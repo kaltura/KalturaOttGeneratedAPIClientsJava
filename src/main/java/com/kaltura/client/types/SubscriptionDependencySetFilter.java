@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.SubscriptionSetType;
 import com.google.gson.JsonObject;
 
 
@@ -41,75 +39,39 @@ import com.google.gson.JsonObject;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Subscription details  */
 @SuppressWarnings("serial")
-public abstract class SubscriptionSet extends ObjectBase {
+public class SubscriptionDependencySetFilter extends SubscriptionSetFilter {
 
-	/**  SubscriptionSet identifier  */
-    private Long id;
-	/**  SubscriptionSet name  */
-    private String name;
-	/**  Type of the Subscription Set  */
-    private SubscriptionSetType type;
-	/**  A list of comma separated subscription ids associated with this set ordered by
-	  priority ascending  */
-    private String subscriptionIds;
+	/**  Comma separated identifiers  */
+    private String baseSubscriptionIdIn;
 
-    // id:
-    public Long getId(){
-        return this.id;
+    // baseSubscriptionIdIn:
+    public String getBaseSubscriptionIdIn(){
+        return this.baseSubscriptionIdIn;
     }
-    public void setId(Long id){
-        this.id = id;
-    }
-
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
-
-    // type:
-    public SubscriptionSetType getType(){
-        return this.type;
-    }
-    public void setType(SubscriptionSetType type){
-        this.type = type;
-    }
-
-    // subscriptionIds:
-    public String getSubscriptionIds(){
-        return this.subscriptionIds;
-    }
-    public void setSubscriptionIds(String subscriptionIds){
-        this.subscriptionIds = subscriptionIds;
+    public void setBaseSubscriptionIdIn(String baseSubscriptionIdIn){
+        this.baseSubscriptionIdIn = baseSubscriptionIdIn;
     }
 
 
-    public SubscriptionSet() {
+    public SubscriptionDependencySetFilter() {
        super();
     }
 
-    public SubscriptionSet(JsonObject jsonObject) throws APIException {
+    public SubscriptionDependencySetFilter(JsonObject jsonObject) throws APIException {
         super(jsonObject);
 
         if(jsonObject == null) return;
 
         // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        type = SubscriptionSetType.get(GsonParser.parseString(jsonObject.get("type")));
-        subscriptionIds = GsonParser.parseString(jsonObject.get("subscriptionIds"));
+        baseSubscriptionIdIn = GsonParser.parseString(jsonObject.get("baseSubscriptionIdIn"));
 
     }
 
     public Params toParams() {
         Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSubscriptionSet");
-        kparams.add("name", this.name);
-        kparams.add("subscriptionIds", this.subscriptionIds);
+        kparams.add("objectType", "KalturaSubscriptionDependencySetFilter");
+        kparams.add("baseSubscriptionIdIn", this.baseSubscriptionIdIn);
         return kparams;
     }
 
