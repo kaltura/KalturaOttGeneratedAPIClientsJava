@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.SubscriptionSetType;
 import com.google.gson.JsonObject;
 
 
@@ -47,8 +46,6 @@ public class SubscriptionSetFilter extends Filter {
     private String idIn;
 	/**  Comma separated subscription identifiers  */
     private String subscriptionIdContains;
-	/**  Subscription Type  */
-    private SubscriptionSetType typeEqual;
 
     // idIn:
     public String getIdIn(){
@@ -66,14 +63,6 @@ public class SubscriptionSetFilter extends Filter {
         this.subscriptionIdContains = subscriptionIdContains;
     }
 
-    // typeEqual:
-    public SubscriptionSetType getTypeEqual(){
-        return this.typeEqual;
-    }
-    public void setTypeEqual(SubscriptionSetType typeEqual){
-        this.typeEqual = typeEqual;
-    }
-
 
     public SubscriptionSetFilter() {
        super();
@@ -87,7 +76,6 @@ public class SubscriptionSetFilter extends Filter {
         // set members values:
         idIn = GsonParser.parseString(jsonObject.get("idIn"));
         subscriptionIdContains = GsonParser.parseString(jsonObject.get("subscriptionIdContains"));
-        typeEqual = SubscriptionSetType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
 
     }
 
@@ -96,7 +84,6 @@ public class SubscriptionSetFilter extends Filter {
         kparams.add("objectType", "KalturaSubscriptionSetFilter");
         kparams.add("idIn", this.idIn);
         kparams.add("subscriptionIdContains", this.subscriptionIdContains);
-        kparams.add("typeEqual", this.typeEqual);
         return kparams;
     }
 

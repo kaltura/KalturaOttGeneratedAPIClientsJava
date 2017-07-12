@@ -35,7 +35,6 @@ import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.types.PreviewModule;
-import com.kaltura.client.enums.SubscriptionDependencyType;
 import java.util.List;
 import com.google.gson.JsonObject;
 
@@ -110,8 +109,6 @@ public class Subscription extends ObjectBase {
     private List<CouponsGroup> couponsGroups;
 	/**  List of Subscription product codes  */
     private List<ProductCode> productCodes;
-	/**  Dependency Type  */
-    private SubscriptionDependencyType dependencyType;
 
     // id:
     public String getId(){
@@ -337,14 +334,6 @@ public class Subscription extends ObjectBase {
         this.productCodes = productCodes;
     }
 
-    // dependencyType:
-    public SubscriptionDependencyType getDependencyType(){
-        return this.dependencyType;
-    }
-    public void setDependencyType(SubscriptionDependencyType dependencyType){
-        this.dependencyType = dependencyType;
-    }
-
 
     public Subscription() {
        super();
@@ -384,7 +373,6 @@ public class Subscription extends ObjectBase {
         userTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("userTypes"), OTTUserType.class);
         couponsGroups = GsonParser.parseArray(jsonObject.getAsJsonArray("couponsGroups"), CouponsGroup.class);
         productCodes = GsonParser.parseArray(jsonObject.getAsJsonArray("productCodes"), ProductCode.class);
-        dependencyType = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyType")));
 
     }
 
@@ -419,7 +407,6 @@ public class Subscription extends ObjectBase {
         kparams.add("userTypes", this.userTypes);
         kparams.add("couponsGroups", this.couponsGroups);
         kparams.add("productCodes", this.productCodes);
-        kparams.add("dependencyType", this.dependencyType);
         return kparams;
     }
 
