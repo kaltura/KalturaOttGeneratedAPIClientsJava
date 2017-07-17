@@ -43,13 +43,14 @@ import com.google.gson.JsonObject;
 @SuppressWarnings("serial")
 public class PushMessage extends ObjectBase {
 
-	/**  Push text  */
+	/**  The message that will be presented to the user.  */
     private String message;
-	/**  Push sound  */
+	/**  Optional. Can be used to change the default push sound on the user device.  */
     private String sound;
-	/**  Push action  */
+	/**  Optional. Used to change the default action of the application when a push is
+	  received.  */
     private String action;
-	/**  Push URL  */
+	/**  Optional. Used to direct the application to the relevant page.  */
     private String url;
 
     // message:
