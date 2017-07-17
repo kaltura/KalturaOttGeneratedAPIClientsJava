@@ -221,15 +221,10 @@ public class OttUserService {
         return new RequestBuilder<OTTUser>(OTTUser.class, "ottuser", "setInitialPassword", kparams);
     }
 
-    public static RequestBuilder<OTTUser> update(OTTUser user)  {
-        return update(user, null);
-    }
-
 	/**  Update user information  */
-    public static RequestBuilder<OTTUser> update(OTTUser user, String id)  {
+    public static RequestBuilder<OTTUser> update(OTTUser user)  {
         Params kparams = new Params();
         kparams.add("user", user);
-        kparams.add("id", id);
 
         return new RequestBuilder<OTTUser>(OTTUser.class, "ottuser", "update", kparams);
     }
