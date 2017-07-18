@@ -83,8 +83,8 @@ public class Subscription extends ObjectBase {
     private Integer mediaId;
 	/**  Subscription order (when returned in methods that retrieve subscriptions)  */
     private Long prorityInOrder;
-	/**  Subscription price plans  */
-    private List<PricePlan> pricePlans;
+	/**  Comma separated subscription price plan IDs  */
+    private String pricePlanIds;
 	/**  Subscription preview module  */
     private PreviewModule previewModule;
 	/**  The household limitation module identifier associated with this subscription  */
@@ -112,6 +112,8 @@ public class Subscription extends ObjectBase {
     private List<ProductCode> productCodes;
 	/**  Dependency Type  */
     private SubscriptionDependencyType dependencyType;
+	/**  External ID  */
+    private String externalId;
 
     // id:
     public String getId(){
@@ -241,12 +243,12 @@ public class Subscription extends ObjectBase {
         this.prorityInOrder = prorityInOrder;
     }
 
-    // pricePlans:
-    public List<PricePlan> getPricePlans(){
-        return this.pricePlans;
+    // pricePlanIds:
+    public String getPricePlanIds(){
+        return this.pricePlanIds;
     }
-    public void setPricePlans(List<PricePlan> pricePlans){
-        this.pricePlans = pricePlans;
+    public void setPricePlanIds(String pricePlanIds){
+        this.pricePlanIds = pricePlanIds;
     }
 
     // previewModule:
@@ -345,6 +347,14 @@ public class Subscription extends ObjectBase {
         this.dependencyType = dependencyType;
     }
 
+    // externalId:
+    public String getExternalId(){
+        return this.externalId;
+    }
+    public void setExternalId(String externalId){
+        this.externalId = externalId;
+    }
+
 
     public Subscription() {
        super();
@@ -372,7 +382,7 @@ public class Subscription extends ObjectBase {
         multilingualDescription = GsonParser.parseObject(jsonObject.getAsJsonObject("multilingualDescription"), MultilingualString.class);
         mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
         prorityInOrder = GsonParser.parseLong(jsonObject.get("prorityInOrder"));
-        pricePlans = GsonParser.parseArray(jsonObject.getAsJsonArray("pricePlans"), PricePlan.class);
+        pricePlanIds = GsonParser.parseString(jsonObject.get("pricePlanIds"));
         previewModule = GsonParser.parseObject(jsonObject.getAsJsonObject("previewModule"), PreviewModule.class);
         householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
         gracePeriodMinutes = GsonParser.parseInt(jsonObject.get("gracePeriodMinutes"));
@@ -385,6 +395,7 @@ public class Subscription extends ObjectBase {
         couponsGroups = GsonParser.parseArray(jsonObject.getAsJsonArray("couponsGroups"), CouponsGroup.class);
         productCodes = GsonParser.parseArray(jsonObject.getAsJsonArray("productCodes"), ProductCode.class);
         dependencyType = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyType")));
+        externalId = GsonParser.parseString(jsonObject.get("externalId"));
 
     }
 
@@ -407,7 +418,7 @@ public class Subscription extends ObjectBase {
         kparams.add("multilingualDescription", this.multilingualDescription);
         kparams.add("mediaId", this.mediaId);
         kparams.add("prorityInOrder", this.prorityInOrder);
-        kparams.add("pricePlans", this.pricePlans);
+        kparams.add("pricePlanIds", this.pricePlanIds);
         kparams.add("previewModule", this.previewModule);
         kparams.add("householdLimitationsId", this.householdLimitationsId);
         kparams.add("gracePeriodMinutes", this.gracePeriodMinutes);
@@ -420,6 +431,7 @@ public class Subscription extends ObjectBase {
         kparams.add("couponsGroups", this.couponsGroups);
         kparams.add("productCodes", this.productCodes);
         kparams.add("dependencyType", this.dependencyType);
+        kparams.add("externalId", this.externalId);
         return kparams;
     }
 
