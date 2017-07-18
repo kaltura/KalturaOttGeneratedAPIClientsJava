@@ -42,11 +42,11 @@ import com.google.gson.JsonObject;
 @SuppressWarnings("serial")
 public class SubscriptionFilter extends Filter {
 
-	/**  Comma separated subscription identifiers to get the subscriptions by  */
+	/**  Comma separated subscription IDs to get the subscriptions by  */
     private String subscriptionIdIn;
-	/**  Media-file identifier to get the subscriptions by  */
+	/**  Media-file ID to get the subscriptions by  */
     private Integer mediaFileIdEqual;
-	/**  Media-file identifier to get the subscriptions by  */
+	/**  Comma separated subscription external IDs to get the subscriptions by  */
     private String externalIdIn;
 
     // subscriptionIdIn:

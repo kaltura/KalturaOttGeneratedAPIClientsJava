@@ -43,6 +43,10 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class PricePlanService {
 
+    public static RequestBuilder<ListResponse<PricePlan>> list()  {
+        return list(null);
+    }
+
 	/**  Returns a list of price plans by IDs  */
     public static RequestBuilder<ListResponse<PricePlan>> list(PricePlanFilter filter)  {
         Params kparams = new Params();
