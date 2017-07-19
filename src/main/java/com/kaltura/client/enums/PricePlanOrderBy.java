@@ -36,7 +36,7 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum PricePlanOrderBy implements EnumAsString {
-    NONE("NONE");
+    CREATE_DATE_DESC("CREATE_DATE_DESC");
 
     private String value;
 
