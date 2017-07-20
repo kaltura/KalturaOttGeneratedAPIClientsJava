@@ -1,23 +1,21 @@
 This is the Readme for the Kaltura Java API Client Library.
 You should read this before building and testing the client.
-This library replaces the deprecated KalturaClient library.
 
 == CONTENTS OF THIS PACKAGE ==
 
  - Kaltura Java Client Library API (src/main/java/com)
+ - Compilation and Run test script (src/Kaltura.java)
  - JUnit tests (src/test/java/com)
 
 
 == DEPENDENCIES ==
  
 The API depends on these libraries:
- - JSON in Java: http://json.org/
- - Gson JSON library: https://github.com/google/gson
- - OkHttp: http://square.github.io/okhttp/
- - OkIO: https://github.com/square/okio
- - Log4j: https://logging.apache.org/log4j
- - Apache Commons Codec 1.4: http://commons.apache.org/proper/commons-codec/
- - JUnit 3.8.2 (optional): http://junit.org
+ - Apache Commons HTTP Client 3.1 (legacy): http://hc.apache.org/downloads.cgi
+ - Log4j: http://logging.apache.org/log4j/1.2/download.html
+ - Apache Commons Logging 1.1: http://commons.apache.org/downloads/download_logging.cgi
+ - Apache Commons Codec 1.4: http://commons.apache.org/codec/download_codec.cgi
+ - JUnit 3.8.2 (optional): http://sourceforge.net/projects/junit/files/junit/
 
 
 
@@ -27,13 +25,13 @@ Use the following command to build the API without running unit tests:
   mvn -Dmaven.test.skip=true package
 
 After running the command you will find 3 Jar files in the "target" directory.
-  -- target/KalturaApiClient-X.X.X.jar contains the compiled client library
-  -- target/KalturaApiClient-X.X.X-sources.jar contains the source code
-  -- target/KalturaApiClient-X.X.X-javadoc.jar contains the Javadoc documentation for the library
+  -- target/kalturaClient-X.X.X.jar contains the compiled client library
+  -- target/kalturaClient-X.X.X-sources.jar contains the source code
+  -- target/kalturaClient-X.X.X-javadoc.jar contains the Javadoc documentation for the library
 
 == TESTING THE API CLIENT LIBRARY USING MAVEN ==
 
-Copy src/test/resources/test.template.properties file to src/test/resources/test.properties and edit it, enter valid data to partnerId, adminSecret, and serviceUrl variables.
+Edit the src/test/resources/test.properties file, enter valid data to ENDPOINT,PARTNER_ID, SECRET and ADMIN_SECRET variables.
 
 Use the following command to both build the API and run unit tests:
   mvn package
@@ -52,8 +50,13 @@ To build the API:
 
 == TESTING THE API CLIENT LIBRARY USING ECLIPSE ==
 
+To run the main class (Kaltura.java):
+ - Edit the src/com/kaltura/client/test/test.properties file, enter valid data to ENDPOINT, PARTNER_ID, SECRET and ADMIN_SECRET variables.
+ - Compile the client library.
+ - Right click the Kaltura.java file and choose Debug As > Java Application.
+
 To run the JUnit test suite that accompanies this source:
- - Copy src/test/resources/test.template.properties file to src/test/resources/test.properties and edit it, enter valid data to partnerId, adminSecret, and serviceUrl variables.
+ - Edit the src/com/kaltura/client/test/test.properties file, enter valid data to ENDPOINT,PARTNER_ID, SECRET and ADMIN_SECRET variables.
  - Compile the client library.
  - Right click the KalturaTestSuite.java file and choose Debug As > JUnit Test.
 
@@ -66,6 +69,6 @@ The launch settings are saved in the following files:
 
 There is a log4j.properties file in src/test/resources/log4j. 
  - Edit it to set the log level as desired, defaults are:
-  log4j.category.ClientBase.class=DEBUG
+  log4j.category.KalturaClientBase.class=DEBUG
   log4j.logger.com.kaltura=ERROR
 
