@@ -33,37 +33,29 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum KalturaInboxMessageType implements KalturaEnumAsString {
-    SYSTEMANNOUNCEMENT ("SystemAnnouncement"),
-    FOLLOWED ("Followed");
+public enum KalturaOTTAssetType implements KalturaEnumAsInt {
+    SERIES (0),
+    REMINDER (1);
 
-    public String hashCode;
+    public int hashCode;
 
-    KalturaInboxMessageType(String hashCode) {
+    KalturaOTTAssetType(int hashCode) {
         this.hashCode = hashCode;
     }
 
-    public String getHashCode() {
+    public int getHashCode() {
         return this.hashCode;
     }
 
-    public void setHashCode(String hashCode) {
+    public void setHashCode(int hashCode) {
         this.hashCode = hashCode;
     }
 
-    public static KalturaInboxMessageType get(String hashCode) {
-        if (hashCode.equals("SystemAnnouncement"))
-        {
-           return SYSTEMANNOUNCEMENT;
-        }
-        else 
-        if (hashCode.equals("Followed"))
-        {
-           return FOLLOWED;
-        }
-        else 
-        {
-           return SYSTEMANNOUNCEMENT;
+    public static KalturaOTTAssetType get(int hashCode) {
+        switch(hashCode) {
+            case 0: return SERIES;
+            case 1: return REMINDER;
+            default: return SERIES;
         }
     }
 }

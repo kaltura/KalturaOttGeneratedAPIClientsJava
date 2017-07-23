@@ -33,13 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum KalturaInboxMessageType implements KalturaEnumAsString {
-    SYSTEMANNOUNCEMENT ("SystemAnnouncement"),
-    FOLLOWED ("Followed");
+public enum KalturaReminderOrderBy implements KalturaEnumAsString {
+    NONE ("NONE");
 
     public String hashCode;
 
-    KalturaInboxMessageType(String hashCode) {
+    KalturaReminderOrderBy(String hashCode) {
         this.hashCode = hashCode;
     }
 
@@ -51,19 +50,14 @@ public enum KalturaInboxMessageType implements KalturaEnumAsString {
         this.hashCode = hashCode;
     }
 
-    public static KalturaInboxMessageType get(String hashCode) {
-        if (hashCode.equals("SystemAnnouncement"))
+    public static KalturaReminderOrderBy get(String hashCode) {
+        if (hashCode.equals("NONE"))
         {
-           return SYSTEMANNOUNCEMENT;
-        }
-        else 
-        if (hashCode.equals("Followed"))
-        {
-           return FOLLOWED;
+           return NONE;
         }
         else 
         {
-           return SYSTEMANNOUNCEMENT;
+           return NONE;
         }
     }
 }

@@ -74,18 +74,6 @@ public class KalturaEntitlementService extends KalturaServiceBase {
         this.kalturaClient.doQueue();
     }
 
-	/**  Cancel Scheduled Subscription  */
-    public boolean cancelScheduledSubscription(long scheduledSubscriptionId) throws KalturaApiException {
-        KalturaParams kparams = new KalturaParams();
-        kparams.add("scheduledSubscriptionId", scheduledSubscriptionId);
-        this.kalturaClient.queueServiceCall("entitlement", "cancelScheduledSubscription", kparams);
-        if (this.kalturaClient.isMultiRequest())
-            return false;
-        Element resultXmlElement = this.kalturaClient.doQueue();
-        String resultText = resultXmlElement.getTextContent();
-        return ParseUtils.parseBool(resultText);
-    }
-
 	/**  Reconcile the user household&amp;#39;s entitlements with an external
 	  entitlements source. This request is frequency protected to avoid too frequent
 	  calls per household.  */

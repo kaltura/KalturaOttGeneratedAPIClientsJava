@@ -30,9 +30,6 @@ package com.kaltura.client.types;
 import org.w3c.dom.Element;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
-import com.kaltura.client.utils.ParseUtils;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 /**
@@ -43,30 +40,18 @@ import org.w3c.dom.NodeList;
  */
 
 @SuppressWarnings("serial")
-public class KalturaAssetFilter extends KalturaPersistedFilter {
-	/**  dynamicOrderBy - order by Meta  */
-    public KalturaDynamicOrderBy dynamicOrderBy;
+public class KalturaAssetFilter extends KalturaFilter {
 
     public KalturaAssetFilter() {
     }
 
     public KalturaAssetFilter(Element node) throws KalturaApiException {
         super(node);
-        NodeList childNodes = node.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node aNode = childNodes.item(i);
-            String nodeName = aNode.getNodeName();
-            if (nodeName.equals("dynamicOrderBy")) {
-                this.dynamicOrderBy = ParseUtils.parseObject(KalturaDynamicOrderBy.class, aNode);
-                continue;
-            } 
-        }
     }
 
     public KalturaParams toParams() throws KalturaApiException {
         KalturaParams kparams = super.toParams();
         kparams.add("objectType", "KalturaAssetFilter");
-        kparams.add("dynamicOrderBy", this.dynamicOrderBy);
         return kparams;
     }
 

@@ -124,6 +124,7 @@ public class KalturaAppToken extends KalturaObjectBase {
         kparams.add("hashType", this.hashType);
         kparams.add("sessionPrivileges", this.sessionPrivileges);
         kparams.add("sessionType", this.sessionType);
+        kparams.add("token", this.token);
         kparams.add("sessionUserId", this.sessionUserId);
         return kparams;
     }

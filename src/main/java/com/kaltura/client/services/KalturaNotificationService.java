@@ -61,19 +61,6 @@ public class KalturaNotificationService extends KalturaServiceBase {
         return ParseUtils.parseObject(KalturaRegistryResponse.class, resultXmlElement);
     }
 
-	/**  Sends push notification to user devices  */
-    public boolean sendPush(int userId, KalturaPushMessage pushMessage) throws KalturaApiException {
-        KalturaParams kparams = new KalturaParams();
-        kparams.add("userId", userId);
-        kparams.add("pushMessage", pushMessage);
-        this.kalturaClient.queueServiceCall("notification", "sendPush", kparams);
-        if (this.kalturaClient.isMultiRequest())
-            return false;
-        Element resultXmlElement = this.kalturaClient.doQueue();
-        String resultText = resultXmlElement.getTextContent();
-        return ParseUtils.parseBool(resultText);
-    }
-
 	/**  Registers the device push token to the push service  */
     public boolean setDevicePushToken(String pushToken) throws KalturaApiException {
         KalturaParams kparams = new KalturaParams();
