@@ -67,6 +67,14 @@ public class KalturaNotificationsPartnerSettings extends KalturaObjectBase {
     public int reminderOffsetSec = Integer.MIN_VALUE;
 	/**  Push adapter URL  */
     public String pushAdapterUrl;
+	/**  Churn mail template name  */
+    public String churnMailTemplateName;
+	/**  Churn mail subject  */
+    public String churnMailSubject;
+	/**  Sender email  */
+    public String senderEmail;
+	/**  Mail sender name  */
+    public String mailSenderName;
 
     public KalturaNotificationsPartnerSettings() {
     }
@@ -111,6 +119,18 @@ public class KalturaNotificationsPartnerSettings extends KalturaObjectBase {
             } else if (nodeName.equals("pushAdapterUrl")) {
                 this.pushAdapterUrl = ParseUtils.parseString(txt);
                 continue;
+            } else if (nodeName.equals("churnMailTemplateName")) {
+                this.churnMailTemplateName = ParseUtils.parseString(txt);
+                continue;
+            } else if (nodeName.equals("churnMailSubject")) {
+                this.churnMailSubject = ParseUtils.parseString(txt);
+                continue;
+            } else if (nodeName.equals("senderEmail")) {
+                this.senderEmail = ParseUtils.parseString(txt);
+                continue;
+            } else if (nodeName.equals("mailSenderName")) {
+                this.mailSenderName = ParseUtils.parseString(txt);
+                continue;
             } 
         }
     }
@@ -129,6 +149,10 @@ public class KalturaNotificationsPartnerSettings extends KalturaObjectBase {
         kparams.add("reminderEnabled", this.reminderEnabled);
         kparams.add("reminderOffsetSec", this.reminderOffsetSec);
         kparams.add("pushAdapterUrl", this.pushAdapterUrl);
+        kparams.add("churnMailTemplateName", this.churnMailTemplateName);
+        kparams.add("churnMailSubject", this.churnMailSubject);
+        kparams.add("senderEmail", this.senderEmail);
+        kparams.add("mailSenderName", this.mailSenderName);
         return kparams;
     }
 

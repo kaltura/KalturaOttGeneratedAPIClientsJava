@@ -58,6 +58,8 @@ public class KalturaSubscriptionEntitlement extends KalturaEntitlement {
     public int paymentGatewayId = Integer.MIN_VALUE;
 	/**  Payment Method identifier  */
     public int paymentMethodId = Integer.MIN_VALUE;
+	/**  Scheduled Subscription Identifier  */
+    public long scheduledSubscriptionId = Long.MIN_VALUE;
 
     public KalturaSubscriptionEntitlement() {
     }
@@ -87,6 +89,9 @@ public class KalturaSubscriptionEntitlement extends KalturaEntitlement {
             } else if (nodeName.equals("paymentMethodId")) {
                 this.paymentMethodId = ParseUtils.parseInt(txt);
                 continue;
+            } else if (nodeName.equals("scheduledSubscriptionId")) {
+                this.scheduledSubscriptionId = ParseUtils.parseBigint(txt);
+                continue;
             } 
         }
     }
@@ -96,6 +101,7 @@ public class KalturaSubscriptionEntitlement extends KalturaEntitlement {
         kparams.add("objectType", "KalturaSubscriptionEntitlement");
         kparams.add("paymentGatewayId", this.paymentGatewayId);
         kparams.add("paymentMethodId", this.paymentMethodId);
+        kparams.add("scheduledSubscriptionId", this.scheduledSubscriptionId);
         return kparams;
     }
 

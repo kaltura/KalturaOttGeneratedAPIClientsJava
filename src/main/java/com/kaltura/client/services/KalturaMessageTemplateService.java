@@ -50,9 +50,9 @@ public class KalturaMessageTemplateService extends KalturaServiceBase {
     }
 
 	/**  Retrieve a message template used in push notifications and inbox  */
-    public KalturaMessageTemplate get(KalturaOTTAssetType assetType) throws KalturaApiException {
+    public KalturaMessageTemplate get(KalturaMessageTemplateType messageType) throws KalturaApiException {
         KalturaParams kparams = new KalturaParams();
-        kparams.add("assetType", assetType);
+        kparams.add("messageType", messageType);
         this.kalturaClient.queueServiceCall("messagetemplate", "get", kparams, KalturaMessageTemplate.class);
         if (this.kalturaClient.isMultiRequest())
             return null;
@@ -61,9 +61,9 @@ public class KalturaMessageTemplateService extends KalturaServiceBase {
     }
 
 	/**  Set the account’s push notifications and inbox messages templates  */
-    public KalturaMessageTemplate update(KalturaOTTAssetType assetType, KalturaMessageTemplate template) throws KalturaApiException {
+    public KalturaMessageTemplate update(KalturaMessageTemplateType messageType, KalturaMessageTemplate template) throws KalturaApiException {
         KalturaParams kparams = new KalturaParams();
-        kparams.add("assetType", assetType);
+        kparams.add("messageType", messageType);
         kparams.add("template", template);
         this.kalturaClient.queueServiceCall("messagetemplate", "update", kparams, KalturaMessageTemplate.class);
         if (this.kalturaClient.isMultiRequest())

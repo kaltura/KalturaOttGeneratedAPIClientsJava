@@ -121,6 +121,23 @@ public class KalturaHouseholdDeviceService extends KalturaServiceBase {
         return ParseUtils.parseObject(KalturaHouseholdDeviceListResponse.class, resultXmlElement);
     }
 
+    public KalturaLoginResponse loginWithPin(int partnerId, String pin) throws KalturaApiException {
+        return this.loginWithPin(partnerId, pin, null);
+    }
+
+	/**  User sign-in via a time-expired sign-in PIN.  */
+    public KalturaLoginResponse loginWithPin(int partnerId, String pin, String udid) throws KalturaApiException {
+        KalturaParams kparams = new KalturaParams();
+        kparams.add("partnerId", partnerId);
+        kparams.add("pin", pin);
+        kparams.add("udid", udid);
+        this.kalturaClient.queueServiceCall("householddevice", "loginWithPin", kparams, KalturaLoginResponse.class);
+        if (this.kalturaClient.isMultiRequest())
+            return null;
+        Element resultXmlElement = this.kalturaClient.doQueue();
+        return ParseUtils.parseObject(KalturaLoginResponse.class, resultXmlElement);
+    }
+
 	/**  Update the name of the device by UDID  */
     public KalturaHouseholdDevice update(String udid, KalturaHouseholdDevice device) throws KalturaApiException {
         KalturaParams kparams = new KalturaParams();

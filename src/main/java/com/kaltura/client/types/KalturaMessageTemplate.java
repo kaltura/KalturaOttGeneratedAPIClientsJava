@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
 import com.kaltura.client.KalturaObjectBase;
-import com.kaltura.client.enums.KalturaOTTAssetType;
+import com.kaltura.client.enums.KalturaMessageTemplateType;
 import com.kaltura.client.utils.ParseUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -50,8 +50,8 @@ public class KalturaMessageTemplate extends KalturaObjectBase {
     public String message;
 	/**  Default date format for the date &amp;amp; time entries used in the template  */
     public String dateFormat;
-	/**  Template type. Possible values: Series  */
-    public KalturaOTTAssetType assetType;
+	/**  Template type. Possible values: Series, Reminder,Churn, SeriesReminder  */
+    public KalturaMessageTemplateType messageType;
 	/**  Sound file name to play upon message arrival to the device (if supported by
 	  target device)  */
     public String sound;
@@ -76,8 +76,8 @@ public class KalturaMessageTemplate extends KalturaObjectBase {
             } else if (nodeName.equals("dateFormat")) {
                 this.dateFormat = ParseUtils.parseString(txt);
                 continue;
-            } else if (nodeName.equals("assetType")) {
-                this.assetType = KalturaOTTAssetType.get(ParseUtils.parseInt(txt));
+            } else if (nodeName.equals("messageType")) {
+                this.messageType = KalturaMessageTemplateType.get(ParseUtils.parseInt(txt));
                 continue;
             } else if (nodeName.equals("sound")) {
                 this.sound = ParseUtils.parseString(txt);
@@ -97,7 +97,7 @@ public class KalturaMessageTemplate extends KalturaObjectBase {
         kparams.add("objectType", "KalturaMessageTemplate");
         kparams.add("message", this.message);
         kparams.add("dateFormat", this.dateFormat);
-        kparams.add("assetType", this.assetType);
+        kparams.add("messageType", this.messageType);
         kparams.add("sound", this.sound);
         kparams.add("action", this.action);
         kparams.add("url", this.url);

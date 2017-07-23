@@ -48,6 +48,8 @@ import com.kaltura.client.services.KalturaCouponService;
 import com.kaltura.client.services.KalturaCurrencyService;
 import com.kaltura.client.services.KalturaDeviceBrandService;
 import com.kaltura.client.services.KalturaDeviceFamilyService;
+import com.kaltura.client.services.KalturaEngagementAdapterService;
+import com.kaltura.client.services.KalturaEngagementService;
 import com.kaltura.client.services.KalturaEntitlementService;
 import com.kaltura.client.services.KalturaExportTaskService;
 import com.kaltura.client.services.KalturaExternalChannelProfileService;
@@ -88,6 +90,7 @@ import com.kaltura.client.services.KalturaRegionService;
 import com.kaltura.client.services.KalturaRegistrySettingsService;
 import com.kaltura.client.services.KalturaReminderService;
 import com.kaltura.client.services.KalturaReportService;
+import com.kaltura.client.services.KalturaSearchHistoryService;
 import com.kaltura.client.services.KalturaSeriesRecordingService;
 import com.kaltura.client.services.KalturaSessionService;
 import com.kaltura.client.services.KalturaSocialActionService;
@@ -95,6 +98,7 @@ import com.kaltura.client.services.KalturaSocialCommentService;
 import com.kaltura.client.services.KalturaSocialService;
 import com.kaltura.client.services.KalturaSocialFriendActivityService;
 import com.kaltura.client.services.KalturaSubscriptionService;
+import com.kaltura.client.services.KalturaSubscriptionSetService;
 import com.kaltura.client.services.KalturaSystemService;
 import com.kaltura.client.services.KalturaTimeShiftedTvPartnerSettingsService;
 import com.kaltura.client.services.KalturaTopicService;
@@ -102,6 +106,7 @@ import com.kaltura.client.services.KalturaTransactionService;
 import com.kaltura.client.services.KalturaTransactionHistoryService;
 import com.kaltura.client.services.KalturaUserAssetRuleService;
 import com.kaltura.client.services.KalturaUserAssetsListItemService;
+import com.kaltura.client.services.KalturaUserInterestService;
 import com.kaltura.client.services.KalturaUserLoginPinService;
 import com.kaltura.client.services.KalturaUserRoleService;
 
@@ -119,7 +124,7 @@ public class KalturaClient extends KalturaClientBase {
 		super(config);
 		
 		this.setClientTag("java:17-07-23");
-		this.setApiVersion("4.3.25.20816");
+		this.setApiVersion("4.4.3.21085");
 	}
 	
 	protected KalturaAnnouncementService announcementService;
@@ -296,6 +301,22 @@ public class KalturaClient extends KalturaClientBase {
 			this.deviceFamilyService = new KalturaDeviceFamilyService(this);
 	
 		return this.deviceFamilyService;
+	}
+	
+	protected KalturaEngagementAdapterService engagementAdapterService;
+	public KalturaEngagementAdapterService getEngagementAdapterService() {
+		if(this.engagementAdapterService == null)
+			this.engagementAdapterService = new KalturaEngagementAdapterService(this);
+	
+		return this.engagementAdapterService;
+	}
+	
+	protected KalturaEngagementService engagementService;
+	public KalturaEngagementService getEngagementService() {
+		if(this.engagementService == null)
+			this.engagementService = new KalturaEngagementService(this);
+	
+		return this.engagementService;
 	}
 	
 	protected KalturaEntitlementService entitlementService;
@@ -618,6 +639,14 @@ public class KalturaClient extends KalturaClientBase {
 		return this.reportService;
 	}
 	
+	protected KalturaSearchHistoryService searchHistoryService;
+	public KalturaSearchHistoryService getSearchHistoryService() {
+		if(this.searchHistoryService == null)
+			this.searchHistoryService = new KalturaSearchHistoryService(this);
+	
+		return this.searchHistoryService;
+	}
+	
 	protected KalturaSeriesRecordingService seriesRecordingService;
 	public KalturaSeriesRecordingService getSeriesRecordingService() {
 		if(this.seriesRecordingService == null)
@@ -674,6 +703,14 @@ public class KalturaClient extends KalturaClientBase {
 		return this.subscriptionService;
 	}
 	
+	protected KalturaSubscriptionSetService subscriptionSetService;
+	public KalturaSubscriptionSetService getSubscriptionSetService() {
+		if(this.subscriptionSetService == null)
+			this.subscriptionSetService = new KalturaSubscriptionSetService(this);
+	
+		return this.subscriptionSetService;
+	}
+	
 	protected KalturaSystemService systemService;
 	public KalturaSystemService getSystemService() {
 		if(this.systemService == null)
@@ -728,6 +765,14 @@ public class KalturaClient extends KalturaClientBase {
 			this.userAssetsListItemService = new KalturaUserAssetsListItemService(this);
 	
 		return this.userAssetsListItemService;
+	}
+	
+	protected KalturaUserInterestService userInterestService;
+	public KalturaUserInterestService getUserInterestService() {
+		if(this.userInterestService == null)
+			this.userInterestService = new KalturaUserInterestService(this);
+	
+		return this.userInterestService;
 	}
 	
 	protected KalturaUserLoginPinService userLoginPinService;

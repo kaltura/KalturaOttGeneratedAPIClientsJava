@@ -58,4 +58,16 @@ public class KalturaSubscriptionService extends KalturaServiceBase {
         Element resultXmlElement = this.kalturaClient.doQueue();
         return ParseUtils.parseObject(KalturaSubscriptionListResponse.class, resultXmlElement);
     }
+
+	/**  Returns information about a coupon for subscription  */
+    public KalturaCoupon validateCoupon(int id, String code) throws KalturaApiException {
+        KalturaParams kparams = new KalturaParams();
+        kparams.add("id", id);
+        kparams.add("code", code);
+        this.kalturaClient.queueServiceCall("subscription", "validateCoupon", kparams, KalturaCoupon.class);
+        if (this.kalturaClient.isMultiRequest())
+            return null;
+        Element resultXmlElement = this.kalturaClient.doQueue();
+        return ParseUtils.parseObject(KalturaCoupon.class, resultXmlElement);
+    }
 }
