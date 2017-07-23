@@ -31,7 +31,6 @@ import org.w3c.dom.Element;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
 import com.kaltura.client.KalturaObjectBase;
-import com.kaltura.client.enums.KalturaSubscriptionSetType;
 import com.kaltura.client.utils.ParseUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -51,8 +50,6 @@ public abstract class KalturaSubscriptionSet extends KalturaObjectBase {
     public long id = Long.MIN_VALUE;
 	/**  SubscriptionSet name  */
     public String name;
-	/**  Type of the Subscription Set  */
-    public KalturaSubscriptionSetType type;
 	/**  A list of comma separated subscription ids associated with this set ordered by
 	  priority ascending  */
     public String subscriptionIds;
@@ -72,9 +69,6 @@ public abstract class KalturaSubscriptionSet extends KalturaObjectBase {
                 continue;
             } else if (nodeName.equals("name")) {
                 this.name = ParseUtils.parseString(txt);
-                continue;
-            } else if (nodeName.equals("type")) {
-                this.type = KalturaSubscriptionSetType.get(ParseUtils.parseString(txt));
                 continue;
             } else if (nodeName.equals("subscriptionIds")) {
                 this.subscriptionIds = ParseUtils.parseString(txt);

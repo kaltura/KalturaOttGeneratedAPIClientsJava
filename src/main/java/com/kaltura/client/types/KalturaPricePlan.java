@@ -50,10 +50,10 @@ public class KalturaPricePlan extends KalturaUsageModule {
 	/**  Defines the number of times the module will be renewed (for the life_cycle
 	  period)  */
     public int renewalsNumber = Integer.MIN_VALUE;
+	/**  Unique identifier associated with this object&amp;#39;s price  */
+    public int priceId = Integer.MIN_VALUE;
 	/**  The discount module identifier of the price plan  */
     public long discountId = Long.MIN_VALUE;
-	/**  The ID of the price details associated with this price plan  */
-    public long priceDetailsId = Long.MIN_VALUE;
 
     public KalturaPricePlan() {
     }
@@ -71,11 +71,11 @@ public class KalturaPricePlan extends KalturaUsageModule {
             } else if (nodeName.equals("renewalsNumber")) {
                 this.renewalsNumber = ParseUtils.parseInt(txt);
                 continue;
+            } else if (nodeName.equals("priceId")) {
+                this.priceId = ParseUtils.parseInt(txt);
+                continue;
             } else if (nodeName.equals("discountId")) {
                 this.discountId = ParseUtils.parseBigint(txt);
-                continue;
-            } else if (nodeName.equals("priceDetailsId")) {
-                this.priceDetailsId = ParseUtils.parseBigint(txt);
                 continue;
             } 
         }
@@ -84,7 +84,10 @@ public class KalturaPricePlan extends KalturaUsageModule {
     public KalturaParams toParams() throws KalturaApiException {
         KalturaParams kparams = super.toParams();
         kparams.add("objectType", "KalturaPricePlan");
-        kparams.add("priceDetailsId", this.priceDetailsId);
+        kparams.add("isRenewable", this.isRenewable);
+        kparams.add("renewalsNumber", this.renewalsNumber);
+        kparams.add("priceId", this.priceId);
+        kparams.add("discountId", this.discountId);
         return kparams;
     }
 
