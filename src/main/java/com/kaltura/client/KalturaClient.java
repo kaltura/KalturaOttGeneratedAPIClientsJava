@@ -82,6 +82,8 @@ import com.kaltura.client.services.KalturaPaymentMethodProfileService;
 import com.kaltura.client.services.KalturaPersonalFeedService;
 import com.kaltura.client.services.KalturaPinService;
 import com.kaltura.client.services.KalturaPpvService;
+import com.kaltura.client.services.KalturaPriceDetailsService;
+import com.kaltura.client.services.KalturaPricePlanService;
 import com.kaltura.client.services.KalturaProductPriceService;
 import com.kaltura.client.services.KalturaPurchaseSettingsService;
 import com.kaltura.client.services.KalturaRecommendationProfileService;
@@ -124,7 +126,7 @@ public class KalturaClient extends KalturaClientBase {
 		super(config);
 		
 		this.setClientTag("java:17-07-23");
-		this.setApiVersion("4.4.3.21085");
+		this.setApiVersion("4.4.43.21360");
 	}
 	
 	protected KalturaAnnouncementService announcementService;
@@ -573,6 +575,22 @@ public class KalturaClient extends KalturaClientBase {
 			this.ppvService = new KalturaPpvService(this);
 	
 		return this.ppvService;
+	}
+	
+	protected KalturaPriceDetailsService priceDetailsService;
+	public KalturaPriceDetailsService getPriceDetailsService() {
+		if(this.priceDetailsService == null)
+			this.priceDetailsService = new KalturaPriceDetailsService(this);
+	
+		return this.priceDetailsService;
+	}
+	
+	protected KalturaPricePlanService pricePlanService;
+	public KalturaPricePlanService getPricePlanService() {
+		if(this.pricePlanService == null)
+			this.pricePlanService = new KalturaPricePlanService(this);
+	
+		return this.pricePlanService;
 	}
 	
 	protected KalturaProductPriceService productPriceService;

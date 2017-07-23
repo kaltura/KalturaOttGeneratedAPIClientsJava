@@ -53,6 +53,8 @@ public class KalturaPriceDetails extends KalturaObjectBase {
     public String name;
 	/**  The price  */
     public KalturaPrice price;
+	/**  Multi currency prices for all countries and currencies  */
+    public ArrayList<KalturaPrice> multiCurrencyPrice;
 	/**  A list of the descriptions for this price on different languages (language code
 	  and translation)  */
     public ArrayList<KalturaTranslationToken> descriptions;
@@ -76,6 +78,9 @@ public class KalturaPriceDetails extends KalturaObjectBase {
             } else if (nodeName.equals("price")) {
                 this.price = ParseUtils.parseObject(KalturaPrice.class, aNode);
                 continue;
+            } else if (nodeName.equals("multiCurrencyPrice")) {
+                this.multiCurrencyPrice = ParseUtils.parseArray(KalturaPrice.class, aNode);
+                continue;
             } else if (nodeName.equals("descriptions")) {
                 this.descriptions = ParseUtils.parseArray(KalturaTranslationToken.class, aNode);
                 continue;
@@ -86,9 +91,8 @@ public class KalturaPriceDetails extends KalturaObjectBase {
     public KalturaParams toParams() throws KalturaApiException {
         KalturaParams kparams = super.toParams();
         kparams.add("objectType", "KalturaPriceDetails");
-        kparams.add("id", this.id);
         kparams.add("name", this.name);
-        kparams.add("price", this.price);
+        kparams.add("multiCurrencyPrice", this.multiCurrencyPrice);
         kparams.add("descriptions", this.descriptions);
         return kparams;
     }
