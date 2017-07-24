@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import org.w3c.dom.Element;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
-import com.kaltura.client.enums.KalturaSubscriptionSetType;
 import com.kaltura.client.utils.ParseUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -49,8 +48,6 @@ public class KalturaSubscriptionSetFilter extends KalturaFilter {
     public String idIn;
 	/**  Comma separated subscription identifiers  */
     public String subscriptionIdContains;
-	/**  Subscription Type  */
-    public KalturaSubscriptionSetType typeEqual;
 
     public KalturaSubscriptionSetFilter() {
     }
@@ -68,9 +65,6 @@ public class KalturaSubscriptionSetFilter extends KalturaFilter {
             } else if (nodeName.equals("subscriptionIdContains")) {
                 this.subscriptionIdContains = ParseUtils.parseString(txt);
                 continue;
-            } else if (nodeName.equals("typeEqual")) {
-                this.typeEqual = KalturaSubscriptionSetType.get(ParseUtils.parseString(txt));
-                continue;
             } 
         }
     }
@@ -80,7 +74,6 @@ public class KalturaSubscriptionSetFilter extends KalturaFilter {
         kparams.add("objectType", "KalturaSubscriptionSetFilter");
         kparams.add("idIn", this.idIn);
         kparams.add("subscriptionIdContains", this.subscriptionIdContains);
-        kparams.add("typeEqual", this.typeEqual);
         return kparams;
     }
 

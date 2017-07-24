@@ -52,8 +52,6 @@ public class KalturaPrice extends KalturaObjectBase {
     public String currency;
 	/**  Currency Sign  */
     public String currencySign;
-	/**  Currency  */
-    public long countryId = Long.MIN_VALUE;
 
     public KalturaPrice() {
     }
@@ -74,9 +72,6 @@ public class KalturaPrice extends KalturaObjectBase {
             } else if (nodeName.equals("currencySign")) {
                 this.currencySign = ParseUtils.parseString(txt);
                 continue;
-            } else if (nodeName.equals("countryId")) {
-                this.countryId = ParseUtils.parseBigint(txt);
-                continue;
             } 
         }
     }
@@ -87,7 +82,6 @@ public class KalturaPrice extends KalturaObjectBase {
         kparams.add("amount", this.amount);
         kparams.add("currency", this.currency);
         kparams.add("currencySign", this.currencySign);
-        kparams.add("countryId", this.countryId);
         return kparams;
     }
 
