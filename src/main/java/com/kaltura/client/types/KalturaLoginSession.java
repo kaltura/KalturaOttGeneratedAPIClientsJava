@@ -48,8 +48,6 @@ import org.w3c.dom.NodeList;
 public class KalturaLoginSession extends KalturaObjectBase {
 	/**  Access token in a KS format  */
     public String ks;
-	/**  Refresh Token  */
-    public String refreshToken;
 
     public KalturaLoginSession() {
     }
@@ -64,9 +62,6 @@ public class KalturaLoginSession extends KalturaObjectBase {
             if (nodeName.equals("ks")) {
                 this.ks = ParseUtils.parseString(txt);
                 continue;
-            } else if (nodeName.equals("refreshToken")) {
-                this.refreshToken = ParseUtils.parseString(txt);
-                continue;
             } 
         }
     }
@@ -75,7 +70,6 @@ public class KalturaLoginSession extends KalturaObjectBase {
         KalturaParams kparams = super.toParams();
         kparams.add("objectType", "KalturaLoginSession");
         kparams.add("ks", this.ks);
-        kparams.add("refreshToken", this.refreshToken);
         return kparams;
     }
 

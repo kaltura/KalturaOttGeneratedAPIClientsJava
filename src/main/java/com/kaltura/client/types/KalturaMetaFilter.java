@@ -56,6 +56,8 @@ public class KalturaMetaFilter extends KalturaFilter {
     public KalturaMetaType typeEqual;
 	/**  Asset type to filter by  */
     public KalturaAssetType assetTypeEqual;
+	/**  Features  */
+    public String featuresIn;
 
     public KalturaMetaFilter() {
     }
@@ -79,6 +81,9 @@ public class KalturaMetaFilter extends KalturaFilter {
             } else if (nodeName.equals("assetTypeEqual")) {
                 this.assetTypeEqual = KalturaAssetType.get(ParseUtils.parseString(txt));
                 continue;
+            } else if (nodeName.equals("featuresIn")) {
+                this.featuresIn = ParseUtils.parseString(txt);
+                continue;
             } 
         }
     }
@@ -90,6 +95,7 @@ public class KalturaMetaFilter extends KalturaFilter {
         kparams.add("fieldNameNotEqual", this.fieldNameNotEqual);
         kparams.add("typeEqual", this.typeEqual);
         kparams.add("assetTypeEqual", this.assetTypeEqual);
+        kparams.add("featuresIn", this.featuresIn);
         return kparams;
     }
 

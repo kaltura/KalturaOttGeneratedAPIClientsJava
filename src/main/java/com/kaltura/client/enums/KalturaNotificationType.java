@@ -36,7 +36,8 @@ package com.kaltura.client.enums;
 public enum KalturaNotificationType implements KalturaEnumAsString {
     ANNOUNCEMENT ("announcement"),
     SYSTEM ("system"),
-    REMINDER ("Reminder");
+    REMINDER ("Reminder"),
+    SERIES_REMINDER ("series_reminder");
 
     public String hashCode;
 
@@ -66,6 +67,11 @@ public enum KalturaNotificationType implements KalturaEnumAsString {
         if (hashCode.equals("Reminder"))
         {
            return REMINDER;
+        }
+        else 
+        if (hashCode.equals("series_reminder"))
+        {
+           return SERIES_REMINDER;
         }
         else 
         {

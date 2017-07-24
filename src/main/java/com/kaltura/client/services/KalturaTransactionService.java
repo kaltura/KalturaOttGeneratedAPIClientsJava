@@ -31,9 +31,9 @@ import com.kaltura.client.KalturaClient;
 import com.kaltura.client.KalturaServiceBase;
 import com.kaltura.client.types.*;
 import org.w3c.dom.Element;
-import com.kaltura.client.utils.ParseUtils;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
+import com.kaltura.client.utils.ParseUtils;
 import com.kaltura.client.enums.*;
 
 /**
@@ -47,6 +47,17 @@ import com.kaltura.client.enums.*;
 public class KalturaTransactionService extends KalturaServiceBase {
     public KalturaTransactionService(KalturaClient client) {
         this.kalturaClient = client;
+    }
+
+	/**  downgrade specific subscription for a household. entitlements will be updated on
+	  the existing subscription end date.  */
+    public void downgrade(KalturaPurchase purchase) throws KalturaApiException {
+        KalturaParams kparams = new KalturaParams();
+        kparams.add("purchase", purchase);
+        this.kalturaClient.queueServiceCall("transaction", "downgrade", kparams);
+        if (this.kalturaClient.isMultiRequest())
+            return ;
+        this.kalturaClient.doQueue();
     }
 
 	/**  Retrieve the purchase session identifier  */
@@ -98,6 +109,18 @@ public class KalturaTransactionService extends KalturaServiceBase {
         if (this.kalturaClient.isMultiRequest())
             return ;
         this.kalturaClient.doQueue();
+    }
+
+	/**  upgrade specific subscription for a household. Upon successful charge
+	  entitlements to use the requested product or subscription are granted.  */
+    public KalturaTransaction upgrade(KalturaPurchase purchase) throws KalturaApiException {
+        KalturaParams kparams = new KalturaParams();
+        kparams.add("purchase", purchase);
+        this.kalturaClient.queueServiceCall("transaction", "upgrade", kparams, KalturaTransaction.class);
+        if (this.kalturaClient.isMultiRequest())
+            return null;
+        Element resultXmlElement = this.kalturaClient.doQueue();
+        return ParseUtils.parseObject(KalturaTransaction.class, resultXmlElement);
     }
 
 	/**  Verifies PPV/Subscription/Collection client purchase (such as InApp) and

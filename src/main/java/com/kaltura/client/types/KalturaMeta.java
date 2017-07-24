@@ -57,6 +57,14 @@ public class KalturaMeta extends KalturaObjectBase {
     public KalturaMetaType type;
 	/**  Asset type this meta is related to  */
     public KalturaAssetType assetType;
+	/**  List of supported features  */
+    public String features;
+	/**  Meta id  */
+    public String id;
+	/**  Parent meta id  */
+    public String parentId;
+	/**  Partner Id  */
+    public int partnerId = Integer.MIN_VALUE;
 
     public KalturaMeta() {
     }
@@ -80,6 +88,18 @@ public class KalturaMeta extends KalturaObjectBase {
             } else if (nodeName.equals("assetType")) {
                 this.assetType = KalturaAssetType.get(ParseUtils.parseString(txt));
                 continue;
+            } else if (nodeName.equals("features")) {
+                this.features = ParseUtils.parseString(txt);
+                continue;
+            } else if (nodeName.equals("id")) {
+                this.id = ParseUtils.parseString(txt);
+                continue;
+            } else if (nodeName.equals("parentId")) {
+                this.parentId = ParseUtils.parseString(txt);
+                continue;
+            } else if (nodeName.equals("partnerId")) {
+                this.partnerId = ParseUtils.parseInt(txt);
+                continue;
             } 
         }
     }
@@ -91,6 +111,10 @@ public class KalturaMeta extends KalturaObjectBase {
         kparams.add("fieldName", this.fieldName);
         kparams.add("type", this.type);
         kparams.add("assetType", this.assetType);
+        kparams.add("features", this.features);
+        kparams.add("id", this.id);
+        kparams.add("parentId", this.parentId);
+        kparams.add("partnerId", this.partnerId);
         return kparams;
     }
 
