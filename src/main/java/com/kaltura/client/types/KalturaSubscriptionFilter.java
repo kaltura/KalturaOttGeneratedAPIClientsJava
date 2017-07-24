@@ -44,12 +44,11 @@ import org.w3c.dom.NodeList;
 
 @SuppressWarnings("serial")
 public class KalturaSubscriptionFilter extends KalturaFilter {
-	/**  Comma separated subscription IDs to get the subscriptions by  */
+	/**  Comma separated subscription identifiers or file identifier (only 1) to get the
+	  subscriptions by  */
     public String subscriptionIdIn;
-	/**  Media-file ID to get the subscriptions by  */
+	/**  Media-file identifier to get the subscriptions by  */
     public int mediaFileIdEqual = Integer.MIN_VALUE;
-	/**  Comma separated subscription external IDs to get the subscriptions by  */
-    public String externalIdIn;
 
     public KalturaSubscriptionFilter() {
     }
@@ -67,9 +66,6 @@ public class KalturaSubscriptionFilter extends KalturaFilter {
             } else if (nodeName.equals("mediaFileIdEqual")) {
                 this.mediaFileIdEqual = ParseUtils.parseInt(txt);
                 continue;
-            } else if (nodeName.equals("externalIdIn")) {
-                this.externalIdIn = ParseUtils.parseString(txt);
-                continue;
             } 
         }
     }
@@ -79,7 +75,6 @@ public class KalturaSubscriptionFilter extends KalturaFilter {
         kparams.add("objectType", "KalturaSubscriptionFilter");
         kparams.add("subscriptionIdIn", this.subscriptionIdIn);
         kparams.add("mediaFileIdEqual", this.mediaFileIdEqual);
-        kparams.add("externalIdIn", this.externalIdIn);
         return kparams;
     }
 
