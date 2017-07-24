@@ -272,10 +272,15 @@ public class KalturaOttUserService extends KalturaServiceBase {
         return ParseUtils.parseObject(KalturaOTTUser.class, resultXmlElement);
     }
 
-	/**  Update user information  */
     public KalturaOTTUser update(KalturaOTTUser user) throws KalturaApiException {
+        return this.update(user, null);
+    }
+
+	/**  Update user information  */
+    public KalturaOTTUser update(KalturaOTTUser user, String id) throws KalturaApiException {
         KalturaParams kparams = new KalturaParams();
         kparams.add("user", user);
+        kparams.add("id", id);
         this.kalturaClient.queueServiceCall("ottuser", "update", kparams, KalturaOTTUser.class);
         if (this.kalturaClient.isMultiRequest())
             return null;
