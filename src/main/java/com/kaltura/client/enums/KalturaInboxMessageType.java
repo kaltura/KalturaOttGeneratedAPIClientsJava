@@ -35,9 +35,7 @@ package com.kaltura.client.enums;
  */
 public enum KalturaInboxMessageType implements KalturaEnumAsString {
     SYSTEMANNOUNCEMENT ("SystemAnnouncement"),
-    FOLLOWED ("Followed"),
-    ENGAGEMENT ("Engagement"),
-    INTEREST ("Interest");
+    FOLLOWED ("Followed");
 
     public String hashCode;
 
@@ -62,16 +60,6 @@ public enum KalturaInboxMessageType implements KalturaEnumAsString {
         if (hashCode.equals("Followed"))
         {
            return FOLLOWED;
-        }
-        else 
-        if (hashCode.equals("Engagement"))
-        {
-           return ENGAGEMENT;
-        }
-        else 
-        if (hashCode.equals("Interest"))
-        {
-           return INTEREST;
         }
         else 
         {

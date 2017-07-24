@@ -31,7 +31,6 @@ import org.w3c.dom.Element;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
 import com.kaltura.client.KalturaObjectBase;
-import com.kaltura.client.enums.KalturaReminderType;
 import com.kaltura.client.utils.ParseUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -50,8 +49,6 @@ public class KalturaReminder extends KalturaObjectBase {
     public String name;
 	/**  Reminder id  */
     public int id = Integer.MIN_VALUE;
-	/**  Reminder type  */
-    public KalturaReminderType type;
 
     public KalturaReminder() {
     }
@@ -69,9 +66,6 @@ public class KalturaReminder extends KalturaObjectBase {
             } else if (nodeName.equals("id")) {
                 this.id = ParseUtils.parseInt(txt);
                 continue;
-            } else if (nodeName.equals("type")) {
-                this.type = KalturaReminderType.get(ParseUtils.parseString(txt));
-                continue;
             } 
         }
     }
@@ -79,7 +73,6 @@ public class KalturaReminder extends KalturaObjectBase {
     public KalturaParams toParams() throws KalturaApiException {
         KalturaParams kparams = super.toParams();
         kparams.add("objectType", "KalturaReminder");
-        kparams.add("type", this.type);
         return kparams;
     }
 

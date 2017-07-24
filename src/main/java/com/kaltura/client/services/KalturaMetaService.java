@@ -62,16 +62,4 @@ public class KalturaMetaService extends KalturaServiceBase {
         Element resultXmlElement = this.kalturaClient.doQueue();
         return ParseUtils.parseObject(KalturaMetaListResponse.class, resultXmlElement);
     }
-
-	/**  Update meta&amp;#39;s user interest  */
-    public KalturaMeta update(String id, KalturaMeta meta) throws KalturaApiException {
-        KalturaParams kparams = new KalturaParams();
-        kparams.add("id", id);
-        kparams.add("meta", meta);
-        this.kalturaClient.queueServiceCall("meta", "update", kparams, KalturaMeta.class);
-        if (this.kalturaClient.isMultiRequest())
-            return null;
-        Element resultXmlElement = this.kalturaClient.doQueue();
-        return ParseUtils.parseObject(KalturaMeta.class, resultXmlElement);
-    }
 }

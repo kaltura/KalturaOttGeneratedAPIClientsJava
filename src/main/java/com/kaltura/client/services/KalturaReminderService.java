@@ -34,7 +34,6 @@ import org.w3c.dom.Element;
 import com.kaltura.client.utils.ParseUtils;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
-import com.kaltura.client.enums.*;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -61,10 +60,9 @@ public class KalturaReminderService extends KalturaServiceBase {
     }
 
 	/**  Delete a reminder. Reminder cannot be delete while being sent.  */
-    public boolean delete(long id, KalturaReminderType type) throws KalturaApiException {
+    public boolean delete(long id) throws KalturaApiException {
         KalturaParams kparams = new KalturaParams();
         kparams.add("id", id);
-        kparams.add("type", type);
         this.kalturaClient.queueServiceCall("reminder", "delete", kparams);
         if (this.kalturaClient.isMultiRequest())
             return false;

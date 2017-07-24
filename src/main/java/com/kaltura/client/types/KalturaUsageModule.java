@@ -112,6 +112,14 @@ public class KalturaUsageModule extends KalturaObjectBase {
     public KalturaParams toParams() throws KalturaApiException {
         KalturaParams kparams = super.toParams();
         kparams.add("objectType", "KalturaUsageModule");
+        kparams.add("name", this.name);
+        kparams.add("maxViewsNumber", this.maxViewsNumber);
+        kparams.add("viewLifeCycle", this.viewLifeCycle);
+        kparams.add("fullLifeCycle", this.fullLifeCycle);
+        kparams.add("couponId", this.couponId);
+        kparams.add("waiverPeriod", this.waiverPeriod);
+        kparams.add("isWaiverEnabled", this.isWaiverEnabled);
+        kparams.add("isOfflinePlayback", this.isOfflinePlayback);
         return kparams;
     }
 

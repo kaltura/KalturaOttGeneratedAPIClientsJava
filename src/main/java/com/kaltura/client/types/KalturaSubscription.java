@@ -31,7 +31,6 @@ import org.w3c.dom.Element;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
 import com.kaltura.client.KalturaObjectBase;
-import com.kaltura.client.enums.KalturaSubscriptionDependencyType;
 import java.util.ArrayList;
 import com.kaltura.client.utils.ParseUtils;
 import org.w3c.dom.Node;
@@ -68,6 +67,8 @@ public class KalturaSubscription extends KalturaObjectBase {
     public KalturaPriceDetails price;
 	/**  The internal discount module for the subscription  */
     public KalturaDiscountModule discountModule;
+	/**  Coupons group for the subscription  */
+    public KalturaCouponsGroup couponsGroup;
 	/**  Name of the subscription  */
     public String name;
 	/**  Name of the subscription  */
@@ -80,8 +81,10 @@ public class KalturaSubscription extends KalturaObjectBase {
     public int mediaId = Integer.MIN_VALUE;
 	/**  Subscription order (when returned in methods that retrieve subscriptions)  */
     public long prorityInOrder = Long.MIN_VALUE;
-	/**  Comma separated subscription price plan IDs  */
-    public String pricePlanIds;
+	/**  Product code for the subscription  */
+    public String productCode;
+	/**  Subscription price plans  */
+    public ArrayList<KalturaPricePlan> pricePlans;
 	/**  Subscription preview module  */
     public KalturaPreviewModule previewModule;
 	/**  The household limitation module identifier associated with this subscription  */
@@ -103,14 +106,6 @@ public class KalturaSubscription extends KalturaObjectBase {
     public boolean isWaiverEnabled;
 	/**  List of permitted user types for the subscription  */
     public ArrayList<KalturaOTTUserType> userTypes;
-	/**  List of Coupons group  */
-    public ArrayList<KalturaCouponsGroup> couponsGroups;
-	/**  List of Subscription product codes  */
-    public ArrayList<KalturaProductCode> productCodes;
-	/**  Dependency Type  */
-    public KalturaSubscriptionDependencyType dependencyType;
-	/**  External ID  */
-    public String externalId;
 
     public KalturaSubscription() {
     }
@@ -152,6 +147,9 @@ public class KalturaSubscription extends KalturaObjectBase {
             } else if (nodeName.equals("discountModule")) {
                 this.discountModule = ParseUtils.parseObject(KalturaDiscountModule.class, aNode);
                 continue;
+            } else if (nodeName.equals("couponsGroup")) {
+                this.couponsGroup = ParseUtils.parseObject(KalturaCouponsGroup.class, aNode);
+                continue;
             } else if (nodeName.equals("name")) {
                 this.name = ParseUtils.parseString(txt);
                 continue;
@@ -170,8 +168,11 @@ public class KalturaSubscription extends KalturaObjectBase {
             } else if (nodeName.equals("prorityInOrder")) {
                 this.prorityInOrder = ParseUtils.parseBigint(txt);
                 continue;
-            } else if (nodeName.equals("pricePlanIds")) {
-                this.pricePlanIds = ParseUtils.parseString(txt);
+            } else if (nodeName.equals("productCode")) {
+                this.productCode = ParseUtils.parseString(txt);
+                continue;
+            } else if (nodeName.equals("pricePlans")) {
+                this.pricePlans = ParseUtils.parseArray(KalturaPricePlan.class, aNode);
                 continue;
             } else if (nodeName.equals("previewModule")) {
                 this.previewModule = ParseUtils.parseObject(KalturaPreviewModule.class, aNode);
@@ -200,18 +201,6 @@ public class KalturaSubscription extends KalturaObjectBase {
             } else if (nodeName.equals("userTypes")) {
                 this.userTypes = ParseUtils.parseArray(KalturaOTTUserType.class, aNode);
                 continue;
-            } else if (nodeName.equals("couponsGroups")) {
-                this.couponsGroups = ParseUtils.parseArray(KalturaCouponsGroup.class, aNode);
-                continue;
-            } else if (nodeName.equals("productCodes")) {
-                this.productCodes = ParseUtils.parseArray(KalturaProductCode.class, aNode);
-                continue;
-            } else if (nodeName.equals("dependencyType")) {
-                this.dependencyType = KalturaSubscriptionDependencyType.get(ParseUtils.parseString(txt));
-                continue;
-            } else if (nodeName.equals("externalId")) {
-                this.externalId = ParseUtils.parseString(txt);
-                continue;
             } 
         }
     }
@@ -229,13 +218,15 @@ public class KalturaSubscription extends KalturaObjectBase {
         kparams.add("isInfiniteRenewal", this.isInfiniteRenewal);
         kparams.add("price", this.price);
         kparams.add("discountModule", this.discountModule);
+        kparams.add("couponsGroup", this.couponsGroup);
         kparams.add("name", this.name);
         kparams.add("multilingualName", this.multilingualName);
         kparams.add("description", this.description);
         kparams.add("multilingualDescription", this.multilingualDescription);
         kparams.add("mediaId", this.mediaId);
         kparams.add("prorityInOrder", this.prorityInOrder);
-        kparams.add("pricePlanIds", this.pricePlanIds);
+        kparams.add("productCode", this.productCode);
+        kparams.add("pricePlans", this.pricePlans);
         kparams.add("previewModule", this.previewModule);
         kparams.add("householdLimitationsId", this.householdLimitationsId);
         kparams.add("gracePeriodMinutes", this.gracePeriodMinutes);
@@ -245,10 +236,6 @@ public class KalturaSubscription extends KalturaObjectBase {
         kparams.add("waiverPeriod", this.waiverPeriod);
         kparams.add("isWaiverEnabled", this.isWaiverEnabled);
         kparams.add("userTypes", this.userTypes);
-        kparams.add("couponsGroups", this.couponsGroups);
-        kparams.add("productCodes", this.productCodes);
-        kparams.add("dependencyType", this.dependencyType);
-        kparams.add("externalId", this.externalId);
         return kparams;
     }
 

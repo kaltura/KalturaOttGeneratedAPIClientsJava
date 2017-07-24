@@ -34,8 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum KalturaSocialFriendActivityOrderBy implements KalturaEnumAsString {
-    NONE ("NONE"),
-    UPDATE_DATE_DESC ("UPDATE_DATE_DESC");
+    NONE ("NONE");
 
     public String hashCode;
 
@@ -55,11 +54,6 @@ public enum KalturaSocialFriendActivityOrderBy implements KalturaEnumAsString {
         if (hashCode.equals("NONE"))
         {
            return NONE;
-        }
-        else 
-        if (hashCode.equals("UPDATE_DATE_DESC"))
-        {
-           return UPDATE_DATE_DESC;
         }
         else 
         {
