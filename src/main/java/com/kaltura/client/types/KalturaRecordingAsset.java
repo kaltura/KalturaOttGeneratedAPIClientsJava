@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import org.w3c.dom.Element;
 import com.kaltura.client.KalturaParams;
 import com.kaltura.client.KalturaApiException;
+import com.kaltura.client.enums.KalturaRecordingType;
 import com.kaltura.client.utils.ParseUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -47,6 +48,8 @@ import org.w3c.dom.NodeList;
 public class KalturaRecordingAsset extends KalturaProgramAsset {
 	/**  Recording identifier  */
     public String recordingId;
+	/**  Recording Type: single/season/series  */
+    public KalturaRecordingType recordingType;
 
     public KalturaRecordingAsset() {
     }
@@ -61,6 +64,9 @@ public class KalturaRecordingAsset extends KalturaProgramAsset {
             if (nodeName.equals("recordingId")) {
                 this.recordingId = ParseUtils.parseString(txt);
                 continue;
+            } else if (nodeName.equals("recordingType")) {
+                this.recordingType = KalturaRecordingType.get(ParseUtils.parseString(txt));
+                continue;
             } 
         }
     }
@@ -69,6 +75,7 @@ public class KalturaRecordingAsset extends KalturaProgramAsset {
         KalturaParams kparams = super.toParams();
         kparams.add("objectType", "KalturaRecordingAsset");
         kparams.add("recordingId", this.recordingId);
+        kparams.add("recordingType", this.recordingType);
         return kparams;
     }
 
