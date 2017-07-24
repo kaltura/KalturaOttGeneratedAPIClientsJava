@@ -45,13 +45,14 @@ import org.w3c.dom.NodeList;
 
 @SuppressWarnings("serial")
 public class KalturaPushMessage extends KalturaObjectBase {
-	/**  Push text  */
+	/**  The message that will be presented to the user.  */
     public String message;
-	/**  Push sound  */
+	/**  Optional. Can be used to change the default push sound on the user device.  */
     public String sound;
-	/**  Push action  */
+	/**  Optional. Used to change the default action of the application when a push is
+	  received.  */
     public String action;
-	/**  Push URL  */
+	/**  Optional. Used to direct the application to the relevant page.  */
     public String url;
 
     public KalturaPushMessage() {
