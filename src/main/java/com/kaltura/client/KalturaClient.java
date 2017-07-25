@@ -125,8 +125,8 @@ public class KalturaClient extends KalturaClientBase {
 	public KalturaClient(KalturaConfiguration config) {
 		super(config);
 		
-		this.setClientTag("java:17-07-24");
-		this.setApiVersion("4.4.44.43148");
+		this.setClientTag("java:17-07-25");
+		this.setApiVersion("4.4.44.14174");
 	}
 	
 	protected KalturaAnnouncementService announcementService;
