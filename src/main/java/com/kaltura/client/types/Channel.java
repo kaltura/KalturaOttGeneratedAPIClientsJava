@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.enums.AssetOrderBy;
 import java.util.List;
 import com.google.gson.JsonObject;
@@ -57,6 +58,8 @@ public class Channel extends BaseChannel {
     private Boolean isActive;
 	/**  Channel order  */
     private AssetOrderBy order;
+	/**  Channel group by  */
+    private AssetGroupBy groupBy;
 
     // description:
     public String getDescription(){
@@ -106,6 +109,14 @@ public class Channel extends BaseChannel {
         this.order = order;
     }
 
+    // groupBy:
+    public AssetGroupBy getGroupBy(){
+        return this.groupBy;
+    }
+    public void setGroupBy(AssetGroupBy groupBy){
+        this.groupBy = groupBy;
+    }
+
 
     public Channel() {
        super();
@@ -123,6 +134,7 @@ public class Channel extends BaseChannel {
         filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
         isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
         order = AssetOrderBy.get(GsonParser.parseString(jsonObject.get("order")));
+        groupBy = GsonParser.parseObject(jsonObject.getAsJsonObject("groupBy"), AssetGroupBy.class);
 
     }
 
@@ -135,6 +147,7 @@ public class Channel extends BaseChannel {
         kparams.add("filterExpression", this.filterExpression);
         kparams.add("isActive", this.isActive);
         kparams.add("order", this.order);
+        kparams.add("groupBy", this.groupBy);
         return kparams;
     }
 

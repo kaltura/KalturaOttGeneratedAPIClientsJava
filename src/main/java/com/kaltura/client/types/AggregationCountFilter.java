@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.RecordingType;
 import com.google.gson.JsonObject;
 
 
@@ -40,52 +39,23 @@ import com.google.gson.JsonObject;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Recording-asset info  */
+/**  Kaltura Aggregation CountFilter  */
 @SuppressWarnings("serial")
-public class RecordingAsset extends ProgramAsset {
-
-	/**  Recording identifier  */
-    private String recordingId;
-	/**  Recording Type: single/season/series  */
-    private RecordingType recordingType;
-
-    // recordingId:
-    public String getRecordingId(){
-        return this.recordingId;
-    }
-    public void setRecordingId(String recordingId){
-        this.recordingId = recordingId;
-    }
-
-    // recordingType:
-    public RecordingType getRecordingType(){
-        return this.recordingType;
-    }
-    public void setRecordingType(RecordingType recordingType){
-        this.recordingType = recordingType;
-    }
+public class AggregationCountFilter extends RelatedObjectFilter {
 
 
-    public RecordingAsset() {
+
+    public AggregationCountFilter() {
        super();
     }
 
-    public RecordingAsset(JsonObject jsonObject) throws APIException {
+    public AggregationCountFilter(JsonObject jsonObject) throws APIException {
         super(jsonObject);
-
-        if(jsonObject == null) return;
-
-        // set members values:
-        recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
-        recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
-
     }
 
     public Params toParams() {
         Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaRecordingAsset");
-        kparams.add("recordingId", this.recordingId);
-        kparams.add("recordingType", this.recordingType);
+        kparams.add("objectType", "KalturaAggregationCountFilter");
         return kparams;
     }
 

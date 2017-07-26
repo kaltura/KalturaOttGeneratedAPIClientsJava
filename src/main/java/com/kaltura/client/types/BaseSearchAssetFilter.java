@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.RecordingType;
+import java.util.List;
 import com.google.gson.JsonObject;
 
 
@@ -40,52 +40,39 @@ import com.google.gson.JsonObject;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Recording-asset info  */
 @SuppressWarnings("serial")
-public class RecordingAsset extends ProgramAsset {
+public abstract class BaseSearchAssetFilter extends AssetFilter {
 
-	/**  Recording identifier  */
-    private String recordingId;
-	/**  Recording Type: single/season/series  */
-    private RecordingType recordingType;
+	/**  groupBy  */
+    private List<AssetGroupBy> groupBy;
 
-    // recordingId:
-    public String getRecordingId(){
-        return this.recordingId;
+    // groupBy:
+    public List<AssetGroupBy> getGroupBy(){
+        return this.groupBy;
     }
-    public void setRecordingId(String recordingId){
-        this.recordingId = recordingId;
-    }
-
-    // recordingType:
-    public RecordingType getRecordingType(){
-        return this.recordingType;
-    }
-    public void setRecordingType(RecordingType recordingType){
-        this.recordingType = recordingType;
+    public void setGroupBy(List<AssetGroupBy> groupBy){
+        this.groupBy = groupBy;
     }
 
 
-    public RecordingAsset() {
+    public BaseSearchAssetFilter() {
        super();
     }
 
-    public RecordingAsset(JsonObject jsonObject) throws APIException {
+    public BaseSearchAssetFilter(JsonObject jsonObject) throws APIException {
         super(jsonObject);
 
         if(jsonObject == null) return;
 
         // set members values:
-        recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
-        recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
+        groupBy = GsonParser.parseArray(jsonObject.getAsJsonArray("groupBy"), AssetGroupBy.class);
 
     }
 
     public Params toParams() {
         Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaRecordingAsset");
-        kparams.add("recordingId", this.recordingId);
-        kparams.add("recordingType", this.recordingType);
+        kparams.add("objectType", "KalturaBaseSearchAssetFilter");
+        kparams.add("groupBy", this.groupBy);
         return kparams;
     }
 

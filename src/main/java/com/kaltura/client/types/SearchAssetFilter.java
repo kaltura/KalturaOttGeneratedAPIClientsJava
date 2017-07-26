@@ -40,7 +40,7 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
-public class SearchAssetFilter extends AssetFilter {
+public class SearchAssetFilter extends BaseSearchAssetFilter {
 
 	/**  Search assets using dynamic criteria. Provided collection of nested expressions
 	  with key, comparison operators, value, and logical conjunction.             

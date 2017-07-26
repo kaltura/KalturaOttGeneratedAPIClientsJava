@@ -29,7 +29,8 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.RecordingType;
+import com.kaltura.client.types.RelatedObjectFilter;
+import java.util.List;
 import com.google.gson.JsonObject;
 
 
@@ -40,52 +41,64 @@ import com.google.gson.JsonObject;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Recording-asset info  */
+/**  Define specific base profile response  */
 @SuppressWarnings("serial")
-public class RecordingAsset extends ProgramAsset {
+public class DetachedResponseProfile extends BaseResponseProfile {
 
-	/**  Recording identifier  */
-    private String recordingId;
-	/**  Recording Type: single/season/series  */
-    private RecordingType recordingType;
+	/**  name  */
+    private String name;
+	/**  filter  */
+    private RelatedObjectFilter filter;
+	/**  relatedProfiles  */
+    private List<DetachedResponseProfile> relatedProfiles;
 
-    // recordingId:
-    public String getRecordingId(){
-        return this.recordingId;
+    // name:
+    public String getName(){
+        return this.name;
     }
-    public void setRecordingId(String recordingId){
-        this.recordingId = recordingId;
-    }
-
-    // recordingType:
-    public RecordingType getRecordingType(){
-        return this.recordingType;
-    }
-    public void setRecordingType(RecordingType recordingType){
-        this.recordingType = recordingType;
+    public void setName(String name){
+        this.name = name;
     }
 
+    // filter:
+    public RelatedObjectFilter getFilter(){
+        return this.filter;
+    }
+    public void setFilter(RelatedObjectFilter filter){
+        this.filter = filter;
+    }
 
-    public RecordingAsset() {
+    // relatedProfiles:
+    public List<DetachedResponseProfile> getRelatedProfiles(){
+        return this.relatedProfiles;
+    }
+    public void setRelatedProfiles(List<DetachedResponseProfile> relatedProfiles){
+        this.relatedProfiles = relatedProfiles;
+    }
+
+
+    public DetachedResponseProfile() {
        super();
     }
 
-    public RecordingAsset(JsonObject jsonObject) throws APIException {
+    public DetachedResponseProfile(JsonObject jsonObject) throws APIException {
         super(jsonObject);
 
         if(jsonObject == null) return;
 
         // set members values:
-        recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
-        recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
+        name = GsonParser.parseString(jsonObject.get("name"));
+        filter = GsonParser.parseObject(jsonObject.getAsJsonObject("filter"), RelatedObjectFilter.class);
+        relatedProfiles = GsonParser.parseArray(jsonObject.getAsJsonArray("relatedProfiles"), DetachedResponseProfile.class);
 
     }
 
     public Params toParams() {
         Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaRecordingAsset");
-        kparams.add("recordingId", this.recordingId);
-        kparams.add("recordingType", this.recordingType);
+        kparams.add("objectType", "KalturaDetachedResponseProfile");
+        kparams.add("name", this.name);
+        kparams.add("filter", this.filter);
+        kparams.add("relatedProfiles", this.relatedProfiles);
         return kparams;
     }
 
