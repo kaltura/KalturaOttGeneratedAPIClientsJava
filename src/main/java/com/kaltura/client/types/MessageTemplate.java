@@ -30,7 +30,7 @@ package com.kaltura.client.types;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.OTTAssetType;
+import com.kaltura.client.enums.MessageTemplateType;
 import com.google.gson.JsonObject;
 
 
@@ -48,8 +48,8 @@ public class MessageTemplate extends ObjectBase {
     private String message;
 	/**  Default date format for the date &amp;amp; time entries used in the template  */
     private String dateFormat;
-	/**  Template type. Possible values: Series  */
-    private OTTAssetType assetType;
+	/**  Template type. Possible values: Series, Reminder,Churn, SeriesReminder  */
+    private MessageTemplateType messageType;
 	/**  Sound file name to play upon message arrival to the device (if supported by
 	  target device)  */
     private String sound;
@@ -74,12 +74,12 @@ public class MessageTemplate extends ObjectBase {
         this.dateFormat = dateFormat;
     }
 
-    // assetType:
-    public OTTAssetType getAssetType(){
-        return this.assetType;
+    // messageType:
+    public MessageTemplateType getMessageType(){
+        return this.messageType;
     }
-    public void setAssetType(OTTAssetType assetType){
-        this.assetType = assetType;
+    public void setMessageType(MessageTemplateType messageType){
+        this.messageType = messageType;
     }
 
     // sound:
@@ -119,7 +119,7 @@ public class MessageTemplate extends ObjectBase {
         // set members values:
         message = GsonParser.parseString(jsonObject.get("message"));
         dateFormat = GsonParser.parseString(jsonObject.get("dateFormat"));
-        assetType = OTTAssetType.get(GsonParser.parseInt(jsonObject.get("assetType")));
+        messageType = MessageTemplateType.get(GsonParser.parseInt(jsonObject.get("messageType")));
         sound = GsonParser.parseString(jsonObject.get("sound"));
         action = GsonParser.parseString(jsonObject.get("action"));
         url = GsonParser.parseString(jsonObject.get("url"));
@@ -131,7 +131,7 @@ public class MessageTemplate extends ObjectBase {
         kparams.add("objectType", "KalturaMessageTemplate");
         kparams.add("message", this.message);
         kparams.add("dateFormat", this.dateFormat);
-        kparams.add("assetType", this.assetType);
+        kparams.add("messageType", this.messageType);
         kparams.add("sound", this.sound);
         kparams.add("action", this.action);
         kparams.add("url", this.url);

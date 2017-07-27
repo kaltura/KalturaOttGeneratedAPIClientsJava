@@ -28,6 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ReminderType;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Reminder;
@@ -53,9 +54,10 @@ public class ReminderService {
     }
 
 	/**  Delete a reminder. Reminder cannot be delete while being sent.  */
-    public static RequestBuilder<Boolean> delete(long id)  {
+    public static RequestBuilder<Boolean> delete(long id, ReminderType type)  {
         Params kparams = new Params();
         kparams.add("id", id);
+        kparams.add("type", type);
 
         return new RequestBuilder<Boolean>(Boolean.class, "reminder", "delete", kparams);
     }

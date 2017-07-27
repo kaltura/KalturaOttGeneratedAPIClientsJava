@@ -32,10 +32,10 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.PriceDetails;
 import com.kaltura.client.types.DiscountModule;
-import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.types.PreviewModule;
+import com.kaltura.client.enums.SubscriptionDependencyType;
 import java.util.List;
 import com.google.gson.JsonObject;
 
@@ -71,8 +71,6 @@ public class Subscription extends ObjectBase {
     private PriceDetails price;
 	/**  The internal discount module for the subscription  */
     private DiscountModule discountModule;
-	/**  Coupons group for the subscription  */
-    private CouponsGroup couponsGroup;
 	/**  Name of the subscription  */
     private String name;
 	/**  Name of the subscription  */
@@ -85,10 +83,8 @@ public class Subscription extends ObjectBase {
     private Integer mediaId;
 	/**  Subscription order (when returned in methods that retrieve subscriptions)  */
     private Long prorityInOrder;
-	/**  Product code for the subscription  */
-    private String productCode;
-	/**  Subscription price plans  */
-    private List<PricePlan> pricePlans;
+	/**  Comma separated subscription price plan IDs  */
+    private String pricePlanIds;
 	/**  Subscription preview module  */
     private PreviewModule previewModule;
 	/**  The household limitation module identifier associated with this subscription  */
@@ -110,6 +106,14 @@ public class Subscription extends ObjectBase {
     private Boolean isWaiverEnabled;
 	/**  List of permitted user types for the subscription  */
     private List<OTTUserType> userTypes;
+	/**  List of Coupons group  */
+    private List<CouponsGroup> couponsGroups;
+	/**  List of Subscription product codes  */
+    private List<ProductCode> productCodes;
+	/**  Dependency Type  */
+    private SubscriptionDependencyType dependencyType;
+	/**  External ID  */
+    private String externalId;
 
     // id:
     public String getId(){
@@ -191,14 +195,6 @@ public class Subscription extends ObjectBase {
         this.discountModule = discountModule;
     }
 
-    // couponsGroup:
-    public CouponsGroup getCouponsGroup(){
-        return this.couponsGroup;
-    }
-    public void setCouponsGroup(CouponsGroup couponsGroup){
-        this.couponsGroup = couponsGroup;
-    }
-
     // name:
     public String getName(){
         return this.name;
@@ -247,20 +243,12 @@ public class Subscription extends ObjectBase {
         this.prorityInOrder = prorityInOrder;
     }
 
-    // productCode:
-    public String getProductCode(){
-        return this.productCode;
+    // pricePlanIds:
+    public String getPricePlanIds(){
+        return this.pricePlanIds;
     }
-    public void setProductCode(String productCode){
-        this.productCode = productCode;
-    }
-
-    // pricePlans:
-    public List<PricePlan> getPricePlans(){
-        return this.pricePlans;
-    }
-    public void setPricePlans(List<PricePlan> pricePlans){
-        this.pricePlans = pricePlans;
+    public void setPricePlanIds(String pricePlanIds){
+        this.pricePlanIds = pricePlanIds;
     }
 
     // previewModule:
@@ -335,6 +323,38 @@ public class Subscription extends ObjectBase {
         this.userTypes = userTypes;
     }
 
+    // couponsGroups:
+    public List<CouponsGroup> getCouponsGroups(){
+        return this.couponsGroups;
+    }
+    public void setCouponsGroups(List<CouponsGroup> couponsGroups){
+        this.couponsGroups = couponsGroups;
+    }
+
+    // productCodes:
+    public List<ProductCode> getProductCodes(){
+        return this.productCodes;
+    }
+    public void setProductCodes(List<ProductCode> productCodes){
+        this.productCodes = productCodes;
+    }
+
+    // dependencyType:
+    public SubscriptionDependencyType getDependencyType(){
+        return this.dependencyType;
+    }
+    public void setDependencyType(SubscriptionDependencyType dependencyType){
+        this.dependencyType = dependencyType;
+    }
+
+    // externalId:
+    public String getExternalId(){
+        return this.externalId;
+    }
+    public void setExternalId(String externalId){
+        this.externalId = externalId;
+    }
+
 
     public Subscription() {
        super();
@@ -356,15 +376,13 @@ public class Subscription extends ObjectBase {
         isInfiniteRenewal = GsonParser.parseBoolean(jsonObject.get("isInfiniteRenewal"));
         price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
         discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
-        couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
         name = GsonParser.parseString(jsonObject.get("name"));
         multilingualName = GsonParser.parseObject(jsonObject.getAsJsonObject("multilingualName"), MultilingualString.class);
         description = GsonParser.parseString(jsonObject.get("description"));
         multilingualDescription = GsonParser.parseObject(jsonObject.getAsJsonObject("multilingualDescription"), MultilingualString.class);
         mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
         prorityInOrder = GsonParser.parseLong(jsonObject.get("prorityInOrder"));
-        productCode = GsonParser.parseString(jsonObject.get("productCode"));
-        pricePlans = GsonParser.parseArray(jsonObject.getAsJsonArray("pricePlans"), PricePlan.class);
+        pricePlanIds = GsonParser.parseString(jsonObject.get("pricePlanIds"));
         previewModule = GsonParser.parseObject(jsonObject.getAsJsonObject("previewModule"), PreviewModule.class);
         householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
         gracePeriodMinutes = GsonParser.parseInt(jsonObject.get("gracePeriodMinutes"));
@@ -374,6 +392,10 @@ public class Subscription extends ObjectBase {
         waiverPeriod = GsonParser.parseInt(jsonObject.get("waiverPeriod"));
         isWaiverEnabled = GsonParser.parseBoolean(jsonObject.get("isWaiverEnabled"));
         userTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("userTypes"), OTTUserType.class);
+        couponsGroups = GsonParser.parseArray(jsonObject.getAsJsonArray("couponsGroups"), CouponsGroup.class);
+        productCodes = GsonParser.parseArray(jsonObject.getAsJsonArray("productCodes"), ProductCode.class);
+        dependencyType = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyType")));
+        externalId = GsonParser.parseString(jsonObject.get("externalId"));
 
     }
 
@@ -390,15 +412,13 @@ public class Subscription extends ObjectBase {
         kparams.add("isInfiniteRenewal", this.isInfiniteRenewal);
         kparams.add("price", this.price);
         kparams.add("discountModule", this.discountModule);
-        kparams.add("couponsGroup", this.couponsGroup);
         kparams.add("name", this.name);
         kparams.add("multilingualName", this.multilingualName);
         kparams.add("description", this.description);
         kparams.add("multilingualDescription", this.multilingualDescription);
         kparams.add("mediaId", this.mediaId);
         kparams.add("prorityInOrder", this.prorityInOrder);
-        kparams.add("productCode", this.productCode);
-        kparams.add("pricePlans", this.pricePlans);
+        kparams.add("pricePlanIds", this.pricePlanIds);
         kparams.add("previewModule", this.previewModule);
         kparams.add("householdLimitationsId", this.householdLimitationsId);
         kparams.add("gracePeriodMinutes", this.gracePeriodMinutes);
@@ -408,6 +428,10 @@ public class Subscription extends ObjectBase {
         kparams.add("waiverPeriod", this.waiverPeriod);
         kparams.add("isWaiverEnabled", this.isWaiverEnabled);
         kparams.add("userTypes", this.userTypes);
+        kparams.add("couponsGroups", this.couponsGroups);
+        kparams.add("productCodes", this.productCodes);
+        kparams.add("dependencyType", this.dependencyType);
+        kparams.add("externalId", this.externalId);
         return kparams;
     }
 

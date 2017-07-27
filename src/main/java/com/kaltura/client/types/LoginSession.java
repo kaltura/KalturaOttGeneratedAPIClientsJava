@@ -46,8 +46,6 @@ public class LoginSession extends ObjectBase {
 
 	/**  Access token in a KS format  */
     private String ks;
-	/**  Refresh Token  */
-    private String refreshToken;
 
     // ks:
     public String getKs(){
@@ -55,14 +53,6 @@ public class LoginSession extends ObjectBase {
     }
     public void setKs(String ks){
         this.ks = ks;
-    }
-
-    // refreshToken:
-    public String getRefreshToken(){
-        return this.refreshToken;
-    }
-    public void setRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
     }
 
 
@@ -77,7 +67,6 @@ public class LoginSession extends ObjectBase {
 
         // set members values:
         ks = GsonParser.parseString(jsonObject.get("ks"));
-        refreshToken = GsonParser.parseString(jsonObject.get("refreshToken"));
 
     }
 
@@ -85,7 +74,6 @@ public class LoginSession extends ObjectBase {
         Params kparams = super.toParams();
         kparams.add("objectType", "KalturaLoginSession");
         kparams.add("ks", this.ks);
-        kparams.add("refreshToken", this.refreshToken);
         return kparams;
     }
 

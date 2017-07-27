@@ -33,7 +33,6 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
-import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PlaybackContext;
@@ -41,7 +40,6 @@ import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.SearchAssetFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -52,15 +50,14 @@ import java.util.List;
 
 public class AssetService {
 
-    public static RequestBuilder<AssetCount> count(List<AssetGroupBy> groupBy)  {
-        return count(groupBy, null);
+    public static RequestBuilder<AssetCount> count()  {
+        return count(null);
     }
 
 	/**  Returns a group-by result for media or EPG according to given filter. Lists
 	  values of each field and their respective count.  */
-    public static RequestBuilder<AssetCount> count(List<AssetGroupBy> groupBy, SearchAssetFilter filter)  {
+    public static RequestBuilder<AssetCount> count(SearchAssetFilter filter)  {
         Params kparams = new Params();
-        kparams.add("groupBy", groupBy);
         kparams.add("filter", filter);
 
         return new RequestBuilder<AssetCount>(AssetCount.class, "asset", "count", kparams);

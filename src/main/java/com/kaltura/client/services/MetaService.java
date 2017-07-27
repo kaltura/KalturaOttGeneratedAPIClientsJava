@@ -54,4 +54,13 @@ public class MetaService {
 
         return new ListResponseRequestBuilder<Meta>(Meta.class, "meta", "list", kparams);
     }
+
+	/**  Update meta&amp;#39;s user interest  */
+    public static RequestBuilder<Meta> update(String id, Meta meta)  {
+        Params kparams = new Params();
+        kparams.add("id", id);
+        kparams.add("meta", meta);
+
+        return new RequestBuilder<Meta>(Meta.class, "meta", "update", kparams);
+    }
 }

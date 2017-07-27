@@ -33,6 +33,7 @@ import com.kaltura.client.types.DevicePin;
 import com.kaltura.client.types.HouseholdDevice;
 import com.kaltura.client.types.HouseholdDeviceFilter;
 import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -96,6 +97,20 @@ public class HouseholdDeviceService {
         kparams.add("filter", filter);
 
         return new ListResponseRequestBuilder<HouseholdDevice>(HouseholdDevice.class, "householddevice", "list", kparams);
+    }
+
+    public static RequestBuilder<LoginResponse> loginWithPin(int partnerId, String pin)  {
+        return loginWithPin(partnerId, pin, null);
+    }
+
+	/**  User sign-in via a time-expired sign-in PIN.  */
+    public static RequestBuilder<LoginResponse> loginWithPin(int partnerId, String pin, String udid)  {
+        Params kparams = new Params();
+        kparams.add("partnerId", partnerId);
+        kparams.add("pin", pin);
+        kparams.add("udid", udid);
+
+        return new RequestBuilder<LoginResponse>(LoginResponse.class, "householddevice", "loginWithPin", kparams);
     }
 
 	/**  Update the name of the device by UDID  */

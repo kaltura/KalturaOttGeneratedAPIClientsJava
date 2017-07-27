@@ -46,6 +46,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class TransactionService {
 
+	/**  downgrade specific subscription for a household. entitlements will be updated on
+	  the existing subscription end date.  */
+    public static RequestBuilder<Void> downgrade(Purchase purchase)  {
+        Params kparams = new Params();
+        kparams.add("purchase", purchase);
+
+        return new NullRequestBuilder("transaction", "downgrade", kparams);
+    }
+
 	/**  Retrieve the purchase session identifier  */
     public static RequestBuilder<Long> getPurchaseSessionId(PurchaseSession purchaseSession)  {
         Params kparams = new Params();
@@ -82,6 +91,15 @@ public class TransactionService {
         kparams.add("status", status);
 
         return new NullRequestBuilder("transaction", "updateStatus", kparams);
+    }
+
+	/**  upgrade specific subscription for a household. Upon successful charge
+	  entitlements to use the requested product or subscription are granted.  */
+    public static RequestBuilder<Transaction> upgrade(Purchase purchase)  {
+        Params kparams = new Params();
+        kparams.add("purchase", purchase);
+
+        return new RequestBuilder<Transaction>(Transaction.class, "transaction", "upgrade", kparams);
     }
 
 	/**  Verifies PPV/Subscription/Collection client purchase (such as InApp) and

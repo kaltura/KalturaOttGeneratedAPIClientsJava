@@ -56,6 +56,8 @@ public class SubscriptionEntitlement extends Entitlement {
     private Integer paymentGatewayId;
 	/**  Payment Method identifier  */
     private Integer paymentMethodId;
+	/**  Scheduled Subscription Identifier  */
+    private Long scheduledSubscriptionId;
 
     // nextRenewalDate:
     public Long getNextRenewalDate(){
@@ -105,6 +107,14 @@ public class SubscriptionEntitlement extends Entitlement {
         this.paymentMethodId = paymentMethodId;
     }
 
+    // scheduledSubscriptionId:
+    public Long getScheduledSubscriptionId(){
+        return this.scheduledSubscriptionId;
+    }
+    public void setScheduledSubscriptionId(Long scheduledSubscriptionId){
+        this.scheduledSubscriptionId = scheduledSubscriptionId;
+    }
+
 
     public SubscriptionEntitlement() {
        super();
@@ -122,6 +132,7 @@ public class SubscriptionEntitlement extends Entitlement {
         isInGracePeriod = GsonParser.parseBoolean(jsonObject.get("isInGracePeriod"));
         paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
         paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
+        scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
 
     }
 
@@ -130,6 +141,7 @@ public class SubscriptionEntitlement extends Entitlement {
         kparams.add("objectType", "KalturaSubscriptionEntitlement");
         kparams.add("paymentGatewayId", this.paymentGatewayId);
         kparams.add("paymentMethodId", this.paymentMethodId);
+        kparams.add("scheduledSubscriptionId", this.scheduledSubscriptionId);
         return kparams;
     }
 

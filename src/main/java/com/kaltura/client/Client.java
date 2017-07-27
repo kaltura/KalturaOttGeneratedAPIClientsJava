@@ -28,6 +28,7 @@
 package com.kaltura.client;
 
 import com.kaltura.client.utils.request.ConnectionConfiguration;
+import com.kaltura.client.types.BaseResponseProfile;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,7 +44,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:17-07-27");
-		this.setApiVersion("4.3.25.13466");
+		this.setApiVersion("4.4.61.14383");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
@@ -210,6 +211,28 @@ public class Client extends ClientBase {
 	public String getSessionId(){
 		if(this.requestConfiguration.containsKey("ks")){
 			return(String) this.requestConfiguration.get("ks");
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Response profile - this attribute will be automatically unset after every API call
+	 * 
+	 * @param responseProfile
+	 */
+	public void setResponseProfile(BaseResponseProfile responseProfile){
+		this.requestConfiguration.put("responseProfile", responseProfile);
+	}
+	
+	/**
+	 * Response profile - this attribute will be automatically unset after every API call
+	 * 
+	 * @return BaseResponseProfile
+	 */
+	public BaseResponseProfile getResponseProfile(){
+		if(this.requestConfiguration.containsKey("responseProfile")){
+			return(BaseResponseProfile) this.requestConfiguration.get("responseProfile");
 		}
 		
 		return null;

@@ -28,7 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.OTTAssetType;
+import com.kaltura.client.enums.MessageTemplateType;
 import com.kaltura.client.types.MessageTemplate;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -42,17 +42,17 @@ import com.kaltura.client.utils.request.RequestBuilder;
 public class MessageTemplateService {
 
 	/**  Retrieve a message template used in push notifications and inbox  */
-    public static RequestBuilder<MessageTemplate> get(OTTAssetType assetType)  {
+    public static RequestBuilder<MessageTemplate> get(MessageTemplateType messageType)  {
         Params kparams = new Params();
-        kparams.add("assetType", assetType);
+        kparams.add("messageType", messageType);
 
         return new RequestBuilder<MessageTemplate>(MessageTemplate.class, "messagetemplate", "get", kparams);
     }
 
 	/**  Set the account’s push notifications and inbox messages templates  */
-    public static RequestBuilder<MessageTemplate> update(OTTAssetType assetType, MessageTemplate template)  {
+    public static RequestBuilder<MessageTemplate> update(MessageTemplateType messageType, MessageTemplate template)  {
         Params kparams = new Params();
-        kparams.add("assetType", assetType);
+        kparams.add("messageType", messageType);
         kparams.add("template", template);
 
         return new RequestBuilder<MessageTemplate>(MessageTemplate.class, "messagetemplate", "update", kparams);
