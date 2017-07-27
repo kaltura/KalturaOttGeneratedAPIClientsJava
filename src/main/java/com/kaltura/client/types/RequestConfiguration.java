@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.BaseResponseProfile;
 import com.google.gson.JsonObject;
 
 
@@ -53,8 +52,6 @@ public class RequestConfiguration extends ObjectBase {
     private String language;
 	/**  Kaltura API session  */
     private String ks;
-	/**  Kaltura response profile object  */
-    private BaseResponseProfile responseProfile;
 
     // partnerId:
     public Integer getPartnerId(){
@@ -88,14 +85,6 @@ public class RequestConfiguration extends ObjectBase {
         this.ks = ks;
     }
 
-    // responseProfile:
-    public BaseResponseProfile getResponseProfile(){
-        return this.responseProfile;
-    }
-    public void setResponseProfile(BaseResponseProfile responseProfile){
-        this.responseProfile = responseProfile;
-    }
-
 
     public RequestConfiguration() {
        super();
@@ -111,7 +100,6 @@ public class RequestConfiguration extends ObjectBase {
         userId = GsonParser.parseInt(jsonObject.get("userId"));
         language = GsonParser.parseString(jsonObject.get("language"));
         ks = GsonParser.parseString(jsonObject.get("ks"));
-        responseProfile = GsonParser.parseObject(jsonObject.getAsJsonObject("responseProfile"), BaseResponseProfile.class);
 
     }
 
@@ -122,7 +110,6 @@ public class RequestConfiguration extends ObjectBase {
         kparams.add("userId", this.userId);
         kparams.add("language", this.language);
         kparams.add("ks", this.ks);
-        kparams.add("responseProfile", this.responseProfile);
         return kparams;
     }
 

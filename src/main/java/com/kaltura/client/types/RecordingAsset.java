@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.RecordingType;
 import com.google.gson.JsonObject;
 
 
@@ -46,8 +45,6 @@ public class RecordingAsset extends ProgramAsset {
 
 	/**  Recording identifier  */
     private String recordingId;
-	/**  Recording Type: single/season/series  */
-    private RecordingType recordingType;
 
     // recordingId:
     public String getRecordingId(){
@@ -55,14 +52,6 @@ public class RecordingAsset extends ProgramAsset {
     }
     public void setRecordingId(String recordingId){
         this.recordingId = recordingId;
-    }
-
-    // recordingType:
-    public RecordingType getRecordingType(){
-        return this.recordingType;
-    }
-    public void setRecordingType(RecordingType recordingType){
-        this.recordingType = recordingType;
     }
 
 
@@ -77,7 +66,6 @@ public class RecordingAsset extends ProgramAsset {
 
         // set members values:
         recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
-        recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
 
     }
 
@@ -85,7 +73,6 @@ public class RecordingAsset extends ProgramAsset {
         Params kparams = super.toParams();
         kparams.add("objectType", "KalturaRecordingAsset");
         kparams.add("recordingId", this.recordingId);
-        kparams.add("recordingType", this.recordingType);
         return kparams;
     }
 

@@ -28,7 +28,6 @@
 package com.kaltura.client.utils.request;
 
 import com.kaltura.client.Params;
-import com.kaltura.client.types.BaseResponseProfile;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -111,15 +110,6 @@ public class RequestBuilderData {
 	 */
 	public void setSessionId(String sessionId){
 		params.add("ks", sessionId);
-	}
-	
-	/**
-	 * Response profile - this attribute will be automatically unset after every API call
-	 * 
-	 * @param responseProfile
-	 */
-	public void setResponseProfile(BaseResponseProfile responseProfile){
-		params.add("responseProfile", responseProfile);
 	}
 	
 }

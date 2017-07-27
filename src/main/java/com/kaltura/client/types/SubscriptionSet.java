@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.SubscriptionSetType;
 import com.google.gson.JsonObject;
 
 
@@ -49,8 +48,6 @@ public abstract class SubscriptionSet extends ObjectBase {
     private Long id;
 	/**  SubscriptionSet name  */
     private String name;
-	/**  Type of the Subscription Set  */
-    private SubscriptionSetType type;
 	/**  A list of comma separated subscription ids associated with this set ordered by
 	  priority ascending  */
     private String subscriptionIds;
@@ -69,14 +66,6 @@ public abstract class SubscriptionSet extends ObjectBase {
     }
     public void setName(String name){
         this.name = name;
-    }
-
-    // type:
-    public SubscriptionSetType getType(){
-        return this.type;
-    }
-    public void setType(SubscriptionSetType type){
-        this.type = type;
     }
 
     // subscriptionIds:
@@ -100,7 +89,6 @@ public abstract class SubscriptionSet extends ObjectBase {
         // set members values:
         id = GsonParser.parseLong(jsonObject.get("id"));
         name = GsonParser.parseString(jsonObject.get("name"));
-        type = SubscriptionSetType.get(GsonParser.parseString(jsonObject.get("type")));
         subscriptionIds = GsonParser.parseString(jsonObject.get("subscriptionIds"));
 
     }

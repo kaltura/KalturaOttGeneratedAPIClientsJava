@@ -50,8 +50,6 @@ public class Price extends ObjectBase {
     private String currency;
 	/**  Currency Sign  */
     private String currencySign;
-	/**  Currency  */
-    private Long countryId;
 
     // amount:
     public Double getAmount(){
@@ -77,14 +75,6 @@ public class Price extends ObjectBase {
         this.currencySign = currencySign;
     }
 
-    // countryId:
-    public Long getCountryId(){
-        return this.countryId;
-    }
-    public void setCountryId(Long countryId){
-        this.countryId = countryId;
-    }
-
 
     public Price() {
        super();
@@ -99,7 +89,6 @@ public class Price extends ObjectBase {
         amount = GsonParser.parseDouble(jsonObject.get("amount"));
         currency = GsonParser.parseString(jsonObject.get("currency"));
         currencySign = GsonParser.parseString(jsonObject.get("currencySign"));
-        countryId = GsonParser.parseLong(jsonObject.get("countryId"));
 
     }
 
@@ -109,7 +98,6 @@ public class Price extends ObjectBase {
         kparams.add("amount", this.amount);
         kparams.add("currency", this.currency);
         kparams.add("currencySign", this.currencySign);
-        kparams.add("countryId", this.countryId);
         return kparams;
     }
 

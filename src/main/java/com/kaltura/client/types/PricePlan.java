@@ -48,10 +48,10 @@ public class PricePlan extends UsageModule {
 	/**  Defines the number of times the module will be renewed (for the life_cycle
 	  period)  */
     private Integer renewalsNumber;
+	/**  Unique identifier associated with this object&amp;#39;s price  */
+    private Integer priceId;
 	/**  The discount module identifier of the price plan  */
     private Long discountId;
-	/**  The ID of the price details associated with this price plan  */
-    private Long priceDetailsId;
 
     // isRenewable:
     public Boolean getIsRenewable(){
@@ -69,20 +69,20 @@ public class PricePlan extends UsageModule {
         this.renewalsNumber = renewalsNumber;
     }
 
+    // priceId:
+    public Integer getPriceId(){
+        return this.priceId;
+    }
+    public void setPriceId(Integer priceId){
+        this.priceId = priceId;
+    }
+
     // discountId:
     public Long getDiscountId(){
         return this.discountId;
     }
     public void setDiscountId(Long discountId){
         this.discountId = discountId;
-    }
-
-    // priceDetailsId:
-    public Long getPriceDetailsId(){
-        return this.priceDetailsId;
-    }
-    public void setPriceDetailsId(Long priceDetailsId){
-        this.priceDetailsId = priceDetailsId;
     }
 
 
@@ -98,15 +98,18 @@ public class PricePlan extends UsageModule {
         // set members values:
         isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
         renewalsNumber = GsonParser.parseInt(jsonObject.get("renewalsNumber"));
+        priceId = GsonParser.parseInt(jsonObject.get("priceId"));
         discountId = GsonParser.parseLong(jsonObject.get("discountId"));
-        priceDetailsId = GsonParser.parseLong(jsonObject.get("priceDetailsId"));
 
     }
 
     public Params toParams() {
         Params kparams = super.toParams();
         kparams.add("objectType", "KalturaPricePlan");
-        kparams.add("priceDetailsId", this.priceDetailsId);
+        kparams.add("isRenewable", this.isRenewable);
+        kparams.add("renewalsNumber", this.renewalsNumber);
+        kparams.add("priceId", this.priceId);
+        kparams.add("discountId", this.discountId);
         return kparams;
     }
 

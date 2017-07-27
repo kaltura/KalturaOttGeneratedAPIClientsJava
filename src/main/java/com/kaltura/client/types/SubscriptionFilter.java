@@ -42,12 +42,11 @@ import com.google.gson.JsonObject;
 @SuppressWarnings("serial")
 public class SubscriptionFilter extends Filter {
 
-	/**  Comma separated subscription IDs to get the subscriptions by  */
+	/**  Comma separated subscription identifiers or file identifier (only 1) to get the
+	  subscriptions by  */
     private String subscriptionIdIn;
-	/**  Media-file ID to get the subscriptions by  */
+	/**  Media-file identifier to get the subscriptions by  */
     private Integer mediaFileIdEqual;
-	/**  Comma separated subscription external IDs to get the subscriptions by  */
-    private String externalIdIn;
 
     // subscriptionIdIn:
     public String getSubscriptionIdIn(){
@@ -65,14 +64,6 @@ public class SubscriptionFilter extends Filter {
         this.mediaFileIdEqual = mediaFileIdEqual;
     }
 
-    // externalIdIn:
-    public String getExternalIdIn(){
-        return this.externalIdIn;
-    }
-    public void setExternalIdIn(String externalIdIn){
-        this.externalIdIn = externalIdIn;
-    }
-
 
     public SubscriptionFilter() {
        super();
@@ -86,7 +77,6 @@ public class SubscriptionFilter extends Filter {
         // set members values:
         subscriptionIdIn = GsonParser.parseString(jsonObject.get("subscriptionIdIn"));
         mediaFileIdEqual = GsonParser.parseInt(jsonObject.get("mediaFileIdEqual"));
-        externalIdIn = GsonParser.parseString(jsonObject.get("externalIdIn"));
 
     }
 
@@ -95,7 +85,6 @@ public class SubscriptionFilter extends Filter {
         kparams.add("objectType", "KalturaSubscriptionFilter");
         kparams.add("subscriptionIdIn", this.subscriptionIdIn);
         kparams.add("mediaFileIdEqual", this.mediaFileIdEqual);
-        kparams.add("externalIdIn", this.externalIdIn);
         return kparams;
     }
 

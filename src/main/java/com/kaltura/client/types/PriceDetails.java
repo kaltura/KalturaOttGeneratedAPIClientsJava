@@ -52,8 +52,6 @@ public class PriceDetails extends ObjectBase {
     private String name;
 	/**  The price  */
     private Price price;
-	/**  Multi currency prices for all countries and currencies  */
-    private List<Price> multiCurrencyPrice;
 	/**  A list of the descriptions for this price on different languages (language code
 	  and translation)  */
     private List<TranslationToken> descriptions;
@@ -82,14 +80,6 @@ public class PriceDetails extends ObjectBase {
         this.price = price;
     }
 
-    // multiCurrencyPrice:
-    public List<Price> getMultiCurrencyPrice(){
-        return this.multiCurrencyPrice;
-    }
-    public void setMultiCurrencyPrice(List<Price> multiCurrencyPrice){
-        this.multiCurrencyPrice = multiCurrencyPrice;
-    }
-
     // descriptions:
     public List<TranslationToken> getDescriptions(){
         return this.descriptions;
@@ -112,7 +102,6 @@ public class PriceDetails extends ObjectBase {
         id = GsonParser.parseInt(jsonObject.get("id"));
         name = GsonParser.parseString(jsonObject.get("name"));
         price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), Price.class);
-        multiCurrencyPrice = GsonParser.parseArray(jsonObject.getAsJsonArray("multiCurrencyPrice"), Price.class);
         descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
 
     }
@@ -120,8 +109,9 @@ public class PriceDetails extends ObjectBase {
     public Params toParams() {
         Params kparams = super.toParams();
         kparams.add("objectType", "KalturaPriceDetails");
+        kparams.add("id", this.id);
         kparams.add("name", this.name);
-        kparams.add("multiCurrencyPrice", this.multiCurrencyPrice);
+        kparams.add("price", this.price);
         kparams.add("descriptions", this.descriptions);
         return kparams;
     }

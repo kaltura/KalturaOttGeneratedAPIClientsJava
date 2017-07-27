@@ -35,7 +35,6 @@ import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.types.PreviewModule;
-import com.kaltura.client.enums.SubscriptionDependencyType;
 import java.util.List;
 import com.google.gson.JsonObject;
 
@@ -83,8 +82,8 @@ public class Subscription extends ObjectBase {
     private Integer mediaId;
 	/**  Subscription order (when returned in methods that retrieve subscriptions)  */
     private Long prorityInOrder;
-	/**  Comma separated subscription price plan IDs  */
-    private String pricePlanIds;
+	/**  Subscription price plans  */
+    private List<PricePlan> pricePlans;
 	/**  Subscription preview module  */
     private PreviewModule previewModule;
 	/**  The household limitation module identifier associated with this subscription  */
@@ -110,10 +109,6 @@ public class Subscription extends ObjectBase {
     private List<CouponsGroup> couponsGroups;
 	/**  List of Subscription product codes  */
     private List<ProductCode> productCodes;
-	/**  Dependency Type  */
-    private SubscriptionDependencyType dependencyType;
-	/**  External ID  */
-    private String externalId;
 
     // id:
     public String getId(){
@@ -243,12 +238,12 @@ public class Subscription extends ObjectBase {
         this.prorityInOrder = prorityInOrder;
     }
 
-    // pricePlanIds:
-    public String getPricePlanIds(){
-        return this.pricePlanIds;
+    // pricePlans:
+    public List<PricePlan> getPricePlans(){
+        return this.pricePlans;
     }
-    public void setPricePlanIds(String pricePlanIds){
-        this.pricePlanIds = pricePlanIds;
+    public void setPricePlans(List<PricePlan> pricePlans){
+        this.pricePlans = pricePlans;
     }
 
     // previewModule:
@@ -339,22 +334,6 @@ public class Subscription extends ObjectBase {
         this.productCodes = productCodes;
     }
 
-    // dependencyType:
-    public SubscriptionDependencyType getDependencyType(){
-        return this.dependencyType;
-    }
-    public void setDependencyType(SubscriptionDependencyType dependencyType){
-        this.dependencyType = dependencyType;
-    }
-
-    // externalId:
-    public String getExternalId(){
-        return this.externalId;
-    }
-    public void setExternalId(String externalId){
-        this.externalId = externalId;
-    }
-
 
     public Subscription() {
        super();
@@ -382,7 +361,7 @@ public class Subscription extends ObjectBase {
         multilingualDescription = GsonParser.parseObject(jsonObject.getAsJsonObject("multilingualDescription"), MultilingualString.class);
         mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
         prorityInOrder = GsonParser.parseLong(jsonObject.get("prorityInOrder"));
-        pricePlanIds = GsonParser.parseString(jsonObject.get("pricePlanIds"));
+        pricePlans = GsonParser.parseArray(jsonObject.getAsJsonArray("pricePlans"), PricePlan.class);
         previewModule = GsonParser.parseObject(jsonObject.getAsJsonObject("previewModule"), PreviewModule.class);
         householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
         gracePeriodMinutes = GsonParser.parseInt(jsonObject.get("gracePeriodMinutes"));
@@ -394,8 +373,6 @@ public class Subscription extends ObjectBase {
         userTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("userTypes"), OTTUserType.class);
         couponsGroups = GsonParser.parseArray(jsonObject.getAsJsonArray("couponsGroups"), CouponsGroup.class);
         productCodes = GsonParser.parseArray(jsonObject.getAsJsonArray("productCodes"), ProductCode.class);
-        dependencyType = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyType")));
-        externalId = GsonParser.parseString(jsonObject.get("externalId"));
 
     }
 
@@ -418,7 +395,7 @@ public class Subscription extends ObjectBase {
         kparams.add("multilingualDescription", this.multilingualDescription);
         kparams.add("mediaId", this.mediaId);
         kparams.add("prorityInOrder", this.prorityInOrder);
-        kparams.add("pricePlanIds", this.pricePlanIds);
+        kparams.add("pricePlans", this.pricePlans);
         kparams.add("previewModule", this.previewModule);
         kparams.add("householdLimitationsId", this.householdLimitationsId);
         kparams.add("gracePeriodMinutes", this.gracePeriodMinutes);
@@ -430,8 +407,6 @@ public class Subscription extends ObjectBase {
         kparams.add("userTypes", this.userTypes);
         kparams.add("couponsGroups", this.couponsGroups);
         kparams.add("productCodes", this.productCodes);
-        kparams.add("dependencyType", this.dependencyType);
-        kparams.add("externalId", this.externalId);
         return kparams;
     }
 
