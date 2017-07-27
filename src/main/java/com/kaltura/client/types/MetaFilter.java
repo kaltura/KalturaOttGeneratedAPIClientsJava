@@ -54,8 +54,6 @@ public class MetaFilter extends Filter {
     private MetaType typeEqual;
 	/**  Asset type to filter by  */
     private AssetType assetTypeEqual;
-	/**  Features  */
-    private String featuresIn;
 
     // fieldNameEqual:
     public MetaFieldName getFieldNameEqual(){
@@ -89,14 +87,6 @@ public class MetaFilter extends Filter {
         this.assetTypeEqual = assetTypeEqual;
     }
 
-    // featuresIn:
-    public String getFeaturesIn(){
-        return this.featuresIn;
-    }
-    public void setFeaturesIn(String featuresIn){
-        this.featuresIn = featuresIn;
-    }
-
 
     public MetaFilter() {
        super();
@@ -112,7 +102,6 @@ public class MetaFilter extends Filter {
         fieldNameNotEqual = MetaFieldName.get(GsonParser.parseString(jsonObject.get("fieldNameNotEqual")));
         typeEqual = MetaType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
         assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
-        featuresIn = GsonParser.parseString(jsonObject.get("featuresIn"));
 
     }
 
@@ -123,7 +112,6 @@ public class MetaFilter extends Filter {
         kparams.add("fieldNameNotEqual", this.fieldNameNotEqual);
         kparams.add("typeEqual", this.typeEqual);
         kparams.add("assetTypeEqual", this.assetTypeEqual);
-        kparams.add("featuresIn", this.featuresIn);
         return kparams;
     }
 

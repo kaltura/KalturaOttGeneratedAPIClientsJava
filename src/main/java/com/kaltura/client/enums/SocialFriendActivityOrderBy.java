@@ -36,8 +36,7 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum SocialFriendActivityOrderBy implements EnumAsString {
-    NONE("NONE"),
-    UPDATE_DATE_DESC("UPDATE_DATE_DESC");
+    NONE("NONE");
 
     private String value;
 

@@ -65,14 +65,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
     private Integer reminderOffsetSec;
 	/**  Push adapter URL  */
     private String pushAdapterUrl;
-	/**  Churn mail template name  */
-    private String churnMailTemplateName;
-	/**  Churn mail subject  */
-    private String churnMailSubject;
-	/**  Sender email  */
-    private String senderEmail;
-	/**  Mail sender name  */
-    private String mailSenderName;
 
     // pushNotificationEnabled:
     public Boolean getPushNotificationEnabled(){
@@ -162,38 +154,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
         this.pushAdapterUrl = pushAdapterUrl;
     }
 
-    // churnMailTemplateName:
-    public String getChurnMailTemplateName(){
-        return this.churnMailTemplateName;
-    }
-    public void setChurnMailTemplateName(String churnMailTemplateName){
-        this.churnMailTemplateName = churnMailTemplateName;
-    }
-
-    // churnMailSubject:
-    public String getChurnMailSubject(){
-        return this.churnMailSubject;
-    }
-    public void setChurnMailSubject(String churnMailSubject){
-        this.churnMailSubject = churnMailSubject;
-    }
-
-    // senderEmail:
-    public String getSenderEmail(){
-        return this.senderEmail;
-    }
-    public void setSenderEmail(String senderEmail){
-        this.senderEmail = senderEmail;
-    }
-
-    // mailSenderName:
-    public String getMailSenderName(){
-        return this.mailSenderName;
-    }
-    public void setMailSenderName(String mailSenderName){
-        this.mailSenderName = mailSenderName;
-    }
-
 
     public NotificationsPartnerSettings() {
        super();
@@ -216,10 +176,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
         reminderEnabled = GsonParser.parseBoolean(jsonObject.get("reminderEnabled"));
         reminderOffsetSec = GsonParser.parseInt(jsonObject.get("reminderOffsetSec"));
         pushAdapterUrl = GsonParser.parseString(jsonObject.get("pushAdapterUrl"));
-        churnMailTemplateName = GsonParser.parseString(jsonObject.get("churnMailTemplateName"));
-        churnMailSubject = GsonParser.parseString(jsonObject.get("churnMailSubject"));
-        senderEmail = GsonParser.parseString(jsonObject.get("senderEmail"));
-        mailSenderName = GsonParser.parseString(jsonObject.get("mailSenderName"));
 
     }
 
@@ -237,10 +193,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
         kparams.add("reminderEnabled", this.reminderEnabled);
         kparams.add("reminderOffsetSec", this.reminderOffsetSec);
         kparams.add("pushAdapterUrl", this.pushAdapterUrl);
-        kparams.add("churnMailTemplateName", this.churnMailTemplateName);
-        kparams.add("churnMailSubject", this.churnMailSubject);
-        kparams.add("senderEmail", this.senderEmail);
-        kparams.add("mailSenderName", this.mailSenderName);
         return kparams;
     }
 

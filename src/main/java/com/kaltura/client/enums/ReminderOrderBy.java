@@ -25,14 +25,9 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.enums;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,18 +35,37 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum ReminderOrderBy implements EnumAsString {
+    NONE("NONE");
 
-public class MetaService {
+    private String value;
 
-    public static RequestBuilder<ListResponse<Meta>> list()  {
-        return list(null);
+    ReminderOrderBy(String value) {
+        this.value = value;
     }
 
-	/**  Get the list of meta mappings for the partner  */
-    public static RequestBuilder<ListResponse<Meta>> list(MetaFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Meta>(Meta.class, "meta", "list", kparams);
+    @Override
+    public String getValue() {
+        return this.value;
     }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public static ReminderOrderBy get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over ReminderOrderBy defined values and compare the inner value with the given one:
+        for(ReminderOrderBy item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return ReminderOrderBy.values().length > 0 ? ReminderOrderBy.values()[0]: null;
+   }
 }

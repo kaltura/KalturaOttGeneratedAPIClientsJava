@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.ReminderType;
 import com.google.gson.JsonObject;
 
 
@@ -48,8 +47,6 @@ public class Reminder extends ObjectBase {
     private String name;
 	/**  Reminder id  */
     private Integer id;
-	/**  Reminder type  */
-    private ReminderType type;
 
     // name:
     public String getName(){
@@ -67,14 +64,6 @@ public class Reminder extends ObjectBase {
         this.id = id;
     }
 
-    // type:
-    public ReminderType getType(){
-        return this.type;
-    }
-    public void setType(ReminderType type){
-        this.type = type;
-    }
-
 
     public Reminder() {
        super();
@@ -88,14 +77,12 @@ public class Reminder extends ObjectBase {
         // set members values:
         name = GsonParser.parseString(jsonObject.get("name"));
         id = GsonParser.parseInt(jsonObject.get("id"));
-        type = ReminderType.get(GsonParser.parseString(jsonObject.get("type")));
 
     }
 
     public Params toParams() {
         Params kparams = super.toParams();
         kparams.add("objectType", "KalturaReminder");
-        kparams.add("type", this.type);
         return kparams;
     }
 

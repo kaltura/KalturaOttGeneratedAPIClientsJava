@@ -28,7 +28,6 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.Params;
-import com.kaltura.client.types.Coupon;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
@@ -50,14 +49,5 @@ public class SubscriptionService {
         kparams.add("filter", filter);
 
         return new ListResponseRequestBuilder<Subscription>(Subscription.class, "subscription", "list", kparams);
-    }
-
-	/**  Returns information about a coupon for subscription  */
-    public static RequestBuilder<Coupon> validateCoupon(int id, String code)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("code", code);
-
-        return new RequestBuilder<Coupon>(Coupon.class, "subscription", "validateCoupon", kparams);
     }
 }

@@ -55,14 +55,6 @@ public class Meta extends ObjectBase {
     private MetaType type;
 	/**  Asset type this meta is related to  */
     private AssetType assetType;
-	/**  List of supported features  */
-    private String features;
-	/**  Meta id  */
-    private String id;
-	/**  Parent meta id  */
-    private String parentId;
-	/**  Partner Id  */
-    private Integer partnerId;
 
     // name:
     public String getName(){
@@ -96,38 +88,6 @@ public class Meta extends ObjectBase {
         this.assetType = assetType;
     }
 
-    // features:
-    public String getFeatures(){
-        return this.features;
-    }
-    public void setFeatures(String features){
-        this.features = features;
-    }
-
-    // id:
-    public String getId(){
-        return this.id;
-    }
-    public void setId(String id){
-        this.id = id;
-    }
-
-    // parentId:
-    public String getParentId(){
-        return this.parentId;
-    }
-    public void setParentId(String parentId){
-        this.parentId = parentId;
-    }
-
-    // partnerId:
-    public Integer getPartnerId(){
-        return this.partnerId;
-    }
-    public void setPartnerId(Integer partnerId){
-        this.partnerId = partnerId;
-    }
-
 
     public Meta() {
        super();
@@ -143,10 +103,6 @@ public class Meta extends ObjectBase {
         fieldName = MetaFieldName.get(GsonParser.parseString(jsonObject.get("fieldName")));
         type = MetaType.get(GsonParser.parseString(jsonObject.get("type")));
         assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
-        features = GsonParser.parseString(jsonObject.get("features"));
-        id = GsonParser.parseString(jsonObject.get("id"));
-        parentId = GsonParser.parseString(jsonObject.get("parentId"));
-        partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
 
     }
 
@@ -157,10 +113,6 @@ public class Meta extends ObjectBase {
         kparams.add("fieldName", this.fieldName);
         kparams.add("type", this.type);
         kparams.add("assetType", this.assetType);
-        kparams.add("features", this.features);
-        kparams.add("id", this.id);
-        kparams.add("parentId", this.parentId);
-        kparams.add("partnerId", this.partnerId);
         return kparams;
     }
 

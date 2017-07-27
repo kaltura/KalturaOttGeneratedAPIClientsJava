@@ -37,9 +37,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public enum InboxMessageType implements EnumAsString {
     SYSTEMANNOUNCEMENT("SystemAnnouncement"),
-    FOLLOWED("Followed"),
-    ENGAGEMENT("Engagement"),
-    INTEREST("Interest");
+    FOLLOWED("Followed");
 
     private String value;
 

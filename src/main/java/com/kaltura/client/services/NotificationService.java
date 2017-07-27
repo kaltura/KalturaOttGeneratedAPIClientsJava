@@ -29,7 +29,6 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.NotificationType;
-import com.kaltura.client.types.PushMessage;
 import com.kaltura.client.types.RegistryResponse;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -49,15 +48,6 @@ public class NotificationService {
         kparams.add("type", type);
 
         return new RequestBuilder<RegistryResponse>(RegistryResponse.class, "notification", "register", kparams);
-    }
-
-	/**  Sends push notification to user devices  */
-    public static RequestBuilder<Boolean> sendPush(int userId, PushMessage pushMessage)  {
-        Params kparams = new Params();
-        kparams.add("userId", userId);
-        kparams.add("pushMessage", pushMessage);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "notification", "sendPush", kparams);
     }
 
 	/**  Registers the device push token to the push service  */

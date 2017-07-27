@@ -38,8 +38,7 @@ import com.google.gson.annotations.SerializedName;
 public enum NotificationType implements EnumAsString {
     ANNOUNCEMENT("announcement"),
     SYSTEM("system"),
-    REMINDER("Reminder"),
-    SERIES_REMINDER("series_reminder");
+    REMINDER("Reminder");
 
     private String value;
 

@@ -65,14 +65,6 @@ public class EntitlementService {
         return new NullRequestBuilder("entitlement", "cancelRenewal", kparams);
     }
 
-	/**  Cancel Scheduled Subscription  */
-    public static RequestBuilder<Boolean> cancelScheduledSubscription(long scheduledSubscriptionId)  {
-        Params kparams = new Params();
-        kparams.add("scheduledSubscriptionId", scheduledSubscriptionId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "entitlement", "cancelScheduledSubscription", kparams);
-    }
-
 	/**  Reconcile the user household&amp;#39;s entitlements with an external
 	  entitlements source. This request is frequency protected to avoid too frequent
 	  calls per household.  */

@@ -25,14 +25,9 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.enums;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,18 +35,38 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum OTTAssetType implements EnumAsInt {
+    SERIES(0),
+    REMINDER(1);
 
-public class MetaService {
+    private int value;
 
-    public static RequestBuilder<ListResponse<Meta>> list()  {
-        return list(null);
+    OTTAssetType(int value) {
+        this.value = value;
     }
 
-	/**  Get the list of meta mappings for the partner  */
-    public static RequestBuilder<ListResponse<Meta>> list(MetaFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Meta>(Meta.class, "meta", "list", kparams);
+    @Override
+    public int getValue() {
+        return this.value;
     }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public static OTTAssetType get(Integer value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over OTTAssetType defined values and compare the inner value with the given one:
+        for(OTTAssetType item: values()) {
+            if(item.getValue() == value) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return OTTAssetType.values().length > 0 ? OTTAssetType.values()[0]: null;
+   }
 }

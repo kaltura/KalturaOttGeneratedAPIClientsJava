@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.DynamicOrderBy;
 import com.google.gson.JsonObject;
 
 
@@ -41,18 +40,8 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
-public class AssetFilter extends PersistedFilter {
+public class AssetFilter extends Filter {
 
-	/**  dynamicOrderBy - order by Meta  */
-    private DynamicOrderBy dynamicOrderBy;
-
-    // dynamicOrderBy:
-    public DynamicOrderBy getDynamicOrderBy(){
-        return this.dynamicOrderBy;
-    }
-    public void setDynamicOrderBy(DynamicOrderBy dynamicOrderBy){
-        this.dynamicOrderBy = dynamicOrderBy;
-    }
 
 
     public AssetFilter() {
@@ -61,18 +50,11 @@ public class AssetFilter extends PersistedFilter {
 
     public AssetFilter(JsonObject jsonObject) throws APIException {
         super(jsonObject);
-
-        if(jsonObject == null) return;
-
-        // set members values:
-        dynamicOrderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("dynamicOrderBy"), DynamicOrderBy.class);
-
     }
 
     public Params toParams() {
         Params kparams = super.toParams();
         kparams.add("objectType", "KalturaAssetFilter");
-        kparams.add("dynamicOrderBy", this.dynamicOrderBy);
         return kparams;
     }
 
