@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,66 +42,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Define client optional configurations  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ClientConfiguration.Tokenizer.class)
 public class ClientConfiguration extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String clientTag();
-		String apiVersion();
-	}
 
 	/**  Client Tag  */
-	private String clientTag;
+    private String clientTag;
 	/**  API client version  */
-	private String apiVersion;
+    private String apiVersion;
 
-	// clientTag:
-	public String getClientTag(){
-		return this.clientTag;
-	}
-	public void setClientTag(String clientTag){
-		this.clientTag = clientTag;
-	}
+    // clientTag:
+    public String getClientTag(){
+        return this.clientTag;
+    }
+    public void setClientTag(String clientTag){
+        this.clientTag = clientTag;
+    }
 
-	public void clientTag(String multirequestToken){
-		setToken("clientTag", multirequestToken);
-	}
-
-	// apiVersion:
-	public String getApiVersion(){
-		return this.apiVersion;
-	}
-	public void setApiVersion(String apiVersion){
-		this.apiVersion = apiVersion;
-	}
-
-	public void apiVersion(String multirequestToken){
-		setToken("apiVersion", multirequestToken);
-	}
+    // apiVersion:
+    public String getApiVersion(){
+        return this.apiVersion;
+    }
+    public void setApiVersion(String apiVersion){
+        this.apiVersion = apiVersion;
+    }
 
 
-	public ClientConfiguration() {
-		super();
-	}
+    public ClientConfiguration() {
+       super();
+    }
 
-	public ClientConfiguration(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public ClientConfiguration(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		clientTag = GsonParser.parseString(jsonObject.get("clientTag"));
-		apiVersion = GsonParser.parseString(jsonObject.get("apiVersion"));
+        // set members values:
+        clientTag = GsonParser.parseString(jsonObject.get("clientTag"));
+        apiVersion = GsonParser.parseString(jsonObject.get("apiVersion"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaClientConfiguration");
-		kparams.add("clientTag", this.clientTag);
-		kparams.add("apiVersion", this.apiVersion);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaClientConfiguration");
+        kparams.add("clientTag", this.clientTag);
+        kparams.add("apiVersion", this.apiVersion);
+        return kparams;
+    }
 
 }
 

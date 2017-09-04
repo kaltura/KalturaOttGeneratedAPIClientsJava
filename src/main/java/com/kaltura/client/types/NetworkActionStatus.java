@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.SocialNetwork;
-import com.kaltura.client.enums.SocialStatus;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.SocialStatus;
+import com.kaltura.client.enums.SocialNetwork;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,66 +43,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(NetworkActionStatus.Tokenizer.class)
 public class NetworkActionStatus extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String status();
-		String network();
-	}
 
 	/**  Status  */
-	private SocialStatus status;
+    private SocialStatus status;
 	/**  Social network  */
-	private SocialNetwork network;
+    private SocialNetwork network;
 
-	// status:
-	public SocialStatus getStatus(){
-		return this.status;
-	}
-	public void setStatus(SocialStatus status){
-		this.status = status;
-	}
+    // status:
+    public SocialStatus getStatus(){
+        return this.status;
+    }
+    public void setStatus(SocialStatus status){
+        this.status = status;
+    }
 
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
-	// network:
-	public SocialNetwork getNetwork(){
-		return this.network;
-	}
-	public void setNetwork(SocialNetwork network){
-		this.network = network;
-	}
-
-	public void network(String multirequestToken){
-		setToken("network", multirequestToken);
-	}
+    // network:
+    public SocialNetwork getNetwork(){
+        return this.network;
+    }
+    public void setNetwork(SocialNetwork network){
+        this.network = network;
+    }
 
 
-	public NetworkActionStatus() {
-		super();
-	}
+    public NetworkActionStatus() {
+       super();
+    }
 
-	public NetworkActionStatus(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public NetworkActionStatus(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		status = SocialStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		network = SocialNetwork.get(GsonParser.parseString(jsonObject.get("network")));
+        // set members values:
+        status = SocialStatus.get(GsonParser.parseString(jsonObject.get("status")));
+        network = SocialNetwork.get(GsonParser.parseString(jsonObject.get("network")));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaNetworkActionStatus");
-		kparams.add("status", this.status);
-		kparams.add("network", this.network);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaNetworkActionStatus");
+        kparams.add("status", this.status);
+        kparams.add("network", this.network);
+        return kparams;
+    }
 
 }
 

@@ -27,9 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PriceDetails;
 import com.kaltura.client.types.PriceDetailsFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,21 +42,16 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class PriceDetailsService {
-	
-	public static class ListPriceDetailsBuilder extends ListResponseRequestBuilder<PriceDetails, PriceDetails.Tokenizer, ListPriceDetailsBuilder> {
-		
-		public ListPriceDetailsBuilder(PriceDetailsFilter filter) {
-			super(PriceDetails.class, "pricedetails", "list");
-			params.add("filter", filter);
-		}
-	}
 
-	public static ListPriceDetailsBuilder list()  {
-		return list(null);
-	}
+    public static RequestBuilder<ListResponse<PriceDetails>> list()  {
+        return list(null);
+    }
 
 	/**  Returns the list of available prices, can be filtered by price IDs  */
-    public static ListPriceDetailsBuilder list(PriceDetailsFilter filter)  {
-		return new ListPriceDetailsBuilder(filter);
-	}
+    public static RequestBuilder<ListResponse<PriceDetails>> list(PriceDetailsFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<PriceDetails>(PriceDetails.class, "pricedetails", "list", kparams);
+    }
 }

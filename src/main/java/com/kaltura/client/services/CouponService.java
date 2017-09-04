@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.Coupon;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -38,21 +39,12 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class CouponService {
-	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
-		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
-		}
-		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
-		}
-	}
 
 	/**  Returns information about a coupon  */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
-	}
+    public static RequestBuilder<Coupon> get(String code)  {
+        Params kparams = new Params();
+        kparams.add("code", code);
+
+        return new RequestBuilder<Coupon>(Coupon.class, "coupon", "get", kparams);
+    }
 }

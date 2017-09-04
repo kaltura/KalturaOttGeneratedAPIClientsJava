@@ -27,9 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.Country;
 import com.kaltura.client.types.CountryFilter;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,18 +42,13 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class CountryService {
-	
-	public static class ListCountryBuilder extends ListResponseRequestBuilder<Country, Country.Tokenizer, ListCountryBuilder> {
-		
-		public ListCountryBuilder(CountryFilter filter) {
-			super(Country.class, "country", "list");
-			params.add("filter", filter);
-		}
-	}
 
 	/**  Get the list of countries for the partner with option to filter by countries
 	  identifiers  */
-    public static ListCountryBuilder list(CountryFilter filter)  {
-		return new ListCountryBuilder(filter);
-	}
+    public static RequestBuilder<ListResponse<Country>> list(CountryFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<Country>(Country.class, "country", "list", kparams);
+    }
 }

@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.CouponStatus;
-import com.kaltura.client.types.CouponsGroup;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.CouponsGroup;
+import com.kaltura.client.enums.CouponStatus;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,60 +44,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Coupon details container  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Coupon.Tokenizer.class)
 public class Coupon extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		CouponsGroup.Tokenizer couponsGroup();
-		String status();
-	}
 
 	/**  Coupons group details  */
-	private CouponsGroup couponsGroup;
+    private CouponsGroup couponsGroup;
 	/**  Coupon status  */
-	private CouponStatus status;
+    private CouponStatus status;
 
-	// couponsGroup:
-	public CouponsGroup getCouponsGroup(){
-		return this.couponsGroup;
-	}
-	public void setCouponsGroup(CouponsGroup couponsGroup){
-		this.couponsGroup = couponsGroup;
-	}
+    // couponsGroup:
+    public CouponsGroup getCouponsGroup(){
+        return this.couponsGroup;
+    }
+    public void setCouponsGroup(CouponsGroup couponsGroup){
+        this.couponsGroup = couponsGroup;
+    }
 
-	// status:
-	public CouponStatus getStatus(){
-		return this.status;
-	}
-	public void setStatus(CouponStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
+    // status:
+    public CouponStatus getStatus(){
+        return this.status;
+    }
+    public void setStatus(CouponStatus status){
+        this.status = status;
+    }
 
 
-	public Coupon() {
-		super();
-	}
+    public Coupon() {
+       super();
+    }
 
-	public Coupon(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Coupon(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
-		status = CouponStatus.get(GsonParser.parseString(jsonObject.get("status")));
+        // set members values:
+        couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
+        status = CouponStatus.get(GsonParser.parseString(jsonObject.get("status")));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCoupon");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaCoupon");
+        return kparams;
+    }
 
 }
 

@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.GroupByField;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.enums.GroupByField;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,49 +42,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Group by a field that is defined in enum  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetFieldGroupBy.Tokenizer.class)
 public class AssetFieldGroupBy extends AssetGroupBy {
-	
-	public interface Tokenizer extends AssetGroupBy.Tokenizer {
-		String value();
-	}
 
 	/**  Group by a specific field that is defined in enum  */
-	private GroupByField value;
+    private GroupByField value;
 
-	// value:
-	public GroupByField getValue(){
-		return this.value;
-	}
-	public void setValue(GroupByField value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
+    // value:
+    public GroupByField getValue(){
+        return this.value;
+    }
+    public void setValue(GroupByField value){
+        this.value = value;
+    }
 
 
-	public AssetFieldGroupBy() {
-		super();
-	}
+    public AssetFieldGroupBy() {
+       super();
+    }
 
-	public AssetFieldGroupBy(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public AssetFieldGroupBy(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		value = GroupByField.get(GsonParser.parseString(jsonObject.get("value")));
+        // set members values:
+        value = GroupByField.get(GsonParser.parseString(jsonObject.get("value")));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetFieldGroupBy");
-		kparams.add("value", this.value);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaAssetFieldGroupBy");
+        kparams.add("value", this.value);
+        return kparams;
+    }
 
 }
 

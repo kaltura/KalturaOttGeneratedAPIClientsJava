@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,66 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseholdDeviceFilter.Tokenizer.class)
 public class HouseholdDeviceFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String householdIdEqual();
-		String deviceFamilyIdIn();
-	}
 
 	/**  The identifier of the household  */
-	private Integer householdIdEqual;
+    private Integer householdIdEqual;
 	/**  Device family Ids  */
-	private String deviceFamilyIdIn;
+    private String deviceFamilyIdIn;
 
-	// householdIdEqual:
-	public Integer getHouseholdIdEqual(){
-		return this.householdIdEqual;
-	}
-	public void setHouseholdIdEqual(Integer householdIdEqual){
-		this.householdIdEqual = householdIdEqual;
-	}
+    // householdIdEqual:
+    public Integer getHouseholdIdEqual(){
+        return this.householdIdEqual;
+    }
+    public void setHouseholdIdEqual(Integer householdIdEqual){
+        this.householdIdEqual = householdIdEqual;
+    }
 
-	public void householdIdEqual(String multirequestToken){
-		setToken("householdIdEqual", multirequestToken);
-	}
-
-	// deviceFamilyIdIn:
-	public String getDeviceFamilyIdIn(){
-		return this.deviceFamilyIdIn;
-	}
-	public void setDeviceFamilyIdIn(String deviceFamilyIdIn){
-		this.deviceFamilyIdIn = deviceFamilyIdIn;
-	}
-
-	public void deviceFamilyIdIn(String multirequestToken){
-		setToken("deviceFamilyIdIn", multirequestToken);
-	}
+    // deviceFamilyIdIn:
+    public String getDeviceFamilyIdIn(){
+        return this.deviceFamilyIdIn;
+    }
+    public void setDeviceFamilyIdIn(String deviceFamilyIdIn){
+        this.deviceFamilyIdIn = deviceFamilyIdIn;
+    }
 
 
-	public HouseholdDeviceFilter() {
-		super();
-	}
+    public HouseholdDeviceFilter() {
+       super();
+    }
 
-	public HouseholdDeviceFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public HouseholdDeviceFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		householdIdEqual = GsonParser.parseInt(jsonObject.get("householdIdEqual"));
-		deviceFamilyIdIn = GsonParser.parseString(jsonObject.get("deviceFamilyIdIn"));
+        // set members values:
+        householdIdEqual = GsonParser.parseInt(jsonObject.get("householdIdEqual"));
+        deviceFamilyIdIn = GsonParser.parseString(jsonObject.get("deviceFamilyIdIn"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseholdDeviceFilter");
-		kparams.add("householdIdEqual", this.householdIdEqual);
-		kparams.add("deviceFamilyIdIn", this.deviceFamilyIdIn);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaHouseholdDeviceFilter");
+        kparams.add("householdIdEqual", this.householdIdEqual);
+        kparams.add("deviceFamilyIdIn", this.deviceFamilyIdIn);
+        return kparams;
+    }
 
 }
 

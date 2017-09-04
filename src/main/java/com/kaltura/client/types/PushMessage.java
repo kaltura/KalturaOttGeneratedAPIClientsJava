@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,101 +41,77 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PushMessage.Tokenizer.class)
 public class PushMessage extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String message();
-		String sound();
-		String action();
-		String url();
-	}
 
 	/**  The message that will be presented to the user.  */
-	private String message;
+    private String message;
 	/**  Optional. Can be used to change the default push sound on the user device.  */
-	private String sound;
+    private String sound;
 	/**  Optional. Used to change the default action of the application when a push is
 	  received.  */
-	private String action;
+    private String action;
 	/**  Optional. Used to direct the application to the relevant page.  */
-	private String url;
+    private String url;
 
-	// message:
-	public String getMessage(){
-		return this.message;
-	}
-	public void setMessage(String message){
-		this.message = message;
-	}
+    // message:
+    public String getMessage(){
+        return this.message;
+    }
+    public void setMessage(String message){
+        this.message = message;
+    }
 
-	public void message(String multirequestToken){
-		setToken("message", multirequestToken);
-	}
+    // sound:
+    public String getSound(){
+        return this.sound;
+    }
+    public void setSound(String sound){
+        this.sound = sound;
+    }
 
-	// sound:
-	public String getSound(){
-		return this.sound;
-	}
-	public void setSound(String sound){
-		this.sound = sound;
-	}
+    // action:
+    public String getAction(){
+        return this.action;
+    }
+    public void setAction(String action){
+        this.action = action;
+    }
 
-	public void sound(String multirequestToken){
-		setToken("sound", multirequestToken);
-	}
-
-	// action:
-	public String getAction(){
-		return this.action;
-	}
-	public void setAction(String action){
-		this.action = action;
-	}
-
-	public void action(String multirequestToken){
-		setToken("action", multirequestToken);
-	}
-
-	// url:
-	public String getUrl(){
-		return this.url;
-	}
-	public void setUrl(String url){
-		this.url = url;
-	}
-
-	public void url(String multirequestToken){
-		setToken("url", multirequestToken);
-	}
+    // url:
+    public String getUrl(){
+        return this.url;
+    }
+    public void setUrl(String url){
+        this.url = url;
+    }
 
 
-	public PushMessage() {
-		super();
-	}
+    public PushMessage() {
+       super();
+    }
 
-	public PushMessage(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public PushMessage(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		message = GsonParser.parseString(jsonObject.get("message"));
-		sound = GsonParser.parseString(jsonObject.get("sound"));
-		action = GsonParser.parseString(jsonObject.get("action"));
-		url = GsonParser.parseString(jsonObject.get("url"));
+        // set members values:
+        message = GsonParser.parseString(jsonObject.get("message"));
+        sound = GsonParser.parseString(jsonObject.get("sound"));
+        action = GsonParser.parseString(jsonObject.get("action"));
+        url = GsonParser.parseString(jsonObject.get("url"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPushMessage");
-		kparams.add("message", this.message);
-		kparams.add("sound", this.sound);
-		kparams.add("action", this.action);
-		kparams.add("url", this.url);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaPushMessage");
+        kparams.add("message", this.message);
+        kparams.add("sound", this.sound);
+        kparams.add("action", this.action);
+        kparams.add("url", this.url);
+        return kparams;
+    }
 
 }
 

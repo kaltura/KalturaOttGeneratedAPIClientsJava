@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,49 +40,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FollowTvSeries.Tokenizer.class)
 public class FollowTvSeries extends FollowDataBase {
-	
-	public interface Tokenizer extends FollowDataBase.Tokenizer {
-		String assetId();
-	}
 
 	/**  Asset Id  */
-	private Integer assetId;
+    private Integer assetId;
 
-	// assetId:
-	public Integer getAssetId(){
-		return this.assetId;
-	}
-	public void setAssetId(Integer assetId){
-		this.assetId = assetId;
-	}
-
-	public void assetId(String multirequestToken){
-		setToken("assetId", multirequestToken);
-	}
+    // assetId:
+    public Integer getAssetId(){
+        return this.assetId;
+    }
+    public void setAssetId(Integer assetId){
+        this.assetId = assetId;
+    }
 
 
-	public FollowTvSeries() {
-		super();
-	}
+    public FollowTvSeries() {
+       super();
+    }
 
-	public FollowTvSeries(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public FollowTvSeries(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetId = GsonParser.parseInt(jsonObject.get("assetId"));
+        // set members values:
+        assetId = GsonParser.parseInt(jsonObject.get("assetId"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFollowTvSeries");
-		kparams.add("assetId", this.assetId);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFollowTvSeries");
+        kparams.add("assetId", this.assetId);
+        return kparams;
+    }
 
 }
 

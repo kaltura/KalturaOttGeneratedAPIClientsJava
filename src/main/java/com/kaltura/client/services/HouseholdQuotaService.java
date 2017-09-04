@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.HouseholdQuota;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -38,16 +39,11 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HouseholdQuotaService {
-	
-	public static class GetHouseholdQuotaBuilder extends RequestBuilder<HouseholdQuota, HouseholdQuota.Tokenizer, GetHouseholdQuotaBuilder> {
-		
-		public GetHouseholdQuotaBuilder() {
-			super(HouseholdQuota.class, "householdquota", "get");
-		}
-	}
 
 	/**  Returns the household&amp;#39;s quota data  */
-    public static GetHouseholdQuotaBuilder get()  {
-		return new GetHouseholdQuotaBuilder();
-	}
+    public static RequestBuilder<HouseholdQuota> get()  {
+        Params kparams = new Params();
+
+        return new RequestBuilder<HouseholdQuota>(HouseholdQuota.class, "householdquota", "get", kparams);
+    }
 }

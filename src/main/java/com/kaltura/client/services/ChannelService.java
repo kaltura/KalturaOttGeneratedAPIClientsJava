@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.Channel;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -38,69 +39,37 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ChannelService {
-	
-	public static class AddChannelBuilder extends RequestBuilder<Channel, Channel.Tokenizer, AddChannelBuilder> {
-		
-		public AddChannelBuilder(Channel channel) {
-			super(Channel.class, "channel", "add");
-			params.add("channel", channel);
-		}
-	}
 
 	/**  Insert new channel for partner. Currently supports only KSQL channel  */
-    public static AddChannelBuilder add(Channel channel)  {
-		return new AddChannelBuilder(channel);
-	}
-	
-	public static class DeleteChannelBuilder extends RequestBuilder<Boolean, String, DeleteChannelBuilder> {
-		
-		public DeleteChannelBuilder(int channelId) {
-			super(Boolean.class, "channel", "delete");
-			params.add("channelId", channelId);
-		}
-		
-		public void channelId(String multirequestToken) {
-			params.add("channelId", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Channel> add(Channel channel)  {
+        Params kparams = new Params();
+        kparams.add("channel", channel);
+
+        return new RequestBuilder<Channel>(Channel.class, "channel", "add", kparams);
+    }
 
 	/**  Delete channel by its channel id  */
-    public static DeleteChannelBuilder delete(int channelId)  {
-		return new DeleteChannelBuilder(channelId);
-	}
-	
-	public static class GetChannelBuilder extends RequestBuilder<Channel, Channel.Tokenizer, GetChannelBuilder> {
-		
-		public GetChannelBuilder(int id) {
-			super(Channel.class, "channel", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Boolean> delete(int channelId)  {
+        Params kparams = new Params();
+        kparams.add("channelId", channelId);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "channel", "delete", kparams);
+    }
 
 	/**  Returns channel info  */
-    public static GetChannelBuilder get(int id)  {
-		return new GetChannelBuilder(id);
-	}
-	
-	public static class UpdateChannelBuilder extends RequestBuilder<Channel, Channel.Tokenizer, UpdateChannelBuilder> {
-		
-		public UpdateChannelBuilder(int channelId, Channel channel) {
-			super(Channel.class, "channel", "update");
-			params.add("channelId", channelId);
-			params.add("channel", channel);
-		}
-		
-		public void channelId(String multirequestToken) {
-			params.add("channelId", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Channel> get(int id)  {
+        Params kparams = new Params();
+        kparams.add("id", id);
+
+        return new RequestBuilder<Channel>(Channel.class, "channel", "get", kparams);
+    }
 
 	/**  Update channel details. Currently supports only KSQL channel  */
-    public static UpdateChannelBuilder update(int channelId, Channel channel)  {
-		return new UpdateChannelBuilder(channelId, channel);
-	}
+    public static RequestBuilder<Channel> update(int channelId, Channel channel)  {
+        Params kparams = new Params();
+        kparams.add("channelId", channelId);
+        kparams.add("channel", channel);
+
+        return new RequestBuilder<Channel>(Channel.class, "channel", "update", kparams);
+    }
 }

@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,38 +36,38 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum InboxMessageStatus implements EnumAsString {
-	UNREAD("Unread"),
-	READ("Read"),
-	DELETED("Deleted");
+    UNREAD("Unread"),
+    READ("Read"),
+    DELETED("Deleted");
 
-	private String value;
+    private String value;
 
-	InboxMessageStatus(String value) {
-		this.value = value;
-	}
+    InboxMessageStatus(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static InboxMessageStatus get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over InboxMessageStatus defined values and compare the inner value with the given one:
-		for(InboxMessageStatus item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return InboxMessageStatus.values().length > 0 ? InboxMessageStatus.values()[0]: null;
+    public static InboxMessageStatus get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over InboxMessageStatus defined values and compare the inner value with the given one:
+        for(InboxMessageStatus item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return InboxMessageStatus.values().length > 0 ? InboxMessageStatus.values()[0]: null;
    }
 }

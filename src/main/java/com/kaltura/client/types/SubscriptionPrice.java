@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,50 +41,41 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Subscription price details  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SubscriptionPrice.Tokenizer.class)
 public class SubscriptionPrice extends ProductPrice {
-	
-	public interface Tokenizer extends ProductPrice.Tokenizer {
-		String endDate();
-	}
 
 	/**  If the item related to unified billing cycle purchased - until when the this
 	  price is relevant  */
-	private Long endDate;
+    private Long endDate;
 
-	// endDate:
-	public Long getEndDate(){
-		return this.endDate;
-	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
-	}
+    // endDate:
+    public Long getEndDate(){
+        return this.endDate;
+    }
+    public void setEndDate(Long endDate){
+        this.endDate = endDate;
+    }
 
 
-	public SubscriptionPrice() {
-		super();
-	}
+    public SubscriptionPrice() {
+       super();
+    }
 
-	public SubscriptionPrice(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public SubscriptionPrice(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+        // set members values:
+        endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSubscriptionPrice");
-		kparams.add("endDate", this.endDate);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaSubscriptionPrice");
+        kparams.add("endDate", this.endDate);
+        return kparams;
+    }
 
 }
 

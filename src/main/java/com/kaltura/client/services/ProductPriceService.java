@@ -27,9 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ProductPrice;
 import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,19 +42,14 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class ProductPriceService {
-	
-	public static class ListProductPriceBuilder extends ListResponseRequestBuilder<ProductPrice, ProductPrice.Tokenizer, ListProductPriceBuilder> {
-		
-		public ListProductPriceBuilder(ProductPriceFilter filter) {
-			super(ProductPrice.class, "productprice", "list");
-			params.add("filter", filter);
-		}
-	}
 
 	/**  Returns a price and a purchase status for each subscription or/and media file,
 	  for a given user (if passed) and with the consideration of a coupon code (if
 	  passed).  */
-    public static ListProductPriceBuilder list(ProductPriceFilter filter)  {
-		return new ListProductPriceBuilder(filter);
-	}
+    public static RequestBuilder<ListResponse<ProductPrice>> list(ProductPriceFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<ProductPrice>(ProductPrice.class, "productprice", "list", kparams);
+    }
 }

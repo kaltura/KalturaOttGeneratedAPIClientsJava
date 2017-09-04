@@ -32,6 +32,7 @@ import com.kaltura.client.enums.EnumAsInt;
 import com.kaltura.client.enums.EnumAsString;
 import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 import java.io.Serializable;
 import java.util.*;
@@ -300,5 +301,9 @@ public class Params extends LinkedHashMap<String, Object> implements Serializabl
 	@Override
 	public String toString() {
 		return gson.toJson(this);
+	}
+
+	public void add(String key, RequestBuilder<?> request) {
+		put(key, request);
 	}
 }

@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,82 +42,63 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Favorite details  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Favorite.Tokenizer.class)
 public class Favorite extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String assetId();
-		String extraData();
-		String createDate();
-	}
 
 	/**  AssetInfo Model  */
-	private Long assetId;
+    private Long assetId;
 	/**  Extra Value  */
-	private String extraData;
+    private String extraData;
 	/**  Specifies when was the favorite created. Date and time represented as epoch.  */
-	private Long createDate;
+    private Long createDate;
 
-	// assetId:
-	public Long getAssetId(){
-		return this.assetId;
-	}
-	public void setAssetId(Long assetId){
-		this.assetId = assetId;
-	}
+    // assetId:
+    public Long getAssetId(){
+        return this.assetId;
+    }
+    public void setAssetId(Long assetId){
+        this.assetId = assetId;
+    }
 
-	public void assetId(String multirequestToken){
-		setToken("assetId", multirequestToken);
-	}
+    // extraData:
+    public String getExtraData(){
+        return this.extraData;
+    }
+    public void setExtraData(String extraData){
+        this.extraData = extraData;
+    }
 
-	// extraData:
-	public String getExtraData(){
-		return this.extraData;
-	}
-	public void setExtraData(String extraData){
-		this.extraData = extraData;
-	}
-
-	public void extraData(String multirequestToken){
-		setToken("extraData", multirequestToken);
-	}
-
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
-	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
+    // createDate:
+    public Long getCreateDate(){
+        return this.createDate;
+    }
+    public void setCreateDate(Long createDate){
+        this.createDate = createDate;
+    }
 
 
-	public Favorite() {
-		super();
-	}
+    public Favorite() {
+       super();
+    }
 
-	public Favorite(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Favorite(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
-		extraData = GsonParser.parseString(jsonObject.get("extraData"));
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+        // set members values:
+        assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+        extraData = GsonParser.parseString(jsonObject.get("extraData"));
+        createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFavorite");
-		kparams.add("assetId", this.assetId);
-		kparams.add("extraData", this.extraData);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFavorite");
+        kparams.add("assetId", this.assetId);
+        kparams.add("extraData", this.extraData);
+        return kparams;
+    }
 
 }
 

@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,49 +40,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PricePlanFilter.Tokenizer.class)
 public class PricePlanFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-	}
 
 	/**  Comma separated price plans identifiers  */
-	private String idIn;
+    private String idIn;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
-	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
+    // idIn:
+    public String getIdIn(){
+        return this.idIn;
+    }
+    public void setIdIn(String idIn){
+        this.idIn = idIn;
+    }
 
 
-	public PricePlanFilter() {
-		super();
-	}
+    public PricePlanFilter() {
+       super();
+    }
 
-	public PricePlanFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public PricePlanFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+        // set members values:
+        idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPricePlanFilter");
-		kparams.add("idIn", this.idIn);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaPricePlanFilter");
+        kparams.add("idIn", this.idIn);
+        return kparams;
+    }
 
 }
 

@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.TopicAutomaticIssueNotification;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.TopicAutomaticIssueNotification;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,116 +42,87 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Topic.Tokenizer.class)
 public class Topic extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String subscribersAmount();
-		String automaticIssueNotification();
-		String lastMessageSentDateSec();
-	}
 
 	/**  message id  */
-	private String id;
+    private String id;
 	/**  message  */
-	private String name;
+    private String name;
 	/**  message  */
-	private String subscribersAmount;
+    private String subscribersAmount;
 	/**  automaticIssueNotification  */
-	private TopicAutomaticIssueNotification automaticIssueNotification;
+    private TopicAutomaticIssueNotification automaticIssueNotification;
 	/**  lastMessageSentDateSec  */
-	private Long lastMessageSentDateSec;
+    private Long lastMessageSentDateSec;
 
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
+    // id:
+    public String getId(){
+        return this.id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // name:
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
+    // subscribersAmount:
+    public String getSubscribersAmount(){
+        return this.subscribersAmount;
+    }
+    public void setSubscribersAmount(String subscribersAmount){
+        this.subscribersAmount = subscribersAmount;
+    }
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
+    // automaticIssueNotification:
+    public TopicAutomaticIssueNotification getAutomaticIssueNotification(){
+        return this.automaticIssueNotification;
+    }
+    public void setAutomaticIssueNotification(TopicAutomaticIssueNotification automaticIssueNotification){
+        this.automaticIssueNotification = automaticIssueNotification;
+    }
 
-	// subscribersAmount:
-	public String getSubscribersAmount(){
-		return this.subscribersAmount;
-	}
-	public void setSubscribersAmount(String subscribersAmount){
-		this.subscribersAmount = subscribersAmount;
-	}
-
-	public void subscribersAmount(String multirequestToken){
-		setToken("subscribersAmount", multirequestToken);
-	}
-
-	// automaticIssueNotification:
-	public TopicAutomaticIssueNotification getAutomaticIssueNotification(){
-		return this.automaticIssueNotification;
-	}
-	public void setAutomaticIssueNotification(TopicAutomaticIssueNotification automaticIssueNotification){
-		this.automaticIssueNotification = automaticIssueNotification;
-	}
-
-	public void automaticIssueNotification(String multirequestToken){
-		setToken("automaticIssueNotification", multirequestToken);
-	}
-
-	// lastMessageSentDateSec:
-	public Long getLastMessageSentDateSec(){
-		return this.lastMessageSentDateSec;
-	}
-	public void setLastMessageSentDateSec(Long lastMessageSentDateSec){
-		this.lastMessageSentDateSec = lastMessageSentDateSec;
-	}
-
-	public void lastMessageSentDateSec(String multirequestToken){
-		setToken("lastMessageSentDateSec", multirequestToken);
-	}
+    // lastMessageSentDateSec:
+    public Long getLastMessageSentDateSec(){
+        return this.lastMessageSentDateSec;
+    }
+    public void setLastMessageSentDateSec(Long lastMessageSentDateSec){
+        this.lastMessageSentDateSec = lastMessageSentDateSec;
+    }
 
 
-	public Topic() {
-		super();
-	}
+    public Topic() {
+       super();
+    }
 
-	public Topic(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Topic(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		subscribersAmount = GsonParser.parseString(jsonObject.get("subscribersAmount"));
-		automaticIssueNotification = TopicAutomaticIssueNotification.get(GsonParser.parseString(jsonObject.get("automaticIssueNotification")));
-		lastMessageSentDateSec = GsonParser.parseLong(jsonObject.get("lastMessageSentDateSec"));
+        // set members values:
+        id = GsonParser.parseString(jsonObject.get("id"));
+        name = GsonParser.parseString(jsonObject.get("name"));
+        subscribersAmount = GsonParser.parseString(jsonObject.get("subscribersAmount"));
+        automaticIssueNotification = TopicAutomaticIssueNotification.get(GsonParser.parseString(jsonObject.get("automaticIssueNotification")));
+        lastMessageSentDateSec = GsonParser.parseLong(jsonObject.get("lastMessageSentDateSec"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaTopic");
-		kparams.add("name", this.name);
-		kparams.add("subscribersAmount", this.subscribersAmount);
-		kparams.add("automaticIssueNotification", this.automaticIssueNotification);
-		kparams.add("lastMessageSentDateSec", this.lastMessageSentDateSec);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaTopic");
+        kparams.add("name", this.name);
+        kparams.add("subscribersAmount", this.subscribersAmount);
+        kparams.add("automaticIssueNotification", this.automaticIssueNotification);
+        kparams.add("lastMessageSentDateSec", this.lastMessageSentDateSec);
+        return kparams;
+    }
 
 }
 

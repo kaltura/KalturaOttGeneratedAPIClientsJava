@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,49 +42,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  A representation to return an array of values  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Value.Tokenizer.class)
 public abstract class Value extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String description();
-	}
 
 	/**  Description  */
-	private String description;
+    private String description;
 
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
+    // description:
+    public String getDescription(){
+        return this.description;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
 
 
-	public Value() {
-		super();
-	}
+    public Value() {
+       super();
+    }
 
-	public Value(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Value(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		description = GsonParser.parseString(jsonObject.get("description"));
+        // set members values:
+        description = GsonParser.parseString(jsonObject.get("description"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaValue");
-		kparams.add("description", this.description);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaValue");
+        kparams.add("description", this.description);
+        return kparams;
+    }
 
 }
 

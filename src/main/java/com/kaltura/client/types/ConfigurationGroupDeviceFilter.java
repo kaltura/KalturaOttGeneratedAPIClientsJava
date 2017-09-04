@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,50 +41,41 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Configuration group device filter  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ConfigurationGroupDeviceFilter.Tokenizer.class)
 public class ConfigurationGroupDeviceFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String configurationGroupIdEqual();
-	}
 
 	/**  the ID of the configuration group for which to return related configurations
 	  group devices  */
-	private String configurationGroupIdEqual;
+    private String configurationGroupIdEqual;
 
-	// configurationGroupIdEqual:
-	public String getConfigurationGroupIdEqual(){
-		return this.configurationGroupIdEqual;
-	}
-	public void setConfigurationGroupIdEqual(String configurationGroupIdEqual){
-		this.configurationGroupIdEqual = configurationGroupIdEqual;
-	}
-
-	public void configurationGroupIdEqual(String multirequestToken){
-		setToken("configurationGroupIdEqual", multirequestToken);
-	}
+    // configurationGroupIdEqual:
+    public String getConfigurationGroupIdEqual(){
+        return this.configurationGroupIdEqual;
+    }
+    public void setConfigurationGroupIdEqual(String configurationGroupIdEqual){
+        this.configurationGroupIdEqual = configurationGroupIdEqual;
+    }
 
 
-	public ConfigurationGroupDeviceFilter() {
-		super();
-	}
+    public ConfigurationGroupDeviceFilter() {
+       super();
+    }
 
-	public ConfigurationGroupDeviceFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public ConfigurationGroupDeviceFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		configurationGroupIdEqual = GsonParser.parseString(jsonObject.get("configurationGroupIdEqual"));
+        // set members values:
+        configurationGroupIdEqual = GsonParser.parseString(jsonObject.get("configurationGroupIdEqual"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaConfigurationGroupDeviceFilter");
-		kparams.add("configurationGroupIdEqual", this.configurationGroupIdEqual);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaConfigurationGroupDeviceFilter");
+        kparams.add("configurationGroupIdEqual", this.configurationGroupIdEqual);
+        return kparams;
+    }
 
 }
 

@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,41 +36,41 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum BillingAction implements EnumAsString {
-	UNKNOWN("unknown"),
-	PURCHASE("purchase"),
-	RENEW_PAYMENT("renew_payment"),
-	RENEW_CANCELED_SUBSCRIPTION("renew_canceled_subscription"),
-	CANCEL_SUBSCRIPTION_ORDER("cancel_subscription_order"),
-	SUBSCRIPTION_DATE_CHANGED("subscription_date_changed");
+    UNKNOWN("unknown"),
+    PURCHASE("purchase"),
+    RENEW_PAYMENT("renew_payment"),
+    RENEW_CANCELED_SUBSCRIPTION("renew_canceled_subscription"),
+    CANCEL_SUBSCRIPTION_ORDER("cancel_subscription_order"),
+    SUBSCRIPTION_DATE_CHANGED("subscription_date_changed");
 
-	private String value;
+    private String value;
 
-	BillingAction(String value) {
-		this.value = value;
-	}
+    BillingAction(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static BillingAction get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BillingAction defined values and compare the inner value with the given one:
-		for(BillingAction item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingAction.values().length > 0 ? BillingAction.values()[0]: null;
+    public static BillingAction get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over BillingAction defined values and compare the inner value with the given one:
+        for(BillingAction item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return BillingAction.values().length > 0 ? BillingAction.values()[0]: null;
    }
 }

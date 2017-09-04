@@ -27,7 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.NetworkActionStatus;
 import com.kaltura.client.types.SocialAction;
 import com.kaltura.client.types.SocialActionFilter;
@@ -35,6 +37,7 @@ import com.kaltura.client.types.UserSocialActionResponse;
 import com.kaltura.client.utils.request.ArrayRequestBuilder;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,52 +47,33 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SocialActionService {
-	
-	public static class AddSocialActionBuilder extends RequestBuilder<UserSocialActionResponse, UserSocialActionResponse.Tokenizer, AddSocialActionBuilder> {
-		
-		public AddSocialActionBuilder(SocialAction socialAction) {
-			super(UserSocialActionResponse.class, "socialaction", "add");
-			params.add("socialAction", socialAction);
-		}
-	}
 
 	/**  Insert new user social action  */
-    public static AddSocialActionBuilder add(SocialAction socialAction)  {
-		return new AddSocialActionBuilder(socialAction);
-	}
-	
-	public static class DeleteSocialActionBuilder extends ArrayRequestBuilder<NetworkActionStatus, NetworkActionStatus.Tokenizer, DeleteSocialActionBuilder> {
-		
-		public DeleteSocialActionBuilder(String id) {
-			super(NetworkActionStatus.class, "socialaction", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
+    public static RequestBuilder<UserSocialActionResponse> add(SocialAction socialAction)  {
+        Params kparams = new Params();
+        kparams.add("socialAction", socialAction);
+
+        return new RequestBuilder<UserSocialActionResponse>(UserSocialActionResponse.class, "socialaction", "add", kparams);
+    }
 
 	/**  delete user social action  */
-    public static DeleteSocialActionBuilder delete(String id)  {
-		return new DeleteSocialActionBuilder(id);
-	}
-	
-	public static class ListSocialActionBuilder extends ListResponseRequestBuilder<SocialAction, SocialAction.Tokenizer, ListSocialActionBuilder> {
-		
-		public ListSocialActionBuilder(SocialActionFilter filter, FilterPager pager) {
-			super(SocialAction.class, "socialaction", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
+    public static RequestBuilder<List<NetworkActionStatus>> delete(String id)  {
+        Params kparams = new Params();
+        kparams.add("id", id);
 
-	public static ListSocialActionBuilder list(SocialActionFilter filter)  {
-		return list(filter, null);
-	}
+        return new ArrayRequestBuilder<NetworkActionStatus>(NetworkActionStatus.class, "socialaction", "delete", kparams);
+    }
+
+    public static RequestBuilder<ListResponse<SocialAction>> list(SocialActionFilter filter)  {
+        return list(filter, null);
+    }
 
 	/**  Get list of user social actions  */
-    public static ListSocialActionBuilder list(SocialActionFilter filter, FilterPager pager)  {
-		return new ListSocialActionBuilder(filter, pager);
-	}
+    public static RequestBuilder<ListResponse<SocialAction>> list(SocialActionFilter filter, FilterPager pager)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+        kparams.add("pager", pager);
+
+        return new ListResponseRequestBuilder<SocialAction>(SocialAction.class, "socialaction", "list", kparams);
+    }
 }

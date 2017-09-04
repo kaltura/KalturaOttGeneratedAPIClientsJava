@@ -27,12 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,62 +41,52 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FacebookPost.Tokenizer.class)
 public class FacebookPost extends SocialNetworkComment {
-	
-	public interface Tokenizer extends SocialNetworkComment.Tokenizer {
-		RequestBuilder.ListTokenizer<SocialNetworkComment.Tokenizer> comments();
-		String link();
-	}
 
 	/**  List of comments on the post  */
-	private List<SocialNetworkComment> comments;
+    private List<SocialNetworkComment> comments;
 	/**  A link associated to the post  */
-	private String link;
+    private String link;
 
-	// comments:
-	public List<SocialNetworkComment> getComments(){
-		return this.comments;
-	}
-	public void setComments(List<SocialNetworkComment> comments){
-		this.comments = comments;
-	}
+    // comments:
+    public List<SocialNetworkComment> getComments(){
+        return this.comments;
+    }
+    public void setComments(List<SocialNetworkComment> comments){
+        this.comments = comments;
+    }
 
-	// link:
-	public String getLink(){
-		return this.link;
-	}
-	public void setLink(String link){
-		this.link = link;
-	}
-
-	public void link(String multirequestToken){
-		setToken("link", multirequestToken);
-	}
+    // link:
+    public String getLink(){
+        return this.link;
+    }
+    public void setLink(String link){
+        this.link = link;
+    }
 
 
-	public FacebookPost() {
-		super();
-	}
+    public FacebookPost() {
+       super();
+    }
 
-	public FacebookPost(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public FacebookPost(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		comments = GsonParser.parseArray(jsonObject.getAsJsonArray("comments"), SocialNetworkComment.class);
-		link = GsonParser.parseString(jsonObject.get("link"));
+        // set members values:
+        comments = GsonParser.parseArray(jsonObject.getAsJsonArray("comments"), SocialNetworkComment.class);
+        link = GsonParser.parseString(jsonObject.get("link"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFacebookPost");
-		kparams.add("comments", this.comments);
-		kparams.add("link", this.link);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFacebookPost");
+        kparams.add("comments", this.comments);
+        kparams.add("link", this.link);
+        return kparams;
+    }
 
 }
 

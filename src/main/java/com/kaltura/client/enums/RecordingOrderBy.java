@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,39 +36,39 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum RecordingOrderBy implements EnumAsString {
-	TITLE_ASC("TITLE_ASC"),
-	TITLE_DESC("TITLE_DESC"),
-	START_DATE_ASC("START_DATE_ASC"),
-	START_DATE_DESC("START_DATE_DESC");
+    TITLE_ASC("TITLE_ASC"),
+    TITLE_DESC("TITLE_DESC"),
+    START_DATE_ASC("START_DATE_ASC"),
+    START_DATE_DESC("START_DATE_DESC");
 
-	private String value;
+    private String value;
 
-	RecordingOrderBy(String value) {
-		this.value = value;
-	}
+    RecordingOrderBy(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static RecordingOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RecordingOrderBy defined values and compare the inner value with the given one:
-		for(RecordingOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RecordingOrderBy.values().length > 0 ? RecordingOrderBy.values()[0]: null;
+    public static RecordingOrderBy get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over RecordingOrderBy defined values and compare the inner value with the given one:
+        for(RecordingOrderBy item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return RecordingOrderBy.values().length > 0 ? RecordingOrderBy.values()[0]: null;
    }
 }

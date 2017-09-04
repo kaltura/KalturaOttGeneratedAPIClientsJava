@@ -27,8 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.RegistrySettings;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,16 +41,11 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class RegistrySettingsService {
-	
-	public static class ListRegistrySettingsBuilder extends ListResponseRequestBuilder<RegistrySettings, RegistrySettings.Tokenizer, ListRegistrySettingsBuilder> {
-		
-		public ListRegistrySettingsBuilder() {
-			super(RegistrySettings.class, "registrysettings", "list");
-		}
-	}
 
 	/**  Retrieve the registry settings.  */
-    public static ListRegistrySettingsBuilder list()  {
-		return new ListRegistrySettingsBuilder();
-	}
+    public static RequestBuilder<ListResponse<RegistrySettings>> list()  {
+        Params kparams = new Params();
+
+        return new ListResponseRequestBuilder<RegistrySettings>(RegistrySettings.class, "registrysettings", "list", kparams);
+    }
 }

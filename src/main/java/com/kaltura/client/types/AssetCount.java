@@ -27,13 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.kaltura.client.types.ObjectBase;
 import java.util.List;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -45,79 +44,64 @@ import java.util.List;
 /**  Asset count - represents a specific value of the field, its count and its sub
   groups.  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetCount.Tokenizer.class)
 public class AssetCount extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String value();
-		String count();
-		RequestBuilder.ListTokenizer<AssetsCount.Tokenizer> subs();
-	}
 
 	/**  Value  */
-	private String value;
+    private String value;
 	/**  Count  */
-	private Integer count;
+    private Integer count;
 	/**  Sub groups  */
-	private List<AssetsCount> subs;
+    private List<AssetsCount> subs;
 
-	// value:
-	public String getValue(){
-		return this.value;
-	}
-	public void setValue(String value){
-		this.value = value;
-	}
+    // value:
+    public String getValue(){
+        return this.value;
+    }
+    public void setValue(String value){
+        this.value = value;
+    }
 
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
+    // count:
+    public Integer getCount(){
+        return this.count;
+    }
+    public void setCount(Integer count){
+        this.count = count;
+    }
 
-	// count:
-	public Integer getCount(){
-		return this.count;
-	}
-	public void setCount(Integer count){
-		this.count = count;
-	}
-
-	public void count(String multirequestToken){
-		setToken("count", multirequestToken);
-	}
-
-	// subs:
-	public List<AssetsCount> getSubs(){
-		return this.subs;
-	}
-	public void setSubs(List<AssetsCount> subs){
-		this.subs = subs;
-	}
+    // subs:
+    public List<AssetsCount> getSubs(){
+        return this.subs;
+    }
+    public void setSubs(List<AssetsCount> subs){
+        this.subs = subs;
+    }
 
 
-	public AssetCount() {
-		super();
-	}
+    public AssetCount() {
+       super();
+    }
 
-	public AssetCount(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public AssetCount(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		value = GsonParser.parseString(jsonObject.get("value"));
-		count = GsonParser.parseInt(jsonObject.get("count"));
-		subs = GsonParser.parseArray(jsonObject.getAsJsonArray("subs"), AssetsCount.class);
+        // set members values:
+        value = GsonParser.parseString(jsonObject.get("value"));
+        count = GsonParser.parseInt(jsonObject.get("count"));
+        subs = GsonParser.parseArray(jsonObject.getAsJsonArray("subs"), AssetsCount.class);
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetCount");
-		kparams.add("value", this.value);
-		kparams.add("count", this.count);
-		kparams.add("subs", this.subs);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaAssetCount");
+        kparams.add("value", this.value);
+        kparams.add("count", this.count);
+        kparams.add("subs", this.subs);
+        return kparams;
+    }
 
 }
 

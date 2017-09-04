@@ -1,25 +1,21 @@
-
 package com.kaltura.client.test;
 
+import com.app.DataFactory;
 import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.services.FavoriteService;
-import com.kaltura.client.services.FavoriteService.ListFavoriteBuilder;
 import com.kaltura.client.services.OttUserService;
-import com.kaltura.client.services.OttUserService.GetOttUserBuilder;
-import com.kaltura.client.services.OttUserService.LoginOttUserBuilder;
+import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.Favorite;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
-import com.kaltura.client.utils.response.base.ApiCompletion;
-import com.kaltura.client.utils.response.base.Response;
+import com.kaltura.client.utils.request.RequestBuilder;
+import com.kaltura.client.utils.response.OnCompletion;
 
-import org.awaitility.Awaitility;
-import org.junit.Test;
-
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.junit.Test;
 
 /**
  * Created by tehilarozin on 11/09/2016.
@@ -33,78 +29,67 @@ public class SingleRequestTest extends TestCommon{
     public void testRequestWithinRequest() throws InterruptedException, ExecutionException{
         logger.info("testLogin");
 
-        final AtomicBoolean done = new AtomicBoolean(false);
+        final CountDownLatch doneSignal = new CountDownLatch(1);
+        DataFactory.UserLogin userLogin = DataFactory.getUser();
         
-        LoginOttUserBuilder requestBuilder = OttUserService.login(testConfig.getPartnerId(), testConfig.getUserName(), testConfig.getUserPassword())
-        .setCompletion(new ApiCompletion<LoginResponse>() {
-
+        RequestBuilder<LoginResponse> requestBuilder = OttUserService.login(PartnerId, userLogin.username, userLogin.password)
+        .setCompletion(new OnCompletion<LoginResponse>() {
+			
 			@Override
-			public void onComplete(Response<LoginResponse> result) {
+			public void onComplete(LoginResponse loginResponse, APIException error) {
+				assertNull(error);
 
-				assertNotNull(result);
-				assertNull(result.error);
+                client.setKs(loginResponse.getLoginSession().getKs());
 
-                client.setKs(result.results.getLoginSession().getKs());
-
-                OTTUser ottUser = result.results.getUser();
+                OTTUser ottUser = loginResponse.getUser();
                 logger.debug("Hello " + ottUser.getFirstName() + " " + ottUser.getLastName() + ", username: " + ottUser.getUsername() + ", ");
 
                 logger.debug("fetching user info: ");
-                GetOttUserBuilder requestBuilder = OttUserService.get()
-                .setCompletion(new ApiCompletion<OTTUser>() {
-
+                RequestBuilder<OTTUser> requestBuilder = OttUserService.get()
+                .setCompletion(new OnCompletion<OTTUser>() {
+					
 					@Override
-					public void onComplete(Response<OTTUser> result) {
-
-						assertNotNull(result);
-						assertNull(result.error);
-						done.set(true);
+					public void onComplete(OTTUser response, APIException error) {
+						assertNull(error);
+						doneSignal.countDown();
 					}
 				});
-				APIOkRequestsExecutor.getExecutor().queue(requestBuilder.build(client));
+				APIOkRequestsExecutor.getSingleton().queue(requestBuilder.build(client));
 			}
 		});
-		APIOkRequestsExecutor.getExecutor().queue(requestBuilder.build(client));
-		Awaitility.await().atMost(20, TimeUnit.SECONDS).untilTrue(done);
-
-		assertTrue(done.get());
+		APIOkRequestsExecutor.getSingleton().queue(requestBuilder.build(client));
+		doneSignal.await();
     }
 
     @Test
     public void testList() throws InterruptedException, ExecutionException {
         logger.info("testCancelRequest");
 
-		final AtomicBoolean done = new AtomicBoolean(false);
-
-        LoginOttUserBuilder requestBuilder = OttUserService.login(testConfig.getPartnerId(),
-				testConfig.getUserName(), testConfig.getUserPassword())
-        .setCompletion(new ApiCompletion<LoginResponse>() {
-
+        final CountDownLatch doneSignal = new CountDownLatch(1);
+        DataFactory.UserLogin userLogin = DataFactory.getUser();
+        
+        RequestBuilder<LoginResponse> requestBuilder = OttUserService.login(PartnerId, userLogin.username, userLogin.password)
+        .setCompletion(new OnCompletion<LoginResponse>() {
+			
 			@Override
-			public void onComplete(Response<LoginResponse> result) {
+			public void onComplete(LoginResponse loginResponse, APIException error) {
+				assertNull(error);
 
-				assertNotNull(result);
-				assertNull(result.error);
+                client.setKs(loginResponse.getLoginSession().getKs());
 
-                client.setKs(result.results.getLoginSession().getKs());
-
-		        ListFavoriteBuilder requestBuilder = FavoriteService.list()
-                .setCompletion(new ApiCompletion<ListResponse<Favorite>>() {
-
-					@Override
-					public void onComplete(Response<ListResponse<Favorite>> result) {
-
-						assertNotNull(result);
-						assertNull(result.error);
-						done.set(true);
+		        RequestBuilder<ListResponse<Favorite>> requestBuilder = FavoriteService.list()
+                .setCompletion(new OnCompletion<ListResponse<Favorite>>() {
+        			
+        			@Override
+        			public void onComplete(ListResponse<Favorite> response, APIException error) {
+						assertNull(error);
+						doneSignal.countDown();
         			}
         		});
-				APIOkRequestsExecutor.getExecutor().queue(requestBuilder.build(client));
+				APIOkRequestsExecutor.getSingleton().queue(requestBuilder.build(client));
 			}
 		});
-		APIOkRequestsExecutor.getExecutor().queue(requestBuilder.build(client));
-		Awaitility.await().atMost(20, TimeUnit.SECONDS).untilTrue(done);
-
-		assertTrue(done.get());
+		APIOkRequestsExecutor.getSingleton().queue(requestBuilder.build(client));
+		doneSignal.await();
     }
 }

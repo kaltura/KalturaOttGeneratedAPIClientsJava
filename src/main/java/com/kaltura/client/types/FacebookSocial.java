@@ -27,9 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.GsonParser;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,27 +40,23 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FacebookSocial.Tokenizer.class)
 public class FacebookSocial extends Social {
-	
-	public interface Tokenizer extends Social.Tokenizer {
-	}
 
 
 
-	public FacebookSocial() {
-		super();
-	}
+    public FacebookSocial() {
+       super();
+    }
 
-	public FacebookSocial(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-	}
+    public FacebookSocial(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFacebookSocial");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFacebookSocial");
+        return kparams;
+    }
 
 }
 

@@ -27,12 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.Map;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,232 +42,172 @@ import java.util.Map;
 
 /**  Payment gateway profile  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PaymentGatewayProfile.Tokenizer.class)
 public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
-	
-	public interface Tokenizer extends PaymentGatewayBaseProfile.Tokenizer {
-		String isActive();
-		String adapterUrl();
-		String transactUrl();
-		String statusUrl();
-		String renewUrl();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> paymentGatewaySettings();
-		String externalIdentifier();
-		String pendingInterval();
-		String pendingRetries();
-		String sharedSecret();
-		String renewIntervalMinutes();
-		String renewStartMinutes();
-	}
 
 	/**  Payment gateway is active status  */
-	private Integer isActive;
+    private Integer isActive;
 	/**  Payment gateway adapter URL  */
-	private String adapterUrl;
+    private String adapterUrl;
 	/**  Payment gateway transact URL  */
-	private String transactUrl;
+    private String transactUrl;
 	/**  Payment gateway status URL  */
-	private String statusUrl;
+    private String statusUrl;
 	/**  Payment gateway renew URL  */
-	private String renewUrl;
+    private String renewUrl;
 	/**  Payment gateway extra parameters  */
-	private Map<String, StringValue> paymentGatewaySettings;
+    private Map<String, StringValue> paymentGatewaySettings;
 	/**  Payment gateway external identifier  */
-	private String externalIdentifier;
+    private String externalIdentifier;
 	/**  Pending Interval in minutes  */
-	private Integer pendingInterval;
+    private Integer pendingInterval;
 	/**  Pending Retries  */
-	private Integer pendingRetries;
+    private Integer pendingRetries;
 	/**  Shared Secret  */
-	private String sharedSecret;
+    private String sharedSecret;
 	/**  Renew Interval Minutes  */
-	private Integer renewIntervalMinutes;
+    private Integer renewIntervalMinutes;
 	/**  Renew Start Minutes  */
-	private Integer renewStartMinutes;
+    private Integer renewStartMinutes;
 
-	// isActive:
-	public Integer getIsActive(){
-		return this.isActive;
-	}
-	public void setIsActive(Integer isActive){
-		this.isActive = isActive;
-	}
+    // isActive:
+    public Integer getIsActive(){
+        return this.isActive;
+    }
+    public void setIsActive(Integer isActive){
+        this.isActive = isActive;
+    }
 
-	public void isActive(String multirequestToken){
-		setToken("isActive", multirequestToken);
-	}
+    // adapterUrl:
+    public String getAdapterUrl(){
+        return this.adapterUrl;
+    }
+    public void setAdapterUrl(String adapterUrl){
+        this.adapterUrl = adapterUrl;
+    }
 
-	// adapterUrl:
-	public String getAdapterUrl(){
-		return this.adapterUrl;
-	}
-	public void setAdapterUrl(String adapterUrl){
-		this.adapterUrl = adapterUrl;
-	}
+    // transactUrl:
+    public String getTransactUrl(){
+        return this.transactUrl;
+    }
+    public void setTransactUrl(String transactUrl){
+        this.transactUrl = transactUrl;
+    }
 
-	public void adapterUrl(String multirequestToken){
-		setToken("adapterUrl", multirequestToken);
-	}
+    // statusUrl:
+    public String getStatusUrl(){
+        return this.statusUrl;
+    }
+    public void setStatusUrl(String statusUrl){
+        this.statusUrl = statusUrl;
+    }
 
-	// transactUrl:
-	public String getTransactUrl(){
-		return this.transactUrl;
-	}
-	public void setTransactUrl(String transactUrl){
-		this.transactUrl = transactUrl;
-	}
+    // renewUrl:
+    public String getRenewUrl(){
+        return this.renewUrl;
+    }
+    public void setRenewUrl(String renewUrl){
+        this.renewUrl = renewUrl;
+    }
 
-	public void transactUrl(String multirequestToken){
-		setToken("transactUrl", multirequestToken);
-	}
+    // paymentGatewaySettings:
+    public Map<String, StringValue> getPaymentGatewaySettings(){
+        return this.paymentGatewaySettings;
+    }
+    public void setPaymentGatewaySettings(Map<String, StringValue> paymentGatewaySettings){
+        this.paymentGatewaySettings = paymentGatewaySettings;
+    }
 
-	// statusUrl:
-	public String getStatusUrl(){
-		return this.statusUrl;
-	}
-	public void setStatusUrl(String statusUrl){
-		this.statusUrl = statusUrl;
-	}
+    // externalIdentifier:
+    public String getExternalIdentifier(){
+        return this.externalIdentifier;
+    }
+    public void setExternalIdentifier(String externalIdentifier){
+        this.externalIdentifier = externalIdentifier;
+    }
 
-	public void statusUrl(String multirequestToken){
-		setToken("statusUrl", multirequestToken);
-	}
+    // pendingInterval:
+    public Integer getPendingInterval(){
+        return this.pendingInterval;
+    }
+    public void setPendingInterval(Integer pendingInterval){
+        this.pendingInterval = pendingInterval;
+    }
 
-	// renewUrl:
-	public String getRenewUrl(){
-		return this.renewUrl;
-	}
-	public void setRenewUrl(String renewUrl){
-		this.renewUrl = renewUrl;
-	}
+    // pendingRetries:
+    public Integer getPendingRetries(){
+        return this.pendingRetries;
+    }
+    public void setPendingRetries(Integer pendingRetries){
+        this.pendingRetries = pendingRetries;
+    }
 
-	public void renewUrl(String multirequestToken){
-		setToken("renewUrl", multirequestToken);
-	}
+    // sharedSecret:
+    public String getSharedSecret(){
+        return this.sharedSecret;
+    }
+    public void setSharedSecret(String sharedSecret){
+        this.sharedSecret = sharedSecret;
+    }
 
-	// paymentGatewaySettings:
-	public Map<String, StringValue> getPaymentGatewaySettings(){
-		return this.paymentGatewaySettings;
-	}
-	public void setPaymentGatewaySettings(Map<String, StringValue> paymentGatewaySettings){
-		this.paymentGatewaySettings = paymentGatewaySettings;
-	}
+    // renewIntervalMinutes:
+    public Integer getRenewIntervalMinutes(){
+        return this.renewIntervalMinutes;
+    }
+    public void setRenewIntervalMinutes(Integer renewIntervalMinutes){
+        this.renewIntervalMinutes = renewIntervalMinutes;
+    }
 
-	// externalIdentifier:
-	public String getExternalIdentifier(){
-		return this.externalIdentifier;
-	}
-	public void setExternalIdentifier(String externalIdentifier){
-		this.externalIdentifier = externalIdentifier;
-	}
-
-	public void externalIdentifier(String multirequestToken){
-		setToken("externalIdentifier", multirequestToken);
-	}
-
-	// pendingInterval:
-	public Integer getPendingInterval(){
-		return this.pendingInterval;
-	}
-	public void setPendingInterval(Integer pendingInterval){
-		this.pendingInterval = pendingInterval;
-	}
-
-	public void pendingInterval(String multirequestToken){
-		setToken("pendingInterval", multirequestToken);
-	}
-
-	// pendingRetries:
-	public Integer getPendingRetries(){
-		return this.pendingRetries;
-	}
-	public void setPendingRetries(Integer pendingRetries){
-		this.pendingRetries = pendingRetries;
-	}
-
-	public void pendingRetries(String multirequestToken){
-		setToken("pendingRetries", multirequestToken);
-	}
-
-	// sharedSecret:
-	public String getSharedSecret(){
-		return this.sharedSecret;
-	}
-	public void setSharedSecret(String sharedSecret){
-		this.sharedSecret = sharedSecret;
-	}
-
-	public void sharedSecret(String multirequestToken){
-		setToken("sharedSecret", multirequestToken);
-	}
-
-	// renewIntervalMinutes:
-	public Integer getRenewIntervalMinutes(){
-		return this.renewIntervalMinutes;
-	}
-	public void setRenewIntervalMinutes(Integer renewIntervalMinutes){
-		this.renewIntervalMinutes = renewIntervalMinutes;
-	}
-
-	public void renewIntervalMinutes(String multirequestToken){
-		setToken("renewIntervalMinutes", multirequestToken);
-	}
-
-	// renewStartMinutes:
-	public Integer getRenewStartMinutes(){
-		return this.renewStartMinutes;
-	}
-	public void setRenewStartMinutes(Integer renewStartMinutes){
-		this.renewStartMinutes = renewStartMinutes;
-	}
-
-	public void renewStartMinutes(String multirequestToken){
-		setToken("renewStartMinutes", multirequestToken);
-	}
+    // renewStartMinutes:
+    public Integer getRenewStartMinutes(){
+        return this.renewStartMinutes;
+    }
+    public void setRenewStartMinutes(Integer renewStartMinutes){
+        this.renewStartMinutes = renewStartMinutes;
+    }
 
 
-	public PaymentGatewayProfile() {
-		super();
-	}
+    public PaymentGatewayProfile() {
+       super();
+    }
 
-	public PaymentGatewayProfile(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public PaymentGatewayProfile(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		isActive = GsonParser.parseInt(jsonObject.get("isActive"));
-		adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
-		transactUrl = GsonParser.parseString(jsonObject.get("transactUrl"));
-		statusUrl = GsonParser.parseString(jsonObject.get("statusUrl"));
-		renewUrl = GsonParser.parseString(jsonObject.get("renewUrl"));
-		paymentGatewaySettings = GsonParser.parseMap(jsonObject.getAsJsonObject("paymentGatewaySettings"), StringValue.class);
-		externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
-		pendingInterval = GsonParser.parseInt(jsonObject.get("pendingInterval"));
-		pendingRetries = GsonParser.parseInt(jsonObject.get("pendingRetries"));
-		sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
-		renewIntervalMinutes = GsonParser.parseInt(jsonObject.get("renewIntervalMinutes"));
-		renewStartMinutes = GsonParser.parseInt(jsonObject.get("renewStartMinutes"));
+        // set members values:
+        isActive = GsonParser.parseInt(jsonObject.get("isActive"));
+        adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
+        transactUrl = GsonParser.parseString(jsonObject.get("transactUrl"));
+        statusUrl = GsonParser.parseString(jsonObject.get("statusUrl"));
+        renewUrl = GsonParser.parseString(jsonObject.get("renewUrl"));
+        paymentGatewaySettings = GsonParser.parseMap(jsonObject.getAsJsonObject("paymentGatewaySettings"), StringValue.class);
+        externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
+        pendingInterval = GsonParser.parseInt(jsonObject.get("pendingInterval"));
+        pendingRetries = GsonParser.parseInt(jsonObject.get("pendingRetries"));
+        sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
+        renewIntervalMinutes = GsonParser.parseInt(jsonObject.get("renewIntervalMinutes"));
+        renewStartMinutes = GsonParser.parseInt(jsonObject.get("renewStartMinutes"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPaymentGatewayProfile");
-		kparams.add("isActive", this.isActive);
-		kparams.add("adapterUrl", this.adapterUrl);
-		kparams.add("transactUrl", this.transactUrl);
-		kparams.add("statusUrl", this.statusUrl);
-		kparams.add("renewUrl", this.renewUrl);
-		kparams.add("paymentGatewaySettings", this.paymentGatewaySettings);
-		kparams.add("externalIdentifier", this.externalIdentifier);
-		kparams.add("pendingInterval", this.pendingInterval);
-		kparams.add("pendingRetries", this.pendingRetries);
-		kparams.add("sharedSecret", this.sharedSecret);
-		kparams.add("renewIntervalMinutes", this.renewIntervalMinutes);
-		kparams.add("renewStartMinutes", this.renewStartMinutes);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaPaymentGatewayProfile");
+        kparams.add("isActive", this.isActive);
+        kparams.add("adapterUrl", this.adapterUrl);
+        kparams.add("transactUrl", this.transactUrl);
+        kparams.add("statusUrl", this.statusUrl);
+        kparams.add("renewUrl", this.renewUrl);
+        kparams.add("paymentGatewaySettings", this.paymentGatewaySettings);
+        kparams.add("externalIdentifier", this.externalIdentifier);
+        kparams.add("pendingInterval", this.pendingInterval);
+        kparams.add("pendingRetries", this.pendingRetries);
+        kparams.add("sharedSecret", this.sharedSecret);
+        kparams.add("renewIntervalMinutes", this.renewIntervalMinutes);
+        kparams.add("renewStartMinutes", this.renewStartMinutes);
+        return kparams;
+    }
 
 }
 

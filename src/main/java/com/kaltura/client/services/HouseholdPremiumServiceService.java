@@ -27,8 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.HouseholdPremiumService;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,16 +41,11 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class HouseholdPremiumServiceService {
-	
-	public static class ListHouseholdPremiumServiceBuilder extends ListResponseRequestBuilder<HouseholdPremiumService, HouseholdPremiumService.Tokenizer, ListHouseholdPremiumServiceBuilder> {
-		
-		public ListHouseholdPremiumServiceBuilder() {
-			super(HouseholdPremiumService.class, "householdpremiumservice", "list");
-		}
-	}
 
 	/**  Returns all the premium services allowed for the household  */
-    public static ListHouseholdPremiumServiceBuilder list()  {
-		return new ListHouseholdPremiumServiceBuilder();
-	}
+    public static RequestBuilder<ListResponse<HouseholdPremiumService>> list()  {
+        Params kparams = new Params();
+
+        return new ListResponseRequestBuilder<HouseholdPremiumService>(HouseholdPremiumService.class, "householdpremiumservice", "list", kparams);
+    }
 }

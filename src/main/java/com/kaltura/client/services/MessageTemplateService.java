@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.enums.MessageTemplateType;
 import com.kaltura.client.types.MessageTemplate;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -39,39 +40,21 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class MessageTemplateService {
-	
-	public static class GetMessageTemplateBuilder extends RequestBuilder<MessageTemplate, MessageTemplate.Tokenizer, GetMessageTemplateBuilder> {
-		
-		public GetMessageTemplateBuilder(MessageTemplateType messageType) {
-			super(MessageTemplate.class, "messagetemplate", "get");
-			params.add("messageType", messageType);
-		}
-		
-		public void messageType(String multirequestToken) {
-			params.add("messageType", multirequestToken);
-		}
-	}
 
 	/**  Retrieve a message template used in push notifications and inbox  */
-    public static GetMessageTemplateBuilder get(MessageTemplateType messageType)  {
-		return new GetMessageTemplateBuilder(messageType);
-	}
-	
-	public static class UpdateMessageTemplateBuilder extends RequestBuilder<MessageTemplate, MessageTemplate.Tokenizer, UpdateMessageTemplateBuilder> {
-		
-		public UpdateMessageTemplateBuilder(MessageTemplateType messageType, MessageTemplate template) {
-			super(MessageTemplate.class, "messagetemplate", "update");
-			params.add("messageType", messageType);
-			params.add("template", template);
-		}
-		
-		public void messageType(String multirequestToken) {
-			params.add("messageType", multirequestToken);
-		}
-	}
+    public static RequestBuilder<MessageTemplate> get(MessageTemplateType messageType)  {
+        Params kparams = new Params();
+        kparams.add("messageType", messageType);
+
+        return new RequestBuilder<MessageTemplate>(MessageTemplate.class, "messagetemplate", "get", kparams);
+    }
 
 	/**  Set the account’s push notifications and inbox messages templates  */
-    public static UpdateMessageTemplateBuilder update(MessageTemplateType messageType, MessageTemplate template)  {
-		return new UpdateMessageTemplateBuilder(messageType, template);
-	}
+    public static RequestBuilder<MessageTemplate> update(MessageTemplateType messageType, MessageTemplate template)  {
+        Params kparams = new Params();
+        kparams.add("messageType", messageType);
+        kparams.add("template", template);
+
+        return new RequestBuilder<MessageTemplate>(MessageTemplate.class, "messagetemplate", "update", kparams);
+    }
 }

@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.PositionOwner;
-import com.kaltura.client.types.BookmarkPlayerData;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.BookmarkPlayerData;
+import com.kaltura.client.enums.PositionOwner;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,111 +42,86 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Bookmark.Tokenizer.class)
 public class Bookmark extends SlimAsset {
-	
-	public interface Tokenizer extends SlimAsset.Tokenizer {
-		String userId();
-		String position();
-		String positionOwner();
-		String finishedWatching();
-		BookmarkPlayerData.Tokenizer playerData();
-	}
 
 	/**  User identifier  */
-	private String userId;
+    private String userId;
 	/**  The position of the user in the specific asset (in seconds)  */
-	private Integer position;
+    private Integer position;
 	/**  Indicates who is the owner of this position  */
-	private PositionOwner positionOwner;
+    private PositionOwner positionOwner;
 	/**  Specifies whether the user&amp;#39;s current position exceeded 95% of the
 	  duration  */
-	private Boolean finishedWatching;
+    private Boolean finishedWatching;
 	/**  Insert only player data  */
-	private BookmarkPlayerData playerData;
+    private BookmarkPlayerData playerData;
 
-	// userId:
-	public String getUserId(){
-		return this.userId;
-	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
+    // userId:
+    public String getUserId(){
+        return this.userId;
+    }
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
+    // position:
+    public Integer getPosition(){
+        return this.position;
+    }
+    public void setPosition(Integer position){
+        this.position = position;
+    }
 
-	// position:
-	public Integer getPosition(){
-		return this.position;
-	}
-	public void setPosition(Integer position){
-		this.position = position;
-	}
+    // positionOwner:
+    public PositionOwner getPositionOwner(){
+        return this.positionOwner;
+    }
+    public void setPositionOwner(PositionOwner positionOwner){
+        this.positionOwner = positionOwner;
+    }
 
-	public void position(String multirequestToken){
-		setToken("position", multirequestToken);
-	}
+    // finishedWatching:
+    public Boolean getFinishedWatching(){
+        return this.finishedWatching;
+    }
+    public void setFinishedWatching(Boolean finishedWatching){
+        this.finishedWatching = finishedWatching;
+    }
 
-	// positionOwner:
-	public PositionOwner getPositionOwner(){
-		return this.positionOwner;
-	}
-	public void setPositionOwner(PositionOwner positionOwner){
-		this.positionOwner = positionOwner;
-	}
-
-	public void positionOwner(String multirequestToken){
-		setToken("positionOwner", multirequestToken);
-	}
-
-	// finishedWatching:
-	public Boolean getFinishedWatching(){
-		return this.finishedWatching;
-	}
-	public void setFinishedWatching(Boolean finishedWatching){
-		this.finishedWatching = finishedWatching;
-	}
-
-	public void finishedWatching(String multirequestToken){
-		setToken("finishedWatching", multirequestToken);
-	}
-
-	// playerData:
-	public BookmarkPlayerData getPlayerData(){
-		return this.playerData;
-	}
-	public void setPlayerData(BookmarkPlayerData playerData){
-		this.playerData = playerData;
-	}
+    // playerData:
+    public BookmarkPlayerData getPlayerData(){
+        return this.playerData;
+    }
+    public void setPlayerData(BookmarkPlayerData playerData){
+        this.playerData = playerData;
+    }
 
 
-	public Bookmark() {
-		super();
-	}
+    public Bookmark() {
+       super();
+    }
 
-	public Bookmark(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Bookmark(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		userId = GsonParser.parseString(jsonObject.get("userId"));
-		position = GsonParser.parseInt(jsonObject.get("position"));
-		positionOwner = PositionOwner.get(GsonParser.parseString(jsonObject.get("positionOwner")));
-		finishedWatching = GsonParser.parseBoolean(jsonObject.get("finishedWatching"));
-		playerData = GsonParser.parseObject(jsonObject.getAsJsonObject("playerData"), BookmarkPlayerData.class);
+        // set members values:
+        userId = GsonParser.parseString(jsonObject.get("userId"));
+        position = GsonParser.parseInt(jsonObject.get("position"));
+        positionOwner = PositionOwner.get(GsonParser.parseString(jsonObject.get("positionOwner")));
+        finishedWatching = GsonParser.parseBoolean(jsonObject.get("finishedWatching"));
+        playerData = GsonParser.parseObject(jsonObject.getAsJsonObject("playerData"), BookmarkPlayerData.class);
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBookmark");
-		kparams.add("position", this.position);
-		kparams.add("playerData", this.playerData);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaBookmark");
+        kparams.add("position", this.position);
+        kparams.add("playerData", this.playerData);
+        return kparams;
+    }
 
 }
 

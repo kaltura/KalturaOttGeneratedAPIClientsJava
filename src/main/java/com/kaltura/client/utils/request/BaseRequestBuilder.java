@@ -1,5 +1,8 @@
 package com.kaltura.client.utils.request;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.FileHolder;
@@ -10,18 +13,15 @@ import com.kaltura.client.utils.APIConstants;
 import com.kaltura.client.utils.EncryptionUtils;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.response.OnCompletion;
-import com.kaltura.client.utils.response.base.Response;
 import com.kaltura.client.utils.response.base.ResponseElement;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by tehilarozin on 14/08/2016.
  */
-public abstract class BaseRequestBuilder<T> extends RequestBuilderData implements RequestElement<T> {
+public abstract class BaseRequestBuilder<T> extends RequestBuilderData implements RequestElement {
 
-	protected Class<T> type;
+	private Class<T> type;
+    protected String id;
     protected String url;
     protected Files files = null;
     protected HashMap<String, String> headers;
@@ -30,14 +30,31 @@ public abstract class BaseRequestBuilder<T> extends RequestBuilderData implement
     /**
      * callback for the parsed response.
      */
-    protected OnCompletion<Response<T>> onCompletion;
+    protected OnCompletion<T> onCompletion;
 
-    protected BaseRequestBuilder(Class<T> type) {
-    	super();
+    protected BaseRequestBuilder(Class<T> type, Params params, Files files) {
+    	super(params);
     	this.type = type;
+        this.files = files;
     }
 
-    protected abstract String getUrlTail();
+    protected BaseRequestBuilder(Class<T> type, Params params) {
+    	this(type, params, null);
+    }
+    
+    protected BaseRequestBuilder(Class<T> type) {
+    	this(type, new Params());
+    }
+
+    protected BaseRequestBuilder(Params params, Files files) {
+    	this(null, params, files);
+    }
+
+    protected BaseRequestBuilder(Params params) {
+    	this(null, params);
+    }
+
+    public abstract String getUrlTail();
 
     public abstract String getTag();
 
@@ -55,7 +72,12 @@ public abstract class BaseRequestBuilder<T> extends RequestBuilderData implement
         return params.toString();
     }
 
-	protected Params getParams() {
+    @Override
+    public String getId() {
+        return id;
+    }
+
+	public Params getParams() {
         return params;
     }
 	
@@ -142,36 +164,36 @@ public abstract class BaseRequestBuilder<T> extends RequestBuilderData implement
         }
     }
 
-    public RequestElement<T> build(final Client client) {
+    public RequestElement build(final Client client) {
         return build(client, false);
     }
 
     @SuppressWarnings("unchecked")
 	@Override
-    final public Response<T> parseResponse(ResponseElement response) {
+    final public void onComplete(ResponseElement response) {
         T result = null;
         APIException error = null;
-
-        if (!response.isSuccess()) {
-            error = generateErrorResponse(response);
+        
+        if(!response.isSuccess()) {
+        	error = generateErrorResponse(response);
         } else {
-            try {
-                result = (T) parse(response.getResponse());
-            } catch (APIException e) {
-                error = e;
-            }
+        	try {
+				result = (T) parse(response.getResponse());
+			} catch (APIException e) {
+	        	error = e;
+			}
         }
 
-        return new Response<T>(result, error);
+        complete(result, error);
     }
-
-    @Override
-    public void onComplete(Response<T> response) {
+    
+    @SuppressWarnings("unchecked")
+	protected void complete(Object result, APIException error) {
         if(onCompletion != null) {
-            onCompletion.onComplete((Response<T>) response);
+        	onCompletion.onComplete((T) result, error);
         }
     }
-
+    
     protected Object parse(String response) throws APIException {
     	if(response.length() == 0 || response.toLowerCase().equals("null")) {
     		return null;
@@ -185,7 +207,7 @@ public abstract class BaseRequestBuilder<T> extends RequestBuilderData implement
     	return exception;
     }
     
-    public RequestElement<T> build(final Client client, boolean addSignature) {
+    public RequestElement build(final Client client, boolean addSignature) {
         connectionConfig = client != null ? client.getConnectionConfiguration() : Configuration.getDefaults();
 
         prepareParams(client, addSignature);

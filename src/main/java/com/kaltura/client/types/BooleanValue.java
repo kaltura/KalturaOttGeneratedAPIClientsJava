@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,49 +41,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  A string representation to return an array of booleans  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BooleanValue.Tokenizer.class)
 public class BooleanValue extends Value {
-	
-	public interface Tokenizer extends Value.Tokenizer {
-		String value();
-	}
 
 	/**  Value  */
-	private Boolean value;
+    private Boolean value;
 
-	// value:
-	public Boolean getValue(){
-		return this.value;
-	}
-	public void setValue(Boolean value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
+    // value:
+    public Boolean getValue(){
+        return this.value;
+    }
+    public void setValue(Boolean value){
+        this.value = value;
+    }
 
 
-	public BooleanValue() {
-		super();
-	}
+    public BooleanValue() {
+       super();
+    }
 
-	public BooleanValue(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public BooleanValue(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		value = GsonParser.parseBoolean(jsonObject.get("value"));
+        // set members values:
+        value = GsonParser.parseBoolean(jsonObject.get("value"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBooleanValue");
-		kparams.add("value", this.value);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaBooleanValue");
+        kparams.add("value", this.value);
+        return kparams;
+    }
 
 }
 

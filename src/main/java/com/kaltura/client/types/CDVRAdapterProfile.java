@@ -27,13 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.kaltura.client.types.ObjectBase;
 import java.util.Map;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,162 +43,122 @@ import java.util.Map;
 
 /**  C-DVR Adapter  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CDVRAdapterProfile.Tokenizer.class)
 public class CDVRAdapterProfile extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String isActive();
-		String adapterUrl();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> settings();
-		String externalIdentifier();
-		String sharedSecret();
-		String dynamicLinksSupport();
-	}
 
 	/**  C-DVR adapter identifier  */
-	private Integer id;
+    private Integer id;
 	/**  C-DVR adapter name  */
-	private String name;
+    private String name;
 	/**  C-DVR adapter active status  */
-	private Boolean isActive;
+    private Boolean isActive;
 	/**  C-DVR adapter adapter URL  */
-	private String adapterUrl;
+    private String adapterUrl;
 	/**  C-DVR adapter extra parameters  */
-	private Map<String, StringValue> settings;
+    private Map<String, StringValue> settings;
 	/**  C-DVR adapter external identifier  */
-	private String externalIdentifier;
+    private String externalIdentifier;
 	/**  C-DVR shared secret  */
-	private String sharedSecret;
+    private String sharedSecret;
 	/**  Indicates whether the C-DVR adapter supports dynamic URLs  */
-	private Boolean dynamicLinksSupport;
+    private Boolean dynamicLinksSupport;
 
-	// id:
-	public Integer getId(){
-		return this.id;
-	}
-	public void setId(Integer id){
-		this.id = id;
-	}
+    // id:
+    public Integer getId(){
+        return this.id;
+    }
+    public void setId(Integer id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // name:
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
+    // isActive:
+    public Boolean getIsActive(){
+        return this.isActive;
+    }
+    public void setIsActive(Boolean isActive){
+        this.isActive = isActive;
+    }
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
+    // adapterUrl:
+    public String getAdapterUrl(){
+        return this.adapterUrl;
+    }
+    public void setAdapterUrl(String adapterUrl){
+        this.adapterUrl = adapterUrl;
+    }
 
-	// isActive:
-	public Boolean getIsActive(){
-		return this.isActive;
-	}
-	public void setIsActive(Boolean isActive){
-		this.isActive = isActive;
-	}
+    // settings:
+    public Map<String, StringValue> getSettings(){
+        return this.settings;
+    }
+    public void setSettings(Map<String, StringValue> settings){
+        this.settings = settings;
+    }
 
-	public void isActive(String multirequestToken){
-		setToken("isActive", multirequestToken);
-	}
+    // externalIdentifier:
+    public String getExternalIdentifier(){
+        return this.externalIdentifier;
+    }
+    public void setExternalIdentifier(String externalIdentifier){
+        this.externalIdentifier = externalIdentifier;
+    }
 
-	// adapterUrl:
-	public String getAdapterUrl(){
-		return this.adapterUrl;
-	}
-	public void setAdapterUrl(String adapterUrl){
-		this.adapterUrl = adapterUrl;
-	}
+    // sharedSecret:
+    public String getSharedSecret(){
+        return this.sharedSecret;
+    }
+    public void setSharedSecret(String sharedSecret){
+        this.sharedSecret = sharedSecret;
+    }
 
-	public void adapterUrl(String multirequestToken){
-		setToken("adapterUrl", multirequestToken);
-	}
-
-	// settings:
-	public Map<String, StringValue> getSettings(){
-		return this.settings;
-	}
-	public void setSettings(Map<String, StringValue> settings){
-		this.settings = settings;
-	}
-
-	// externalIdentifier:
-	public String getExternalIdentifier(){
-		return this.externalIdentifier;
-	}
-	public void setExternalIdentifier(String externalIdentifier){
-		this.externalIdentifier = externalIdentifier;
-	}
-
-	public void externalIdentifier(String multirequestToken){
-		setToken("externalIdentifier", multirequestToken);
-	}
-
-	// sharedSecret:
-	public String getSharedSecret(){
-		return this.sharedSecret;
-	}
-	public void setSharedSecret(String sharedSecret){
-		this.sharedSecret = sharedSecret;
-	}
-
-	public void sharedSecret(String multirequestToken){
-		setToken("sharedSecret", multirequestToken);
-	}
-
-	// dynamicLinksSupport:
-	public Boolean getDynamicLinksSupport(){
-		return this.dynamicLinksSupport;
-	}
-	public void setDynamicLinksSupport(Boolean dynamicLinksSupport){
-		this.dynamicLinksSupport = dynamicLinksSupport;
-	}
-
-	public void dynamicLinksSupport(String multirequestToken){
-		setToken("dynamicLinksSupport", multirequestToken);
-	}
+    // dynamicLinksSupport:
+    public Boolean getDynamicLinksSupport(){
+        return this.dynamicLinksSupport;
+    }
+    public void setDynamicLinksSupport(Boolean dynamicLinksSupport){
+        this.dynamicLinksSupport = dynamicLinksSupport;
+    }
 
 
-	public CDVRAdapterProfile() {
-		super();
-	}
+    public CDVRAdapterProfile() {
+       super();
+    }
 
-	public CDVRAdapterProfile(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public CDVRAdapterProfile(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseInt(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
-		adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
-		settings = GsonParser.parseMap(jsonObject.getAsJsonObject("settings"), StringValue.class);
-		externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
-		sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
-		dynamicLinksSupport = GsonParser.parseBoolean(jsonObject.get("dynamicLinksSupport"));
+        // set members values:
+        id = GsonParser.parseInt(jsonObject.get("id"));
+        name = GsonParser.parseString(jsonObject.get("name"));
+        isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+        adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
+        settings = GsonParser.parseMap(jsonObject.getAsJsonObject("settings"), StringValue.class);
+        externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
+        sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
+        dynamicLinksSupport = GsonParser.parseBoolean(jsonObject.get("dynamicLinksSupport"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCDVRAdapterProfile");
-		kparams.add("name", this.name);
-		kparams.add("isActive", this.isActive);
-		kparams.add("adapterUrl", this.adapterUrl);
-		kparams.add("settings", this.settings);
-		kparams.add("externalIdentifier", this.externalIdentifier);
-		kparams.add("dynamicLinksSupport", this.dynamicLinksSupport);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaCDVRAdapterProfile");
+        kparams.add("name", this.name);
+        kparams.add("isActive", this.isActive);
+        kparams.add("adapterUrl", this.adapterUrl);
+        kparams.add("settings", this.settings);
+        kparams.add("externalIdentifier", this.externalIdentifier);
+        kparams.add("dynamicLinksSupport", this.dynamicLinksSupport);
+        return kparams;
+    }
 
 }
 

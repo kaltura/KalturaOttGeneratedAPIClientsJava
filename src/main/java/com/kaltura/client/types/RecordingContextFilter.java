@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,49 +41,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Filtering assets  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RecordingContextFilter.Tokenizer.class)
 public class RecordingContextFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String assetIdIn();
-	}
 
 	/**  Comma separated asset ids  */
-	private String assetIdIn;
+    private String assetIdIn;
 
-	// assetIdIn:
-	public String getAssetIdIn(){
-		return this.assetIdIn;
-	}
-	public void setAssetIdIn(String assetIdIn){
-		this.assetIdIn = assetIdIn;
-	}
-
-	public void assetIdIn(String multirequestToken){
-		setToken("assetIdIn", multirequestToken);
-	}
+    // assetIdIn:
+    public String getAssetIdIn(){
+        return this.assetIdIn;
+    }
+    public void setAssetIdIn(String assetIdIn){
+        this.assetIdIn = assetIdIn;
+    }
 
 
-	public RecordingContextFilter() {
-		super();
-	}
+    public RecordingContextFilter() {
+       super();
+    }
 
-	public RecordingContextFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public RecordingContextFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
+        // set members values:
+        assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRecordingContextFilter");
-		kparams.add("assetIdIn", this.assetIdIn);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaRecordingContextFilter");
+        kparams.add("assetIdIn", this.assetIdIn);
+        return kparams;
+    }
 
 }
 

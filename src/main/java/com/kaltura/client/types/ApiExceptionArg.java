@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,66 +41,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ApiExceptionArg.Tokenizer.class)
 public class ApiExceptionArg extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String name();
-		String value();
-	}
 
 	/**  Argument name  */
-	private String name;
+    private String name;
 	/**  Argument value  */
-	private String value;
+    private String value;
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
+    // name:
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// value:
-	public String getValue(){
-		return this.value;
-	}
-	public void setValue(String value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
+    // value:
+    public String getValue(){
+        return this.value;
+    }
+    public void setValue(String value){
+        this.value = value;
+    }
 
 
-	public ApiExceptionArg() {
-		super();
-	}
+    public ApiExceptionArg() {
+       super();
+    }
 
-	public ApiExceptionArg(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public ApiExceptionArg(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		name = GsonParser.parseString(jsonObject.get("name"));
-		value = GsonParser.parseString(jsonObject.get("value"));
+        // set members values:
+        name = GsonParser.parseString(jsonObject.get("name"));
+        value = GsonParser.parseString(jsonObject.get("value"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaApiExceptionArg");
-		kparams.add("name", this.name);
-		kparams.add("value", this.value);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaApiExceptionArg");
+        kparams.add("name", this.name);
+        kparams.add("value", this.value);
+        return kparams;
+    }
 
 }
 

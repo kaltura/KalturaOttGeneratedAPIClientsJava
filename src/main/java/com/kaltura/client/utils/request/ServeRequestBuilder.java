@@ -5,10 +5,14 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.APIException;
 import com.kaltura.client.utils.APIConstants;
 
-public abstract class ServeRequestBuilder extends RequestBuilder<String, String, ServeRequestBuilder> {
+public class ServeRequestBuilder extends RequestBuilder<String> {
 
-    public ServeRequestBuilder(String service, String action) {
-        super(String.class, service, action);
+    public ServeRequestBuilder() {
+    	super(String.class);
+    }
+
+    public ServeRequestBuilder(String service, String action, Params params) {
+        super(String.class, service, action, params);
     }
 
 	@Override
@@ -22,7 +26,7 @@ public abstract class ServeRequestBuilder extends RequestBuilder<String, String,
     }
 
 	@Override
-    public RequestElement<String> build(final Client client, boolean addSignature) {
+    public RequestElement build(final Client client, boolean addSignature) {
 		Params kParams = prepareParams(client, true);
 		prepareHeaders(client.getConnectionConfiguration());
 		String endPoint = client.getConnectionConfiguration().getEndpoint().replaceAll("/$", "");
@@ -45,11 +49,6 @@ public abstract class ServeRequestBuilder extends RequestBuilder<String, String,
     protected Object parse(String response) throws APIException {
     	return response;
     }
-
-	@Override
-	public String getTokenizer() throws APIException {
-		throw new APIException(APIException.FailureStep.OnRequest, "Served content response can not be used as multi-request token");
-	}
 }
 
 

@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.enums.InboxMessageStatus;
 import com.kaltura.client.enums.InboxMessageType;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,131 +43,97 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(InboxMessage.Tokenizer.class)
 public class InboxMessage extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String message();
-		String status();
-		String type();
-		String createdAt();
-		String url();
-	}
 
 	/**  message id  */
-	private String id;
+    private String id;
 	/**  message  */
-	private String message;
+    private String message;
 	/**  Status  */
-	private InboxMessageStatus status;
+    private InboxMessageStatus status;
 	/**  Type  */
-	private InboxMessageType type;
+    private InboxMessageType type;
 	/**  Created at  */
-	private Long createdAt;
+    private Long createdAt;
 	/**  url  */
-	private String url;
+    private String url;
 
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
+    // id:
+    public String getId(){
+        return this.id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // message:
+    public String getMessage(){
+        return this.message;
+    }
+    public void setMessage(String message){
+        this.message = message;
+    }
 
-	// message:
-	public String getMessage(){
-		return this.message;
-	}
-	public void setMessage(String message){
-		this.message = message;
-	}
+    // status:
+    public InboxMessageStatus getStatus(){
+        return this.status;
+    }
+    public void setStatus(InboxMessageStatus status){
+        this.status = status;
+    }
 
-	public void message(String multirequestToken){
-		setToken("message", multirequestToken);
-	}
+    // type:
+    public InboxMessageType getType(){
+        return this.type;
+    }
+    public void setType(InboxMessageType type){
+        this.type = type;
+    }
 
-	// status:
-	public InboxMessageStatus getStatus(){
-		return this.status;
-	}
-	public void setStatus(InboxMessageStatus status){
-		this.status = status;
-	}
+    // createdAt:
+    public Long getCreatedAt(){
+        return this.createdAt;
+    }
+    public void setCreatedAt(Long createdAt){
+        this.createdAt = createdAt;
+    }
 
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
-	// type:
-	public InboxMessageType getType(){
-		return this.type;
-	}
-	public void setType(InboxMessageType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
-	// createdAt:
-	public Long getCreatedAt(){
-		return this.createdAt;
-	}
-	public void setCreatedAt(Long createdAt){
-		this.createdAt = createdAt;
-	}
-
-	public void createdAt(String multirequestToken){
-		setToken("createdAt", multirequestToken);
-	}
-
-	// url:
-	public String getUrl(){
-		return this.url;
-	}
-	public void setUrl(String url){
-		this.url = url;
-	}
-
-	public void url(String multirequestToken){
-		setToken("url", multirequestToken);
-	}
+    // url:
+    public String getUrl(){
+        return this.url;
+    }
+    public void setUrl(String url){
+        this.url = url;
+    }
 
 
-	public InboxMessage() {
-		super();
-	}
+    public InboxMessage() {
+       super();
+    }
 
-	public InboxMessage(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public InboxMessage(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		message = GsonParser.parseString(jsonObject.get("message"));
-		status = InboxMessageStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		type = InboxMessageType.get(GsonParser.parseString(jsonObject.get("type")));
-		createdAt = GsonParser.parseLong(jsonObject.get("createdAt"));
-		url = GsonParser.parseString(jsonObject.get("url"));
+        // set members values:
+        id = GsonParser.parseString(jsonObject.get("id"));
+        message = GsonParser.parseString(jsonObject.get("message"));
+        status = InboxMessageStatus.get(GsonParser.parseString(jsonObject.get("status")));
+        type = InboxMessageType.get(GsonParser.parseString(jsonObject.get("type")));
+        createdAt = GsonParser.parseLong(jsonObject.get("createdAt"));
+        url = GsonParser.parseString(jsonObject.get("url"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaInboxMessage");
-		kparams.add("message", this.message);
-		kparams.add("type", this.type);
-		kparams.add("url", this.url);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaInboxMessage");
+        kparams.add("message", this.message);
+        kparams.add("type", this.type);
+        kparams.add("url", this.url);
+        return kparams;
+    }
 
 }
 

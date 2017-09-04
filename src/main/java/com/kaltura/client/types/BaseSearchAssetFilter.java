@@ -27,12 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,45 +41,40 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSearchAssetFilter.Tokenizer.class)
 public abstract class BaseSearchAssetFilter extends AssetFilter {
-	
-	public interface Tokenizer extends AssetFilter.Tokenizer {
-		RequestBuilder.ListTokenizer<AssetGroupBy.Tokenizer> groupBy();
-	}
 
 	/**  groupBy  */
-	private List<AssetGroupBy> groupBy;
+    private List<AssetGroupBy> groupBy;
 
-	// groupBy:
-	public List<AssetGroupBy> getGroupBy(){
-		return this.groupBy;
-	}
-	public void setGroupBy(List<AssetGroupBy> groupBy){
-		this.groupBy = groupBy;
-	}
+    // groupBy:
+    public List<AssetGroupBy> getGroupBy(){
+        return this.groupBy;
+    }
+    public void setGroupBy(List<AssetGroupBy> groupBy){
+        this.groupBy = groupBy;
+    }
 
 
-	public BaseSearchAssetFilter() {
-		super();
-	}
+    public BaseSearchAssetFilter() {
+       super();
+    }
 
-	public BaseSearchAssetFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public BaseSearchAssetFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		groupBy = GsonParser.parseArray(jsonObject.getAsJsonArray("groupBy"), AssetGroupBy.class);
+        // set members values:
+        groupBy = GsonParser.parseArray(jsonObject.getAsJsonArray("groupBy"), AssetGroupBy.class);
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSearchAssetFilter");
-		kparams.add("groupBy", this.groupBy);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaBaseSearchAssetFilter");
+        kparams.add("groupBy", this.groupBy);
+        return kparams;
+    }
 
 }
 

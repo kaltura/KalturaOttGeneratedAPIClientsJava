@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,49 +40,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FairPlayPlaybackPluginData.Tokenizer.class)
 public class FairPlayPlaybackPluginData extends DrmPlaybackPluginData {
-	
-	public interface Tokenizer extends DrmPlaybackPluginData.Tokenizer {
-		String certificate();
-	}
 
 	/**  Custom data string  */
-	private String certificate;
+    private String certificate;
 
-	// certificate:
-	public String getCertificate(){
-		return this.certificate;
-	}
-	public void setCertificate(String certificate){
-		this.certificate = certificate;
-	}
-
-	public void certificate(String multirequestToken){
-		setToken("certificate", multirequestToken);
-	}
+    // certificate:
+    public String getCertificate(){
+        return this.certificate;
+    }
+    public void setCertificate(String certificate){
+        this.certificate = certificate;
+    }
 
 
-	public FairPlayPlaybackPluginData() {
-		super();
-	}
+    public FairPlayPlaybackPluginData() {
+       super();
+    }
 
-	public FairPlayPlaybackPluginData(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public FairPlayPlaybackPluginData(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		certificate = GsonParser.parseString(jsonObject.get("certificate"));
+        // set members values:
+        certificate = GsonParser.parseString(jsonObject.get("certificate"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFairPlayPlaybackPluginData");
-		kparams.add("certificate", this.certificate);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFairPlayPlaybackPluginData");
+        kparams.add("certificate", this.certificate);
+        return kparams;
+    }
 
 }
 

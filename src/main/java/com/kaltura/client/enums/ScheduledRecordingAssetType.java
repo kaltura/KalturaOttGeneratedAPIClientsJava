@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,38 +36,38 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum ScheduledRecordingAssetType implements EnumAsString {
-	SINGLE("single"),
-	SERIES("series"),
-	ALL("all");
+    SINGLE("single"),
+    SERIES("series"),
+    ALL("all");
 
-	private String value;
+    private String value;
 
-	ScheduledRecordingAssetType(String value) {
-		this.value = value;
-	}
+    ScheduledRecordingAssetType(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static ScheduledRecordingAssetType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over ScheduledRecordingAssetType defined values and compare the inner value with the given one:
-		for(ScheduledRecordingAssetType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ScheduledRecordingAssetType.values().length > 0 ? ScheduledRecordingAssetType.values()[0]: null;
+    public static ScheduledRecordingAssetType get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over ScheduledRecordingAssetType defined values and compare the inner value with the given one:
+        for(ScheduledRecordingAssetType item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return ScheduledRecordingAssetType.values().length > 0 ? ScheduledRecordingAssetType.values()[0]: null;
    }
 }

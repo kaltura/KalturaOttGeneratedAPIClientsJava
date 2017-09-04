@@ -27,9 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.GsonParser;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,27 +40,23 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AccessControlBlockAction.Tokenizer.class)
 public class AccessControlBlockAction extends RuleAction {
-	
-	public interface Tokenizer extends RuleAction.Tokenizer {
-	}
 
 
 
-	public AccessControlBlockAction() {
-		super();
-	}
+    public AccessControlBlockAction() {
+       super();
+    }
 
-	public AccessControlBlockAction(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-	}
+    public AccessControlBlockAction(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAccessControlBlockAction");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaAccessControlBlockAction");
+        return kparams;
+    }
 
 }
 

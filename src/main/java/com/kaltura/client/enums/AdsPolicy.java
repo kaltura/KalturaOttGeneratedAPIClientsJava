@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,37 +36,37 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum AdsPolicy implements EnumAsString {
-	NO_ADS("NO_ADS"),
-	KEEP_ADS("KEEP_ADS");
+    NO_ADS("NO_ADS"),
+    KEEP_ADS("KEEP_ADS");
 
-	private String value;
+    private String value;
 
-	AdsPolicy(String value) {
-		this.value = value;
-	}
+    AdsPolicy(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static AdsPolicy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over AdsPolicy defined values and compare the inner value with the given one:
-		for(AdsPolicy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AdsPolicy.values().length > 0 ? AdsPolicy.values()[0]: null;
+    public static AdsPolicy get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over AdsPolicy defined values and compare the inner value with the given one:
+        for(AdsPolicy item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return AdsPolicy.values().length > 0 ? AdsPolicy.values()[0]: null;
    }
 }

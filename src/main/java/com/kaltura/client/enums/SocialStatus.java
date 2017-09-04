@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,47 +36,47 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum SocialStatus implements EnumAsString {
-	ERROR("error"),
-	OK("ok"),
-	USER_DOES_NOT_EXIST("user_does_not_exist"),
-	NO_USER_SOCIAL_SETTINGS_FOUND("no_user_social_settings_found"),
-	ASSET_ALREADY_LIKED("asset_already_liked"),
-	NOT_ALLOWED("not_allowed"),
-	INVALID_PARAMETERS("invalid_parameters"),
-	NO_FACEBOOK_ACTION("no_facebook_action"),
-	ASSET_ALREADY_RATED("asset_already_rated"),
-	ASSET_DOSE_NOT_EXISTS("asset_dose_not_exists"),
-	INVALID_PLATFORM_REQUEST("invalid_platform_request"),
-	INVALID_ACCESS_TOKEN("invalid_access_token");
+    ERROR("error"),
+    OK("ok"),
+    USER_DOES_NOT_EXIST("user_does_not_exist"),
+    NO_USER_SOCIAL_SETTINGS_FOUND("no_user_social_settings_found"),
+    ASSET_ALREADY_LIKED("asset_already_liked"),
+    NOT_ALLOWED("not_allowed"),
+    INVALID_PARAMETERS("invalid_parameters"),
+    NO_FACEBOOK_ACTION("no_facebook_action"),
+    ASSET_ALREADY_RATED("asset_already_rated"),
+    ASSET_DOSE_NOT_EXISTS("asset_dose_not_exists"),
+    INVALID_PLATFORM_REQUEST("invalid_platform_request"),
+    INVALID_ACCESS_TOKEN("invalid_access_token");
 
-	private String value;
+    private String value;
 
-	SocialStatus(String value) {
-		this.value = value;
-	}
+    SocialStatus(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static SocialStatus get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over SocialStatus defined values and compare the inner value with the given one:
-		for(SocialStatus item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SocialStatus.values().length > 0 ? SocialStatus.values()[0]: null;
+    public static SocialStatus get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over SocialStatus defined values and compare the inner value with the given one:
+        for(SocialStatus item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return SocialStatus.values().length > 0 ? SocialStatus.values()[0]: null;
    }
 }

@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.enums.AssetType;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,83 +41,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SocialActionFilter.Tokenizer.class)
 public class SocialActionFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String assetIdIn();
-		String assetTypeEqual();
-		String actionTypeIn();
-	}
 
 	/**  Comma separated list of asset identifiers.  */
-	private String assetIdIn;
+    private String assetIdIn;
 	/**  Asset Type  */
-	private AssetType assetTypeEqual;
+    private AssetType assetTypeEqual;
 	/**  Comma separated list of social actions to filter by  */
-	private String actionTypeIn;
+    private String actionTypeIn;
 
-	// assetIdIn:
-	public String getAssetIdIn(){
-		return this.assetIdIn;
-	}
-	public void setAssetIdIn(String assetIdIn){
-		this.assetIdIn = assetIdIn;
-	}
+    // assetIdIn:
+    public String getAssetIdIn(){
+        return this.assetIdIn;
+    }
+    public void setAssetIdIn(String assetIdIn){
+        this.assetIdIn = assetIdIn;
+    }
 
-	public void assetIdIn(String multirequestToken){
-		setToken("assetIdIn", multirequestToken);
-	}
+    // assetTypeEqual:
+    public AssetType getAssetTypeEqual(){
+        return this.assetTypeEqual;
+    }
+    public void setAssetTypeEqual(AssetType assetTypeEqual){
+        this.assetTypeEqual = assetTypeEqual;
+    }
 
-	// assetTypeEqual:
-	public AssetType getAssetTypeEqual(){
-		return this.assetTypeEqual;
-	}
-	public void setAssetTypeEqual(AssetType assetTypeEqual){
-		this.assetTypeEqual = assetTypeEqual;
-	}
-
-	public void assetTypeEqual(String multirequestToken){
-		setToken("assetTypeEqual", multirequestToken);
-	}
-
-	// actionTypeIn:
-	public String getActionTypeIn(){
-		return this.actionTypeIn;
-	}
-	public void setActionTypeIn(String actionTypeIn){
-		this.actionTypeIn = actionTypeIn;
-	}
-
-	public void actionTypeIn(String multirequestToken){
-		setToken("actionTypeIn", multirequestToken);
-	}
+    // actionTypeIn:
+    public String getActionTypeIn(){
+        return this.actionTypeIn;
+    }
+    public void setActionTypeIn(String actionTypeIn){
+        this.actionTypeIn = actionTypeIn;
+    }
 
 
-	public SocialActionFilter() {
-		super();
-	}
+    public SocialActionFilter() {
+       super();
+    }
 
-	public SocialActionFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public SocialActionFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
-		assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
-		actionTypeIn = GsonParser.parseString(jsonObject.get("actionTypeIn"));
+        // set members values:
+        assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
+        assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
+        actionTypeIn = GsonParser.parseString(jsonObject.get("actionTypeIn"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSocialActionFilter");
-		kparams.add("assetIdIn", this.assetIdIn);
-		kparams.add("assetTypeEqual", this.assetTypeEqual);
-		kparams.add("actionTypeIn", this.actionTypeIn);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaSocialActionFilter");
+        kparams.add("assetIdIn", this.assetIdIn);
+        kparams.add("assetTypeEqual", this.assetTypeEqual);
+        kparams.add("actionTypeIn", this.actionTypeIn);
+        return kparams;
+    }
 
 }
 

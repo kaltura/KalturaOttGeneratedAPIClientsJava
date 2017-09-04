@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AssetType;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.AssetType;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,128 +43,94 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Watch history asset info  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetHistory.Tokenizer.class)
 public class AssetHistory extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String assetId();
-		String assetType();
-		String position();
-		String duration();
-		String watchedDate();
-		String finishedWatching();
-	}
 
 	/**  Asset identifier  */
-	private Long assetId;
+    private Long assetId;
 	/**  Asset identifier  */
-	private AssetType assetType;
+    private AssetType assetType;
 	/**  Position in seconds of the relevant asset  */
-	private Integer position;
+    private Integer position;
 	/**  Duration in seconds of the relevant asset  */
-	private Integer duration;
+    private Integer duration;
 	/**  The date when the media was last watched  */
-	private Long watchedDate;
+    private Long watchedDate;
 	/**  Boolean which specifies whether the user finished watching the movie or not  */
-	private Boolean finishedWatching;
+    private Boolean finishedWatching;
 
-	// assetId:
-	public Long getAssetId(){
-		return this.assetId;
-	}
-	public void setAssetId(Long assetId){
-		this.assetId = assetId;
-	}
+    // assetId:
+    public Long getAssetId(){
+        return this.assetId;
+    }
+    public void setAssetId(Long assetId){
+        this.assetId = assetId;
+    }
 
-	public void assetId(String multirequestToken){
-		setToken("assetId", multirequestToken);
-	}
+    // assetType:
+    public AssetType getAssetType(){
+        return this.assetType;
+    }
+    public void setAssetType(AssetType assetType){
+        this.assetType = assetType;
+    }
 
-	// assetType:
-	public AssetType getAssetType(){
-		return this.assetType;
-	}
-	public void setAssetType(AssetType assetType){
-		this.assetType = assetType;
-	}
+    // position:
+    public Integer getPosition(){
+        return this.position;
+    }
+    public void setPosition(Integer position){
+        this.position = position;
+    }
 
-	public void assetType(String multirequestToken){
-		setToken("assetType", multirequestToken);
-	}
+    // duration:
+    public Integer getDuration(){
+        return this.duration;
+    }
+    public void setDuration(Integer duration){
+        this.duration = duration;
+    }
 
-	// position:
-	public Integer getPosition(){
-		return this.position;
-	}
-	public void setPosition(Integer position){
-		this.position = position;
-	}
+    // watchedDate:
+    public Long getWatchedDate(){
+        return this.watchedDate;
+    }
+    public void setWatchedDate(Long watchedDate){
+        this.watchedDate = watchedDate;
+    }
 
-	public void position(String multirequestToken){
-		setToken("position", multirequestToken);
-	}
-
-	// duration:
-	public Integer getDuration(){
-		return this.duration;
-	}
-	public void setDuration(Integer duration){
-		this.duration = duration;
-	}
-
-	public void duration(String multirequestToken){
-		setToken("duration", multirequestToken);
-	}
-
-	// watchedDate:
-	public Long getWatchedDate(){
-		return this.watchedDate;
-	}
-	public void setWatchedDate(Long watchedDate){
-		this.watchedDate = watchedDate;
-	}
-
-	public void watchedDate(String multirequestToken){
-		setToken("watchedDate", multirequestToken);
-	}
-
-	// finishedWatching:
-	public Boolean getFinishedWatching(){
-		return this.finishedWatching;
-	}
-	public void setFinishedWatching(Boolean finishedWatching){
-		this.finishedWatching = finishedWatching;
-	}
-
-	public void finishedWatching(String multirequestToken){
-		setToken("finishedWatching", multirequestToken);
-	}
+    // finishedWatching:
+    public Boolean getFinishedWatching(){
+        return this.finishedWatching;
+    }
+    public void setFinishedWatching(Boolean finishedWatching){
+        this.finishedWatching = finishedWatching;
+    }
 
 
-	public AssetHistory() {
-		super();
-	}
+    public AssetHistory() {
+       super();
+    }
 
-	public AssetHistory(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public AssetHistory(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
-		assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
-		position = GsonParser.parseInt(jsonObject.get("position"));
-		duration = GsonParser.parseInt(jsonObject.get("duration"));
-		watchedDate = GsonParser.parseLong(jsonObject.get("watchedDate"));
-		finishedWatching = GsonParser.parseBoolean(jsonObject.get("finishedWatching"));
+        // set members values:
+        assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+        assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
+        position = GsonParser.parseInt(jsonObject.get("position"));
+        duration = GsonParser.parseInt(jsonObject.get("duration"));
+        watchedDate = GsonParser.parseLong(jsonObject.get("watchedDate"));
+        finishedWatching = GsonParser.parseBoolean(jsonObject.get("finishedWatching"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetHistory");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaAssetHistory");
+        return kparams;
+    }
 
 }
 

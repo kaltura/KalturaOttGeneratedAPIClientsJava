@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,37 +36,37 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum ReminderType implements EnumAsString {
-	ASSET("ASSET"),
-	SERIES("SERIES");
+    ASSET("ASSET"),
+    SERIES("SERIES");
 
-	private String value;
+    private String value;
 
-	ReminderType(String value) {
-		this.value = value;
-	}
+    ReminderType(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static ReminderType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over ReminderType defined values and compare the inner value with the given one:
-		for(ReminderType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ReminderType.values().length > 0 ? ReminderType.values()[0]: null;
+    public static ReminderType get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over ReminderType defined values and compare the inner value with the given one:
+        for(ReminderType item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return ReminderType.values().length > 0 ? ReminderType.values()[0]: null;
    }
 }

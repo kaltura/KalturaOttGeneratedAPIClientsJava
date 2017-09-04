@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,68 +43,54 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 /**  The KalturaFilterPager object enables paging management to be applied upon
   service list actions  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterPager.Tokenizer.class)
 public class FilterPager extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String pageSize();
-		String pageIndex();
-	}
 
 	/**  The number of objects to retrieve. Possible range 1 ≤ value ≤ 50. If omitted
 	  or value &amp;lt; 1 - will be set to 25. If a value &amp;gt; 50 provided –
 	  will be set to 50  */
-	private Integer pageSize;
+    private Integer pageSize;
 	/**  The page number for which {pageSize} of objects should be retrieved  */
-	private Integer pageIndex;
+    private Integer pageIndex;
 
-	// pageSize:
-	public Integer getPageSize(){
-		return this.pageSize;
-	}
-	public void setPageSize(Integer pageSize){
-		this.pageSize = pageSize;
-	}
+    // pageSize:
+    public Integer getPageSize(){
+        return this.pageSize;
+    }
+    public void setPageSize(Integer pageSize){
+        this.pageSize = pageSize;
+    }
 
-	public void pageSize(String multirequestToken){
-		setToken("pageSize", multirequestToken);
-	}
-
-	// pageIndex:
-	public Integer getPageIndex(){
-		return this.pageIndex;
-	}
-	public void setPageIndex(Integer pageIndex){
-		this.pageIndex = pageIndex;
-	}
-
-	public void pageIndex(String multirequestToken){
-		setToken("pageIndex", multirequestToken);
-	}
+    // pageIndex:
+    public Integer getPageIndex(){
+        return this.pageIndex;
+    }
+    public void setPageIndex(Integer pageIndex){
+        this.pageIndex = pageIndex;
+    }
 
 
-	public FilterPager() {
-		super();
-	}
+    public FilterPager() {
+       super();
+    }
 
-	public FilterPager(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public FilterPager(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		pageSize = GsonParser.parseInt(jsonObject.get("pageSize"));
-		pageIndex = GsonParser.parseInt(jsonObject.get("pageIndex"));
+        // set members values:
+        pageSize = GsonParser.parseInt(jsonObject.get("pageSize"));
+        pageIndex = GsonParser.parseInt(jsonObject.get("pageIndex"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterPager");
-		kparams.add("pageSize", this.pageSize);
-		kparams.add("pageIndex", this.pageIndex);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFilterPager");
+        kparams.add("pageSize", this.pageSize);
+        kparams.add("pageIndex", this.pageIndex);
+        return kparams;
+    }
 
 }
 

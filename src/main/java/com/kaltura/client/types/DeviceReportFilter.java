@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,49 +41,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Report filter  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceReportFilter.Tokenizer.class)
 public class DeviceReportFilter extends ReportFilter {
-	
-	public interface Tokenizer extends ReportFilter.Tokenizer {
-		String lastAccessDateGreaterThanOrEqual();
-	}
 
 	/**  Filter device configuration later than specific date  */
-	private Long lastAccessDateGreaterThanOrEqual;
+    private Long lastAccessDateGreaterThanOrEqual;
 
-	// lastAccessDateGreaterThanOrEqual:
-	public Long getLastAccessDateGreaterThanOrEqual(){
-		return this.lastAccessDateGreaterThanOrEqual;
-	}
-	public void setLastAccessDateGreaterThanOrEqual(Long lastAccessDateGreaterThanOrEqual){
-		this.lastAccessDateGreaterThanOrEqual = lastAccessDateGreaterThanOrEqual;
-	}
-
-	public void lastAccessDateGreaterThanOrEqual(String multirequestToken){
-		setToken("lastAccessDateGreaterThanOrEqual", multirequestToken);
-	}
+    // lastAccessDateGreaterThanOrEqual:
+    public Long getLastAccessDateGreaterThanOrEqual(){
+        return this.lastAccessDateGreaterThanOrEqual;
+    }
+    public void setLastAccessDateGreaterThanOrEqual(Long lastAccessDateGreaterThanOrEqual){
+        this.lastAccessDateGreaterThanOrEqual = lastAccessDateGreaterThanOrEqual;
+    }
 
 
-	public DeviceReportFilter() {
-		super();
-	}
+    public DeviceReportFilter() {
+       super();
+    }
 
-	public DeviceReportFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public DeviceReportFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		lastAccessDateGreaterThanOrEqual = GsonParser.parseLong(jsonObject.get("lastAccessDateGreaterThanOrEqual"));
+        // set members values:
+        lastAccessDateGreaterThanOrEqual = GsonParser.parseLong(jsonObject.get("lastAccessDateGreaterThanOrEqual"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceReportFilter");
-		kparams.add("lastAccessDateGreaterThanOrEqual", this.lastAccessDateGreaterThanOrEqual);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaDeviceReportFilter");
+        kparams.add("lastAccessDateGreaterThanOrEqual", this.lastAccessDateGreaterThanOrEqual);
+        return kparams;
+    }
 
 }
 

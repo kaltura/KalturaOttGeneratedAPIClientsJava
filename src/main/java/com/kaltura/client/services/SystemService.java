@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -37,40 +38,25 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SystemService {
-	
-	public static class GetTimeSystemBuilder extends RequestBuilder<Long, String, GetTimeSystemBuilder> {
-		
-		public GetTimeSystemBuilder() {
-			super(Long.class, "system", "getTime");
-		}
-	}
 
 	/**  Returns current server timestamp  */
-    public static GetTimeSystemBuilder getTime()  {
-		return new GetTimeSystemBuilder();
-	}
-	
-	public static class GetVersionSystemBuilder extends RequestBuilder<String, String, GetVersionSystemBuilder> {
-		
-		public GetVersionSystemBuilder() {
-			super(String.class, "system", "getVersion");
-		}
-	}
+    public static RequestBuilder<Long> getTime()  {
+        Params kparams = new Params();
+
+        return new RequestBuilder<Long>(Long.class, "system", "getTime", kparams);
+    }
 
 	/**  Returns current server version  */
-    public static GetVersionSystemBuilder getVersion()  {
-		return new GetVersionSystemBuilder();
-	}
-	
-	public static class PingSystemBuilder extends RequestBuilder<Boolean, String, PingSystemBuilder> {
-		
-		public PingSystemBuilder() {
-			super(Boolean.class, "system", "ping");
-		}
-	}
+    public static RequestBuilder<String> getVersion()  {
+        Params kparams = new Params();
+
+        return new RequestBuilder<String>(String.class, "system", "getVersion", kparams);
+    }
 
 	/**  Returns true  */
-    public static PingSystemBuilder ping()  {
-		return new PingSystemBuilder();
-	}
+    public static RequestBuilder<Boolean> ping()  {
+        Params kparams = new Params();
+
+        return new RequestBuilder<Boolean>(Boolean.class, "system", "ping", kparams);
+    }
 }

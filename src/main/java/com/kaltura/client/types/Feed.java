@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,48 +41,39 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Feed.Tokenizer.class)
 public class Feed extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String assetId();
-	}
 
 	/**  Asset identifier  */
-	private Long assetId;
+    private Long assetId;
 
-	// assetId:
-	public Long getAssetId(){
-		return this.assetId;
-	}
-	public void setAssetId(Long assetId){
-		this.assetId = assetId;
-	}
-
-	public void assetId(String multirequestToken){
-		setToken("assetId", multirequestToken);
-	}
+    // assetId:
+    public Long getAssetId(){
+        return this.assetId;
+    }
+    public void setAssetId(Long assetId){
+        this.assetId = assetId;
+    }
 
 
-	public Feed() {
-		super();
-	}
+    public Feed() {
+       super();
+    }
 
-	public Feed(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Feed(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+        // set members values:
+        assetId = GsonParser.parseLong(jsonObject.get("assetId"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFeed");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFeed");
+        return kparams;
+    }
 
 }
 

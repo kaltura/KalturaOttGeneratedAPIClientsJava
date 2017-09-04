@@ -27,9 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.GsonParser;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,27 +41,23 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Filtering recordings  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SeriesRecordingFilter.Tokenizer.class)
 public class SeriesRecordingFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-	}
 
 
 
-	public SeriesRecordingFilter() {
-		super();
-	}
+    public SeriesRecordingFilter() {
+       super();
+    }
 
-	public SeriesRecordingFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-	}
+    public SeriesRecordingFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSeriesRecordingFilter");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaSeriesRecordingFilter");
+        return kparams;
+    }
 
 }
 

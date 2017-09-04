@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,83 +42,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Buzz score  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BuzzScore.Tokenizer.class)
 public class BuzzScore extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String normalizedAvgScore();
-		String updateDate();
-		String avgScore();
-	}
 
 	/**  Normalized average score  */
-	private Double normalizedAvgScore;
+    private Double normalizedAvgScore;
 	/**  Update date  */
-	private Long updateDate;
+    private Long updateDate;
 	/**  Average score  */
-	private Double avgScore;
+    private Double avgScore;
 
-	// normalizedAvgScore:
-	public Double getNormalizedAvgScore(){
-		return this.normalizedAvgScore;
-	}
-	public void setNormalizedAvgScore(Double normalizedAvgScore){
-		this.normalizedAvgScore = normalizedAvgScore;
-	}
+    // normalizedAvgScore:
+    public Double getNormalizedAvgScore(){
+        return this.normalizedAvgScore;
+    }
+    public void setNormalizedAvgScore(Double normalizedAvgScore){
+        this.normalizedAvgScore = normalizedAvgScore;
+    }
 
-	public void normalizedAvgScore(String multirequestToken){
-		setToken("normalizedAvgScore", multirequestToken);
-	}
+    // updateDate:
+    public Long getUpdateDate(){
+        return this.updateDate;
+    }
+    public void setUpdateDate(Long updateDate){
+        this.updateDate = updateDate;
+    }
 
-	// updateDate:
-	public Long getUpdateDate(){
-		return this.updateDate;
-	}
-	public void setUpdateDate(Long updateDate){
-		this.updateDate = updateDate;
-	}
-
-	public void updateDate(String multirequestToken){
-		setToken("updateDate", multirequestToken);
-	}
-
-	// avgScore:
-	public Double getAvgScore(){
-		return this.avgScore;
-	}
-	public void setAvgScore(Double avgScore){
-		this.avgScore = avgScore;
-	}
-
-	public void avgScore(String multirequestToken){
-		setToken("avgScore", multirequestToken);
-	}
+    // avgScore:
+    public Double getAvgScore(){
+        return this.avgScore;
+    }
+    public void setAvgScore(Double avgScore){
+        this.avgScore = avgScore;
+    }
 
 
-	public BuzzScore() {
-		super();
-	}
+    public BuzzScore() {
+       super();
+    }
 
-	public BuzzScore(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public BuzzScore(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		normalizedAvgScore = GsonParser.parseDouble(jsonObject.get("normalizedAvgScore"));
-		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-		avgScore = GsonParser.parseDouble(jsonObject.get("avgScore"));
+        // set members values:
+        normalizedAvgScore = GsonParser.parseDouble(jsonObject.get("normalizedAvgScore"));
+        updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+        avgScore = GsonParser.parseDouble(jsonObject.get("avgScore"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBuzzScore");
-		kparams.add("normalizedAvgScore", this.normalizedAvgScore);
-		kparams.add("updateDate", this.updateDate);
-		kparams.add("avgScore", this.avgScore);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaBuzzScore");
+        kparams.add("normalizedAvgScore", this.normalizedAvgScore);
+        kparams.add("updateDate", this.updateDate);
+        kparams.add("avgScore", this.avgScore);
+        return kparams;
+    }
 
 }
 

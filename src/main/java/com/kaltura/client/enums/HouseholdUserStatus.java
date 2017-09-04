@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,37 +36,37 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum HouseholdUserStatus implements EnumAsString {
-	OK("OK"),
-	PENDING("PENDING");
+    OK("OK"),
+    PENDING("PENDING");
 
-	private String value;
+    private String value;
 
-	HouseholdUserStatus(String value) {
-		this.value = value;
-	}
+    HouseholdUserStatus(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static HouseholdUserStatus get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over HouseholdUserStatus defined values and compare the inner value with the given one:
-		for(HouseholdUserStatus item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return HouseholdUserStatus.values().length > 0 ? HouseholdUserStatus.values()[0]: null;
+    public static HouseholdUserStatus get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over HouseholdUserStatus defined values and compare the inner value with the given one:
+        for(HouseholdUserStatus item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return HouseholdUserStatus.values().length > 0 ? HouseholdUserStatus.values()[0]: null;
    }
 }

@@ -27,9 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.GsonParser;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,27 +41,23 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Kaltura Session  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SessionInfo.Tokenizer.class)
 public class SessionInfo extends Session {
-	
-	public interface Tokenizer extends Session.Tokenizer {
-	}
 
 
 
-	public SessionInfo() {
-		super();
-	}
+    public SessionInfo() {
+       super();
+    }
 
-	public SessionInfo(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-	}
+    public SessionInfo(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSessionInfo");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaSessionInfo");
+        return kparams;
+    }
 
 }
 

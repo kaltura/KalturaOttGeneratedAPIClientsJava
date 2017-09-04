@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.UserInterest;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -39,46 +41,27 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class UserInterestService {
-	
-	public static class AddUserInterestBuilder extends RequestBuilder<UserInterest, UserInterest.Tokenizer, AddUserInterestBuilder> {
-		
-		public AddUserInterestBuilder(UserInterest userInterest) {
-			super(UserInterest.class, "userinterest", "add");
-			params.add("userInterest", userInterest);
-		}
-	}
 
 	/**  Insert new user interest for partner user  */
-    public static AddUserInterestBuilder add(UserInterest userInterest)  {
-		return new AddUserInterestBuilder(userInterest);
-	}
-	
-	public static class DeleteUserInterestBuilder extends RequestBuilder<Boolean, String, DeleteUserInterestBuilder> {
-		
-		public DeleteUserInterestBuilder(String id) {
-			super(Boolean.class, "userinterest", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
+    public static RequestBuilder<UserInterest> add(UserInterest userInterest)  {
+        Params kparams = new Params();
+        kparams.add("userInterest", userInterest);
+
+        return new RequestBuilder<UserInterest>(UserInterest.class, "userinterest", "add", kparams);
+    }
 
 	/**  Delete new user interest for partner user  */
-    public static DeleteUserInterestBuilder delete(String id)  {
-		return new DeleteUserInterestBuilder(id);
-	}
-	
-	public static class ListUserInterestBuilder extends ListResponseRequestBuilder<UserInterest, UserInterest.Tokenizer, ListUserInterestBuilder> {
-		
-		public ListUserInterestBuilder() {
-			super(UserInterest.class, "userinterest", "list");
-		}
-	}
+    public static RequestBuilder<Boolean> delete(String id)  {
+        Params kparams = new Params();
+        kparams.add("id", id);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "userinterest", "delete", kparams);
+    }
 
 	/**  Returns all Engagement for partner  */
-    public static ListUserInterestBuilder list()  {
-		return new ListUserInterestBuilder();
-	}
+    public static RequestBuilder<ListResponse<UserInterest>> list()  {
+        Params kparams = new Params();
+
+        return new ListResponseRequestBuilder<UserInterest>(UserInterest.class, "userinterest", "list", kparams);
+    }
 }

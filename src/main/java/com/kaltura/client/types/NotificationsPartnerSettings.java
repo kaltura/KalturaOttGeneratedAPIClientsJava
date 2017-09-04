@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,287 +41,208 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(NotificationsPartnerSettings.Tokenizer.class)
 public class NotificationsPartnerSettings extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String pushNotificationEnabled();
-		String pushSystemAnnouncementsEnabled();
-		String pushStartHour();
-		String pushEndHour();
-		String inboxEnabled();
-		String messageTTLDays();
-		String automaticIssueFollowNotification();
-		String topicExpirationDurationDays();
-		String reminderEnabled();
-		String reminderOffsetSec();
-		String pushAdapterUrl();
-		String churnMailTemplateName();
-		String churnMailSubject();
-		String senderEmail();
-		String mailSenderName();
-	}
 
 	/**  Push notification capability is enabled for the account  */
-	private Boolean pushNotificationEnabled;
+    private Boolean pushNotificationEnabled;
 	/**  System announcement capability is enabled for the account  */
-	private Boolean pushSystemAnnouncementsEnabled;
+    private Boolean pushSystemAnnouncementsEnabled;
 	/**  Window start time (UTC) for send automated push messages  */
-	private Integer pushStartHour;
+    private Integer pushStartHour;
 	/**  Window end time (UTC) for send automated push messages  */
-	private Integer pushEndHour;
+    private Integer pushEndHour;
 	/**  Inbox enabled  */
-	private Boolean inboxEnabled;
+    private Boolean inboxEnabled;
 	/**  Message TTL in days  */
-	private Integer messageTTLDays;
+    private Integer messageTTLDays;
 	/**  Automatic issue follow notification  */
-	private Boolean automaticIssueFollowNotification;
+    private Boolean automaticIssueFollowNotification;
 	/**  Topic expiration duration in days  */
-	private Integer topicExpirationDurationDays;
+    private Integer topicExpirationDurationDays;
 	/**  Reminder enabled  */
-	private Boolean reminderEnabled;
+    private Boolean reminderEnabled;
 	/**  Offset time (UTC) in seconds for send reminder  */
-	private Integer reminderOffsetSec;
+    private Integer reminderOffsetSec;
 	/**  Push adapter URL  */
-	private String pushAdapterUrl;
+    private String pushAdapterUrl;
 	/**  Churn mail template name  */
-	private String churnMailTemplateName;
+    private String churnMailTemplateName;
 	/**  Churn mail subject  */
-	private String churnMailSubject;
+    private String churnMailSubject;
 	/**  Sender email  */
-	private String senderEmail;
+    private String senderEmail;
 	/**  Mail sender name  */
-	private String mailSenderName;
+    private String mailSenderName;
 
-	// pushNotificationEnabled:
-	public Boolean getPushNotificationEnabled(){
-		return this.pushNotificationEnabled;
-	}
-	public void setPushNotificationEnabled(Boolean pushNotificationEnabled){
-		this.pushNotificationEnabled = pushNotificationEnabled;
-	}
+    // pushNotificationEnabled:
+    public Boolean getPushNotificationEnabled(){
+        return this.pushNotificationEnabled;
+    }
+    public void setPushNotificationEnabled(Boolean pushNotificationEnabled){
+        this.pushNotificationEnabled = pushNotificationEnabled;
+    }
 
-	public void pushNotificationEnabled(String multirequestToken){
-		setToken("pushNotificationEnabled", multirequestToken);
-	}
+    // pushSystemAnnouncementsEnabled:
+    public Boolean getPushSystemAnnouncementsEnabled(){
+        return this.pushSystemAnnouncementsEnabled;
+    }
+    public void setPushSystemAnnouncementsEnabled(Boolean pushSystemAnnouncementsEnabled){
+        this.pushSystemAnnouncementsEnabled = pushSystemAnnouncementsEnabled;
+    }
 
-	// pushSystemAnnouncementsEnabled:
-	public Boolean getPushSystemAnnouncementsEnabled(){
-		return this.pushSystemAnnouncementsEnabled;
-	}
-	public void setPushSystemAnnouncementsEnabled(Boolean pushSystemAnnouncementsEnabled){
-		this.pushSystemAnnouncementsEnabled = pushSystemAnnouncementsEnabled;
-	}
+    // pushStartHour:
+    public Integer getPushStartHour(){
+        return this.pushStartHour;
+    }
+    public void setPushStartHour(Integer pushStartHour){
+        this.pushStartHour = pushStartHour;
+    }
 
-	public void pushSystemAnnouncementsEnabled(String multirequestToken){
-		setToken("pushSystemAnnouncementsEnabled", multirequestToken);
-	}
+    // pushEndHour:
+    public Integer getPushEndHour(){
+        return this.pushEndHour;
+    }
+    public void setPushEndHour(Integer pushEndHour){
+        this.pushEndHour = pushEndHour;
+    }
 
-	// pushStartHour:
-	public Integer getPushStartHour(){
-		return this.pushStartHour;
-	}
-	public void setPushStartHour(Integer pushStartHour){
-		this.pushStartHour = pushStartHour;
-	}
+    // inboxEnabled:
+    public Boolean getInboxEnabled(){
+        return this.inboxEnabled;
+    }
+    public void setInboxEnabled(Boolean inboxEnabled){
+        this.inboxEnabled = inboxEnabled;
+    }
 
-	public void pushStartHour(String multirequestToken){
-		setToken("pushStartHour", multirequestToken);
-	}
+    // messageTTLDays:
+    public Integer getMessageTTLDays(){
+        return this.messageTTLDays;
+    }
+    public void setMessageTTLDays(Integer messageTTLDays){
+        this.messageTTLDays = messageTTLDays;
+    }
 
-	// pushEndHour:
-	public Integer getPushEndHour(){
-		return this.pushEndHour;
-	}
-	public void setPushEndHour(Integer pushEndHour){
-		this.pushEndHour = pushEndHour;
-	}
+    // automaticIssueFollowNotification:
+    public Boolean getAutomaticIssueFollowNotification(){
+        return this.automaticIssueFollowNotification;
+    }
+    public void setAutomaticIssueFollowNotification(Boolean automaticIssueFollowNotification){
+        this.automaticIssueFollowNotification = automaticIssueFollowNotification;
+    }
 
-	public void pushEndHour(String multirequestToken){
-		setToken("pushEndHour", multirequestToken);
-	}
+    // topicExpirationDurationDays:
+    public Integer getTopicExpirationDurationDays(){
+        return this.topicExpirationDurationDays;
+    }
+    public void setTopicExpirationDurationDays(Integer topicExpirationDurationDays){
+        this.topicExpirationDurationDays = topicExpirationDurationDays;
+    }
 
-	// inboxEnabled:
-	public Boolean getInboxEnabled(){
-		return this.inboxEnabled;
-	}
-	public void setInboxEnabled(Boolean inboxEnabled){
-		this.inboxEnabled = inboxEnabled;
-	}
+    // reminderEnabled:
+    public Boolean getReminderEnabled(){
+        return this.reminderEnabled;
+    }
+    public void setReminderEnabled(Boolean reminderEnabled){
+        this.reminderEnabled = reminderEnabled;
+    }
 
-	public void inboxEnabled(String multirequestToken){
-		setToken("inboxEnabled", multirequestToken);
-	}
+    // reminderOffsetSec:
+    public Integer getReminderOffsetSec(){
+        return this.reminderOffsetSec;
+    }
+    public void setReminderOffsetSec(Integer reminderOffsetSec){
+        this.reminderOffsetSec = reminderOffsetSec;
+    }
 
-	// messageTTLDays:
-	public Integer getMessageTTLDays(){
-		return this.messageTTLDays;
-	}
-	public void setMessageTTLDays(Integer messageTTLDays){
-		this.messageTTLDays = messageTTLDays;
-	}
+    // pushAdapterUrl:
+    public String getPushAdapterUrl(){
+        return this.pushAdapterUrl;
+    }
+    public void setPushAdapterUrl(String pushAdapterUrl){
+        this.pushAdapterUrl = pushAdapterUrl;
+    }
 
-	public void messageTTLDays(String multirequestToken){
-		setToken("messageTTLDays", multirequestToken);
-	}
+    // churnMailTemplateName:
+    public String getChurnMailTemplateName(){
+        return this.churnMailTemplateName;
+    }
+    public void setChurnMailTemplateName(String churnMailTemplateName){
+        this.churnMailTemplateName = churnMailTemplateName;
+    }
 
-	// automaticIssueFollowNotification:
-	public Boolean getAutomaticIssueFollowNotification(){
-		return this.automaticIssueFollowNotification;
-	}
-	public void setAutomaticIssueFollowNotification(Boolean automaticIssueFollowNotification){
-		this.automaticIssueFollowNotification = automaticIssueFollowNotification;
-	}
+    // churnMailSubject:
+    public String getChurnMailSubject(){
+        return this.churnMailSubject;
+    }
+    public void setChurnMailSubject(String churnMailSubject){
+        this.churnMailSubject = churnMailSubject;
+    }
 
-	public void automaticIssueFollowNotification(String multirequestToken){
-		setToken("automaticIssueFollowNotification", multirequestToken);
-	}
+    // senderEmail:
+    public String getSenderEmail(){
+        return this.senderEmail;
+    }
+    public void setSenderEmail(String senderEmail){
+        this.senderEmail = senderEmail;
+    }
 
-	// topicExpirationDurationDays:
-	public Integer getTopicExpirationDurationDays(){
-		return this.topicExpirationDurationDays;
-	}
-	public void setTopicExpirationDurationDays(Integer topicExpirationDurationDays){
-		this.topicExpirationDurationDays = topicExpirationDurationDays;
-	}
-
-	public void topicExpirationDurationDays(String multirequestToken){
-		setToken("topicExpirationDurationDays", multirequestToken);
-	}
-
-	// reminderEnabled:
-	public Boolean getReminderEnabled(){
-		return this.reminderEnabled;
-	}
-	public void setReminderEnabled(Boolean reminderEnabled){
-		this.reminderEnabled = reminderEnabled;
-	}
-
-	public void reminderEnabled(String multirequestToken){
-		setToken("reminderEnabled", multirequestToken);
-	}
-
-	// reminderOffsetSec:
-	public Integer getReminderOffsetSec(){
-		return this.reminderOffsetSec;
-	}
-	public void setReminderOffsetSec(Integer reminderOffsetSec){
-		this.reminderOffsetSec = reminderOffsetSec;
-	}
-
-	public void reminderOffsetSec(String multirequestToken){
-		setToken("reminderOffsetSec", multirequestToken);
-	}
-
-	// pushAdapterUrl:
-	public String getPushAdapterUrl(){
-		return this.pushAdapterUrl;
-	}
-	public void setPushAdapterUrl(String pushAdapterUrl){
-		this.pushAdapterUrl = pushAdapterUrl;
-	}
-
-	public void pushAdapterUrl(String multirequestToken){
-		setToken("pushAdapterUrl", multirequestToken);
-	}
-
-	// churnMailTemplateName:
-	public String getChurnMailTemplateName(){
-		return this.churnMailTemplateName;
-	}
-	public void setChurnMailTemplateName(String churnMailTemplateName){
-		this.churnMailTemplateName = churnMailTemplateName;
-	}
-
-	public void churnMailTemplateName(String multirequestToken){
-		setToken("churnMailTemplateName", multirequestToken);
-	}
-
-	// churnMailSubject:
-	public String getChurnMailSubject(){
-		return this.churnMailSubject;
-	}
-	public void setChurnMailSubject(String churnMailSubject){
-		this.churnMailSubject = churnMailSubject;
-	}
-
-	public void churnMailSubject(String multirequestToken){
-		setToken("churnMailSubject", multirequestToken);
-	}
-
-	// senderEmail:
-	public String getSenderEmail(){
-		return this.senderEmail;
-	}
-	public void setSenderEmail(String senderEmail){
-		this.senderEmail = senderEmail;
-	}
-
-	public void senderEmail(String multirequestToken){
-		setToken("senderEmail", multirequestToken);
-	}
-
-	// mailSenderName:
-	public String getMailSenderName(){
-		return this.mailSenderName;
-	}
-	public void setMailSenderName(String mailSenderName){
-		this.mailSenderName = mailSenderName;
-	}
-
-	public void mailSenderName(String multirequestToken){
-		setToken("mailSenderName", multirequestToken);
-	}
+    // mailSenderName:
+    public String getMailSenderName(){
+        return this.mailSenderName;
+    }
+    public void setMailSenderName(String mailSenderName){
+        this.mailSenderName = mailSenderName;
+    }
 
 
-	public NotificationsPartnerSettings() {
-		super();
-	}
+    public NotificationsPartnerSettings() {
+       super();
+    }
 
-	public NotificationsPartnerSettings(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public NotificationsPartnerSettings(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		pushNotificationEnabled = GsonParser.parseBoolean(jsonObject.get("pushNotificationEnabled"));
-		pushSystemAnnouncementsEnabled = GsonParser.parseBoolean(jsonObject.get("pushSystemAnnouncementsEnabled"));
-		pushStartHour = GsonParser.parseInt(jsonObject.get("pushStartHour"));
-		pushEndHour = GsonParser.parseInt(jsonObject.get("pushEndHour"));
-		inboxEnabled = GsonParser.parseBoolean(jsonObject.get("inboxEnabled"));
-		messageTTLDays = GsonParser.parseInt(jsonObject.get("messageTTLDays"));
-		automaticIssueFollowNotification = GsonParser.parseBoolean(jsonObject.get("automaticIssueFollowNotification"));
-		topicExpirationDurationDays = GsonParser.parseInt(jsonObject.get("topicExpirationDurationDays"));
-		reminderEnabled = GsonParser.parseBoolean(jsonObject.get("reminderEnabled"));
-		reminderOffsetSec = GsonParser.parseInt(jsonObject.get("reminderOffsetSec"));
-		pushAdapterUrl = GsonParser.parseString(jsonObject.get("pushAdapterUrl"));
-		churnMailTemplateName = GsonParser.parseString(jsonObject.get("churnMailTemplateName"));
-		churnMailSubject = GsonParser.parseString(jsonObject.get("churnMailSubject"));
-		senderEmail = GsonParser.parseString(jsonObject.get("senderEmail"));
-		mailSenderName = GsonParser.parseString(jsonObject.get("mailSenderName"));
+        // set members values:
+        pushNotificationEnabled = GsonParser.parseBoolean(jsonObject.get("pushNotificationEnabled"));
+        pushSystemAnnouncementsEnabled = GsonParser.parseBoolean(jsonObject.get("pushSystemAnnouncementsEnabled"));
+        pushStartHour = GsonParser.parseInt(jsonObject.get("pushStartHour"));
+        pushEndHour = GsonParser.parseInt(jsonObject.get("pushEndHour"));
+        inboxEnabled = GsonParser.parseBoolean(jsonObject.get("inboxEnabled"));
+        messageTTLDays = GsonParser.parseInt(jsonObject.get("messageTTLDays"));
+        automaticIssueFollowNotification = GsonParser.parseBoolean(jsonObject.get("automaticIssueFollowNotification"));
+        topicExpirationDurationDays = GsonParser.parseInt(jsonObject.get("topicExpirationDurationDays"));
+        reminderEnabled = GsonParser.parseBoolean(jsonObject.get("reminderEnabled"));
+        reminderOffsetSec = GsonParser.parseInt(jsonObject.get("reminderOffsetSec"));
+        pushAdapterUrl = GsonParser.parseString(jsonObject.get("pushAdapterUrl"));
+        churnMailTemplateName = GsonParser.parseString(jsonObject.get("churnMailTemplateName"));
+        churnMailSubject = GsonParser.parseString(jsonObject.get("churnMailSubject"));
+        senderEmail = GsonParser.parseString(jsonObject.get("senderEmail"));
+        mailSenderName = GsonParser.parseString(jsonObject.get("mailSenderName"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaNotificationsPartnerSettings");
-		kparams.add("pushNotificationEnabled", this.pushNotificationEnabled);
-		kparams.add("pushSystemAnnouncementsEnabled", this.pushSystemAnnouncementsEnabled);
-		kparams.add("pushStartHour", this.pushStartHour);
-		kparams.add("pushEndHour", this.pushEndHour);
-		kparams.add("inboxEnabled", this.inboxEnabled);
-		kparams.add("messageTTLDays", this.messageTTLDays);
-		kparams.add("automaticIssueFollowNotification", this.automaticIssueFollowNotification);
-		kparams.add("topicExpirationDurationDays", this.topicExpirationDurationDays);
-		kparams.add("reminderEnabled", this.reminderEnabled);
-		kparams.add("reminderOffsetSec", this.reminderOffsetSec);
-		kparams.add("pushAdapterUrl", this.pushAdapterUrl);
-		kparams.add("churnMailTemplateName", this.churnMailTemplateName);
-		kparams.add("churnMailSubject", this.churnMailSubject);
-		kparams.add("senderEmail", this.senderEmail);
-		kparams.add("mailSenderName", this.mailSenderName);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaNotificationsPartnerSettings");
+        kparams.add("pushNotificationEnabled", this.pushNotificationEnabled);
+        kparams.add("pushSystemAnnouncementsEnabled", this.pushSystemAnnouncementsEnabled);
+        kparams.add("pushStartHour", this.pushStartHour);
+        kparams.add("pushEndHour", this.pushEndHour);
+        kparams.add("inboxEnabled", this.inboxEnabled);
+        kparams.add("messageTTLDays", this.messageTTLDays);
+        kparams.add("automaticIssueFollowNotification", this.automaticIssueFollowNotification);
+        kparams.add("topicExpirationDurationDays", this.topicExpirationDurationDays);
+        kparams.add("reminderEnabled", this.reminderEnabled);
+        kparams.add("reminderOffsetSec", this.reminderOffsetSec);
+        kparams.add("pushAdapterUrl", this.pushAdapterUrl);
+        kparams.add("churnMailTemplateName", this.churnMailTemplateName);
+        kparams.add("churnMailSubject", this.churnMailSubject);
+        kparams.add("senderEmail", this.senderEmail);
+        kparams.add("mailSenderName", this.mailSenderName);
+        return kparams;
+    }
 
 }
 

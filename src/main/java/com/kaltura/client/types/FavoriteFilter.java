@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,66 +41,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Favorite request filter  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FavoriteFilter.Tokenizer.class)
 public class FavoriteFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String mediaTypeEqual();
-		String mediaIdIn();
-	}
 
 	/**  Media type to filter by the favorite assets  */
-	private Integer mediaTypeEqual;
+    private Integer mediaTypeEqual;
 	/**  Media identifiers from which to filter the favorite assets  */
-	private String mediaIdIn;
+    private String mediaIdIn;
 
-	// mediaTypeEqual:
-	public Integer getMediaTypeEqual(){
-		return this.mediaTypeEqual;
-	}
-	public void setMediaTypeEqual(Integer mediaTypeEqual){
-		this.mediaTypeEqual = mediaTypeEqual;
-	}
+    // mediaTypeEqual:
+    public Integer getMediaTypeEqual(){
+        return this.mediaTypeEqual;
+    }
+    public void setMediaTypeEqual(Integer mediaTypeEqual){
+        this.mediaTypeEqual = mediaTypeEqual;
+    }
 
-	public void mediaTypeEqual(String multirequestToken){
-		setToken("mediaTypeEqual", multirequestToken);
-	}
-
-	// mediaIdIn:
-	public String getMediaIdIn(){
-		return this.mediaIdIn;
-	}
-	public void setMediaIdIn(String mediaIdIn){
-		this.mediaIdIn = mediaIdIn;
-	}
-
-	public void mediaIdIn(String multirequestToken){
-		setToken("mediaIdIn", multirequestToken);
-	}
+    // mediaIdIn:
+    public String getMediaIdIn(){
+        return this.mediaIdIn;
+    }
+    public void setMediaIdIn(String mediaIdIn){
+        this.mediaIdIn = mediaIdIn;
+    }
 
 
-	public FavoriteFilter() {
-		super();
-	}
+    public FavoriteFilter() {
+       super();
+    }
 
-	public FavoriteFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public FavoriteFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		mediaTypeEqual = GsonParser.parseInt(jsonObject.get("mediaTypeEqual"));
-		mediaIdIn = GsonParser.parseString(jsonObject.get("mediaIdIn"));
+        // set members values:
+        mediaTypeEqual = GsonParser.parseInt(jsonObject.get("mediaTypeEqual"));
+        mediaIdIn = GsonParser.parseString(jsonObject.get("mediaIdIn"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFavoriteFilter");
-		kparams.add("mediaTypeEqual", this.mediaTypeEqual);
-		kparams.add("mediaIdIn", this.mediaIdIn);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaFavoriteFilter");
+        kparams.add("mediaTypeEqual", this.mediaTypeEqual);
+        kparams.add("mediaIdIn", this.mediaIdIn);
+        return kparams;
+    }
 
 }
 

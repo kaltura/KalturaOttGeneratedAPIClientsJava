@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.types.ExternalReceipt;
 import com.kaltura.client.types.Purchase;
@@ -44,124 +45,69 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class TransactionService {
-	
-	public static class DowngradeTransactionBuilder extends NullRequestBuilder {
-		
-		public DowngradeTransactionBuilder(Purchase purchase) {
-			super("transaction", "downgrade");
-			params.add("purchase", purchase);
-		}
-	}
 
 	/**  downgrade specific subscription for a household. entitlements will be updated on
 	  the existing subscription end date.  */
-    public static DowngradeTransactionBuilder downgrade(Purchase purchase)  {
-		return new DowngradeTransactionBuilder(purchase);
-	}
-	
-	public static class GetPurchaseSessionIdTransactionBuilder extends RequestBuilder<Long, String, GetPurchaseSessionIdTransactionBuilder> {
-		
-		public GetPurchaseSessionIdTransactionBuilder(PurchaseSession purchaseSession) {
-			super(Long.class, "transaction", "getPurchaseSessionId");
-			params.add("purchaseSession", purchaseSession);
-		}
-	}
+    public static RequestBuilder<Void> downgrade(Purchase purchase)  {
+        Params kparams = new Params();
+        kparams.add("purchase", purchase);
+
+        return new NullRequestBuilder("transaction", "downgrade", kparams);
+    }
 
 	/**  Retrieve the purchase session identifier  */
-    public static GetPurchaseSessionIdTransactionBuilder getPurchaseSessionId(PurchaseSession purchaseSession)  {
-		return new GetPurchaseSessionIdTransactionBuilder(purchaseSession);
-	}
-	
-	public static class PurchaseTransactionBuilder extends RequestBuilder<Transaction, Transaction.Tokenizer, PurchaseTransactionBuilder> {
-		
-		public PurchaseTransactionBuilder(Purchase purchase) {
-			super(Transaction.class, "transaction", "purchase");
-			params.add("purchase", purchase);
-		}
-	}
+    public static RequestBuilder<Long> getPurchaseSessionId(PurchaseSession purchaseSession)  {
+        Params kparams = new Params();
+        kparams.add("purchaseSession", purchaseSession);
+
+        return new RequestBuilder<Long>(Long.class, "transaction", "getPurchaseSessionId", kparams);
+    }
 
 	/**  Purchase specific product or subscription for a household. Upon successful
 	  charge entitlements to use the requested product or subscription are granted.  */
-    public static PurchaseTransactionBuilder purchase(Purchase purchase)  {
-		return new PurchaseTransactionBuilder(purchase);
-	}
-	
-	public static class SetWaiverTransactionBuilder extends RequestBuilder<Boolean, String, SetWaiverTransactionBuilder> {
-		
-		public SetWaiverTransactionBuilder(int assetId, TransactionType transactionType) {
-			super(Boolean.class, "transaction", "setWaiver");
-			params.add("assetId", assetId);
-			params.add("transactionType", transactionType);
-		}
-		
-		public void assetId(String multirequestToken) {
-			params.add("assetId", multirequestToken);
-		}
-		
-		public void transactionType(String multirequestToken) {
-			params.add("transactionType", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Transaction> purchase(Purchase purchase)  {
+        Params kparams = new Params();
+        kparams.add("purchase", purchase);
+
+        return new RequestBuilder<Transaction>(Transaction.class, "transaction", "purchase", kparams);
+    }
 
 	/**  This method shall set the waiver flag on the user entitlement table and the
 	  waiver date field to the current date.  */
-    public static SetWaiverTransactionBuilder setWaiver(int assetId, TransactionType transactionType)  {
-		return new SetWaiverTransactionBuilder(assetId, transactionType);
-	}
-	
-	public static class UpdateStatusTransactionBuilder extends NullRequestBuilder {
-		
-		public UpdateStatusTransactionBuilder(String paymentGatewayId, String externalTransactionId, String signature, TransactionStatus status) {
-			super("transaction", "updateStatus");
-			params.add("paymentGatewayId", paymentGatewayId);
-			params.add("externalTransactionId", externalTransactionId);
-			params.add("signature", signature);
-			params.add("status", status);
-		}
-		
-		public void paymentGatewayId(String multirequestToken) {
-			params.add("paymentGatewayId", multirequestToken);
-		}
-		
-		public void externalTransactionId(String multirequestToken) {
-			params.add("externalTransactionId", multirequestToken);
-		}
-		
-		public void signature(String multirequestToken) {
-			params.add("signature", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Boolean> setWaiver(int assetId, TransactionType transactionType)  {
+        Params kparams = new Params();
+        kparams.add("assetId", assetId);
+        kparams.add("transactionType", transactionType);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "transaction", "setWaiver", kparams);
+    }
 
 	/**  Updates a pending purchase transaction state.  */
-    public static UpdateStatusTransactionBuilder updateStatus(String paymentGatewayId, String externalTransactionId, String signature, TransactionStatus status)  {
-		return new UpdateStatusTransactionBuilder(paymentGatewayId, externalTransactionId, signature, status);
-	}
-	
-	public static class UpgradeTransactionBuilder extends RequestBuilder<Transaction, Transaction.Tokenizer, UpgradeTransactionBuilder> {
-		
-		public UpgradeTransactionBuilder(Purchase purchase) {
-			super(Transaction.class, "transaction", "upgrade");
-			params.add("purchase", purchase);
-		}
-	}
+    public static RequestBuilder<Void> updateStatus(String paymentGatewayId, String externalTransactionId, String signature, TransactionStatus status)  {
+        Params kparams = new Params();
+        kparams.add("paymentGatewayId", paymentGatewayId);
+        kparams.add("externalTransactionId", externalTransactionId);
+        kparams.add("signature", signature);
+        kparams.add("status", status);
+
+        return new NullRequestBuilder("transaction", "updateStatus", kparams);
+    }
 
 	/**  upgrade specific subscription for a household. Upon successful charge
 	  entitlements to use the requested product or subscription are granted.  */
-    public static UpgradeTransactionBuilder upgrade(Purchase purchase)  {
-		return new UpgradeTransactionBuilder(purchase);
-	}
-	
-	public static class ValidateReceiptTransactionBuilder extends RequestBuilder<Transaction, Transaction.Tokenizer, ValidateReceiptTransactionBuilder> {
-		
-		public ValidateReceiptTransactionBuilder(ExternalReceipt externalReceipt) {
-			super(Transaction.class, "transaction", "validateReceipt");
-			params.add("externalReceipt", externalReceipt);
-		}
-	}
+    public static RequestBuilder<Transaction> upgrade(Purchase purchase)  {
+        Params kparams = new Params();
+        kparams.add("purchase", purchase);
+
+        return new RequestBuilder<Transaction>(Transaction.class, "transaction", "upgrade", kparams);
+    }
 
 	/**  Verifies PPV/Subscription/Collection client purchase (such as InApp) and
 	  entitles the user.  */
-    public static ValidateReceiptTransactionBuilder validateReceipt(ExternalReceipt externalReceipt)  {
-		return new ValidateReceiptTransactionBuilder(externalReceipt);
-	}
+    public static RequestBuilder<Transaction> validateReceipt(ExternalReceipt externalReceipt)  {
+        Params kparams = new Params();
+        kparams.add("externalReceipt", externalReceipt);
+
+        return new RequestBuilder<Transaction>(Transaction.class, "transaction", "validateReceipt", kparams);
+    }
 }

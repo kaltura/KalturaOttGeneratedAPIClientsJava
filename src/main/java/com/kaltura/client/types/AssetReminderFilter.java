@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,12 +40,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetReminderFilter.Tokenizer.class)
 public class AssetReminderFilter extends ReminderFilter {
-	
-	public interface Tokenizer extends ReminderFilter.Tokenizer {
-		String kSql();
-	}
 
 	/**  Search assets using dynamic criteria. Provided collection of nested expressions
 	  with key, comparison operators, value, and logical conjunction.             
@@ -67,41 +62,37 @@ public class AssetReminderFilter extends ReminderFilter {
 	  ~ (like), !~, ^ (starts with), + (exists), !+ (not exists).              Logical
 	  conjunction: and, or.               Search values are limited to 20 characters
 	  each.              (maximum length of entire filter is 2048 characters)  */
-	private String kSql;
+    private String kSql;
 
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
-
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
-	}
+    // kSql:
+    public String getKSql(){
+        return this.kSql;
+    }
+    public void setKSql(String kSql){
+        this.kSql = kSql;
+    }
 
 
-	public AssetReminderFilter() {
-		super();
-	}
+    public AssetReminderFilter() {
+       super();
+    }
 
-	public AssetReminderFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public AssetReminderFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+        // set members values:
+        kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetReminderFilter");
-		kparams.add("kSql", this.kSql);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaAssetReminderFilter");
+        kparams.add("kSql", this.kSql);
+        return kparams;
+    }
 
 }
 

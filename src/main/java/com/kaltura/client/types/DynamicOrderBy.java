@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.MetaTagOrderBy;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.MetaTagOrderBy;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,66 +43,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Kaltura Asset Order  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DynamicOrderBy.Tokenizer.class)
 public class DynamicOrderBy extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String name();
-		String orderBy();
-	}
 
 	/**  order by name  */
-	private String name;
+    private String name;
 	/**  order by meta asc/desc  */
-	private MetaTagOrderBy orderBy;
+    private MetaTagOrderBy orderBy;
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
+    // name:
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// orderBy:
-	public MetaTagOrderBy getOrderBy(){
-		return this.orderBy;
-	}
-	public void setOrderBy(MetaTagOrderBy orderBy){
-		this.orderBy = orderBy;
-	}
-
-	public void orderBy(String multirequestToken){
-		setToken("orderBy", multirequestToken);
-	}
+    // orderBy:
+    public MetaTagOrderBy getOrderBy(){
+        return this.orderBy;
+    }
+    public void setOrderBy(MetaTagOrderBy orderBy){
+        this.orderBy = orderBy;
+    }
 
 
-	public DynamicOrderBy() {
-		super();
-	}
+    public DynamicOrderBy() {
+       super();
+    }
 
-	public DynamicOrderBy(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public DynamicOrderBy(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		name = GsonParser.parseString(jsonObject.get("name"));
-		orderBy = MetaTagOrderBy.get(GsonParser.parseString(jsonObject.get("orderBy")));
+        // set members values:
+        name = GsonParser.parseString(jsonObject.get("name"));
+        orderBy = MetaTagOrderBy.get(GsonParser.parseString(jsonObject.get("orderBy")));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDynamicOrderBy");
-		kparams.add("name", this.name);
-		kparams.add("orderBy", this.orderBy);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaDynamicOrderBy");
+        kparams.add("name", this.name);
+        kparams.add("orderBy", this.orderBy);
+        return kparams;
+    }
 
 }
 

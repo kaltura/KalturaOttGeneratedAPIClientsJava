@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,117 +41,88 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Program-asset info  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ProgramAsset.Tokenizer.class)
 public class ProgramAsset extends Asset {
-	
-	public interface Tokenizer extends Asset.Tokenizer {
-		String epgChannelId();
-		String epgId();
-		String relatedMediaId();
-		String crid();
-		String linearAssetId();
-	}
 
 	/**  EPG channel identifier  */
-	private Long epgChannelId;
+    private Long epgChannelId;
 	/**  EPG identifier  */
-	private String epgId;
+    private String epgId;
 	/**  Ralated media identifier  */
-	private Long relatedMediaId;
+    private Long relatedMediaId;
 	/**  Unique identifier for the program  */
-	private String crid;
+    private String crid;
 	/**  Id of linear media asset  */
-	private Long linearAssetId;
+    private Long linearAssetId;
 
-	// epgChannelId:
-	public Long getEpgChannelId(){
-		return this.epgChannelId;
-	}
-	public void setEpgChannelId(Long epgChannelId){
-		this.epgChannelId = epgChannelId;
-	}
+    // epgChannelId:
+    public Long getEpgChannelId(){
+        return this.epgChannelId;
+    }
+    public void setEpgChannelId(Long epgChannelId){
+        this.epgChannelId = epgChannelId;
+    }
 
-	public void epgChannelId(String multirequestToken){
-		setToken("epgChannelId", multirequestToken);
-	}
+    // epgId:
+    public String getEpgId(){
+        return this.epgId;
+    }
+    public void setEpgId(String epgId){
+        this.epgId = epgId;
+    }
 
-	// epgId:
-	public String getEpgId(){
-		return this.epgId;
-	}
-	public void setEpgId(String epgId){
-		this.epgId = epgId;
-	}
+    // relatedMediaId:
+    public Long getRelatedMediaId(){
+        return this.relatedMediaId;
+    }
+    public void setRelatedMediaId(Long relatedMediaId){
+        this.relatedMediaId = relatedMediaId;
+    }
 
-	public void epgId(String multirequestToken){
-		setToken("epgId", multirequestToken);
-	}
+    // crid:
+    public String getCrid(){
+        return this.crid;
+    }
+    public void setCrid(String crid){
+        this.crid = crid;
+    }
 
-	// relatedMediaId:
-	public Long getRelatedMediaId(){
-		return this.relatedMediaId;
-	}
-	public void setRelatedMediaId(Long relatedMediaId){
-		this.relatedMediaId = relatedMediaId;
-	}
-
-	public void relatedMediaId(String multirequestToken){
-		setToken("relatedMediaId", multirequestToken);
-	}
-
-	// crid:
-	public String getCrid(){
-		return this.crid;
-	}
-	public void setCrid(String crid){
-		this.crid = crid;
-	}
-
-	public void crid(String multirequestToken){
-		setToken("crid", multirequestToken);
-	}
-
-	// linearAssetId:
-	public Long getLinearAssetId(){
-		return this.linearAssetId;
-	}
-	public void setLinearAssetId(Long linearAssetId){
-		this.linearAssetId = linearAssetId;
-	}
-
-	public void linearAssetId(String multirequestToken){
-		setToken("linearAssetId", multirequestToken);
-	}
+    // linearAssetId:
+    public Long getLinearAssetId(){
+        return this.linearAssetId;
+    }
+    public void setLinearAssetId(Long linearAssetId){
+        this.linearAssetId = linearAssetId;
+    }
 
 
-	public ProgramAsset() {
-		super();
-	}
+    public ProgramAsset() {
+       super();
+    }
 
-	public ProgramAsset(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public ProgramAsset(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		epgChannelId = GsonParser.parseLong(jsonObject.get("epgChannelId"));
-		epgId = GsonParser.parseString(jsonObject.get("epgId"));
-		relatedMediaId = GsonParser.parseLong(jsonObject.get("relatedMediaId"));
-		crid = GsonParser.parseString(jsonObject.get("crid"));
-		linearAssetId = GsonParser.parseLong(jsonObject.get("linearAssetId"));
+        // set members values:
+        epgChannelId = GsonParser.parseLong(jsonObject.get("epgChannelId"));
+        epgId = GsonParser.parseString(jsonObject.get("epgId"));
+        relatedMediaId = GsonParser.parseLong(jsonObject.get("relatedMediaId"));
+        crid = GsonParser.parseString(jsonObject.get("crid"));
+        linearAssetId = GsonParser.parseLong(jsonObject.get("linearAssetId"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaProgramAsset");
-		kparams.add("epgChannelId", this.epgChannelId);
-		kparams.add("epgId", this.epgId);
-		kparams.add("relatedMediaId", this.relatedMediaId);
-		kparams.add("crid", this.crid);
-		kparams.add("linearAssetId", this.linearAssetId);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaProgramAsset");
+        kparams.add("epgChannelId", this.epgChannelId);
+        kparams.add("epgId", this.epgId);
+        kparams.add("relatedMediaId", this.relatedMediaId);
+        kparams.add("crid", this.crid);
+        kparams.add("linearAssetId", this.linearAssetId);
+        return kparams;
+    }
 
 }
 

@@ -27,13 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.kaltura.client.types.ObjectBase;
 import java.util.List;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,45 +42,40 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(StringValueArray.Tokenizer.class)
 public class StringValueArray extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> objects();
-	}
 
 	/**  List of string values  */
-	private List<StringValue> objects;
+    private List<StringValue> objects;
 
-	// objects:
-	public List<StringValue> getObjects(){
-		return this.objects;
-	}
-	public void setObjects(List<StringValue> objects){
-		this.objects = objects;
-	}
+    // objects:
+    public List<StringValue> getObjects(){
+        return this.objects;
+    }
+    public void setObjects(List<StringValue> objects){
+        this.objects = objects;
+    }
 
 
-	public StringValueArray() {
-		super();
-	}
+    public StringValueArray() {
+       super();
+    }
 
-	public StringValueArray(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public StringValueArray(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), StringValue.class);
+        // set members values:
+        objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), StringValue.class);
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaStringValueArray");
-		kparams.add("objects", this.objects);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaStringValueArray");
+        kparams.add("objects", this.objects);
+        return kparams;
+    }
 
 }
 

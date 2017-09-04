@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,39 +36,39 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum UserAssetsListType implements EnumAsString {
-	ALL("all"),
-	WATCH("watch"),
-	PURCHASE("purchase"),
-	LIBRARY("library");
+    ALL("all"),
+    WATCH("watch"),
+    PURCHASE("purchase"),
+    LIBRARY("library");
 
-	private String value;
+    private String value;
 
-	UserAssetsListType(String value) {
-		this.value = value;
-	}
+    UserAssetsListType(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static UserAssetsListType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over UserAssetsListType defined values and compare the inner value with the given one:
-		for(UserAssetsListType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return UserAssetsListType.values().length > 0 ? UserAssetsListType.values()[0]: null;
+    public static UserAssetsListType get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over UserAssetsListType defined values and compare the inner value with the given one:
+        for(UserAssetsListType item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return UserAssetsListType.values().length > 0 ? UserAssetsListType.values()[0]: null;
    }
 }

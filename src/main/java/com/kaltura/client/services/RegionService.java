@@ -27,9 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Region;
 import com.kaltura.client.types.RegionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,17 +42,12 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class RegionService {
-	
-	public static class ListRegionBuilder extends ListResponseRequestBuilder<Region, Region.Tokenizer, ListRegionBuilder> {
-		
-		public ListRegionBuilder(RegionFilter filter) {
-			super(Region.class, "region", "list");
-			params.add("filter", filter);
-		}
-	}
 
 	/**  Returns all regions for the partner  */
-    public static ListRegionBuilder list(RegionFilter filter)  {
-		return new ListRegionBuilder(filter);
-	}
+    public static RequestBuilder<ListResponse<Region>> list(RegionFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<Region>(Region.class, "region", "list", kparams);
+    }
 }

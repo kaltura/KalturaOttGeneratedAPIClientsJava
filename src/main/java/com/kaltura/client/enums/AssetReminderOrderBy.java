@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,44 +36,44 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum AssetReminderOrderBy implements EnumAsString {
-	RELEVANCY_DESC("RELEVANCY_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC"),
-	VIEWS_DESC("VIEWS_DESC"),
-	RATINGS_DESC("RATINGS_DESC"),
-	VOTES_DESC("VOTES_DESC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	START_DATE_ASC("START_DATE_ASC"),
-	LIKES_DESC("LIKES_DESC");
+    RELEVANCY_DESC("RELEVANCY_DESC"),
+    NAME_ASC("NAME_ASC"),
+    NAME_DESC("NAME_DESC"),
+    VIEWS_DESC("VIEWS_DESC"),
+    RATINGS_DESC("RATINGS_DESC"),
+    VOTES_DESC("VOTES_DESC"),
+    START_DATE_DESC("START_DATE_DESC"),
+    START_DATE_ASC("START_DATE_ASC"),
+    LIKES_DESC("LIKES_DESC");
 
-	private String value;
+    private String value;
 
-	AssetReminderOrderBy(String value) {
-		this.value = value;
-	}
+    AssetReminderOrderBy(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static AssetReminderOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over AssetReminderOrderBy defined values and compare the inner value with the given one:
-		for(AssetReminderOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetReminderOrderBy.values().length > 0 ? AssetReminderOrderBy.values()[0]: null;
+    public static AssetReminderOrderBy get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over AssetReminderOrderBy defined values and compare the inner value with the given one:
+        for(AssetReminderOrderBy item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return AssetReminderOrderBy.values().length > 0 ? AssetReminderOrderBy.values()[0]: null;
    }
 }

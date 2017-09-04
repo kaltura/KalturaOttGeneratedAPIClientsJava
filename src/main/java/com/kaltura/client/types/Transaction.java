@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,139 +41,105 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Transaction.Tokenizer.class)
 public class Transaction extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String paymentGatewayReferenceId();
-		String paymentGatewayResponseId();
-		String state();
-		String failReasonCode();
-		String createdAt();
-	}
 
 	/**  Kaltura unique ID representing the transaction  */
-	private String id;
+    private String id;
 	/**  Transaction reference ID received from the payment gateway.               Value
 	  is available only if the payment gateway provides this information.  */
-	private String paymentGatewayReferenceId;
+    private String paymentGatewayReferenceId;
 	/**  Response ID received from by the payment gateway.               Value is
 	  available only if the payment gateway provides this information.  */
-	private String paymentGatewayResponseId;
+    private String paymentGatewayResponseId;
 	/**  Transaction state: OK/Pending/Failed  */
-	private String state;
+    private String state;
 	/**  Adapter failure reason code              Insufficient funds = 20, Invalid
 	  account = 21, User unknown = 22, Reason unknown = 23, Unknown payment gateway
 	  response = 24,              No response from payment gateway = 25, Exceeded
 	  retry limit = 26, Illegal client request = 27, Expired = 28  */
-	private Integer failReasonCode;
+    private Integer failReasonCode;
 	/**  Entitlement creation date  */
-	private Integer createdAt;
+    private Integer createdAt;
 
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
+    // id:
+    public String getId(){
+        return this.id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // paymentGatewayReferenceId:
+    public String getPaymentGatewayReferenceId(){
+        return this.paymentGatewayReferenceId;
+    }
+    public void setPaymentGatewayReferenceId(String paymentGatewayReferenceId){
+        this.paymentGatewayReferenceId = paymentGatewayReferenceId;
+    }
 
-	// paymentGatewayReferenceId:
-	public String getPaymentGatewayReferenceId(){
-		return this.paymentGatewayReferenceId;
-	}
-	public void setPaymentGatewayReferenceId(String paymentGatewayReferenceId){
-		this.paymentGatewayReferenceId = paymentGatewayReferenceId;
-	}
+    // paymentGatewayResponseId:
+    public String getPaymentGatewayResponseId(){
+        return this.paymentGatewayResponseId;
+    }
+    public void setPaymentGatewayResponseId(String paymentGatewayResponseId){
+        this.paymentGatewayResponseId = paymentGatewayResponseId;
+    }
 
-	public void paymentGatewayReferenceId(String multirequestToken){
-		setToken("paymentGatewayReferenceId", multirequestToken);
-	}
+    // state:
+    public String getState(){
+        return this.state;
+    }
+    public void setState(String state){
+        this.state = state;
+    }
 
-	// paymentGatewayResponseId:
-	public String getPaymentGatewayResponseId(){
-		return this.paymentGatewayResponseId;
-	}
-	public void setPaymentGatewayResponseId(String paymentGatewayResponseId){
-		this.paymentGatewayResponseId = paymentGatewayResponseId;
-	}
+    // failReasonCode:
+    public Integer getFailReasonCode(){
+        return this.failReasonCode;
+    }
+    public void setFailReasonCode(Integer failReasonCode){
+        this.failReasonCode = failReasonCode;
+    }
 
-	public void paymentGatewayResponseId(String multirequestToken){
-		setToken("paymentGatewayResponseId", multirequestToken);
-	}
-
-	// state:
-	public String getState(){
-		return this.state;
-	}
-	public void setState(String state){
-		this.state = state;
-	}
-
-	public void state(String multirequestToken){
-		setToken("state", multirequestToken);
-	}
-
-	// failReasonCode:
-	public Integer getFailReasonCode(){
-		return this.failReasonCode;
-	}
-	public void setFailReasonCode(Integer failReasonCode){
-		this.failReasonCode = failReasonCode;
-	}
-
-	public void failReasonCode(String multirequestToken){
-		setToken("failReasonCode", multirequestToken);
-	}
-
-	// createdAt:
-	public Integer getCreatedAt(){
-		return this.createdAt;
-	}
-	public void setCreatedAt(Integer createdAt){
-		this.createdAt = createdAt;
-	}
-
-	public void createdAt(String multirequestToken){
-		setToken("createdAt", multirequestToken);
-	}
+    // createdAt:
+    public Integer getCreatedAt(){
+        return this.createdAt;
+    }
+    public void setCreatedAt(Integer createdAt){
+        this.createdAt = createdAt;
+    }
 
 
-	public Transaction() {
-		super();
-	}
+    public Transaction() {
+       super();
+    }
 
-	public Transaction(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Transaction(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		paymentGatewayReferenceId = GsonParser.parseString(jsonObject.get("paymentGatewayReferenceId"));
-		paymentGatewayResponseId = GsonParser.parseString(jsonObject.get("paymentGatewayResponseId"));
-		state = GsonParser.parseString(jsonObject.get("state"));
-		failReasonCode = GsonParser.parseInt(jsonObject.get("failReasonCode"));
-		createdAt = GsonParser.parseInt(jsonObject.get("createdAt"));
+        // set members values:
+        id = GsonParser.parseString(jsonObject.get("id"));
+        paymentGatewayReferenceId = GsonParser.parseString(jsonObject.get("paymentGatewayReferenceId"));
+        paymentGatewayResponseId = GsonParser.parseString(jsonObject.get("paymentGatewayResponseId"));
+        state = GsonParser.parseString(jsonObject.get("state"));
+        failReasonCode = GsonParser.parseInt(jsonObject.get("failReasonCode"));
+        createdAt = GsonParser.parseInt(jsonObject.get("createdAt"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaTransaction");
-		kparams.add("id", this.id);
-		kparams.add("paymentGatewayReferenceId", this.paymentGatewayReferenceId);
-		kparams.add("paymentGatewayResponseId", this.paymentGatewayResponseId);
-		kparams.add("state", this.state);
-		kparams.add("failReasonCode", this.failReasonCode);
-		kparams.add("createdAt", this.createdAt);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaTransaction");
+        kparams.add("id", this.id);
+        kparams.add("paymentGatewayReferenceId", this.paymentGatewayReferenceId);
+        kparams.add("paymentGatewayResponseId", this.paymentGatewayResponseId);
+        kparams.add("state", this.state);
+        kparams.add("failReasonCode", this.failReasonCode);
+        kparams.add("createdAt", this.createdAt);
+        return kparams;
+    }
 
 }
 

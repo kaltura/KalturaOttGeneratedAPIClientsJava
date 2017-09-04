@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,38 +36,38 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum SocialPlatform implements EnumAsString {
-	IN_APP("IN_APP"),
-	FACEBOOK("FACEBOOK"),
-	TWITTER("TWITTER");
+    IN_APP("IN_APP"),
+    FACEBOOK("FACEBOOK"),
+    TWITTER("TWITTER");
 
-	private String value;
+    private String value;
 
-	SocialPlatform(String value) {
-		this.value = value;
-	}
+    SocialPlatform(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static SocialPlatform get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over SocialPlatform defined values and compare the inner value with the given one:
-		for(SocialPlatform item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SocialPlatform.values().length > 0 ? SocialPlatform.values()[0]: null;
+    public static SocialPlatform get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over SocialPlatform defined values and compare the inner value with the given one:
+        for(SocialPlatform item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return SocialPlatform.values().length > 0 ? SocialPlatform.values()[0]: null;
    }
 }

@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.enums.UserAssetsListItemType;
 import com.kaltura.client.enums.UserAssetsListType;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,116 +44,87 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  An item of user asset list  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserAssetsListItem.Tokenizer.class)
 public class UserAssetsListItem extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String orderIndex();
-		String type();
-		String userId();
-		String listType();
-	}
 
 	/**  Asset identifier  */
-	private String id;
+    private String id;
 	/**  The order index of the asset in the list  */
-	private Integer orderIndex;
+    private Integer orderIndex;
 	/**  The type of the asset  */
-	private UserAssetsListItemType type;
+    private UserAssetsListItemType type;
 	/**  The identifier of the user who added the item to the list  */
-	private String userId;
+    private String userId;
 	/**  The type of the list, all is not supported  */
-	private UserAssetsListType listType;
+    private UserAssetsListType listType;
 
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
+    // id:
+    public String getId(){
+        return this.id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // orderIndex:
+    public Integer getOrderIndex(){
+        return this.orderIndex;
+    }
+    public void setOrderIndex(Integer orderIndex){
+        this.orderIndex = orderIndex;
+    }
 
-	// orderIndex:
-	public Integer getOrderIndex(){
-		return this.orderIndex;
-	}
-	public void setOrderIndex(Integer orderIndex){
-		this.orderIndex = orderIndex;
-	}
+    // type:
+    public UserAssetsListItemType getType(){
+        return this.type;
+    }
+    public void setType(UserAssetsListItemType type){
+        this.type = type;
+    }
 
-	public void orderIndex(String multirequestToken){
-		setToken("orderIndex", multirequestToken);
-	}
+    // userId:
+    public String getUserId(){
+        return this.userId;
+    }
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
-	// type:
-	public UserAssetsListItemType getType(){
-		return this.type;
-	}
-	public void setType(UserAssetsListItemType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
-	// userId:
-	public String getUserId(){
-		return this.userId;
-	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
-
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
-
-	// listType:
-	public UserAssetsListType getListType(){
-		return this.listType;
-	}
-	public void setListType(UserAssetsListType listType){
-		this.listType = listType;
-	}
-
-	public void listType(String multirequestToken){
-		setToken("listType", multirequestToken);
-	}
+    // listType:
+    public UserAssetsListType getListType(){
+        return this.listType;
+    }
+    public void setListType(UserAssetsListType listType){
+        this.listType = listType;
+    }
 
 
-	public UserAssetsListItem() {
-		super();
-	}
+    public UserAssetsListItem() {
+       super();
+    }
 
-	public UserAssetsListItem(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public UserAssetsListItem(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		orderIndex = GsonParser.parseInt(jsonObject.get("orderIndex"));
-		type = UserAssetsListItemType.get(GsonParser.parseString(jsonObject.get("type")));
-		userId = GsonParser.parseString(jsonObject.get("userId"));
-		listType = UserAssetsListType.get(GsonParser.parseString(jsonObject.get("listType")));
+        // set members values:
+        id = GsonParser.parseString(jsonObject.get("id"));
+        orderIndex = GsonParser.parseInt(jsonObject.get("orderIndex"));
+        type = UserAssetsListItemType.get(GsonParser.parseString(jsonObject.get("type")));
+        userId = GsonParser.parseString(jsonObject.get("userId"));
+        listType = UserAssetsListType.get(GsonParser.parseString(jsonObject.get("listType")));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserAssetsListItem");
-		kparams.add("id", this.id);
-		kparams.add("orderIndex", this.orderIndex);
-		kparams.add("type", this.type);
-		kparams.add("listType", this.listType);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaUserAssetsListItem");
+        kparams.add("id", this.id);
+        kparams.add("orderIndex", this.orderIndex);
+        kparams.add("type", this.type);
+        kparams.add("listType", this.listType);
+        return kparams;
+    }
 
 }
 

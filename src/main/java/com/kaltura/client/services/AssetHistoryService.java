@@ -27,10 +27,14 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,26 +44,33 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class AssetHistoryService {
-	
-	public static class ListAssetHistoryBuilder extends ListResponseRequestBuilder<AssetHistory, AssetHistory.Tokenizer, ListAssetHistoryBuilder> {
-		
-		public ListAssetHistoryBuilder(AssetHistoryFilter filter, FilterPager pager) {
-			super(AssetHistory.class, "assethistory", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
 
-	public static ListAssetHistoryBuilder list()  {
-		return list(null);
-	}
+    public static RequestBuilder<Void> clean()  {
+        return clean(null);
+    }
 
-	public static ListAssetHistoryBuilder list(AssetHistoryFilter filter)  {
-		return list(filter, null);
-	}
+	/**  Clean the user’s viewing history  */
+    public static RequestBuilder<Void> clean(AssetHistoryFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new NullRequestBuilder("assethistory", "clean", kparams);
+    }
+
+    public static RequestBuilder<ListResponse<AssetHistory>> list()  {
+        return list(null);
+    }
+
+    public static RequestBuilder<ListResponse<AssetHistory>> list(AssetHistoryFilter filter)  {
+        return list(filter, null);
+    }
 
 	/**  Get recently watched media for user, ordered by recently watched first.  */
-    public static ListAssetHistoryBuilder list(AssetHistoryFilter filter, FilterPager pager)  {
-		return new ListAssetHistoryBuilder(filter, pager);
-	}
+    public static RequestBuilder<ListResponse<AssetHistory>> list(AssetHistoryFilter filter, FilterPager pager)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+        kparams.add("pager", pager);
+
+        return new ListResponseRequestBuilder<AssetHistory>(AssetHistory.class, "assethistory", "list", kparams);
+    }
 }

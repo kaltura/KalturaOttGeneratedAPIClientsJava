@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Meta;
 import com.kaltura.client.types.MetaFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -40,39 +42,25 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class MetaService {
-	
-	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
-		
-		public ListMetaBuilder(MetaFilter filter) {
-			super(Meta.class, "meta", "list");
-			params.add("filter", filter);
-		}
-	}
 
-	public static ListMetaBuilder list()  {
-		return list(null);
-	}
+    public static RequestBuilder<ListResponse<Meta>> list()  {
+        return list(null);
+    }
 
 	/**  Get the list of meta mappings for the partner  */
-    public static ListMetaBuilder list(MetaFilter filter)  {
-		return new ListMetaBuilder(filter);
-	}
-	
-	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
-		
-		public UpdateMetaBuilder(String id, Meta meta) {
-			super(Meta.class, "meta", "update");
-			params.add("id", id);
-			params.add("meta", meta);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
+    public static RequestBuilder<ListResponse<Meta>> list(MetaFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<Meta>(Meta.class, "meta", "list", kparams);
+    }
 
 	/**  Update meta&amp;#39;s user interest  */
-    public static UpdateMetaBuilder update(String id, Meta meta)  {
-		return new UpdateMetaBuilder(id, meta);
-	}
+    public static RequestBuilder<Meta> update(String id, Meta meta)  {
+        Params kparams = new Params();
+        kparams.add("id", id);
+        kparams.add("meta", meta);
+
+        return new RequestBuilder<Meta>(Meta.class, "meta", "update", kparams);
+    }
 }

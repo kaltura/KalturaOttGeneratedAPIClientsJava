@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.PaymentMethodType;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.PaymentMethodType;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,257 +43,183 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Entitlement  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Entitlement.Tokenizer.class)
 public class Entitlement extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String entitlementId();
-		String currentUses();
-		String endDate();
-		String currentDate();
-		String lastViewDate();
-		String purchaseDate();
-		String paymentMethod();
-		String deviceUdid();
-		String deviceName();
-		String isCancelationWindowEnabled();
-		String maxUses();
-		String userId();
-		String householdId();
-	}
 
 	/**  Purchase identifier (for subscriptions and collections only)  */
-	private Integer id;
+    private Integer id;
 	/**  Entitlement identifier  */
-	private String entitlementId;
+    private String entitlementId;
 	/**  The current number of uses  */
-	private Integer currentUses;
+    private Integer currentUses;
 	/**  The end date of the entitlement  */
-	private Long endDate;
+    private Long endDate;
 	/**  Current date  */
-	private Long currentDate;
+    private Long currentDate;
 	/**  The last date the item was viewed  */
-	private Long lastViewDate;
+    private Long lastViewDate;
 	/**  Purchase date  */
-	private Long purchaseDate;
+    private Long purchaseDate;
 	/**  Payment Method  */
-	private PaymentMethodType paymentMethod;
+    private PaymentMethodType paymentMethod;
 	/**  The UDID of the device from which the purchase was made  */
-	private String deviceUdid;
+    private String deviceUdid;
 	/**  The name of the device from which the purchase was made  */
-	private String deviceName;
+    private String deviceName;
 	/**  Indicates whether a cancelation window period is enabled  */
-	private Boolean isCancelationWindowEnabled;
+    private Boolean isCancelationWindowEnabled;
 	/**  The maximum number of uses available for this item (only for subscription and
 	  PPV)  */
-	private Integer maxUses;
+    private Integer maxUses;
 	/**  The Identifier of the purchasing user  */
-	private String userId;
+    private String userId;
 	/**  The Identifier of the purchasing household  */
-	private Long householdId;
+    private Long householdId;
 
-	// id:
-	public Integer getId(){
-		return this.id;
-	}
-	public void setId(Integer id){
-		this.id = id;
-	}
+    // id:
+    public Integer getId(){
+        return this.id;
+    }
+    public void setId(Integer id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // entitlementId:
+    public String getEntitlementId(){
+        return this.entitlementId;
+    }
+    public void setEntitlementId(String entitlementId){
+        this.entitlementId = entitlementId;
+    }
 
-	// entitlementId:
-	public String getEntitlementId(){
-		return this.entitlementId;
-	}
-	public void setEntitlementId(String entitlementId){
-		this.entitlementId = entitlementId;
-	}
+    // currentUses:
+    public Integer getCurrentUses(){
+        return this.currentUses;
+    }
+    public void setCurrentUses(Integer currentUses){
+        this.currentUses = currentUses;
+    }
 
-	public void entitlementId(String multirequestToken){
-		setToken("entitlementId", multirequestToken);
-	}
+    // endDate:
+    public Long getEndDate(){
+        return this.endDate;
+    }
+    public void setEndDate(Long endDate){
+        this.endDate = endDate;
+    }
 
-	// currentUses:
-	public Integer getCurrentUses(){
-		return this.currentUses;
-	}
-	public void setCurrentUses(Integer currentUses){
-		this.currentUses = currentUses;
-	}
+    // currentDate:
+    public Long getCurrentDate(){
+        return this.currentDate;
+    }
+    public void setCurrentDate(Long currentDate){
+        this.currentDate = currentDate;
+    }
 
-	public void currentUses(String multirequestToken){
-		setToken("currentUses", multirequestToken);
-	}
+    // lastViewDate:
+    public Long getLastViewDate(){
+        return this.lastViewDate;
+    }
+    public void setLastViewDate(Long lastViewDate){
+        this.lastViewDate = lastViewDate;
+    }
 
-	// endDate:
-	public Long getEndDate(){
-		return this.endDate;
-	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
+    // purchaseDate:
+    public Long getPurchaseDate(){
+        return this.purchaseDate;
+    }
+    public void setPurchaseDate(Long purchaseDate){
+        this.purchaseDate = purchaseDate;
+    }
 
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
-	}
+    // paymentMethod:
+    public PaymentMethodType getPaymentMethod(){
+        return this.paymentMethod;
+    }
+    public void setPaymentMethod(PaymentMethodType paymentMethod){
+        this.paymentMethod = paymentMethod;
+    }
 
-	// currentDate:
-	public Long getCurrentDate(){
-		return this.currentDate;
-	}
-	public void setCurrentDate(Long currentDate){
-		this.currentDate = currentDate;
-	}
+    // deviceUdid:
+    public String getDeviceUdid(){
+        return this.deviceUdid;
+    }
+    public void setDeviceUdid(String deviceUdid){
+        this.deviceUdid = deviceUdid;
+    }
 
-	public void currentDate(String multirequestToken){
-		setToken("currentDate", multirequestToken);
-	}
+    // deviceName:
+    public String getDeviceName(){
+        return this.deviceName;
+    }
+    public void setDeviceName(String deviceName){
+        this.deviceName = deviceName;
+    }
 
-	// lastViewDate:
-	public Long getLastViewDate(){
-		return this.lastViewDate;
-	}
-	public void setLastViewDate(Long lastViewDate){
-		this.lastViewDate = lastViewDate;
-	}
+    // isCancelationWindowEnabled:
+    public Boolean getIsCancelationWindowEnabled(){
+        return this.isCancelationWindowEnabled;
+    }
+    public void setIsCancelationWindowEnabled(Boolean isCancelationWindowEnabled){
+        this.isCancelationWindowEnabled = isCancelationWindowEnabled;
+    }
 
-	public void lastViewDate(String multirequestToken){
-		setToken("lastViewDate", multirequestToken);
-	}
+    // maxUses:
+    public Integer getMaxUses(){
+        return this.maxUses;
+    }
+    public void setMaxUses(Integer maxUses){
+        this.maxUses = maxUses;
+    }
 
-	// purchaseDate:
-	public Long getPurchaseDate(){
-		return this.purchaseDate;
-	}
-	public void setPurchaseDate(Long purchaseDate){
-		this.purchaseDate = purchaseDate;
-	}
+    // userId:
+    public String getUserId(){
+        return this.userId;
+    }
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
-	public void purchaseDate(String multirequestToken){
-		setToken("purchaseDate", multirequestToken);
-	}
-
-	// paymentMethod:
-	public PaymentMethodType getPaymentMethod(){
-		return this.paymentMethod;
-	}
-	public void setPaymentMethod(PaymentMethodType paymentMethod){
-		this.paymentMethod = paymentMethod;
-	}
-
-	public void paymentMethod(String multirequestToken){
-		setToken("paymentMethod", multirequestToken);
-	}
-
-	// deviceUdid:
-	public String getDeviceUdid(){
-		return this.deviceUdid;
-	}
-	public void setDeviceUdid(String deviceUdid){
-		this.deviceUdid = deviceUdid;
-	}
-
-	public void deviceUdid(String multirequestToken){
-		setToken("deviceUdid", multirequestToken);
-	}
-
-	// deviceName:
-	public String getDeviceName(){
-		return this.deviceName;
-	}
-	public void setDeviceName(String deviceName){
-		this.deviceName = deviceName;
-	}
-
-	public void deviceName(String multirequestToken){
-		setToken("deviceName", multirequestToken);
-	}
-
-	// isCancelationWindowEnabled:
-	public Boolean getIsCancelationWindowEnabled(){
-		return this.isCancelationWindowEnabled;
-	}
-	public void setIsCancelationWindowEnabled(Boolean isCancelationWindowEnabled){
-		this.isCancelationWindowEnabled = isCancelationWindowEnabled;
-	}
-
-	public void isCancelationWindowEnabled(String multirequestToken){
-		setToken("isCancelationWindowEnabled", multirequestToken);
-	}
-
-	// maxUses:
-	public Integer getMaxUses(){
-		return this.maxUses;
-	}
-	public void setMaxUses(Integer maxUses){
-		this.maxUses = maxUses;
-	}
-
-	public void maxUses(String multirequestToken){
-		setToken("maxUses", multirequestToken);
-	}
-
-	// userId:
-	public String getUserId(){
-		return this.userId;
-	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
-
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
-
-	// householdId:
-	public Long getHouseholdId(){
-		return this.householdId;
-	}
-	public void setHouseholdId(Long householdId){
-		this.householdId = householdId;
-	}
-
-	public void householdId(String multirequestToken){
-		setToken("householdId", multirequestToken);
-	}
+    // householdId:
+    public Long getHouseholdId(){
+        return this.householdId;
+    }
+    public void setHouseholdId(Long householdId){
+        this.householdId = householdId;
+    }
 
 
-	public Entitlement() {
-		super();
-	}
+    public Entitlement() {
+       super();
+    }
 
-	public Entitlement(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Entitlement(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseInt(jsonObject.get("id"));
-		entitlementId = GsonParser.parseString(jsonObject.get("entitlementId"));
-		currentUses = GsonParser.parseInt(jsonObject.get("currentUses"));
-		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
-		currentDate = GsonParser.parseLong(jsonObject.get("currentDate"));
-		lastViewDate = GsonParser.parseLong(jsonObject.get("lastViewDate"));
-		purchaseDate = GsonParser.parseLong(jsonObject.get("purchaseDate"));
-		paymentMethod = PaymentMethodType.get(GsonParser.parseString(jsonObject.get("paymentMethod")));
-		deviceUdid = GsonParser.parseString(jsonObject.get("deviceUdid"));
-		deviceName = GsonParser.parseString(jsonObject.get("deviceName"));
-		isCancelationWindowEnabled = GsonParser.parseBoolean(jsonObject.get("isCancelationWindowEnabled"));
-		maxUses = GsonParser.parseInt(jsonObject.get("maxUses"));
-		userId = GsonParser.parseString(jsonObject.get("userId"));
-		householdId = GsonParser.parseLong(jsonObject.get("householdId"));
+        // set members values:
+        id = GsonParser.parseInt(jsonObject.get("id"));
+        entitlementId = GsonParser.parseString(jsonObject.get("entitlementId"));
+        currentUses = GsonParser.parseInt(jsonObject.get("currentUses"));
+        endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+        currentDate = GsonParser.parseLong(jsonObject.get("currentDate"));
+        lastViewDate = GsonParser.parseLong(jsonObject.get("lastViewDate"));
+        purchaseDate = GsonParser.parseLong(jsonObject.get("purchaseDate"));
+        paymentMethod = PaymentMethodType.get(GsonParser.parseString(jsonObject.get("paymentMethod")));
+        deviceUdid = GsonParser.parseString(jsonObject.get("deviceUdid"));
+        deviceName = GsonParser.parseString(jsonObject.get("deviceName"));
+        isCancelationWindowEnabled = GsonParser.parseBoolean(jsonObject.get("isCancelationWindowEnabled"));
+        maxUses = GsonParser.parseInt(jsonObject.get("maxUses"));
+        userId = GsonParser.parseString(jsonObject.get("userId"));
+        householdId = GsonParser.parseLong(jsonObject.get("householdId"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaEntitlement");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaEntitlement");
+        return kparams;
+    }
 
 }
 

@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,66 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(LicensedUrlMediaRequest.Tokenizer.class)
 public class LicensedUrlMediaRequest extends LicensedUrlBaseRequest {
-	
-	public interface Tokenizer extends LicensedUrlBaseRequest.Tokenizer {
-		String contentId();
-		String baseUrl();
-	}
 
 	/**  Identifier of the content to get the link for (file identifier)  */
-	private Integer contentId;
+    private Integer contentId;
 	/**  Base URL for the licensed URLs  */
-	private String baseUrl;
+    private String baseUrl;
 
-	// contentId:
-	public Integer getContentId(){
-		return this.contentId;
-	}
-	public void setContentId(Integer contentId){
-		this.contentId = contentId;
-	}
+    // contentId:
+    public Integer getContentId(){
+        return this.contentId;
+    }
+    public void setContentId(Integer contentId){
+        this.contentId = contentId;
+    }
 
-	public void contentId(String multirequestToken){
-		setToken("contentId", multirequestToken);
-	}
-
-	// baseUrl:
-	public String getBaseUrl(){
-		return this.baseUrl;
-	}
-	public void setBaseUrl(String baseUrl){
-		this.baseUrl = baseUrl;
-	}
-
-	public void baseUrl(String multirequestToken){
-		setToken("baseUrl", multirequestToken);
-	}
+    // baseUrl:
+    public String getBaseUrl(){
+        return this.baseUrl;
+    }
+    public void setBaseUrl(String baseUrl){
+        this.baseUrl = baseUrl;
+    }
 
 
-	public LicensedUrlMediaRequest() {
-		super();
-	}
+    public LicensedUrlMediaRequest() {
+       super();
+    }
 
-	public LicensedUrlMediaRequest(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public LicensedUrlMediaRequest(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		contentId = GsonParser.parseInt(jsonObject.get("contentId"));
-		baseUrl = GsonParser.parseString(jsonObject.get("baseUrl"));
+        // set members values:
+        contentId = GsonParser.parseInt(jsonObject.get("contentId"));
+        baseUrl = GsonParser.parseString(jsonObject.get("baseUrl"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaLicensedUrlMediaRequest");
-		kparams.add("contentId", this.contentId);
-		kparams.add("baseUrl", this.baseUrl);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaLicensedUrlMediaRequest");
+        kparams.add("contentId", this.contentId);
+        kparams.add("baseUrl", this.baseUrl);
+        return kparams;
+    }
 
 }
 

@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,100 +41,76 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SocialComment.Tokenizer.class)
 public class SocialComment extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String header();
-		String text();
-		String createDate();
-		String writer();
-	}
 
 	/**  Comment header  */
-	private String header;
+    private String header;
 	/**  Comment body  */
-	private String text;
+    private String text;
 	/**  Comment creation date  */
-	private Long createDate;
+    private Long createDate;
 	/**  The writer of the comment  */
-	private String writer;
+    private String writer;
 
-	// header:
-	public String getHeader(){
-		return this.header;
-	}
-	public void setHeader(String header){
-		this.header = header;
-	}
+    // header:
+    public String getHeader(){
+        return this.header;
+    }
+    public void setHeader(String header){
+        this.header = header;
+    }
 
-	public void header(String multirequestToken){
-		setToken("header", multirequestToken);
-	}
+    // text:
+    public String getText(){
+        return this.text;
+    }
+    public void setText(String text){
+        this.text = text;
+    }
 
-	// text:
-	public String getText(){
-		return this.text;
-	}
-	public void setText(String text){
-		this.text = text;
-	}
+    // createDate:
+    public Long getCreateDate(){
+        return this.createDate;
+    }
+    public void setCreateDate(Long createDate){
+        this.createDate = createDate;
+    }
 
-	public void text(String multirequestToken){
-		setToken("text", multirequestToken);
-	}
-
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
-	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
-	// writer:
-	public String getWriter(){
-		return this.writer;
-	}
-	public void setWriter(String writer){
-		this.writer = writer;
-	}
-
-	public void writer(String multirequestToken){
-		setToken("writer", multirequestToken);
-	}
+    // writer:
+    public String getWriter(){
+        return this.writer;
+    }
+    public void setWriter(String writer){
+        this.writer = writer;
+    }
 
 
-	public SocialComment() {
-		super();
-	}
+    public SocialComment() {
+       super();
+    }
 
-	public SocialComment(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public SocialComment(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		header = GsonParser.parseString(jsonObject.get("header"));
-		text = GsonParser.parseString(jsonObject.get("text"));
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		writer = GsonParser.parseString(jsonObject.get("writer"));
+        // set members values:
+        header = GsonParser.parseString(jsonObject.get("header"));
+        text = GsonParser.parseString(jsonObject.get("text"));
+        createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+        writer = GsonParser.parseString(jsonObject.get("writer"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSocialComment");
-		kparams.add("header", this.header);
-		kparams.add("text", this.text);
-		kparams.add("createDate", this.createDate);
-		kparams.add("writer", this.writer);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaSocialComment");
+        kparams.add("header", this.header);
+        kparams.add("text", this.text);
+        kparams.add("createDate", this.createDate);
+        kparams.add("writer", this.writer);
+        return kparams;
+    }
 
 }
 

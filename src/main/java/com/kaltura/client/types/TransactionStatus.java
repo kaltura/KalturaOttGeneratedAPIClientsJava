@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.TransactionAdapterStatus;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.TransactionAdapterStatus;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,117 +42,88 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(TransactionStatus.Tokenizer.class)
 public class TransactionStatus extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String adapterTransactionStatus();
-		String externalId();
-		String externalStatus();
-		String externalMessage();
-		String failReason();
-	}
 
 	/**  Payment gateway adapter application state for the transaction to update  */
-	private TransactionAdapterStatus adapterTransactionStatus;
+    private TransactionAdapterStatus adapterTransactionStatus;
 	/**  External transaction identifier  */
-	private String externalId;
+    private String externalId;
 	/**  Payment gateway transaction status  */
-	private String externalStatus;
+    private String externalStatus;
 	/**  Payment gateway message  */
-	private String externalMessage;
+    private String externalMessage;
 	/**  The reason the transaction failed  */
-	private Integer failReason;
+    private Integer failReason;
 
-	// adapterTransactionStatus:
-	public TransactionAdapterStatus getAdapterTransactionStatus(){
-		return this.adapterTransactionStatus;
-	}
-	public void setAdapterTransactionStatus(TransactionAdapterStatus adapterTransactionStatus){
-		this.adapterTransactionStatus = adapterTransactionStatus;
-	}
+    // adapterTransactionStatus:
+    public TransactionAdapterStatus getAdapterTransactionStatus(){
+        return this.adapterTransactionStatus;
+    }
+    public void setAdapterTransactionStatus(TransactionAdapterStatus adapterTransactionStatus){
+        this.adapterTransactionStatus = adapterTransactionStatus;
+    }
 
-	public void adapterTransactionStatus(String multirequestToken){
-		setToken("adapterTransactionStatus", multirequestToken);
-	}
+    // externalId:
+    public String getExternalId(){
+        return this.externalId;
+    }
+    public void setExternalId(String externalId){
+        this.externalId = externalId;
+    }
 
-	// externalId:
-	public String getExternalId(){
-		return this.externalId;
-	}
-	public void setExternalId(String externalId){
-		this.externalId = externalId;
-	}
+    // externalStatus:
+    public String getExternalStatus(){
+        return this.externalStatus;
+    }
+    public void setExternalStatus(String externalStatus){
+        this.externalStatus = externalStatus;
+    }
 
-	public void externalId(String multirequestToken){
-		setToken("externalId", multirequestToken);
-	}
+    // externalMessage:
+    public String getExternalMessage(){
+        return this.externalMessage;
+    }
+    public void setExternalMessage(String externalMessage){
+        this.externalMessage = externalMessage;
+    }
 
-	// externalStatus:
-	public String getExternalStatus(){
-		return this.externalStatus;
-	}
-	public void setExternalStatus(String externalStatus){
-		this.externalStatus = externalStatus;
-	}
-
-	public void externalStatus(String multirequestToken){
-		setToken("externalStatus", multirequestToken);
-	}
-
-	// externalMessage:
-	public String getExternalMessage(){
-		return this.externalMessage;
-	}
-	public void setExternalMessage(String externalMessage){
-		this.externalMessage = externalMessage;
-	}
-
-	public void externalMessage(String multirequestToken){
-		setToken("externalMessage", multirequestToken);
-	}
-
-	// failReason:
-	public Integer getFailReason(){
-		return this.failReason;
-	}
-	public void setFailReason(Integer failReason){
-		this.failReason = failReason;
-	}
-
-	public void failReason(String multirequestToken){
-		setToken("failReason", multirequestToken);
-	}
+    // failReason:
+    public Integer getFailReason(){
+        return this.failReason;
+    }
+    public void setFailReason(Integer failReason){
+        this.failReason = failReason;
+    }
 
 
-	public TransactionStatus() {
-		super();
-	}
+    public TransactionStatus() {
+       super();
+    }
 
-	public TransactionStatus(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public TransactionStatus(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		adapterTransactionStatus = TransactionAdapterStatus.get(GsonParser.parseString(jsonObject.get("adapterTransactionStatus")));
-		externalId = GsonParser.parseString(jsonObject.get("externalId"));
-		externalStatus = GsonParser.parseString(jsonObject.get("externalStatus"));
-		externalMessage = GsonParser.parseString(jsonObject.get("externalMessage"));
-		failReason = GsonParser.parseInt(jsonObject.get("failReason"));
+        // set members values:
+        adapterTransactionStatus = TransactionAdapterStatus.get(GsonParser.parseString(jsonObject.get("adapterTransactionStatus")));
+        externalId = GsonParser.parseString(jsonObject.get("externalId"));
+        externalStatus = GsonParser.parseString(jsonObject.get("externalStatus"));
+        externalMessage = GsonParser.parseString(jsonObject.get("externalMessage"));
+        failReason = GsonParser.parseInt(jsonObject.get("failReason"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaTransactionStatus");
-		kparams.add("adapterTransactionStatus", this.adapterTransactionStatus);
-		kparams.add("externalId", this.externalId);
-		kparams.add("externalStatus", this.externalStatus);
-		kparams.add("externalMessage", this.externalMessage);
-		kparams.add("failReason", this.failReason);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaTransactionStatus");
+        kparams.add("adapterTransactionStatus", this.adapterTransactionStatus);
+        kparams.add("externalId", this.externalId);
+        kparams.add("externalStatus", this.externalStatus);
+        kparams.add("externalMessage", this.externalMessage);
+        kparams.add("failReason", this.failReason);
+        return kparams;
+    }
 
 }
 

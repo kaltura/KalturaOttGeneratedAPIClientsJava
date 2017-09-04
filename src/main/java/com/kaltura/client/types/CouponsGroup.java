@@ -27,14 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.CouponGroupType;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.CouponGroupType;
 import java.util.List;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -45,164 +44,124 @@ import java.util.List;
 
 /**  Coupons group details  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CouponsGroup.Tokenizer.class)
 public class CouponsGroup extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
-		String startDate();
-		String endDate();
-		String maxUsesNumber();
-		String maxUsesNumberOnRenewableSub();
-		String couponGroupType();
-	}
 
 	/**  Coupon group identifier  */
-	private String id;
+    private String id;
 	/**  Coupon group name  */
-	private String name;
+    private String name;
 	/**  A list of the descriptions of the coupon group on different languages (language
 	  code and translation)  */
-	private List<TranslationToken> descriptions;
+    private List<TranslationToken> descriptions;
 	/**  The first date the coupons in this coupons group are valid  */
-	private Long startDate;
+    private Long startDate;
 	/**  The last date the coupons in this coupons group are valid  */
-	private Long endDate;
+    private Long endDate;
 	/**  Maximum number of uses for each coupon in the group  */
-	private Integer maxUsesNumber;
+    private Integer maxUsesNumber;
 	/**  Maximum number of uses for each coupon in the group on a renewable subscription  */
-	private Integer maxUsesNumberOnRenewableSub;
+    private Integer maxUsesNumberOnRenewableSub;
 	/**  Type of the coupon group  */
-	private CouponGroupType couponGroupType;
+    private CouponGroupType couponGroupType;
 
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
+    // id:
+    public String getId(){
+        return this.id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // name:
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
+    // descriptions:
+    public List<TranslationToken> getDescriptions(){
+        return this.descriptions;
+    }
+    public void setDescriptions(List<TranslationToken> descriptions){
+        this.descriptions = descriptions;
+    }
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
+    // startDate:
+    public Long getStartDate(){
+        return this.startDate;
+    }
+    public void setStartDate(Long startDate){
+        this.startDate = startDate;
+    }
 
-	// descriptions:
-	public List<TranslationToken> getDescriptions(){
-		return this.descriptions;
-	}
-	public void setDescriptions(List<TranslationToken> descriptions){
-		this.descriptions = descriptions;
-	}
+    // endDate:
+    public Long getEndDate(){
+        return this.endDate;
+    }
+    public void setEndDate(Long endDate){
+        this.endDate = endDate;
+    }
 
-	// startDate:
-	public Long getStartDate(){
-		return this.startDate;
-	}
-	public void setStartDate(Long startDate){
-		this.startDate = startDate;
-	}
+    // maxUsesNumber:
+    public Integer getMaxUsesNumber(){
+        return this.maxUsesNumber;
+    }
+    public void setMaxUsesNumber(Integer maxUsesNumber){
+        this.maxUsesNumber = maxUsesNumber;
+    }
 
-	public void startDate(String multirequestToken){
-		setToken("startDate", multirequestToken);
-	}
+    // maxUsesNumberOnRenewableSub:
+    public Integer getMaxUsesNumberOnRenewableSub(){
+        return this.maxUsesNumberOnRenewableSub;
+    }
+    public void setMaxUsesNumberOnRenewableSub(Integer maxUsesNumberOnRenewableSub){
+        this.maxUsesNumberOnRenewableSub = maxUsesNumberOnRenewableSub;
+    }
 
-	// endDate:
-	public Long getEndDate(){
-		return this.endDate;
-	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
-	}
-
-	// maxUsesNumber:
-	public Integer getMaxUsesNumber(){
-		return this.maxUsesNumber;
-	}
-	public void setMaxUsesNumber(Integer maxUsesNumber){
-		this.maxUsesNumber = maxUsesNumber;
-	}
-
-	public void maxUsesNumber(String multirequestToken){
-		setToken("maxUsesNumber", multirequestToken);
-	}
-
-	// maxUsesNumberOnRenewableSub:
-	public Integer getMaxUsesNumberOnRenewableSub(){
-		return this.maxUsesNumberOnRenewableSub;
-	}
-	public void setMaxUsesNumberOnRenewableSub(Integer maxUsesNumberOnRenewableSub){
-		this.maxUsesNumberOnRenewableSub = maxUsesNumberOnRenewableSub;
-	}
-
-	public void maxUsesNumberOnRenewableSub(String multirequestToken){
-		setToken("maxUsesNumberOnRenewableSub", multirequestToken);
-	}
-
-	// couponGroupType:
-	public CouponGroupType getCouponGroupType(){
-		return this.couponGroupType;
-	}
-	public void setCouponGroupType(CouponGroupType couponGroupType){
-		this.couponGroupType = couponGroupType;
-	}
-
-	public void couponGroupType(String multirequestToken){
-		setToken("couponGroupType", multirequestToken);
-	}
+    // couponGroupType:
+    public CouponGroupType getCouponGroupType(){
+        return this.couponGroupType;
+    }
+    public void setCouponGroupType(CouponGroupType couponGroupType){
+        this.couponGroupType = couponGroupType;
+    }
 
 
-	public CouponsGroup() {
-		super();
-	}
+    public CouponsGroup() {
+       super();
+    }
 
-	public CouponsGroup(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public CouponsGroup(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
-		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
-		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
-		maxUsesNumber = GsonParser.parseInt(jsonObject.get("maxUsesNumber"));
-		maxUsesNumberOnRenewableSub = GsonParser.parseInt(jsonObject.get("maxUsesNumberOnRenewableSub"));
-		couponGroupType = CouponGroupType.get(GsonParser.parseString(jsonObject.get("couponGroupType")));
+        // set members values:
+        id = GsonParser.parseString(jsonObject.get("id"));
+        name = GsonParser.parseString(jsonObject.get("name"));
+        descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
+        startDate = GsonParser.parseLong(jsonObject.get("startDate"));
+        endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+        maxUsesNumber = GsonParser.parseInt(jsonObject.get("maxUsesNumber"));
+        maxUsesNumberOnRenewableSub = GsonParser.parseInt(jsonObject.get("maxUsesNumberOnRenewableSub"));
+        couponGroupType = CouponGroupType.get(GsonParser.parseString(jsonObject.get("couponGroupType")));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCouponsGroup");
-		kparams.add("name", this.name);
-		kparams.add("descriptions", this.descriptions);
-		kparams.add("startDate", this.startDate);
-		kparams.add("endDate", this.endDate);
-		kparams.add("maxUsesNumber", this.maxUsesNumber);
-		kparams.add("maxUsesNumberOnRenewableSub", this.maxUsesNumberOnRenewableSub);
-		kparams.add("couponGroupType", this.couponGroupType);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaCouponsGroup");
+        kparams.add("name", this.name);
+        kparams.add("descriptions", this.descriptions);
+        kparams.add("startDate", this.startDate);
+        kparams.add("endDate", this.endDate);
+        kparams.add("maxUsesNumber", this.maxUsesNumber);
+        kparams.add("maxUsesNumberOnRenewableSub", this.maxUsesNumberOnRenewableSub);
+        kparams.add("couponGroupType", this.couponGroupType);
+        return kparams;
+    }
 
 }
 

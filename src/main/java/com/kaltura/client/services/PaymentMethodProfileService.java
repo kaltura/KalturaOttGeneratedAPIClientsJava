@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PaymentMethodProfile;
 import com.kaltura.client.types.PaymentMethodProfileFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -40,65 +42,37 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PaymentMethodProfileService {
-	
-	public static class AddPaymentMethodProfileBuilder extends RequestBuilder<PaymentMethodProfile, PaymentMethodProfile.Tokenizer, AddPaymentMethodProfileBuilder> {
-		
-		public AddPaymentMethodProfileBuilder(PaymentMethodProfile paymentMethod) {
-			super(PaymentMethodProfile.class, "paymentmethodprofile", "add");
-			params.add("paymentMethod", paymentMethod);
-		}
-	}
 
 	/**  TBD  */
-    public static AddPaymentMethodProfileBuilder add(PaymentMethodProfile paymentMethod)  {
-		return new AddPaymentMethodProfileBuilder(paymentMethod);
-	}
-	
-	public static class DeletePaymentMethodProfileBuilder extends RequestBuilder<Boolean, String, DeletePaymentMethodProfileBuilder> {
-		
-		public DeletePaymentMethodProfileBuilder(int paymentMethodId) {
-			super(Boolean.class, "paymentmethodprofile", "delete");
-			params.add("paymentMethodId", paymentMethodId);
-		}
-		
-		public void paymentMethodId(String multirequestToken) {
-			params.add("paymentMethodId", multirequestToken);
-		}
-	}
+    public static RequestBuilder<PaymentMethodProfile> add(PaymentMethodProfile paymentMethod)  {
+        Params kparams = new Params();
+        kparams.add("paymentMethod", paymentMethod);
+
+        return new RequestBuilder<PaymentMethodProfile>(PaymentMethodProfile.class, "paymentmethodprofile", "add", kparams);
+    }
 
 	/**  Delete payment method profile  */
-    public static DeletePaymentMethodProfileBuilder delete(int paymentMethodId)  {
-		return new DeletePaymentMethodProfileBuilder(paymentMethodId);
-	}
-	
-	public static class ListPaymentMethodProfileBuilder extends ListResponseRequestBuilder<PaymentMethodProfile, PaymentMethodProfile.Tokenizer, ListPaymentMethodProfileBuilder> {
-		
-		public ListPaymentMethodProfileBuilder(PaymentMethodProfileFilter filter) {
-			super(PaymentMethodProfile.class, "paymentmethodprofile", "list");
-			params.add("filter", filter);
-		}
-	}
+    public static RequestBuilder<Boolean> delete(int paymentMethodId)  {
+        Params kparams = new Params();
+        kparams.add("paymentMethodId", paymentMethodId);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "paymentmethodprofile", "delete", kparams);
+    }
 
 	/**  TBD  */
-    public static ListPaymentMethodProfileBuilder list(PaymentMethodProfileFilter filter)  {
-		return new ListPaymentMethodProfileBuilder(filter);
-	}
-	
-	public static class UpdatePaymentMethodProfileBuilder extends RequestBuilder<PaymentMethodProfile, PaymentMethodProfile.Tokenizer, UpdatePaymentMethodProfileBuilder> {
-		
-		public UpdatePaymentMethodProfileBuilder(int paymentMethodId, PaymentMethodProfile paymentMethod) {
-			super(PaymentMethodProfile.class, "paymentmethodprofile", "update");
-			params.add("paymentMethodId", paymentMethodId);
-			params.add("paymentMethod", paymentMethod);
-		}
-		
-		public void paymentMethodId(String multirequestToken) {
-			params.add("paymentMethodId", multirequestToken);
-		}
-	}
+    public static RequestBuilder<ListResponse<PaymentMethodProfile>> list(PaymentMethodProfileFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<PaymentMethodProfile>(PaymentMethodProfile.class, "paymentmethodprofile", "list", kparams);
+    }
 
 	/**  Update payment method  */
-    public static UpdatePaymentMethodProfileBuilder update(int paymentMethodId, PaymentMethodProfile paymentMethod)  {
-		return new UpdatePaymentMethodProfileBuilder(paymentMethodId, paymentMethod);
-	}
+    public static RequestBuilder<PaymentMethodProfile> update(int paymentMethodId, PaymentMethodProfile paymentMethod)  {
+        Params kparams = new Params();
+        kparams.add("paymentMethodId", paymentMethodId);
+        kparams.add("paymentMethod", paymentMethod);
+
+        return new RequestBuilder<PaymentMethodProfile>(PaymentMethodProfile.class, "paymentmethodprofile", "update", kparams);
+    }
 }

@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,37 +36,37 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum RegionOrderBy implements EnumAsString {
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
+    CREATE_DATE_ASC("CREATE_DATE_ASC"),
+    CREATE_DATE_DESC("CREATE_DATE_DESC");
 
-	private String value;
+    private String value;
 
-	RegionOrderBy(String value) {
-		this.value = value;
-	}
+    RegionOrderBy(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static RegionOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RegionOrderBy defined values and compare the inner value with the given one:
-		for(RegionOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RegionOrderBy.values().length > 0 ? RegionOrderBy.values()[0]: null;
+    public static RegionOrderBy get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over RegionOrderBy defined values and compare the inner value with the given one:
+        for(RegionOrderBy item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return RegionOrderBy.values().length > 0 ? RegionOrderBy.values()[0]: null;
    }
 }

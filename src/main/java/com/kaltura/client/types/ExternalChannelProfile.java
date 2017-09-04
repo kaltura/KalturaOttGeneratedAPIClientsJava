@@ -27,13 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.kaltura.client.types.ObjectBase;
 import java.util.List;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,146 +43,111 @@ import java.util.List;
 
 /**  OSS Adapter  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ExternalChannelProfile.Tokenizer.class)
 public class ExternalChannelProfile extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String isActive();
-		String externalIdentifier();
-		String filterExpression();
-		String recommendationEngineId();
-		RequestBuilder.ListTokenizer<ChannelEnrichmentHolder.Tokenizer> enrichments();
-	}
 
 	/**  External channel id  */
-	private Integer id;
+    private Integer id;
 	/**  External channel name  */
-	private String name;
+    private String name;
 	/**  External channel active status  */
-	private Boolean isActive;
+    private Boolean isActive;
 	/**  External channel external identifier  */
-	private String externalIdentifier;
+    private String externalIdentifier;
 	/**  Filter expression  */
-	private String filterExpression;
+    private String filterExpression;
 	/**  Recommendation engine id  */
-	private Integer recommendationEngineId;
+    private Integer recommendationEngineId;
 	/**  Enrichments  */
-	private List<ChannelEnrichmentHolder> enrichments;
+    private List<ChannelEnrichmentHolder> enrichments;
 
-	// id:
-	public Integer getId(){
-		return this.id;
-	}
-	public void setId(Integer id){
-		this.id = id;
-	}
+    // id:
+    public Integer getId(){
+        return this.id;
+    }
+    public void setId(Integer id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // name:
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
+    // isActive:
+    public Boolean getIsActive(){
+        return this.isActive;
+    }
+    public void setIsActive(Boolean isActive){
+        this.isActive = isActive;
+    }
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
+    // externalIdentifier:
+    public String getExternalIdentifier(){
+        return this.externalIdentifier;
+    }
+    public void setExternalIdentifier(String externalIdentifier){
+        this.externalIdentifier = externalIdentifier;
+    }
 
-	// isActive:
-	public Boolean getIsActive(){
-		return this.isActive;
-	}
-	public void setIsActive(Boolean isActive){
-		this.isActive = isActive;
-	}
+    // filterExpression:
+    public String getFilterExpression(){
+        return this.filterExpression;
+    }
+    public void setFilterExpression(String filterExpression){
+        this.filterExpression = filterExpression;
+    }
 
-	public void isActive(String multirequestToken){
-		setToken("isActive", multirequestToken);
-	}
+    // recommendationEngineId:
+    public Integer getRecommendationEngineId(){
+        return this.recommendationEngineId;
+    }
+    public void setRecommendationEngineId(Integer recommendationEngineId){
+        this.recommendationEngineId = recommendationEngineId;
+    }
 
-	// externalIdentifier:
-	public String getExternalIdentifier(){
-		return this.externalIdentifier;
-	}
-	public void setExternalIdentifier(String externalIdentifier){
-		this.externalIdentifier = externalIdentifier;
-	}
-
-	public void externalIdentifier(String multirequestToken){
-		setToken("externalIdentifier", multirequestToken);
-	}
-
-	// filterExpression:
-	public String getFilterExpression(){
-		return this.filterExpression;
-	}
-	public void setFilterExpression(String filterExpression){
-		this.filterExpression = filterExpression;
-	}
-
-	public void filterExpression(String multirequestToken){
-		setToken("filterExpression", multirequestToken);
-	}
-
-	// recommendationEngineId:
-	public Integer getRecommendationEngineId(){
-		return this.recommendationEngineId;
-	}
-	public void setRecommendationEngineId(Integer recommendationEngineId){
-		this.recommendationEngineId = recommendationEngineId;
-	}
-
-	public void recommendationEngineId(String multirequestToken){
-		setToken("recommendationEngineId", multirequestToken);
-	}
-
-	// enrichments:
-	public List<ChannelEnrichmentHolder> getEnrichments(){
-		return this.enrichments;
-	}
-	public void setEnrichments(List<ChannelEnrichmentHolder> enrichments){
-		this.enrichments = enrichments;
-	}
+    // enrichments:
+    public List<ChannelEnrichmentHolder> getEnrichments(){
+        return this.enrichments;
+    }
+    public void setEnrichments(List<ChannelEnrichmentHolder> enrichments){
+        this.enrichments = enrichments;
+    }
 
 
-	public ExternalChannelProfile() {
-		super();
-	}
+    public ExternalChannelProfile() {
+       super();
+    }
 
-	public ExternalChannelProfile(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public ExternalChannelProfile(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseInt(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
-		externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
-		filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
-		recommendationEngineId = GsonParser.parseInt(jsonObject.get("recommendationEngineId"));
-		enrichments = GsonParser.parseArray(jsonObject.getAsJsonArray("enrichments"), ChannelEnrichmentHolder.class);
+        // set members values:
+        id = GsonParser.parseInt(jsonObject.get("id"));
+        name = GsonParser.parseString(jsonObject.get("name"));
+        isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+        externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
+        filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
+        recommendationEngineId = GsonParser.parseInt(jsonObject.get("recommendationEngineId"));
+        enrichments = GsonParser.parseArray(jsonObject.getAsJsonArray("enrichments"), ChannelEnrichmentHolder.class);
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaExternalChannelProfile");
-		kparams.add("name", this.name);
-		kparams.add("isActive", this.isActive);
-		kparams.add("externalIdentifier", this.externalIdentifier);
-		kparams.add("filterExpression", this.filterExpression);
-		kparams.add("recommendationEngineId", this.recommendationEngineId);
-		kparams.add("enrichments", this.enrichments);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaExternalChannelProfile");
+        kparams.add("name", this.name);
+        kparams.add("isActive", this.isActive);
+        kparams.add("externalIdentifier", this.externalIdentifier);
+        kparams.add("filterExpression", this.filterExpression);
+        kparams.add("recommendationEngineId", this.recommendationEngineId);
+        kparams.add("enrichments", this.enrichments);
+        return kparams;
+    }
 
 }
 

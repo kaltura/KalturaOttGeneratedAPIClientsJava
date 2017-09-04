@@ -27,7 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.enums.EntityReferenceBy;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ParentalRule;
 import com.kaltura.client.types.ParentalRuleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -41,82 +43,42 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ParentalRuleService {
-	
-	public static class DisableParentalRuleBuilder extends RequestBuilder<Boolean, String, DisableParentalRuleBuilder> {
-		
-		public DisableParentalRuleBuilder(long ruleId, EntityReferenceBy entityReference) {
-			super(Boolean.class, "parentalrule", "disable");
-			params.add("ruleId", ruleId);
-			params.add("entityReference", entityReference);
-		}
-		
-		public void ruleId(String multirequestToken) {
-			params.add("ruleId", multirequestToken);
-		}
-		
-		public void entityReference(String multirequestToken) {
-			params.add("entityReference", multirequestToken);
-		}
-	}
 
 	/**  Disables a parental rule that was previously defined by the household master.
 	  Disable can be at specific user or household level.  */
-    public static DisableParentalRuleBuilder disable(long ruleId, EntityReferenceBy entityReference)  {
-		return new DisableParentalRuleBuilder(ruleId, entityReference);
-	}
-	
-	public static class DisableDefaultParentalRuleBuilder extends RequestBuilder<Boolean, String, DisableDefaultParentalRuleBuilder> {
-		
-		public DisableDefaultParentalRuleBuilder(EntityReferenceBy entityReference) {
-			super(Boolean.class, "parentalrule", "disableDefault");
-			params.add("entityReference", entityReference);
-		}
-		
-		public void entityReference(String multirequestToken) {
-			params.add("entityReference", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Boolean> disable(long ruleId, EntityReferenceBy entityReference)  {
+        Params kparams = new Params();
+        kparams.add("ruleId", ruleId);
+        kparams.add("entityReference", entityReference);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "parentalrule", "disable", kparams);
+    }
 
 	/**  Disables a parental rule that was defined at account level. Disable can be at
 	  specific user or household level.  */
-    public static DisableDefaultParentalRuleBuilder disableDefault(EntityReferenceBy entityReference)  {
-		return new DisableDefaultParentalRuleBuilder(entityReference);
-	}
-	
-	public static class EnableParentalRuleBuilder extends RequestBuilder<Boolean, String, EnableParentalRuleBuilder> {
-		
-		public EnableParentalRuleBuilder(long ruleId, EntityReferenceBy entityReference) {
-			super(Boolean.class, "parentalrule", "enable");
-			params.add("ruleId", ruleId);
-			params.add("entityReference", entityReference);
-		}
-		
-		public void ruleId(String multirequestToken) {
-			params.add("ruleId", multirequestToken);
-		}
-		
-		public void entityReference(String multirequestToken) {
-			params.add("entityReference", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Boolean> disableDefault(EntityReferenceBy entityReference)  {
+        Params kparams = new Params();
+        kparams.add("entityReference", entityReference);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "parentalrule", "disableDefault", kparams);
+    }
 
 	/**  Enable a parental rules for a user  */
-    public static EnableParentalRuleBuilder enable(long ruleId, EntityReferenceBy entityReference)  {
-		return new EnableParentalRuleBuilder(ruleId, entityReference);
-	}
-	
-	public static class ListParentalRuleBuilder extends ListResponseRequestBuilder<ParentalRule, ParentalRule.Tokenizer, ListParentalRuleBuilder> {
-		
-		public ListParentalRuleBuilder(ParentalRuleFilter filter) {
-			super(ParentalRule.class, "parentalrule", "list");
-			params.add("filter", filter);
-		}
-	}
+    public static RequestBuilder<Boolean> enable(long ruleId, EntityReferenceBy entityReference)  {
+        Params kparams = new Params();
+        kparams.add("ruleId", ruleId);
+        kparams.add("entityReference", entityReference);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "parentalrule", "enable", kparams);
+    }
 
 	/**  Return the parental rules that applies for the user or household. Can include
 	  rules that have been associated in account, household, or user level.           
 	    Association level is also specified in the response.  */
-    public static ListParentalRuleBuilder list(ParentalRuleFilter filter)  {
-		return new ListParentalRuleBuilder(filter);
-	}
+    public static RequestBuilder<ListResponse<ParentalRule>> list(ParentalRuleFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<ParentalRule>(ParentalRule.class, "parentalrule", "list", kparams);
+    }
 }

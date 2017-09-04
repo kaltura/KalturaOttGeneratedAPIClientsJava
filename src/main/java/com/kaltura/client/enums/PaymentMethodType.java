@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,49 +36,49 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum PaymentMethodType implements EnumAsString {
-	UNKNOWN("unknown"),
-	CREDIT_CARD("credit_card"),
-	SMS("sms"),
-	PAY_PAL("pay_pal"),
-	DEBIT_CARD("debit_card"),
-	IDEAL("ideal"),
-	INCASO("incaso"),
-	GIFT("gift"),
-	VISA("visa"),
-	MASTER_CARD("master_card"),
-	IN_APP("in_app"),
-	M1("m1"),
-	CHANGE_SUBSCRIPTION("change_subscription"),
-	OFFLINE("offline");
+    UNKNOWN("unknown"),
+    CREDIT_CARD("credit_card"),
+    SMS("sms"),
+    PAY_PAL("pay_pal"),
+    DEBIT_CARD("debit_card"),
+    IDEAL("ideal"),
+    INCASO("incaso"),
+    GIFT("gift"),
+    VISA("visa"),
+    MASTER_CARD("master_card"),
+    IN_APP("in_app"),
+    M1("m1"),
+    CHANGE_SUBSCRIPTION("change_subscription"),
+    OFFLINE("offline");
 
-	private String value;
+    private String value;
 
-	PaymentMethodType(String value) {
-		this.value = value;
-	}
+    PaymentMethodType(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static PaymentMethodType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PaymentMethodType defined values and compare the inner value with the given one:
-		for(PaymentMethodType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PaymentMethodType.values().length > 0 ? PaymentMethodType.values()[0]: null;
+    public static PaymentMethodType get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over PaymentMethodType defined values and compare the inner value with the given one:
+        for(PaymentMethodType item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return PaymentMethodType.values().length > 0 ? PaymentMethodType.values()[0]: null;
    }
 }

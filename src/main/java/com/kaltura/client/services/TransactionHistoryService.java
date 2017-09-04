@@ -27,10 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.BillingTransaction;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.TransactionHistoryFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,26 +43,21 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class TransactionHistoryService {
-	
-	public static class ListTransactionHistoryBuilder extends ListResponseRequestBuilder<BillingTransaction, BillingTransaction.Tokenizer, ListTransactionHistoryBuilder> {
-		
-		public ListTransactionHistoryBuilder(TransactionHistoryFilter filter, FilterPager pager) {
-			super(BillingTransaction.class, "transactionhistory", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
 
-	public static ListTransactionHistoryBuilder list()  {
-		return list(null);
-	}
+    public static RequestBuilder<ListResponse<BillingTransaction>> list()  {
+        return list(null);
+    }
 
-	public static ListTransactionHistoryBuilder list(TransactionHistoryFilter filter)  {
-		return list(filter, null);
-	}
+    public static RequestBuilder<ListResponse<BillingTransaction>> list(TransactionHistoryFilter filter)  {
+        return list(filter, null);
+    }
 
 	/**  Gets user or household transaction history.  */
-    public static ListTransactionHistoryBuilder list(TransactionHistoryFilter filter, FilterPager pager)  {
-		return new ListTransactionHistoryBuilder(filter, pager);
-	}
+    public static RequestBuilder<ListResponse<BillingTransaction>> list(TransactionHistoryFilter filter, FilterPager pager)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+        kparams.add("pager", pager);
+
+        return new ListResponseRequestBuilder<BillingTransaction>(BillingTransaction.class, "transactionhistory", "list", kparams);
+    }
 }

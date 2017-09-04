@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.enums.WatchStatus;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,107 +41,83 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetHistoryFilter.Tokenizer.class)
 public class AssetHistoryFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String typeIn();
-		String assetIdIn();
-		String statusEqual();
-		String daysLessThanOrEqual();
-	}
 
 	/**  Comma separated list of asset types to search within.              Possible
 	  values: 0 – EPG linear programs entries, any media type ID (according to media
 	  type IDs defined dynamically in the system).              If omitted – all
 	  types should be included.  */
-	private String typeIn;
+    private String typeIn;
 	/**  Comma separated list of asset identifiers.  */
-	private String assetIdIn;
+    private String assetIdIn;
 	/**  Which type of recently watched media to include in the result – those that
 	  finished watching, those that are in progress or both.              If omitted
 	  or specified filter = all – return all types.              Allowed values:
 	  progress – return medias that are in-progress, done – return medias that
 	  finished watching.  */
-	private WatchStatus statusEqual;
+    private WatchStatus statusEqual;
 	/**  How many days back to return the watched media. If omitted, default to 7 days  */
-	private Integer daysLessThanOrEqual;
+    private Integer daysLessThanOrEqual;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
-	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
-	}
+    // typeIn:
+    public String getTypeIn(){
+        return this.typeIn;
+    }
+    public void setTypeIn(String typeIn){
+        this.typeIn = typeIn;
+    }
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
-	}
+    // assetIdIn:
+    public String getAssetIdIn(){
+        return this.assetIdIn;
+    }
+    public void setAssetIdIn(String assetIdIn){
+        this.assetIdIn = assetIdIn;
+    }
 
-	// assetIdIn:
-	public String getAssetIdIn(){
-		return this.assetIdIn;
-	}
-	public void setAssetIdIn(String assetIdIn){
-		this.assetIdIn = assetIdIn;
-	}
+    // statusEqual:
+    public WatchStatus getStatusEqual(){
+        return this.statusEqual;
+    }
+    public void setStatusEqual(WatchStatus statusEqual){
+        this.statusEqual = statusEqual;
+    }
 
-	public void assetIdIn(String multirequestToken){
-		setToken("assetIdIn", multirequestToken);
-	}
-
-	// statusEqual:
-	public WatchStatus getStatusEqual(){
-		return this.statusEqual;
-	}
-	public void setStatusEqual(WatchStatus statusEqual){
-		this.statusEqual = statusEqual;
-	}
-
-	public void statusEqual(String multirequestToken){
-		setToken("statusEqual", multirequestToken);
-	}
-
-	// daysLessThanOrEqual:
-	public Integer getDaysLessThanOrEqual(){
-		return this.daysLessThanOrEqual;
-	}
-	public void setDaysLessThanOrEqual(Integer daysLessThanOrEqual){
-		this.daysLessThanOrEqual = daysLessThanOrEqual;
-	}
-
-	public void daysLessThanOrEqual(String multirequestToken){
-		setToken("daysLessThanOrEqual", multirequestToken);
-	}
+    // daysLessThanOrEqual:
+    public Integer getDaysLessThanOrEqual(){
+        return this.daysLessThanOrEqual;
+    }
+    public void setDaysLessThanOrEqual(Integer daysLessThanOrEqual){
+        this.daysLessThanOrEqual = daysLessThanOrEqual;
+    }
 
 
-	public AssetHistoryFilter() {
-		super();
-	}
+    public AssetHistoryFilter() {
+       super();
+    }
 
-	public AssetHistoryFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public AssetHistoryFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
-		statusEqual = WatchStatus.get(GsonParser.parseString(jsonObject.get("statusEqual")));
-		daysLessThanOrEqual = GsonParser.parseInt(jsonObject.get("daysLessThanOrEqual"));
+        // set members values:
+        typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+        assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
+        statusEqual = WatchStatus.get(GsonParser.parseString(jsonObject.get("statusEqual")));
+        daysLessThanOrEqual = GsonParser.parseInt(jsonObject.get("daysLessThanOrEqual"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetHistoryFilter");
-		kparams.add("typeIn", this.typeIn);
-		kparams.add("assetIdIn", this.assetIdIn);
-		kparams.add("statusEqual", this.statusEqual);
-		kparams.add("daysLessThanOrEqual", this.daysLessThanOrEqual);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaAssetHistoryFilter");
+        kparams.add("typeIn", this.typeIn);
+        kparams.add("assetIdIn", this.assetIdIn);
+        kparams.add("statusEqual", this.statusEqual);
+        kparams.add("daysLessThanOrEqual", this.daysLessThanOrEqual);
+        return kparams;
+    }
 
 }
 

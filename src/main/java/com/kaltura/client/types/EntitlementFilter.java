@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.EntityReferenceBy;
-import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.enums.TransactionType;
+import com.kaltura.client.enums.EntityReferenceBy;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,83 +43,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Entitlements filter  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(EntitlementFilter.Tokenizer.class)
 public class EntitlementFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String entitlementTypeEqual();
-		String entityReferenceEqual();
-		String isExpiredEqual();
-	}
 
 	/**  The type of the entitlements to return  */
-	private TransactionType entitlementTypeEqual;
+    private TransactionType entitlementTypeEqual;
 	/**  Reference type to filter by  */
-	private EntityReferenceBy entityReferenceEqual;
+    private EntityReferenceBy entityReferenceEqual;
 	/**  Is expired  */
-	private Boolean isExpiredEqual;
+    private Boolean isExpiredEqual;
 
-	// entitlementTypeEqual:
-	public TransactionType getEntitlementTypeEqual(){
-		return this.entitlementTypeEqual;
-	}
-	public void setEntitlementTypeEqual(TransactionType entitlementTypeEqual){
-		this.entitlementTypeEqual = entitlementTypeEqual;
-	}
+    // entitlementTypeEqual:
+    public TransactionType getEntitlementTypeEqual(){
+        return this.entitlementTypeEqual;
+    }
+    public void setEntitlementTypeEqual(TransactionType entitlementTypeEqual){
+        this.entitlementTypeEqual = entitlementTypeEqual;
+    }
 
-	public void entitlementTypeEqual(String multirequestToken){
-		setToken("entitlementTypeEqual", multirequestToken);
-	}
+    // entityReferenceEqual:
+    public EntityReferenceBy getEntityReferenceEqual(){
+        return this.entityReferenceEqual;
+    }
+    public void setEntityReferenceEqual(EntityReferenceBy entityReferenceEqual){
+        this.entityReferenceEqual = entityReferenceEqual;
+    }
 
-	// entityReferenceEqual:
-	public EntityReferenceBy getEntityReferenceEqual(){
-		return this.entityReferenceEqual;
-	}
-	public void setEntityReferenceEqual(EntityReferenceBy entityReferenceEqual){
-		this.entityReferenceEqual = entityReferenceEqual;
-	}
-
-	public void entityReferenceEqual(String multirequestToken){
-		setToken("entityReferenceEqual", multirequestToken);
-	}
-
-	// isExpiredEqual:
-	public Boolean getIsExpiredEqual(){
-		return this.isExpiredEqual;
-	}
-	public void setIsExpiredEqual(Boolean isExpiredEqual){
-		this.isExpiredEqual = isExpiredEqual;
-	}
-
-	public void isExpiredEqual(String multirequestToken){
-		setToken("isExpiredEqual", multirequestToken);
-	}
+    // isExpiredEqual:
+    public Boolean getIsExpiredEqual(){
+        return this.isExpiredEqual;
+    }
+    public void setIsExpiredEqual(Boolean isExpiredEqual){
+        this.isExpiredEqual = isExpiredEqual;
+    }
 
 
-	public EntitlementFilter() {
-		super();
-	}
+    public EntitlementFilter() {
+       super();
+    }
 
-	public EntitlementFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public EntitlementFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		entitlementTypeEqual = TransactionType.get(GsonParser.parseString(jsonObject.get("entitlementTypeEqual")));
-		entityReferenceEqual = EntityReferenceBy.get(GsonParser.parseString(jsonObject.get("entityReferenceEqual")));
-		isExpiredEqual = GsonParser.parseBoolean(jsonObject.get("isExpiredEqual"));
+        // set members values:
+        entitlementTypeEqual = TransactionType.get(GsonParser.parseString(jsonObject.get("entitlementTypeEqual")));
+        entityReferenceEqual = EntityReferenceBy.get(GsonParser.parseString(jsonObject.get("entityReferenceEqual")));
+        isExpiredEqual = GsonParser.parseBoolean(jsonObject.get("isExpiredEqual"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaEntitlementFilter");
-		kparams.add("entitlementTypeEqual", this.entitlementTypeEqual);
-		kparams.add("entityReferenceEqual", this.entityReferenceEqual);
-		kparams.add("isExpiredEqual", this.isExpiredEqual);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaEntitlementFilter");
+        kparams.add("entitlementTypeEqual", this.entitlementTypeEqual);
+        kparams.add("entityReferenceEqual", this.entityReferenceEqual);
+        kparams.add("isExpiredEqual", this.isExpiredEqual);
+        return kparams;
+    }
 
 }
 

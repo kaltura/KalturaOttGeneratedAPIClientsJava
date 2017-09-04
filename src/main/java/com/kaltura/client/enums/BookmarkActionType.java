@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,49 +36,49 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum BookmarkActionType implements EnumAsString {
-	HIT("HIT"),
-	PLAY("PLAY"),
-	STOP("STOP"),
-	PAUSE("PAUSE"),
-	FIRST_PLAY("FIRST_PLAY"),
-	SWOOSH("SWOOSH"),
-	FULL_SCREEN("FULL_SCREEN"),
-	SEND_TO_FRIEND("SEND_TO_FRIEND"),
-	LOAD("LOAD"),
-	FULL_SCREEN_EXIT("FULL_SCREEN_EXIT"),
-	FINISH("FINISH"),
-	ERROR("ERROR"),
-	BITRATE_CHANGE("BITRATE_CHANGE"),
-	NONE("NONE");
+    HIT("HIT"),
+    PLAY("PLAY"),
+    STOP("STOP"),
+    PAUSE("PAUSE"),
+    FIRST_PLAY("FIRST_PLAY"),
+    SWOOSH("SWOOSH"),
+    FULL_SCREEN("FULL_SCREEN"),
+    SEND_TO_FRIEND("SEND_TO_FRIEND"),
+    LOAD("LOAD"),
+    FULL_SCREEN_EXIT("FULL_SCREEN_EXIT"),
+    FINISH("FINISH"),
+    ERROR("ERROR"),
+    BITRATE_CHANGE("BITRATE_CHANGE"),
+    NONE("NONE");
 
-	private String value;
+    private String value;
 
-	BookmarkActionType(String value) {
-		this.value = value;
-	}
+    BookmarkActionType(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static BookmarkActionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BookmarkActionType defined values and compare the inner value with the given one:
-		for(BookmarkActionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BookmarkActionType.values().length > 0 ? BookmarkActionType.values()[0]: null;
+    public static BookmarkActionType get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over BookmarkActionType defined values and compare the inner value with the given one:
+        for(BookmarkActionType item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return BookmarkActionType.values().length > 0 ? BookmarkActionType.values()[0]: null;
    }
 }

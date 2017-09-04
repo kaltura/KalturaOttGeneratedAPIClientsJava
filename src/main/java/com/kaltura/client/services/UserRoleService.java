@@ -27,9 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.UserRole;
 import com.kaltura.client.types.UserRoleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,22 +42,17 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class UserRoleService {
-	
-	public static class ListUserRoleBuilder extends ListResponseRequestBuilder<UserRole, UserRole.Tokenizer, ListUserRoleBuilder> {
-		
-		public ListUserRoleBuilder(UserRoleFilter filter) {
-			super(UserRole.class, "userrole", "list");
-			params.add("filter", filter);
-		}
-	}
 
-	public static ListUserRoleBuilder list()  {
-		return list(null);
-	}
+    public static RequestBuilder<ListResponse<UserRole>> list()  {
+        return list(null);
+    }
 
 	/**  Retrieving user roles by identifiers, if filter is empty, returns all partner
 	  roles  */
-    public static ListUserRoleBuilder list(UserRoleFilter filter)  {
-		return new ListUserRoleBuilder(filter);
-	}
+    public static RequestBuilder<ListResponse<UserRole>> list(UserRoleFilter filter)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+
+        return new ListResponseRequestBuilder<UserRole>(UserRole.class, "userrole", "list", kparams);
+    }
 }

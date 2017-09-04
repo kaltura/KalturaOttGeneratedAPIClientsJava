@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,37 +36,37 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum SubscriptionSetType implements EnumAsString {
-	SWITCH("SWITCH"),
-	DEPENDENCY("DEPENDENCY");
+    SWITCH("SWITCH"),
+    DEPENDENCY("DEPENDENCY");
 
-	private String value;
+    private String value;
 
-	SubscriptionSetType(String value) {
-		this.value = value;
-	}
+    SubscriptionSetType(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static SubscriptionSetType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over SubscriptionSetType defined values and compare the inner value with the given one:
-		for(SubscriptionSetType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SubscriptionSetType.values().length > 0 ? SubscriptionSetType.values()[0]: null;
+    public static SubscriptionSetType get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over SubscriptionSetType defined values and compare the inner value with the given one:
+        for(SubscriptionSetType item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return SubscriptionSetType.values().length > 0 ? SubscriptionSetType.values()[0]: null;
    }
 }

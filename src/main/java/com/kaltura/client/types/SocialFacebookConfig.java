@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,66 +41,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Returns social configuration for the partner  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SocialFacebookConfig.Tokenizer.class)
 public class SocialFacebookConfig extends SocialConfig {
-	
-	public interface Tokenizer extends SocialConfig.Tokenizer {
-		String appId();
-		String permissions();
-	}
 
 	/**  The application identifier  */
-	private String appId;
+    private String appId;
 	/**  List of application permissions  */
-	private String permissions;
+    private String permissions;
 
-	// appId:
-	public String getAppId(){
-		return this.appId;
-	}
-	public void setAppId(String appId){
-		this.appId = appId;
-	}
+    // appId:
+    public String getAppId(){
+        return this.appId;
+    }
+    public void setAppId(String appId){
+        this.appId = appId;
+    }
 
-	public void appId(String multirequestToken){
-		setToken("appId", multirequestToken);
-	}
-
-	// permissions:
-	public String getPermissions(){
-		return this.permissions;
-	}
-	public void setPermissions(String permissions){
-		this.permissions = permissions;
-	}
-
-	public void permissions(String multirequestToken){
-		setToken("permissions", multirequestToken);
-	}
+    // permissions:
+    public String getPermissions(){
+        return this.permissions;
+    }
+    public void setPermissions(String permissions){
+        this.permissions = permissions;
+    }
 
 
-	public SocialFacebookConfig() {
-		super();
-	}
+    public SocialFacebookConfig() {
+       super();
+    }
 
-	public SocialFacebookConfig(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public SocialFacebookConfig(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		appId = GsonParser.parseString(jsonObject.get("appId"));
-		permissions = GsonParser.parseString(jsonObject.get("permissions"));
+        // set members values:
+        appId = GsonParser.parseString(jsonObject.get("appId"));
+        permissions = GsonParser.parseString(jsonObject.get("permissions"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSocialFacebookConfig");
-		kparams.add("appId", this.appId);
-		kparams.add("permissions", this.permissions);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaSocialFacebookConfig");
+        kparams.add("appId", this.appId);
+        kparams.add("permissions", this.permissions);
+        return kparams;
+    }
 
 }
 

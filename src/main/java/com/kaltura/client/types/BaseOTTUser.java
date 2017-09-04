@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,99 +42,75 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Slim user data  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseOTTUser.Tokenizer.class)
 public class BaseOTTUser extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String username();
-		String firstName();
-		String lastName();
-	}
 
 	/**  User identifier  */
-	private String id;
+    private String id;
 	/**  Username  */
-	private String username;
+    private String username;
 	/**  First name  */
-	private String firstName;
+    private String firstName;
 	/**  Last name  */
-	private String lastName;
+    private String lastName;
 
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
+    // id:
+    public String getId(){
+        return this.id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // username:
+    public String getUsername(){
+        return this.username;
+    }
+    public void setUsername(String username){
+        this.username = username;
+    }
 
-	// username:
-	public String getUsername(){
-		return this.username;
-	}
-	public void setUsername(String username){
-		this.username = username;
-	}
+    // firstName:
+    public String getFirstName(){
+        return this.firstName;
+    }
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
+    }
 
-	public void username(String multirequestToken){
-		setToken("username", multirequestToken);
-	}
-
-	// firstName:
-	public String getFirstName(){
-		return this.firstName;
-	}
-	public void setFirstName(String firstName){
-		this.firstName = firstName;
-	}
-
-	public void firstName(String multirequestToken){
-		setToken("firstName", multirequestToken);
-	}
-
-	// lastName:
-	public String getLastName(){
-		return this.lastName;
-	}
-	public void setLastName(String lastName){
-		this.lastName = lastName;
-	}
-
-	public void lastName(String multirequestToken){
-		setToken("lastName", multirequestToken);
-	}
+    // lastName:
+    public String getLastName(){
+        return this.lastName;
+    }
+    public void setLastName(String lastName){
+        this.lastName = lastName;
+    }
 
 
-	public BaseOTTUser() {
-		super();
-	}
+    public BaseOTTUser() {
+       super();
+    }
 
-	public BaseOTTUser(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public BaseOTTUser(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		username = GsonParser.parseString(jsonObject.get("username"));
-		firstName = GsonParser.parseString(jsonObject.get("firstName"));
-		lastName = GsonParser.parseString(jsonObject.get("lastName"));
+        // set members values:
+        id = GsonParser.parseString(jsonObject.get("id"));
+        username = GsonParser.parseString(jsonObject.get("username"));
+        firstName = GsonParser.parseString(jsonObject.get("firstName"));
+        lastName = GsonParser.parseString(jsonObject.get("lastName"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseOTTUser");
-		kparams.add("username", this.username);
-		kparams.add("firstName", this.firstName);
-		kparams.add("lastName", this.lastName);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaBaseOTTUser");
+        kparams.add("username", this.username);
+        kparams.add("firstName", this.firstName);
+        kparams.add("lastName", this.lastName);
+        return kparams;
+    }
 
 }
 

@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.HouseholdUserStatus;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.HouseholdUserStatus;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,133 +43,99 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Household user  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseholdUser.Tokenizer.class)
 public class HouseholdUser extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String householdId();
-		String userId();
-		String isMaster();
-		String householdMasterUsername();
-		String status();
-		String isDefault();
-	}
 
 	/**  The identifier of the household  */
-	private Integer householdId;
+    private Integer householdId;
 	/**  The identifier of the user  */
-	private String userId;
+    private String userId;
 	/**  True if the user added as master use  */
-	private Boolean isMaster;
+    private Boolean isMaster;
 	/**  The username of the household master for adding a user in status pending for the
 	  household master to approve  */
-	private String householdMasterUsername;
+    private String householdMasterUsername;
 	/**  The status of the user in the household  */
-	private HouseholdUserStatus status;
+    private HouseholdUserStatus status;
 	/**  True if the user is a default user  */
-	private Boolean isDefault;
+    private Boolean isDefault;
 
-	// householdId:
-	public Integer getHouseholdId(){
-		return this.householdId;
-	}
-	public void setHouseholdId(Integer householdId){
-		this.householdId = householdId;
-	}
+    // householdId:
+    public Integer getHouseholdId(){
+        return this.householdId;
+    }
+    public void setHouseholdId(Integer householdId){
+        this.householdId = householdId;
+    }
 
-	public void householdId(String multirequestToken){
-		setToken("householdId", multirequestToken);
-	}
+    // userId:
+    public String getUserId(){
+        return this.userId;
+    }
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
-	// userId:
-	public String getUserId(){
-		return this.userId;
-	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
+    // isMaster:
+    public Boolean getIsMaster(){
+        return this.isMaster;
+    }
+    public void setIsMaster(Boolean isMaster){
+        this.isMaster = isMaster;
+    }
 
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
+    // householdMasterUsername:
+    public String getHouseholdMasterUsername(){
+        return this.householdMasterUsername;
+    }
+    public void setHouseholdMasterUsername(String householdMasterUsername){
+        this.householdMasterUsername = householdMasterUsername;
+    }
 
-	// isMaster:
-	public Boolean getIsMaster(){
-		return this.isMaster;
-	}
-	public void setIsMaster(Boolean isMaster){
-		this.isMaster = isMaster;
-	}
+    // status:
+    public HouseholdUserStatus getStatus(){
+        return this.status;
+    }
+    public void setStatus(HouseholdUserStatus status){
+        this.status = status;
+    }
 
-	public void isMaster(String multirequestToken){
-		setToken("isMaster", multirequestToken);
-	}
-
-	// householdMasterUsername:
-	public String getHouseholdMasterUsername(){
-		return this.householdMasterUsername;
-	}
-	public void setHouseholdMasterUsername(String householdMasterUsername){
-		this.householdMasterUsername = householdMasterUsername;
-	}
-
-	public void householdMasterUsername(String multirequestToken){
-		setToken("householdMasterUsername", multirequestToken);
-	}
-
-	// status:
-	public HouseholdUserStatus getStatus(){
-		return this.status;
-	}
-	public void setStatus(HouseholdUserStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
-	// isDefault:
-	public Boolean getIsDefault(){
-		return this.isDefault;
-	}
-	public void setIsDefault(Boolean isDefault){
-		this.isDefault = isDefault;
-	}
-
-	public void isDefault(String multirequestToken){
-		setToken("isDefault", multirequestToken);
-	}
+    // isDefault:
+    public Boolean getIsDefault(){
+        return this.isDefault;
+    }
+    public void setIsDefault(Boolean isDefault){
+        this.isDefault = isDefault;
+    }
 
 
-	public HouseholdUser() {
-		super();
-	}
+    public HouseholdUser() {
+       super();
+    }
 
-	public HouseholdUser(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public HouseholdUser(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		householdId = GsonParser.parseInt(jsonObject.get("householdId"));
-		userId = GsonParser.parseString(jsonObject.get("userId"));
-		isMaster = GsonParser.parseBoolean(jsonObject.get("isMaster"));
-		householdMasterUsername = GsonParser.parseString(jsonObject.get("householdMasterUsername"));
-		status = HouseholdUserStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
+        // set members values:
+        householdId = GsonParser.parseInt(jsonObject.get("householdId"));
+        userId = GsonParser.parseString(jsonObject.get("userId"));
+        isMaster = GsonParser.parseBoolean(jsonObject.get("isMaster"));
+        householdMasterUsername = GsonParser.parseString(jsonObject.get("householdMasterUsername"));
+        status = HouseholdUserStatus.get(GsonParser.parseString(jsonObject.get("status")));
+        isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseholdUser");
-		kparams.add("householdId", this.householdId);
-		kparams.add("userId", this.userId);
-		kparams.add("isMaster", this.isMaster);
-		kparams.add("householdMasterUsername", this.householdMasterUsername);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaHouseholdUser");
+        kparams.add("householdId", this.householdId);
+        kparams.add("userId", this.userId);
+        kparams.add("isMaster", this.isMaster);
+        kparams.add("householdMasterUsername", this.householdMasterUsername);
+        return kparams;
+    }
 
 }
 

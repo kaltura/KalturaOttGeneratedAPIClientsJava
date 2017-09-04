@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.enums.AssetType;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,83 +41,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SocialFriendActivityFilter.Tokenizer.class)
 public class SocialFriendActivityFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String assetIdEqual();
-		String assetTypeEqual();
-		String actionTypeIn();
-	}
 
 	/**  Asset ID to filter by  */
-	private Long assetIdEqual;
+    private Long assetIdEqual;
 	/**  Asset type to filter by, currently only VOD (media)  */
-	private AssetType assetTypeEqual;
+    private AssetType assetTypeEqual;
 	/**  Comma separated list of social actions to filter by  */
-	private String actionTypeIn;
+    private String actionTypeIn;
 
-	// assetIdEqual:
-	public Long getAssetIdEqual(){
-		return this.assetIdEqual;
-	}
-	public void setAssetIdEqual(Long assetIdEqual){
-		this.assetIdEqual = assetIdEqual;
-	}
+    // assetIdEqual:
+    public Long getAssetIdEqual(){
+        return this.assetIdEqual;
+    }
+    public void setAssetIdEqual(Long assetIdEqual){
+        this.assetIdEqual = assetIdEqual;
+    }
 
-	public void assetIdEqual(String multirequestToken){
-		setToken("assetIdEqual", multirequestToken);
-	}
+    // assetTypeEqual:
+    public AssetType getAssetTypeEqual(){
+        return this.assetTypeEqual;
+    }
+    public void setAssetTypeEqual(AssetType assetTypeEqual){
+        this.assetTypeEqual = assetTypeEqual;
+    }
 
-	// assetTypeEqual:
-	public AssetType getAssetTypeEqual(){
-		return this.assetTypeEqual;
-	}
-	public void setAssetTypeEqual(AssetType assetTypeEqual){
-		this.assetTypeEqual = assetTypeEqual;
-	}
-
-	public void assetTypeEqual(String multirequestToken){
-		setToken("assetTypeEqual", multirequestToken);
-	}
-
-	// actionTypeIn:
-	public String getActionTypeIn(){
-		return this.actionTypeIn;
-	}
-	public void setActionTypeIn(String actionTypeIn){
-		this.actionTypeIn = actionTypeIn;
-	}
-
-	public void actionTypeIn(String multirequestToken){
-		setToken("actionTypeIn", multirequestToken);
-	}
+    // actionTypeIn:
+    public String getActionTypeIn(){
+        return this.actionTypeIn;
+    }
+    public void setActionTypeIn(String actionTypeIn){
+        this.actionTypeIn = actionTypeIn;
+    }
 
 
-	public SocialFriendActivityFilter() {
-		super();
-	}
+    public SocialFriendActivityFilter() {
+       super();
+    }
 
-	public SocialFriendActivityFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public SocialFriendActivityFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetIdEqual = GsonParser.parseLong(jsonObject.get("assetIdEqual"));
-		assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
-		actionTypeIn = GsonParser.parseString(jsonObject.get("actionTypeIn"));
+        // set members values:
+        assetIdEqual = GsonParser.parseLong(jsonObject.get("assetIdEqual"));
+        assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
+        actionTypeIn = GsonParser.parseString(jsonObject.get("actionTypeIn"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSocialFriendActivityFilter");
-		kparams.add("assetIdEqual", this.assetIdEqual);
-		kparams.add("assetTypeEqual", this.assetTypeEqual);
-		kparams.add("actionTypeIn", this.actionTypeIn);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaSocialFriendActivityFilter");
+        kparams.add("assetIdEqual", this.assetIdEqual);
+        kparams.add("assetTypeEqual", this.assetTypeEqual);
+        kparams.add("actionTypeIn", this.actionTypeIn);
+        return kparams;
+    }
 
 }
 

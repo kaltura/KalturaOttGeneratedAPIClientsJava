@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,66 +41,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CDNPartnerSettings.Tokenizer.class)
 public class CDNPartnerSettings extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String defaultAdapterId();
-		String defaultRecordingAdapterId();
-	}
 
 	/**  Default CDN adapter identifier  */
-	private Integer defaultAdapterId;
+    private Integer defaultAdapterId;
 	/**  Default recording CDN adapter identifier  */
-	private Integer defaultRecordingAdapterId;
+    private Integer defaultRecordingAdapterId;
 
-	// defaultAdapterId:
-	public Integer getDefaultAdapterId(){
-		return this.defaultAdapterId;
-	}
-	public void setDefaultAdapterId(Integer defaultAdapterId){
-		this.defaultAdapterId = defaultAdapterId;
-	}
+    // defaultAdapterId:
+    public Integer getDefaultAdapterId(){
+        return this.defaultAdapterId;
+    }
+    public void setDefaultAdapterId(Integer defaultAdapterId){
+        this.defaultAdapterId = defaultAdapterId;
+    }
 
-	public void defaultAdapterId(String multirequestToken){
-		setToken("defaultAdapterId", multirequestToken);
-	}
-
-	// defaultRecordingAdapterId:
-	public Integer getDefaultRecordingAdapterId(){
-		return this.defaultRecordingAdapterId;
-	}
-	public void setDefaultRecordingAdapterId(Integer defaultRecordingAdapterId){
-		this.defaultRecordingAdapterId = defaultRecordingAdapterId;
-	}
-
-	public void defaultRecordingAdapterId(String multirequestToken){
-		setToken("defaultRecordingAdapterId", multirequestToken);
-	}
+    // defaultRecordingAdapterId:
+    public Integer getDefaultRecordingAdapterId(){
+        return this.defaultRecordingAdapterId;
+    }
+    public void setDefaultRecordingAdapterId(Integer defaultRecordingAdapterId){
+        this.defaultRecordingAdapterId = defaultRecordingAdapterId;
+    }
 
 
-	public CDNPartnerSettings() {
-		super();
-	}
+    public CDNPartnerSettings() {
+       super();
+    }
 
-	public CDNPartnerSettings(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public CDNPartnerSettings(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		defaultAdapterId = GsonParser.parseInt(jsonObject.get("defaultAdapterId"));
-		defaultRecordingAdapterId = GsonParser.parseInt(jsonObject.get("defaultRecordingAdapterId"));
+        // set members values:
+        defaultAdapterId = GsonParser.parseInt(jsonObject.get("defaultAdapterId"));
+        defaultRecordingAdapterId = GsonParser.parseInt(jsonObject.get("defaultRecordingAdapterId"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCDNPartnerSettings");
-		kparams.add("defaultAdapterId", this.defaultAdapterId);
-		kparams.add("defaultRecordingAdapterId", this.defaultRecordingAdapterId);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaCDNPartnerSettings");
+        kparams.add("defaultAdapterId", this.defaultAdapterId);
+        kparams.add("defaultRecordingAdapterId", this.defaultRecordingAdapterId);
+        return kparams;
+    }
 
 }
 

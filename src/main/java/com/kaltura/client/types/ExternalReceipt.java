@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,68 +40,54 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ExternalReceipt.Tokenizer.class)
 public class ExternalReceipt extends PurchaseBase {
-	
-	public interface Tokenizer extends PurchaseBase.Tokenizer {
-		String receiptId();
-		String paymentGatewayName();
-	}
 
 	/**  A unique identifier that was provided by the In-App billing service to validate
 	  the purchase  */
-	private String receiptId;
+    private String receiptId;
 	/**  The payment gateway name for the In-App billing service to be used. Possible
 	  values: Google/Apple  */
-	private String paymentGatewayName;
+    private String paymentGatewayName;
 
-	// receiptId:
-	public String getReceiptId(){
-		return this.receiptId;
-	}
-	public void setReceiptId(String receiptId){
-		this.receiptId = receiptId;
-	}
+    // receiptId:
+    public String getReceiptId(){
+        return this.receiptId;
+    }
+    public void setReceiptId(String receiptId){
+        this.receiptId = receiptId;
+    }
 
-	public void receiptId(String multirequestToken){
-		setToken("receiptId", multirequestToken);
-	}
-
-	// paymentGatewayName:
-	public String getPaymentGatewayName(){
-		return this.paymentGatewayName;
-	}
-	public void setPaymentGatewayName(String paymentGatewayName){
-		this.paymentGatewayName = paymentGatewayName;
-	}
-
-	public void paymentGatewayName(String multirequestToken){
-		setToken("paymentGatewayName", multirequestToken);
-	}
+    // paymentGatewayName:
+    public String getPaymentGatewayName(){
+        return this.paymentGatewayName;
+    }
+    public void setPaymentGatewayName(String paymentGatewayName){
+        this.paymentGatewayName = paymentGatewayName;
+    }
 
 
-	public ExternalReceipt() {
-		super();
-	}
+    public ExternalReceipt() {
+       super();
+    }
 
-	public ExternalReceipt(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public ExternalReceipt(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		receiptId = GsonParser.parseString(jsonObject.get("receiptId"));
-		paymentGatewayName = GsonParser.parseString(jsonObject.get("paymentGatewayName"));
+        // set members values:
+        receiptId = GsonParser.parseString(jsonObject.get("receiptId"));
+        paymentGatewayName = GsonParser.parseString(jsonObject.get("paymentGatewayName"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaExternalReceipt");
-		kparams.add("receiptId", this.receiptId);
-		kparams.add("paymentGatewayName", this.paymentGatewayName);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaExternalReceipt");
+        kparams.add("receiptId", this.receiptId);
+        kparams.add("paymentGatewayName", this.paymentGatewayName);
+        return kparams;
+    }
 
 }
 

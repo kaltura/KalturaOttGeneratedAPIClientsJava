@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RecordingType;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.enums.RecordingType;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,66 +42,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Recording-asset info  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RecordingAsset.Tokenizer.class)
 public class RecordingAsset extends ProgramAsset {
-	
-	public interface Tokenizer extends ProgramAsset.Tokenizer {
-		String recordingId();
-		String recordingType();
-	}
 
 	/**  Recording identifier  */
-	private String recordingId;
+    private String recordingId;
 	/**  Recording Type: single/season/series  */
-	private RecordingType recordingType;
+    private RecordingType recordingType;
 
-	// recordingId:
-	public String getRecordingId(){
-		return this.recordingId;
-	}
-	public void setRecordingId(String recordingId){
-		this.recordingId = recordingId;
-	}
+    // recordingId:
+    public String getRecordingId(){
+        return this.recordingId;
+    }
+    public void setRecordingId(String recordingId){
+        this.recordingId = recordingId;
+    }
 
-	public void recordingId(String multirequestToken){
-		setToken("recordingId", multirequestToken);
-	}
-
-	// recordingType:
-	public RecordingType getRecordingType(){
-		return this.recordingType;
-	}
-	public void setRecordingType(RecordingType recordingType){
-		this.recordingType = recordingType;
-	}
-
-	public void recordingType(String multirequestToken){
-		setToken("recordingType", multirequestToken);
-	}
+    // recordingType:
+    public RecordingType getRecordingType(){
+        return this.recordingType;
+    }
+    public void setRecordingType(RecordingType recordingType){
+        this.recordingType = recordingType;
+    }
 
 
-	public RecordingAsset() {
-		super();
-	}
+    public RecordingAsset() {
+       super();
+    }
 
-	public RecordingAsset(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public RecordingAsset(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
-		recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
+        // set members values:
+        recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
+        recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRecordingAsset");
-		kparams.add("recordingId", this.recordingId);
-		kparams.add("recordingType", this.recordingType);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaRecordingAsset");
+        kparams.add("recordingId", this.recordingId);
+        kparams.add("recordingType", this.recordingType);
+        return kparams;
+    }
 
 }
 

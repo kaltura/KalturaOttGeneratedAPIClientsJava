@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.Platform;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.Platform;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,183 +42,134 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Configurations.Tokenizer.class)
 public class Configurations extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String partnerId();
-		String configurationGroupId();
-		String appName();
-		String clientVersion();
-		String platform();
-		String externalPushId();
-		String isForceUpdate();
-		String content();
-	}
 
 	/**  Configuration id  */
-	private String id;
+    private String id;
 	/**  Partner id  */
-	private Integer partnerId;
+    private Integer partnerId;
 	/**  Configuration group id  */
-	private String configurationGroupId;
+    private String configurationGroupId;
 	/**  Application name  */
-	private String appName;
+    private String appName;
 	/**  Client version  */
-	private String clientVersion;
+    private String clientVersion;
 	/**  Platform: Android/iOS/WindowsPhone/Blackberry/STB/CTV/Other  */
-	private Platform platform;
+    private Platform platform;
 	/**  External push id  */
-	private String externalPushId;
+    private String externalPushId;
 	/**  Is force update  */
-	private Boolean isForceUpdate;
+    private Boolean isForceUpdate;
 	/**  Content  */
-	private String content;
+    private String content;
 
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
+    // id:
+    public String getId(){
+        return this.id;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // partnerId:
+    public Integer getPartnerId(){
+        return this.partnerId;
+    }
+    public void setPartnerId(Integer partnerId){
+        this.partnerId = partnerId;
+    }
 
-	// partnerId:
-	public Integer getPartnerId(){
-		return this.partnerId;
-	}
-	public void setPartnerId(Integer partnerId){
-		this.partnerId = partnerId;
-	}
+    // configurationGroupId:
+    public String getConfigurationGroupId(){
+        return this.configurationGroupId;
+    }
+    public void setConfigurationGroupId(String configurationGroupId){
+        this.configurationGroupId = configurationGroupId;
+    }
 
-	public void partnerId(String multirequestToken){
-		setToken("partnerId", multirequestToken);
-	}
+    // appName:
+    public String getAppName(){
+        return this.appName;
+    }
+    public void setAppName(String appName){
+        this.appName = appName;
+    }
 
-	// configurationGroupId:
-	public String getConfigurationGroupId(){
-		return this.configurationGroupId;
-	}
-	public void setConfigurationGroupId(String configurationGroupId){
-		this.configurationGroupId = configurationGroupId;
-	}
+    // clientVersion:
+    public String getClientVersion(){
+        return this.clientVersion;
+    }
+    public void setClientVersion(String clientVersion){
+        this.clientVersion = clientVersion;
+    }
 
-	public void configurationGroupId(String multirequestToken){
-		setToken("configurationGroupId", multirequestToken);
-	}
+    // platform:
+    public Platform getPlatform(){
+        return this.platform;
+    }
+    public void setPlatform(Platform platform){
+        this.platform = platform;
+    }
 
-	// appName:
-	public String getAppName(){
-		return this.appName;
-	}
-	public void setAppName(String appName){
-		this.appName = appName;
-	}
+    // externalPushId:
+    public String getExternalPushId(){
+        return this.externalPushId;
+    }
+    public void setExternalPushId(String externalPushId){
+        this.externalPushId = externalPushId;
+    }
 
-	public void appName(String multirequestToken){
-		setToken("appName", multirequestToken);
-	}
+    // isForceUpdate:
+    public Boolean getIsForceUpdate(){
+        return this.isForceUpdate;
+    }
+    public void setIsForceUpdate(Boolean isForceUpdate){
+        this.isForceUpdate = isForceUpdate;
+    }
 
-	// clientVersion:
-	public String getClientVersion(){
-		return this.clientVersion;
-	}
-	public void setClientVersion(String clientVersion){
-		this.clientVersion = clientVersion;
-	}
-
-	public void clientVersion(String multirequestToken){
-		setToken("clientVersion", multirequestToken);
-	}
-
-	// platform:
-	public Platform getPlatform(){
-		return this.platform;
-	}
-	public void setPlatform(Platform platform){
-		this.platform = platform;
-	}
-
-	public void platform(String multirequestToken){
-		setToken("platform", multirequestToken);
-	}
-
-	// externalPushId:
-	public String getExternalPushId(){
-		return this.externalPushId;
-	}
-	public void setExternalPushId(String externalPushId){
-		this.externalPushId = externalPushId;
-	}
-
-	public void externalPushId(String multirequestToken){
-		setToken("externalPushId", multirequestToken);
-	}
-
-	// isForceUpdate:
-	public Boolean getIsForceUpdate(){
-		return this.isForceUpdate;
-	}
-	public void setIsForceUpdate(Boolean isForceUpdate){
-		this.isForceUpdate = isForceUpdate;
-	}
-
-	public void isForceUpdate(String multirequestToken){
-		setToken("isForceUpdate", multirequestToken);
-	}
-
-	// content:
-	public String getContent(){
-		return this.content;
-	}
-	public void setContent(String content){
-		this.content = content;
-	}
-
-	public void content(String multirequestToken){
-		setToken("content", multirequestToken);
-	}
+    // content:
+    public String getContent(){
+        return this.content;
+    }
+    public void setContent(String content){
+        this.content = content;
+    }
 
 
-	public Configurations() {
-		super();
-	}
+    public Configurations() {
+       super();
+    }
 
-	public Configurations(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public Configurations(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
-		configurationGroupId = GsonParser.parseString(jsonObject.get("configurationGroupId"));
-		appName = GsonParser.parseString(jsonObject.get("appName"));
-		clientVersion = GsonParser.parseString(jsonObject.get("clientVersion"));
-		platform = Platform.get(GsonParser.parseString(jsonObject.get("platform")));
-		externalPushId = GsonParser.parseString(jsonObject.get("externalPushId"));
-		isForceUpdate = GsonParser.parseBoolean(jsonObject.get("isForceUpdate"));
-		content = GsonParser.parseString(jsonObject.get("content"));
+        // set members values:
+        id = GsonParser.parseString(jsonObject.get("id"));
+        partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
+        configurationGroupId = GsonParser.parseString(jsonObject.get("configurationGroupId"));
+        appName = GsonParser.parseString(jsonObject.get("appName"));
+        clientVersion = GsonParser.parseString(jsonObject.get("clientVersion"));
+        platform = Platform.get(GsonParser.parseString(jsonObject.get("platform")));
+        externalPushId = GsonParser.parseString(jsonObject.get("externalPushId"));
+        isForceUpdate = GsonParser.parseBoolean(jsonObject.get("isForceUpdate"));
+        content = GsonParser.parseString(jsonObject.get("content"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaConfigurations");
-		kparams.add("configurationGroupId", this.configurationGroupId);
-		kparams.add("appName", this.appName);
-		kparams.add("clientVersion", this.clientVersion);
-		kparams.add("platform", this.platform);
-		kparams.add("externalPushId", this.externalPushId);
-		kparams.add("isForceUpdate", this.isForceUpdate);
-		kparams.add("content", this.content);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaConfigurations");
+        kparams.add("configurationGroupId", this.configurationGroupId);
+        kparams.add("appName", this.appName);
+        kparams.add("clientVersion", this.clientVersion);
+        kparams.add("platform", this.platform);
+        kparams.add("externalPushId", this.externalPushId);
+        kparams.add("isForceUpdate", this.isForceUpdate);
+        kparams.add("content", this.content);
+        return kparams;
+    }
 
 }
 

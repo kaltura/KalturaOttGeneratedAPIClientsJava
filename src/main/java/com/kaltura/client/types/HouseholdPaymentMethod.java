@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,132 +41,98 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseholdPaymentMethod.Tokenizer.class)
 public class HouseholdPaymentMethod extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String externalId();
-		String paymentGatewayId();
-		String details();
-		String isDefault();
-		String paymentMethodProfileId();
-	}
 
 	/**  Household payment method identifier (internal)  */
-	private Integer id;
+    private Integer id;
 	/**  External identifier for the household payment method  */
-	private String externalId;
+    private String externalId;
 	/**  Payment-gateway identifier  */
-	private Integer paymentGatewayId;
+    private Integer paymentGatewayId;
 	/**  Description of the payment method details  */
-	private String details;
+    private String details;
 	/**  indicates whether the payment method is set as default for the household  */
-	private Boolean isDefault;
+    private Boolean isDefault;
 	/**  Payment method profile identifier  */
-	private Integer paymentMethodProfileId;
+    private Integer paymentMethodProfileId;
 
-	// id:
-	public Integer getId(){
-		return this.id;
-	}
-	public void setId(Integer id){
-		this.id = id;
-	}
+    // id:
+    public Integer getId(){
+        return this.id;
+    }
+    public void setId(Integer id){
+        this.id = id;
+    }
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
+    // externalId:
+    public String getExternalId(){
+        return this.externalId;
+    }
+    public void setExternalId(String externalId){
+        this.externalId = externalId;
+    }
 
-	// externalId:
-	public String getExternalId(){
-		return this.externalId;
-	}
-	public void setExternalId(String externalId){
-		this.externalId = externalId;
-	}
+    // paymentGatewayId:
+    public Integer getPaymentGatewayId(){
+        return this.paymentGatewayId;
+    }
+    public void setPaymentGatewayId(Integer paymentGatewayId){
+        this.paymentGatewayId = paymentGatewayId;
+    }
 
-	public void externalId(String multirequestToken){
-		setToken("externalId", multirequestToken);
-	}
+    // details:
+    public String getDetails(){
+        return this.details;
+    }
+    public void setDetails(String details){
+        this.details = details;
+    }
 
-	// paymentGatewayId:
-	public Integer getPaymentGatewayId(){
-		return this.paymentGatewayId;
-	}
-	public void setPaymentGatewayId(Integer paymentGatewayId){
-		this.paymentGatewayId = paymentGatewayId;
-	}
+    // isDefault:
+    public Boolean getIsDefault(){
+        return this.isDefault;
+    }
+    public void setIsDefault(Boolean isDefault){
+        this.isDefault = isDefault;
+    }
 
-	public void paymentGatewayId(String multirequestToken){
-		setToken("paymentGatewayId", multirequestToken);
-	}
-
-	// details:
-	public String getDetails(){
-		return this.details;
-	}
-	public void setDetails(String details){
-		this.details = details;
-	}
-
-	public void details(String multirequestToken){
-		setToken("details", multirequestToken);
-	}
-
-	// isDefault:
-	public Boolean getIsDefault(){
-		return this.isDefault;
-	}
-	public void setIsDefault(Boolean isDefault){
-		this.isDefault = isDefault;
-	}
-
-	public void isDefault(String multirequestToken){
-		setToken("isDefault", multirequestToken);
-	}
-
-	// paymentMethodProfileId:
-	public Integer getPaymentMethodProfileId(){
-		return this.paymentMethodProfileId;
-	}
-	public void setPaymentMethodProfileId(Integer paymentMethodProfileId){
-		this.paymentMethodProfileId = paymentMethodProfileId;
-	}
-
-	public void paymentMethodProfileId(String multirequestToken){
-		setToken("paymentMethodProfileId", multirequestToken);
-	}
+    // paymentMethodProfileId:
+    public Integer getPaymentMethodProfileId(){
+        return this.paymentMethodProfileId;
+    }
+    public void setPaymentMethodProfileId(Integer paymentMethodProfileId){
+        this.paymentMethodProfileId = paymentMethodProfileId;
+    }
 
 
-	public HouseholdPaymentMethod() {
-		super();
-	}
+    public HouseholdPaymentMethod() {
+       super();
+    }
 
-	public HouseholdPaymentMethod(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public HouseholdPaymentMethod(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		id = GsonParser.parseInt(jsonObject.get("id"));
-		externalId = GsonParser.parseString(jsonObject.get("externalId"));
-		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
-		details = GsonParser.parseString(jsonObject.get("details"));
-		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
-		paymentMethodProfileId = GsonParser.parseInt(jsonObject.get("paymentMethodProfileId"));
+        // set members values:
+        id = GsonParser.parseInt(jsonObject.get("id"));
+        externalId = GsonParser.parseString(jsonObject.get("externalId"));
+        paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
+        details = GsonParser.parseString(jsonObject.get("details"));
+        isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
+        paymentMethodProfileId = GsonParser.parseInt(jsonObject.get("paymentMethodProfileId"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseholdPaymentMethod");
-		kparams.add("externalId", this.externalId);
-		kparams.add("paymentGatewayId", this.paymentGatewayId);
-		kparams.add("details", this.details);
-		kparams.add("paymentMethodProfileId", this.paymentMethodProfileId);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaHouseholdPaymentMethod");
+        kparams.add("externalId", this.externalId);
+        kparams.add("paymentGatewayId", this.paymentGatewayId);
+        kparams.add("details", this.details);
+        kparams.add("paymentMethodProfileId", this.paymentMethodProfileId);
+        return kparams;
+    }
 
 }
 

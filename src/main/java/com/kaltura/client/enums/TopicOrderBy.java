@@ -27,6 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -34,36 +36,36 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum TopicOrderBy implements EnumAsString {
-	NONE("NONE");
+    NONE("NONE");
 
-	private String value;
+    private String value;
 
-	TopicOrderBy(String value) {
-		this.value = value;
-	}
+    TopicOrderBy(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public static TopicOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over TopicOrderBy defined values and compare the inner value with the given one:
-		for(TopicOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return TopicOrderBy.values().length > 0 ? TopicOrderBy.values()[0]: null;
+    public static TopicOrderBy get(String value) {
+        if(value == null)
+        {
+        	return null;
+        }
+        
+        // goes over TopicOrderBy defined values and compare the inner value with the given one:
+        for(TopicOrderBy item: values()) {
+            if(item.getValue().equals(value)) {
+                return item;
+            }
+        }
+        // in case the requested value was not found in the enum values, we return the first item as default.
+        return TopicOrderBy.values().length > 0 ? TopicOrderBy.values()[0]: null;
    }
 }

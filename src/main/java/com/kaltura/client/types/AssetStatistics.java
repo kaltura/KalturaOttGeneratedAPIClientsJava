@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.BuzzScore;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.BuzzScore;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,130 +43,100 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Asset statistics  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetStatistics.Tokenizer.class)
 public class AssetStatistics extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String assetId();
-		String likes();
-		String views();
-		String ratingCount();
-		String rating();
-		BuzzScore.Tokenizer buzzScore();
-	}
 
 	/**  Unique identifier for the asset  */
-	private Integer assetId;
+    private Integer assetId;
 	/**  Total number of likes for this asset  */
-	private Integer likes;
+    private Integer likes;
 	/**  Total number of views for this asset  */
-	private Integer views;
+    private Integer views;
 	/**  Number of people that rated the asset  */
-	private Integer ratingCount;
+    private Integer ratingCount;
 	/**  Average rating for the asset  */
-	private Double rating;
+    private Double rating;
 	/**  Buzz score  */
-	private BuzzScore buzzScore;
+    private BuzzScore buzzScore;
 
-	// assetId:
-	public Integer getAssetId(){
-		return this.assetId;
-	}
-	public void setAssetId(Integer assetId){
-		this.assetId = assetId;
-	}
+    // assetId:
+    public Integer getAssetId(){
+        return this.assetId;
+    }
+    public void setAssetId(Integer assetId){
+        this.assetId = assetId;
+    }
 
-	public void assetId(String multirequestToken){
-		setToken("assetId", multirequestToken);
-	}
+    // likes:
+    public Integer getLikes(){
+        return this.likes;
+    }
+    public void setLikes(Integer likes){
+        this.likes = likes;
+    }
 
-	// likes:
-	public Integer getLikes(){
-		return this.likes;
-	}
-	public void setLikes(Integer likes){
-		this.likes = likes;
-	}
+    // views:
+    public Integer getViews(){
+        return this.views;
+    }
+    public void setViews(Integer views){
+        this.views = views;
+    }
 
-	public void likes(String multirequestToken){
-		setToken("likes", multirequestToken);
-	}
+    // ratingCount:
+    public Integer getRatingCount(){
+        return this.ratingCount;
+    }
+    public void setRatingCount(Integer ratingCount){
+        this.ratingCount = ratingCount;
+    }
 
-	// views:
-	public Integer getViews(){
-		return this.views;
-	}
-	public void setViews(Integer views){
-		this.views = views;
-	}
+    // rating:
+    public Double getRating(){
+        return this.rating;
+    }
+    public void setRating(Double rating){
+        this.rating = rating;
+    }
 
-	public void views(String multirequestToken){
-		setToken("views", multirequestToken);
-	}
-
-	// ratingCount:
-	public Integer getRatingCount(){
-		return this.ratingCount;
-	}
-	public void setRatingCount(Integer ratingCount){
-		this.ratingCount = ratingCount;
-	}
-
-	public void ratingCount(String multirequestToken){
-		setToken("ratingCount", multirequestToken);
-	}
-
-	// rating:
-	public Double getRating(){
-		return this.rating;
-	}
-	public void setRating(Double rating){
-		this.rating = rating;
-	}
-
-	public void rating(String multirequestToken){
-		setToken("rating", multirequestToken);
-	}
-
-	// buzzScore:
-	public BuzzScore getBuzzScore(){
-		return this.buzzScore;
-	}
-	public void setBuzzScore(BuzzScore buzzScore){
-		this.buzzScore = buzzScore;
-	}
+    // buzzScore:
+    public BuzzScore getBuzzScore(){
+        return this.buzzScore;
+    }
+    public void setBuzzScore(BuzzScore buzzScore){
+        this.buzzScore = buzzScore;
+    }
 
 
-	public AssetStatistics() {
-		super();
-	}
+    public AssetStatistics() {
+       super();
+    }
 
-	public AssetStatistics(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public AssetStatistics(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		assetId = GsonParser.parseInt(jsonObject.get("assetId"));
-		likes = GsonParser.parseInt(jsonObject.get("likes"));
-		views = GsonParser.parseInt(jsonObject.get("views"));
-		ratingCount = GsonParser.parseInt(jsonObject.get("ratingCount"));
-		rating = GsonParser.parseDouble(jsonObject.get("rating"));
-		buzzScore = GsonParser.parseObject(jsonObject.getAsJsonObject("buzzScore"), BuzzScore.class);
+        // set members values:
+        assetId = GsonParser.parseInt(jsonObject.get("assetId"));
+        likes = GsonParser.parseInt(jsonObject.get("likes"));
+        views = GsonParser.parseInt(jsonObject.get("views"));
+        ratingCount = GsonParser.parseInt(jsonObject.get("ratingCount"));
+        rating = GsonParser.parseDouble(jsonObject.get("rating"));
+        buzzScore = GsonParser.parseObject(jsonObject.getAsJsonObject("buzzScore"), BuzzScore.class);
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetStatistics");
-		kparams.add("assetId", this.assetId);
-		kparams.add("likes", this.likes);
-		kparams.add("views", this.views);
-		kparams.add("ratingCount", this.ratingCount);
-		kparams.add("rating", this.rating);
-		kparams.add("buzzScore", this.buzzScore);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaAssetStatistics");
+        kparams.add("assetId", this.assetId);
+        kparams.add("likes", this.likes);
+        kparams.add("views", this.views);
+        kparams.add("ratingCount", this.ratingCount);
+        kparams.add("rating", this.rating);
+        kparams.add("buzzScore", this.buzzScore);
+        return kparams;
+    }
 
 }
 

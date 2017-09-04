@@ -27,10 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.SocialComment;
 import com.kaltura.client.types.SocialCommentFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,22 +43,17 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class SocialCommentService {
-	
-	public static class ListSocialCommentBuilder extends ListResponseRequestBuilder<SocialComment, SocialComment.Tokenizer, ListSocialCommentBuilder> {
-		
-		public ListSocialCommentBuilder(SocialCommentFilter filter, FilterPager pager) {
-			super(SocialComment.class, "socialcomment", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
 
-	public static ListSocialCommentBuilder list(SocialCommentFilter filter)  {
-		return list(filter, null);
-	}
+    public static RequestBuilder<ListResponse<SocialComment>> list(SocialCommentFilter filter)  {
+        return list(filter, null);
+    }
 
 	/**  Get a list of all social comments filtered by asset ID and social platform  */
-    public static ListSocialCommentBuilder list(SocialCommentFilter filter, FilterPager pager)  {
-		return new ListSocialCommentBuilder(filter, pager);
-	}
+    public static RequestBuilder<ListResponse<SocialComment>> list(SocialCommentFilter filter, FilterPager pager)  {
+        Params kparams = new Params();
+        kparams.add("filter", filter);
+        kparams.add("pager", pager);
+
+        return new ListResponseRequestBuilder<SocialComment>(SocialComment.class, "socialcomment", "list", kparams);
+    }
 }

@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,49 +40,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PaymentMethodProfileFilter.Tokenizer.class)
 public class PaymentMethodProfileFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String paymentGatewayIdEqual();
-	}
 
 	/**  Payment gateway identifier to list the payment methods for  */
-	private Integer paymentGatewayIdEqual;
+    private Integer paymentGatewayIdEqual;
 
-	// paymentGatewayIdEqual:
-	public Integer getPaymentGatewayIdEqual(){
-		return this.paymentGatewayIdEqual;
-	}
-	public void setPaymentGatewayIdEqual(Integer paymentGatewayIdEqual){
-		this.paymentGatewayIdEqual = paymentGatewayIdEqual;
-	}
-
-	public void paymentGatewayIdEqual(String multirequestToken){
-		setToken("paymentGatewayIdEqual", multirequestToken);
-	}
+    // paymentGatewayIdEqual:
+    public Integer getPaymentGatewayIdEqual(){
+        return this.paymentGatewayIdEqual;
+    }
+    public void setPaymentGatewayIdEqual(Integer paymentGatewayIdEqual){
+        this.paymentGatewayIdEqual = paymentGatewayIdEqual;
+    }
 
 
-	public PaymentMethodProfileFilter() {
-		super();
-	}
+    public PaymentMethodProfileFilter() {
+       super();
+    }
 
-	public PaymentMethodProfileFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public PaymentMethodProfileFilter(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		paymentGatewayIdEqual = GsonParser.parseInt(jsonObject.get("paymentGatewayIdEqual"));
+        // set members values:
+        paymentGatewayIdEqual = GsonParser.parseInt(jsonObject.get("paymentGatewayIdEqual"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPaymentMethodProfileFilter");
-		kparams.add("paymentGatewayIdEqual", this.paymentGatewayIdEqual);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaPaymentMethodProfileFilter");
+        kparams.add("paymentGatewayIdEqual", this.paymentGatewayIdEqual);
+        return kparams;
+    }
 
 }
 

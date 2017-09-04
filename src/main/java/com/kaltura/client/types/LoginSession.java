@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,49 +42,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Login response  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(LoginSession.Tokenizer.class)
 public class LoginSession extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String ks();
-	}
 
 	/**  Access token in a KS format  */
-	private String ks;
+    private String ks;
 
-	// ks:
-	public String getKs(){
-		return this.ks;
-	}
-	public void setKs(String ks){
-		this.ks = ks;
-	}
-
-	public void ks(String multirequestToken){
-		setToken("ks", multirequestToken);
-	}
+    // ks:
+    public String getKs(){
+        return this.ks;
+    }
+    public void setKs(String ks){
+        this.ks = ks;
+    }
 
 
-	public LoginSession() {
-		super();
-	}
+    public LoginSession() {
+       super();
+    }
 
-	public LoginSession(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public LoginSession(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		ks = GsonParser.parseString(jsonObject.get("ks"));
+        // set members values:
+        ks = GsonParser.parseString(jsonObject.get("ks"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaLoginSession");
-		kparams.add("ks", this.ks);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaLoginSession");
+        kparams.add("ks", this.ks);
+        return kparams;
+    }
 
 }
 

@@ -27,7 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.Params;
 import com.kaltura.client.types.CDNAdapterProfile;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,81 +41,44 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class CdnAdapterProfileService {
-	
-	public static class AddCdnAdapterProfileBuilder extends RequestBuilder<CDNAdapterProfile, CDNAdapterProfile.Tokenizer, AddCdnAdapterProfileBuilder> {
-		
-		public AddCdnAdapterProfileBuilder(CDNAdapterProfile adapter) {
-			super(CDNAdapterProfile.class, "cdnadapterprofile", "add");
-			params.add("adapter", adapter);
-		}
-	}
 
 	/**  Insert new CDN adapter for partner  */
-    public static AddCdnAdapterProfileBuilder add(CDNAdapterProfile adapter)  {
-		return new AddCdnAdapterProfileBuilder(adapter);
-	}
-	
-	public static class DeleteCdnAdapterProfileBuilder extends RequestBuilder<Boolean, String, DeleteCdnAdapterProfileBuilder> {
-		
-		public DeleteCdnAdapterProfileBuilder(int adapterId) {
-			super(Boolean.class, "cdnadapterprofile", "delete");
-			params.add("adapterId", adapterId);
-		}
-		
-		public void adapterId(String multirequestToken) {
-			params.add("adapterId", multirequestToken);
-		}
-	}
+    public static RequestBuilder<CDNAdapterProfile> add(CDNAdapterProfile adapter)  {
+        Params kparams = new Params();
+        kparams.add("adapter", adapter);
+
+        return new RequestBuilder<CDNAdapterProfile>(CDNAdapterProfile.class, "cdnadapterprofile", "add", kparams);
+    }
 
 	/**  Delete CDN adapter by CDN adapter id  */
-    public static DeleteCdnAdapterProfileBuilder delete(int adapterId)  {
-		return new DeleteCdnAdapterProfileBuilder(adapterId);
-	}
-	
-	public static class GenerateSharedSecretCdnAdapterProfileBuilder extends RequestBuilder<CDNAdapterProfile, CDNAdapterProfile.Tokenizer, GenerateSharedSecretCdnAdapterProfileBuilder> {
-		
-		public GenerateSharedSecretCdnAdapterProfileBuilder(int adapterId) {
-			super(CDNAdapterProfile.class, "cdnadapterprofile", "generateSharedSecret");
-			params.add("adapterId", adapterId);
-		}
-		
-		public void adapterId(String multirequestToken) {
-			params.add("adapterId", multirequestToken);
-		}
-	}
+    public static RequestBuilder<Boolean> delete(int adapterId)  {
+        Params kparams = new Params();
+        kparams.add("adapterId", adapterId);
+
+        return new RequestBuilder<Boolean>(Boolean.class, "cdnadapterprofile", "delete", kparams);
+    }
 
 	/**  Generate CDN adapter shared secret  */
-    public static GenerateSharedSecretCdnAdapterProfileBuilder generateSharedSecret(int adapterId)  {
-		return new GenerateSharedSecretCdnAdapterProfileBuilder(adapterId);
-	}
-	
-	public static class ListCdnAdapterProfileBuilder extends ListResponseRequestBuilder<CDNAdapterProfile, CDNAdapterProfile.Tokenizer, ListCdnAdapterProfileBuilder> {
-		
-		public ListCdnAdapterProfileBuilder() {
-			super(CDNAdapterProfile.class, "cdnadapterprofile", "list");
-		}
-	}
+    public static RequestBuilder<CDNAdapterProfile> generateSharedSecret(int adapterId)  {
+        Params kparams = new Params();
+        kparams.add("adapterId", adapterId);
+
+        return new RequestBuilder<CDNAdapterProfile>(CDNAdapterProfile.class, "cdnadapterprofile", "generateSharedSecret", kparams);
+    }
 
 	/**  Returns all CDN adapters for partner  */
-    public static ListCdnAdapterProfileBuilder list()  {
-		return new ListCdnAdapterProfileBuilder();
-	}
-	
-	public static class UpdateCdnAdapterProfileBuilder extends RequestBuilder<CDNAdapterProfile, CDNAdapterProfile.Tokenizer, UpdateCdnAdapterProfileBuilder> {
-		
-		public UpdateCdnAdapterProfileBuilder(int adapterId, CDNAdapterProfile adapter) {
-			super(CDNAdapterProfile.class, "cdnadapterprofile", "update");
-			params.add("adapterId", adapterId);
-			params.add("adapter", adapter);
-		}
-		
-		public void adapterId(String multirequestToken) {
-			params.add("adapterId", multirequestToken);
-		}
-	}
+    public static RequestBuilder<ListResponse<CDNAdapterProfile>> list()  {
+        Params kparams = new Params();
+
+        return new ListResponseRequestBuilder<CDNAdapterProfile>(CDNAdapterProfile.class, "cdnadapterprofile", "list", kparams);
+    }
 
 	/**  Update CDN adapter details  */
-    public static UpdateCdnAdapterProfileBuilder update(int adapterId, CDNAdapterProfile adapter)  {
-		return new UpdateCdnAdapterProfileBuilder(adapterId, adapter);
-	}
+    public static RequestBuilder<CDNAdapterProfile> update(int adapterId, CDNAdapterProfile adapter)  {
+        Params kparams = new Params();
+        kparams.add("adapterId", adapterId);
+        kparams.add("adapter", adapter);
+
+        return new RequestBuilder<CDNAdapterProfile>(CDNAdapterProfile.class, "cdnadapterprofile", "update", kparams);
+    }
 }

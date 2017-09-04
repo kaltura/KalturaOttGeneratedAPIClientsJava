@@ -27,9 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.GsonParser;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,27 +41,23 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**  Device family details  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceFamily.Tokenizer.class)
 public class DeviceFamily extends DeviceFamilyBase {
-	
-	public interface Tokenizer extends DeviceFamilyBase.Tokenizer {
-	}
 
 
 
-	public DeviceFamily() {
-		super();
-	}
+    public DeviceFamily() {
+       super();
+    }
 
-	public DeviceFamily(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-	}
+    public DeviceFamily(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceFamily");
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaDeviceFamily");
+        return kparams;
+    }
 
 }
 

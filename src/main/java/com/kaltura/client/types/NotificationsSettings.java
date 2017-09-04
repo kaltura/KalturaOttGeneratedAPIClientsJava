@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.ObjectBase;
+import com.google.gson.JsonObject;
+
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,67 +41,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(NotificationsSettings.Tokenizer.class)
 public class NotificationsSettings extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String pushNotificationEnabled();
-		String pushFollowEnabled();
-	}
 
 	/**  Specify if the user want to receive push notifications or not  */
-	private Boolean pushNotificationEnabled;
+    private Boolean pushNotificationEnabled;
 	/**  Specify if the user will be notified for followed content via push. (requires
 	  push_notification_enabled to be enabled)  */
-	private Boolean pushFollowEnabled;
+    private Boolean pushFollowEnabled;
 
-	// pushNotificationEnabled:
-	public Boolean getPushNotificationEnabled(){
-		return this.pushNotificationEnabled;
-	}
-	public void setPushNotificationEnabled(Boolean pushNotificationEnabled){
-		this.pushNotificationEnabled = pushNotificationEnabled;
-	}
+    // pushNotificationEnabled:
+    public Boolean getPushNotificationEnabled(){
+        return this.pushNotificationEnabled;
+    }
+    public void setPushNotificationEnabled(Boolean pushNotificationEnabled){
+        this.pushNotificationEnabled = pushNotificationEnabled;
+    }
 
-	public void pushNotificationEnabled(String multirequestToken){
-		setToken("pushNotificationEnabled", multirequestToken);
-	}
-
-	// pushFollowEnabled:
-	public Boolean getPushFollowEnabled(){
-		return this.pushFollowEnabled;
-	}
-	public void setPushFollowEnabled(Boolean pushFollowEnabled){
-		this.pushFollowEnabled = pushFollowEnabled;
-	}
-
-	public void pushFollowEnabled(String multirequestToken){
-		setToken("pushFollowEnabled", multirequestToken);
-	}
+    // pushFollowEnabled:
+    public Boolean getPushFollowEnabled(){
+        return this.pushFollowEnabled;
+    }
+    public void setPushFollowEnabled(Boolean pushFollowEnabled){
+        this.pushFollowEnabled = pushFollowEnabled;
+    }
 
 
-	public NotificationsSettings() {
-		super();
-	}
+    public NotificationsSettings() {
+       super();
+    }
 
-	public NotificationsSettings(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+    public NotificationsSettings(JsonObject jsonObject) throws APIException {
+        super(jsonObject);
 
-		if(jsonObject == null) return;
+        if(jsonObject == null) return;
 
-		// set members values:
-		pushNotificationEnabled = GsonParser.parseBoolean(jsonObject.get("pushNotificationEnabled"));
-		pushFollowEnabled = GsonParser.parseBoolean(jsonObject.get("pushFollowEnabled"));
+        // set members values:
+        pushNotificationEnabled = GsonParser.parseBoolean(jsonObject.get("pushNotificationEnabled"));
+        pushFollowEnabled = GsonParser.parseBoolean(jsonObject.get("pushFollowEnabled"));
 
-	}
+    }
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaNotificationsSettings");
-		kparams.add("pushNotificationEnabled", this.pushNotificationEnabled);
-		kparams.add("pushFollowEnabled", this.pushFollowEnabled);
-		return kparams;
-	}
+    public Params toParams() {
+        Params kparams = super.toParams();
+        kparams.add("objectType", "KalturaNotificationsSettings");
+        kparams.add("pushNotificationEnabled", this.pushNotificationEnabled);
+        kparams.add("pushFollowEnabled", this.pushFollowEnabled);
+        return kparams;
+    }
 
 }
 
