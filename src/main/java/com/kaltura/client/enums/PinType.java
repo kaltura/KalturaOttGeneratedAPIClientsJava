@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,37 +34,37 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum PinType implements EnumAsString {
-    PURCHASE("purchase"),
-    PARENTAL("parental");
+	PURCHASE("purchase"),
+	PARENTAL("parental");
 
-    private String value;
+	private String value;
 
-    PinType(String value) {
-        this.value = value;
-    }
+	PinType(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static PinType get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over PinType defined values and compare the inner value with the given one:
-        for(PinType item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return PinType.values().length > 0 ? PinType.values()[0]: null;
+	public static PinType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over PinType defined values and compare the inner value with the given one:
+		for(PinType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return PinType.values().length > 0 ? PinType.values()[0]: null;
    }
 }

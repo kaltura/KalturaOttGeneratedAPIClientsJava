@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,51 +41,65 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PermissionItem.Tokenizer.class)
 public class PermissionItem extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+	}
 
 	/**  Permission item identifier  */
-    private Long id;
+	private Long id;
 	/**  Permission item name  */
-    private String name;
+	private String name;
 
-    // id:
-    public Long getId(){
-        return this.id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
 
-    public PermissionItem() {
-       super();
-    }
+	public PermissionItem() {
+		super();
+	}
 
-    public PermissionItem(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PermissionItem(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
+		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPermissionItem");
-        kparams.add("name", this.name);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPermissionItem");
+		kparams.add("name", this.name);
+		return kparams;
+	}
 
 }
 

@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Report;
 import com.kaltura.client.types.ReportFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -43,26 +41,40 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ReportService {
+	
+	public static class GetReportBuilder extends RequestBuilder<Report, Report.Tokenizer, GetReportBuilder> {
+		
+		public GetReportBuilder(String udid) {
+			super(Report.class, "report", "get");
+			params.add("udid", udid);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
 
 	/**  Return a device configuration retrieval log request for a specific device.  */
-    public static RequestBuilder<Report> get(String udid)  {
-        Params kparams = new Params();
-        kparams.add("udid", udid);
+    public static GetReportBuilder get(String udid)  {
+		return new GetReportBuilder(udid);
+	}
+	
+	public static class ListReportBuilder extends ListResponseRequestBuilder<Report, Report.Tokenizer, ListReportBuilder> {
+		
+		public ListReportBuilder(ReportFilter filter, FilterPager pager) {
+			super(Report.class, "report", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Report>(Report.class, "report", "get", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<Report>> list(ReportFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListReportBuilder list(ReportFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Return device configurations retrieval log. Supports paging and can be filtered
 	  with the parameter &amp;quot;FromData&amp;quot;.  */
-    public static RequestBuilder<ListResponse<Report>> list(ReportFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<Report>(Report.class, "report", "list", kparams);
-    }
+    public static ListReportBuilder list(ReportFilter filter, FilterPager pager)  {
+		return new ListReportBuilder(filter, pager);
+	}
 }

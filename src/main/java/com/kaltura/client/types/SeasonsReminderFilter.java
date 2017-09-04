@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,64 +40,83 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SeasonsReminderFilter.Tokenizer.class)
 public class SeasonsReminderFilter extends ReminderFilter {
+	
+	public interface Tokenizer extends ReminderFilter.Tokenizer {
+		String seriesIdEqual();
+		String seasonNumberIn();
+		String epgChannelIdEqual();
+	}
 
 	/**  Series ID  */
-    private String seriesIdEqual;
+	private String seriesIdEqual;
 	/**  Comma separated season numbers  */
-    private String seasonNumberIn;
+	private String seasonNumberIn;
 	/**  EPG channel ID  */
-    private Long epgChannelIdEqual;
+	private Long epgChannelIdEqual;
 
-    // seriesIdEqual:
-    public String getSeriesIdEqual(){
-        return this.seriesIdEqual;
-    }
-    public void setSeriesIdEqual(String seriesIdEqual){
-        this.seriesIdEqual = seriesIdEqual;
-    }
+	// seriesIdEqual:
+	public String getSeriesIdEqual(){
+		return this.seriesIdEqual;
+	}
+	public void setSeriesIdEqual(String seriesIdEqual){
+		this.seriesIdEqual = seriesIdEqual;
+	}
 
-    // seasonNumberIn:
-    public String getSeasonNumberIn(){
-        return this.seasonNumberIn;
-    }
-    public void setSeasonNumberIn(String seasonNumberIn){
-        this.seasonNumberIn = seasonNumberIn;
-    }
+	public void seriesIdEqual(String multirequestToken){
+		setToken("seriesIdEqual", multirequestToken);
+	}
 
-    // epgChannelIdEqual:
-    public Long getEpgChannelIdEqual(){
-        return this.epgChannelIdEqual;
-    }
-    public void setEpgChannelIdEqual(Long epgChannelIdEqual){
-        this.epgChannelIdEqual = epgChannelIdEqual;
-    }
+	// seasonNumberIn:
+	public String getSeasonNumberIn(){
+		return this.seasonNumberIn;
+	}
+	public void setSeasonNumberIn(String seasonNumberIn){
+		this.seasonNumberIn = seasonNumberIn;
+	}
+
+	public void seasonNumberIn(String multirequestToken){
+		setToken("seasonNumberIn", multirequestToken);
+	}
+
+	// epgChannelIdEqual:
+	public Long getEpgChannelIdEqual(){
+		return this.epgChannelIdEqual;
+	}
+	public void setEpgChannelIdEqual(Long epgChannelIdEqual){
+		this.epgChannelIdEqual = epgChannelIdEqual;
+	}
+
+	public void epgChannelIdEqual(String multirequestToken){
+		setToken("epgChannelIdEqual", multirequestToken);
+	}
 
 
-    public SeasonsReminderFilter() {
-       super();
-    }
+	public SeasonsReminderFilter() {
+		super();
+	}
 
-    public SeasonsReminderFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SeasonsReminderFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        seriesIdEqual = GsonParser.parseString(jsonObject.get("seriesIdEqual"));
-        seasonNumberIn = GsonParser.parseString(jsonObject.get("seasonNumberIn"));
-        epgChannelIdEqual = GsonParser.parseLong(jsonObject.get("epgChannelIdEqual"));
+		// set members values:
+		seriesIdEqual = GsonParser.parseString(jsonObject.get("seriesIdEqual"));
+		seasonNumberIn = GsonParser.parseString(jsonObject.get("seasonNumberIn"));
+		epgChannelIdEqual = GsonParser.parseLong(jsonObject.get("epgChannelIdEqual"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSeasonsReminderFilter");
-        kparams.add("seriesIdEqual", this.seriesIdEqual);
-        kparams.add("seasonNumberIn", this.seasonNumberIn);
-        kparams.add("epgChannelIdEqual", this.epgChannelIdEqual);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSeasonsReminderFilter");
+		kparams.add("seriesIdEqual", this.seriesIdEqual);
+		kparams.add("seasonNumberIn", this.seasonNumberIn);
+		kparams.add("epgChannelIdEqual", this.epgChannelIdEqual);
+		return kparams;
+	}
 
 }
 

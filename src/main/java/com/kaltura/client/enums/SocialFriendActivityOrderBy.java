@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,37 +34,37 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum SocialFriendActivityOrderBy implements EnumAsString {
-    NONE("NONE"),
-    UPDATE_DATE_DESC("UPDATE_DATE_DESC");
+	NONE("NONE"),
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
-    private String value;
+	private String value;
 
-    SocialFriendActivityOrderBy(String value) {
-        this.value = value;
-    }
+	SocialFriendActivityOrderBy(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static SocialFriendActivityOrderBy get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over SocialFriendActivityOrderBy defined values and compare the inner value with the given one:
-        for(SocialFriendActivityOrderBy item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return SocialFriendActivityOrderBy.values().length > 0 ? SocialFriendActivityOrderBy.values()[0]: null;
+	public static SocialFriendActivityOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over SocialFriendActivityOrderBy defined values and compare the inner value with the given one:
+		for(SocialFriendActivityOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return SocialFriendActivityOrderBy.values().length > 0 ? SocialFriendActivityOrderBy.values()[0]: null;
    }
 }

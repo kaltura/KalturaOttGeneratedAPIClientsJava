@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.CDNPartnerSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,19 +38,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class CdnPartnerSettingsService {
+	
+	public static class GetCdnPartnerSettingsBuilder extends RequestBuilder<CDNPartnerSettings, CDNPartnerSettings.Tokenizer, GetCdnPartnerSettingsBuilder> {
+		
+		public GetCdnPartnerSettingsBuilder() {
+			super(CDNPartnerSettings.class, "cdnpartnersettings", "get");
+		}
+	}
 
 	/**  Retrieve the partner’s CDN settings (default adapters)  */
-    public static RequestBuilder<CDNPartnerSettings> get()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<CDNPartnerSettings>(CDNPartnerSettings.class, "cdnpartnersettings", "get", kparams);
-    }
+    public static GetCdnPartnerSettingsBuilder get()  {
+		return new GetCdnPartnerSettingsBuilder();
+	}
+	
+	public static class UpdateCdnPartnerSettingsBuilder extends RequestBuilder<CDNPartnerSettings, CDNPartnerSettings.Tokenizer, UpdateCdnPartnerSettingsBuilder> {
+		
+		public UpdateCdnPartnerSettingsBuilder(CDNPartnerSettings settings) {
+			super(CDNPartnerSettings.class, "cdnpartnersettings", "update");
+			params.add("settings", settings);
+		}
+	}
 
 	/**  Configure the partner’s CDN settings (default adapters)  */
-    public static RequestBuilder<CDNPartnerSettings> update(CDNPartnerSettings settings)  {
-        Params kparams = new Params();
-        kparams.add("settings", settings);
-
-        return new RequestBuilder<CDNPartnerSettings>(CDNPartnerSettings.class, "cdnpartnersettings", "update", kparams);
-    }
+    public static UpdateCdnPartnerSettingsBuilder update(CDNPartnerSettings settings)  {
+		return new UpdateCdnPartnerSettingsBuilder(settings);
+	}
 }

@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,67 +40,86 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SearchExternalFilter.Tokenizer.class)
 public class SearchExternalFilter extends AssetFilter {
+	
+	public interface Tokenizer extends AssetFilter.Tokenizer {
+		String query();
+		String utcOffsetEqual();
+		String typeIn();
+	}
 
 	/**  Query  */
-    private String query;
+	private String query;
 	/**  UtcOffsetEqual  */
-    private Integer utcOffsetEqual;
+	private Integer utcOffsetEqual;
 	/**  Comma separated list of asset types to search within.               Possible
 	  values: 0 – EPG linear programs entries, any media type ID (according to media
 	  type IDs defined dynamically in the system).              If omitted – all
 	  types should be included.  */
-    private String typeIn;
+	private String typeIn;
 
-    // query:
-    public String getQuery(){
-        return this.query;
-    }
-    public void setQuery(String query){
-        this.query = query;
-    }
+	// query:
+	public String getQuery(){
+		return this.query;
+	}
+	public void setQuery(String query){
+		this.query = query;
+	}
 
-    // utcOffsetEqual:
-    public Integer getUtcOffsetEqual(){
-        return this.utcOffsetEqual;
-    }
-    public void setUtcOffsetEqual(Integer utcOffsetEqual){
-        this.utcOffsetEqual = utcOffsetEqual;
-    }
+	public void query(String multirequestToken){
+		setToken("query", multirequestToken);
+	}
 
-    // typeIn:
-    public String getTypeIn(){
-        return this.typeIn;
-    }
-    public void setTypeIn(String typeIn){
-        this.typeIn = typeIn;
-    }
+	// utcOffsetEqual:
+	public Integer getUtcOffsetEqual(){
+		return this.utcOffsetEqual;
+	}
+	public void setUtcOffsetEqual(Integer utcOffsetEqual){
+		this.utcOffsetEqual = utcOffsetEqual;
+	}
+
+	public void utcOffsetEqual(String multirequestToken){
+		setToken("utcOffsetEqual", multirequestToken);
+	}
+
+	// typeIn:
+	public String getTypeIn(){
+		return this.typeIn;
+	}
+	public void setTypeIn(String typeIn){
+		this.typeIn = typeIn;
+	}
+
+	public void typeIn(String multirequestToken){
+		setToken("typeIn", multirequestToken);
+	}
 
 
-    public SearchExternalFilter() {
-       super();
-    }
+	public SearchExternalFilter() {
+		super();
+	}
 
-    public SearchExternalFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SearchExternalFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        query = GsonParser.parseString(jsonObject.get("query"));
-        utcOffsetEqual = GsonParser.parseInt(jsonObject.get("utcOffsetEqual"));
-        typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		// set members values:
+		query = GsonParser.parseString(jsonObject.get("query"));
+		utcOffsetEqual = GsonParser.parseInt(jsonObject.get("utcOffsetEqual"));
+		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSearchExternalFilter");
-        kparams.add("query", this.query);
-        kparams.add("utcOffsetEqual", this.utcOffsetEqual);
-        kparams.add("typeIn", this.typeIn);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSearchExternalFilter");
+		kparams.add("query", this.query);
+		kparams.add("utcOffsetEqual", this.utcOffsetEqual);
+		kparams.add("typeIn", this.typeIn);
+		return kparams;
+	}
 
 }
 

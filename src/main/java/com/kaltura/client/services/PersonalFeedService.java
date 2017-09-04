@@ -27,13 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PersonalFeed;
 import com.kaltura.client.types.PersonalFeedFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,17 +40,22 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PersonalFeedService {
+	
+	public static class ListPersonalFeedBuilder extends ListResponseRequestBuilder<PersonalFeed, PersonalFeed.Tokenizer, ListPersonalFeedBuilder> {
+		
+		public ListPersonalFeedBuilder(PersonalFeedFilter filter, FilterPager pager) {
+			super(PersonalFeed.class, "personalfeed", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-    public static RequestBuilder<ListResponse<PersonalFeed>> list(PersonalFeedFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListPersonalFeedBuilder list(PersonalFeedFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  List user&amp;#39;s feeds.              Possible status codes:  */
-    public static RequestBuilder<ListResponse<PersonalFeed>> list(PersonalFeedFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<PersonalFeed>(PersonalFeed.class, "personalfeed", "list", kparams);
-    }
+    public static ListPersonalFeedBuilder list(PersonalFeedFilter filter, FilterPager pager)  {
+		return new ListPersonalFeedBuilder(filter, pager);
+	}
 }

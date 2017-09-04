@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,62 +42,81 @@ import com.google.gson.JsonObject;
 
 /**  Device brand details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DeviceBrand.Tokenizer.class)
 public class DeviceBrand extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String deviceFamilyid();
+	}
 
 	/**  Device brand identifier  */
-    private Long id;
+	private Long id;
 	/**  Device brand name  */
-    private String name;
+	private String name;
 	/**  Device family identifier  */
-    private Long deviceFamilyid;
+	private Long deviceFamilyid;
 
-    // id:
-    public Long getId(){
-        return this.id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // deviceFamilyid:
-    public Long getDeviceFamilyid(){
-        return this.deviceFamilyid;
-    }
-    public void setDeviceFamilyid(Long deviceFamilyid){
-        this.deviceFamilyid = deviceFamilyid;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// deviceFamilyid:
+	public Long getDeviceFamilyid(){
+		return this.deviceFamilyid;
+	}
+	public void setDeviceFamilyid(Long deviceFamilyid){
+		this.deviceFamilyid = deviceFamilyid;
+	}
+
+	public void deviceFamilyid(String multirequestToken){
+		setToken("deviceFamilyid", multirequestToken);
+	}
 
 
-    public DeviceBrand() {
-       super();
-    }
+	public DeviceBrand() {
+		super();
+	}
 
-    public DeviceBrand(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public DeviceBrand(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        deviceFamilyid = GsonParser.parseLong(jsonObject.get("deviceFamilyid"));
+		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		deviceFamilyid = GsonParser.parseLong(jsonObject.get("deviceFamilyid"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaDeviceBrand");
-        kparams.add("name", this.name);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDeviceBrand");
+		kparams.add("name", this.name);
+		return kparams;
+	}
 
 }
 

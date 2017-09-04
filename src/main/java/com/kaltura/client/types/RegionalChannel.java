@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,52 +41,66 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(RegionalChannel.Tokenizer.class)
 public class RegionalChannel extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String linearChannelId();
+		String channelNumber();
+	}
 
 	/**  The identifier of the linear media representing the channel  */
-    private Integer linearChannelId;
+	private Integer linearChannelId;
 	/**  The number of the channel  */
-    private Integer channelNumber;
+	private Integer channelNumber;
 
-    // linearChannelId:
-    public Integer getLinearChannelId(){
-        return this.linearChannelId;
-    }
-    public void setLinearChannelId(Integer linearChannelId){
-        this.linearChannelId = linearChannelId;
-    }
+	// linearChannelId:
+	public Integer getLinearChannelId(){
+		return this.linearChannelId;
+	}
+	public void setLinearChannelId(Integer linearChannelId){
+		this.linearChannelId = linearChannelId;
+	}
 
-    // channelNumber:
-    public Integer getChannelNumber(){
-        return this.channelNumber;
-    }
-    public void setChannelNumber(Integer channelNumber){
-        this.channelNumber = channelNumber;
-    }
+	public void linearChannelId(String multirequestToken){
+		setToken("linearChannelId", multirequestToken);
+	}
+
+	// channelNumber:
+	public Integer getChannelNumber(){
+		return this.channelNumber;
+	}
+	public void setChannelNumber(Integer channelNumber){
+		this.channelNumber = channelNumber;
+	}
+
+	public void channelNumber(String multirequestToken){
+		setToken("channelNumber", multirequestToken);
+	}
 
 
-    public RegionalChannel() {
-       super();
-    }
+	public RegionalChannel() {
+		super();
+	}
 
-    public RegionalChannel(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public RegionalChannel(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        linearChannelId = GsonParser.parseInt(jsonObject.get("linearChannelId"));
-        channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		// set members values:
+		linearChannelId = GsonParser.parseInt(jsonObject.get("linearChannelId"));
+		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaRegionalChannel");
-        kparams.add("linearChannelId", this.linearChannelId);
-        kparams.add("channelNumber", this.channelNumber);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaRegionalChannel");
+		kparams.add("linearChannelId", this.linearChannelId);
+		kparams.add("channelNumber", this.channelNumber);
+		return kparams;
+	}
 
 }
 

@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.KeyValue;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PaymentGatewayConfiguration;
 import com.kaltura.client.types.PaymentGatewayProfile;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -44,54 +42,104 @@ import java.util.List;
  */
 
 public class PaymentGatewayProfileService {
+	
+	public static class AddPaymentGatewayProfileBuilder extends RequestBuilder<PaymentGatewayProfile, PaymentGatewayProfile.Tokenizer, AddPaymentGatewayProfileBuilder> {
+		
+		public AddPaymentGatewayProfileBuilder(PaymentGatewayProfile paymentGateway) {
+			super(PaymentGatewayProfile.class, "paymentgatewayprofile", "add");
+			params.add("paymentGateway", paymentGateway);
+		}
+	}
 
 	/**  Insert new payment gateway for partner  */
-    public static RequestBuilder<PaymentGatewayProfile> add(PaymentGatewayProfile paymentGateway)  {
-        Params kparams = new Params();
-        kparams.add("paymentGateway", paymentGateway);
-
-        return new RequestBuilder<PaymentGatewayProfile>(PaymentGatewayProfile.class, "paymentgatewayprofile", "add", kparams);
-    }
+    public static AddPaymentGatewayProfileBuilder add(PaymentGatewayProfile paymentGateway)  {
+		return new AddPaymentGatewayProfileBuilder(paymentGateway);
+	}
+	
+	public static class DeletePaymentGatewayProfileBuilder extends RequestBuilder<Boolean, String, DeletePaymentGatewayProfileBuilder> {
+		
+		public DeletePaymentGatewayProfileBuilder(int paymentGatewayId) {
+			super(Boolean.class, "paymentgatewayprofile", "delete");
+			params.add("paymentGatewayId", paymentGatewayId);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+	}
 
 	/**  Delete payment gateway by payment gateway id  */
-    public static RequestBuilder<Boolean> delete(int paymentGatewayId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "paymentgatewayprofile", "delete", kparams);
-    }
+    public static DeletePaymentGatewayProfileBuilder delete(int paymentGatewayId)  {
+		return new DeletePaymentGatewayProfileBuilder(paymentGatewayId);
+	}
+	
+	public static class GenerateSharedSecretPaymentGatewayProfileBuilder extends RequestBuilder<PaymentGatewayProfile, PaymentGatewayProfile.Tokenizer, GenerateSharedSecretPaymentGatewayProfileBuilder> {
+		
+		public GenerateSharedSecretPaymentGatewayProfileBuilder(int paymentGatewayId) {
+			super(PaymentGatewayProfile.class, "paymentgatewayprofile", "generateSharedSecret");
+			params.add("paymentGatewayId", paymentGatewayId);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+	}
 
 	/**  Generate payment gateway shared secret  */
-    public static RequestBuilder<PaymentGatewayProfile> generateSharedSecret(int paymentGatewayId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-
-        return new RequestBuilder<PaymentGatewayProfile>(PaymentGatewayProfile.class, "paymentgatewayprofile", "generateSharedSecret", kparams);
-    }
+    public static GenerateSharedSecretPaymentGatewayProfileBuilder generateSharedSecret(int paymentGatewayId)  {
+		return new GenerateSharedSecretPaymentGatewayProfileBuilder(paymentGatewayId);
+	}
+	
+	public static class GetConfigurationPaymentGatewayProfileBuilder extends RequestBuilder<PaymentGatewayConfiguration, PaymentGatewayConfiguration.Tokenizer, GetConfigurationPaymentGatewayProfileBuilder> {
+		
+		public GetConfigurationPaymentGatewayProfileBuilder(String alias, String intent, List<KeyValue> extraParameters) {
+			super(PaymentGatewayConfiguration.class, "paymentgatewayprofile", "getConfiguration");
+			params.add("alias", alias);
+			params.add("intent", intent);
+			params.add("extraParameters", extraParameters);
+		}
+		
+		public void alias(String multirequestToken) {
+			params.add("alias", multirequestToken);
+		}
+		
+		public void intent(String multirequestToken) {
+			params.add("intent", multirequestToken);
+		}
+	}
 
 	/**  Gets the Payment Gateway Configuration for the payment gateway identifier given  */
-    public static RequestBuilder<PaymentGatewayConfiguration> getConfiguration(String alias, String intent, List<KeyValue> extraParameters)  {
-        Params kparams = new Params();
-        kparams.add("alias", alias);
-        kparams.add("intent", intent);
-        kparams.add("extraParameters", extraParameters);
-
-        return new RequestBuilder<PaymentGatewayConfiguration>(PaymentGatewayConfiguration.class, "paymentgatewayprofile", "getConfiguration", kparams);
-    }
+    public static GetConfigurationPaymentGatewayProfileBuilder getConfiguration(String alias, String intent, List<KeyValue> extraParameters)  {
+		return new GetConfigurationPaymentGatewayProfileBuilder(alias, intent, extraParameters);
+	}
+	
+	public static class ListPaymentGatewayProfileBuilder extends ListResponseRequestBuilder<PaymentGatewayProfile, PaymentGatewayProfile.Tokenizer, ListPaymentGatewayProfileBuilder> {
+		
+		public ListPaymentGatewayProfileBuilder() {
+			super(PaymentGatewayProfile.class, "paymentgatewayprofile", "list");
+		}
+	}
 
 	/**  Returns all payment gateways for partner : id + name  */
-    public static RequestBuilder<ListResponse<PaymentGatewayProfile>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<PaymentGatewayProfile>(PaymentGatewayProfile.class, "paymentgatewayprofile", "list", kparams);
-    }
+    public static ListPaymentGatewayProfileBuilder list()  {
+		return new ListPaymentGatewayProfileBuilder();
+	}
+	
+	public static class UpdatePaymentGatewayProfileBuilder extends RequestBuilder<PaymentGatewayProfile, PaymentGatewayProfile.Tokenizer, UpdatePaymentGatewayProfileBuilder> {
+		
+		public UpdatePaymentGatewayProfileBuilder(int paymentGatewayId, PaymentGatewayProfile paymentGateway) {
+			super(PaymentGatewayProfile.class, "paymentgatewayprofile", "update");
+			params.add("paymentGatewayId", paymentGatewayId);
+			params.add("paymentGateway", paymentGateway);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+	}
 
 	/**  Update payment gateway details  */
-    public static RequestBuilder<PaymentGatewayProfile> update(int paymentGatewayId, PaymentGatewayProfile paymentGateway)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-        kparams.add("paymentGateway", paymentGateway);
-
-        return new RequestBuilder<PaymentGatewayProfile>(PaymentGatewayProfile.class, "paymentgatewayprofile", "update", kparams);
-    }
+    public static UpdatePaymentGatewayProfileBuilder update(int paymentGatewayId, PaymentGatewayProfile paymentGateway)  {
+		return new UpdatePaymentGatewayProfileBuilder(paymentGatewayId, paymentGateway);
+	}
 }

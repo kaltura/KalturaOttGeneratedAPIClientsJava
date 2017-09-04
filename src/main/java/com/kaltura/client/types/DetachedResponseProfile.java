@@ -27,12 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.RelatedObjectFilter;
-import java.util.List;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.RelatedObjectFilter;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,64 +44,75 @@ import com.google.gson.JsonObject;
 
 /**  Define specific base profile response  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DetachedResponseProfile.Tokenizer.class)
 public class DetachedResponseProfile extends BaseResponseProfile {
+	
+	public interface Tokenizer extends BaseResponseProfile.Tokenizer {
+		String name();
+		RelatedObjectFilter.Tokenizer filter();
+		RequestBuilder.ListTokenizer<DetachedResponseProfile.Tokenizer> relatedProfiles();
+	}
 
 	/**  name  */
-    private String name;
+	private String name;
 	/**  filter  */
-    private RelatedObjectFilter filter;
+	private RelatedObjectFilter filter;
 	/**  relatedProfiles  */
-    private List<DetachedResponseProfile> relatedProfiles;
+	private List<DetachedResponseProfile> relatedProfiles;
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // filter:
-    public RelatedObjectFilter getFilter(){
-        return this.filter;
-    }
-    public void setFilter(RelatedObjectFilter filter){
-        this.filter = filter;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // relatedProfiles:
-    public List<DetachedResponseProfile> getRelatedProfiles(){
-        return this.relatedProfiles;
-    }
-    public void setRelatedProfiles(List<DetachedResponseProfile> relatedProfiles){
-        this.relatedProfiles = relatedProfiles;
-    }
+	// filter:
+	public RelatedObjectFilter getFilter(){
+		return this.filter;
+	}
+	public void setFilter(RelatedObjectFilter filter){
+		this.filter = filter;
+	}
+
+	// relatedProfiles:
+	public List<DetachedResponseProfile> getRelatedProfiles(){
+		return this.relatedProfiles;
+	}
+	public void setRelatedProfiles(List<DetachedResponseProfile> relatedProfiles){
+		this.relatedProfiles = relatedProfiles;
+	}
 
 
-    public DetachedResponseProfile() {
-       super();
-    }
+	public DetachedResponseProfile() {
+		super();
+	}
 
-    public DetachedResponseProfile(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public DetachedResponseProfile(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        name = GsonParser.parseString(jsonObject.get("name"));
-        filter = GsonParser.parseObject(jsonObject.getAsJsonObject("filter"), RelatedObjectFilter.class);
-        relatedProfiles = GsonParser.parseArray(jsonObject.getAsJsonArray("relatedProfiles"), DetachedResponseProfile.class);
+		// set members values:
+		name = GsonParser.parseString(jsonObject.get("name"));
+		filter = GsonParser.parseObject(jsonObject.getAsJsonObject("filter"), RelatedObjectFilter.class);
+		relatedProfiles = GsonParser.parseArray(jsonObject.getAsJsonArray("relatedProfiles"), DetachedResponseProfile.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaDetachedResponseProfile");
-        kparams.add("name", this.name);
-        kparams.add("filter", this.filter);
-        kparams.add("relatedProfiles", this.relatedProfiles);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDetachedResponseProfile");
+		kparams.add("name", this.name);
+		kparams.add("filter", this.filter);
+		kparams.add("relatedProfiles", this.relatedProfiles);
+		return kparams;
+	}
 
 }
 

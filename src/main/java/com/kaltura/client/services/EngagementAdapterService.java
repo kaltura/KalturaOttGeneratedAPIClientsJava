@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.EngagementAdapter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,52 +39,98 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class EngagementAdapterService {
+	
+	public static class AddEngagementAdapterBuilder extends RequestBuilder<EngagementAdapter, EngagementAdapter.Tokenizer, AddEngagementAdapterBuilder> {
+		
+		public AddEngagementAdapterBuilder(EngagementAdapter engagementAdapter) {
+			super(EngagementAdapter.class, "engagementadapter", "add");
+			params.add("engagementAdapter", engagementAdapter);
+		}
+	}
 
 	/**  Insert new Engagement adapter for partner  */
-    public static RequestBuilder<EngagementAdapter> add(EngagementAdapter engagementAdapter)  {
-        Params kparams = new Params();
-        kparams.add("engagementAdapter", engagementAdapter);
-
-        return new RequestBuilder<EngagementAdapter>(EngagementAdapter.class, "engagementadapter", "add", kparams);
-    }
+    public static AddEngagementAdapterBuilder add(EngagementAdapter engagementAdapter)  {
+		return new AddEngagementAdapterBuilder(engagementAdapter);
+	}
+	
+	public static class DeleteEngagementAdapterBuilder extends RequestBuilder<Boolean, String, DeleteEngagementAdapterBuilder> {
+		
+		public DeleteEngagementAdapterBuilder(int id) {
+			super(Boolean.class, "engagementadapter", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete Engagement adapter by Engagement adapter id  */
-    public static RequestBuilder<Boolean> delete(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "engagementadapter", "delete", kparams);
-    }
+    public static DeleteEngagementAdapterBuilder delete(int id)  {
+		return new DeleteEngagementAdapterBuilder(id);
+	}
+	
+	public static class GenerateSharedSecretEngagementAdapterBuilder extends RequestBuilder<EngagementAdapter, EngagementAdapter.Tokenizer, GenerateSharedSecretEngagementAdapterBuilder> {
+		
+		public GenerateSharedSecretEngagementAdapterBuilder(int id) {
+			super(EngagementAdapter.class, "engagementadapter", "generateSharedSecret");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Generate engagement adapter shared secret  */
-    public static RequestBuilder<EngagementAdapter> generateSharedSecret(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<EngagementAdapter>(EngagementAdapter.class, "engagementadapter", "generateSharedSecret", kparams);
-    }
+    public static GenerateSharedSecretEngagementAdapterBuilder generateSharedSecret(int id)  {
+		return new GenerateSharedSecretEngagementAdapterBuilder(id);
+	}
+	
+	public static class GetEngagementAdapterBuilder extends RequestBuilder<EngagementAdapter, EngagementAdapter.Tokenizer, GetEngagementAdapterBuilder> {
+		
+		public GetEngagementAdapterBuilder(int id) {
+			super(EngagementAdapter.class, "engagementadapter", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Returns all Engagement adapters for partner : id + name  */
-    public static RequestBuilder<EngagementAdapter> get(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<EngagementAdapter>(EngagementAdapter.class, "engagementadapter", "get", kparams);
-    }
+    public static GetEngagementAdapterBuilder get(int id)  {
+		return new GetEngagementAdapterBuilder(id);
+	}
+	
+	public static class ListEngagementAdapterBuilder extends ListResponseRequestBuilder<EngagementAdapter, EngagementAdapter.Tokenizer, ListEngagementAdapterBuilder> {
+		
+		public ListEngagementAdapterBuilder() {
+			super(EngagementAdapter.class, "engagementadapter", "list");
+		}
+	}
 
 	/**  Returns all Engagement adapters for partner : id + name  */
-    public static RequestBuilder<ListResponse<EngagementAdapter>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<EngagementAdapter>(EngagementAdapter.class, "engagementadapter", "list", kparams);
-    }
+    public static ListEngagementAdapterBuilder list()  {
+		return new ListEngagementAdapterBuilder();
+	}
+	
+	public static class UpdateEngagementAdapterBuilder extends RequestBuilder<EngagementAdapter, EngagementAdapter.Tokenizer, UpdateEngagementAdapterBuilder> {
+		
+		public UpdateEngagementAdapterBuilder(int id, EngagementAdapter engagementAdapter) {
+			super(EngagementAdapter.class, "engagementadapter", "update");
+			params.add("id", id);
+			params.add("engagementAdapter", engagementAdapter);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Update Engagement adapter details  */
-    public static RequestBuilder<EngagementAdapter> update(int id, EngagementAdapter engagementAdapter)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("engagementAdapter", engagementAdapter);
-
-        return new RequestBuilder<EngagementAdapter>(EngagementAdapter.class, "engagementadapter", "update", kparams);
-    }
+    public static UpdateEngagementAdapterBuilder update(int id, EngagementAdapter engagementAdapter)  {
+		return new UpdateEngagementAdapterBuilder(id, engagementAdapter);
+	}
 }

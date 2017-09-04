@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.StringValueArray;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,195 +43,265 @@ import com.google.gson.JsonObject;
 
 /**  Media file details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(MediaFile.Tokenizer.class)
 public class MediaFile extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String assetId();
+		String id();
+		String type();
+		String url();
+		String duration();
+		String externalId();
+		String billingType();
+		String quality();
+		String handlingType();
+		String cdnName();
+		String cdnCode();
+		String altCdnCode();
+		StringValueArray.Tokenizer ppvModules();
+		String productCode();
+	}
 
 	/**  Unique identifier for the asset  */
-    private Integer assetId;
+	private Integer assetId;
 	/**  File unique identifier  */
-    private Integer id;
+	private Integer id;
 	/**  Device types as defined in the system  */
-    private String type;
+	private String type;
 	/**  URL of the media file to be played  */
-    private String url;
+	private String url;
 	/**  Duration of the media file  */
-    private Long duration;
+	private Long duration;
 	/**  External identifier for the media file  */
-    private String externalId;
+	private String externalId;
 	/**  Billing type  */
-    private String billingType;
+	private String billingType;
 	/**  Quality  */
-    private String quality;
+	private String quality;
 	/**  Handling type  */
-    private String handlingType;
+	private String handlingType;
 	/**  CDN name  */
-    private String cdnName;
+	private String cdnName;
 	/**  CDN code  */
-    private String cdnCode;
+	private String cdnCode;
 	/**  Alt CDN code  */
-    private String altCdnCode;
+	private String altCdnCode;
 	/**  PPV Module  */
-    private StringValueArray ppvModules;
+	private StringValueArray ppvModules;
 	/**  Product code  */
-    private String productCode;
+	private String productCode;
 
-    // assetId:
-    public Integer getAssetId(){
-        return this.assetId;
-    }
-    public void setAssetId(Integer assetId){
-        this.assetId = assetId;
-    }
+	// assetId:
+	public Integer getAssetId(){
+		return this.assetId;
+	}
+	public void setAssetId(Integer assetId){
+		this.assetId = assetId;
+	}
 
-    // id:
-    public Integer getId(){
-        return this.id;
-    }
-    public void setId(Integer id){
-        this.id = id;
-    }
+	public void assetId(String multirequestToken){
+		setToken("assetId", multirequestToken);
+	}
 
-    // type:
-    public String getType(){
-        return this.type;
-    }
-    public void setType(String type){
-        this.type = type;
-    }
+	// id:
+	public Integer getId(){
+		return this.id;
+	}
+	public void setId(Integer id){
+		this.id = id;
+	}
 
-    // url:
-    public String getUrl(){
-        return this.url;
-    }
-    public void setUrl(String url){
-        this.url = url;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // duration:
-    public Long getDuration(){
-        return this.duration;
-    }
-    public void setDuration(Long duration){
-        this.duration = duration;
-    }
+	// type:
+	public String getType(){
+		return this.type;
+	}
+	public void setType(String type){
+		this.type = type;
+	}
 
-    // externalId:
-    public String getExternalId(){
-        return this.externalId;
-    }
-    public void setExternalId(String externalId){
-        this.externalId = externalId;
-    }
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
 
-    // billingType:
-    public String getBillingType(){
-        return this.billingType;
-    }
-    public void setBillingType(String billingType){
-        this.billingType = billingType;
-    }
+	// url:
+	public String getUrl(){
+		return this.url;
+	}
+	public void setUrl(String url){
+		this.url = url;
+	}
 
-    // quality:
-    public String getQuality(){
-        return this.quality;
-    }
-    public void setQuality(String quality){
-        this.quality = quality;
-    }
+	public void url(String multirequestToken){
+		setToken("url", multirequestToken);
+	}
 
-    // handlingType:
-    public String getHandlingType(){
-        return this.handlingType;
-    }
-    public void setHandlingType(String handlingType){
-        this.handlingType = handlingType;
-    }
+	// duration:
+	public Long getDuration(){
+		return this.duration;
+	}
+	public void setDuration(Long duration){
+		this.duration = duration;
+	}
 
-    // cdnName:
-    public String getCdnName(){
-        return this.cdnName;
-    }
-    public void setCdnName(String cdnName){
-        this.cdnName = cdnName;
-    }
+	public void duration(String multirequestToken){
+		setToken("duration", multirequestToken);
+	}
 
-    // cdnCode:
-    public String getCdnCode(){
-        return this.cdnCode;
-    }
-    public void setCdnCode(String cdnCode){
-        this.cdnCode = cdnCode;
-    }
+	// externalId:
+	public String getExternalId(){
+		return this.externalId;
+	}
+	public void setExternalId(String externalId){
+		this.externalId = externalId;
+	}
 
-    // altCdnCode:
-    public String getAltCdnCode(){
-        return this.altCdnCode;
-    }
-    public void setAltCdnCode(String altCdnCode){
-        this.altCdnCode = altCdnCode;
-    }
+	public void externalId(String multirequestToken){
+		setToken("externalId", multirequestToken);
+	}
 
-    // ppvModules:
-    public StringValueArray getPpvModules(){
-        return this.ppvModules;
-    }
-    public void setPpvModules(StringValueArray ppvModules){
-        this.ppvModules = ppvModules;
-    }
+	// billingType:
+	public String getBillingType(){
+		return this.billingType;
+	}
+	public void setBillingType(String billingType){
+		this.billingType = billingType;
+	}
 
-    // productCode:
-    public String getProductCode(){
-        return this.productCode;
-    }
-    public void setProductCode(String productCode){
-        this.productCode = productCode;
-    }
+	public void billingType(String multirequestToken){
+		setToken("billingType", multirequestToken);
+	}
+
+	// quality:
+	public String getQuality(){
+		return this.quality;
+	}
+	public void setQuality(String quality){
+		this.quality = quality;
+	}
+
+	public void quality(String multirequestToken){
+		setToken("quality", multirequestToken);
+	}
+
+	// handlingType:
+	public String getHandlingType(){
+		return this.handlingType;
+	}
+	public void setHandlingType(String handlingType){
+		this.handlingType = handlingType;
+	}
+
+	public void handlingType(String multirequestToken){
+		setToken("handlingType", multirequestToken);
+	}
+
+	// cdnName:
+	public String getCdnName(){
+		return this.cdnName;
+	}
+	public void setCdnName(String cdnName){
+		this.cdnName = cdnName;
+	}
+
+	public void cdnName(String multirequestToken){
+		setToken("cdnName", multirequestToken);
+	}
+
+	// cdnCode:
+	public String getCdnCode(){
+		return this.cdnCode;
+	}
+	public void setCdnCode(String cdnCode){
+		this.cdnCode = cdnCode;
+	}
+
+	public void cdnCode(String multirequestToken){
+		setToken("cdnCode", multirequestToken);
+	}
+
+	// altCdnCode:
+	public String getAltCdnCode(){
+		return this.altCdnCode;
+	}
+	public void setAltCdnCode(String altCdnCode){
+		this.altCdnCode = altCdnCode;
+	}
+
+	public void altCdnCode(String multirequestToken){
+		setToken("altCdnCode", multirequestToken);
+	}
+
+	// ppvModules:
+	public StringValueArray getPpvModules(){
+		return this.ppvModules;
+	}
+	public void setPpvModules(StringValueArray ppvModules){
+		this.ppvModules = ppvModules;
+	}
+
+	// productCode:
+	public String getProductCode(){
+		return this.productCode;
+	}
+	public void setProductCode(String productCode){
+		this.productCode = productCode;
+	}
+
+	public void productCode(String multirequestToken){
+		setToken("productCode", multirequestToken);
+	}
 
 
-    public MediaFile() {
-       super();
-    }
+	public MediaFile() {
+		super();
+	}
 
-    public MediaFile(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public MediaFile(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        assetId = GsonParser.parseInt(jsonObject.get("assetId"));
-        id = GsonParser.parseInt(jsonObject.get("id"));
-        type = GsonParser.parseString(jsonObject.get("type"));
-        url = GsonParser.parseString(jsonObject.get("url"));
-        duration = GsonParser.parseLong(jsonObject.get("duration"));
-        externalId = GsonParser.parseString(jsonObject.get("externalId"));
-        billingType = GsonParser.parseString(jsonObject.get("billingType"));
-        quality = GsonParser.parseString(jsonObject.get("quality"));
-        handlingType = GsonParser.parseString(jsonObject.get("handlingType"));
-        cdnName = GsonParser.parseString(jsonObject.get("cdnName"));
-        cdnCode = GsonParser.parseString(jsonObject.get("cdnCode"));
-        altCdnCode = GsonParser.parseString(jsonObject.get("altCdnCode"));
-        ppvModules = GsonParser.parseObject(jsonObject.getAsJsonObject("ppvModules"), StringValueArray.class);
-        productCode = GsonParser.parseString(jsonObject.get("productCode"));
+		// set members values:
+		assetId = GsonParser.parseInt(jsonObject.get("assetId"));
+		id = GsonParser.parseInt(jsonObject.get("id"));
+		type = GsonParser.parseString(jsonObject.get("type"));
+		url = GsonParser.parseString(jsonObject.get("url"));
+		duration = GsonParser.parseLong(jsonObject.get("duration"));
+		externalId = GsonParser.parseString(jsonObject.get("externalId"));
+		billingType = GsonParser.parseString(jsonObject.get("billingType"));
+		quality = GsonParser.parseString(jsonObject.get("quality"));
+		handlingType = GsonParser.parseString(jsonObject.get("handlingType"));
+		cdnName = GsonParser.parseString(jsonObject.get("cdnName"));
+		cdnCode = GsonParser.parseString(jsonObject.get("cdnCode"));
+		altCdnCode = GsonParser.parseString(jsonObject.get("altCdnCode"));
+		ppvModules = GsonParser.parseObject(jsonObject.getAsJsonObject("ppvModules"), StringValueArray.class);
+		productCode = GsonParser.parseString(jsonObject.get("productCode"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaMediaFile");
-        kparams.add("assetId", this.assetId);
-        kparams.add("type", this.type);
-        kparams.add("url", this.url);
-        kparams.add("duration", this.duration);
-        kparams.add("externalId", this.externalId);
-        kparams.add("billingType", this.billingType);
-        kparams.add("quality", this.quality);
-        kparams.add("handlingType", this.handlingType);
-        kparams.add("cdnName", this.cdnName);
-        kparams.add("cdnCode", this.cdnCode);
-        kparams.add("altCdnCode", this.altCdnCode);
-        kparams.add("ppvModules", this.ppvModules);
-        kparams.add("productCode", this.productCode);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaMediaFile");
+		kparams.add("assetId", this.assetId);
+		kparams.add("type", this.type);
+		kparams.add("url", this.url);
+		kparams.add("duration", this.duration);
+		kparams.add("externalId", this.externalId);
+		kparams.add("billingType", this.billingType);
+		kparams.add("quality", this.quality);
+		kparams.add("handlingType", this.handlingType);
+		kparams.add("cdnName", this.cdnName);
+		kparams.add("cdnCode", this.cdnCode);
+		kparams.add("altCdnCode", this.altCdnCode);
+		kparams.add("ppvModules", this.ppvModules);
+		kparams.add("productCode", this.productCode);
+		return kparams;
+	}
 
 }
 

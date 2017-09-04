@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.UserLoginPin;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,48 +38,84 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class UserLoginPinService {
+	
+	public static class AddUserLoginPinBuilder extends RequestBuilder<UserLoginPin, UserLoginPin.Tokenizer, AddUserLoginPinBuilder> {
+		
+		public AddUserLoginPinBuilder(String secret) {
+			super(UserLoginPin.class, "userloginpin", "add");
+			params.add("secret", secret);
+		}
+		
+		public void secret(String multirequestToken) {
+			params.add("secret", multirequestToken);
+		}
+	}
 
-    public static RequestBuilder<UserLoginPin> add()  {
-        return add(null);
-    }
+	public static AddUserLoginPinBuilder add()  {
+		return add(null);
+	}
 
 	/**  Generate a time and usage expiry login-PIN that can allow a single login per
 	  PIN. If an active login-PIN already exists. Calling this API again for same user
 	  will add another login-PIN  */
-    public static RequestBuilder<UserLoginPin> add(String secret)  {
-        Params kparams = new Params();
-        kparams.add("secret", secret);
-
-        return new RequestBuilder<UserLoginPin>(UserLoginPin.class, "userloginpin", "add", kparams);
-    }
+    public static AddUserLoginPinBuilder add(String secret)  {
+		return new AddUserLoginPinBuilder(secret);
+	}
+	
+	public static class DeleteUserLoginPinBuilder extends RequestBuilder<Boolean, String, DeleteUserLoginPinBuilder> {
+		
+		public DeleteUserLoginPinBuilder(String pinCode) {
+			super(Boolean.class, "userloginpin", "delete");
+			params.add("pinCode", pinCode);
+		}
+		
+		public void pinCode(String multirequestToken) {
+			params.add("pinCode", multirequestToken);
+		}
+	}
 
 	/**  Immediately deletes a given pre set login pin code for the user.  */
-    public static RequestBuilder<Boolean> delete(String pinCode)  {
-        Params kparams = new Params();
-        kparams.add("pinCode", pinCode);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "userloginpin", "delete", kparams);
-    }
+    public static DeleteUserLoginPinBuilder delete(String pinCode)  {
+		return new DeleteUserLoginPinBuilder(pinCode);
+	}
+	
+	public static class DeleteAllUserLoginPinBuilder extends RequestBuilder<Boolean, String, DeleteAllUserLoginPinBuilder> {
+		
+		public DeleteAllUserLoginPinBuilder() {
+			super(Boolean.class, "userloginpin", "deleteAll");
+		}
+	}
 
 	/**  Immediately expire all active login-PINs for a user  */
-    public static RequestBuilder<Boolean> deleteAll()  {
-        Params kparams = new Params();
+    public static DeleteAllUserLoginPinBuilder deleteAll()  {
+		return new DeleteAllUserLoginPinBuilder();
+	}
+	
+	public static class UpdateUserLoginPinBuilder extends RequestBuilder<UserLoginPin, UserLoginPin.Tokenizer, UpdateUserLoginPinBuilder> {
+		
+		public UpdateUserLoginPinBuilder(String pinCode, String secret) {
+			super(UserLoginPin.class, "userloginpin", "update");
+			params.add("pinCode", pinCode);
+			params.add("secret", secret);
+		}
+		
+		public void pinCode(String multirequestToken) {
+			params.add("pinCode", multirequestToken);
+		}
+		
+		public void secret(String multirequestToken) {
+			params.add("secret", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "userloginpin", "deleteAll", kparams);
-    }
-
-    public static RequestBuilder<UserLoginPin> update(String pinCode)  {
-        return update(pinCode, null);
-    }
+	public static UpdateUserLoginPinBuilder update(String pinCode)  {
+		return update(pinCode, null);
+	}
 
 	/**  Set a time and usage expiry login-PIN that can allow a single login per PIN. If
 	  an active login-PIN already exists. Calling this API again for same user will
 	  add another login-PIN  */
-    public static RequestBuilder<UserLoginPin> update(String pinCode, String secret)  {
-        Params kparams = new Params();
-        kparams.add("pinCode", pinCode);
-        kparams.add("secret", secret);
-
-        return new RequestBuilder<UserLoginPin>(UserLoginPin.class, "userloginpin", "update", kparams);
-    }
+    public static UpdateUserLoginPinBuilder update(String pinCode, String secret)  {
+		return new UpdateUserLoginPinBuilder(pinCode, secret);
+	}
 }

@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Compensation;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,29 +39,52 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class CompensationService {
+	
+	public static class AddCompensationBuilder extends RequestBuilder<Compensation, Compensation.Tokenizer, AddCompensationBuilder> {
+		
+		public AddCompensationBuilder(Compensation compensation) {
+			super(Compensation.class, "compensation", "add");
+			params.add("compensation", compensation);
+		}
+	}
 
 	/**  Adds a new compensation for a household for a given number of iterations of a
 	  subscription renewal for a fixed amount / percentage of the renewal price.  */
-    public static RequestBuilder<Compensation> add(Compensation compensation)  {
-        Params kparams = new Params();
-        kparams.add("compensation", compensation);
-
-        return new RequestBuilder<Compensation>(Compensation.class, "compensation", "add", kparams);
-    }
+    public static AddCompensationBuilder add(Compensation compensation)  {
+		return new AddCompensationBuilder(compensation);
+	}
+	
+	public static class DeleteCompensationBuilder extends NullRequestBuilder {
+		
+		public DeleteCompensationBuilder(long id) {
+			super("compensation", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete a compensation by identifier  */
-    public static RequestBuilder<Void> delete(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new NullRequestBuilder("compensation", "delete", kparams);
-    }
+    public static DeleteCompensationBuilder delete(long id)  {
+		return new DeleteCompensationBuilder(id);
+	}
+	
+	public static class GetCompensationBuilder extends RequestBuilder<Compensation, Compensation.Tokenizer, GetCompensationBuilder> {
+		
+		public GetCompensationBuilder(long id) {
+			super(Compensation.class, "compensation", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Get a compensation by identifier  */
-    public static RequestBuilder<Compensation> get(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Compensation>(Compensation.class, "compensation", "get", kparams);
-    }
+    public static GetCompensationBuilder get(long id)  {
+		return new GetCompensationBuilder(id);
+	}
 }

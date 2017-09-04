@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.HouseholdLimitations;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,12 +38,21 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HouseholdLimitationsService {
+	
+	public static class GetHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, GetHouseholdLimitationsBuilder> {
+		
+		public GetHouseholdLimitationsBuilder(int id) {
+			super(HouseholdLimitations.class, "householdlimitations", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Get the limitation module by id  */
-    public static RequestBuilder<HouseholdLimitations> get(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<HouseholdLimitations>(HouseholdLimitations.class, "householdlimitations", "get", kparams);
-    }
+    public static GetHouseholdLimitationsBuilder get(int id)  {
+		return new GetHouseholdLimitationsBuilder(id);
+	}
 }

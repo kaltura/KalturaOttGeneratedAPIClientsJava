@@ -27,16 +27,17 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.CouponsGroup;
+import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.PriceDetails;
-import com.kaltura.client.types.DiscountModule;
-import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.UsageModule;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
-import com.google.gson.JsonObject;
-
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -47,162 +48,197 @@ import com.google.gson.JsonObject;
 
 /**  PPV details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Ppv.Tokenizer.class)
 public class Ppv extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		PriceDetails.Tokenizer price();
+		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> fileTypes();
+		DiscountModule.Tokenizer discountModule();
+		CouponsGroup.Tokenizer couponsGroup();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
+		String productCode();
+		String isSubscriptionOnly();
+		String firstDeviceLimitation();
+		UsageModule.Tokenizer usageModule();
+	}
 
 	/**  PPV identifier  */
-    private String id;
+	private String id;
 	/**  the name for the ppv  */
-    private String name;
+	private String name;
 	/**  The price of the ppv  */
-    private PriceDetails price;
+	private PriceDetails price;
 	/**  A list of file types identifiers that are supported in this ppv  */
-    private List<IntegerValue> fileTypes;
+	private List<IntegerValue> fileTypes;
 	/**  The internal discount module for the ppv  */
-    private DiscountModule discountModule;
+	private DiscountModule discountModule;
 	/**  Coupons group for the ppv  */
-    private CouponsGroup couponsGroup;
+	private CouponsGroup couponsGroup;
 	/**  A list of the descriptions of the ppv on different languages (language code and
 	  translation)  */
-    private List<TranslationToken> descriptions;
+	private List<TranslationToken> descriptions;
 	/**  Product code for the ppv  */
-    private String productCode;
+	private String productCode;
 	/**  Indicates whether or not this ppv can be purchased standalone or only as part of
 	  a subscription  */
-    private Boolean isSubscriptionOnly;
+	private Boolean isSubscriptionOnly;
 	/**  Indicates whether or not this ppv can be consumed only on the first device  */
-    private Boolean firstDeviceLimitation;
+	private Boolean firstDeviceLimitation;
 	/**  PPV usage module  */
-    private UsageModule usageModule;
+	private UsageModule usageModule;
 
-    // id:
-    public String getId(){
-        return this.id;
-    }
-    public void setId(String id){
-        this.id = id;
-    }
+	// id:
+	public String getId(){
+		return this.id;
+	}
+	public void setId(String id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // price:
-    public PriceDetails getPrice(){
-        return this.price;
-    }
-    public void setPrice(PriceDetails price){
-        this.price = price;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // fileTypes:
-    public List<IntegerValue> getFileTypes(){
-        return this.fileTypes;
-    }
-    public void setFileTypes(List<IntegerValue> fileTypes){
-        this.fileTypes = fileTypes;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // discountModule:
-    public DiscountModule getDiscountModule(){
-        return this.discountModule;
-    }
-    public void setDiscountModule(DiscountModule discountModule){
-        this.discountModule = discountModule;
-    }
+	// price:
+	public PriceDetails getPrice(){
+		return this.price;
+	}
+	public void setPrice(PriceDetails price){
+		this.price = price;
+	}
 
-    // couponsGroup:
-    public CouponsGroup getCouponsGroup(){
-        return this.couponsGroup;
-    }
-    public void setCouponsGroup(CouponsGroup couponsGroup){
-        this.couponsGroup = couponsGroup;
-    }
+	// fileTypes:
+	public List<IntegerValue> getFileTypes(){
+		return this.fileTypes;
+	}
+	public void setFileTypes(List<IntegerValue> fileTypes){
+		this.fileTypes = fileTypes;
+	}
 
-    // descriptions:
-    public List<TranslationToken> getDescriptions(){
-        return this.descriptions;
-    }
-    public void setDescriptions(List<TranslationToken> descriptions){
-        this.descriptions = descriptions;
-    }
+	// discountModule:
+	public DiscountModule getDiscountModule(){
+		return this.discountModule;
+	}
+	public void setDiscountModule(DiscountModule discountModule){
+		this.discountModule = discountModule;
+	}
 
-    // productCode:
-    public String getProductCode(){
-        return this.productCode;
-    }
-    public void setProductCode(String productCode){
-        this.productCode = productCode;
-    }
+	// couponsGroup:
+	public CouponsGroup getCouponsGroup(){
+		return this.couponsGroup;
+	}
+	public void setCouponsGroup(CouponsGroup couponsGroup){
+		this.couponsGroup = couponsGroup;
+	}
 
-    // isSubscriptionOnly:
-    public Boolean getIsSubscriptionOnly(){
-        return this.isSubscriptionOnly;
-    }
-    public void setIsSubscriptionOnly(Boolean isSubscriptionOnly){
-        this.isSubscriptionOnly = isSubscriptionOnly;
-    }
+	// descriptions:
+	public List<TranslationToken> getDescriptions(){
+		return this.descriptions;
+	}
+	public void setDescriptions(List<TranslationToken> descriptions){
+		this.descriptions = descriptions;
+	}
 
-    // firstDeviceLimitation:
-    public Boolean getFirstDeviceLimitation(){
-        return this.firstDeviceLimitation;
-    }
-    public void setFirstDeviceLimitation(Boolean firstDeviceLimitation){
-        this.firstDeviceLimitation = firstDeviceLimitation;
-    }
+	// productCode:
+	public String getProductCode(){
+		return this.productCode;
+	}
+	public void setProductCode(String productCode){
+		this.productCode = productCode;
+	}
 
-    // usageModule:
-    public UsageModule getUsageModule(){
-        return this.usageModule;
-    }
-    public void setUsageModule(UsageModule usageModule){
-        this.usageModule = usageModule;
-    }
+	public void productCode(String multirequestToken){
+		setToken("productCode", multirequestToken);
+	}
+
+	// isSubscriptionOnly:
+	public Boolean getIsSubscriptionOnly(){
+		return this.isSubscriptionOnly;
+	}
+	public void setIsSubscriptionOnly(Boolean isSubscriptionOnly){
+		this.isSubscriptionOnly = isSubscriptionOnly;
+	}
+
+	public void isSubscriptionOnly(String multirequestToken){
+		setToken("isSubscriptionOnly", multirequestToken);
+	}
+
+	// firstDeviceLimitation:
+	public Boolean getFirstDeviceLimitation(){
+		return this.firstDeviceLimitation;
+	}
+	public void setFirstDeviceLimitation(Boolean firstDeviceLimitation){
+		this.firstDeviceLimitation = firstDeviceLimitation;
+	}
+
+	public void firstDeviceLimitation(String multirequestToken){
+		setToken("firstDeviceLimitation", multirequestToken);
+	}
+
+	// usageModule:
+	public UsageModule getUsageModule(){
+		return this.usageModule;
+	}
+	public void setUsageModule(UsageModule usageModule){
+		this.usageModule = usageModule;
+	}
 
 
-    public Ppv() {
-       super();
-    }
+	public Ppv() {
+		super();
+	}
 
-    public Ppv(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Ppv(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseString(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
-        fileTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("fileTypes"), IntegerValue.class);
-        discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
-        couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
-        descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
-        productCode = GsonParser.parseString(jsonObject.get("productCode"));
-        isSubscriptionOnly = GsonParser.parseBoolean(jsonObject.get("isSubscriptionOnly"));
-        firstDeviceLimitation = GsonParser.parseBoolean(jsonObject.get("firstDeviceLimitation"));
-        usageModule = GsonParser.parseObject(jsonObject.getAsJsonObject("usageModule"), UsageModule.class);
+		// set members values:
+		id = GsonParser.parseString(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
+		fileTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("fileTypes"), IntegerValue.class);
+		discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
+		couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
+		descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
+		productCode = GsonParser.parseString(jsonObject.get("productCode"));
+		isSubscriptionOnly = GsonParser.parseBoolean(jsonObject.get("isSubscriptionOnly"));
+		firstDeviceLimitation = GsonParser.parseBoolean(jsonObject.get("firstDeviceLimitation"));
+		usageModule = GsonParser.parseObject(jsonObject.getAsJsonObject("usageModule"), UsageModule.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPpv");
-        kparams.add("id", this.id);
-        kparams.add("name", this.name);
-        kparams.add("price", this.price);
-        kparams.add("fileTypes", this.fileTypes);
-        kparams.add("discountModule", this.discountModule);
-        kparams.add("couponsGroup", this.couponsGroup);
-        kparams.add("descriptions", this.descriptions);
-        kparams.add("productCode", this.productCode);
-        kparams.add("isSubscriptionOnly", this.isSubscriptionOnly);
-        kparams.add("firstDeviceLimitation", this.firstDeviceLimitation);
-        kparams.add("usageModule", this.usageModule);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPpv");
+		kparams.add("id", this.id);
+		kparams.add("name", this.name);
+		kparams.add("price", this.price);
+		kparams.add("fileTypes", this.fileTypes);
+		kparams.add("discountModule", this.discountModule);
+		kparams.add("couponsGroup", this.couponsGroup);
+		kparams.add("descriptions", this.descriptions);
+		kparams.add("productCode", this.productCode);
+		kparams.add("isSubscriptionOnly", this.isSubscriptionOnly);
+		kparams.add("firstDeviceLimitation", this.firstDeviceLimitation);
+		kparams.add("usageModule", this.usageModule);
+		return kparams;
+	}
 
 }
 

@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,37 +34,37 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum HouseholdSuspensionState implements EnumAsString {
-    NOT_SUSPENDED("NOT_SUSPENDED"),
-    SUSPENDED("SUSPENDED");
+	NOT_SUSPENDED("NOT_SUSPENDED"),
+	SUSPENDED("SUSPENDED");
 
-    private String value;
+	private String value;
 
-    HouseholdSuspensionState(String value) {
-        this.value = value;
-    }
+	HouseholdSuspensionState(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static HouseholdSuspensionState get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over HouseholdSuspensionState defined values and compare the inner value with the given one:
-        for(HouseholdSuspensionState item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return HouseholdSuspensionState.values().length > 0 ? HouseholdSuspensionState.values()[0]: null;
+	public static HouseholdSuspensionState get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over HouseholdSuspensionState defined values and compare the inner value with the given one:
+		for(HouseholdSuspensionState item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return HouseholdSuspensionState.values().length > 0 ? HouseholdSuspensionState.values()[0]: null;
    }
 }

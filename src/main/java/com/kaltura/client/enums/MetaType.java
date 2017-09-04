@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,39 +34,39 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum MetaType implements EnumAsString {
-    STRING("STRING"),
-    NUMBER("NUMBER"),
-    BOOLEAN("BOOLEAN"),
-    STRING_ARRAY("STRING_ARRAY");
+	STRING("STRING"),
+	NUMBER("NUMBER"),
+	BOOLEAN("BOOLEAN"),
+	STRING_ARRAY("STRING_ARRAY");
 
-    private String value;
+	private String value;
 
-    MetaType(String value) {
-        this.value = value;
-    }
+	MetaType(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static MetaType get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over MetaType defined values and compare the inner value with the given one:
-        for(MetaType item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return MetaType.values().length > 0 ? MetaType.values()[0]: null;
+	public static MetaType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over MetaType defined values and compare the inner value with the given one:
+		for(MetaType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return MetaType.values().length > 0 ? MetaType.values()[0]: null;
    }
 }

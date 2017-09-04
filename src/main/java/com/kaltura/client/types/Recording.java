@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.enums.RecordingStatus;
 import com.kaltura.client.enums.RecordingType;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,120 +43,164 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Recording.Tokenizer.class)
 public class Recording extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String status();
+		String assetId();
+		String type();
+		String viewableUntilDate();
+		String isProtected();
+		String createDate();
+		String updateDate();
+	}
 
 	/**  Kaltura unique ID representing the recording identifier  */
-    private Long id;
+	private Long id;
 	/**  Recording state:
 	  scheduled/recording/recorded/canceled/failed/does_not_exists/deleted  */
-    private RecordingStatus status;
+	private RecordingStatus status;
 	/**  Kaltura unique ID representing the program identifier  */
-    private Long assetId;
+	private Long assetId;
 	/**  Recording Type: single/season/series  */
-    private RecordingType type;
+	private RecordingType type;
 	/**  Specifies until when the recording is available for viewing. Date and time
 	  represented as epoch.  */
-    private Long viewableUntilDate;
+	private Long viewableUntilDate;
 	/**  Specifies whether or not the recording is protected  */
-    private Boolean isProtected;
+	private Boolean isProtected;
 	/**  Specifies when was the recording created. Date and time represented as epoch.  */
-    private Long createDate;
+	private Long createDate;
 	/**  Specifies when was the recording last updated. Date and time represented as
 	  epoch.  */
-    private Long updateDate;
+	private Long updateDate;
 
-    // id:
-    public Long getId(){
-        return this.id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 
-    // status:
-    public RecordingStatus getStatus(){
-        return this.status;
-    }
-    public void setStatus(RecordingStatus status){
-        this.status = status;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // assetId:
-    public Long getAssetId(){
-        return this.assetId;
-    }
-    public void setAssetId(Long assetId){
-        this.assetId = assetId;
-    }
+	// status:
+	public RecordingStatus getStatus(){
+		return this.status;
+	}
+	public void setStatus(RecordingStatus status){
+		this.status = status;
+	}
 
-    // type:
-    public RecordingType getType(){
-        return this.type;
-    }
-    public void setType(RecordingType type){
-        this.type = type;
-    }
+	public void status(String multirequestToken){
+		setToken("status", multirequestToken);
+	}
 
-    // viewableUntilDate:
-    public Long getViewableUntilDate(){
-        return this.viewableUntilDate;
-    }
-    public void setViewableUntilDate(Long viewableUntilDate){
-        this.viewableUntilDate = viewableUntilDate;
-    }
+	// assetId:
+	public Long getAssetId(){
+		return this.assetId;
+	}
+	public void setAssetId(Long assetId){
+		this.assetId = assetId;
+	}
 
-    // isProtected:
-    public Boolean getIsProtected(){
-        return this.isProtected;
-    }
-    public void setIsProtected(Boolean isProtected){
-        this.isProtected = isProtected;
-    }
+	public void assetId(String multirequestToken){
+		setToken("assetId", multirequestToken);
+	}
 
-    // createDate:
-    public Long getCreateDate(){
-        return this.createDate;
-    }
-    public void setCreateDate(Long createDate){
-        this.createDate = createDate;
-    }
+	// type:
+	public RecordingType getType(){
+		return this.type;
+	}
+	public void setType(RecordingType type){
+		this.type = type;
+	}
 
-    // updateDate:
-    public Long getUpdateDate(){
-        return this.updateDate;
-    }
-    public void setUpdateDate(Long updateDate){
-        this.updateDate = updateDate;
-    }
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
+
+	// viewableUntilDate:
+	public Long getViewableUntilDate(){
+		return this.viewableUntilDate;
+	}
+	public void setViewableUntilDate(Long viewableUntilDate){
+		this.viewableUntilDate = viewableUntilDate;
+	}
+
+	public void viewableUntilDate(String multirequestToken){
+		setToken("viewableUntilDate", multirequestToken);
+	}
+
+	// isProtected:
+	public Boolean getIsProtected(){
+		return this.isProtected;
+	}
+	public void setIsProtected(Boolean isProtected){
+		this.isProtected = isProtected;
+	}
+
+	public void isProtected(String multirequestToken){
+		setToken("isProtected", multirequestToken);
+	}
+
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	public void setCreateDate(Long createDate){
+		this.createDate = createDate;
+	}
+
+	public void createDate(String multirequestToken){
+		setToken("createDate", multirequestToken);
+	}
+
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	public void setUpdateDate(Long updateDate){
+		this.updateDate = updateDate;
+	}
+
+	public void updateDate(String multirequestToken){
+		setToken("updateDate", multirequestToken);
+	}
 
 
-    public Recording() {
-       super();
-    }
+	public Recording() {
+		super();
+	}
 
-    public Recording(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Recording(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        status = RecordingStatus.get(GsonParser.parseString(jsonObject.get("status")));
-        assetId = GsonParser.parseLong(jsonObject.get("assetId"));
-        type = RecordingType.get(GsonParser.parseString(jsonObject.get("type")));
-        viewableUntilDate = GsonParser.parseLong(jsonObject.get("viewableUntilDate"));
-        isProtected = GsonParser.parseBoolean(jsonObject.get("isProtected"));
-        createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-        updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		status = RecordingStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+		type = RecordingType.get(GsonParser.parseString(jsonObject.get("type")));
+		viewableUntilDate = GsonParser.parseLong(jsonObject.get("viewableUntilDate"));
+		isProtected = GsonParser.parseBoolean(jsonObject.get("isProtected"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaRecording");
-        kparams.add("assetId", this.assetId);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaRecording");
+		kparams.add("assetId", this.assetId);
+		return kparams;
+	}
 
 }
 

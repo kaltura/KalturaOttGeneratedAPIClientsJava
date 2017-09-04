@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,109 +41,148 @@ import com.google.gson.JsonObject;
 
 /**  KalturaSubscriptionEntitlement  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SubscriptionEntitlement.Tokenizer.class)
 public class SubscriptionEntitlement extends Entitlement {
+	
+	public interface Tokenizer extends Entitlement.Tokenizer {
+		String nextRenewalDate();
+		String isRenewableForPurchase();
+		String isRenewable();
+		String isInGracePeriod();
+		String paymentGatewayId();
+		String paymentMethodId();
+		String scheduledSubscriptionId();
+	}
 
 	/**  The date of the next renewal (only for subscription)  */
-    private Long nextRenewalDate;
+	private Long nextRenewalDate;
 	/**  Indicates whether the subscription is renewable in this purchase (only for
 	  subscription)  */
-    private Boolean isRenewableForPurchase;
+	private Boolean isRenewableForPurchase;
 	/**  Indicates whether a subscription is renewable (only for subscription)  */
-    private Boolean isRenewable;
+	private Boolean isRenewable;
 	/**  Indicates whether the user is currently in his grace period entitlement  */
-    private Boolean isInGracePeriod;
+	private Boolean isInGracePeriod;
 	/**  Payment Gateway identifier  */
-    private Integer paymentGatewayId;
+	private Integer paymentGatewayId;
 	/**  Payment Method identifier  */
-    private Integer paymentMethodId;
+	private Integer paymentMethodId;
 	/**  Scheduled Subscription Identifier  */
-    private Long scheduledSubscriptionId;
+	private Long scheduledSubscriptionId;
 
-    // nextRenewalDate:
-    public Long getNextRenewalDate(){
-        return this.nextRenewalDate;
-    }
-    public void setNextRenewalDate(Long nextRenewalDate){
-        this.nextRenewalDate = nextRenewalDate;
-    }
+	// nextRenewalDate:
+	public Long getNextRenewalDate(){
+		return this.nextRenewalDate;
+	}
+	public void setNextRenewalDate(Long nextRenewalDate){
+		this.nextRenewalDate = nextRenewalDate;
+	}
 
-    // isRenewableForPurchase:
-    public Boolean getIsRenewableForPurchase(){
-        return this.isRenewableForPurchase;
-    }
-    public void setIsRenewableForPurchase(Boolean isRenewableForPurchase){
-        this.isRenewableForPurchase = isRenewableForPurchase;
-    }
+	public void nextRenewalDate(String multirequestToken){
+		setToken("nextRenewalDate", multirequestToken);
+	}
 
-    // isRenewable:
-    public Boolean getIsRenewable(){
-        return this.isRenewable;
-    }
-    public void setIsRenewable(Boolean isRenewable){
-        this.isRenewable = isRenewable;
-    }
+	// isRenewableForPurchase:
+	public Boolean getIsRenewableForPurchase(){
+		return this.isRenewableForPurchase;
+	}
+	public void setIsRenewableForPurchase(Boolean isRenewableForPurchase){
+		this.isRenewableForPurchase = isRenewableForPurchase;
+	}
 
-    // isInGracePeriod:
-    public Boolean getIsInGracePeriod(){
-        return this.isInGracePeriod;
-    }
-    public void setIsInGracePeriod(Boolean isInGracePeriod){
-        this.isInGracePeriod = isInGracePeriod;
-    }
+	public void isRenewableForPurchase(String multirequestToken){
+		setToken("isRenewableForPurchase", multirequestToken);
+	}
 
-    // paymentGatewayId:
-    public Integer getPaymentGatewayId(){
-        return this.paymentGatewayId;
-    }
-    public void setPaymentGatewayId(Integer paymentGatewayId){
-        this.paymentGatewayId = paymentGatewayId;
-    }
+	// isRenewable:
+	public Boolean getIsRenewable(){
+		return this.isRenewable;
+	}
+	public void setIsRenewable(Boolean isRenewable){
+		this.isRenewable = isRenewable;
+	}
 
-    // paymentMethodId:
-    public Integer getPaymentMethodId(){
-        return this.paymentMethodId;
-    }
-    public void setPaymentMethodId(Integer paymentMethodId){
-        this.paymentMethodId = paymentMethodId;
-    }
+	public void isRenewable(String multirequestToken){
+		setToken("isRenewable", multirequestToken);
+	}
 
-    // scheduledSubscriptionId:
-    public Long getScheduledSubscriptionId(){
-        return this.scheduledSubscriptionId;
-    }
-    public void setScheduledSubscriptionId(Long scheduledSubscriptionId){
-        this.scheduledSubscriptionId = scheduledSubscriptionId;
-    }
+	// isInGracePeriod:
+	public Boolean getIsInGracePeriod(){
+		return this.isInGracePeriod;
+	}
+	public void setIsInGracePeriod(Boolean isInGracePeriod){
+		this.isInGracePeriod = isInGracePeriod;
+	}
+
+	public void isInGracePeriod(String multirequestToken){
+		setToken("isInGracePeriod", multirequestToken);
+	}
+
+	// paymentGatewayId:
+	public Integer getPaymentGatewayId(){
+		return this.paymentGatewayId;
+	}
+	public void setPaymentGatewayId(Integer paymentGatewayId){
+		this.paymentGatewayId = paymentGatewayId;
+	}
+
+	public void paymentGatewayId(String multirequestToken){
+		setToken("paymentGatewayId", multirequestToken);
+	}
+
+	// paymentMethodId:
+	public Integer getPaymentMethodId(){
+		return this.paymentMethodId;
+	}
+	public void setPaymentMethodId(Integer paymentMethodId){
+		this.paymentMethodId = paymentMethodId;
+	}
+
+	public void paymentMethodId(String multirequestToken){
+		setToken("paymentMethodId", multirequestToken);
+	}
+
+	// scheduledSubscriptionId:
+	public Long getScheduledSubscriptionId(){
+		return this.scheduledSubscriptionId;
+	}
+	public void setScheduledSubscriptionId(Long scheduledSubscriptionId){
+		this.scheduledSubscriptionId = scheduledSubscriptionId;
+	}
+
+	public void scheduledSubscriptionId(String multirequestToken){
+		setToken("scheduledSubscriptionId", multirequestToken);
+	}
 
 
-    public SubscriptionEntitlement() {
-       super();
-    }
+	public SubscriptionEntitlement() {
+		super();
+	}
 
-    public SubscriptionEntitlement(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SubscriptionEntitlement(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        nextRenewalDate = GsonParser.parseLong(jsonObject.get("nextRenewalDate"));
-        isRenewableForPurchase = GsonParser.parseBoolean(jsonObject.get("isRenewableForPurchase"));
-        isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
-        isInGracePeriod = GsonParser.parseBoolean(jsonObject.get("isInGracePeriod"));
-        paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
-        paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
-        scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
+		// set members values:
+		nextRenewalDate = GsonParser.parseLong(jsonObject.get("nextRenewalDate"));
+		isRenewableForPurchase = GsonParser.parseBoolean(jsonObject.get("isRenewableForPurchase"));
+		isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
+		isInGracePeriod = GsonParser.parseBoolean(jsonObject.get("isInGracePeriod"));
+		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
+		paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
+		scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSubscriptionEntitlement");
-        kparams.add("paymentGatewayId", this.paymentGatewayId);
-        kparams.add("paymentMethodId", this.paymentMethodId);
-        kparams.add("scheduledSubscriptionId", this.scheduledSubscriptionId);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSubscriptionEntitlement");
+		kparams.add("paymentGatewayId", this.paymentGatewayId);
+		kparams.add("paymentMethodId", this.paymentMethodId);
+		kparams.add("scheduledSubscriptionId", this.scheduledSubscriptionId);
+		return kparams;
+	}
 
 }
 

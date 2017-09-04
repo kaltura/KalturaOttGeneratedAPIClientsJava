@@ -27,12 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.DeviceStatus;
 import com.kaltura.client.types.DevicePin;
 import com.kaltura.client.types.HouseholdDevice;
 import com.kaltura.client.types.HouseholdDeviceFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -45,89 +43,178 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HouseholdDeviceService {
+	
+	public static class AddHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, AddHouseholdDeviceBuilder> {
+		
+		public AddHouseholdDeviceBuilder(HouseholdDevice device) {
+			super(HouseholdDevice.class, "householddevice", "add");
+			params.add("device", device);
+		}
+	}
 
 	/**  Add device to household  */
-    public static RequestBuilder<HouseholdDevice> add(HouseholdDevice device)  {
-        Params kparams = new Params();
-        kparams.add("device", device);
-
-        return new RequestBuilder<HouseholdDevice>(HouseholdDevice.class, "householddevice", "add", kparams);
-    }
+    public static AddHouseholdDeviceBuilder add(HouseholdDevice device)  {
+		return new AddHouseholdDeviceBuilder(device);
+	}
+	
+	public static class AddByPinHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, AddByPinHouseholdDeviceBuilder> {
+		
+		public AddByPinHouseholdDeviceBuilder(String deviceName, String pin) {
+			super(HouseholdDevice.class, "householddevice", "addByPin");
+			params.add("deviceName", deviceName);
+			params.add("pin", pin);
+		}
+		
+		public void deviceName(String multirequestToken) {
+			params.add("deviceName", multirequestToken);
+		}
+		
+		public void pin(String multirequestToken) {
+			params.add("pin", multirequestToken);
+		}
+	}
 
 	/**  Registers a device to a household using pin code  */
-    public static RequestBuilder<HouseholdDevice> addByPin(String deviceName, String pin)  {
-        Params kparams = new Params();
-        kparams.add("deviceName", deviceName);
-        kparams.add("pin", pin);
-
-        return new RequestBuilder<HouseholdDevice>(HouseholdDevice.class, "householddevice", "addByPin", kparams);
-    }
+    public static AddByPinHouseholdDeviceBuilder addByPin(String deviceName, String pin)  {
+		return new AddByPinHouseholdDeviceBuilder(deviceName, pin);
+	}
+	
+	public static class DeleteHouseholdDeviceBuilder extends RequestBuilder<Boolean, String, DeleteHouseholdDeviceBuilder> {
+		
+		public DeleteHouseholdDeviceBuilder(String udid) {
+			super(Boolean.class, "householddevice", "delete");
+			params.add("udid", udid);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
 
 	/**  Removes a device from household  */
-    public static RequestBuilder<Boolean> delete(String udid)  {
-        Params kparams = new Params();
-        kparams.add("udid", udid);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householddevice", "delete", kparams);
-    }
+    public static DeleteHouseholdDeviceBuilder delete(String udid)  {
+		return new DeleteHouseholdDeviceBuilder(udid);
+	}
+	
+	public static class GeneratePinHouseholdDeviceBuilder extends RequestBuilder<DevicePin, DevicePin.Tokenizer, GeneratePinHouseholdDeviceBuilder> {
+		
+		public GeneratePinHouseholdDeviceBuilder(String udid, int brandId) {
+			super(DevicePin.class, "householddevice", "generatePin");
+			params.add("udid", udid);
+			params.add("brandId", brandId);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+		
+		public void brandId(String multirequestToken) {
+			params.add("brandId", multirequestToken);
+		}
+	}
 
 	/**  Generates device pin to use when adding a device to household by pin  */
-    public static RequestBuilder<DevicePin> generatePin(String udid, int brandId)  {
-        Params kparams = new Params();
-        kparams.add("udid", udid);
-        kparams.add("brandId", brandId);
-
-        return new RequestBuilder<DevicePin>(DevicePin.class, "householddevice", "generatePin", kparams);
-    }
+    public static GeneratePinHouseholdDeviceBuilder generatePin(String udid, int brandId)  {
+		return new GeneratePinHouseholdDeviceBuilder(udid, brandId);
+	}
+	
+	public static class GetHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, GetHouseholdDeviceBuilder> {
+		
+		public GetHouseholdDeviceBuilder() {
+			super(HouseholdDevice.class, "householddevice", "get");
+		}
+	}
 
 	/**  Returns device registration status to the supplied household  */
-    public static RequestBuilder<HouseholdDevice> get()  {
-        Params kparams = new Params();
+    public static GetHouseholdDeviceBuilder get()  {
+		return new GetHouseholdDeviceBuilder();
+	}
+	
+	public static class ListHouseholdDeviceBuilder extends ListResponseRequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, ListHouseholdDeviceBuilder> {
+		
+		public ListHouseholdDeviceBuilder(HouseholdDeviceFilter filter) {
+			super(HouseholdDevice.class, "householddevice", "list");
+			params.add("filter", filter);
+		}
+	}
 
-        return new RequestBuilder<HouseholdDevice>(HouseholdDevice.class, "householddevice", "get", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<HouseholdDevice>> list()  {
-        return list(null);
-    }
+	public static ListHouseholdDeviceBuilder list()  {
+		return list(null);
+	}
 
 	/**  Returns the devices within the household  */
-    public static RequestBuilder<ListResponse<HouseholdDevice>> list(HouseholdDeviceFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
+    public static ListHouseholdDeviceBuilder list(HouseholdDeviceFilter filter)  {
+		return new ListHouseholdDeviceBuilder(filter);
+	}
+	
+	public static class LoginWithPinHouseholdDeviceBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, LoginWithPinHouseholdDeviceBuilder> {
+		
+		public LoginWithPinHouseholdDeviceBuilder(int partnerId, String pin, String udid) {
+			super(LoginResponse.class, "householddevice", "loginWithPin");
+			params.add("partnerId", partnerId);
+			params.add("pin", pin);
+			params.add("udid", udid);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+		
+		public void pin(String multirequestToken) {
+			params.add("pin", multirequestToken);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
 
-        return new ListResponseRequestBuilder<HouseholdDevice>(HouseholdDevice.class, "householddevice", "list", kparams);
-    }
-
-    public static RequestBuilder<LoginResponse> loginWithPin(int partnerId, String pin)  {
-        return loginWithPin(partnerId, pin, null);
-    }
+	public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin)  {
+		return loginWithPin(partnerId, pin, null);
+	}
 
 	/**  User sign-in via a time-expired sign-in PIN.  */
-    public static RequestBuilder<LoginResponse> loginWithPin(int partnerId, String pin, String udid)  {
-        Params kparams = new Params();
-        kparams.add("partnerId", partnerId);
-        kparams.add("pin", pin);
-        kparams.add("udid", udid);
-
-        return new RequestBuilder<LoginResponse>(LoginResponse.class, "householddevice", "loginWithPin", kparams);
-    }
+    public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid)  {
+		return new LoginWithPinHouseholdDeviceBuilder(partnerId, pin, udid);
+	}
+	
+	public static class UpdateHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, UpdateHouseholdDeviceBuilder> {
+		
+		public UpdateHouseholdDeviceBuilder(String udid, HouseholdDevice device) {
+			super(HouseholdDevice.class, "householddevice", "update");
+			params.add("udid", udid);
+			params.add("device", device);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
 
 	/**  Update the name of the device by UDID  */
-    public static RequestBuilder<HouseholdDevice> update(String udid, HouseholdDevice device)  {
-        Params kparams = new Params();
-        kparams.add("udid", udid);
-        kparams.add("device", device);
-
-        return new RequestBuilder<HouseholdDevice>(HouseholdDevice.class, "householddevice", "update", kparams);
-    }
+    public static UpdateHouseholdDeviceBuilder update(String udid, HouseholdDevice device)  {
+		return new UpdateHouseholdDeviceBuilder(udid, device);
+	}
+	
+	public static class UpdateStatusHouseholdDeviceBuilder extends RequestBuilder<Boolean, String, UpdateStatusHouseholdDeviceBuilder> {
+		
+		public UpdateStatusHouseholdDeviceBuilder(String udid, DeviceStatus status) {
+			super(Boolean.class, "householddevice", "updateStatus");
+			params.add("udid", udid);
+			params.add("status", status);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+		
+		public void status(String multirequestToken) {
+			params.add("status", multirequestToken);
+		}
+	}
 
 	/**  Update the name of the device by UDID  */
-    public static RequestBuilder<Boolean> updateStatus(String udid, DeviceStatus status)  {
-        Params kparams = new Params();
-        kparams.add("udid", udid);
-        kparams.add("status", status);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householddevice", "updateStatus", kparams);
-    }
+    public static UpdateStatusHouseholdDeviceBuilder updateStatus(String udid, DeviceStatus status)  {
+		return new UpdateStatusHouseholdDeviceBuilder(udid, status);
+	}
 }

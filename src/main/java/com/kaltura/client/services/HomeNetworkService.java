@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.HomeNetwork;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,36 +39,64 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HomeNetworkService {
+	
+	public static class AddHomeNetworkBuilder extends RequestBuilder<HomeNetwork, HomeNetwork.Tokenizer, AddHomeNetworkBuilder> {
+		
+		public AddHomeNetworkBuilder(HomeNetwork homeNetwork) {
+			super(HomeNetwork.class, "homenetwork", "add");
+			params.add("homeNetwork", homeNetwork);
+		}
+	}
 
 	/**  Add a new home network to a household  */
-    public static RequestBuilder<HomeNetwork> add(HomeNetwork homeNetwork)  {
-        Params kparams = new Params();
-        kparams.add("homeNetwork", homeNetwork);
-
-        return new RequestBuilder<HomeNetwork>(HomeNetwork.class, "homenetwork", "add", kparams);
-    }
+    public static AddHomeNetworkBuilder add(HomeNetwork homeNetwork)  {
+		return new AddHomeNetworkBuilder(homeNetwork);
+	}
+	
+	public static class DeleteHomeNetworkBuilder extends RequestBuilder<Boolean, String, DeleteHomeNetworkBuilder> {
+		
+		public DeleteHomeNetworkBuilder(String externalId) {
+			super(Boolean.class, "homenetwork", "delete");
+			params.add("externalId", externalId);
+		}
+		
+		public void externalId(String multirequestToken) {
+			params.add("externalId", multirequestToken);
+		}
+	}
 
 	/**  Delete household’s existing home network  */
-    public static RequestBuilder<Boolean> delete(String externalId)  {
-        Params kparams = new Params();
-        kparams.add("externalId", externalId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "homenetwork", "delete", kparams);
-    }
+    public static DeleteHomeNetworkBuilder delete(String externalId)  {
+		return new DeleteHomeNetworkBuilder(externalId);
+	}
+	
+	public static class ListHomeNetworkBuilder extends ListResponseRequestBuilder<HomeNetwork, HomeNetwork.Tokenizer, ListHomeNetworkBuilder> {
+		
+		public ListHomeNetworkBuilder() {
+			super(HomeNetwork.class, "homenetwork", "list");
+		}
+	}
 
 	/**  Retrieve the household’s home networks  */
-    public static RequestBuilder<ListResponse<HomeNetwork>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<HomeNetwork>(HomeNetwork.class, "homenetwork", "list", kparams);
-    }
+    public static ListHomeNetworkBuilder list()  {
+		return new ListHomeNetworkBuilder();
+	}
+	
+	public static class UpdateHomeNetworkBuilder extends RequestBuilder<HomeNetwork, HomeNetwork.Tokenizer, UpdateHomeNetworkBuilder> {
+		
+		public UpdateHomeNetworkBuilder(String externalId, HomeNetwork homeNetwork) {
+			super(HomeNetwork.class, "homenetwork", "update");
+			params.add("externalId", externalId);
+			params.add("homeNetwork", homeNetwork);
+		}
+		
+		public void externalId(String multirequestToken) {
+			params.add("externalId", multirequestToken);
+		}
+	}
 
 	/**  Update and existing home network for a household  */
-    public static RequestBuilder<HomeNetwork> update(String externalId, HomeNetwork homeNetwork)  {
-        Params kparams = new Params();
-        kparams.add("externalId", externalId);
-        kparams.add("homeNetwork", homeNetwork);
-
-        return new RequestBuilder<HomeNetwork>(HomeNetwork.class, "homenetwork", "update", kparams);
-    }
+    public static UpdateHomeNetworkBuilder update(String externalId, HomeNetwork homeNetwork)  {
+		return new UpdateHomeNetworkBuilder(externalId, homeNetwork);
+	}
 }

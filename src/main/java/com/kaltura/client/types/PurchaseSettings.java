@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.PurchaseSettingsType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.PurchaseSettingsType;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,40 +42,49 @@ import com.google.gson.JsonObject;
 
 /**  Purchase settings and PIN  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PurchaseSettings.Tokenizer.class)
 public class PurchaseSettings extends Pin {
+	
+	public interface Tokenizer extends Pin.Tokenizer {
+		String permission();
+	}
 
 	/**  Purchase permission - block, ask or allow  */
-    private PurchaseSettingsType permission;
+	private PurchaseSettingsType permission;
 
-    // permission:
-    public PurchaseSettingsType getPermission(){
-        return this.permission;
-    }
-    public void setPermission(PurchaseSettingsType permission){
-        this.permission = permission;
-    }
+	// permission:
+	public PurchaseSettingsType getPermission(){
+		return this.permission;
+	}
+	public void setPermission(PurchaseSettingsType permission){
+		this.permission = permission;
+	}
+
+	public void permission(String multirequestToken){
+		setToken("permission", multirequestToken);
+	}
 
 
-    public PurchaseSettings() {
-       super();
-    }
+	public PurchaseSettings() {
+		super();
+	}
 
-    public PurchaseSettings(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PurchaseSettings(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        permission = PurchaseSettingsType.get(GsonParser.parseString(jsonObject.get("permission")));
+		// set members values:
+		permission = PurchaseSettingsType.get(GsonParser.parseString(jsonObject.get("permission")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPurchaseSettings");
-        kparams.add("permission", this.permission);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPurchaseSettings");
+		kparams.add("permission", this.permission);
+		return kparams;
+	}
 
 }
 

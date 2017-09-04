@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.enums.PinType;
 import com.kaltura.client.types.Pin;
@@ -41,49 +40,100 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PinService {
+	
+	public static class GetPinBuilder extends RequestBuilder<Pin, Pin.Tokenizer, GetPinBuilder> {
+		
+		public GetPinBuilder(EntityReferenceBy by, PinType type, int ruleId) {
+			super(Pin.class, "pin", "get");
+			params.add("by", by);
+			params.add("type", type);
+			params.add("ruleId", ruleId);
+		}
+		
+		public void by(String multirequestToken) {
+			params.add("by", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+		
+		public void ruleId(String multirequestToken) {
+			params.add("ruleId", multirequestToken);
+		}
+	}
 
-    public static RequestBuilder<Pin> get(EntityReferenceBy by, PinType type)  {
-        return get(by, type, Integer.MIN_VALUE);
-    }
+	public static GetPinBuilder get(EntityReferenceBy by, PinType type)  {
+		return get(by, type, Integer.MIN_VALUE);
+	}
 
 	/**  Retrieve the parental or purchase PIN that applies for the household or user.
 	  Includes specification of where the PIN was defined at – account, household or
 	  user  level  */
-    public static RequestBuilder<Pin> get(EntityReferenceBy by, PinType type, int ruleId)  {
-        Params kparams = new Params();
-        kparams.add("by", by);
-        kparams.add("type", type);
-        kparams.add("ruleId", ruleId);
+    public static GetPinBuilder get(EntityReferenceBy by, PinType type, int ruleId)  {
+		return new GetPinBuilder(by, type, ruleId);
+	}
+	
+	public static class UpdatePinBuilder extends RequestBuilder<Pin, Pin.Tokenizer, UpdatePinBuilder> {
+		
+		public UpdatePinBuilder(EntityReferenceBy by, PinType type, Pin pin, int ruleId) {
+			super(Pin.class, "pin", "update");
+			params.add("by", by);
+			params.add("type", type);
+			params.add("pin", pin);
+			params.add("ruleId", ruleId);
+		}
+		
+		public void by(String multirequestToken) {
+			params.add("by", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+		
+		public void ruleId(String multirequestToken) {
+			params.add("ruleId", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Pin>(Pin.class, "pin", "get", kparams);
-    }
-
-    public static RequestBuilder<Pin> update(EntityReferenceBy by, PinType type, Pin pin)  {
-        return update(by, type, pin, Integer.MIN_VALUE);
-    }
+	public static UpdatePinBuilder update(EntityReferenceBy by, PinType type, Pin pin)  {
+		return update(by, type, pin, Integer.MIN_VALUE);
+	}
 
 	/**  Set the parental or purchase PIN that applies for the user or the household.  */
-    public static RequestBuilder<Pin> update(EntityReferenceBy by, PinType type, Pin pin, int ruleId)  {
-        Params kparams = new Params();
-        kparams.add("by", by);
-        kparams.add("type", type);
-        kparams.add("pin", pin);
-        kparams.add("ruleId", ruleId);
+    public static UpdatePinBuilder update(EntityReferenceBy by, PinType type, Pin pin, int ruleId)  {
+		return new UpdatePinBuilder(by, type, pin, ruleId);
+	}
+	
+	public static class ValidatePinBuilder extends RequestBuilder<Boolean, String, ValidatePinBuilder> {
+		
+		public ValidatePinBuilder(String pin, PinType type, int ruleId) {
+			super(Boolean.class, "pin", "validate");
+			params.add("pin", pin);
+			params.add("type", type);
+			params.add("ruleId", ruleId);
+		}
+		
+		public void pin(String multirequestToken) {
+			params.add("pin", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+		
+		public void ruleId(String multirequestToken) {
+			params.add("ruleId", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Pin>(Pin.class, "pin", "update", kparams);
-    }
-
-    public static RequestBuilder<Boolean> validate(String pin, PinType type)  {
-        return validate(pin, type, Integer.MIN_VALUE);
-    }
+	public static ValidatePinBuilder validate(String pin, PinType type)  {
+		return validate(pin, type, Integer.MIN_VALUE);
+	}
 
 	/**  Validate a purchase or parental PIN for a user.  */
-    public static RequestBuilder<Boolean> validate(String pin, PinType type, int ruleId)  {
-        Params kparams = new Params();
-        kparams.add("pin", pin);
-        kparams.add("type", type);
-        kparams.add("ruleId", ruleId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "pin", "validate", kparams);
-    }
+    public static ValidatePinBuilder validate(String pin, PinType type, int ruleId)  {
+		return new ValidatePinBuilder(pin, type, ruleId);
+	}
 }

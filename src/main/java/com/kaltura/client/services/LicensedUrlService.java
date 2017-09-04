@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.LicensedUrl;
 import com.kaltura.client.types.LicensedUrlBaseRequest;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,12 +39,17 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class LicensedUrlService {
+	
+	public static class GetLicensedUrlBuilder extends RequestBuilder<LicensedUrl, LicensedUrl.Tokenizer, GetLicensedUrlBuilder> {
+		
+		public GetLicensedUrlBuilder(LicensedUrlBaseRequest request) {
+			super(LicensedUrl.class, "licensedurl", "get");
+			params.add("request", request);
+		}
+	}
 
 	/**  Get the URL for playing an asset - program, media or recording  */
-    public static RequestBuilder<LicensedUrl> get(LicensedUrlBaseRequest request)  {
-        Params kparams = new Params();
-        kparams.add("request", request);
-
-        return new RequestBuilder<LicensedUrl>(LicensedUrl.class, "licensedurl", "get", kparams);
-    }
+    public static GetLicensedUrlBuilder get(LicensedUrlBaseRequest request)  {
+		return new GetLicensedUrlBuilder(request);
+	}
 }

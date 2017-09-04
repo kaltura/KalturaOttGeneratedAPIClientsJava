@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,36 +34,36 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum ParentalRuleOrderBy implements EnumAsString {
-    PARTNER_SORT_VALUE("PARTNER_SORT_VALUE");
+	PARTNER_SORT_VALUE("PARTNER_SORT_VALUE");
 
-    private String value;
+	private String value;
 
-    ParentalRuleOrderBy(String value) {
-        this.value = value;
-    }
+	ParentalRuleOrderBy(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static ParentalRuleOrderBy get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over ParentalRuleOrderBy defined values and compare the inner value with the given one:
-        for(ParentalRuleOrderBy item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return ParentalRuleOrderBy.values().length > 0 ? ParentalRuleOrderBy.values()[0]: null;
+	public static ParentalRuleOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over ParentalRuleOrderBy defined values and compare the inner value with the given one:
+		for(ParentalRuleOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return ParentalRuleOrderBy.values().length > 0 ? ParentalRuleOrderBy.values()[0]: null;
    }
 }

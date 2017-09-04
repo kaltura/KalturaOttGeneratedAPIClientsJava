@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.PushParams;
-import com.kaltura.client.enums.Platform;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.Platform;
+import com.kaltura.client.types.PushParams;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,160 +42,215 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DeviceReport.Tokenizer.class)
 public class DeviceReport extends Report {
+	
+	public interface Tokenizer extends Report.Tokenizer {
+		String partnerId();
+		String configurationGroupId();
+		String udid();
+		PushParams.Tokenizer pushParameters();
+		String versionNumber();
+		String versionPlatform();
+		String versionAppName();
+		String lastAccessIP();
+		String lastAccessDate();
+		String userAgent();
+		String operationSystem();
+	}
 
 	/**  Partner id  */
-    private Integer partnerId;
+	private Integer partnerId;
 	/**  Configuration group id  */
-    private String configurationGroupId;
+	private String configurationGroupId;
 	/**  Device UDID  */
-    private String udid;
+	private String udid;
 	/**  Push parameters  */
-    private PushParams pushParameters;
+	private PushParams pushParameters;
 	/**  Version number  */
-    private String versionNumber;
+	private String versionNumber;
 	/**  Version platform  */
-    private Platform versionPlatform;
+	private Platform versionPlatform;
 	/**  Version application name  */
-    private String versionAppName;
+	private String versionAppName;
 	/**  Last access IP  */
-    private String lastAccessIP;
+	private String lastAccessIP;
 	/**  Last access date  */
-    private Long lastAccessDate;
+	private Long lastAccessDate;
 	/**  User agent  */
-    private String userAgent;
+	private String userAgent;
 	/**  Operation system  */
-    private String operationSystem;
+	private String operationSystem;
 
-    // partnerId:
-    public Integer getPartnerId(){
-        return this.partnerId;
-    }
-    public void setPartnerId(Integer partnerId){
-        this.partnerId = partnerId;
-    }
+	// partnerId:
+	public Integer getPartnerId(){
+		return this.partnerId;
+	}
+	public void setPartnerId(Integer partnerId){
+		this.partnerId = partnerId;
+	}
 
-    // configurationGroupId:
-    public String getConfigurationGroupId(){
-        return this.configurationGroupId;
-    }
-    public void setConfigurationGroupId(String configurationGroupId){
-        this.configurationGroupId = configurationGroupId;
-    }
+	public void partnerId(String multirequestToken){
+		setToken("partnerId", multirequestToken);
+	}
 
-    // udid:
-    public String getUdid(){
-        return this.udid;
-    }
-    public void setUdid(String udid){
-        this.udid = udid;
-    }
+	// configurationGroupId:
+	public String getConfigurationGroupId(){
+		return this.configurationGroupId;
+	}
+	public void setConfigurationGroupId(String configurationGroupId){
+		this.configurationGroupId = configurationGroupId;
+	}
 
-    // pushParameters:
-    public PushParams getPushParameters(){
-        return this.pushParameters;
-    }
-    public void setPushParameters(PushParams pushParameters){
-        this.pushParameters = pushParameters;
-    }
+	public void configurationGroupId(String multirequestToken){
+		setToken("configurationGroupId", multirequestToken);
+	}
 
-    // versionNumber:
-    public String getVersionNumber(){
-        return this.versionNumber;
-    }
-    public void setVersionNumber(String versionNumber){
-        this.versionNumber = versionNumber;
-    }
+	// udid:
+	public String getUdid(){
+		return this.udid;
+	}
+	public void setUdid(String udid){
+		this.udid = udid;
+	}
 
-    // versionPlatform:
-    public Platform getVersionPlatform(){
-        return this.versionPlatform;
-    }
-    public void setVersionPlatform(Platform versionPlatform){
-        this.versionPlatform = versionPlatform;
-    }
+	public void udid(String multirequestToken){
+		setToken("udid", multirequestToken);
+	}
 
-    // versionAppName:
-    public String getVersionAppName(){
-        return this.versionAppName;
-    }
-    public void setVersionAppName(String versionAppName){
-        this.versionAppName = versionAppName;
-    }
+	// pushParameters:
+	public PushParams getPushParameters(){
+		return this.pushParameters;
+	}
+	public void setPushParameters(PushParams pushParameters){
+		this.pushParameters = pushParameters;
+	}
 
-    // lastAccessIP:
-    public String getLastAccessIP(){
-        return this.lastAccessIP;
-    }
-    public void setLastAccessIP(String lastAccessIP){
-        this.lastAccessIP = lastAccessIP;
-    }
+	// versionNumber:
+	public String getVersionNumber(){
+		return this.versionNumber;
+	}
+	public void setVersionNumber(String versionNumber){
+		this.versionNumber = versionNumber;
+	}
 
-    // lastAccessDate:
-    public Long getLastAccessDate(){
-        return this.lastAccessDate;
-    }
-    public void setLastAccessDate(Long lastAccessDate){
-        this.lastAccessDate = lastAccessDate;
-    }
+	public void versionNumber(String multirequestToken){
+		setToken("versionNumber", multirequestToken);
+	}
 
-    // userAgent:
-    public String getUserAgent(){
-        return this.userAgent;
-    }
-    public void setUserAgent(String userAgent){
-        this.userAgent = userAgent;
-    }
+	// versionPlatform:
+	public Platform getVersionPlatform(){
+		return this.versionPlatform;
+	}
+	public void setVersionPlatform(Platform versionPlatform){
+		this.versionPlatform = versionPlatform;
+	}
 
-    // operationSystem:
-    public String getOperationSystem(){
-        return this.operationSystem;
-    }
-    public void setOperationSystem(String operationSystem){
-        this.operationSystem = operationSystem;
-    }
+	public void versionPlatform(String multirequestToken){
+		setToken("versionPlatform", multirequestToken);
+	}
+
+	// versionAppName:
+	public String getVersionAppName(){
+		return this.versionAppName;
+	}
+	public void setVersionAppName(String versionAppName){
+		this.versionAppName = versionAppName;
+	}
+
+	public void versionAppName(String multirequestToken){
+		setToken("versionAppName", multirequestToken);
+	}
+
+	// lastAccessIP:
+	public String getLastAccessIP(){
+		return this.lastAccessIP;
+	}
+	public void setLastAccessIP(String lastAccessIP){
+		this.lastAccessIP = lastAccessIP;
+	}
+
+	public void lastAccessIP(String multirequestToken){
+		setToken("lastAccessIP", multirequestToken);
+	}
+
+	// lastAccessDate:
+	public Long getLastAccessDate(){
+		return this.lastAccessDate;
+	}
+	public void setLastAccessDate(Long lastAccessDate){
+		this.lastAccessDate = lastAccessDate;
+	}
+
+	public void lastAccessDate(String multirequestToken){
+		setToken("lastAccessDate", multirequestToken);
+	}
+
+	// userAgent:
+	public String getUserAgent(){
+		return this.userAgent;
+	}
+	public void setUserAgent(String userAgent){
+		this.userAgent = userAgent;
+	}
+
+	public void userAgent(String multirequestToken){
+		setToken("userAgent", multirequestToken);
+	}
+
+	// operationSystem:
+	public String getOperationSystem(){
+		return this.operationSystem;
+	}
+	public void setOperationSystem(String operationSystem){
+		this.operationSystem = operationSystem;
+	}
+
+	public void operationSystem(String multirequestToken){
+		setToken("operationSystem", multirequestToken);
+	}
 
 
-    public DeviceReport() {
-       super();
-    }
+	public DeviceReport() {
+		super();
+	}
 
-    public DeviceReport(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public DeviceReport(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
-        configurationGroupId = GsonParser.parseString(jsonObject.get("configurationGroupId"));
-        udid = GsonParser.parseString(jsonObject.get("udid"));
-        pushParameters = GsonParser.parseObject(jsonObject.getAsJsonObject("pushParameters"), PushParams.class);
-        versionNumber = GsonParser.parseString(jsonObject.get("versionNumber"));
-        versionPlatform = Platform.get(GsonParser.parseString(jsonObject.get("versionPlatform")));
-        versionAppName = GsonParser.parseString(jsonObject.get("versionAppName"));
-        lastAccessIP = GsonParser.parseString(jsonObject.get("lastAccessIP"));
-        lastAccessDate = GsonParser.parseLong(jsonObject.get("lastAccessDate"));
-        userAgent = GsonParser.parseString(jsonObject.get("userAgent"));
-        operationSystem = GsonParser.parseString(jsonObject.get("operationSystem"));
+		// set members values:
+		partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
+		configurationGroupId = GsonParser.parseString(jsonObject.get("configurationGroupId"));
+		udid = GsonParser.parseString(jsonObject.get("udid"));
+		pushParameters = GsonParser.parseObject(jsonObject.getAsJsonObject("pushParameters"), PushParams.class);
+		versionNumber = GsonParser.parseString(jsonObject.get("versionNumber"));
+		versionPlatform = Platform.get(GsonParser.parseString(jsonObject.get("versionPlatform")));
+		versionAppName = GsonParser.parseString(jsonObject.get("versionAppName"));
+		lastAccessIP = GsonParser.parseString(jsonObject.get("lastAccessIP"));
+		lastAccessDate = GsonParser.parseLong(jsonObject.get("lastAccessDate"));
+		userAgent = GsonParser.parseString(jsonObject.get("userAgent"));
+		operationSystem = GsonParser.parseString(jsonObject.get("operationSystem"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaDeviceReport");
-        kparams.add("partnerId", this.partnerId);
-        kparams.add("configurationGroupId", this.configurationGroupId);
-        kparams.add("udid", this.udid);
-        kparams.add("pushParameters", this.pushParameters);
-        kparams.add("versionNumber", this.versionNumber);
-        kparams.add("versionPlatform", this.versionPlatform);
-        kparams.add("versionAppName", this.versionAppName);
-        kparams.add("lastAccessIP", this.lastAccessIP);
-        kparams.add("lastAccessDate", this.lastAccessDate);
-        kparams.add("userAgent", this.userAgent);
-        kparams.add("operationSystem", this.operationSystem);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDeviceReport");
+		kparams.add("partnerId", this.partnerId);
+		kparams.add("configurationGroupId", this.configurationGroupId);
+		kparams.add("udid", this.udid);
+		kparams.add("pushParameters", this.pushParameters);
+		kparams.add("versionNumber", this.versionNumber);
+		kparams.add("versionPlatform", this.versionPlatform);
+		kparams.add("versionAppName", this.versionAppName);
+		kparams.add("lastAccessIP", this.lastAccessIP);
+		kparams.add("lastAccessDate", this.lastAccessDate);
+		kparams.add("userAgent", this.userAgent);
+		kparams.add("operationSystem", this.operationSystem);
+		return kparams;
+	}
 
 }
 

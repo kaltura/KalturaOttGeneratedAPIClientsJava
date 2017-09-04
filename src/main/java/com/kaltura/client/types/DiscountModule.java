@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,64 +42,83 @@ import com.google.gson.JsonObject;
 
 /**  Discount module  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DiscountModule.Tokenizer.class)
 public class DiscountModule extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String percent();
+		String startDate();
+		String endDate();
+	}
 
 	/**  The discount percentage  */
-    private Double percent;
+	private Double percent;
 	/**  The first date the discount is available  */
-    private Long startDate;
+	private Long startDate;
 	/**  The last date the discount is available  */
-    private Long endDate;
+	private Long endDate;
 
-    // percent:
-    public Double getPercent(){
-        return this.percent;
-    }
-    public void setPercent(Double percent){
-        this.percent = percent;
-    }
+	// percent:
+	public Double getPercent(){
+		return this.percent;
+	}
+	public void setPercent(Double percent){
+		this.percent = percent;
+	}
 
-    // startDate:
-    public Long getStartDate(){
-        return this.startDate;
-    }
-    public void setStartDate(Long startDate){
-        this.startDate = startDate;
-    }
+	public void percent(String multirequestToken){
+		setToken("percent", multirequestToken);
+	}
 
-    // endDate:
-    public Long getEndDate(){
-        return this.endDate;
-    }
-    public void setEndDate(Long endDate){
-        this.endDate = endDate;
-    }
+	// startDate:
+	public Long getStartDate(){
+		return this.startDate;
+	}
+	public void setStartDate(Long startDate){
+		this.startDate = startDate;
+	}
+
+	public void startDate(String multirequestToken){
+		setToken("startDate", multirequestToken);
+	}
+
+	// endDate:
+	public Long getEndDate(){
+		return this.endDate;
+	}
+	public void setEndDate(Long endDate){
+		this.endDate = endDate;
+	}
+
+	public void endDate(String multirequestToken){
+		setToken("endDate", multirequestToken);
+	}
 
 
-    public DiscountModule() {
-       super();
-    }
+	public DiscountModule() {
+		super();
+	}
 
-    public DiscountModule(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public DiscountModule(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        percent = GsonParser.parseDouble(jsonObject.get("percent"));
-        startDate = GsonParser.parseLong(jsonObject.get("startDate"));
-        endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+		// set members values:
+		percent = GsonParser.parseDouble(jsonObject.get("percent"));
+		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
+		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaDiscountModule");
-        kparams.add("percent", this.percent);
-        kparams.add("startDate", this.startDate);
-        kparams.add("endDate", this.endDate);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDiscountModule");
+		kparams.add("percent", this.percent);
+		kparams.add("startDate", this.startDate);
+		kparams.add("endDate", this.endDate);
+		return kparams;
+	}
 
 }
 

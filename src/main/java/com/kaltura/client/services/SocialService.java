@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.SocialNetwork;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.Social;
@@ -42,91 +41,199 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SocialService {
+	
+	public static class GetSocialBuilder extends RequestBuilder<Social, Social.Tokenizer, GetSocialBuilder> {
+		
+		public GetSocialBuilder(SocialNetwork type) {
+			super(Social.class, "social", "get");
+			params.add("type", type);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+	}
 
 	/**  List social accounts  */
-    public static RequestBuilder<Social> get(SocialNetwork type)  {
-        Params kparams = new Params();
-        kparams.add("type", type);
-
-        return new RequestBuilder<Social>(Social.class, "social", "get", kparams);
-    }
+    public static GetSocialBuilder get(SocialNetwork type)  {
+		return new GetSocialBuilder(type);
+	}
+	
+	public static class GetByTokenSocialBuilder extends RequestBuilder<Social, Social.Tokenizer, GetByTokenSocialBuilder> {
+		
+		public GetByTokenSocialBuilder(int partnerId, String token, SocialNetwork type) {
+			super(Social.class, "social", "getByToken");
+			params.add("partnerId", partnerId);
+			params.add("token", token);
+			params.add("type", type);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+	}
 
 	/**  Return the user object with social information according to a provided external
 	  social token  */
-    public static RequestBuilder<Social> getByToken(int partnerId, String token, SocialNetwork type)  {
-        Params kparams = new Params();
-        kparams.add("partnerId", partnerId);
-        kparams.add("token", token);
-        kparams.add("type", type);
+    public static GetByTokenSocialBuilder getByToken(int partnerId, String token, SocialNetwork type)  {
+		return new GetByTokenSocialBuilder(partnerId, token, type);
+	}
+	
+	public static class GetConfigurationSocialBuilder extends RequestBuilder<SocialConfig, SocialConfig.Tokenizer, GetConfigurationSocialBuilder> {
+		
+		public GetConfigurationSocialBuilder(SocialNetwork type, int partnerId) {
+			super(SocialConfig.class, "social", "getConfiguration");
+			params.add("type", type);
+			params.add("partnerId", partnerId);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Social>(Social.class, "social", "getByToken", kparams);
-    }
-
-    public static RequestBuilder<SocialConfig> getConfiguration(SocialNetwork type)  {
-        return getConfiguration(type, Integer.MIN_VALUE);
-    }
+	public static GetConfigurationSocialBuilder getConfiguration(SocialNetwork type)  {
+		return getConfiguration(type, Integer.MIN_VALUE);
+	}
 
 	/**  Retrieve the social network’s configuration information  */
-    public static RequestBuilder<SocialConfig> getConfiguration(SocialNetwork type, int partnerId)  {
-        Params kparams = new Params();
-        kparams.add("type", type);
-        kparams.add("partnerId", partnerId);
+    public static GetConfigurationSocialBuilder getConfiguration(SocialNetwork type, int partnerId)  {
+		return new GetConfigurationSocialBuilder(type, partnerId);
+	}
+	
+	public static class LoginSocialBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, LoginSocialBuilder> {
+		
+		public LoginSocialBuilder(int partnerId, String token, SocialNetwork type, String udid) {
+			super(LoginResponse.class, "social", "login");
+			params.add("partnerId", partnerId);
+			params.add("token", token);
+			params.add("type", type);
+			params.add("udid", udid);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<SocialConfig>(SocialConfig.class, "social", "getConfiguration", kparams);
-    }
-
-    public static RequestBuilder<LoginResponse> login(int partnerId, String token, SocialNetwork type)  {
-        return login(partnerId, token, type, null);
-    }
+	public static LoginSocialBuilder login(int partnerId, String token, SocialNetwork type)  {
+		return login(partnerId, token, type, null);
+	}
 
 	/**  Login using social token  */
-    public static RequestBuilder<LoginResponse> login(int partnerId, String token, SocialNetwork type, String udid)  {
-        Params kparams = new Params();
-        kparams.add("partnerId", partnerId);
-        kparams.add("token", token);
-        kparams.add("type", type);
-        kparams.add("udid", udid);
-
-        return new RequestBuilder<LoginResponse>(LoginResponse.class, "social", "login", kparams);
-    }
+    public static LoginSocialBuilder login(int partnerId, String token, SocialNetwork type, String udid)  {
+		return new LoginSocialBuilder(partnerId, token, type, udid);
+	}
+	
+	public static class MergeSocialBuilder extends RequestBuilder<Social, Social.Tokenizer, MergeSocialBuilder> {
+		
+		public MergeSocialBuilder(String token, SocialNetwork type) {
+			super(Social.class, "social", "merge");
+			params.add("token", token);
+			params.add("type", type);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+	}
 
 	/**  Connect an existing user in the system to an external social network user  */
-    public static RequestBuilder<Social> merge(String token, SocialNetwork type)  {
-        Params kparams = new Params();
-        kparams.add("token", token);
-        kparams.add("type", type);
+    public static MergeSocialBuilder merge(String token, SocialNetwork type)  {
+		return new MergeSocialBuilder(token, type);
+	}
+	
+	public static class RegisterSocialBuilder extends RequestBuilder<Social, Social.Tokenizer, RegisterSocialBuilder> {
+		
+		public RegisterSocialBuilder(int partnerId, String token, SocialNetwork type, String email) {
+			super(Social.class, "social", "register");
+			params.add("partnerId", partnerId);
+			params.add("token", token);
+			params.add("type", type);
+			params.add("email", email);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+		
+		public void email(String multirequestToken) {
+			params.add("email", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Social>(Social.class, "social", "merge", kparams);
-    }
-
-    public static RequestBuilder<Social> register(int partnerId, String token, SocialNetwork type)  {
-        return register(partnerId, token, type, null);
-    }
+	public static RegisterSocialBuilder register(int partnerId, String token, SocialNetwork type)  {
+		return register(partnerId, token, type, null);
+	}
 
 	/**  Create a new user in the system using a provided external social token  */
-    public static RequestBuilder<Social> register(int partnerId, String token, SocialNetwork type, String email)  {
-        Params kparams = new Params();
-        kparams.add("partnerId", partnerId);
-        kparams.add("token", token);
-        kparams.add("type", type);
-        kparams.add("email", email);
-
-        return new RequestBuilder<Social>(Social.class, "social", "register", kparams);
-    }
+    public static RegisterSocialBuilder register(int partnerId, String token, SocialNetwork type, String email)  {
+		return new RegisterSocialBuilder(partnerId, token, type, email);
+	}
+	
+	public static class UnmergeSocialBuilder extends RequestBuilder<Social, Social.Tokenizer, UnmergeSocialBuilder> {
+		
+		public UnmergeSocialBuilder(SocialNetwork type) {
+			super(Social.class, "social", "unmerge");
+			params.add("type", type);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+	}
 
 	/**  Disconnect an existing user in the system from its external social network user  */
-    public static RequestBuilder<Social> unmerge(SocialNetwork type)  {
-        Params kparams = new Params();
-        kparams.add("type", type);
-
-        return new RequestBuilder<Social>(Social.class, "social", "unmerge", kparams);
-    }
+    public static UnmergeSocialBuilder unmerge(SocialNetwork type)  {
+		return new UnmergeSocialBuilder(type);
+	}
+	
+	public static class UpdateConfigurationSocialBuilder extends RequestBuilder<SocialConfig, SocialConfig.Tokenizer, UpdateConfigurationSocialBuilder> {
+		
+		public UpdateConfigurationSocialBuilder(SocialConfig configuration) {
+			super(SocialConfig.class, "social", "UpdateConfiguration");
+			params.add("configuration", configuration);
+		}
+	}
 
 	/**  Set the user social network’s configuration information  */
-    public static RequestBuilder<SocialConfig> UpdateConfiguration(SocialConfig configuration)  {
-        Params kparams = new Params();
-        kparams.add("configuration", configuration);
-
-        return new RequestBuilder<SocialConfig>(SocialConfig.class, "social", "UpdateConfiguration", kparams);
-    }
+    public static UpdateConfigurationSocialBuilder UpdateConfiguration(SocialConfig configuration)  {
+		return new UpdateConfigurationSocialBuilder(configuration);
+	}
 }

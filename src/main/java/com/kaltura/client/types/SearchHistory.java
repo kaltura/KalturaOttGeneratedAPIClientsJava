@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,116 +42,160 @@ import com.google.gson.JsonObject;
 
 /**  Search history info  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SearchHistory.Tokenizer.class)
 public class SearchHistory extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String filter();
+		String language();
+		String createdAt();
+		String service();
+		String action();
+		String deviceId();
+	}
 
 	/**  Search ID  */
-    private String id;
+	private String id;
 	/**  Search name  */
-    private String name;
+	private String name;
 	/**  Filter  */
-    private String filter;
+	private String filter;
 	/**  Search language  */
-    private String language;
+	private String language;
 	/**  When search was performed  */
-    private Long createdAt;
+	private Long createdAt;
 	/**  Kaltura OTT Service  */
-    private String service;
+	private String service;
 	/**  Kaltura OTT Service Action  */
-    private String action;
+	private String action;
 	/**  Unique Device ID  */
-    private String deviceId;
+	private String deviceId;
 
-    // id:
-    public String getId(){
-        return this.id;
-    }
-    public void setId(String id){
-        this.id = id;
-    }
+	// id:
+	public String getId(){
+		return this.id;
+	}
+	public void setId(String id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // filter:
-    public String getFilter(){
-        return this.filter;
-    }
-    public void setFilter(String filter){
-        this.filter = filter;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // language:
-    public String getLanguage(){
-        return this.language;
-    }
-    public void setLanguage(String language){
-        this.language = language;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // createdAt:
-    public Long getCreatedAt(){
-        return this.createdAt;
-    }
-    public void setCreatedAt(Long createdAt){
-        this.createdAt = createdAt;
-    }
+	// filter:
+	public String getFilter(){
+		return this.filter;
+	}
+	public void setFilter(String filter){
+		this.filter = filter;
+	}
 
-    // service:
-    public String getService(){
-        return this.service;
-    }
-    public void setService(String service){
-        this.service = service;
-    }
+	public void filter(String multirequestToken){
+		setToken("filter", multirequestToken);
+	}
 
-    // action:
-    public String getAction(){
-        return this.action;
-    }
-    public void setAction(String action){
-        this.action = action;
-    }
+	// language:
+	public String getLanguage(){
+		return this.language;
+	}
+	public void setLanguage(String language){
+		this.language = language;
+	}
 
-    // deviceId:
-    public String getDeviceId(){
-        return this.deviceId;
-    }
-    public void setDeviceId(String deviceId){
-        this.deviceId = deviceId;
-    }
+	public void language(String multirequestToken){
+		setToken("language", multirequestToken);
+	}
+
+	// createdAt:
+	public Long getCreatedAt(){
+		return this.createdAt;
+	}
+	public void setCreatedAt(Long createdAt){
+		this.createdAt = createdAt;
+	}
+
+	public void createdAt(String multirequestToken){
+		setToken("createdAt", multirequestToken);
+	}
+
+	// service:
+	public String getService(){
+		return this.service;
+	}
+	public void setService(String service){
+		this.service = service;
+	}
+
+	public void service(String multirequestToken){
+		setToken("service", multirequestToken);
+	}
+
+	// action:
+	public String getAction(){
+		return this.action;
+	}
+	public void setAction(String action){
+		this.action = action;
+	}
+
+	public void action(String multirequestToken){
+		setToken("action", multirequestToken);
+	}
+
+	// deviceId:
+	public String getDeviceId(){
+		return this.deviceId;
+	}
+	public void setDeviceId(String deviceId){
+		this.deviceId = deviceId;
+	}
+
+	public void deviceId(String multirequestToken){
+		setToken("deviceId", multirequestToken);
+	}
 
 
-    public SearchHistory() {
-       super();
-    }
+	public SearchHistory() {
+		super();
+	}
 
-    public SearchHistory(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SearchHistory(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseString(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        filter = GsonParser.parseString(jsonObject.get("filter"));
-        language = GsonParser.parseString(jsonObject.get("language"));
-        createdAt = GsonParser.parseLong(jsonObject.get("createdAt"));
-        service = GsonParser.parseString(jsonObject.get("service"));
-        action = GsonParser.parseString(jsonObject.get("action"));
-        deviceId = GsonParser.parseString(jsonObject.get("deviceId"));
+		// set members values:
+		id = GsonParser.parseString(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		filter = GsonParser.parseString(jsonObject.get("filter"));
+		language = GsonParser.parseString(jsonObject.get("language"));
+		createdAt = GsonParser.parseLong(jsonObject.get("createdAt"));
+		service = GsonParser.parseString(jsonObject.get("service"));
+		action = GsonParser.parseString(jsonObject.get("action"));
+		deviceId = GsonParser.parseString(jsonObject.get("deviceId"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSearchHistory");
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSearchHistory");
+		return kparams;
+	}
 
 }
 

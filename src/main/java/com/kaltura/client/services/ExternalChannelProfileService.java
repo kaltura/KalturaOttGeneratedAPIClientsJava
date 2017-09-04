@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.ExternalChannelProfile;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,36 +39,64 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ExternalChannelProfileService {
+	
+	public static class AddExternalChannelProfileBuilder extends RequestBuilder<ExternalChannelProfile, ExternalChannelProfile.Tokenizer, AddExternalChannelProfileBuilder> {
+		
+		public AddExternalChannelProfileBuilder(ExternalChannelProfile externalChannel) {
+			super(ExternalChannelProfile.class, "externalchannelprofile", "add");
+			params.add("externalChannel", externalChannel);
+		}
+	}
 
 	/**  Insert new External channel for partner  */
-    public static RequestBuilder<ExternalChannelProfile> add(ExternalChannelProfile externalChannel)  {
-        Params kparams = new Params();
-        kparams.add("externalChannel", externalChannel);
-
-        return new RequestBuilder<ExternalChannelProfile>(ExternalChannelProfile.class, "externalchannelprofile", "add", kparams);
-    }
+    public static AddExternalChannelProfileBuilder add(ExternalChannelProfile externalChannel)  {
+		return new AddExternalChannelProfileBuilder(externalChannel);
+	}
+	
+	public static class DeleteExternalChannelProfileBuilder extends RequestBuilder<Boolean, String, DeleteExternalChannelProfileBuilder> {
+		
+		public DeleteExternalChannelProfileBuilder(int externalChannelId) {
+			super(Boolean.class, "externalchannelprofile", "delete");
+			params.add("externalChannelId", externalChannelId);
+		}
+		
+		public void externalChannelId(String multirequestToken) {
+			params.add("externalChannelId", multirequestToken);
+		}
+	}
 
 	/**  Delete External channel by External channel id  */
-    public static RequestBuilder<Boolean> delete(int externalChannelId)  {
-        Params kparams = new Params();
-        kparams.add("externalChannelId", externalChannelId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "externalchannelprofile", "delete", kparams);
-    }
+    public static DeleteExternalChannelProfileBuilder delete(int externalChannelId)  {
+		return new DeleteExternalChannelProfileBuilder(externalChannelId);
+	}
+	
+	public static class ListExternalChannelProfileBuilder extends ListResponseRequestBuilder<ExternalChannelProfile, ExternalChannelProfile.Tokenizer, ListExternalChannelProfileBuilder> {
+		
+		public ListExternalChannelProfileBuilder() {
+			super(ExternalChannelProfile.class, "externalchannelprofile", "list");
+		}
+	}
 
 	/**  Returns all External channels for partner  */
-    public static RequestBuilder<ListResponse<ExternalChannelProfile>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<ExternalChannelProfile>(ExternalChannelProfile.class, "externalchannelprofile", "list", kparams);
-    }
+    public static ListExternalChannelProfileBuilder list()  {
+		return new ListExternalChannelProfileBuilder();
+	}
+	
+	public static class UpdateExternalChannelProfileBuilder extends RequestBuilder<ExternalChannelProfile, ExternalChannelProfile.Tokenizer, UpdateExternalChannelProfileBuilder> {
+		
+		public UpdateExternalChannelProfileBuilder(int externalChannelId, ExternalChannelProfile externalChannel) {
+			super(ExternalChannelProfile.class, "externalchannelprofile", "update");
+			params.add("externalChannelId", externalChannelId);
+			params.add("externalChannel", externalChannel);
+		}
+		
+		public void externalChannelId(String multirequestToken) {
+			params.add("externalChannelId", multirequestToken);
+		}
+	}
 
 	/**  Update External channel details  */
-    public static RequestBuilder<ExternalChannelProfile> update(int externalChannelId, ExternalChannelProfile externalChannel)  {
-        Params kparams = new Params();
-        kparams.add("externalChannelId", externalChannelId);
-        kparams.add("externalChannel", externalChannel);
-
-        return new RequestBuilder<ExternalChannelProfile>(ExternalChannelProfile.class, "externalchannelprofile", "update", kparams);
-    }
+    public static UpdateExternalChannelProfileBuilder update(int externalChannelId, ExternalChannelProfile externalChannel)  {
+		return new UpdateExternalChannelProfileBuilder(externalChannelId, externalChannel);
+	}
 }

@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.types.PurchaseSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,22 +39,40 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PurchaseSettingsService {
+	
+	public static class GetPurchaseSettingsBuilder extends RequestBuilder<PurchaseSettings, PurchaseSettings.Tokenizer, GetPurchaseSettingsBuilder> {
+		
+		public GetPurchaseSettingsBuilder(EntityReferenceBy by) {
+			super(PurchaseSettings.class, "purchasesettings", "get");
+			params.add("by", by);
+		}
+		
+		public void by(String multirequestToken) {
+			params.add("by", multirequestToken);
+		}
+	}
 
 	/**  Retrieve the purchase settings.              Includes specification of where
 	  these settings were defined – account, household or user  */
-    public static RequestBuilder<PurchaseSettings> get(EntityReferenceBy by)  {
-        Params kparams = new Params();
-        kparams.add("by", by);
-
-        return new RequestBuilder<PurchaseSettings>(PurchaseSettings.class, "purchasesettings", "get", kparams);
-    }
+    public static GetPurchaseSettingsBuilder get(EntityReferenceBy by)  {
+		return new GetPurchaseSettingsBuilder(by);
+	}
+	
+	public static class UpdatePurchaseSettingsBuilder extends RequestBuilder<PurchaseSettings, PurchaseSettings.Tokenizer, UpdatePurchaseSettingsBuilder> {
+		
+		public UpdatePurchaseSettingsBuilder(EntityReferenceBy entityReference, PurchaseSettings settings) {
+			super(PurchaseSettings.class, "purchasesettings", "update");
+			params.add("entityReference", entityReference);
+			params.add("settings", settings);
+		}
+		
+		public void entityReference(String multirequestToken) {
+			params.add("entityReference", multirequestToken);
+		}
+	}
 
 	/**  Set a purchase PIN for the household or user  */
-    public static RequestBuilder<PurchaseSettings> update(EntityReferenceBy entityReference, PurchaseSettings settings)  {
-        Params kparams = new Params();
-        kparams.add("entityReference", entityReference);
-        kparams.add("settings", settings);
-
-        return new RequestBuilder<PurchaseSettings>(PurchaseSettings.class, "purchasesettings", "update", kparams);
-    }
+    public static UpdatePurchaseSettingsBuilder update(EntityReferenceBy entityReference, PurchaseSettings settings)  {
+		return new UpdatePurchaseSettingsBuilder(entityReference, settings);
+	}
 }

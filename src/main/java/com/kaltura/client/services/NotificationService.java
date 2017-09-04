@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.NotificationType;
 import com.kaltura.client.types.PushMessage;
 import com.kaltura.client.types.RegistryResponse;
@@ -41,30 +40,61 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class NotificationService {
+	
+	public static class RegisterNotificationBuilder extends RequestBuilder<RegistryResponse, RegistryResponse.Tokenizer, RegisterNotificationBuilder> {
+		
+		public RegisterNotificationBuilder(String identifier, NotificationType type) {
+			super(RegistryResponse.class, "notification", "register");
+			params.add("identifier", identifier);
+			params.add("type", type);
+		}
+		
+		public void identifier(String multirequestToken) {
+			params.add("identifier", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+	}
 
 	/**  TBD  */
-    public static RequestBuilder<RegistryResponse> register(String identifier, NotificationType type)  {
-        Params kparams = new Params();
-        kparams.add("identifier", identifier);
-        kparams.add("type", type);
-
-        return new RequestBuilder<RegistryResponse>(RegistryResponse.class, "notification", "register", kparams);
-    }
+    public static RegisterNotificationBuilder register(String identifier, NotificationType type)  {
+		return new RegisterNotificationBuilder(identifier, type);
+	}
+	
+	public static class SendPushNotificationBuilder extends RequestBuilder<Boolean, String, SendPushNotificationBuilder> {
+		
+		public SendPushNotificationBuilder(int userId, PushMessage pushMessage) {
+			super(Boolean.class, "notification", "sendPush");
+			params.add("userId", userId);
+			params.add("pushMessage", pushMessage);
+		}
+		
+		public void userId(String multirequestToken) {
+			params.add("userId", multirequestToken);
+		}
+	}
 
 	/**  Sends push notification to user devices  */
-    public static RequestBuilder<Boolean> sendPush(int userId, PushMessage pushMessage)  {
-        Params kparams = new Params();
-        kparams.add("userId", userId);
-        kparams.add("pushMessage", pushMessage);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "notification", "sendPush", kparams);
-    }
+    public static SendPushNotificationBuilder sendPush(int userId, PushMessage pushMessage)  {
+		return new SendPushNotificationBuilder(userId, pushMessage);
+	}
+	
+	public static class SetDevicePushTokenNotificationBuilder extends RequestBuilder<Boolean, String, SetDevicePushTokenNotificationBuilder> {
+		
+		public SetDevicePushTokenNotificationBuilder(String pushToken) {
+			super(Boolean.class, "notification", "setDevicePushToken");
+			params.add("pushToken", pushToken);
+		}
+		
+		public void pushToken(String multirequestToken) {
+			params.add("pushToken", multirequestToken);
+		}
+	}
 
 	/**  Registers the device push token to the push service  */
-    public static RequestBuilder<Boolean> setDevicePushToken(String pushToken)  {
-        Params kparams = new Params();
-        kparams.add("pushToken", pushToken);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "notification", "setDevicePushToken", kparams);
-    }
+    public static SetDevicePushTokenNotificationBuilder setDevicePushToken(String pushToken)  {
+		return new SetDevicePushTokenNotificationBuilder(pushToken);
+	}
 }

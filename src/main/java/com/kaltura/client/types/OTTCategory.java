@@ -27,12 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import java.util.List;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,99 +44,121 @@ import com.google.gson.JsonObject;
 
 /**  Category details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(OTTCategory.Tokenizer.class)
 public class OTTCategory extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String parentCategoryId();
+		RequestBuilder.ListTokenizer<OTTCategory.Tokenizer> childCategories();
+		RequestBuilder.ListTokenizer<Channel.Tokenizer> channels();
+		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
+	}
 
 	/**  Unique identifier for the category  */
-    private Long id;
+	private Long id;
 	/**  Category name  */
-    private String name;
+	private String name;
 	/**  Category parent identifier  */
-    private Long parentCategoryId;
+	private Long parentCategoryId;
 	/**  Child categories  */
-    private List<OTTCategory> childCategories;
+	private List<OTTCategory> childCategories;
 	/**  Category channels  */
-    private List<Channel> channels;
+	private List<Channel> channels;
 	/**  Category images  */
-    private List<MediaImage> images;
+	private List<MediaImage> images;
 
-    // id:
-    public Long getId(){
-        return this.id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // parentCategoryId:
-    public Long getParentCategoryId(){
-        return this.parentCategoryId;
-    }
-    public void setParentCategoryId(Long parentCategoryId){
-        this.parentCategoryId = parentCategoryId;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // childCategories:
-    public List<OTTCategory> getChildCategories(){
-        return this.childCategories;
-    }
-    public void setChildCategories(List<OTTCategory> childCategories){
-        this.childCategories = childCategories;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // channels:
-    public List<Channel> getChannels(){
-        return this.channels;
-    }
-    public void setChannels(List<Channel> channels){
-        this.channels = channels;
-    }
+	// parentCategoryId:
+	public Long getParentCategoryId(){
+		return this.parentCategoryId;
+	}
+	public void setParentCategoryId(Long parentCategoryId){
+		this.parentCategoryId = parentCategoryId;
+	}
 
-    // images:
-    public List<MediaImage> getImages(){
-        return this.images;
-    }
-    public void setImages(List<MediaImage> images){
-        this.images = images;
-    }
+	public void parentCategoryId(String multirequestToken){
+		setToken("parentCategoryId", multirequestToken);
+	}
+
+	// childCategories:
+	public List<OTTCategory> getChildCategories(){
+		return this.childCategories;
+	}
+	public void setChildCategories(List<OTTCategory> childCategories){
+		this.childCategories = childCategories;
+	}
+
+	// channels:
+	public List<Channel> getChannels(){
+		return this.channels;
+	}
+	public void setChannels(List<Channel> channels){
+		this.channels = channels;
+	}
+
+	// images:
+	public List<MediaImage> getImages(){
+		return this.images;
+	}
+	public void setImages(List<MediaImage> images){
+		this.images = images;
+	}
 
 
-    public OTTCategory() {
-       super();
-    }
+	public OTTCategory() {
+		super();
+	}
 
-    public OTTCategory(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public OTTCategory(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        parentCategoryId = GsonParser.parseLong(jsonObject.get("parentCategoryId"));
-        childCategories = GsonParser.parseArray(jsonObject.getAsJsonArray("childCategories"), OTTCategory.class);
-        channels = GsonParser.parseArray(jsonObject.getAsJsonArray("channels"), Channel.class);
-        images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
+		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		parentCategoryId = GsonParser.parseLong(jsonObject.get("parentCategoryId"));
+		childCategories = GsonParser.parseArray(jsonObject.getAsJsonArray("childCategories"), OTTCategory.class);
+		channels = GsonParser.parseArray(jsonObject.getAsJsonArray("channels"), Channel.class);
+		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaOTTCategory");
-        kparams.add("name", this.name);
-        kparams.add("parentCategoryId", this.parentCategoryId);
-        kparams.add("childCategories", this.childCategories);
-        kparams.add("channels", this.channels);
-        kparams.add("images", this.images);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaOTTCategory");
+		kparams.add("name", this.name);
+		kparams.add("parentCategoryId", this.parentCategoryId);
+		kparams.add("childCategories", this.childCategories);
+		kparams.add("channels", this.channels);
+		kparams.add("images", this.images);
+		return kparams;
+	}
 
 }
 

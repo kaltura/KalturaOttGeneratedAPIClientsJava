@@ -27,11 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.Map;
-import com.google.gson.JsonObject;
-
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,87 +43,112 @@ import com.google.gson.JsonObject;
 
 /**  Engagement Adapter  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(EngagementAdapter.Tokenizer.class)
 public class EngagementAdapter extends EngagementAdapterBase {
+	
+	public interface Tokenizer extends EngagementAdapterBase.Tokenizer {
+		String isActive();
+		String adapterUrl();
+		String providerUrl();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> engagementAdapterSettings();
+		String sharedSecret();
+	}
 
 	/**  Engagement adapter active status  */
-    private Boolean isActive;
+	private Boolean isActive;
 	/**  Engagement adapter adapter URL  */
-    private String adapterUrl;
+	private String adapterUrl;
 	/**  Engagement provider adapter URL  */
-    private String providerUrl;
+	private String providerUrl;
 	/**  Engagement adapter extra parameters  */
-    private Map<String, StringValue> engagementAdapterSettings;
+	private Map<String, StringValue> engagementAdapterSettings;
 	/**  Shared Secret  */
-    private String sharedSecret;
+	private String sharedSecret;
 
-    // isActive:
-    public Boolean getIsActive(){
-        return this.isActive;
-    }
-    public void setIsActive(Boolean isActive){
-        this.isActive = isActive;
-    }
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
 
-    // adapterUrl:
-    public String getAdapterUrl(){
-        return this.adapterUrl;
-    }
-    public void setAdapterUrl(String adapterUrl){
-        this.adapterUrl = adapterUrl;
-    }
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
 
-    // providerUrl:
-    public String getProviderUrl(){
-        return this.providerUrl;
-    }
-    public void setProviderUrl(String providerUrl){
-        this.providerUrl = providerUrl;
-    }
+	// adapterUrl:
+	public String getAdapterUrl(){
+		return this.adapterUrl;
+	}
+	public void setAdapterUrl(String adapterUrl){
+		this.adapterUrl = adapterUrl;
+	}
 
-    // engagementAdapterSettings:
-    public Map<String, StringValue> getEngagementAdapterSettings(){
-        return this.engagementAdapterSettings;
-    }
-    public void setEngagementAdapterSettings(Map<String, StringValue> engagementAdapterSettings){
-        this.engagementAdapterSettings = engagementAdapterSettings;
-    }
+	public void adapterUrl(String multirequestToken){
+		setToken("adapterUrl", multirequestToken);
+	}
 
-    // sharedSecret:
-    public String getSharedSecret(){
-        return this.sharedSecret;
-    }
-    public void setSharedSecret(String sharedSecret){
-        this.sharedSecret = sharedSecret;
-    }
+	// providerUrl:
+	public String getProviderUrl(){
+		return this.providerUrl;
+	}
+	public void setProviderUrl(String providerUrl){
+		this.providerUrl = providerUrl;
+	}
+
+	public void providerUrl(String multirequestToken){
+		setToken("providerUrl", multirequestToken);
+	}
+
+	// engagementAdapterSettings:
+	public Map<String, StringValue> getEngagementAdapterSettings(){
+		return this.engagementAdapterSettings;
+	}
+	public void setEngagementAdapterSettings(Map<String, StringValue> engagementAdapterSettings){
+		this.engagementAdapterSettings = engagementAdapterSettings;
+	}
+
+	// sharedSecret:
+	public String getSharedSecret(){
+		return this.sharedSecret;
+	}
+	public void setSharedSecret(String sharedSecret){
+		this.sharedSecret = sharedSecret;
+	}
+
+	public void sharedSecret(String multirequestToken){
+		setToken("sharedSecret", multirequestToken);
+	}
 
 
-    public EngagementAdapter() {
-       super();
-    }
+	public EngagementAdapter() {
+		super();
+	}
 
-    public EngagementAdapter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public EngagementAdapter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
-        adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
-        providerUrl = GsonParser.parseString(jsonObject.get("providerUrl"));
-        engagementAdapterSettings = GsonParser.parseMap(jsonObject.getAsJsonObject("engagementAdapterSettings"), StringValue.class);
-        sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
+		// set members values:
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
+		providerUrl = GsonParser.parseString(jsonObject.get("providerUrl"));
+		engagementAdapterSettings = GsonParser.parseMap(jsonObject.getAsJsonObject("engagementAdapterSettings"), StringValue.class);
+		sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaEngagementAdapter");
-        kparams.add("isActive", this.isActive);
-        kparams.add("adapterUrl", this.adapterUrl);
-        kparams.add("providerUrl", this.providerUrl);
-        kparams.add("engagementAdapterSettings", this.engagementAdapterSettings);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaEngagementAdapter");
+		kparams.add("isActive", this.isActive);
+		kparams.add("adapterUrl", this.adapterUrl);
+		kparams.add("providerUrl", this.providerUrl);
+		kparams.add("engagementAdapterSettings", this.engagementAdapterSettings);
+		return kparams;
+	}
 
 }
 

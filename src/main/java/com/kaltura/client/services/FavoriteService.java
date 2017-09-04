@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Favorite;
 import com.kaltura.client.types.FavoriteFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -42,32 +40,51 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class FavoriteService {
+	
+	public static class AddFavoriteBuilder extends RequestBuilder<Favorite, Favorite.Tokenizer, AddFavoriteBuilder> {
+		
+		public AddFavoriteBuilder(Favorite favorite) {
+			super(Favorite.class, "favorite", "add");
+			params.add("favorite", favorite);
+		}
+	}
 
 	/**  Add media to user&amp;#39;s favorite list  */
-    public static RequestBuilder<Favorite> add(Favorite favorite)  {
-        Params kparams = new Params();
-        kparams.add("favorite", favorite);
-
-        return new RequestBuilder<Favorite>(Favorite.class, "favorite", "add", kparams);
-    }
+    public static AddFavoriteBuilder add(Favorite favorite)  {
+		return new AddFavoriteBuilder(favorite);
+	}
+	
+	public static class DeleteFavoriteBuilder extends RequestBuilder<Boolean, String, DeleteFavoriteBuilder> {
+		
+		public DeleteFavoriteBuilder(int id) {
+			super(Boolean.class, "favorite", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Remove media from user&amp;#39;s favorite list  */
-    public static RequestBuilder<Boolean> delete(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static DeleteFavoriteBuilder delete(int id)  {
+		return new DeleteFavoriteBuilder(id);
+	}
+	
+	public static class ListFavoriteBuilder extends ListResponseRequestBuilder<Favorite, Favorite.Tokenizer, ListFavoriteBuilder> {
+		
+		public ListFavoriteBuilder(FavoriteFilter filter) {
+			super(Favorite.class, "favorite", "list");
+			params.add("filter", filter);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "favorite", "delete", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<Favorite>> list()  {
-        return list(null);
-    }
+	public static ListFavoriteBuilder list()  {
+		return list(null);
+	}
 
 	/**  Retrieving users&amp;#39; favorites  */
-    public static RequestBuilder<ListResponse<Favorite>> list(FavoriteFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Favorite>(Favorite.class, "favorite", "list", kparams);
-    }
+    public static ListFavoriteBuilder list(FavoriteFilter filter)  {
+		return new ListFavoriteBuilder(filter);
+	}
 }

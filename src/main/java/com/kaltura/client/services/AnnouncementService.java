@@ -27,11 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Announcement;
 import com.kaltura.client.types.AnnouncementFilter;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -43,59 +41,105 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class AnnouncementService {
+	
+	public static class AddAnnouncementBuilder extends RequestBuilder<Announcement, Announcement.Tokenizer, AddAnnouncementBuilder> {
+		
+		public AddAnnouncementBuilder(Announcement announcement) {
+			super(Announcement.class, "announcement", "add");
+			params.add("announcement", announcement);
+		}
+	}
 
 	/**  Add a new future scheduled system announcement push notification  */
-    public static RequestBuilder<Announcement> add(Announcement announcement)  {
-        Params kparams = new Params();
-        kparams.add("announcement", announcement);
-
-        return new RequestBuilder<Announcement>(Announcement.class, "announcement", "add", kparams);
-    }
+    public static AddAnnouncementBuilder add(Announcement announcement)  {
+		return new AddAnnouncementBuilder(announcement);
+	}
+	
+	public static class DeleteAnnouncementBuilder extends RequestBuilder<Boolean, String, DeleteAnnouncementBuilder> {
+		
+		public DeleteAnnouncementBuilder(long id) {
+			super(Boolean.class, "announcement", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete an existing announcing. Announcement cannot be delete while being sent.  */
-    public static RequestBuilder<Boolean> delete(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "announcement", "delete", kparams);
-    }
+    public static DeleteAnnouncementBuilder delete(long id)  {
+		return new DeleteAnnouncementBuilder(id);
+	}
+	
+	public static class EnableSystemAnnouncementsAnnouncementBuilder extends RequestBuilder<Boolean, String, EnableSystemAnnouncementsAnnouncementBuilder> {
+		
+		public EnableSystemAnnouncementsAnnouncementBuilder() {
+			super(Boolean.class, "announcement", "enableSystemAnnouncements");
+		}
+	}
 
 	/**  Enable system announcements  */
-    public static RequestBuilder<Boolean> enableSystemAnnouncements()  {
-        Params kparams = new Params();
+    public static EnableSystemAnnouncementsAnnouncementBuilder enableSystemAnnouncements()  {
+		return new EnableSystemAnnouncementsAnnouncementBuilder();
+	}
+	
+	public static class ListAnnouncementBuilder extends ListResponseRequestBuilder<Announcement, Announcement.Tokenizer, ListAnnouncementBuilder> {
+		
+		public ListAnnouncementBuilder(AnnouncementFilter filter, FilterPager pager) {
+			super(Announcement.class, "announcement", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "announcement", "enableSystemAnnouncements", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<Announcement>> list(AnnouncementFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListAnnouncementBuilder list(AnnouncementFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Lists all announcements in the system.  */
-    public static RequestBuilder<ListResponse<Announcement>> list(AnnouncementFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<Announcement>(Announcement.class, "announcement", "list", kparams);
-    }
+    public static ListAnnouncementBuilder list(AnnouncementFilter filter, FilterPager pager)  {
+		return new ListAnnouncementBuilder(filter, pager);
+	}
+	
+	public static class UpdateAnnouncementBuilder extends RequestBuilder<Announcement, Announcement.Tokenizer, UpdateAnnouncementBuilder> {
+		
+		public UpdateAnnouncementBuilder(int announcementId, Announcement announcement) {
+			super(Announcement.class, "announcement", "update");
+			params.add("announcementId", announcementId);
+			params.add("announcement", announcement);
+		}
+		
+		public void announcementId(String multirequestToken) {
+			params.add("announcementId", multirequestToken);
+		}
+	}
 
 	/**  Update an existing future system announcement push notification. Announcement
 	  can only be updated only before sending  */
-    public static RequestBuilder<Announcement> update(int announcementId, Announcement announcement)  {
-        Params kparams = new Params();
-        kparams.add("announcementId", announcementId);
-        kparams.add("announcement", announcement);
-
-        return new RequestBuilder<Announcement>(Announcement.class, "announcement", "update", kparams);
-    }
+    public static UpdateAnnouncementBuilder update(int announcementId, Announcement announcement)  {
+		return new UpdateAnnouncementBuilder(announcementId, announcement);
+	}
+	
+	public static class UpdateStatusAnnouncementBuilder extends RequestBuilder<Boolean, String, UpdateStatusAnnouncementBuilder> {
+		
+		public UpdateStatusAnnouncementBuilder(long id, boolean status) {
+			super(Boolean.class, "announcement", "updateStatus");
+			params.add("id", id);
+			params.add("status", status);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void status(String multirequestToken) {
+			params.add("status", multirequestToken);
+		}
+	}
 
 	/**  Update a system announcement status  */
-    public static RequestBuilder<Boolean> updateStatus(long id, boolean status)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("status", status);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "announcement", "updateStatus", kparams);
-    }
+    public static UpdateStatusAnnouncementBuilder updateStatus(long id, boolean status)  {
+		return new UpdateStatusAnnouncementBuilder(id, status);
+	}
 }

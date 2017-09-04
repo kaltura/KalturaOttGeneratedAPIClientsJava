@@ -27,12 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import java.util.List;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,64 +43,71 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PlaybackContext.Tokenizer.class)
 public class PlaybackContext extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.ListTokenizer<PlaybackSource.Tokenizer> sources();
+		RequestBuilder.ListTokenizer<RuleAction.Tokenizer> actions();
+		RequestBuilder.ListTokenizer<AccessControlMessage.Tokenizer> messages();
+	}
 
 	/**  Sources  */
-    private List<PlaybackSource> sources;
+	private List<PlaybackSource> sources;
 	/**  Actions  */
-    private List<RuleAction> actions;
+	private List<RuleAction> actions;
 	/**  Messages  */
-    private List<AccessControlMessage> messages;
+	private List<AccessControlMessage> messages;
 
-    // sources:
-    public List<PlaybackSource> getSources(){
-        return this.sources;
-    }
-    public void setSources(List<PlaybackSource> sources){
-        this.sources = sources;
-    }
+	// sources:
+	public List<PlaybackSource> getSources(){
+		return this.sources;
+	}
+	public void setSources(List<PlaybackSource> sources){
+		this.sources = sources;
+	}
 
-    // actions:
-    public List<RuleAction> getActions(){
-        return this.actions;
-    }
-    public void setActions(List<RuleAction> actions){
-        this.actions = actions;
-    }
+	// actions:
+	public List<RuleAction> getActions(){
+		return this.actions;
+	}
+	public void setActions(List<RuleAction> actions){
+		this.actions = actions;
+	}
 
-    // messages:
-    public List<AccessControlMessage> getMessages(){
-        return this.messages;
-    }
-    public void setMessages(List<AccessControlMessage> messages){
-        this.messages = messages;
-    }
+	// messages:
+	public List<AccessControlMessage> getMessages(){
+		return this.messages;
+	}
+	public void setMessages(List<AccessControlMessage> messages){
+		this.messages = messages;
+	}
 
 
-    public PlaybackContext() {
-       super();
-    }
+	public PlaybackContext() {
+		super();
+	}
 
-    public PlaybackContext(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PlaybackContext(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        sources = GsonParser.parseArray(jsonObject.getAsJsonArray("sources"), PlaybackSource.class);
-        actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), RuleAction.class);
-        messages = GsonParser.parseArray(jsonObject.getAsJsonArray("messages"), AccessControlMessage.class);
+		// set members values:
+		sources = GsonParser.parseArray(jsonObject.getAsJsonArray("sources"), PlaybackSource.class);
+		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), RuleAction.class);
+		messages = GsonParser.parseArray(jsonObject.getAsJsonArray("messages"), AccessControlMessage.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPlaybackContext");
-        kparams.add("sources", this.sources);
-        kparams.add("actions", this.actions);
-        kparams.add("messages", this.messages);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPlaybackContext");
+		kparams.add("sources", this.sources);
+		kparams.add("actions", this.actions);
+		kparams.add("messages", this.messages);
+		return kparams;
+	}
 
 }
 

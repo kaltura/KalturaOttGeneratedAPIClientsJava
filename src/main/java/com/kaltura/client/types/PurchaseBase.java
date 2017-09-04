@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.TransactionType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.TransactionType;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,64 +42,83 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PurchaseBase.Tokenizer.class)
 public class PurchaseBase extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String productId();
+		String contentId();
+		String productType();
+	}
 
 	/**  Identifier for the package from which this content is offered  */
-    private Integer productId;
+	private Integer productId;
 	/**  Identifier for the content to purchase. Relevant only if Product type = PPV  */
-    private Integer contentId;
+	private Integer contentId;
 	/**  Package type. Possible values: PPV, Subscription, Collection  */
-    private TransactionType productType;
+	private TransactionType productType;
 
-    // productId:
-    public Integer getProductId(){
-        return this.productId;
-    }
-    public void setProductId(Integer productId){
-        this.productId = productId;
-    }
+	// productId:
+	public Integer getProductId(){
+		return this.productId;
+	}
+	public void setProductId(Integer productId){
+		this.productId = productId;
+	}
 
-    // contentId:
-    public Integer getContentId(){
-        return this.contentId;
-    }
-    public void setContentId(Integer contentId){
-        this.contentId = contentId;
-    }
+	public void productId(String multirequestToken){
+		setToken("productId", multirequestToken);
+	}
 
-    // productType:
-    public TransactionType getProductType(){
-        return this.productType;
-    }
-    public void setProductType(TransactionType productType){
-        this.productType = productType;
-    }
+	// contentId:
+	public Integer getContentId(){
+		return this.contentId;
+	}
+	public void setContentId(Integer contentId){
+		this.contentId = contentId;
+	}
+
+	public void contentId(String multirequestToken){
+		setToken("contentId", multirequestToken);
+	}
+
+	// productType:
+	public TransactionType getProductType(){
+		return this.productType;
+	}
+	public void setProductType(TransactionType productType){
+		this.productType = productType;
+	}
+
+	public void productType(String multirequestToken){
+		setToken("productType", multirequestToken);
+	}
 
 
-    public PurchaseBase() {
-       super();
-    }
+	public PurchaseBase() {
+		super();
+	}
 
-    public PurchaseBase(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PurchaseBase(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        productId = GsonParser.parseInt(jsonObject.get("productId"));
-        contentId = GsonParser.parseInt(jsonObject.get("contentId"));
-        productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
+		// set members values:
+		productId = GsonParser.parseInt(jsonObject.get("productId"));
+		contentId = GsonParser.parseInt(jsonObject.get("contentId"));
+		productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPurchaseBase");
-        kparams.add("productId", this.productId);
-        kparams.add("contentId", this.contentId);
-        kparams.add("productType", this.productType);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPurchaseBase");
+		kparams.add("productId", this.productId);
+		kparams.add("contentId", this.contentId);
+		kparams.add("productType", this.productType);
+		return kparams;
+	}
 
 }
 

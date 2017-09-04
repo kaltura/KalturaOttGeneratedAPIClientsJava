@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,52 +41,66 @@ import com.google.gson.JsonObject;
 
 /**  Filtering recordings  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(RecordingFilter.Tokenizer.class)
 public class RecordingFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String statusIn();
+		String filterExpression();
+	}
 
 	/**  Recording Statuses  */
-    private String statusIn;
+	private String statusIn;
 	/**  KSQL expression  */
-    private String filterExpression;
+	private String filterExpression;
 
-    // statusIn:
-    public String getStatusIn(){
-        return this.statusIn;
-    }
-    public void setStatusIn(String statusIn){
-        this.statusIn = statusIn;
-    }
+	// statusIn:
+	public String getStatusIn(){
+		return this.statusIn;
+	}
+	public void setStatusIn(String statusIn){
+		this.statusIn = statusIn;
+	}
 
-    // filterExpression:
-    public String getFilterExpression(){
-        return this.filterExpression;
-    }
-    public void setFilterExpression(String filterExpression){
-        this.filterExpression = filterExpression;
-    }
+	public void statusIn(String multirequestToken){
+		setToken("statusIn", multirequestToken);
+	}
+
+	// filterExpression:
+	public String getFilterExpression(){
+		return this.filterExpression;
+	}
+	public void setFilterExpression(String filterExpression){
+		this.filterExpression = filterExpression;
+	}
+
+	public void filterExpression(String multirequestToken){
+		setToken("filterExpression", multirequestToken);
+	}
 
 
-    public RecordingFilter() {
-       super();
-    }
+	public RecordingFilter() {
+		super();
+	}
 
-    public RecordingFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public RecordingFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
-        filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
+		// set members values:
+		statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
+		filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaRecordingFilter");
-        kparams.add("statusIn", this.statusIn);
-        kparams.add("filterExpression", this.filterExpression);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaRecordingFilter");
+		kparams.add("statusIn", this.statusIn);
+		kparams.add("filterExpression", this.filterExpression);
+		return kparams;
+	}
 
 }
 

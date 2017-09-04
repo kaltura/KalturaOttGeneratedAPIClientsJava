@@ -27,12 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Currency;
 import com.kaltura.client.types.CurrencyFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,13 +39,18 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class CurrencyService {
+	
+	public static class ListCurrencyBuilder extends ListResponseRequestBuilder<Currency, Currency.Tokenizer, ListCurrencyBuilder> {
+		
+		public ListCurrencyBuilder(CurrencyFilter filter) {
+			super(Currency.class, "currency", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Get the list of currencies for the partner with option to filter by currency
 	  codes  */
-    public static RequestBuilder<ListResponse<Currency>> list(CurrencyFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Currency>(Currency.class, "currency", "list", kparams);
-    }
+    public static ListCurrencyBuilder list(CurrencyFilter filter)  {
+		return new ListCurrencyBuilder(filter);
+	}
 }

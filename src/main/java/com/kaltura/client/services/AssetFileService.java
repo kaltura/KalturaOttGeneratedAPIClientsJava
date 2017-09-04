@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.ContextType;
 import com.kaltura.client.enums.PlaybackContextType;
@@ -43,30 +42,72 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class AssetFileService {
+	
+	public static class GetContextAssetFileBuilder extends RequestBuilder<AssetFileContext, AssetFileContext.Tokenizer, GetContextAssetFileBuilder> {
+		
+		public GetContextAssetFileBuilder(String id, ContextType contextType) {
+			super(AssetFileContext.class, "assetfile", "getContext");
+			params.add("id", id);
+			params.add("contextType", contextType);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void contextType(String multirequestToken) {
+			params.add("contextType", multirequestToken);
+		}
+	}
 
 	/**  get KalturaAssetFileContext  */
-    public static RequestBuilder<AssetFileContext> getContext(String id, ContextType contextType)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("contextType", contextType);
+    public static GetContextAssetFileBuilder getContext(String id, ContextType contextType)  {
+		return new GetContextAssetFileBuilder(id, contextType);
+	}
+	
+	public static class PlayManifestAssetFileBuilder extends NullRequestBuilder {
+		
+		public PlayManifestAssetFileBuilder(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks) {
+			super("assetfile", "playManifest");
+			params.add("partnerId", partnerId);
+			params.add("assetId", assetId);
+			params.add("assetType", assetType);
+			params.add("assetFileId", assetFileId);
+			params.add("contextType", contextType);
+			params.add("ks", ks);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void assetType(String multirequestToken) {
+			params.add("assetType", multirequestToken);
+		}
+		
+		public void assetFileId(String multirequestToken) {
+			params.add("assetFileId", multirequestToken);
+		}
+		
+		public void contextType(String multirequestToken) {
+			params.add("contextType", multirequestToken);
+		}
+		
+		public void ks(String multirequestToken) {
+			params.add("ks", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<AssetFileContext>(AssetFileContext.class, "assetfile", "getContext", kparams);
-    }
-
-    public static RequestBuilder<Void> playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType)  {
-        return playManifest(partnerId, assetId, assetType, assetFileId, contextType, null);
-    }
+	public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType)  {
+		return playManifest(partnerId, assetId, assetType, assetFileId, contextType, null);
+	}
 
 	/**  Redirects to play manifest  */
-    public static RequestBuilder<Void> playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks)  {
-        Params kparams = new Params();
-        kparams.add("partnerId", partnerId);
-        kparams.add("assetId", assetId);
-        kparams.add("assetType", assetType);
-        kparams.add("assetFileId", assetFileId);
-        kparams.add("contextType", contextType);
-        kparams.add("ks", ks);
-
-        return new NullRequestBuilder("assetfile", "playManifest", kparams);
-    }
+    public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks)  {
+		return new PlayManifestAssetFileBuilder(partnerId, assetId, assetType, assetFileId, contextType, ks);
+	}
 }

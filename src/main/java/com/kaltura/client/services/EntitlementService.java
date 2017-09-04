@@ -27,12 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.types.Entitlement;
 import com.kaltura.client.types.EntitlementFilter;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -45,98 +43,199 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class EntitlementService {
+	
+	public static class CancelEntitlementBuilder extends RequestBuilder<Boolean, String, CancelEntitlementBuilder> {
+		
+		public CancelEntitlementBuilder(int assetId, TransactionType transactionType) {
+			super(Boolean.class, "entitlement", "cancel");
+			params.add("assetId", assetId);
+			params.add("transactionType", transactionType);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void transactionType(String multirequestToken) {
+			params.add("transactionType", multirequestToken);
+		}
+	}
 
 	/**  Immediately cancel a subscription, PPV or collection. Cancel is possible only if
 	  within cancellation window and content not already consumed  */
-    public static RequestBuilder<Boolean> cancel(int assetId, TransactionType transactionType)  {
-        Params kparams = new Params();
-        kparams.add("assetId", assetId);
-        kparams.add("transactionType", transactionType);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "entitlement", "cancel", kparams);
-    }
+    public static CancelEntitlementBuilder cancel(int assetId, TransactionType transactionType)  {
+		return new CancelEntitlementBuilder(assetId, transactionType);
+	}
+	
+	public static class CancelRenewalEntitlementBuilder extends NullRequestBuilder {
+		
+		public CancelRenewalEntitlementBuilder(String subscriptionId) {
+			super("entitlement", "cancelRenewal");
+			params.add("subscriptionId", subscriptionId);
+		}
+		
+		public void subscriptionId(String multirequestToken) {
+			params.add("subscriptionId", multirequestToken);
+		}
+	}
 
 	/**  Cancel a household service subscription at the next renewal. The subscription
 	  stays valid till the next renewal.  */
-    public static RequestBuilder<Void> cancelRenewal(String subscriptionId)  {
-        Params kparams = new Params();
-        kparams.add("subscriptionId", subscriptionId);
-
-        return new NullRequestBuilder("entitlement", "cancelRenewal", kparams);
-    }
+    public static CancelRenewalEntitlementBuilder cancelRenewal(String subscriptionId)  {
+		return new CancelRenewalEntitlementBuilder(subscriptionId);
+	}
+	
+	public static class CancelScheduledSubscriptionEntitlementBuilder extends RequestBuilder<Boolean, String, CancelScheduledSubscriptionEntitlementBuilder> {
+		
+		public CancelScheduledSubscriptionEntitlementBuilder(long scheduledSubscriptionId) {
+			super(Boolean.class, "entitlement", "cancelScheduledSubscription");
+			params.add("scheduledSubscriptionId", scheduledSubscriptionId);
+		}
+		
+		public void scheduledSubscriptionId(String multirequestToken) {
+			params.add("scheduledSubscriptionId", multirequestToken);
+		}
+	}
 
 	/**  Cancel Scheduled Subscription  */
-    public static RequestBuilder<Boolean> cancelScheduledSubscription(long scheduledSubscriptionId)  {
-        Params kparams = new Params();
-        kparams.add("scheduledSubscriptionId", scheduledSubscriptionId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "entitlement", "cancelScheduledSubscription", kparams);
-    }
+    public static CancelScheduledSubscriptionEntitlementBuilder cancelScheduledSubscription(long scheduledSubscriptionId)  {
+		return new CancelScheduledSubscriptionEntitlementBuilder(scheduledSubscriptionId);
+	}
+	
+	public static class ExternalReconcileEntitlementBuilder extends RequestBuilder<Boolean, String, ExternalReconcileEntitlementBuilder> {
+		
+		public ExternalReconcileEntitlementBuilder() {
+			super(Boolean.class, "entitlement", "externalReconcile");
+		}
+	}
 
 	/**  Reconcile the user household&amp;#39;s entitlements with an external
 	  entitlements source. This request is frequency protected to avoid too frequent
 	  calls per household.  */
-    public static RequestBuilder<Boolean> externalReconcile()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<Boolean>(Boolean.class, "entitlement", "externalReconcile", kparams);
-    }
+    public static ExternalReconcileEntitlementBuilder externalReconcile()  {
+		return new ExternalReconcileEntitlementBuilder();
+	}
+	
+	public static class ForceCancelEntitlementBuilder extends RequestBuilder<Boolean, String, ForceCancelEntitlementBuilder> {
+		
+		public ForceCancelEntitlementBuilder(int assetId, TransactionType transactionType) {
+			super(Boolean.class, "entitlement", "forceCancel");
+			params.add("assetId", assetId);
+			params.add("transactionType", transactionType);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void transactionType(String multirequestToken) {
+			params.add("transactionType", multirequestToken);
+		}
+	}
 
 	/**  Immediately cancel a subscription, PPV or collection. Cancel applies regardless
 	  of cancellation window and content consumption status  */
-    public static RequestBuilder<Boolean> forceCancel(int assetId, TransactionType transactionType)  {
-        Params kparams = new Params();
-        kparams.add("assetId", assetId);
-        kparams.add("transactionType", transactionType);
+    public static ForceCancelEntitlementBuilder forceCancel(int assetId, TransactionType transactionType)  {
+		return new ForceCancelEntitlementBuilder(assetId, transactionType);
+	}
+	
+	public static class GrantEntitlementBuilder extends RequestBuilder<Boolean, String, GrantEntitlementBuilder> {
+		
+		public GrantEntitlementBuilder(int productId, TransactionType productType, boolean history, int contentId) {
+			super(Boolean.class, "entitlement", "grant");
+			params.add("productId", productId);
+			params.add("productType", productType);
+			params.add("history", history);
+			params.add("contentId", contentId);
+		}
+		
+		public void productId(String multirequestToken) {
+			params.add("productId", multirequestToken);
+		}
+		
+		public void productType(String multirequestToken) {
+			params.add("productType", multirequestToken);
+		}
+		
+		public void history(String multirequestToken) {
+			params.add("history", multirequestToken);
+		}
+		
+		public void contentId(String multirequestToken) {
+			params.add("contentId", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "entitlement", "forceCancel", kparams);
-    }
-
-    public static RequestBuilder<Boolean> grant(int productId, TransactionType productType, boolean history)  {
-        return grant(productId, productType, history, 0);
-    }
+	public static GrantEntitlementBuilder grant(int productId, TransactionType productType, boolean history)  {
+		return grant(productId, productType, history, 0);
+	}
 
 	/**  Grant household for an entitlement for a PPV or Subscription.  */
-    public static RequestBuilder<Boolean> grant(int productId, TransactionType productType, boolean history, int contentId)  {
-        Params kparams = new Params();
-        kparams.add("productId", productId);
-        kparams.add("productType", productType);
-        kparams.add("history", history);
-        kparams.add("contentId", contentId);
+    public static GrantEntitlementBuilder grant(int productId, TransactionType productType, boolean history, int contentId)  {
+		return new GrantEntitlementBuilder(productId, productType, history, contentId);
+	}
+	
+	public static class ListEntitlementBuilder extends ListResponseRequestBuilder<Entitlement, Entitlement.Tokenizer, ListEntitlementBuilder> {
+		
+		public ListEntitlementBuilder(EntitlementFilter filter, FilterPager pager) {
+			super(Entitlement.class, "entitlement", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "entitlement", "grant", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<Entitlement>> list(EntitlementFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListEntitlementBuilder list(EntitlementFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Gets all the entitled media items for a household  */
-    public static RequestBuilder<ListResponse<Entitlement>> list(EntitlementFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<Entitlement>(Entitlement.class, "entitlement", "list", kparams);
-    }
+    public static ListEntitlementBuilder list(EntitlementFilter filter, FilterPager pager)  {
+		return new ListEntitlementBuilder(filter, pager);
+	}
+	
+	public static class SwapEntitlementBuilder extends RequestBuilder<Boolean, String, SwapEntitlementBuilder> {
+		
+		public SwapEntitlementBuilder(int currentProductId, int newProductId, boolean history) {
+			super(Boolean.class, "entitlement", "swap");
+			params.add("currentProductId", currentProductId);
+			params.add("newProductId", newProductId);
+			params.add("history", history);
+		}
+		
+		public void currentProductId(String multirequestToken) {
+			params.add("currentProductId", multirequestToken);
+		}
+		
+		public void newProductId(String multirequestToken) {
+			params.add("newProductId", multirequestToken);
+		}
+		
+		public void history(String multirequestToken) {
+			params.add("history", multirequestToken);
+		}
+	}
 
 	/**  Swap current entitlement (subscription) with new entitlement (subscription) -
 	  only Grant  */
-    public static RequestBuilder<Boolean> swap(int currentProductId, int newProductId, boolean history)  {
-        Params kparams = new Params();
-        kparams.add("currentProductId", currentProductId);
-        kparams.add("newProductId", newProductId);
-        kparams.add("history", history);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "entitlement", "swap", kparams);
-    }
+    public static SwapEntitlementBuilder swap(int currentProductId, int newProductId, boolean history)  {
+		return new SwapEntitlementBuilder(currentProductId, newProductId, history);
+	}
+	
+	public static class UpdateEntitlementBuilder extends RequestBuilder<Entitlement, Entitlement.Tokenizer, UpdateEntitlementBuilder> {
+		
+		public UpdateEntitlementBuilder(int id, Entitlement entitlement) {
+			super(Entitlement.class, "entitlement", "update");
+			params.add("id", id);
+			params.add("entitlement", entitlement);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Update Kaltura Entitelment by Purchase id  */
-    public static RequestBuilder<Entitlement> update(int id, Entitlement entitlement)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("entitlement", entitlement);
-
-        return new RequestBuilder<Entitlement>(Entitlement.class, "entitlement", "update", kparams);
-    }
+    public static UpdateEntitlementBuilder update(int id, Entitlement entitlement)  {
+		return new UpdateEntitlementBuilder(id, entitlement);
+	}
 }

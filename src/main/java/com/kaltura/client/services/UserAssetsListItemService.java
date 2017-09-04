@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.UserAssetsListItemType;
 import com.kaltura.client.enums.UserAssetsListType;
 import com.kaltura.client.types.UserAssetsListItem;
@@ -41,31 +40,66 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class UserAssetsListItemService {
+	
+	public static class AddUserAssetsListItemBuilder extends RequestBuilder<UserAssetsListItem, UserAssetsListItem.Tokenizer, AddUserAssetsListItemBuilder> {
+		
+		public AddUserAssetsListItemBuilder(UserAssetsListItem userAssetsListItem) {
+			super(UserAssetsListItem.class, "userassetslistitem", "add");
+			params.add("userAssetsListItem", userAssetsListItem);
+		}
+	}
 
 	/**  Adds a new item to user’s private asset list  */
-    public static RequestBuilder<UserAssetsListItem> add(UserAssetsListItem userAssetsListItem)  {
-        Params kparams = new Params();
-        kparams.add("userAssetsListItem", userAssetsListItem);
-
-        return new RequestBuilder<UserAssetsListItem>(UserAssetsListItem.class, "userassetslistitem", "add", kparams);
-    }
+    public static AddUserAssetsListItemBuilder add(UserAssetsListItem userAssetsListItem)  {
+		return new AddUserAssetsListItemBuilder(userAssetsListItem);
+	}
+	
+	public static class DeleteUserAssetsListItemBuilder extends RequestBuilder<Boolean, String, DeleteUserAssetsListItemBuilder> {
+		
+		public DeleteUserAssetsListItemBuilder(String assetId, UserAssetsListType listType) {
+			super(Boolean.class, "userassetslistitem", "delete");
+			params.add("assetId", assetId);
+			params.add("listType", listType);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void listType(String multirequestToken) {
+			params.add("listType", multirequestToken);
+		}
+	}
 
 	/**  Deletes an item from user’s private asset list  */
-    public static RequestBuilder<Boolean> delete(String assetId, UserAssetsListType listType)  {
-        Params kparams = new Params();
-        kparams.add("assetId", assetId);
-        kparams.add("listType", listType);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "userassetslistitem", "delete", kparams);
-    }
+    public static DeleteUserAssetsListItemBuilder delete(String assetId, UserAssetsListType listType)  {
+		return new DeleteUserAssetsListItemBuilder(assetId, listType);
+	}
+	
+	public static class GetUserAssetsListItemBuilder extends RequestBuilder<UserAssetsListItem, UserAssetsListItem.Tokenizer, GetUserAssetsListItemBuilder> {
+		
+		public GetUserAssetsListItemBuilder(String assetId, UserAssetsListType listType, UserAssetsListItemType itemType) {
+			super(UserAssetsListItem.class, "userassetslistitem", "get");
+			params.add("assetId", assetId);
+			params.add("listType", listType);
+			params.add("itemType", itemType);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void listType(String multirequestToken) {
+			params.add("listType", multirequestToken);
+		}
+		
+		public void itemType(String multirequestToken) {
+			params.add("itemType", multirequestToken);
+		}
+	}
 
 	/**  Get an item from user’s private asset list  */
-    public static RequestBuilder<UserAssetsListItem> get(String assetId, UserAssetsListType listType, UserAssetsListItemType itemType)  {
-        Params kparams = new Params();
-        kparams.add("assetId", assetId);
-        kparams.add("listType", listType);
-        kparams.add("itemType", itemType);
-
-        return new RequestBuilder<UserAssetsListItem>(UserAssetsListItem.class, "userassetslistitem", "get", kparams);
-    }
+    public static GetUserAssetsListItemBuilder get(String assetId, UserAssetsListType listType, UserAssetsListItemType itemType)  {
+		return new GetUserAssetsListItemBuilder(assetId, listType, itemType);
+	}
 }

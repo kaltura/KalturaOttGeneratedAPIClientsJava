@@ -27,10 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,23 +39,27 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(CollectionEntitlement.Tokenizer.class)
 public class CollectionEntitlement extends Entitlement {
+	
+	public interface Tokenizer extends Entitlement.Tokenizer {
+	}
 
 
 
-    public CollectionEntitlement() {
-       super();
-    }
+	public CollectionEntitlement() {
+		super();
+	}
 
-    public CollectionEntitlement(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
-    }
+	public CollectionEntitlement(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaCollectionEntitlement");
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaCollectionEntitlement");
+		return kparams;
+	}
 
 }
 

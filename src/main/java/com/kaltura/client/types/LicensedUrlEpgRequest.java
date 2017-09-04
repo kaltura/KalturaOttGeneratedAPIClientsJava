@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.StreamType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.StreamType;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,52 +41,66 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(LicensedUrlEpgRequest.Tokenizer.class)
 public class LicensedUrlEpgRequest extends LicensedUrlMediaRequest {
+	
+	public interface Tokenizer extends LicensedUrlMediaRequest.Tokenizer {
+		String streamType();
+		String startDate();
+	}
 
 	/**  The stream type to get the URL for  */
-    private StreamType streamType;
+	private StreamType streamType;
 	/**  The start date of the stream (epoch)  */
-    private Long startDate;
+	private Long startDate;
 
-    // streamType:
-    public StreamType getStreamType(){
-        return this.streamType;
-    }
-    public void setStreamType(StreamType streamType){
-        this.streamType = streamType;
-    }
+	// streamType:
+	public StreamType getStreamType(){
+		return this.streamType;
+	}
+	public void setStreamType(StreamType streamType){
+		this.streamType = streamType;
+	}
 
-    // startDate:
-    public Long getStartDate(){
-        return this.startDate;
-    }
-    public void setStartDate(Long startDate){
-        this.startDate = startDate;
-    }
+	public void streamType(String multirequestToken){
+		setToken("streamType", multirequestToken);
+	}
+
+	// startDate:
+	public Long getStartDate(){
+		return this.startDate;
+	}
+	public void setStartDate(Long startDate){
+		this.startDate = startDate;
+	}
+
+	public void startDate(String multirequestToken){
+		setToken("startDate", multirequestToken);
+	}
 
 
-    public LicensedUrlEpgRequest() {
-       super();
-    }
+	public LicensedUrlEpgRequest() {
+		super();
+	}
 
-    public LicensedUrlEpgRequest(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public LicensedUrlEpgRequest(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        streamType = StreamType.get(GsonParser.parseString(jsonObject.get("streamType")));
-        startDate = GsonParser.parseLong(jsonObject.get("startDate"));
+		// set members values:
+		streamType = StreamType.get(GsonParser.parseString(jsonObject.get("streamType")));
+		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaLicensedUrlEpgRequest");
-        kparams.add("streamType", this.streamType);
-        kparams.add("startDate", this.startDate);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaLicensedUrlEpgRequest");
+		kparams.add("streamType", this.streamType);
+		kparams.add("startDate", this.startDate);
+		return kparams;
+	}
 
 }
 

@@ -27,13 +27,14 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.AssetGroupBy;
-import com.kaltura.client.enums.AssetOrderBy;
-import java.util.List;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.AssetOrderBy;
+import com.kaltura.client.types.AssetGroupBy;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,112 +45,139 @@ import com.google.gson.JsonObject;
 
 /**  Channel details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Channel.Tokenizer.class)
 public class Channel extends BaseChannel {
+	
+	public interface Tokenizer extends BaseChannel.Tokenizer {
+		String description();
+		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
+		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> assetTypes();
+		String filterExpression();
+		String isActive();
+		String order();
+		AssetGroupBy.Tokenizer groupBy();
+	}
 
 	/**  Cannel description  */
-    private String description;
+	private String description;
 	/**  Channel images  */
-    private List<MediaImage> images;
+	private List<MediaImage> images;
 	/**  Asset types in the channel.              -26 is EPG  */
-    private List<IntegerValue> assetTypes;
+	private List<IntegerValue> assetTypes;
 	/**  Filter expression  */
-    private String filterExpression;
+	private String filterExpression;
 	/**  active status  */
-    private Boolean isActive;
+	private Boolean isActive;
 	/**  Channel order  */
-    private AssetOrderBy order;
+	private AssetOrderBy order;
 	/**  Channel group by  */
-    private AssetGroupBy groupBy;
+	private AssetGroupBy groupBy;
 
-    // description:
-    public String getDescription(){
-        return this.description;
-    }
-    public void setDescription(String description){
-        this.description = description;
-    }
+	// description:
+	public String getDescription(){
+		return this.description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
 
-    // images:
-    public List<MediaImage> getImages(){
-        return this.images;
-    }
-    public void setImages(List<MediaImage> images){
-        this.images = images;
-    }
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
+	}
 
-    // assetTypes:
-    public List<IntegerValue> getAssetTypes(){
-        return this.assetTypes;
-    }
-    public void setAssetTypes(List<IntegerValue> assetTypes){
-        this.assetTypes = assetTypes;
-    }
+	// images:
+	public List<MediaImage> getImages(){
+		return this.images;
+	}
+	public void setImages(List<MediaImage> images){
+		this.images = images;
+	}
 
-    // filterExpression:
-    public String getFilterExpression(){
-        return this.filterExpression;
-    }
-    public void setFilterExpression(String filterExpression){
-        this.filterExpression = filterExpression;
-    }
+	// assetTypes:
+	public List<IntegerValue> getAssetTypes(){
+		return this.assetTypes;
+	}
+	public void setAssetTypes(List<IntegerValue> assetTypes){
+		this.assetTypes = assetTypes;
+	}
 
-    // isActive:
-    public Boolean getIsActive(){
-        return this.isActive;
-    }
-    public void setIsActive(Boolean isActive){
-        this.isActive = isActive;
-    }
+	// filterExpression:
+	public String getFilterExpression(){
+		return this.filterExpression;
+	}
+	public void setFilterExpression(String filterExpression){
+		this.filterExpression = filterExpression;
+	}
 
-    // order:
-    public AssetOrderBy getOrder(){
-        return this.order;
-    }
-    public void setOrder(AssetOrderBy order){
-        this.order = order;
-    }
+	public void filterExpression(String multirequestToken){
+		setToken("filterExpression", multirequestToken);
+	}
 
-    // groupBy:
-    public AssetGroupBy getGroupBy(){
-        return this.groupBy;
-    }
-    public void setGroupBy(AssetGroupBy groupBy){
-        this.groupBy = groupBy;
-    }
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
+
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
+
+	// order:
+	public AssetOrderBy getOrder(){
+		return this.order;
+	}
+	public void setOrder(AssetOrderBy order){
+		this.order = order;
+	}
+
+	public void order(String multirequestToken){
+		setToken("order", multirequestToken);
+	}
+
+	// groupBy:
+	public AssetGroupBy getGroupBy(){
+		return this.groupBy;
+	}
+	public void setGroupBy(AssetGroupBy groupBy){
+		this.groupBy = groupBy;
+	}
 
 
-    public Channel() {
-       super();
-    }
+	public Channel() {
+		super();
+	}
 
-    public Channel(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Channel(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        description = GsonParser.parseString(jsonObject.get("description"));
-        images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
-        assetTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("assetTypes"), IntegerValue.class);
-        filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
-        isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
-        order = AssetOrderBy.get(GsonParser.parseString(jsonObject.get("order")));
-        groupBy = GsonParser.parseObject(jsonObject.getAsJsonObject("groupBy"), AssetGroupBy.class);
+		// set members values:
+		description = GsonParser.parseString(jsonObject.get("description"));
+		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
+		assetTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("assetTypes"), IntegerValue.class);
+		filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		order = AssetOrderBy.get(GsonParser.parseString(jsonObject.get("order")));
+		groupBy = GsonParser.parseObject(jsonObject.getAsJsonObject("groupBy"), AssetGroupBy.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaChannel");
-        kparams.add("description", this.description);
-        kparams.add("images", this.images);
-        kparams.add("assetTypes", this.assetTypes);
-        kparams.add("filterExpression", this.filterExpression);
-        kparams.add("isActive", this.isActive);
-        kparams.add("order", this.order);
-        kparams.add("groupBy", this.groupBy);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaChannel");
+		kparams.add("description", this.description);
+		kparams.add("images", this.images);
+		kparams.add("assetTypes", this.assetTypes);
+		kparams.add("filterExpression", this.filterExpression);
+		kparams.add("isActive", this.isActive);
+		kparams.add("order", this.order);
+		kparams.add("groupBy", this.groupBy);
+		return kparams;
+	}
 
 }
 

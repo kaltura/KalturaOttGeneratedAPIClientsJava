@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.PartnerConfiguration;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,12 +38,17 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PartnerConfigurationService {
+	
+	public static class UpdatePartnerConfigurationBuilder extends RequestBuilder<Boolean, String, UpdatePartnerConfigurationBuilder> {
+		
+		public UpdatePartnerConfigurationBuilder(PartnerConfiguration configuration) {
+			super(Boolean.class, "partnerconfiguration", "update");
+			params.add("configuration", configuration);
+		}
+	}
 
 	/**  Update Partner Configuration  */
-    public static RequestBuilder<Boolean> update(PartnerConfiguration configuration)  {
-        Params kparams = new Params();
-        kparams.add("configuration", configuration);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "partnerconfiguration", "update", kparams);
-    }
+    public static UpdatePartnerConfigurationBuilder update(PartnerConfiguration configuration)  {
+		return new UpdatePartnerConfigurationBuilder(configuration);
+	}
 }

@@ -27,12 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Language;
 import com.kaltura.client.types.LanguageFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,13 +39,18 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class LanguageService {
+	
+	public static class ListLanguageBuilder extends ListResponseRequestBuilder<Language, Language.Tokenizer, ListLanguageBuilder> {
+		
+		public ListLanguageBuilder(LanguageFilter filter) {
+			super(Language.class, "language", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Get the list of languages for the partner with option to filter by language
 	  codes  */
-    public static RequestBuilder<ListResponse<Language>> list(LanguageFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Language>(Language.class, "language", "list", kparams);
-    }
+    public static ListLanguageBuilder list(LanguageFilter filter)  {
+		return new ListLanguageBuilder(filter);
+	}
 }

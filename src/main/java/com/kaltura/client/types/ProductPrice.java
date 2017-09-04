@@ -27,14 +27,14 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.enums.PurchaseStatus;
+import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.Price;
-import com.kaltura.client.enums.TransactionType;
-import com.kaltura.client.enums.PurchaseStatus;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,76 +44,96 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ProductPrice.Tokenizer.class)
 public abstract class ProductPrice extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String productId();
+		String productType();
+		Price.Tokenizer price();
+		String purchaseStatus();
+	}
 
 	/**  Product identifier  */
-    private String productId;
+	private String productId;
 	/**  Product Type  */
-    private TransactionType productType;
+	private TransactionType productType;
 	/**  Product price  */
-    private Price price;
+	private Price price;
 	/**  Product purchase status  */
-    private PurchaseStatus purchaseStatus;
+	private PurchaseStatus purchaseStatus;
 
-    // productId:
-    public String getProductId(){
-        return this.productId;
-    }
-    public void setProductId(String productId){
-        this.productId = productId;
-    }
+	// productId:
+	public String getProductId(){
+		return this.productId;
+	}
+	public void setProductId(String productId){
+		this.productId = productId;
+	}
 
-    // productType:
-    public TransactionType getProductType(){
-        return this.productType;
-    }
-    public void setProductType(TransactionType productType){
-        this.productType = productType;
-    }
+	public void productId(String multirequestToken){
+		setToken("productId", multirequestToken);
+	}
 
-    // price:
-    public Price getPrice(){
-        return this.price;
-    }
-    public void setPrice(Price price){
-        this.price = price;
-    }
+	// productType:
+	public TransactionType getProductType(){
+		return this.productType;
+	}
+	public void setProductType(TransactionType productType){
+		this.productType = productType;
+	}
 
-    // purchaseStatus:
-    public PurchaseStatus getPurchaseStatus(){
-        return this.purchaseStatus;
-    }
-    public void setPurchaseStatus(PurchaseStatus purchaseStatus){
-        this.purchaseStatus = purchaseStatus;
-    }
+	public void productType(String multirequestToken){
+		setToken("productType", multirequestToken);
+	}
+
+	// price:
+	public Price getPrice(){
+		return this.price;
+	}
+	public void setPrice(Price price){
+		this.price = price;
+	}
+
+	// purchaseStatus:
+	public PurchaseStatus getPurchaseStatus(){
+		return this.purchaseStatus;
+	}
+	public void setPurchaseStatus(PurchaseStatus purchaseStatus){
+		this.purchaseStatus = purchaseStatus;
+	}
+
+	public void purchaseStatus(String multirequestToken){
+		setToken("purchaseStatus", multirequestToken);
+	}
 
 
-    public ProductPrice() {
-       super();
-    }
+	public ProductPrice() {
+		super();
+	}
 
-    public ProductPrice(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public ProductPrice(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        productId = GsonParser.parseString(jsonObject.get("productId"));
-        productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
-        price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), Price.class);
-        purchaseStatus = PurchaseStatus.get(GsonParser.parseString(jsonObject.get("purchaseStatus")));
+		// set members values:
+		productId = GsonParser.parseString(jsonObject.get("productId"));
+		productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
+		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), Price.class);
+		purchaseStatus = PurchaseStatus.get(GsonParser.parseString(jsonObject.get("purchaseStatus")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaProductPrice");
-        kparams.add("productId", this.productId);
-        kparams.add("productType", this.productType);
-        kparams.add("price", this.price);
-        kparams.add("purchaseStatus", this.purchaseStatus);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaProductPrice");
+		kparams.add("productId", this.productId);
+		kparams.add("productType", this.productType);
+		kparams.add("price", this.price);
+		kparams.add("purchaseStatus", this.purchaseStatus);
+		return kparams;
+	}
 
 }
 

@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,74 +41,98 @@ import com.google.gson.JsonObject;
 
 /**  Price plan  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PricePlan.Tokenizer.class)
 public class PricePlan extends UsageModule {
+	
+	public interface Tokenizer extends UsageModule.Tokenizer {
+		String isRenewable();
+		String renewalsNumber();
+		String discountId();
+		String priceDetailsId();
+	}
 
 	/**  Denotes whether or not this object can be renewed  */
-    private Boolean isRenewable;
+	private Boolean isRenewable;
 	/**  Defines the number of times the module will be renewed (for the life_cycle
 	  period)  */
-    private Integer renewalsNumber;
+	private Integer renewalsNumber;
 	/**  The discount module identifier of the price plan  */
-    private Long discountId;
+	private Long discountId;
 	/**  The ID of the price details associated with this price plan  */
-    private Long priceDetailsId;
+	private Long priceDetailsId;
 
-    // isRenewable:
-    public Boolean getIsRenewable(){
-        return this.isRenewable;
-    }
-    public void setIsRenewable(Boolean isRenewable){
-        this.isRenewable = isRenewable;
-    }
+	// isRenewable:
+	public Boolean getIsRenewable(){
+		return this.isRenewable;
+	}
+	public void setIsRenewable(Boolean isRenewable){
+		this.isRenewable = isRenewable;
+	}
 
-    // renewalsNumber:
-    public Integer getRenewalsNumber(){
-        return this.renewalsNumber;
-    }
-    public void setRenewalsNumber(Integer renewalsNumber){
-        this.renewalsNumber = renewalsNumber;
-    }
+	public void isRenewable(String multirequestToken){
+		setToken("isRenewable", multirequestToken);
+	}
 
-    // discountId:
-    public Long getDiscountId(){
-        return this.discountId;
-    }
-    public void setDiscountId(Long discountId){
-        this.discountId = discountId;
-    }
+	// renewalsNumber:
+	public Integer getRenewalsNumber(){
+		return this.renewalsNumber;
+	}
+	public void setRenewalsNumber(Integer renewalsNumber){
+		this.renewalsNumber = renewalsNumber;
+	}
 
-    // priceDetailsId:
-    public Long getPriceDetailsId(){
-        return this.priceDetailsId;
-    }
-    public void setPriceDetailsId(Long priceDetailsId){
-        this.priceDetailsId = priceDetailsId;
-    }
+	public void renewalsNumber(String multirequestToken){
+		setToken("renewalsNumber", multirequestToken);
+	}
+
+	// discountId:
+	public Long getDiscountId(){
+		return this.discountId;
+	}
+	public void setDiscountId(Long discountId){
+		this.discountId = discountId;
+	}
+
+	public void discountId(String multirequestToken){
+		setToken("discountId", multirequestToken);
+	}
+
+	// priceDetailsId:
+	public Long getPriceDetailsId(){
+		return this.priceDetailsId;
+	}
+	public void setPriceDetailsId(Long priceDetailsId){
+		this.priceDetailsId = priceDetailsId;
+	}
+
+	public void priceDetailsId(String multirequestToken){
+		setToken("priceDetailsId", multirequestToken);
+	}
 
 
-    public PricePlan() {
-       super();
-    }
+	public PricePlan() {
+		super();
+	}
 
-    public PricePlan(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PricePlan(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
-        renewalsNumber = GsonParser.parseInt(jsonObject.get("renewalsNumber"));
-        discountId = GsonParser.parseLong(jsonObject.get("discountId"));
-        priceDetailsId = GsonParser.parseLong(jsonObject.get("priceDetailsId"));
+		// set members values:
+		isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
+		renewalsNumber = GsonParser.parseInt(jsonObject.get("renewalsNumber"));
+		discountId = GsonParser.parseLong(jsonObject.get("discountId"));
+		priceDetailsId = GsonParser.parseLong(jsonObject.get("priceDetailsId"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPricePlan");
-        kparams.add("priceDetailsId", this.priceDetailsId);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPricePlan");
+		kparams.add("priceDetailsId", this.priceDetailsId);
+		return kparams;
+	}
 
 }
 

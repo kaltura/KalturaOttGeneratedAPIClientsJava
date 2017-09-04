@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.RuleLevel;
-import com.kaltura.client.enums.PinType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.PinType;
+import com.kaltura.client.enums.RuleLevel;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,64 +44,83 @@ import com.google.gson.JsonObject;
 
 /**  PIN and its origin of definition  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Pin.Tokenizer.class)
 public class Pin extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String pin();
+		String origin();
+		String type();
+	}
 
 	/**  PIN code  */
-    private String pin;
+	private String pin;
 	/**  Where the PIN was defined at – account, household or user  */
-    private RuleLevel origin;
+	private RuleLevel origin;
 	/**  PIN type  */
-    private PinType type;
+	private PinType type;
 
-    // pin:
-    public String getPin(){
-        return this.pin;
-    }
-    public void setPin(String pin){
-        this.pin = pin;
-    }
+	// pin:
+	public String getPin(){
+		return this.pin;
+	}
+	public void setPin(String pin){
+		this.pin = pin;
+	}
 
-    // origin:
-    public RuleLevel getOrigin(){
-        return this.origin;
-    }
-    public void setOrigin(RuleLevel origin){
-        this.origin = origin;
-    }
+	public void pin(String multirequestToken){
+		setToken("pin", multirequestToken);
+	}
 
-    // type:
-    public PinType getType(){
-        return this.type;
-    }
-    public void setType(PinType type){
-        this.type = type;
-    }
+	// origin:
+	public RuleLevel getOrigin(){
+		return this.origin;
+	}
+	public void setOrigin(RuleLevel origin){
+		this.origin = origin;
+	}
+
+	public void origin(String multirequestToken){
+		setToken("origin", multirequestToken);
+	}
+
+	// type:
+	public PinType getType(){
+		return this.type;
+	}
+	public void setType(PinType type){
+		this.type = type;
+	}
+
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
 
 
-    public Pin() {
-       super();
-    }
+	public Pin() {
+		super();
+	}
 
-    public Pin(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Pin(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        pin = GsonParser.parseString(jsonObject.get("pin"));
-        origin = RuleLevel.get(GsonParser.parseString(jsonObject.get("origin")));
-        type = PinType.get(GsonParser.parseString(jsonObject.get("type")));
+		// set members values:
+		pin = GsonParser.parseString(jsonObject.get("pin"));
+		origin = RuleLevel.get(GsonParser.parseString(jsonObject.get("origin")));
+		type = PinType.get(GsonParser.parseString(jsonObject.get("type")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPin");
-        kparams.add("pin", this.pin);
-        kparams.add("origin", this.origin);
-        kparams.add("type", this.type);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPin");
+		kparams.add("pin", this.pin);
+		kparams.add("origin", this.origin);
+		kparams.add("type", this.type);
+		return kparams;
+	}
 
 }
 

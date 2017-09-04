@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Engagement;
 import com.kaltura.client.types.EngagementFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -42,36 +40,64 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class EngagementService {
+	
+	public static class AddEngagementBuilder extends RequestBuilder<Engagement, Engagement.Tokenizer, AddEngagementBuilder> {
+		
+		public AddEngagementBuilder(Engagement engagement) {
+			super(Engagement.class, "engagement", "add");
+			params.add("engagement", engagement);
+		}
+	}
 
 	/**  Insert new Engagement for partner  */
-    public static RequestBuilder<Engagement> add(Engagement engagement)  {
-        Params kparams = new Params();
-        kparams.add("engagement", engagement);
-
-        return new RequestBuilder<Engagement>(Engagement.class, "engagement", "add", kparams);
-    }
+    public static AddEngagementBuilder add(Engagement engagement)  {
+		return new AddEngagementBuilder(engagement);
+	}
+	
+	public static class DeleteEngagementBuilder extends RequestBuilder<Boolean, String, DeleteEngagementBuilder> {
+		
+		public DeleteEngagementBuilder(int id) {
+			super(Boolean.class, "engagement", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete engagement by engagement adapter id  */
-    public static RequestBuilder<Boolean> delete(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "engagement", "delete", kparams);
-    }
+    public static DeleteEngagementBuilder delete(int id)  {
+		return new DeleteEngagementBuilder(id);
+	}
+	
+	public static class GetEngagementBuilder extends RequestBuilder<Engagement, Engagement.Tokenizer, GetEngagementBuilder> {
+		
+		public GetEngagementBuilder(int id) {
+			super(Engagement.class, "engagement", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Return engagement  */
-    public static RequestBuilder<Engagement> get(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Engagement>(Engagement.class, "engagement", "get", kparams);
-    }
+    public static GetEngagementBuilder get(int id)  {
+		return new GetEngagementBuilder(id);
+	}
+	
+	public static class ListEngagementBuilder extends ListResponseRequestBuilder<Engagement, Engagement.Tokenizer, ListEngagementBuilder> {
+		
+		public ListEngagementBuilder(EngagementFilter filter) {
+			super(Engagement.class, "engagement", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Returns all Engagement for partner  */
-    public static RequestBuilder<ListResponse<Engagement>> list(EngagementFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Engagement>(Engagement.class, "engagement", "list", kparams);
-    }
+    public static ListEngagementBuilder list(EngagementFilter filter)  {
+		return new ListEngagementBuilder(filter);
+	}
 }

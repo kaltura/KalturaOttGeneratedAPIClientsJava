@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.ExportTask;
 import com.kaltura.client.types.ExportTaskFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -42,49 +40,86 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ExportTaskService {
+	
+	public static class AddExportTaskBuilder extends RequestBuilder<ExportTask, ExportTask.Tokenizer, AddExportTaskBuilder> {
+		
+		public AddExportTaskBuilder(ExportTask task) {
+			super(ExportTask.class, "exporttask", "add");
+			params.add("task", task);
+		}
+	}
 
 	/**  Adds a new bulk export task  */
-    public static RequestBuilder<ExportTask> add(ExportTask task)  {
-        Params kparams = new Params();
-        kparams.add("task", task);
-
-        return new RequestBuilder<ExportTask>(ExportTask.class, "exporttask", "add", kparams);
-    }
+    public static AddExportTaskBuilder add(ExportTask task)  {
+		return new AddExportTaskBuilder(task);
+	}
+	
+	public static class DeleteExportTaskBuilder extends RequestBuilder<Boolean, String, DeleteExportTaskBuilder> {
+		
+		public DeleteExportTaskBuilder(long id) {
+			super(Boolean.class, "exporttask", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Deletes an existing bulk export task by task identifier  */
-    public static RequestBuilder<Boolean> delete(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "exporttask", "delete", kparams);
-    }
+    public static DeleteExportTaskBuilder delete(long id)  {
+		return new DeleteExportTaskBuilder(id);
+	}
+	
+	public static class GetExportTaskBuilder extends RequestBuilder<ExportTask, ExportTask.Tokenizer, GetExportTaskBuilder> {
+		
+		public GetExportTaskBuilder(long id) {
+			super(ExportTask.class, "exporttask", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Gets an existing bulk export task by task identifier  */
-    public static RequestBuilder<ExportTask> get(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static GetExportTaskBuilder get(long id)  {
+		return new GetExportTaskBuilder(id);
+	}
+	
+	public static class ListExportTaskBuilder extends ListResponseRequestBuilder<ExportTask, ExportTask.Tokenizer, ListExportTaskBuilder> {
+		
+		public ListExportTaskBuilder(ExportTaskFilter filter) {
+			super(ExportTask.class, "exporttask", "list");
+			params.add("filter", filter);
+		}
+	}
 
-        return new RequestBuilder<ExportTask>(ExportTask.class, "exporttask", "get", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<ExportTask>> list()  {
-        return list(null);
-    }
+	public static ListExportTaskBuilder list()  {
+		return list(null);
+	}
 
 	/**  Returns bulk export tasks by tasks identifiers  */
-    public static RequestBuilder<ListResponse<ExportTask>> list(ExportTaskFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<ExportTask>(ExportTask.class, "exporttask", "list", kparams);
-    }
+    public static ListExportTaskBuilder list(ExportTaskFilter filter)  {
+		return new ListExportTaskBuilder(filter);
+	}
+	
+	public static class UpdateExportTaskBuilder extends RequestBuilder<ExportTask, ExportTask.Tokenizer, UpdateExportTaskBuilder> {
+		
+		public UpdateExportTaskBuilder(long id, ExportTask task) {
+			super(ExportTask.class, "exporttask", "update");
+			params.add("id", id);
+			params.add("task", task);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Updates an existing bulk export task by task identifier  */
-    public static RequestBuilder<ExportTask> update(long id, ExportTask task)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("task", task);
-
-        return new RequestBuilder<ExportTask>(ExportTask.class, "exporttask", "update", kparams);
-    }
+    public static UpdateExportTaskBuilder update(long id, ExportTask task)  {
+		return new UpdateExportTaskBuilder(id, task);
+	}
 }

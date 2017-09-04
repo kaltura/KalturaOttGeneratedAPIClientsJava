@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.OSSAdapterProfile;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -41,52 +39,98 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class OssAdapterProfileService {
+	
+	public static class AddOssAdapterProfileBuilder extends RequestBuilder<OSSAdapterProfile, OSSAdapterProfile.Tokenizer, AddOssAdapterProfileBuilder> {
+		
+		public AddOssAdapterProfileBuilder(OSSAdapterProfile ossAdapter) {
+			super(OSSAdapterProfile.class, "ossadapterprofile", "add");
+			params.add("ossAdapter", ossAdapter);
+		}
+	}
 
 	/**  Insert new OSS adapter for partner  */
-    public static RequestBuilder<OSSAdapterProfile> add(OSSAdapterProfile ossAdapter)  {
-        Params kparams = new Params();
-        kparams.add("ossAdapter", ossAdapter);
-
-        return new RequestBuilder<OSSAdapterProfile>(OSSAdapterProfile.class, "ossadapterprofile", "add", kparams);
-    }
+    public static AddOssAdapterProfileBuilder add(OSSAdapterProfile ossAdapter)  {
+		return new AddOssAdapterProfileBuilder(ossAdapter);
+	}
+	
+	public static class DeleteOssAdapterProfileBuilder extends RequestBuilder<Boolean, String, DeleteOssAdapterProfileBuilder> {
+		
+		public DeleteOssAdapterProfileBuilder(int ossAdapterId) {
+			super(Boolean.class, "ossadapterprofile", "delete");
+			params.add("ossAdapterId", ossAdapterId);
+		}
+		
+		public void ossAdapterId(String multirequestToken) {
+			params.add("ossAdapterId", multirequestToken);
+		}
+	}
 
 	/**  Delete OSS adapter by OSS adapter id  */
-    public static RequestBuilder<Boolean> delete(int ossAdapterId)  {
-        Params kparams = new Params();
-        kparams.add("ossAdapterId", ossAdapterId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "ossadapterprofile", "delete", kparams);
-    }
+    public static DeleteOssAdapterProfileBuilder delete(int ossAdapterId)  {
+		return new DeleteOssAdapterProfileBuilder(ossAdapterId);
+	}
+	
+	public static class GenerateSharedSecretOssAdapterProfileBuilder extends RequestBuilder<OSSAdapterProfile, OSSAdapterProfile.Tokenizer, GenerateSharedSecretOssAdapterProfileBuilder> {
+		
+		public GenerateSharedSecretOssAdapterProfileBuilder(int ossAdapterId) {
+			super(OSSAdapterProfile.class, "ossadapterprofile", "generateSharedSecret");
+			params.add("ossAdapterId", ossAdapterId);
+		}
+		
+		public void ossAdapterId(String multirequestToken) {
+			params.add("ossAdapterId", multirequestToken);
+		}
+	}
 
 	/**  Generate oss adapter shared secret  */
-    public static RequestBuilder<OSSAdapterProfile> generateSharedSecret(int ossAdapterId)  {
-        Params kparams = new Params();
-        kparams.add("ossAdapterId", ossAdapterId);
-
-        return new RequestBuilder<OSSAdapterProfile>(OSSAdapterProfile.class, "ossadapterprofile", "generateSharedSecret", kparams);
-    }
+    public static GenerateSharedSecretOssAdapterProfileBuilder generateSharedSecret(int ossAdapterId)  {
+		return new GenerateSharedSecretOssAdapterProfileBuilder(ossAdapterId);
+	}
+	
+	public static class GetOssAdapterProfileBuilder extends RequestBuilder<OSSAdapterProfile, OSSAdapterProfile.Tokenizer, GetOssAdapterProfileBuilder> {
+		
+		public GetOssAdapterProfileBuilder(int id) {
+			super(OSSAdapterProfile.class, "ossadapterprofile", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Returns all OSS adapters for partner : id + name  */
-    public static RequestBuilder<OSSAdapterProfile> get(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<OSSAdapterProfile>(OSSAdapterProfile.class, "ossadapterprofile", "get", kparams);
-    }
+    public static GetOssAdapterProfileBuilder get(int id)  {
+		return new GetOssAdapterProfileBuilder(id);
+	}
+	
+	public static class ListOssAdapterProfileBuilder extends ListResponseRequestBuilder<OSSAdapterProfile, OSSAdapterProfile.Tokenizer, ListOssAdapterProfileBuilder> {
+		
+		public ListOssAdapterProfileBuilder() {
+			super(OSSAdapterProfile.class, "ossadapterprofile", "list");
+		}
+	}
 
 	/**  Returns all OSS adapters for partner : id + name  */
-    public static RequestBuilder<ListResponse<OSSAdapterProfile>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<OSSAdapterProfile>(OSSAdapterProfile.class, "ossadapterprofile", "list", kparams);
-    }
+    public static ListOssAdapterProfileBuilder list()  {
+		return new ListOssAdapterProfileBuilder();
+	}
+	
+	public static class UpdateOssAdapterProfileBuilder extends RequestBuilder<OSSAdapterProfile, OSSAdapterProfile.Tokenizer, UpdateOssAdapterProfileBuilder> {
+		
+		public UpdateOssAdapterProfileBuilder(int ossAdapterId, OSSAdapterProfile ossAdapter) {
+			super(OSSAdapterProfile.class, "ossadapterprofile", "update");
+			params.add("ossAdapterId", ossAdapterId);
+			params.add("ossAdapter", ossAdapter);
+		}
+		
+		public void ossAdapterId(String multirequestToken) {
+			params.add("ossAdapterId", multirequestToken);
+		}
+	}
 
 	/**  Update OSS adapter details  */
-    public static RequestBuilder<OSSAdapterProfile> update(int ossAdapterId, OSSAdapterProfile ossAdapter)  {
-        Params kparams = new Params();
-        kparams.add("ossAdapterId", ossAdapterId);
-        kparams.add("ossAdapter", ossAdapter);
-
-        return new RequestBuilder<OSSAdapterProfile>(OSSAdapterProfile.class, "ossadapterprofile", "update", kparams);
-    }
+    public static UpdateOssAdapterProfileBuilder update(int ossAdapterId, OSSAdapterProfile ossAdapter)  {
+		return new UpdateOssAdapterProfileBuilder(ossAdapterId, ossAdapter);
+	}
 }

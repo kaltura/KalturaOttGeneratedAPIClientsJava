@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.ReminderType;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Reminder;
 import com.kaltura.client.types.ReminderFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -44,34 +42,57 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ReminderService {
+	
+	public static class AddReminderBuilder extends RequestBuilder<Reminder, Reminder.Tokenizer, AddReminderBuilder> {
+		
+		public AddReminderBuilder(Reminder reminder) {
+			super(Reminder.class, "reminder", "add");
+			params.add("reminder", reminder);
+		}
+	}
 
 	/**  Add a new future reminder  */
-    public static RequestBuilder<Reminder> add(Reminder reminder)  {
-        Params kparams = new Params();
-        kparams.add("reminder", reminder);
-
-        return new RequestBuilder<Reminder>(Reminder.class, "reminder", "add", kparams);
-    }
+    public static AddReminderBuilder add(Reminder reminder)  {
+		return new AddReminderBuilder(reminder);
+	}
+	
+	public static class DeleteReminderBuilder extends RequestBuilder<Boolean, String, DeleteReminderBuilder> {
+		
+		public DeleteReminderBuilder(long id, ReminderType type) {
+			super(Boolean.class, "reminder", "delete");
+			params.add("id", id);
+			params.add("type", type);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+	}
 
 	/**  Delete a reminder. Reminder cannot be delete while being sent.  */
-    public static RequestBuilder<Boolean> delete(long id, ReminderType type)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("type", type);
+    public static DeleteReminderBuilder delete(long id, ReminderType type)  {
+		return new DeleteReminderBuilder(id, type);
+	}
+	
+	public static class ListReminderBuilder extends ListResponseRequestBuilder<Reminder, Reminder.Tokenizer, ListReminderBuilder> {
+		
+		public ListReminderBuilder(ReminderFilter filter, FilterPager pager) {
+			super(Reminder.class, "reminder", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "reminder", "delete", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<Reminder>> list(ReminderFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListReminderBuilder list(ReminderFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Return a list of reminders with optional filter by KSQL.  */
-    public static RequestBuilder<ListResponse<Reminder>> list(ReminderFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<Reminder>(Reminder.class, "reminder", "list", kparams);
-    }
+    public static ListReminderBuilder list(ReminderFilter filter, FilterPager pager)  {
+		return new ListReminderBuilder(filter, pager);
+	}
 }

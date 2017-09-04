@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.HouseholdPaymentMethod;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,46 +39,95 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HouseholdPaymentMethodService {
+	
+	public static class AddHouseholdPaymentMethodBuilder extends RequestBuilder<HouseholdPaymentMethod, HouseholdPaymentMethod.Tokenizer, AddHouseholdPaymentMethodBuilder> {
+		
+		public AddHouseholdPaymentMethodBuilder(HouseholdPaymentMethod householdPaymentMethod) {
+			super(HouseholdPaymentMethod.class, "householdpaymentmethod", "add");
+			params.add("householdPaymentMethod", householdPaymentMethod);
+		}
+	}
 
 	/**  Add a new payment method for household  */
-    public static RequestBuilder<HouseholdPaymentMethod> add(HouseholdPaymentMethod householdPaymentMethod)  {
-        Params kparams = new Params();
-        kparams.add("householdPaymentMethod", householdPaymentMethod);
-
-        return new RequestBuilder<HouseholdPaymentMethod>(HouseholdPaymentMethod.class, "householdpaymentmethod", "add", kparams);
-    }
+    public static AddHouseholdPaymentMethodBuilder add(HouseholdPaymentMethod householdPaymentMethod)  {
+		return new AddHouseholdPaymentMethodBuilder(householdPaymentMethod);
+	}
+	
+	public static class ForceRemoveHouseholdPaymentMethodBuilder extends RequestBuilder<Boolean, String, ForceRemoveHouseholdPaymentMethodBuilder> {
+		
+		public ForceRemoveHouseholdPaymentMethodBuilder(int paymentGatewayId, int paymentMethodId) {
+			super(Boolean.class, "householdpaymentmethod", "forceRemove");
+			params.add("paymentGatewayId", paymentGatewayId);
+			params.add("paymentMethodId", paymentMethodId);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+		
+		public void paymentMethodId(String multirequestToken) {
+			params.add("paymentMethodId", multirequestToken);
+		}
+	}
 
 	/**  Force remove of a payment method of the household.  */
-    public static RequestBuilder<Boolean> forceRemove(int paymentGatewayId, int paymentMethodId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-        kparams.add("paymentMethodId", paymentMethodId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householdpaymentmethod", "forceRemove", kparams);
-    }
+    public static ForceRemoveHouseholdPaymentMethodBuilder forceRemove(int paymentGatewayId, int paymentMethodId)  {
+		return new ForceRemoveHouseholdPaymentMethodBuilder(paymentGatewayId, paymentMethodId);
+	}
+	
+	public static class ListHouseholdPaymentMethodBuilder extends ListResponseRequestBuilder<HouseholdPaymentMethod, HouseholdPaymentMethod.Tokenizer, ListHouseholdPaymentMethodBuilder> {
+		
+		public ListHouseholdPaymentMethodBuilder() {
+			super(HouseholdPaymentMethod.class, "householdpaymentmethod", "list");
+		}
+	}
 
 	/**  Get a list of all payment methods of the household.  */
-    public static RequestBuilder<ListResponse<HouseholdPaymentMethod>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<HouseholdPaymentMethod>(HouseholdPaymentMethod.class, "householdpaymentmethod", "list", kparams);
-    }
+    public static ListHouseholdPaymentMethodBuilder list()  {
+		return new ListHouseholdPaymentMethodBuilder();
+	}
+	
+	public static class RemoveHouseholdPaymentMethodBuilder extends RequestBuilder<Boolean, String, RemoveHouseholdPaymentMethodBuilder> {
+		
+		public RemoveHouseholdPaymentMethodBuilder(int paymentGatewayId, int paymentMethodId) {
+			super(Boolean.class, "householdpaymentmethod", "remove");
+			params.add("paymentGatewayId", paymentGatewayId);
+			params.add("paymentMethodId", paymentMethodId);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+		
+		public void paymentMethodId(String multirequestToken) {
+			params.add("paymentMethodId", multirequestToken);
+		}
+	}
 
 	/**  Removes a payment method of the household.  */
-    public static RequestBuilder<Boolean> remove(int paymentGatewayId, int paymentMethodId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-        kparams.add("paymentMethodId", paymentMethodId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householdpaymentmethod", "remove", kparams);
-    }
+    public static RemoveHouseholdPaymentMethodBuilder remove(int paymentGatewayId, int paymentMethodId)  {
+		return new RemoveHouseholdPaymentMethodBuilder(paymentGatewayId, paymentMethodId);
+	}
+	
+	public static class SetAsDefaultHouseholdPaymentMethodBuilder extends RequestBuilder<Boolean, String, SetAsDefaultHouseholdPaymentMethodBuilder> {
+		
+		public SetAsDefaultHouseholdPaymentMethodBuilder(int paymentGatewayId, int paymentMethodId) {
+			super(Boolean.class, "householdpaymentmethod", "setAsDefault");
+			params.add("paymentGatewayId", paymentGatewayId);
+			params.add("paymentMethodId", paymentMethodId);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+		
+		public void paymentMethodId(String multirequestToken) {
+			params.add("paymentMethodId", multirequestToken);
+		}
+	}
 
 	/**  Set a payment method as default for the household.  */
-    public static RequestBuilder<Boolean> setAsDefault(int paymentGatewayId, int paymentMethodId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-        kparams.add("paymentMethodId", paymentMethodId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householdpaymentmethod", "setAsDefault", kparams);
-    }
+    public static SetAsDefaultHouseholdPaymentMethodBuilder setAsDefault(int paymentGatewayId, int paymentMethodId)  {
+		return new SetAsDefaultHouseholdPaymentMethodBuilder(paymentGatewayId, paymentMethodId);
+	}
 }

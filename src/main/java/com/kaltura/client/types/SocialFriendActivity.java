@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.SocialAction;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,64 +42,79 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SocialFriendActivity.Tokenizer.class)
 public class SocialFriendActivity extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String userFullName();
+		String userPictureUrl();
+		SocialAction.Tokenizer socialAction();
+	}
 
 	/**  The full name of the user who did the social action  */
-    private String userFullName;
+	private String userFullName;
 	/**  The URL of the profile picture of the user who did the social action  */
-    private String userPictureUrl;
+	private String userPictureUrl;
 	/**  The social action  */
-    private SocialAction socialAction;
+	private SocialAction socialAction;
 
-    // userFullName:
-    public String getUserFullName(){
-        return this.userFullName;
-    }
-    public void setUserFullName(String userFullName){
-        this.userFullName = userFullName;
-    }
+	// userFullName:
+	public String getUserFullName(){
+		return this.userFullName;
+	}
+	public void setUserFullName(String userFullName){
+		this.userFullName = userFullName;
+	}
 
-    // userPictureUrl:
-    public String getUserPictureUrl(){
-        return this.userPictureUrl;
-    }
-    public void setUserPictureUrl(String userPictureUrl){
-        this.userPictureUrl = userPictureUrl;
-    }
+	public void userFullName(String multirequestToken){
+		setToken("userFullName", multirequestToken);
+	}
 
-    // socialAction:
-    public SocialAction getSocialAction(){
-        return this.socialAction;
-    }
-    public void setSocialAction(SocialAction socialAction){
-        this.socialAction = socialAction;
-    }
+	// userPictureUrl:
+	public String getUserPictureUrl(){
+		return this.userPictureUrl;
+	}
+	public void setUserPictureUrl(String userPictureUrl){
+		this.userPictureUrl = userPictureUrl;
+	}
+
+	public void userPictureUrl(String multirequestToken){
+		setToken("userPictureUrl", multirequestToken);
+	}
+
+	// socialAction:
+	public SocialAction getSocialAction(){
+		return this.socialAction;
+	}
+	public void setSocialAction(SocialAction socialAction){
+		this.socialAction = socialAction;
+	}
 
 
-    public SocialFriendActivity() {
-       super();
-    }
+	public SocialFriendActivity() {
+		super();
+	}
 
-    public SocialFriendActivity(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SocialFriendActivity(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        userFullName = GsonParser.parseString(jsonObject.get("userFullName"));
-        userPictureUrl = GsonParser.parseString(jsonObject.get("userPictureUrl"));
-        socialAction = GsonParser.parseObject(jsonObject.getAsJsonObject("socialAction"), SocialAction.class);
+		// set members values:
+		userFullName = GsonParser.parseString(jsonObject.get("userFullName"));
+		userPictureUrl = GsonParser.parseString(jsonObject.get("userPictureUrl"));
+		socialAction = GsonParser.parseObject(jsonObject.getAsJsonObject("socialAction"), SocialAction.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSocialFriendActivity");
-        kparams.add("userFullName", this.userFullName);
-        kparams.add("userPictureUrl", this.userPictureUrl);
-        kparams.add("socialAction", this.socialAction);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSocialFriendActivity");
+		kparams.add("userFullName", this.userFullName);
+		kparams.add("userPictureUrl", this.userPictureUrl);
+		kparams.add("socialAction", this.socialAction);
+		return kparams;
+	}
 
 }
 

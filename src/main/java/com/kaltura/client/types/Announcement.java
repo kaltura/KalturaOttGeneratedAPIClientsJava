@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.AnnouncementStatus;
-import com.kaltura.client.enums.AnnouncementRecipientsType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.AnnouncementRecipientsType;
+import com.kaltura.client.enums.AnnouncementStatus;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,122 +43,166 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Announcement.Tokenizer.class)
 public class Announcement extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String name();
+		String message();
+		String enabled();
+		String startTime();
+		String timezone();
+		String status();
+		String recipients();
+		String id();
+	}
 
 	/**  Announcement name  */
-    private String name;
+	private String name;
 	/**  Announcement message  */
-    private String message;
+	private String message;
 	/**  Announcement enabled  */
-    private Boolean enabled;
+	private Boolean enabled;
 	/**  Announcement start time  */
-    private Long startTime;
+	private Long startTime;
 	/**  Announcement time zone  */
-    private String timezone;
+	private String timezone;
 	/**  Announcement status: NotSent=0/Sending=1/Sent=2/Aborted=3  */
-    private AnnouncementStatus status;
+	private AnnouncementStatus status;
 	/**  Announcement recipients: All=0/LoggedIn=1/Guests=2/Other=3  */
-    private AnnouncementRecipientsType recipients;
+	private AnnouncementRecipientsType recipients;
 	/**  Announcement id  */
-    private Integer id;
+	private Integer id;
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // message:
-    public String getMessage(){
-        return this.message;
-    }
-    public void setMessage(String message){
-        this.message = message;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // enabled:
-    public Boolean getEnabled(){
-        return this.enabled;
-    }
-    public void setEnabled(Boolean enabled){
-        this.enabled = enabled;
-    }
+	// message:
+	public String getMessage(){
+		return this.message;
+	}
+	public void setMessage(String message){
+		this.message = message;
+	}
 
-    // startTime:
-    public Long getStartTime(){
-        return this.startTime;
-    }
-    public void setStartTime(Long startTime){
-        this.startTime = startTime;
-    }
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
 
-    // timezone:
-    public String getTimezone(){
-        return this.timezone;
-    }
-    public void setTimezone(String timezone){
-        this.timezone = timezone;
-    }
+	// enabled:
+	public Boolean getEnabled(){
+		return this.enabled;
+	}
+	public void setEnabled(Boolean enabled){
+		this.enabled = enabled;
+	}
 
-    // status:
-    public AnnouncementStatus getStatus(){
-        return this.status;
-    }
-    public void setStatus(AnnouncementStatus status){
-        this.status = status;
-    }
+	public void enabled(String multirequestToken){
+		setToken("enabled", multirequestToken);
+	}
 
-    // recipients:
-    public AnnouncementRecipientsType getRecipients(){
-        return this.recipients;
-    }
-    public void setRecipients(AnnouncementRecipientsType recipients){
-        this.recipients = recipients;
-    }
+	// startTime:
+	public Long getStartTime(){
+		return this.startTime;
+	}
+	public void setStartTime(Long startTime){
+		this.startTime = startTime;
+	}
 
-    // id:
-    public Integer getId(){
-        return this.id;
-    }
-    public void setId(Integer id){
-        this.id = id;
-    }
+	public void startTime(String multirequestToken){
+		setToken("startTime", multirequestToken);
+	}
+
+	// timezone:
+	public String getTimezone(){
+		return this.timezone;
+	}
+	public void setTimezone(String timezone){
+		this.timezone = timezone;
+	}
+
+	public void timezone(String multirequestToken){
+		setToken("timezone", multirequestToken);
+	}
+
+	// status:
+	public AnnouncementStatus getStatus(){
+		return this.status;
+	}
+	public void setStatus(AnnouncementStatus status){
+		this.status = status;
+	}
+
+	public void status(String multirequestToken){
+		setToken("status", multirequestToken);
+	}
+
+	// recipients:
+	public AnnouncementRecipientsType getRecipients(){
+		return this.recipients;
+	}
+	public void setRecipients(AnnouncementRecipientsType recipients){
+		this.recipients = recipients;
+	}
+
+	public void recipients(String multirequestToken){
+		setToken("recipients", multirequestToken);
+	}
+
+	// id:
+	public Integer getId(){
+		return this.id;
+	}
+	public void setId(Integer id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
 
-    public Announcement() {
-       super();
-    }
+	public Announcement() {
+		super();
+	}
 
-    public Announcement(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Announcement(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        name = GsonParser.parseString(jsonObject.get("name"));
-        message = GsonParser.parseString(jsonObject.get("message"));
-        enabled = GsonParser.parseBoolean(jsonObject.get("enabled"));
-        startTime = GsonParser.parseLong(jsonObject.get("startTime"));
-        timezone = GsonParser.parseString(jsonObject.get("timezone"));
-        status = AnnouncementStatus.get(GsonParser.parseString(jsonObject.get("status")));
-        recipients = AnnouncementRecipientsType.get(GsonParser.parseString(jsonObject.get("recipients")));
-        id = GsonParser.parseInt(jsonObject.get("id"));
+		// set members values:
+		name = GsonParser.parseString(jsonObject.get("name"));
+		message = GsonParser.parseString(jsonObject.get("message"));
+		enabled = GsonParser.parseBoolean(jsonObject.get("enabled"));
+		startTime = GsonParser.parseLong(jsonObject.get("startTime"));
+		timezone = GsonParser.parseString(jsonObject.get("timezone"));
+		status = AnnouncementStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		recipients = AnnouncementRecipientsType.get(GsonParser.parseString(jsonObject.get("recipients")));
+		id = GsonParser.parseInt(jsonObject.get("id"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaAnnouncement");
-        kparams.add("name", this.name);
-        kparams.add("message", this.message);
-        kparams.add("enabled", this.enabled);
-        kparams.add("startTime", this.startTime);
-        kparams.add("timezone", this.timezone);
-        kparams.add("recipients", this.recipients);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaAnnouncement");
+		kparams.add("name", this.name);
+		kparams.add("message", this.message);
+		kparams.add("enabled", this.enabled);
+		kparams.add("startTime", this.startTime);
+		kparams.add("timezone", this.timezone);
+		kparams.add("recipients", this.recipients);
+		return kparams;
+	}
 
 }
 

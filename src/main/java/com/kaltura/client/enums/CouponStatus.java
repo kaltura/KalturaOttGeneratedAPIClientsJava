@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,40 +34,40 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum CouponStatus implements EnumAsString {
-    VALID("VALID"),
-    NOT_EXISTS("NOT_EXISTS"),
-    ALREADY_USED("ALREADY_USED"),
-    EXPIRED("EXPIRED"),
-    INACTIVE("INACTIVE");
+	VALID("VALID"),
+	NOT_EXISTS("NOT_EXISTS"),
+	ALREADY_USED("ALREADY_USED"),
+	EXPIRED("EXPIRED"),
+	INACTIVE("INACTIVE");
 
-    private String value;
+	private String value;
 
-    CouponStatus(String value) {
-        this.value = value;
-    }
+	CouponStatus(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static CouponStatus get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over CouponStatus defined values and compare the inner value with the given one:
-        for(CouponStatus item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return CouponStatus.values().length > 0 ? CouponStatus.values()[0]: null;
+	public static CouponStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over CouponStatus defined values and compare the inner value with the given one:
+		for(CouponStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return CouponStatus.values().length > 0 ? CouponStatus.values()[0]: null;
    }
 }

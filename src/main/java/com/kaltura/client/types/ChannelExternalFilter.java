@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,64 +40,83 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ChannelExternalFilter.Tokenizer.class)
 public class ChannelExternalFilter extends AssetFilter {
+	
+	public interface Tokenizer extends AssetFilter.Tokenizer {
+		String idEqual();
+		String utcOffsetEqual();
+		String freeText();
+	}
 
 	/**  External Channel Id.  */
-    private Integer idEqual;
+	private Integer idEqual;
 	/**  UtcOffsetEqual  */
-    private Double utcOffsetEqual;
+	private Double utcOffsetEqual;
 	/**  FreeTextEqual  */
-    private String freeText;
+	private String freeText;
 
-    // idEqual:
-    public Integer getIdEqual(){
-        return this.idEqual;
-    }
-    public void setIdEqual(Integer idEqual){
-        this.idEqual = idEqual;
-    }
+	// idEqual:
+	public Integer getIdEqual(){
+		return this.idEqual;
+	}
+	public void setIdEqual(Integer idEqual){
+		this.idEqual = idEqual;
+	}
 
-    // utcOffsetEqual:
-    public Double getUtcOffsetEqual(){
-        return this.utcOffsetEqual;
-    }
-    public void setUtcOffsetEqual(Double utcOffsetEqual){
-        this.utcOffsetEqual = utcOffsetEqual;
-    }
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
+	}
 
-    // freeText:
-    public String getFreeText(){
-        return this.freeText;
-    }
-    public void setFreeText(String freeText){
-        this.freeText = freeText;
-    }
+	// utcOffsetEqual:
+	public Double getUtcOffsetEqual(){
+		return this.utcOffsetEqual;
+	}
+	public void setUtcOffsetEqual(Double utcOffsetEqual){
+		this.utcOffsetEqual = utcOffsetEqual;
+	}
+
+	public void utcOffsetEqual(String multirequestToken){
+		setToken("utcOffsetEqual", multirequestToken);
+	}
+
+	// freeText:
+	public String getFreeText(){
+		return this.freeText;
+	}
+	public void setFreeText(String freeText){
+		this.freeText = freeText;
+	}
+
+	public void freeText(String multirequestToken){
+		setToken("freeText", multirequestToken);
+	}
 
 
-    public ChannelExternalFilter() {
-       super();
-    }
+	public ChannelExternalFilter() {
+		super();
+	}
 
-    public ChannelExternalFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public ChannelExternalFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-        utcOffsetEqual = GsonParser.parseDouble(jsonObject.get("utcOffsetEqual"));
-        freeText = GsonParser.parseString(jsonObject.get("freeText"));
+		// set members values:
+		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+		utcOffsetEqual = GsonParser.parseDouble(jsonObject.get("utcOffsetEqual"));
+		freeText = GsonParser.parseString(jsonObject.get("freeText"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaChannelExternalFilter");
-        kparams.add("idEqual", this.idEqual);
-        kparams.add("utcOffsetEqual", this.utcOffsetEqual);
-        kparams.add("freeText", this.freeText);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaChannelExternalFilter");
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("utcOffsetEqual", this.utcOffsetEqual);
+		kparams.add("freeText", this.freeText);
+		return kparams;
+	}
 
 }
 

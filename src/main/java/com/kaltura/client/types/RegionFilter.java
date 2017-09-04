@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,40 +40,49 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(RegionFilter.Tokenizer.class)
 public class RegionFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String externalIdIn();
+	}
 
 	/**  List of comma separated regions external identifiers  */
-    private String externalIdIn;
+	private String externalIdIn;
 
-    // externalIdIn:
-    public String getExternalIdIn(){
-        return this.externalIdIn;
-    }
-    public void setExternalIdIn(String externalIdIn){
-        this.externalIdIn = externalIdIn;
-    }
+	// externalIdIn:
+	public String getExternalIdIn(){
+		return this.externalIdIn;
+	}
+	public void setExternalIdIn(String externalIdIn){
+		this.externalIdIn = externalIdIn;
+	}
+
+	public void externalIdIn(String multirequestToken){
+		setToken("externalIdIn", multirequestToken);
+	}
 
 
-    public RegionFilter() {
-       super();
-    }
+	public RegionFilter() {
+		super();
+	}
 
-    public RegionFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public RegionFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        externalIdIn = GsonParser.parseString(jsonObject.get("externalIdIn"));
+		// set members values:
+		externalIdIn = GsonParser.parseString(jsonObject.get("externalIdIn"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaRegionFilter");
-        kparams.add("externalIdIn", this.externalIdIn);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaRegionFilter");
+		kparams.add("externalIdIn", this.externalIdIn);
+		return kparams;
+	}
 
 }
 

@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.RecommendationProfile;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -41,44 +39,81 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class RecommendationProfileService {
+	
+	public static class AddRecommendationProfileBuilder extends RequestBuilder<RecommendationProfile, RecommendationProfile.Tokenizer, AddRecommendationProfileBuilder> {
+		
+		public AddRecommendationProfileBuilder(RecommendationProfile recommendationEngine) {
+			super(RecommendationProfile.class, "recommendationprofile", "add");
+			params.add("recommendationEngine", recommendationEngine);
+		}
+	}
 
 	/**  Insert new recommendation engine for partner  */
-    public static RequestBuilder<RecommendationProfile> add(RecommendationProfile recommendationEngine)  {
-        Params kparams = new Params();
-        kparams.add("recommendationEngine", recommendationEngine);
-
-        return new RequestBuilder<RecommendationProfile>(RecommendationProfile.class, "recommendationprofile", "add", kparams);
-    }
+    public static AddRecommendationProfileBuilder add(RecommendationProfile recommendationEngine)  {
+		return new AddRecommendationProfileBuilder(recommendationEngine);
+	}
+	
+	public static class DeleteRecommendationProfileBuilder extends RequestBuilder<Boolean, String, DeleteRecommendationProfileBuilder> {
+		
+		public DeleteRecommendationProfileBuilder(int id) {
+			super(Boolean.class, "recommendationprofile", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete recommendation engine by recommendation engine id  */
-    public static RequestBuilder<Boolean> delete(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "recommendationprofile", "delete", kparams);
-    }
+    public static DeleteRecommendationProfileBuilder delete(int id)  {
+		return new DeleteRecommendationProfileBuilder(id);
+	}
+	
+	public static class GenerateSharedSecretRecommendationProfileBuilder extends RequestBuilder<RecommendationProfile, RecommendationProfile.Tokenizer, GenerateSharedSecretRecommendationProfileBuilder> {
+		
+		public GenerateSharedSecretRecommendationProfileBuilder(int recommendationEngineId) {
+			super(RecommendationProfile.class, "recommendationprofile", "generateSharedSecret");
+			params.add("recommendationEngineId", recommendationEngineId);
+		}
+		
+		public void recommendationEngineId(String multirequestToken) {
+			params.add("recommendationEngineId", multirequestToken);
+		}
+	}
 
 	/**  Generate recommendation engine  shared secret  */
-    public static RequestBuilder<RecommendationProfile> generateSharedSecret(int recommendationEngineId)  {
-        Params kparams = new Params();
-        kparams.add("recommendationEngineId", recommendationEngineId);
-
-        return new RequestBuilder<RecommendationProfile>(RecommendationProfile.class, "recommendationprofile", "generateSharedSecret", kparams);
-    }
+    public static GenerateSharedSecretRecommendationProfileBuilder generateSharedSecret(int recommendationEngineId)  {
+		return new GenerateSharedSecretRecommendationProfileBuilder(recommendationEngineId);
+	}
+	
+	public static class ListRecommendationProfileBuilder extends ListResponseRequestBuilder<RecommendationProfile, RecommendationProfile.Tokenizer, ListRecommendationProfileBuilder> {
+		
+		public ListRecommendationProfileBuilder() {
+			super(RecommendationProfile.class, "recommendationprofile", "list");
+		}
+	}
 
 	/**  Returns all recommendation engines for partner  */
-    public static RequestBuilder<ListResponse<RecommendationProfile>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<RecommendationProfile>(RecommendationProfile.class, "recommendationprofile", "list", kparams);
-    }
+    public static ListRecommendationProfileBuilder list()  {
+		return new ListRecommendationProfileBuilder();
+	}
+	
+	public static class UpdateRecommendationProfileBuilder extends RequestBuilder<RecommendationProfile, RecommendationProfile.Tokenizer, UpdateRecommendationProfileBuilder> {
+		
+		public UpdateRecommendationProfileBuilder(int recommendationEngineId, RecommendationProfile recommendationEngine) {
+			super(RecommendationProfile.class, "recommendationprofile", "update");
+			params.add("recommendationEngineId", recommendationEngineId);
+			params.add("recommendationEngine", recommendationEngine);
+		}
+		
+		public void recommendationEngineId(String multirequestToken) {
+			params.add("recommendationEngineId", multirequestToken);
+		}
+	}
 
 	/**  Update recommendation engine details  */
-    public static RequestBuilder<RecommendationProfile> update(int recommendationEngineId, RecommendationProfile recommendationEngine)  {
-        Params kparams = new Params();
-        kparams.add("recommendationEngineId", recommendationEngineId);
-        kparams.add("recommendationEngine", recommendationEngine);
-
-        return new RequestBuilder<RecommendationProfile>(RecommendationProfile.class, "recommendationprofile", "update", kparams);
-    }
+    public static UpdateRecommendationProfileBuilder update(int recommendationEngineId, RecommendationProfile recommendationEngine)  {
+		return new UpdateRecommendationProfileBuilder(recommendationEngineId, recommendationEngine);
+	}
 }

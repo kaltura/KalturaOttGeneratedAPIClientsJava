@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.AdsPolicy;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.AdsPolicy;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,75 +42,99 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(AdsSource.Tokenizer.class)
 public class AdsSource extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String type();
+		String adsPolicy();
+		String adsParam();
+	}
 
 	/**  File unique identifier  */
-    private Integer id;
+	private Integer id;
 	/**  Device types as defined in the system  */
-    private String type;
+	private String type;
 	/**  Ads policy  */
-    private AdsPolicy adsPolicy;
+	private AdsPolicy adsPolicy;
 	/**  The parameters to pass to the ads server  */
-    private String adsParam;
+	private String adsParam;
 
-    // id:
-    public Integer getId(){
-        return this.id;
-    }
-    public void setId(Integer id){
-        this.id = id;
-    }
+	// id:
+	public Integer getId(){
+		return this.id;
+	}
+	public void setId(Integer id){
+		this.id = id;
+	}
 
-    // type:
-    public String getType(){
-        return this.type;
-    }
-    public void setType(String type){
-        this.type = type;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // adsPolicy:
-    public AdsPolicy getAdsPolicy(){
-        return this.adsPolicy;
-    }
-    public void setAdsPolicy(AdsPolicy adsPolicy){
-        this.adsPolicy = adsPolicy;
-    }
+	// type:
+	public String getType(){
+		return this.type;
+	}
+	public void setType(String type){
+		this.type = type;
+	}
 
-    // adsParam:
-    public String getAdsParam(){
-        return this.adsParam;
-    }
-    public void setAdsParam(String adsParam){
-        this.adsParam = adsParam;
-    }
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
+
+	// adsPolicy:
+	public AdsPolicy getAdsPolicy(){
+		return this.adsPolicy;
+	}
+	public void setAdsPolicy(AdsPolicy adsPolicy){
+		this.adsPolicy = adsPolicy;
+	}
+
+	public void adsPolicy(String multirequestToken){
+		setToken("adsPolicy", multirequestToken);
+	}
+
+	// adsParam:
+	public String getAdsParam(){
+		return this.adsParam;
+	}
+	public void setAdsParam(String adsParam){
+		this.adsParam = adsParam;
+	}
+
+	public void adsParam(String multirequestToken){
+		setToken("adsParam", multirequestToken);
+	}
 
 
-    public AdsSource() {
-       super();
-    }
+	public AdsSource() {
+		super();
+	}
 
-    public AdsSource(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public AdsSource(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseInt(jsonObject.get("id"));
-        type = GsonParser.parseString(jsonObject.get("type"));
-        adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
-        adsParam = GsonParser.parseString(jsonObject.get("adsParam"));
+		// set members values:
+		id = GsonParser.parseInt(jsonObject.get("id"));
+		type = GsonParser.parseString(jsonObject.get("type"));
+		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
+		adsParam = GsonParser.parseString(jsonObject.get("adsParam"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaAdsSource");
-        kparams.add("type", this.type);
-        kparams.add("adsPolicy", this.adsPolicy);
-        kparams.add("adsParam", this.adsParam);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaAdsSource");
+		kparams.add("type", this.type);
+		kparams.add("adsPolicy", this.adsPolicy);
+		kparams.add("adsParam", this.adsParam);
+		return kparams;
+	}
 
 }
 

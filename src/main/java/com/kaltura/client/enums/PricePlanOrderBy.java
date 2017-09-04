@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,36 +34,36 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum PricePlanOrderBy implements EnumAsString {
-    CREATE_DATE_DESC("CREATE_DATE_DESC");
+	CREATE_DATE_DESC("CREATE_DATE_DESC");
 
-    private String value;
+	private String value;
 
-    PricePlanOrderBy(String value) {
-        this.value = value;
-    }
+	PricePlanOrderBy(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static PricePlanOrderBy get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over PricePlanOrderBy defined values and compare the inner value with the given one:
-        for(PricePlanOrderBy item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return PricePlanOrderBy.values().length > 0 ? PricePlanOrderBy.values()[0]: null;
+	public static PricePlanOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over PricePlanOrderBy defined values and compare the inner value with the given one:
+		for(PricePlanOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return PricePlanOrderBy.values().length > 0 ? PricePlanOrderBy.values()[0]: null;
    }
 }

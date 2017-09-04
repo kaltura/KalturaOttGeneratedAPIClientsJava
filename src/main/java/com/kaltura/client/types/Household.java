@@ -27,13 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.HouseholdState;
-import com.kaltura.client.enums.HouseholdRestriction;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.HouseholdRestriction;
+import com.kaltura.client.enums.HouseholdState;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,185 +44,259 @@ import com.google.gson.JsonObject;
 
 /**  Household details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Household.Tokenizer.class)
 public class Household extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String description();
+		String externalId();
+		String householdLimitationsId();
+		String devicesLimit();
+		String usersLimit();
+		String concurrentLimit();
+		String regionId();
+		String state();
+		String isFrequencyEnabled();
+		String frequencyNextDeviceAction();
+		String frequencyNextUserAction();
+		String restriction();
+	}
 
 	/**  Household identifier  */
-    private Long id;
+	private Long id;
 	/**  Household name  */
-    private String name;
+	private String name;
 	/**  Household description  */
-    private String description;
+	private String description;
 	/**  Household external identifier  */
-    private String externalId;
+	private String externalId;
 	/**  Household limitation module identifier  */
-    private Integer householdLimitationsId;
+	private Integer householdLimitationsId;
 	/**  The max number of the devices that can be added to the household  */
-    private Integer devicesLimit;
+	private Integer devicesLimit;
 	/**  The max number of the users that can be added to the household  */
-    private Integer usersLimit;
+	private Integer usersLimit;
 	/**  The max number of concurrent streams in the household  */
-    private Integer concurrentLimit;
+	private Integer concurrentLimit;
 	/**  The households region identifier  */
-    private Integer regionId;
+	private Integer regionId;
 	/**  Household state  */
-    private HouseholdState state;
+	private HouseholdState state;
 	/**  Is household frequency enabled  */
-    private Boolean isFrequencyEnabled;
+	private Boolean isFrequencyEnabled;
 	/**  The next time a device is allowed to be removed from the household (epoch)  */
-    private Long frequencyNextDeviceAction;
+	private Long frequencyNextDeviceAction;
 	/**  The next time a user is allowed to be removed from the household (epoch)  */
-    private Long frequencyNextUserAction;
+	private Long frequencyNextUserAction;
 	/**  Household restriction  */
-    private HouseholdRestriction restriction;
+	private HouseholdRestriction restriction;
 
-    // id:
-    public Long getId(){
-        return this.id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // description:
-    public String getDescription(){
-        return this.description;
-    }
-    public void setDescription(String description){
-        this.description = description;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // externalId:
-    public String getExternalId(){
-        return this.externalId;
-    }
-    public void setExternalId(String externalId){
-        this.externalId = externalId;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // householdLimitationsId:
-    public Integer getHouseholdLimitationsId(){
-        return this.householdLimitationsId;
-    }
-    public void setHouseholdLimitationsId(Integer householdLimitationsId){
-        this.householdLimitationsId = householdLimitationsId;
-    }
+	// description:
+	public String getDescription(){
+		return this.description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
 
-    // devicesLimit:
-    public Integer getDevicesLimit(){
-        return this.devicesLimit;
-    }
-    public void setDevicesLimit(Integer devicesLimit){
-        this.devicesLimit = devicesLimit;
-    }
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
+	}
 
-    // usersLimit:
-    public Integer getUsersLimit(){
-        return this.usersLimit;
-    }
-    public void setUsersLimit(Integer usersLimit){
-        this.usersLimit = usersLimit;
-    }
+	// externalId:
+	public String getExternalId(){
+		return this.externalId;
+	}
+	public void setExternalId(String externalId){
+		this.externalId = externalId;
+	}
 
-    // concurrentLimit:
-    public Integer getConcurrentLimit(){
-        return this.concurrentLimit;
-    }
-    public void setConcurrentLimit(Integer concurrentLimit){
-        this.concurrentLimit = concurrentLimit;
-    }
+	public void externalId(String multirequestToken){
+		setToken("externalId", multirequestToken);
+	}
 
-    // regionId:
-    public Integer getRegionId(){
-        return this.regionId;
-    }
-    public void setRegionId(Integer regionId){
-        this.regionId = regionId;
-    }
+	// householdLimitationsId:
+	public Integer getHouseholdLimitationsId(){
+		return this.householdLimitationsId;
+	}
+	public void setHouseholdLimitationsId(Integer householdLimitationsId){
+		this.householdLimitationsId = householdLimitationsId;
+	}
 
-    // state:
-    public HouseholdState getState(){
-        return this.state;
-    }
-    public void setState(HouseholdState state){
-        this.state = state;
-    }
+	public void householdLimitationsId(String multirequestToken){
+		setToken("householdLimitationsId", multirequestToken);
+	}
 
-    // isFrequencyEnabled:
-    public Boolean getIsFrequencyEnabled(){
-        return this.isFrequencyEnabled;
-    }
-    public void setIsFrequencyEnabled(Boolean isFrequencyEnabled){
-        this.isFrequencyEnabled = isFrequencyEnabled;
-    }
+	// devicesLimit:
+	public Integer getDevicesLimit(){
+		return this.devicesLimit;
+	}
+	public void setDevicesLimit(Integer devicesLimit){
+		this.devicesLimit = devicesLimit;
+	}
 
-    // frequencyNextDeviceAction:
-    public Long getFrequencyNextDeviceAction(){
-        return this.frequencyNextDeviceAction;
-    }
-    public void setFrequencyNextDeviceAction(Long frequencyNextDeviceAction){
-        this.frequencyNextDeviceAction = frequencyNextDeviceAction;
-    }
+	public void devicesLimit(String multirequestToken){
+		setToken("devicesLimit", multirequestToken);
+	}
 
-    // frequencyNextUserAction:
-    public Long getFrequencyNextUserAction(){
-        return this.frequencyNextUserAction;
-    }
-    public void setFrequencyNextUserAction(Long frequencyNextUserAction){
-        this.frequencyNextUserAction = frequencyNextUserAction;
-    }
+	// usersLimit:
+	public Integer getUsersLimit(){
+		return this.usersLimit;
+	}
+	public void setUsersLimit(Integer usersLimit){
+		this.usersLimit = usersLimit;
+	}
 
-    // restriction:
-    public HouseholdRestriction getRestriction(){
-        return this.restriction;
-    }
-    public void setRestriction(HouseholdRestriction restriction){
-        this.restriction = restriction;
-    }
+	public void usersLimit(String multirequestToken){
+		setToken("usersLimit", multirequestToken);
+	}
+
+	// concurrentLimit:
+	public Integer getConcurrentLimit(){
+		return this.concurrentLimit;
+	}
+	public void setConcurrentLimit(Integer concurrentLimit){
+		this.concurrentLimit = concurrentLimit;
+	}
+
+	public void concurrentLimit(String multirequestToken){
+		setToken("concurrentLimit", multirequestToken);
+	}
+
+	// regionId:
+	public Integer getRegionId(){
+		return this.regionId;
+	}
+	public void setRegionId(Integer regionId){
+		this.regionId = regionId;
+	}
+
+	public void regionId(String multirequestToken){
+		setToken("regionId", multirequestToken);
+	}
+
+	// state:
+	public HouseholdState getState(){
+		return this.state;
+	}
+	public void setState(HouseholdState state){
+		this.state = state;
+	}
+
+	public void state(String multirequestToken){
+		setToken("state", multirequestToken);
+	}
+
+	// isFrequencyEnabled:
+	public Boolean getIsFrequencyEnabled(){
+		return this.isFrequencyEnabled;
+	}
+	public void setIsFrequencyEnabled(Boolean isFrequencyEnabled){
+		this.isFrequencyEnabled = isFrequencyEnabled;
+	}
+
+	public void isFrequencyEnabled(String multirequestToken){
+		setToken("isFrequencyEnabled", multirequestToken);
+	}
+
+	// frequencyNextDeviceAction:
+	public Long getFrequencyNextDeviceAction(){
+		return this.frequencyNextDeviceAction;
+	}
+	public void setFrequencyNextDeviceAction(Long frequencyNextDeviceAction){
+		this.frequencyNextDeviceAction = frequencyNextDeviceAction;
+	}
+
+	public void frequencyNextDeviceAction(String multirequestToken){
+		setToken("frequencyNextDeviceAction", multirequestToken);
+	}
+
+	// frequencyNextUserAction:
+	public Long getFrequencyNextUserAction(){
+		return this.frequencyNextUserAction;
+	}
+	public void setFrequencyNextUserAction(Long frequencyNextUserAction){
+		this.frequencyNextUserAction = frequencyNextUserAction;
+	}
+
+	public void frequencyNextUserAction(String multirequestToken){
+		setToken("frequencyNextUserAction", multirequestToken);
+	}
+
+	// restriction:
+	public HouseholdRestriction getRestriction(){
+		return this.restriction;
+	}
+	public void setRestriction(HouseholdRestriction restriction){
+		this.restriction = restriction;
+	}
+
+	public void restriction(String multirequestToken){
+		setToken("restriction", multirequestToken);
+	}
 
 
-    public Household() {
-       super();
-    }
+	public Household() {
+		super();
+	}
 
-    public Household(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Household(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        description = GsonParser.parseString(jsonObject.get("description"));
-        externalId = GsonParser.parseString(jsonObject.get("externalId"));
-        householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
-        devicesLimit = GsonParser.parseInt(jsonObject.get("devicesLimit"));
-        usersLimit = GsonParser.parseInt(jsonObject.get("usersLimit"));
-        concurrentLimit = GsonParser.parseInt(jsonObject.get("concurrentLimit"));
-        regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-        state = HouseholdState.get(GsonParser.parseString(jsonObject.get("state")));
-        isFrequencyEnabled = GsonParser.parseBoolean(jsonObject.get("isFrequencyEnabled"));
-        frequencyNextDeviceAction = GsonParser.parseLong(jsonObject.get("frequencyNextDeviceAction"));
-        frequencyNextUserAction = GsonParser.parseLong(jsonObject.get("frequencyNextUserAction"));
-        restriction = HouseholdRestriction.get(GsonParser.parseString(jsonObject.get("restriction")));
+		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		description = GsonParser.parseString(jsonObject.get("description"));
+		externalId = GsonParser.parseString(jsonObject.get("externalId"));
+		householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
+		devicesLimit = GsonParser.parseInt(jsonObject.get("devicesLimit"));
+		usersLimit = GsonParser.parseInt(jsonObject.get("usersLimit"));
+		concurrentLimit = GsonParser.parseInt(jsonObject.get("concurrentLimit"));
+		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
+		state = HouseholdState.get(GsonParser.parseString(jsonObject.get("state")));
+		isFrequencyEnabled = GsonParser.parseBoolean(jsonObject.get("isFrequencyEnabled"));
+		frequencyNextDeviceAction = GsonParser.parseLong(jsonObject.get("frequencyNextDeviceAction"));
+		frequencyNextUserAction = GsonParser.parseLong(jsonObject.get("frequencyNextUserAction"));
+		restriction = HouseholdRestriction.get(GsonParser.parseString(jsonObject.get("restriction")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaHousehold");
-        kparams.add("name", this.name);
-        kparams.add("description", this.description);
-        kparams.add("externalId", this.externalId);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaHousehold");
+		kparams.add("name", this.name);
+		kparams.add("description", this.description);
+		kparams.add("externalId", this.externalId);
+		return kparams;
+	}
 
 }
 

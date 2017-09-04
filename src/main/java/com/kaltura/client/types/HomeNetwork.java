@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,76 +42,100 @@ import com.google.gson.JsonObject;
 
 /**  Home network details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(HomeNetwork.Tokenizer.class)
 public class HomeNetwork extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String externalId();
+		String name();
+		String description();
+		String isActive();
+	}
 
 	/**  Home network identifier  */
-    private String externalId;
+	private String externalId;
 	/**  Home network name  */
-    private String name;
+	private String name;
 	/**  Home network description  */
-    private String description;
+	private String description;
 	/**  Is home network is active  */
-    private Boolean isActive;
+	private Boolean isActive;
 
-    // externalId:
-    public String getExternalId(){
-        return this.externalId;
-    }
-    public void setExternalId(String externalId){
-        this.externalId = externalId;
-    }
+	// externalId:
+	public String getExternalId(){
+		return this.externalId;
+	}
+	public void setExternalId(String externalId){
+		this.externalId = externalId;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void externalId(String multirequestToken){
+		setToken("externalId", multirequestToken);
+	}
 
-    // description:
-    public String getDescription(){
-        return this.description;
-    }
-    public void setDescription(String description){
-        this.description = description;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // isActive:
-    public Boolean getIsActive(){
-        return this.isActive;
-    }
-    public void setIsActive(Boolean isActive){
-        this.isActive = isActive;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// description:
+	public String getDescription(){
+		return this.description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
+
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
+	}
+
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
+
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
 
 
-    public HomeNetwork() {
-       super();
-    }
+	public HomeNetwork() {
+		super();
+	}
 
-    public HomeNetwork(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public HomeNetwork(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        externalId = GsonParser.parseString(jsonObject.get("externalId"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        description = GsonParser.parseString(jsonObject.get("description"));
-        isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		// set members values:
+		externalId = GsonParser.parseString(jsonObject.get("externalId"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		description = GsonParser.parseString(jsonObject.get("description"));
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaHomeNetwork");
-        kparams.add("externalId", this.externalId);
-        kparams.add("name", this.name);
-        kparams.add("description", this.description);
-        kparams.add("isActive", this.isActive);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaHomeNetwork");
+		kparams.add("externalId", this.externalId);
+		kparams.add("name", this.name);
+		kparams.add("description", this.description);
+		kparams.add("isActive", this.isActive);
+		return kparams;
+	}
 
 }
 

@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,50 +41,64 @@ import com.google.gson.JsonObject;
 
 /**  KalturaPpvEntitlement  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PpvEntitlement.Tokenizer.class)
 public class PpvEntitlement extends Entitlement {
+	
+	public interface Tokenizer extends Entitlement.Tokenizer {
+		String mediaFileId();
+		String mediaId();
+	}
 
 	/**  Media file identifier  */
-    private Integer mediaFileId;
+	private Integer mediaFileId;
 	/**  Media identifier  */
-    private Integer mediaId;
+	private Integer mediaId;
 
-    // mediaFileId:
-    public Integer getMediaFileId(){
-        return this.mediaFileId;
-    }
-    public void setMediaFileId(Integer mediaFileId){
-        this.mediaFileId = mediaFileId;
-    }
+	// mediaFileId:
+	public Integer getMediaFileId(){
+		return this.mediaFileId;
+	}
+	public void setMediaFileId(Integer mediaFileId){
+		this.mediaFileId = mediaFileId;
+	}
 
-    // mediaId:
-    public Integer getMediaId(){
-        return this.mediaId;
-    }
-    public void setMediaId(Integer mediaId){
-        this.mediaId = mediaId;
-    }
+	public void mediaFileId(String multirequestToken){
+		setToken("mediaFileId", multirequestToken);
+	}
+
+	// mediaId:
+	public Integer getMediaId(){
+		return this.mediaId;
+	}
+	public void setMediaId(Integer mediaId){
+		this.mediaId = mediaId;
+	}
+
+	public void mediaId(String multirequestToken){
+		setToken("mediaId", multirequestToken);
+	}
 
 
-    public PpvEntitlement() {
-       super();
-    }
+	public PpvEntitlement() {
+		super();
+	}
 
-    public PpvEntitlement(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PpvEntitlement(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        mediaFileId = GsonParser.parseInt(jsonObject.get("mediaFileId"));
-        mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
+		// set members values:
+		mediaFileId = GsonParser.parseInt(jsonObject.get("mediaFileId"));
+		mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPpvEntitlement");
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPpvEntitlement");
+		return kparams;
+	}
 
 }
 
