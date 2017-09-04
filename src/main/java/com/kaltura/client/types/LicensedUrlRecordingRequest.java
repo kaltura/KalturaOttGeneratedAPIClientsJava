@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,40 +40,49 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(LicensedUrlRecordingRequest.Tokenizer.class)
 public class LicensedUrlRecordingRequest extends LicensedUrlBaseRequest {
+	
+	public interface Tokenizer extends LicensedUrlBaseRequest.Tokenizer {
+		String fileType();
+	}
 
 	/**  The file type for the URL  */
-    private String fileType;
+	private String fileType;
 
-    // fileType:
-    public String getFileType(){
-        return this.fileType;
-    }
-    public void setFileType(String fileType){
-        this.fileType = fileType;
-    }
+	// fileType:
+	public String getFileType(){
+		return this.fileType;
+	}
+	public void setFileType(String fileType){
+		this.fileType = fileType;
+	}
+
+	public void fileType(String multirequestToken){
+		setToken("fileType", multirequestToken);
+	}
 
 
-    public LicensedUrlRecordingRequest() {
-       super();
-    }
+	public LicensedUrlRecordingRequest() {
+		super();
+	}
 
-    public LicensedUrlRecordingRequest(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public LicensedUrlRecordingRequest(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        fileType = GsonParser.parseString(jsonObject.get("fileType"));
+		// set members values:
+		fileType = GsonParser.parseString(jsonObject.get("fileType"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaLicensedUrlRecordingRequest");
-        kparams.add("fileType", this.fileType);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaLicensedUrlRecordingRequest");
+		kparams.add("fileType", this.fileType);
+		return kparams;
+	}
 
 }
 

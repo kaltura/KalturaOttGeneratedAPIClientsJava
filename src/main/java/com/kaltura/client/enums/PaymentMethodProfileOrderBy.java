@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,36 +34,36 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum PaymentMethodProfileOrderBy implements EnumAsString {
-    NONE("NONE");
+	NONE("NONE");
 
-    private String value;
+	private String value;
 
-    PaymentMethodProfileOrderBy(String value) {
-        this.value = value;
-    }
+	PaymentMethodProfileOrderBy(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static PaymentMethodProfileOrderBy get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over PaymentMethodProfileOrderBy defined values and compare the inner value with the given one:
-        for(PaymentMethodProfileOrderBy item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return PaymentMethodProfileOrderBy.values().length > 0 ? PaymentMethodProfileOrderBy.values()[0]: null;
+	public static PaymentMethodProfileOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over PaymentMethodProfileOrderBy defined values and compare the inner value with the given one:
+		for(PaymentMethodProfileOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return PaymentMethodProfileOrderBy.values().length > 0 ? PaymentMethodProfileOrderBy.values()[0]: null;
    }
 }

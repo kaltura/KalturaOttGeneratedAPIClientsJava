@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,43 +34,43 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum PersonalFeedOrderBy implements EnumAsString {
-    RELEVANCY_DESC("RELEVANCY_DESC"),
-    NAME_ASC("NAME_ASC"),
-    NAME_DESC("NAME_DESC"),
-    VIEWS_DESC("VIEWS_DESC"),
-    RATINGS_DESC("RATINGS_DESC"),
-    VOTES_DESC("VOTES_DESC"),
-    START_DATE_DESC("START_DATE_DESC"),
-    START_DATE_ASC("START_DATE_ASC");
+	RELEVANCY_DESC("RELEVANCY_DESC"),
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	VIEWS_DESC("VIEWS_DESC"),
+	RATINGS_DESC("RATINGS_DESC"),
+	VOTES_DESC("VOTES_DESC"),
+	START_DATE_DESC("START_DATE_DESC"),
+	START_DATE_ASC("START_DATE_ASC");
 
-    private String value;
+	private String value;
 
-    PersonalFeedOrderBy(String value) {
-        this.value = value;
-    }
+	PersonalFeedOrderBy(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static PersonalFeedOrderBy get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over PersonalFeedOrderBy defined values and compare the inner value with the given one:
-        for(PersonalFeedOrderBy item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return PersonalFeedOrderBy.values().length > 0 ? PersonalFeedOrderBy.values()[0]: null;
+	public static PersonalFeedOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over PersonalFeedOrderBy defined values and compare the inner value with the given one:
+		for(PersonalFeedOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return PersonalFeedOrderBy.values().length > 0 ? PersonalFeedOrderBy.values()[0]: null;
    }
 }

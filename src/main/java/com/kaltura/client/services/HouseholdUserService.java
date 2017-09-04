@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.HouseholdUser;
 import com.kaltura.client.types.HouseholdUserFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -42,32 +40,51 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HouseholdUserService {
+	
+	public static class AddHouseholdUserBuilder extends RequestBuilder<HouseholdUser, HouseholdUser.Tokenizer, AddHouseholdUserBuilder> {
+		
+		public AddHouseholdUserBuilder(HouseholdUser householdUser) {
+			super(HouseholdUser.class, "householduser", "add");
+			params.add("householdUser", householdUser);
+		}
+	}
 
 	/**  Adds a user to household  */
-    public static RequestBuilder<HouseholdUser> add(HouseholdUser householdUser)  {
-        Params kparams = new Params();
-        kparams.add("householdUser", householdUser);
-
-        return new RequestBuilder<HouseholdUser>(HouseholdUser.class, "householduser", "add", kparams);
-    }
+    public static AddHouseholdUserBuilder add(HouseholdUser householdUser)  {
+		return new AddHouseholdUserBuilder(householdUser);
+	}
+	
+	public static class DeleteHouseholdUserBuilder extends RequestBuilder<Boolean, String, DeleteHouseholdUserBuilder> {
+		
+		public DeleteHouseholdUserBuilder(String id) {
+			super(Boolean.class, "householduser", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Removes a user from household  */
-    public static RequestBuilder<Boolean> delete(String id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static DeleteHouseholdUserBuilder delete(String id)  {
+		return new DeleteHouseholdUserBuilder(id);
+	}
+	
+	public static class ListHouseholdUserBuilder extends ListResponseRequestBuilder<HouseholdUser, HouseholdUser.Tokenizer, ListHouseholdUserBuilder> {
+		
+		public ListHouseholdUserBuilder(HouseholdUserFilter filter) {
+			super(HouseholdUser.class, "householduser", "list");
+			params.add("filter", filter);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "householduser", "delete", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<HouseholdUser>> list()  {
-        return list(null);
-    }
+	public static ListHouseholdUserBuilder list()  {
+		return list(null);
+	}
 
 	/**  Returns the users within the household  */
-    public static RequestBuilder<ListResponse<HouseholdUser>> list(HouseholdUserFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<HouseholdUser>(HouseholdUser.class, "householduser", "list", kparams);
-    }
+    public static ListHouseholdUserBuilder list(HouseholdUserFilter filter)  {
+		return new ListHouseholdUserBuilder(filter);
+	}
 }

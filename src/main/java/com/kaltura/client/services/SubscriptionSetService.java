@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.SubscriptionSet;
 import com.kaltura.client.types.SubscriptionSetFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -42,49 +40,86 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SubscriptionSetService {
+	
+	public static class AddSubscriptionSetBuilder extends RequestBuilder<SubscriptionSet, SubscriptionSet.Tokenizer, AddSubscriptionSetBuilder> {
+		
+		public AddSubscriptionSetBuilder(SubscriptionSet subscriptionSet) {
+			super(SubscriptionSet.class, "subscriptionset", "add");
+			params.add("subscriptionSet", subscriptionSet);
+		}
+	}
 
 	/**  Add a new subscriptionSet  */
-    public static RequestBuilder<SubscriptionSet> add(SubscriptionSet subscriptionSet)  {
-        Params kparams = new Params();
-        kparams.add("subscriptionSet", subscriptionSet);
-
-        return new RequestBuilder<SubscriptionSet>(SubscriptionSet.class, "subscriptionset", "add", kparams);
-    }
+    public static AddSubscriptionSetBuilder add(SubscriptionSet subscriptionSet)  {
+		return new AddSubscriptionSetBuilder(subscriptionSet);
+	}
+	
+	public static class DeleteSubscriptionSetBuilder extends RequestBuilder<Boolean, String, DeleteSubscriptionSetBuilder> {
+		
+		public DeleteSubscriptionSetBuilder(long id) {
+			super(Boolean.class, "subscriptionset", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete a subscriptionSet  */
-    public static RequestBuilder<Boolean> delete(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "subscriptionset", "delete", kparams);
-    }
+    public static DeleteSubscriptionSetBuilder delete(long id)  {
+		return new DeleteSubscriptionSetBuilder(id);
+	}
+	
+	public static class GetSubscriptionSetBuilder extends RequestBuilder<SubscriptionSet, SubscriptionSet.Tokenizer, GetSubscriptionSetBuilder> {
+		
+		public GetSubscriptionSetBuilder(long id) {
+			super(SubscriptionSet.class, "subscriptionset", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Get the subscriptionSet according to the Identifier  */
-    public static RequestBuilder<SubscriptionSet> get(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static GetSubscriptionSetBuilder get(long id)  {
+		return new GetSubscriptionSetBuilder(id);
+	}
+	
+	public static class ListSubscriptionSetBuilder extends ListResponseRequestBuilder<SubscriptionSet, SubscriptionSet.Tokenizer, ListSubscriptionSetBuilder> {
+		
+		public ListSubscriptionSetBuilder(SubscriptionSetFilter filter) {
+			super(SubscriptionSet.class, "subscriptionset", "list");
+			params.add("filter", filter);
+		}
+	}
 
-        return new RequestBuilder<SubscriptionSet>(SubscriptionSet.class, "subscriptionset", "get", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<SubscriptionSet>> list()  {
-        return list(null);
-    }
+	public static ListSubscriptionSetBuilder list()  {
+		return list(null);
+	}
 
 	/**  Returns a list of subscriptionSets requested by ids or subscription ids  */
-    public static RequestBuilder<ListResponse<SubscriptionSet>> list(SubscriptionSetFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<SubscriptionSet>(SubscriptionSet.class, "subscriptionset", "list", kparams);
-    }
+    public static ListSubscriptionSetBuilder list(SubscriptionSetFilter filter)  {
+		return new ListSubscriptionSetBuilder(filter);
+	}
+	
+	public static class UpdateSubscriptionSetBuilder extends RequestBuilder<SubscriptionSet, SubscriptionSet.Tokenizer, UpdateSubscriptionSetBuilder> {
+		
+		public UpdateSubscriptionSetBuilder(long id, SubscriptionSet subscriptionSet) {
+			super(SubscriptionSet.class, "subscriptionset", "update");
+			params.add("id", id);
+			params.add("subscriptionSet", subscriptionSet);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Update the subscriptionSet  */
-    public static RequestBuilder<SubscriptionSet> update(long id, SubscriptionSet subscriptionSet)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("subscriptionSet", subscriptionSet);
-
-        return new RequestBuilder<SubscriptionSet>(SubscriptionSet.class, "subscriptionset", "update", kparams);
-    }
+    public static UpdateSubscriptionSetBuilder update(long id, SubscriptionSet subscriptionSet)  {
+		return new UpdateSubscriptionSetBuilder(id, subscriptionSet);
+	}
 }

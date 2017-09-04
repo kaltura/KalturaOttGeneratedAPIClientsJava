@@ -27,12 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import java.util.List;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,40 +44,45 @@ import com.google.gson.JsonObject;
 
 /**  Array of translated strings  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(MultilingualStringValueArray.Tokenizer.class)
 public class MultilingualStringValueArray extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.ListTokenizer<MultilingualStringValue.Tokenizer> objects();
+	}
 
 	/**  List of string values  */
-    private List<MultilingualStringValue> objects;
+	private List<MultilingualStringValue> objects;
 
-    // objects:
-    public List<MultilingualStringValue> getObjects(){
-        return this.objects;
-    }
-    public void setObjects(List<MultilingualStringValue> objects){
-        this.objects = objects;
-    }
+	// objects:
+	public List<MultilingualStringValue> getObjects(){
+		return this.objects;
+	}
+	public void setObjects(List<MultilingualStringValue> objects){
+		this.objects = objects;
+	}
 
 
-    public MultilingualStringValueArray() {
-       super();
-    }
+	public MultilingualStringValueArray() {
+		super();
+	}
 
-    public MultilingualStringValueArray(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public MultilingualStringValueArray(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), MultilingualStringValue.class);
+		// set members values:
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), MultilingualStringValue.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaMultilingualStringValueArray");
-        kparams.add("objects", this.objects);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaMultilingualStringValueArray");
+		kparams.add("objects", this.objects);
+		return kparams;
+	}
 
 }
 

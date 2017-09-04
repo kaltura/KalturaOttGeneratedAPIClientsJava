@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.AssetType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,52 +42,66 @@ import com.google.gson.JsonObject;
 
 /**  Filtering Assets requests  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BookmarkFilter.Tokenizer.class)
 public class BookmarkFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String assetIdIn();
+		String assetTypeEqual();
+	}
 
 	/**  Comma separated list of assets identifiers  */
-    private String assetIdIn;
+	private String assetIdIn;
 	/**  Asset type  */
-    private AssetType assetTypeEqual;
+	private AssetType assetTypeEqual;
 
-    // assetIdIn:
-    public String getAssetIdIn(){
-        return this.assetIdIn;
-    }
-    public void setAssetIdIn(String assetIdIn){
-        this.assetIdIn = assetIdIn;
-    }
+	// assetIdIn:
+	public String getAssetIdIn(){
+		return this.assetIdIn;
+	}
+	public void setAssetIdIn(String assetIdIn){
+		this.assetIdIn = assetIdIn;
+	}
 
-    // assetTypeEqual:
-    public AssetType getAssetTypeEqual(){
-        return this.assetTypeEqual;
-    }
-    public void setAssetTypeEqual(AssetType assetTypeEqual){
-        this.assetTypeEqual = assetTypeEqual;
-    }
+	public void assetIdIn(String multirequestToken){
+		setToken("assetIdIn", multirequestToken);
+	}
+
+	// assetTypeEqual:
+	public AssetType getAssetTypeEqual(){
+		return this.assetTypeEqual;
+	}
+	public void setAssetTypeEqual(AssetType assetTypeEqual){
+		this.assetTypeEqual = assetTypeEqual;
+	}
+
+	public void assetTypeEqual(String multirequestToken){
+		setToken("assetTypeEqual", multirequestToken);
+	}
 
 
-    public BookmarkFilter() {
-       super();
-    }
+	public BookmarkFilter() {
+		super();
+	}
 
-    public BookmarkFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public BookmarkFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
-        assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
+		// set members values:
+		assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
+		assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaBookmarkFilter");
-        kparams.add("assetIdIn", this.assetIdIn);
-        kparams.add("assetTypeEqual", this.assetTypeEqual);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBookmarkFilter");
+		kparams.add("assetIdIn", this.assetIdIn);
+		kparams.add("assetTypeEqual", this.assetTypeEqual);
+		return kparams;
+	}
 
 }
 

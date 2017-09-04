@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.ScheduledRecordingAssetType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.ScheduledRecordingAssetType;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,76 +41,100 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ScheduledRecordingProgramFilter.Tokenizer.class)
 public class ScheduledRecordingProgramFilter extends AssetFilter {
+	
+	public interface Tokenizer extends AssetFilter.Tokenizer {
+		String recordingTypeEqual();
+		String channelsIn();
+		String startDateGreaterThanOrNull();
+		String endDateLessThanOrNull();
+	}
 
 	/**  The type of recordings to return  */
-    private ScheduledRecordingAssetType recordingTypeEqual;
+	private ScheduledRecordingAssetType recordingTypeEqual;
 	/**  Channels to filter by  */
-    private String channelsIn;
+	private String channelsIn;
 	/**  start date  */
-    private Long startDateGreaterThanOrNull;
+	private Long startDateGreaterThanOrNull;
 	/**  end date  */
-    private Long endDateLessThanOrNull;
+	private Long endDateLessThanOrNull;
 
-    // recordingTypeEqual:
-    public ScheduledRecordingAssetType getRecordingTypeEqual(){
-        return this.recordingTypeEqual;
-    }
-    public void setRecordingTypeEqual(ScheduledRecordingAssetType recordingTypeEqual){
-        this.recordingTypeEqual = recordingTypeEqual;
-    }
+	// recordingTypeEqual:
+	public ScheduledRecordingAssetType getRecordingTypeEqual(){
+		return this.recordingTypeEqual;
+	}
+	public void setRecordingTypeEqual(ScheduledRecordingAssetType recordingTypeEqual){
+		this.recordingTypeEqual = recordingTypeEqual;
+	}
 
-    // channelsIn:
-    public String getChannelsIn(){
-        return this.channelsIn;
-    }
-    public void setChannelsIn(String channelsIn){
-        this.channelsIn = channelsIn;
-    }
+	public void recordingTypeEqual(String multirequestToken){
+		setToken("recordingTypeEqual", multirequestToken);
+	}
 
-    // startDateGreaterThanOrNull:
-    public Long getStartDateGreaterThanOrNull(){
-        return this.startDateGreaterThanOrNull;
-    }
-    public void setStartDateGreaterThanOrNull(Long startDateGreaterThanOrNull){
-        this.startDateGreaterThanOrNull = startDateGreaterThanOrNull;
-    }
+	// channelsIn:
+	public String getChannelsIn(){
+		return this.channelsIn;
+	}
+	public void setChannelsIn(String channelsIn){
+		this.channelsIn = channelsIn;
+	}
 
-    // endDateLessThanOrNull:
-    public Long getEndDateLessThanOrNull(){
-        return this.endDateLessThanOrNull;
-    }
-    public void setEndDateLessThanOrNull(Long endDateLessThanOrNull){
-        this.endDateLessThanOrNull = endDateLessThanOrNull;
-    }
+	public void channelsIn(String multirequestToken){
+		setToken("channelsIn", multirequestToken);
+	}
+
+	// startDateGreaterThanOrNull:
+	public Long getStartDateGreaterThanOrNull(){
+		return this.startDateGreaterThanOrNull;
+	}
+	public void setStartDateGreaterThanOrNull(Long startDateGreaterThanOrNull){
+		this.startDateGreaterThanOrNull = startDateGreaterThanOrNull;
+	}
+
+	public void startDateGreaterThanOrNull(String multirequestToken){
+		setToken("startDateGreaterThanOrNull", multirequestToken);
+	}
+
+	// endDateLessThanOrNull:
+	public Long getEndDateLessThanOrNull(){
+		return this.endDateLessThanOrNull;
+	}
+	public void setEndDateLessThanOrNull(Long endDateLessThanOrNull){
+		this.endDateLessThanOrNull = endDateLessThanOrNull;
+	}
+
+	public void endDateLessThanOrNull(String multirequestToken){
+		setToken("endDateLessThanOrNull", multirequestToken);
+	}
 
 
-    public ScheduledRecordingProgramFilter() {
-       super();
-    }
+	public ScheduledRecordingProgramFilter() {
+		super();
+	}
 
-    public ScheduledRecordingProgramFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public ScheduledRecordingProgramFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        recordingTypeEqual = ScheduledRecordingAssetType.get(GsonParser.parseString(jsonObject.get("recordingTypeEqual")));
-        channelsIn = GsonParser.parseString(jsonObject.get("channelsIn"));
-        startDateGreaterThanOrNull = GsonParser.parseLong(jsonObject.get("startDateGreaterThanOrNull"));
-        endDateLessThanOrNull = GsonParser.parseLong(jsonObject.get("endDateLessThanOrNull"));
+		// set members values:
+		recordingTypeEqual = ScheduledRecordingAssetType.get(GsonParser.parseString(jsonObject.get("recordingTypeEqual")));
+		channelsIn = GsonParser.parseString(jsonObject.get("channelsIn"));
+		startDateGreaterThanOrNull = GsonParser.parseLong(jsonObject.get("startDateGreaterThanOrNull"));
+		endDateLessThanOrNull = GsonParser.parseLong(jsonObject.get("endDateLessThanOrNull"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaScheduledRecordingProgramFilter");
-        kparams.add("recordingTypeEqual", this.recordingTypeEqual);
-        kparams.add("channelsIn", this.channelsIn);
-        kparams.add("startDateGreaterThanOrNull", this.startDateGreaterThanOrNull);
-        kparams.add("endDateLessThanOrNull", this.endDateLessThanOrNull);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaScheduledRecordingProgramFilter");
+		kparams.add("recordingTypeEqual", this.recordingTypeEqual);
+		kparams.add("channelsIn", this.channelsIn);
+		kparams.add("startDateGreaterThanOrNull", this.startDateGreaterThanOrNull);
+		kparams.add("endDateLessThanOrNull", this.endDateLessThanOrNull);
+		return kparams;
+	}
 
 }
 

@@ -27,12 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import java.util.List;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,63 +43,78 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(UserRole.Tokenizer.class)
 public class UserRole extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		RequestBuilder.ListTokenizer<Permission.Tokenizer> permissions();
+	}
 
 	/**  User role identifier  */
-    private Long id;
+	private Long id;
 	/**  User role name  */
-    private String name;
+	private String name;
 	/**  List of permissions associated with the user role  */
-    private List<Permission> permissions;
+	private List<Permission> permissions;
 
-    // id:
-    public Long getId(){
-        return this.id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // permissions:
-    public List<Permission> getPermissions(){
-        return this.permissions;
-    }
-    public void setPermissions(List<Permission> permissions){
-        this.permissions = permissions;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// permissions:
+	public List<Permission> getPermissions(){
+		return this.permissions;
+	}
+	public void setPermissions(List<Permission> permissions){
+		this.permissions = permissions;
+	}
 
 
-    public UserRole() {
-       super();
-    }
+	public UserRole() {
+		super();
+	}
 
-    public UserRole(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public UserRole(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        permissions = GsonParser.parseArray(jsonObject.getAsJsonArray("permissions"), Permission.class);
+		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		permissions = GsonParser.parseArray(jsonObject.getAsJsonArray("permissions"), Permission.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaUserRole");
-        kparams.add("name", this.name);
-        kparams.add("permissions", this.permissions);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaUserRole");
+		kparams.add("name", this.name);
+		kparams.add("permissions", this.permissions);
+		return kparams;
+	}
 
 }
 

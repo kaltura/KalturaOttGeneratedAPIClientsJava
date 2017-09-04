@@ -27,11 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.ConfigurationGroupDevice;
 import com.kaltura.client.types.ConfigurationGroupDeviceFilter;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -43,42 +41,70 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ConfigurationGroupDeviceService {
+	
+	public static class AddConfigurationGroupDeviceBuilder extends RequestBuilder<Boolean, String, AddConfigurationGroupDeviceBuilder> {
+		
+		public AddConfigurationGroupDeviceBuilder(ConfigurationGroupDevice configurationGroupDevice) {
+			super(Boolean.class, "configurationgroupdevice", "add");
+			params.add("configurationGroupDevice", configurationGroupDevice);
+		}
+	}
 
 	/**  Associate a collection of devices to a configuration group. If a device is
 	  already associated to another group – old association is replaced  */
-    public static RequestBuilder<Boolean> add(ConfigurationGroupDevice configurationGroupDevice)  {
-        Params kparams = new Params();
-        kparams.add("configurationGroupDevice", configurationGroupDevice);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "configurationgroupdevice", "add", kparams);
-    }
+    public static AddConfigurationGroupDeviceBuilder add(ConfigurationGroupDevice configurationGroupDevice)  {
+		return new AddConfigurationGroupDeviceBuilder(configurationGroupDevice);
+	}
+	
+	public static class DeleteConfigurationGroupDeviceBuilder extends RequestBuilder<Boolean, String, DeleteConfigurationGroupDeviceBuilder> {
+		
+		public DeleteConfigurationGroupDeviceBuilder(String udid) {
+			super(Boolean.class, "configurationgroupdevice", "delete");
+			params.add("udid", udid);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
 
 	/**  Remove a device association  */
-    public static RequestBuilder<Boolean> delete(String udid)  {
-        Params kparams = new Params();
-        kparams.add("udid", udid);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "configurationgroupdevice", "delete", kparams);
-    }
+    public static DeleteConfigurationGroupDeviceBuilder delete(String udid)  {
+		return new DeleteConfigurationGroupDeviceBuilder(udid);
+	}
+	
+	public static class GetConfigurationGroupDeviceBuilder extends RequestBuilder<ConfigurationGroupDevice, ConfigurationGroupDevice.Tokenizer, GetConfigurationGroupDeviceBuilder> {
+		
+		public GetConfigurationGroupDeviceBuilder(String udid) {
+			super(ConfigurationGroupDevice.class, "configurationgroupdevice", "get");
+			params.add("udid", udid);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
 
 	/**  Return the configuration group to which a specific device is associated to  */
-    public static RequestBuilder<ConfigurationGroupDevice> get(String udid)  {
-        Params kparams = new Params();
-        kparams.add("udid", udid);
+    public static GetConfigurationGroupDeviceBuilder get(String udid)  {
+		return new GetConfigurationGroupDeviceBuilder(udid);
+	}
+	
+	public static class ListConfigurationGroupDeviceBuilder extends ListResponseRequestBuilder<ConfigurationGroupDevice, ConfigurationGroupDevice.Tokenizer, ListConfigurationGroupDeviceBuilder> {
+		
+		public ListConfigurationGroupDeviceBuilder(ConfigurationGroupDeviceFilter filter, FilterPager pager) {
+			super(ConfigurationGroupDevice.class, "configurationgroupdevice", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<ConfigurationGroupDevice>(ConfigurationGroupDevice.class, "configurationgroupdevice", "get", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<ConfigurationGroupDevice>> list(ConfigurationGroupDeviceFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListConfigurationGroupDeviceBuilder list(ConfigurationGroupDeviceFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Return the list of associated devices for a given configuration group  */
-    public static RequestBuilder<ListResponse<ConfigurationGroupDevice>> list(ConfigurationGroupDeviceFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<ConfigurationGroupDevice>(ConfigurationGroupDevice.class, "configurationgroupdevice", "list", kparams);
-    }
+    public static ListConfigurationGroupDeviceBuilder list(ConfigurationGroupDeviceFilter filter, FilterPager pager)  {
+		return new ListConfigurationGroupDeviceBuilder(filter, pager);
+	}
 }

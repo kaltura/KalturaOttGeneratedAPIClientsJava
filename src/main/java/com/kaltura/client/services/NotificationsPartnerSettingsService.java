@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.NotificationsPartnerSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,19 +38,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class NotificationsPartnerSettingsService {
+	
+	public static class GetNotificationsPartnerSettingsBuilder extends RequestBuilder<NotificationsPartnerSettings, NotificationsPartnerSettings.Tokenizer, GetNotificationsPartnerSettingsBuilder> {
+		
+		public GetNotificationsPartnerSettingsBuilder() {
+			super(NotificationsPartnerSettings.class, "notificationspartnersettings", "get");
+		}
+	}
 
 	/**  Retrieve the partner notification settings.  */
-    public static RequestBuilder<NotificationsPartnerSettings> get()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<NotificationsPartnerSettings>(NotificationsPartnerSettings.class, "notificationspartnersettings", "get", kparams);
-    }
+    public static GetNotificationsPartnerSettingsBuilder get()  {
+		return new GetNotificationsPartnerSettingsBuilder();
+	}
+	
+	public static class UpdateNotificationsPartnerSettingsBuilder extends RequestBuilder<Boolean, String, UpdateNotificationsPartnerSettingsBuilder> {
+		
+		public UpdateNotificationsPartnerSettingsBuilder(NotificationsPartnerSettings settings) {
+			super(Boolean.class, "notificationspartnersettings", "update");
+			params.add("settings", settings);
+		}
+	}
 
 	/**  Update the account notification settings  */
-    public static RequestBuilder<Boolean> update(NotificationsPartnerSettings settings)  {
-        Params kparams = new Params();
-        kparams.add("settings", settings);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "notificationspartnersettings", "update", kparams);
-    }
+    public static UpdateNotificationsPartnerSettingsBuilder update(NotificationsPartnerSettings settings)  {
+		return new UpdateNotificationsPartnerSettingsBuilder(settings);
+	}
 }

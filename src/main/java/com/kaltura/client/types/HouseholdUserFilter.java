@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,40 +40,49 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(HouseholdUserFilter.Tokenizer.class)
 public class HouseholdUserFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String householdIdEqual();
+	}
 
 	/**  The identifier of the household  */
-    private Integer householdIdEqual;
+	private Integer householdIdEqual;
 
-    // householdIdEqual:
-    public Integer getHouseholdIdEqual(){
-        return this.householdIdEqual;
-    }
-    public void setHouseholdIdEqual(Integer householdIdEqual){
-        this.householdIdEqual = householdIdEqual;
-    }
+	// householdIdEqual:
+	public Integer getHouseholdIdEqual(){
+		return this.householdIdEqual;
+	}
+	public void setHouseholdIdEqual(Integer householdIdEqual){
+		this.householdIdEqual = householdIdEqual;
+	}
+
+	public void householdIdEqual(String multirequestToken){
+		setToken("householdIdEqual", multirequestToken);
+	}
 
 
-    public HouseholdUserFilter() {
-       super();
-    }
+	public HouseholdUserFilter() {
+		super();
+	}
 
-    public HouseholdUserFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public HouseholdUserFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        householdIdEqual = GsonParser.parseInt(jsonObject.get("householdIdEqual"));
+		// set members values:
+		householdIdEqual = GsonParser.parseInt(jsonObject.get("householdIdEqual"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaHouseholdUserFilter");
-        kparams.add("householdIdEqual", this.householdIdEqual);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaHouseholdUserFilter");
+		kparams.add("householdIdEqual", this.householdIdEqual);
+		return kparams;
+	}
 
 }
 

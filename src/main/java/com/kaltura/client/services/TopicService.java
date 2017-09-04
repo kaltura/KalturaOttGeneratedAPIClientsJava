@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.TopicAutomaticIssueNotification;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Topic;
 import com.kaltura.client.types.TopicFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -44,46 +42,82 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class TopicService {
+	
+	public static class DeleteTopicBuilder extends RequestBuilder<Boolean, String, DeleteTopicBuilder> {
+		
+		public DeleteTopicBuilder(int id) {
+			super(Boolean.class, "topic", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Deleted a topic  */
-    public static RequestBuilder<Boolean> delete(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "topic", "delete", kparams);
-    }
+    public static DeleteTopicBuilder delete(int id)  {
+		return new DeleteTopicBuilder(id);
+	}
+	
+	public static class GetTopicBuilder extends RequestBuilder<Topic, Topic.Tokenizer, GetTopicBuilder> {
+		
+		public GetTopicBuilder(int id) {
+			super(Topic.class, "topic", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Gets a topic  */
-    public static RequestBuilder<Topic> get(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static GetTopicBuilder get(int id)  {
+		return new GetTopicBuilder(id);
+	}
+	
+	public static class ListTopicBuilder extends ListResponseRequestBuilder<Topic, Topic.Tokenizer, ListTopicBuilder> {
+		
+		public ListTopicBuilder(TopicFilter filter, FilterPager pager) {
+			super(Topic.class, "topic", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Topic>(Topic.class, "topic", "get", kparams);
-    }
+	public static ListTopicBuilder list()  {
+		return list(null);
+	}
 
-    public static RequestBuilder<ListResponse<Topic>> list()  {
-        return list(null);
-    }
-
-    public static RequestBuilder<ListResponse<Topic>> list(TopicFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListTopicBuilder list(TopicFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Get list of topics  */
-    public static RequestBuilder<ListResponse<Topic>> list(TopicFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<Topic>(Topic.class, "topic", "list", kparams);
-    }
+    public static ListTopicBuilder list(TopicFilter filter, FilterPager pager)  {
+		return new ListTopicBuilder(filter, pager);
+	}
+	
+	public static class UpdateStatusTopicBuilder extends RequestBuilder<Boolean, String, UpdateStatusTopicBuilder> {
+		
+		public UpdateStatusTopicBuilder(int id, TopicAutomaticIssueNotification automaticIssueNotification) {
+			super(Boolean.class, "topic", "updateStatus");
+			params.add("id", id);
+			params.add("automaticIssueNotification", automaticIssueNotification);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void automaticIssueNotification(String multirequestToken) {
+			params.add("automaticIssueNotification", multirequestToken);
+		}
+	}
 
 	/**  Updates a topic &amp;quot;automatic issue notification&amp;quot; behavior.  */
-    public static RequestBuilder<Boolean> updateStatus(int id, TopicAutomaticIssueNotification automaticIssueNotification)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("automaticIssueNotification", automaticIssueNotification);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "topic", "updateStatus", kparams);
-    }
+    public static UpdateStatusTopicBuilder updateStatus(int id, TopicAutomaticIssueNotification automaticIssueNotification)  {
+		return new UpdateStatusTopicBuilder(id, automaticIssueNotification);
+	}
 }

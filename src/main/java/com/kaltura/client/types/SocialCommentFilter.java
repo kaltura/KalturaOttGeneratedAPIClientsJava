@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.SocialPlatform;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,76 +42,100 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SocialCommentFilter.Tokenizer.class)
 public class SocialCommentFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String assetIdEqual();
+		String assetTypeEqual();
+		String socialPlatformEqual();
+		String createDateGreaterThan();
+	}
 
 	/**  Asset ID to filter by  */
-    private Long assetIdEqual;
+	private Long assetIdEqual;
 	/**  Asset type to filter by, currently only VOD (media)  */
-    private AssetType assetTypeEqual;
+	private AssetType assetTypeEqual;
 	/**  Comma separated list of social actions to filter by  */
-    private SocialPlatform socialPlatformEqual;
+	private SocialPlatform socialPlatformEqual;
 	/**  The create date from which to get the comments  */
-    private Long createDateGreaterThan;
+	private Long createDateGreaterThan;
 
-    // assetIdEqual:
-    public Long getAssetIdEqual(){
-        return this.assetIdEqual;
-    }
-    public void setAssetIdEqual(Long assetIdEqual){
-        this.assetIdEqual = assetIdEqual;
-    }
+	// assetIdEqual:
+	public Long getAssetIdEqual(){
+		return this.assetIdEqual;
+	}
+	public void setAssetIdEqual(Long assetIdEqual){
+		this.assetIdEqual = assetIdEqual;
+	}
 
-    // assetTypeEqual:
-    public AssetType getAssetTypeEqual(){
-        return this.assetTypeEqual;
-    }
-    public void setAssetTypeEqual(AssetType assetTypeEqual){
-        this.assetTypeEqual = assetTypeEqual;
-    }
+	public void assetIdEqual(String multirequestToken){
+		setToken("assetIdEqual", multirequestToken);
+	}
 
-    // socialPlatformEqual:
-    public SocialPlatform getSocialPlatformEqual(){
-        return this.socialPlatformEqual;
-    }
-    public void setSocialPlatformEqual(SocialPlatform socialPlatformEqual){
-        this.socialPlatformEqual = socialPlatformEqual;
-    }
+	// assetTypeEqual:
+	public AssetType getAssetTypeEqual(){
+		return this.assetTypeEqual;
+	}
+	public void setAssetTypeEqual(AssetType assetTypeEqual){
+		this.assetTypeEqual = assetTypeEqual;
+	}
 
-    // createDateGreaterThan:
-    public Long getCreateDateGreaterThan(){
-        return this.createDateGreaterThan;
-    }
-    public void setCreateDateGreaterThan(Long createDateGreaterThan){
-        this.createDateGreaterThan = createDateGreaterThan;
-    }
+	public void assetTypeEqual(String multirequestToken){
+		setToken("assetTypeEqual", multirequestToken);
+	}
+
+	// socialPlatformEqual:
+	public SocialPlatform getSocialPlatformEqual(){
+		return this.socialPlatformEqual;
+	}
+	public void setSocialPlatformEqual(SocialPlatform socialPlatformEqual){
+		this.socialPlatformEqual = socialPlatformEqual;
+	}
+
+	public void socialPlatformEqual(String multirequestToken){
+		setToken("socialPlatformEqual", multirequestToken);
+	}
+
+	// createDateGreaterThan:
+	public Long getCreateDateGreaterThan(){
+		return this.createDateGreaterThan;
+	}
+	public void setCreateDateGreaterThan(Long createDateGreaterThan){
+		this.createDateGreaterThan = createDateGreaterThan;
+	}
+
+	public void createDateGreaterThan(String multirequestToken){
+		setToken("createDateGreaterThan", multirequestToken);
+	}
 
 
-    public SocialCommentFilter() {
-       super();
-    }
+	public SocialCommentFilter() {
+		super();
+	}
 
-    public SocialCommentFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SocialCommentFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        assetIdEqual = GsonParser.parseLong(jsonObject.get("assetIdEqual"));
-        assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
-        socialPlatformEqual = SocialPlatform.get(GsonParser.parseString(jsonObject.get("socialPlatformEqual")));
-        createDateGreaterThan = GsonParser.parseLong(jsonObject.get("createDateGreaterThan"));
+		// set members values:
+		assetIdEqual = GsonParser.parseLong(jsonObject.get("assetIdEqual"));
+		assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
+		socialPlatformEqual = SocialPlatform.get(GsonParser.parseString(jsonObject.get("socialPlatformEqual")));
+		createDateGreaterThan = GsonParser.parseLong(jsonObject.get("createDateGreaterThan"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSocialCommentFilter");
-        kparams.add("assetIdEqual", this.assetIdEqual);
-        kparams.add("assetTypeEqual", this.assetTypeEqual);
-        kparams.add("socialPlatformEqual", this.socialPlatformEqual);
-        kparams.add("createDateGreaterThan", this.createDateGreaterThan);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSocialCommentFilter");
+		kparams.add("assetIdEqual", this.assetIdEqual);
+		kparams.add("assetTypeEqual", this.assetTypeEqual);
+		kparams.add("socialPlatformEqual", this.socialPlatformEqual);
+		kparams.add("createDateGreaterThan", this.createDateGreaterThan);
+		return kparams;
+	}
 
 }
 

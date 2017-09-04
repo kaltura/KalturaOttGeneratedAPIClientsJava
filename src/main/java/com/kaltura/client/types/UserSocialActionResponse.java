@@ -27,13 +27,14 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.SocialAction;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
-import com.google.gson.JsonObject;
-
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,52 +44,58 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(UserSocialActionResponse.Tokenizer.class)
 public class UserSocialActionResponse extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		SocialAction.Tokenizer socialAction();
+		RequestBuilder.ListTokenizer<NetworkActionStatus.Tokenizer> failStatus();
+	}
 
 	/**  socialAction  */
-    private SocialAction socialAction;
+	private SocialAction socialAction;
 	/**  List of action permission items  */
-    private List<NetworkActionStatus> failStatus;
+	private List<NetworkActionStatus> failStatus;
 
-    // socialAction:
-    public SocialAction getSocialAction(){
-        return this.socialAction;
-    }
-    public void setSocialAction(SocialAction socialAction){
-        this.socialAction = socialAction;
-    }
+	// socialAction:
+	public SocialAction getSocialAction(){
+		return this.socialAction;
+	}
+	public void setSocialAction(SocialAction socialAction){
+		this.socialAction = socialAction;
+	}
 
-    // failStatus:
-    public List<NetworkActionStatus> getFailStatus(){
-        return this.failStatus;
-    }
-    public void setFailStatus(List<NetworkActionStatus> failStatus){
-        this.failStatus = failStatus;
-    }
+	// failStatus:
+	public List<NetworkActionStatus> getFailStatus(){
+		return this.failStatus;
+	}
+	public void setFailStatus(List<NetworkActionStatus> failStatus){
+		this.failStatus = failStatus;
+	}
 
 
-    public UserSocialActionResponse() {
-       super();
-    }
+	public UserSocialActionResponse() {
+		super();
+	}
 
-    public UserSocialActionResponse(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public UserSocialActionResponse(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        socialAction = GsonParser.parseObject(jsonObject.getAsJsonObject("socialAction"), SocialAction.class);
-        failStatus = GsonParser.parseArray(jsonObject.getAsJsonArray("failStatus"), NetworkActionStatus.class);
+		// set members values:
+		socialAction = GsonParser.parseObject(jsonObject.getAsJsonObject("socialAction"), SocialAction.class);
+		failStatus = GsonParser.parseArray(jsonObject.getAsJsonArray("failStatus"), NetworkActionStatus.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaUserSocialActionResponse");
-        kparams.add("socialAction", this.socialAction);
-        kparams.add("failStatus", this.failStatus);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaUserSocialActionResponse");
+		kparams.add("socialAction", this.socialAction);
+		kparams.add("failStatus", this.failStatus);
+		return kparams;
+	}
 
 }
 

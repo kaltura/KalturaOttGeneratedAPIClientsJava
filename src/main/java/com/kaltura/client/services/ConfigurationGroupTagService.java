@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.ConfigurationGroupTag;
 import com.kaltura.client.types.ConfigurationGroupTagFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -42,37 +40,65 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class ConfigurationGroupTagService {
+	
+	public static class AddConfigurationGroupTagBuilder extends RequestBuilder<ConfigurationGroupTag, ConfigurationGroupTag.Tokenizer, AddConfigurationGroupTagBuilder> {
+		
+		public AddConfigurationGroupTagBuilder(ConfigurationGroupTag configurationGroupTag) {
+			super(ConfigurationGroupTag.class, "configurationgrouptag", "add");
+			params.add("configurationGroupTag", configurationGroupTag);
+		}
+	}
 
 	/**  Add a new tag to a configuration group. If this tag is already associated to
 	  another group, request fails  */
-    public static RequestBuilder<ConfigurationGroupTag> add(ConfigurationGroupTag configurationGroupTag)  {
-        Params kparams = new Params();
-        kparams.add("configurationGroupTag", configurationGroupTag);
-
-        return new RequestBuilder<ConfigurationGroupTag>(ConfigurationGroupTag.class, "configurationgrouptag", "add", kparams);
-    }
+    public static AddConfigurationGroupTagBuilder add(ConfigurationGroupTag configurationGroupTag)  {
+		return new AddConfigurationGroupTagBuilder(configurationGroupTag);
+	}
+	
+	public static class DeleteConfigurationGroupTagBuilder extends RequestBuilder<Boolean, String, DeleteConfigurationGroupTagBuilder> {
+		
+		public DeleteConfigurationGroupTagBuilder(String tag) {
+			super(Boolean.class, "configurationgrouptag", "delete");
+			params.add("tag", tag);
+		}
+		
+		public void tag(String multirequestToken) {
+			params.add("tag", multirequestToken);
+		}
+	}
 
 	/**  Remove a tag association from configuration group  */
-    public static RequestBuilder<Boolean> delete(String tag)  {
-        Params kparams = new Params();
-        kparams.add("tag", tag);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "configurationgrouptag", "delete", kparams);
-    }
+    public static DeleteConfigurationGroupTagBuilder delete(String tag)  {
+		return new DeleteConfigurationGroupTagBuilder(tag);
+	}
+	
+	public static class GetConfigurationGroupTagBuilder extends RequestBuilder<ConfigurationGroupTag, ConfigurationGroupTag.Tokenizer, GetConfigurationGroupTagBuilder> {
+		
+		public GetConfigurationGroupTagBuilder(String tag) {
+			super(ConfigurationGroupTag.class, "configurationgrouptag", "get");
+			params.add("tag", tag);
+		}
+		
+		public void tag(String multirequestToken) {
+			params.add("tag", multirequestToken);
+		}
+	}
 
 	/**  Return the configuration group the tag is associated to  */
-    public static RequestBuilder<ConfigurationGroupTag> get(String tag)  {
-        Params kparams = new Params();
-        kparams.add("tag", tag);
-
-        return new RequestBuilder<ConfigurationGroupTag>(ConfigurationGroupTag.class, "configurationgrouptag", "get", kparams);
-    }
+    public static GetConfigurationGroupTagBuilder get(String tag)  {
+		return new GetConfigurationGroupTagBuilder(tag);
+	}
+	
+	public static class ListConfigurationGroupTagBuilder extends ListResponseRequestBuilder<ConfigurationGroupTag, ConfigurationGroupTag.Tokenizer, ListConfigurationGroupTagBuilder> {
+		
+		public ListConfigurationGroupTagBuilder(ConfigurationGroupTagFilter filter) {
+			super(ConfigurationGroupTag.class, "configurationgrouptag", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Return list of tags for a configuration group  */
-    public static RequestBuilder<ListResponse<ConfigurationGroupTag>> list(ConfigurationGroupTagFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<ConfigurationGroupTag>(ConfigurationGroupTag.class, "configurationgrouptag", "list", kparams);
-    }
+    public static ListConfigurationGroupTagBuilder list(ConfigurationGroupTagFilter filter)  {
+		return new ListConfigurationGroupTagBuilder(filter);
+	}
 }

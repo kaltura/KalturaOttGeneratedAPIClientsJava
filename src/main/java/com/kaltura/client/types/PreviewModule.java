@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,76 +42,100 @@ import com.google.gson.JsonObject;
 
 /**  Preview module  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PreviewModule.Tokenizer.class)
 public class PreviewModule extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String lifeCycle();
+		String nonRenewablePeriod();
+	}
 
 	/**  Preview module identifier  */
-    private Long id;
+	private Long id;
 	/**  Preview module name  */
-    private String name;
+	private String name;
 	/**  Preview module life cycle - for how long the preview module is active  */
-    private Integer lifeCycle;
+	private Integer lifeCycle;
 	/**  The time you can&amp;#39;t buy the item to which the preview module is assigned
 	  to again  */
-    private Integer nonRenewablePeriod;
+	private Integer nonRenewablePeriod;
 
-    // id:
-    public Long getId(){
-        return this.id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-    // lifeCycle:
-    public Integer getLifeCycle(){
-        return this.lifeCycle;
-    }
-    public void setLifeCycle(Integer lifeCycle){
-        this.lifeCycle = lifeCycle;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // nonRenewablePeriod:
-    public Integer getNonRenewablePeriod(){
-        return this.nonRenewablePeriod;
-    }
-    public void setNonRenewablePeriod(Integer nonRenewablePeriod){
-        this.nonRenewablePeriod = nonRenewablePeriod;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// lifeCycle:
+	public Integer getLifeCycle(){
+		return this.lifeCycle;
+	}
+	public void setLifeCycle(Integer lifeCycle){
+		this.lifeCycle = lifeCycle;
+	}
+
+	public void lifeCycle(String multirequestToken){
+		setToken("lifeCycle", multirequestToken);
+	}
+
+	// nonRenewablePeriod:
+	public Integer getNonRenewablePeriod(){
+		return this.nonRenewablePeriod;
+	}
+	public void setNonRenewablePeriod(Integer nonRenewablePeriod){
+		this.nonRenewablePeriod = nonRenewablePeriod;
+	}
+
+	public void nonRenewablePeriod(String multirequestToken){
+		setToken("nonRenewablePeriod", multirequestToken);
+	}
 
 
-    public PreviewModule() {
-       super();
-    }
+	public PreviewModule() {
+		super();
+	}
 
-    public PreviewModule(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PreviewModule(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        id = GsonParser.parseLong(jsonObject.get("id"));
-        name = GsonParser.parseString(jsonObject.get("name"));
-        lifeCycle = GsonParser.parseInt(jsonObject.get("lifeCycle"));
-        nonRenewablePeriod = GsonParser.parseInt(jsonObject.get("nonRenewablePeriod"));
+		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		lifeCycle = GsonParser.parseInt(jsonObject.get("lifeCycle"));
+		nonRenewablePeriod = GsonParser.parseInt(jsonObject.get("nonRenewablePeriod"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPreviewModule");
-        kparams.add("name", this.name);
-        kparams.add("lifeCycle", this.lifeCycle);
-        kparams.add("nonRenewablePeriod", this.nonRenewablePeriod);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPreviewModule");
+		kparams.add("name", this.name);
+		kparams.add("lifeCycle", this.lifeCycle);
+		kparams.add("nonRenewablePeriod", this.nonRenewablePeriod);
+		return kparams;
+	}
 
 }
 

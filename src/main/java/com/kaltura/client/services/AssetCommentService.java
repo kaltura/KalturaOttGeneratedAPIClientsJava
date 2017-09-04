@@ -27,11 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.AssetComment;
 import com.kaltura.client.types.AssetCommentFilter;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -43,25 +41,35 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class AssetCommentService {
+	
+	public static class AddAssetCommentBuilder extends RequestBuilder<AssetComment, AssetComment.Tokenizer, AddAssetCommentBuilder> {
+		
+		public AddAssetCommentBuilder(AssetComment comment) {
+			super(AssetComment.class, "assetcomment", "add");
+			params.add("comment", comment);
+		}
+	}
 
 	/**  Add asset comments by asset id  */
-    public static RequestBuilder<AssetComment> add(AssetComment comment)  {
-        Params kparams = new Params();
-        kparams.add("comment", comment);
+    public static AddAssetCommentBuilder add(AssetComment comment)  {
+		return new AddAssetCommentBuilder(comment);
+	}
+	
+	public static class ListAssetCommentBuilder extends ListResponseRequestBuilder<AssetComment, AssetComment.Tokenizer, ListAssetCommentBuilder> {
+		
+		public ListAssetCommentBuilder(AssetCommentFilter filter, FilterPager pager) {
+			super(AssetComment.class, "assetcomment", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<AssetComment>(AssetComment.class, "assetcomment", "add", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<AssetComment>> list(AssetCommentFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListAssetCommentBuilder list(AssetCommentFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Returns asset comments by asset id  */
-    public static RequestBuilder<ListResponse<AssetComment>> list(AssetCommentFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<AssetComment>(AssetComment.class, "assetcomment", "list", kparams);
-    }
+    public static ListAssetCommentBuilder list(AssetCommentFilter filter, FilterPager pager)  {
+		return new ListAssetCommentBuilder(filter, pager);
+	}
 }

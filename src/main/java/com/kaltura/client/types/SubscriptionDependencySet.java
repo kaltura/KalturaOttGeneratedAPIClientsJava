@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,40 +41,49 @@ import com.google.gson.JsonObject;
 
 /**  Subscription Dependency Set  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SubscriptionDependencySet.Tokenizer.class)
 public class SubscriptionDependencySet extends SubscriptionSet {
+	
+	public interface Tokenizer extends SubscriptionSet.Tokenizer {
+		String baseSubscriptionId();
+	}
 
 	/**  Base Subscription identifier  */
-    private Long baseSubscriptionId;
+	private Long baseSubscriptionId;
 
-    // baseSubscriptionId:
-    public Long getBaseSubscriptionId(){
-        return this.baseSubscriptionId;
-    }
-    public void setBaseSubscriptionId(Long baseSubscriptionId){
-        this.baseSubscriptionId = baseSubscriptionId;
-    }
+	// baseSubscriptionId:
+	public Long getBaseSubscriptionId(){
+		return this.baseSubscriptionId;
+	}
+	public void setBaseSubscriptionId(Long baseSubscriptionId){
+		this.baseSubscriptionId = baseSubscriptionId;
+	}
+
+	public void baseSubscriptionId(String multirequestToken){
+		setToken("baseSubscriptionId", multirequestToken);
+	}
 
 
-    public SubscriptionDependencySet() {
-       super();
-    }
+	public SubscriptionDependencySet() {
+		super();
+	}
 
-    public SubscriptionDependencySet(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SubscriptionDependencySet(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        baseSubscriptionId = GsonParser.parseLong(jsonObject.get("baseSubscriptionId"));
+		// set members values:
+		baseSubscriptionId = GsonParser.parseLong(jsonObject.get("baseSubscriptionId"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSubscriptionDependencySet");
-        kparams.add("baseSubscriptionId", this.baseSubscriptionId);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSubscriptionDependencySet");
+		kparams.add("baseSubscriptionId", this.baseSubscriptionId);
+		return kparams;
+	}
 
 }
 

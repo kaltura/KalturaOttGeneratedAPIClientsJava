@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.HouseholdFrequencyType;
 import com.kaltura.client.types.Household;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,69 +39,116 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HouseholdService {
+	
+	public static class AddHouseholdBuilder extends RequestBuilder<Household, Household.Tokenizer, AddHouseholdBuilder> {
+		
+		public AddHouseholdBuilder(Household household) {
+			super(Household.class, "household", "add");
+			params.add("household", household);
+		}
+	}
 
 	/**  Creates a household for the user  */
-    public static RequestBuilder<Household> add(Household household)  {
-        Params kparams = new Params();
-        kparams.add("household", household);
+    public static AddHouseholdBuilder add(Household household)  {
+		return new AddHouseholdBuilder(household);
+	}
+	
+	public static class DeleteHouseholdBuilder extends RequestBuilder<Boolean, String, DeleteHouseholdBuilder> {
+		
+		public DeleteHouseholdBuilder(int id) {
+			super(Boolean.class, "household", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Household>(Household.class, "household", "add", kparams);
-    }
-
-    public static RequestBuilder<Boolean> delete()  {
-        return delete(Integer.MIN_VALUE);
-    }
+	public static DeleteHouseholdBuilder delete()  {
+		return delete(Integer.MIN_VALUE);
+	}
 
 	/**  Fully delete a household. Delete all of the household information, including
 	  users, devices, entitlements, payment methods and notification date.  */
-    public static RequestBuilder<Boolean> delete(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static DeleteHouseholdBuilder delete(int id)  {
+		return new DeleteHouseholdBuilder(id);
+	}
+	
+	public static class GetHouseholdBuilder extends RequestBuilder<Household, Household.Tokenizer, GetHouseholdBuilder> {
+		
+		public GetHouseholdBuilder(int id) {
+			super(Household.class, "household", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "household", "delete", kparams);
-    }
-
-    public static RequestBuilder<Household> get()  {
-        return get(Integer.MIN_VALUE);
-    }
+	public static GetHouseholdBuilder get()  {
+		return get(Integer.MIN_VALUE);
+	}
 
 	/**  Returns the household model  */
-    public static RequestBuilder<Household> get(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Household>(Household.class, "household", "get", kparams);
-    }
+    public static GetHouseholdBuilder get(int id)  {
+		return new GetHouseholdBuilder(id);
+	}
+	
+	public static class ResetFrequencyHouseholdBuilder extends RequestBuilder<Household, Household.Tokenizer, ResetFrequencyHouseholdBuilder> {
+		
+		public ResetFrequencyHouseholdBuilder(HouseholdFrequencyType frequencyType) {
+			super(Household.class, "household", "resetFrequency");
+			params.add("frequencyType", frequencyType);
+		}
+		
+		public void frequencyType(String multirequestToken) {
+			params.add("frequencyType", multirequestToken);
+		}
+	}
 
 	/**  Reset a household’s time limitation for removing user or device  */
-    public static RequestBuilder<Household> resetFrequency(HouseholdFrequencyType frequencyType)  {
-        Params kparams = new Params();
-        kparams.add("frequencyType", frequencyType);
-
-        return new RequestBuilder<Household>(Household.class, "household", "resetFrequency", kparams);
-    }
+    public static ResetFrequencyHouseholdBuilder resetFrequency(HouseholdFrequencyType frequencyType)  {
+		return new ResetFrequencyHouseholdBuilder(frequencyType);
+	}
+	
+	public static class ResumeHouseholdBuilder extends RequestBuilder<Boolean, String, ResumeHouseholdBuilder> {
+		
+		public ResumeHouseholdBuilder() {
+			super(Boolean.class, "household", "resume");
+		}
+	}
 
 	/**  Resumed a given household service to its previous service settings  */
-    public static RequestBuilder<Boolean> resume()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<Boolean>(Boolean.class, "household", "resume", kparams);
-    }
+    public static ResumeHouseholdBuilder resume()  {
+		return new ResumeHouseholdBuilder();
+	}
+	
+	public static class SuspendHouseholdBuilder extends RequestBuilder<Boolean, String, SuspendHouseholdBuilder> {
+		
+		public SuspendHouseholdBuilder() {
+			super(Boolean.class, "household", "suspend");
+		}
+	}
 
 	/**  Suspend a given household service. Sets the household status to
 	  “suspended&amp;quot;.The household service settings are maintained for later
 	  resume  */
-    public static RequestBuilder<Boolean> suspend()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<Boolean>(Boolean.class, "household", "suspend", kparams);
-    }
+    public static SuspendHouseholdBuilder suspend()  {
+		return new SuspendHouseholdBuilder();
+	}
+	
+	public static class UpdateHouseholdBuilder extends RequestBuilder<Household, Household.Tokenizer, UpdateHouseholdBuilder> {
+		
+		public UpdateHouseholdBuilder(Household household) {
+			super(Household.class, "household", "update");
+			params.add("household", household);
+		}
+	}
 
 	/**  Update the household name and description  */
-    public static RequestBuilder<Household> update(Household household)  {
-        Params kparams = new Params();
-        kparams.add("household", household);
-
-        return new RequestBuilder<Household>(Household.class, "household", "update", kparams);
-    }
+    public static UpdateHouseholdBuilder update(Household household)  {
+		return new UpdateHouseholdBuilder(household);
+	}
 }

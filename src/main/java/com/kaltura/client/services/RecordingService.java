@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Recording;
 import com.kaltura.client.types.RecordingFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -43,65 +41,111 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class RecordingService {
+	
+	public static class AddRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, AddRecordingBuilder> {
+		
+		public AddRecordingBuilder(Recording recording) {
+			super(Recording.class, "recording", "add");
+			params.add("recording", recording);
+		}
+	}
 
 	/**  Issue a record request for a program  */
-    public static RequestBuilder<Recording> add(Recording recording)  {
-        Params kparams = new Params();
-        kparams.add("recording", recording);
-
-        return new RequestBuilder<Recording>(Recording.class, "recording", "add", kparams);
-    }
+    public static AddRecordingBuilder add(Recording recording)  {
+		return new AddRecordingBuilder(recording);
+	}
+	
+	public static class CancelRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, CancelRecordingBuilder> {
+		
+		public CancelRecordingBuilder(long id) {
+			super(Recording.class, "recording", "cancel");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Cancel a previously requested recording. Cancel recording can be called for
 	  recording in status Scheduled or Recording Only  */
-    public static RequestBuilder<Recording> cancel(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Recording>(Recording.class, "recording", "cancel", kparams);
-    }
+    public static CancelRecordingBuilder cancel(long id)  {
+		return new CancelRecordingBuilder(id);
+	}
+	
+	public static class DeleteRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, DeleteRecordingBuilder> {
+		
+		public DeleteRecordingBuilder(long id) {
+			super(Recording.class, "recording", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete one or more user recording(s). Delete recording can be called only for
 	  recordings in status Recorded  */
-    public static RequestBuilder<Recording> delete(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Recording>(Recording.class, "recording", "delete", kparams);
-    }
+    public static DeleteRecordingBuilder delete(long id)  {
+		return new DeleteRecordingBuilder(id);
+	}
+	
+	public static class GetRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, GetRecordingBuilder> {
+		
+		public GetRecordingBuilder(long id) {
+			super(Recording.class, "recording", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Returns recording object by internal identifier  */
-    public static RequestBuilder<Recording> get(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static GetRecordingBuilder get(long id)  {
+		return new GetRecordingBuilder(id);
+	}
+	
+	public static class ListRecordingBuilder extends ListResponseRequestBuilder<Recording, Recording.Tokenizer, ListRecordingBuilder> {
+		
+		public ListRecordingBuilder(RecordingFilter filter, FilterPager pager) {
+			super(Recording.class, "recording", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Recording>(Recording.class, "recording", "get", kparams);
-    }
+	public static ListRecordingBuilder list()  {
+		return list(null);
+	}
 
-    public static RequestBuilder<ListResponse<Recording>> list()  {
-        return list(null);
-    }
-
-    public static RequestBuilder<ListResponse<Recording>> list(RecordingFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListRecordingBuilder list(RecordingFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Return a list of recordings for the household with optional filter by status and
 	  KSQL.  */
-    public static RequestBuilder<ListResponse<Recording>> list(RecordingFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<Recording>(Recording.class, "recording", "list", kparams);
-    }
+    public static ListRecordingBuilder list(RecordingFilter filter, FilterPager pager)  {
+		return new ListRecordingBuilder(filter, pager);
+	}
+	
+	public static class ProtectRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, ProtectRecordingBuilder> {
+		
+		public ProtectRecordingBuilder(long id) {
+			super(Recording.class, "recording", "protect");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Protects an existing recording from the cleanup process for the defined
 	  protection period  */
-    public static RequestBuilder<Recording> protect(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Recording>(Recording.class, "recording", "protect", kparams);
-    }
+    public static ProtectRecordingBuilder protect(long id)  {
+		return new ProtectRecordingBuilder(id);
+	}
 }

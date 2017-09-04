@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.ReminderType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.ReminderType;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,62 +42,81 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Reminder.Tokenizer.class)
 public class Reminder extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String name();
+		String id();
+		String type();
+	}
 
 	/**  Reminder name  */
-    private String name;
+	private String name;
 	/**  Reminder id  */
-    private Integer id;
+	private Integer id;
 	/**  Reminder type  */
-    private ReminderType type;
+	private ReminderType type;
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // id:
-    public Integer getId(){
-        return this.id;
-    }
-    public void setId(Integer id){
-        this.id = id;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // type:
-    public ReminderType getType(){
-        return this.type;
-    }
-    public void setType(ReminderType type){
-        this.type = type;
-    }
+	// id:
+	public Integer getId(){
+		return this.id;
+	}
+	public void setId(Integer id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// type:
+	public ReminderType getType(){
+		return this.type;
+	}
+	public void setType(ReminderType type){
+		this.type = type;
+	}
+
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
 
 
-    public Reminder() {
-       super();
-    }
+	public Reminder() {
+		super();
+	}
 
-    public Reminder(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Reminder(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        name = GsonParser.parseString(jsonObject.get("name"));
-        id = GsonParser.parseInt(jsonObject.get("id"));
-        type = ReminderType.get(GsonParser.parseString(jsonObject.get("type")));
+		// set members values:
+		name = GsonParser.parseString(jsonObject.get("name"));
+		id = GsonParser.parseInt(jsonObject.get("id"));
+		type = ReminderType.get(GsonParser.parseString(jsonObject.get("type")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaReminder");
-        kparams.add("type", this.type);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaReminder");
+		kparams.add("type", this.type);
+		return kparams;
+	}
 
 }
 

@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,40 +41,49 @@ import com.google.gson.JsonObject;
 
 /**  A string representation to return an array of ints  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(IntegerValue.Tokenizer.class)
 public class IntegerValue extends Value {
+	
+	public interface Tokenizer extends Value.Tokenizer {
+		String value();
+	}
 
 	/**  Value  */
-    private Integer value;
+	private Integer value;
 
-    // value:
-    public Integer getValue(){
-        return this.value;
-    }
-    public void setValue(Integer value){
-        this.value = value;
-    }
+	// value:
+	public Integer getValue(){
+		return this.value;
+	}
+	public void setValue(Integer value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
+	}
 
 
-    public IntegerValue() {
-       super();
-    }
+	public IntegerValue() {
+		super();
+	}
 
-    public IntegerValue(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public IntegerValue(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        value = GsonParser.parseInt(jsonObject.get("value"));
+		// set members values:
+		value = GsonParser.parseInt(jsonObject.get("value"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaIntegerValue");
-        kparams.add("value", this.value);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaIntegerValue");
+		kparams.add("value", this.value);
+		return kparams;
+	}
 
 }
 

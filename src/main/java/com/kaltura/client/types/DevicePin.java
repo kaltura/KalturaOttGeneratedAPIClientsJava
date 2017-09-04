@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,40 +42,49 @@ import com.google.gson.JsonObject;
 
 /**  Device pin  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DevicePin.Tokenizer.class)
 public class DevicePin extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String pin();
+	}
 
 	/**  Device pin  */
-    private String pin;
+	private String pin;
 
-    // pin:
-    public String getPin(){
-        return this.pin;
-    }
-    public void setPin(String pin){
-        this.pin = pin;
-    }
+	// pin:
+	public String getPin(){
+		return this.pin;
+	}
+	public void setPin(String pin){
+		this.pin = pin;
+	}
+
+	public void pin(String multirequestToken){
+		setToken("pin", multirequestToken);
+	}
 
 
-    public DevicePin() {
-       super();
-    }
+	public DevicePin() {
+		super();
+	}
 
-    public DevicePin(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public DevicePin(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        pin = GsonParser.parseString(jsonObject.get("pin"));
+		// set members values:
+		pin = GsonParser.parseString(jsonObject.get("pin"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaDevicePin");
-        kparams.add("pin", this.pin);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDevicePin");
+		kparams.add("pin", this.pin);
+		return kparams;
+	}
 
 }
 

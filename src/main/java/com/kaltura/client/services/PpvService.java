@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Ppv;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,12 +38,21 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PpvService {
+	
+	public static class GetPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, GetPpvBuilder> {
+		
+		public GetPpvBuilder(long id) {
+			super(Ppv.class, "ppv", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Returns ppv object by internal identifier  */
-    public static RequestBuilder<Ppv> get(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Ppv>(Ppv.class, "ppv", "get", kparams);
-    }
+    public static GetPpvBuilder get(long id)  {
+		return new GetPpvBuilder(id);
+	}
 }

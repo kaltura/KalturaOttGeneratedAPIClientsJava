@@ -27,13 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.SocialFriendActivity;
 import com.kaltura.client.types.SocialFriendActivityFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,21 +40,26 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SocialFriendActivityService {
+	
+	public static class ListSocialFriendActivityBuilder extends ListResponseRequestBuilder<SocialFriendActivity, SocialFriendActivity.Tokenizer, ListSocialFriendActivityBuilder> {
+		
+		public ListSocialFriendActivityBuilder(SocialFriendActivityFilter filter, FilterPager pager) {
+			super(SocialFriendActivity.class, "socialfriendactivity", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-    public static RequestBuilder<ListResponse<SocialFriendActivity>> list()  {
-        return list(null);
-    }
+	public static ListSocialFriendActivityBuilder list()  {
+		return list(null);
+	}
 
-    public static RequestBuilder<ListResponse<SocialFriendActivity>> list(SocialFriendActivityFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListSocialFriendActivityBuilder list(SocialFriendActivityFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Get a list of the social friends activity for a user  */
-    public static RequestBuilder<ListResponse<SocialFriendActivity>> list(SocialFriendActivityFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<SocialFriendActivity>(SocialFriendActivity.class, "socialfriendactivity", "list", kparams);
-    }
+    public static ListSocialFriendActivityBuilder list(SocialFriendActivityFilter filter, FilterPager pager)  {
+		return new ListSocialFriendActivityBuilder(filter, pager);
+	}
 }

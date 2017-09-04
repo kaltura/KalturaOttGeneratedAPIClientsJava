@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,63 +41,82 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ConfigurationGroupTag.Tokenizer.class)
 public class ConfigurationGroupTag extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String configurationGroupId();
+		String partnerId();
+		String tag();
+	}
 
 	/**  Configuration group identifier  */
-    private String configurationGroupId;
+	private String configurationGroupId;
 	/**  Partner identifier  */
-    private Integer partnerId;
+	private Integer partnerId;
 	/**  Tag  */
-    private String tag;
+	private String tag;
 
-    // configurationGroupId:
-    public String getConfigurationGroupId(){
-        return this.configurationGroupId;
-    }
-    public void setConfigurationGroupId(String configurationGroupId){
-        this.configurationGroupId = configurationGroupId;
-    }
+	// configurationGroupId:
+	public String getConfigurationGroupId(){
+		return this.configurationGroupId;
+	}
+	public void setConfigurationGroupId(String configurationGroupId){
+		this.configurationGroupId = configurationGroupId;
+	}
 
-    // partnerId:
-    public Integer getPartnerId(){
-        return this.partnerId;
-    }
-    public void setPartnerId(Integer partnerId){
-        this.partnerId = partnerId;
-    }
+	public void configurationGroupId(String multirequestToken){
+		setToken("configurationGroupId", multirequestToken);
+	}
 
-    // tag:
-    public String getTag(){
-        return this.tag;
-    }
-    public void setTag(String tag){
-        this.tag = tag;
-    }
+	// partnerId:
+	public Integer getPartnerId(){
+		return this.partnerId;
+	}
+	public void setPartnerId(Integer partnerId){
+		this.partnerId = partnerId;
+	}
+
+	public void partnerId(String multirequestToken){
+		setToken("partnerId", multirequestToken);
+	}
+
+	// tag:
+	public String getTag(){
+		return this.tag;
+	}
+	public void setTag(String tag){
+		this.tag = tag;
+	}
+
+	public void tag(String multirequestToken){
+		setToken("tag", multirequestToken);
+	}
 
 
-    public ConfigurationGroupTag() {
-       super();
-    }
+	public ConfigurationGroupTag() {
+		super();
+	}
 
-    public ConfigurationGroupTag(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public ConfigurationGroupTag(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        configurationGroupId = GsonParser.parseString(jsonObject.get("configurationGroupId"));
-        partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
-        tag = GsonParser.parseString(jsonObject.get("tag"));
+		// set members values:
+		configurationGroupId = GsonParser.parseString(jsonObject.get("configurationGroupId"));
+		partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
+		tag = GsonParser.parseString(jsonObject.get("tag"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaConfigurationGroupTag");
-        kparams.add("configurationGroupId", this.configurationGroupId);
-        kparams.add("tag", this.tag);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaConfigurationGroupTag");
+		kparams.add("configurationGroupId", this.configurationGroupId);
+		kparams.add("tag", this.tag);
+		return kparams;
+	}
 
 }
 

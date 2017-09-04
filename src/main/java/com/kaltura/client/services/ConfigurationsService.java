@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Configurations;
 import com.kaltura.client.types.ConfigurationsFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import com.kaltura.client.utils.request.ServeRequestBuilder;
@@ -43,63 +41,129 @@ import com.kaltura.client.utils.request.ServeRequestBuilder;
  */
 
 public class ConfigurationsService {
+	
+	public static class AddConfigurationsBuilder extends RequestBuilder<Configurations, Configurations.Tokenizer, AddConfigurationsBuilder> {
+		
+		public AddConfigurationsBuilder(Configurations configurations) {
+			super(Configurations.class, "configurations", "add");
+			params.add("configurations", configurations);
+		}
+	}
 
 	/**  Add a new device configuration to a configuration group  */
-    public static RequestBuilder<Configurations> add(Configurations configurations)  {
-        Params kparams = new Params();
-        kparams.add("configurations", configurations);
-
-        return new RequestBuilder<Configurations>(Configurations.class, "configurations", "add", kparams);
-    }
+    public static AddConfigurationsBuilder add(Configurations configurations)  {
+		return new AddConfigurationsBuilder(configurations);
+	}
+	
+	public static class DeleteConfigurationsBuilder extends RequestBuilder<Boolean, String, DeleteConfigurationsBuilder> {
+		
+		public DeleteConfigurationsBuilder(String id) {
+			super(Boolean.class, "configurations", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete a device configuration  */
-    public static RequestBuilder<Boolean> delete(String id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "configurations", "delete", kparams);
-    }
+    public static DeleteConfigurationsBuilder delete(String id)  {
+		return new DeleteConfigurationsBuilder(id);
+	}
+	
+	public static class GetConfigurationsBuilder extends RequestBuilder<Configurations, Configurations.Tokenizer, GetConfigurationsBuilder> {
+		
+		public GetConfigurationsBuilder(String id) {
+			super(Configurations.class, "configurations", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Return the device configuration  */
-    public static RequestBuilder<Configurations> get(String id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<Configurations>(Configurations.class, "configurations", "get", kparams);
-    }
+    public static GetConfigurationsBuilder get(String id)  {
+		return new GetConfigurationsBuilder(id);
+	}
+	
+	public static class ListConfigurationsBuilder extends ListResponseRequestBuilder<Configurations, Configurations.Tokenizer, ListConfigurationsBuilder> {
+		
+		public ListConfigurationsBuilder(ConfigurationsFilter filter) {
+			super(Configurations.class, "configurations", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Return a list of device configurations of a configuration group  */
-    public static RequestBuilder<ListResponse<Configurations>> list(ConfigurationsFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
+    public static ListConfigurationsBuilder list(ConfigurationsFilter filter)  {
+		return new ListConfigurationsBuilder(filter);
+	}
+	
+	public static class ServeByDeviceConfigurationsBuilder extends ServeRequestBuilder {
+		
+		public ServeByDeviceConfigurationsBuilder(String applicationName, String clientVersion, String platform, String udid, String tag, int partnerId) {
+			super("configurations", "serveByDevice");
+			params.add("applicationName", applicationName);
+			params.add("clientVersion", clientVersion);
+			params.add("platform", platform);
+			params.add("udid", udid);
+			params.add("tag", tag);
+			params.add("partnerId", partnerId);
+		}
+		
+		public void applicationName(String multirequestToken) {
+			params.add("applicationName", multirequestToken);
+		}
+		
+		public void clientVersion(String multirequestToken) {
+			params.add("clientVersion", multirequestToken);
+		}
+		
+		public void platform(String multirequestToken) {
+			params.add("platform", multirequestToken);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+		
+		public void tag(String multirequestToken) {
+			params.add("tag", multirequestToken);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+	}
 
-        return new ListResponseRequestBuilder<Configurations>(Configurations.class, "configurations", "list", kparams);
-    }
-
-    public static RequestBuilder<String> serveByDevice(String applicationName, String clientVersion, String platform, String udid, String tag)  {
-        return serveByDevice(applicationName, clientVersion, platform, udid, tag, 0);
-    }
+	public static ServeByDeviceConfigurationsBuilder serveByDevice(String applicationName, String clientVersion, String platform, String udid, String tag)  {
+		return serveByDevice(applicationName, clientVersion, platform, udid, tag, 0);
+	}
 
 	/**  Return a device configuration applicable for a specific device (UDID), app name,
 	  software version, platform and optionally a configuration group’s tag  */
-    public static RequestBuilder<String> serveByDevice(String applicationName, String clientVersion, String platform, String udid, String tag, int partnerId)  {
-        Params kparams = new Params();
-        kparams.add("applicationName", applicationName);
-        kparams.add("clientVersion", clientVersion);
-        kparams.add("platform", platform);
-        kparams.add("udid", udid);
-        kparams.add("tag", tag);
-        kparams.add("partnerId", partnerId);
-
-        return new ServeRequestBuilder("configurations", "serveByDevice", kparams);
-    }
+    public static ServeByDeviceConfigurationsBuilder serveByDevice(String applicationName, String clientVersion, String platform, String udid, String tag, int partnerId)  {
+		return new ServeByDeviceConfigurationsBuilder(applicationName, clientVersion, platform, udid, tag, partnerId);
+	}
+	
+	public static class UpdateConfigurationsBuilder extends RequestBuilder<Configurations, Configurations.Tokenizer, UpdateConfigurationsBuilder> {
+		
+		public UpdateConfigurationsBuilder(String id, Configurations configurations) {
+			super(Configurations.class, "configurations", "update");
+			params.add("id", id);
+			params.add("configurations", configurations);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Update device configuration  */
-    public static RequestBuilder<Configurations> update(String id, Configurations configurations)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("configurations", configurations);
-
-        return new RequestBuilder<Configurations>(Configurations.class, "configurations", "update", kparams);
-    }
+    public static UpdateConfigurationsBuilder update(String id, Configurations configurations)  {
+		return new UpdateConfigurationsBuilder(id, configurations);
+	}
 }

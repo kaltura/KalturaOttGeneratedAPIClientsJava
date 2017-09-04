@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,39 +34,39 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum AnnouncementRecipientsType implements EnumAsString {
-    ALL("All"),
-    LOGGEDIN("LoggedIn"),
-    GUESTS("Guests"),
-    OTHER("Other");
+	ALL("All"),
+	LOGGEDIN("LoggedIn"),
+	GUESTS("Guests"),
+	OTHER("Other");
 
-    private String value;
+	private String value;
 
-    AnnouncementRecipientsType(String value) {
-        this.value = value;
-    }
+	AnnouncementRecipientsType(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static AnnouncementRecipientsType get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over AnnouncementRecipientsType defined values and compare the inner value with the given one:
-        for(AnnouncementRecipientsType item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return AnnouncementRecipientsType.values().length > 0 ? AnnouncementRecipientsType.values()[0]: null;
+	public static AnnouncementRecipientsType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over AnnouncementRecipientsType defined values and compare the inner value with the given one:
+		for(AnnouncementRecipientsType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return AnnouncementRecipientsType.values().length > 0 ? AnnouncementRecipientsType.values()[0]: null;
    }
 }

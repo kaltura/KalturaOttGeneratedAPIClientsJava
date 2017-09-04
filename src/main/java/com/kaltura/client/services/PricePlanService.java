@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PricePlan;
 import com.kaltura.client.types.PricePlanFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -42,25 +40,39 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PricePlanService {
+	
+	public static class ListPricePlanBuilder extends ListResponseRequestBuilder<PricePlan, PricePlan.Tokenizer, ListPricePlanBuilder> {
+		
+		public ListPricePlanBuilder(PricePlanFilter filter) {
+			super(PricePlan.class, "priceplan", "list");
+			params.add("filter", filter);
+		}
+	}
 
-    public static RequestBuilder<ListResponse<PricePlan>> list()  {
-        return list(null);
-    }
+	public static ListPricePlanBuilder list()  {
+		return list(null);
+	}
 
 	/**  Returns a list of price plans by IDs  */
-    public static RequestBuilder<ListResponse<PricePlan>> list(PricePlanFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<PricePlan>(PricePlan.class, "priceplan", "list", kparams);
-    }
+    public static ListPricePlanBuilder list(PricePlanFilter filter)  {
+		return new ListPricePlanBuilder(filter);
+	}
+	
+	public static class UpdatePricePlanBuilder extends RequestBuilder<PricePlan, PricePlan.Tokenizer, UpdatePricePlanBuilder> {
+		
+		public UpdatePricePlanBuilder(long id, PricePlan pricePlan) {
+			super(PricePlan.class, "priceplan", "update");
+			params.add("id", id);
+			params.add("pricePlan", pricePlan);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Updates a price plan  */
-    public static RequestBuilder<PricePlan> update(long id, PricePlan pricePlan)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("pricePlan", pricePlan);
-
-        return new RequestBuilder<PricePlan>(PricePlan.class, "priceplan", "update", kparams);
-    }
+    public static UpdatePricePlanBuilder update(long id, PricePlan pricePlan)  {
+		return new UpdatePricePlanBuilder(id, pricePlan);
+	}
 }

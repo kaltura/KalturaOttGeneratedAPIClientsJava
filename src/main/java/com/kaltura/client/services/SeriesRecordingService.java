@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.SeriesRecording;
 import com.kaltura.client.types.SeriesRecordingFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -42,70 +40,137 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SeriesRecordingService {
+	
+	public static class AddSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, AddSeriesRecordingBuilder> {
+		
+		public AddSeriesRecordingBuilder(SeriesRecording recording) {
+			super(SeriesRecording.class, "seriesrecording", "add");
+			params.add("recording", recording);
+		}
+	}
 
 	/**  Issue a record request for a complete season or series  */
-    public static RequestBuilder<SeriesRecording> add(SeriesRecording recording)  {
-        Params kparams = new Params();
-        kparams.add("recording", recording);
-
-        return new RequestBuilder<SeriesRecording>(SeriesRecording.class, "seriesrecording", "add", kparams);
-    }
+    public static AddSeriesRecordingBuilder add(SeriesRecording recording)  {
+		return new AddSeriesRecordingBuilder(recording);
+	}
+	
+	public static class CancelSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, CancelSeriesRecordingBuilder> {
+		
+		public CancelSeriesRecordingBuilder(long id) {
+			super(SeriesRecording.class, "seriesrecording", "cancel");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Cancel a previously requested series recording. Cancel series recording can be
 	  called for recording in status Scheduled or Recording Only  */
-    public static RequestBuilder<SeriesRecording> cancel(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<SeriesRecording>(SeriesRecording.class, "seriesrecording", "cancel", kparams);
-    }
+    public static CancelSeriesRecordingBuilder cancel(long id)  {
+		return new CancelSeriesRecordingBuilder(id);
+	}
+	
+	public static class CancelByEpgIdSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, CancelByEpgIdSeriesRecordingBuilder> {
+		
+		public CancelByEpgIdSeriesRecordingBuilder(long id, long epgId) {
+			super(SeriesRecording.class, "seriesrecording", "cancelByEpgId");
+			params.add("id", id);
+			params.add("epgId", epgId);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void epgId(String multirequestToken) {
+			params.add("epgId", multirequestToken);
+		}
+	}
 
 	/**  Cancel EPG recording that was recorded as part of series  */
-    public static RequestBuilder<SeriesRecording> cancelByEpgId(long id, long epgId)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("epgId", epgId);
-
-        return new RequestBuilder<SeriesRecording>(SeriesRecording.class, "seriesrecording", "cancelByEpgId", kparams);
-    }
+    public static CancelByEpgIdSeriesRecordingBuilder cancelByEpgId(long id, long epgId)  {
+		return new CancelByEpgIdSeriesRecordingBuilder(id, epgId);
+	}
+	
+	public static class CancelBySeasonNumberSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, CancelBySeasonNumberSeriesRecordingBuilder> {
+		
+		public CancelBySeasonNumberSeriesRecordingBuilder(long id, long seasonNumber) {
+			super(SeriesRecording.class, "seriesrecording", "cancelBySeasonNumber");
+			params.add("id", id);
+			params.add("seasonNumber", seasonNumber);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void seasonNumber(String multirequestToken) {
+			params.add("seasonNumber", multirequestToken);
+		}
+	}
 
 	/**  Cancel Season recording epgs that was recorded as part of series  */
-    public static RequestBuilder<SeriesRecording> cancelBySeasonNumber(long id, long seasonNumber)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("seasonNumber", seasonNumber);
-
-        return new RequestBuilder<SeriesRecording>(SeriesRecording.class, "seriesrecording", "cancelBySeasonNumber", kparams);
-    }
+    public static CancelBySeasonNumberSeriesRecordingBuilder cancelBySeasonNumber(long id, long seasonNumber)  {
+		return new CancelBySeasonNumberSeriesRecordingBuilder(id, seasonNumber);
+	}
+	
+	public static class DeleteSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, DeleteSeriesRecordingBuilder> {
+		
+		public DeleteSeriesRecordingBuilder(long id) {
+			super(SeriesRecording.class, "seriesrecording", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete series recording(s). Delete series recording can be called recordings in
 	  any status  */
-    public static RequestBuilder<SeriesRecording> delete(long id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<SeriesRecording>(SeriesRecording.class, "seriesrecording", "delete", kparams);
-    }
+    public static DeleteSeriesRecordingBuilder delete(long id)  {
+		return new DeleteSeriesRecordingBuilder(id);
+	}
+	
+	public static class DeleteBySeasonNumberSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, DeleteBySeasonNumberSeriesRecordingBuilder> {
+		
+		public DeleteBySeasonNumberSeriesRecordingBuilder(long id, int seasonNumber) {
+			super(SeriesRecording.class, "seriesrecording", "deleteBySeasonNumber");
+			params.add("id", id);
+			params.add("seasonNumber", seasonNumber);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void seasonNumber(String multirequestToken) {
+			params.add("seasonNumber", multirequestToken);
+		}
+	}
 
 	/**  Delete Season recording epgs that was recorded as part of series  */
-    public static RequestBuilder<SeriesRecording> deleteBySeasonNumber(long id, int seasonNumber)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("seasonNumber", seasonNumber);
+    public static DeleteBySeasonNumberSeriesRecordingBuilder deleteBySeasonNumber(long id, int seasonNumber)  {
+		return new DeleteBySeasonNumberSeriesRecordingBuilder(id, seasonNumber);
+	}
+	
+	public static class ListSeriesRecordingBuilder extends ListResponseRequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, ListSeriesRecordingBuilder> {
+		
+		public ListSeriesRecordingBuilder(SeriesRecordingFilter filter) {
+			super(SeriesRecording.class, "seriesrecording", "list");
+			params.add("filter", filter);
+		}
+	}
 
-        return new RequestBuilder<SeriesRecording>(SeriesRecording.class, "seriesrecording", "deleteBySeasonNumber", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<SeriesRecording>> list()  {
-        return list(null);
-    }
+	public static ListSeriesRecordingBuilder list()  {
+		return list(null);
+	}
 
 	/**  Return a list of series recordings for the household with optional filter by
 	  status and KSQL.  */
-    public static RequestBuilder<ListResponse<SeriesRecording>> list(SeriesRecordingFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<SeriesRecording>(SeriesRecording.class, "seriesrecording", "list", kparams);
-    }
+    public static ListSeriesRecordingBuilder list(SeriesRecordingFilter filter)  {
+		return new ListSeriesRecordingBuilder(filter);
+	}
 }

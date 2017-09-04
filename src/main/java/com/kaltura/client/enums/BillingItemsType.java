@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,41 +34,41 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum BillingItemsType implements EnumAsString {
-    UNKNOWN("unknown"),
-    PPV("ppv"),
-    SUBSCRIPTION("subscription"),
-    PRE_PAID("pre_paid"),
-    PRE_PAID_EXPIRED("pre_paid_expired"),
-    COLLECTION("collection");
+	UNKNOWN("unknown"),
+	PPV("ppv"),
+	SUBSCRIPTION("subscription"),
+	PRE_PAID("pre_paid"),
+	PRE_PAID_EXPIRED("pre_paid_expired"),
+	COLLECTION("collection");
 
-    private String value;
+	private String value;
 
-    BillingItemsType(String value) {
-        this.value = value;
-    }
+	BillingItemsType(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static BillingItemsType get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over BillingItemsType defined values and compare the inner value with the given one:
-        for(BillingItemsType item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
+	public static BillingItemsType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over BillingItemsType defined values and compare the inner value with the given one:
+		for(BillingItemsType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
    }
 }

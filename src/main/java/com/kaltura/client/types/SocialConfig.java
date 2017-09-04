@@ -27,11 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,23 +41,27 @@ import com.google.gson.JsonObject;
 
 /**  Returns social configuration for the partner  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SocialConfig.Tokenizer.class)
 public class SocialConfig extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+	}
 
 
 
-    public SocialConfig() {
-       super();
-    }
+	public SocialConfig() {
+		super();
+	}
 
-    public SocialConfig(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
-    }
+	public SocialConfig(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSocialConfig");
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSocialConfig");
+		return kparams;
+	}
 
 }
 

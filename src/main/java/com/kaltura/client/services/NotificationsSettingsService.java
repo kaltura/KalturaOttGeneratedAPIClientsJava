@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.NotificationsSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,19 +38,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class NotificationsSettingsService {
+	
+	public static class GetNotificationsSettingsBuilder extends RequestBuilder<NotificationsSettings, NotificationsSettings.Tokenizer, GetNotificationsSettingsBuilder> {
+		
+		public GetNotificationsSettingsBuilder() {
+			super(NotificationsSettings.class, "notificationssettings", "get");
+		}
+	}
 
 	/**  Retrieve the user’s notification settings.  */
-    public static RequestBuilder<NotificationsSettings> get()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<NotificationsSettings>(NotificationsSettings.class, "notificationssettings", "get", kparams);
-    }
+    public static GetNotificationsSettingsBuilder get()  {
+		return new GetNotificationsSettingsBuilder();
+	}
+	
+	public static class UpdateNotificationsSettingsBuilder extends RequestBuilder<Boolean, String, UpdateNotificationsSettingsBuilder> {
+		
+		public UpdateNotificationsSettingsBuilder(NotificationsSettings settings) {
+			super(Boolean.class, "notificationssettings", "update");
+			params.add("settings", settings);
+		}
+	}
 
 	/**  Update the user’s notification settings.  */
-    public static RequestBuilder<Boolean> update(NotificationsSettings settings)  {
-        Params kparams = new Params();
-        kparams.add("settings", settings);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "notificationssettings", "update", kparams);
-    }
+    public static UpdateNotificationsSettingsBuilder update(NotificationsSettings settings)  {
+		return new UpdateNotificationsSettingsBuilder(settings);
+	}
 }

@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.types.Session;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,32 +39,55 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SessionService {
+	
+	public static class GetSessionBuilder extends RequestBuilder<Session, Session.Tokenizer, GetSessionBuilder> {
+		
+		public GetSessionBuilder(String session) {
+			super(Session.class, "session", "get");
+			params.add("session", session);
+		}
+		
+		public void session(String multirequestToken) {
+			params.add("session", multirequestToken);
+		}
+	}
 
-    public static RequestBuilder<Session> get()  {
-        return get(null);
-    }
+	public static GetSessionBuilder get()  {
+		return get(null);
+	}
 
 	/**  Parses KS  */
-    public static RequestBuilder<Session> get(String session)  {
-        Params kparams = new Params();
-        kparams.add("session", session);
-
-        return new RequestBuilder<Session>(Session.class, "session", "get", kparams);
-    }
+    public static GetSessionBuilder get(String session)  {
+		return new GetSessionBuilder(session);
+	}
+	
+	public static class RevokeSessionBuilder extends RequestBuilder<Boolean, String, RevokeSessionBuilder> {
+		
+		public RevokeSessionBuilder() {
+			super(Boolean.class, "session", "revoke");
+		}
+	}
 
 	/**  Revokes all the sessions (KS) of a given user  */
-    public static RequestBuilder<Boolean> revoke()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<Boolean>(Boolean.class, "session", "revoke", kparams);
-    }
+    public static RevokeSessionBuilder revoke()  {
+		return new RevokeSessionBuilder();
+	}
+	
+	public static class SwitchUserSessionBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, SwitchUserSessionBuilder> {
+		
+		public SwitchUserSessionBuilder(String userIdToSwitch) {
+			super(LoginSession.class, "session", "switchUser");
+			params.add("userIdToSwitch", userIdToSwitch);
+		}
+		
+		public void userIdToSwitch(String multirequestToken) {
+			params.add("userIdToSwitch", multirequestToken);
+		}
+	}
 
 	/**  Switching the user in the session by generating a new session for a new user
 	  within the same household  */
-    public static RequestBuilder<LoginSession> switchUser(String userIdToSwitch)  {
-        Params kparams = new Params();
-        kparams.add("userIdToSwitch", userIdToSwitch);
-
-        return new RequestBuilder<LoginSession>(LoginSession.class, "session", "switchUser", kparams);
-    }
+    public static SwitchUserSessionBuilder switchUser(String userIdToSwitch)  {
+		return new SwitchUserSessionBuilder(userIdToSwitch);
+	}
 }

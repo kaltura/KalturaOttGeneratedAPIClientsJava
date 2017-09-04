@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
@@ -36,37 +34,37 @@ import com.google.gson.annotations.SerializedName;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum ContextType implements EnumAsString {
-    NONE("none"),
-    RECORDING("recording");
+	NONE("none"),
+	RECORDING("recording");
 
-    private String value;
+	private String value;
 
-    ContextType(String value) {
-        this.value = value;
-    }
+	ContextType(String value) {
+		this.value = value;
+	}
 
-    @Override
-    public String getValue() {
-        return this.value;
-    }
+	@Override
+	public String getValue() {
+		return this.value;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    public static ContextType get(String value) {
-        if(value == null)
-        {
-        	return null;
-        }
-        
-        // goes over ContextType defined values and compare the inner value with the given one:
-        for(ContextType item: values()) {
-            if(item.getValue().equals(value)) {
-                return item;
-            }
-        }
-        // in case the requested value was not found in the enum values, we return the first item as default.
-        return ContextType.values().length > 0 ? ContextType.values()[0]: null;
+	public static ContextType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over ContextType defined values and compare the inner value with the given one:
+		for(ContextType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return ContextType.values().length > 0 ? ContextType.values()[0]: null;
    }
 }

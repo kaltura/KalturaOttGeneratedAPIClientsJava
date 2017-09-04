@@ -27,12 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.AssetStatistics;
 import com.kaltura.client.types.AssetStatisticsQuery;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,12 +39,17 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class AssetStatisticsService {
+	
+	public static class QueryAssetStatisticsBuilder extends ListResponseRequestBuilder<AssetStatistics, AssetStatistics.Tokenizer, QueryAssetStatisticsBuilder> {
+		
+		public QueryAssetStatisticsBuilder(AssetStatisticsQuery query) {
+			super(AssetStatistics.class, "assetstatistics", "query");
+			params.add("query", query);
+		}
+	}
 
 	/**  Returns statistics for given list of assets by type and / or time period  */
-    public static RequestBuilder<ListResponse<AssetStatistics>> query(AssetStatisticsQuery query)  {
-        Params kparams = new Params();
-        kparams.add("query", query);
-
-        return new ListResponseRequestBuilder<AssetStatistics>(AssetStatistics.class, "assetstatistics", "query", kparams);
-    }
+    public static QueryAssetStatisticsBuilder query(AssetStatisticsQuery query)  {
+		return new QueryAssetStatisticsBuilder(query);
+	}
 }

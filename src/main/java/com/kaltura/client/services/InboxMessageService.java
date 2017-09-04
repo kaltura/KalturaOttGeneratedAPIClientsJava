@@ -27,12 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.InboxMessageStatus;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.InboxMessage;
 import com.kaltura.client.types.InboxMessageFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -44,38 +42,65 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class InboxMessageService {
+	
+	public static class GetInboxMessageBuilder extends RequestBuilder<InboxMessage, InboxMessage.Tokenizer, GetInboxMessageBuilder> {
+		
+		public GetInboxMessageBuilder(String id) {
+			super(InboxMessage.class, "inboxmessage", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  TBD  */
-    public static RequestBuilder<InboxMessage> get(String id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static GetInboxMessageBuilder get(String id)  {
+		return new GetInboxMessageBuilder(id);
+	}
+	
+	public static class ListInboxMessageBuilder extends ListResponseRequestBuilder<InboxMessage, InboxMessage.Tokenizer, ListInboxMessageBuilder> {
+		
+		public ListInboxMessageBuilder(InboxMessageFilter filter, FilterPager pager) {
+			super(InboxMessage.class, "inboxmessage", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<InboxMessage>(InboxMessage.class, "inboxmessage", "get", kparams);
-    }
+	public static ListInboxMessageBuilder list()  {
+		return list(null);
+	}
 
-    public static RequestBuilder<ListResponse<InboxMessage>> list()  {
-        return list(null);
-    }
-
-    public static RequestBuilder<ListResponse<InboxMessage>> list(InboxMessageFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListInboxMessageBuilder list(InboxMessageFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  List inbox messages  */
-    public static RequestBuilder<ListResponse<InboxMessage>> list(InboxMessageFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<InboxMessage>(InboxMessage.class, "inboxmessage", "list", kparams);
-    }
+    public static ListInboxMessageBuilder list(InboxMessageFilter filter, FilterPager pager)  {
+		return new ListInboxMessageBuilder(filter, pager);
+	}
+	
+	public static class UpdateStatusInboxMessageBuilder extends RequestBuilder<Boolean, String, UpdateStatusInboxMessageBuilder> {
+		
+		public UpdateStatusInboxMessageBuilder(String id, InboxMessageStatus status) {
+			super(Boolean.class, "inboxmessage", "updateStatus");
+			params.add("id", id);
+			params.add("status", status);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void status(String multirequestToken) {
+			params.add("status", multirequestToken);
+		}
+	}
 
 	/**  Updates the message status.  */
-    public static RequestBuilder<Boolean> updateStatus(String id, InboxMessageStatus status)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("status", status);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "inboxmessage", "updateStatus", kparams);
-    }
+    public static UpdateStatusInboxMessageBuilder updateStatus(String id, InboxMessageStatus status)  {
+		return new UpdateStatusInboxMessageBuilder(id, status);
+	}
 }

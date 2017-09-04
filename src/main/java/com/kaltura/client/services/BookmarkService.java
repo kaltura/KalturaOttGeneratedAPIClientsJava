@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.BookmarkFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -42,25 +40,35 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class BookmarkService {
+	
+	public static class AddBookmarkBuilder extends RequestBuilder<Boolean, String, AddBookmarkBuilder> {
+		
+		public AddBookmarkBuilder(Bookmark bookmark) {
+			super(Boolean.class, "bookmark", "add");
+			params.add("bookmark", bookmark);
+		}
+	}
 
 	/**  Report player position and action for the user on the watched asset. Player
 	  position is used to later allow resume watching.  */
-    public static RequestBuilder<Boolean> add(Bookmark bookmark)  {
-        Params kparams = new Params();
-        kparams.add("bookmark", bookmark);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "bookmark", "add", kparams);
-    }
+    public static AddBookmarkBuilder add(Bookmark bookmark)  {
+		return new AddBookmarkBuilder(bookmark);
+	}
+	
+	public static class ListBookmarkBuilder extends ListResponseRequestBuilder<Bookmark, Bookmark.Tokenizer, ListBookmarkBuilder> {
+		
+		public ListBookmarkBuilder(BookmarkFilter filter) {
+			super(Bookmark.class, "bookmark", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Returns player position record/s for the requested asset and the requesting
 	  user.               If default user makes the request – player position
 	  records are provided for all of the users in the household.              If
 	  non-default user makes the request - player position records are provided for
 	  the requesting user and the default user of the household.  */
-    public static RequestBuilder<ListResponse<Bookmark>> list(BookmarkFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Bookmark>(Bookmark.class, "bookmark", "list", kparams);
-    }
+    public static ListBookmarkBuilder list(BookmarkFilter filter)  {
+		return new ListBookmarkBuilder(filter);
+	}
 }

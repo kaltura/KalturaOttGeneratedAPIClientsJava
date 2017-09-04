@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -43,21 +41,39 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SubscriptionService {
+	
+	public static class ListSubscriptionBuilder extends ListResponseRequestBuilder<Subscription, Subscription.Tokenizer, ListSubscriptionBuilder> {
+		
+		public ListSubscriptionBuilder(SubscriptionFilter filter) {
+			super(Subscription.class, "subscription", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Returns a list of subscriptions requested by Subscription ID or file ID  */
-    public static RequestBuilder<ListResponse<Subscription>> list(SubscriptionFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<Subscription>(Subscription.class, "subscription", "list", kparams);
-    }
+    public static ListSubscriptionBuilder list(SubscriptionFilter filter)  {
+		return new ListSubscriptionBuilder(filter);
+	}
+	
+	public static class ValidateCouponSubscriptionBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, ValidateCouponSubscriptionBuilder> {
+		
+		public ValidateCouponSubscriptionBuilder(int id, String code) {
+			super(Coupon.class, "subscription", "validateCoupon");
+			params.add("id", id);
+			params.add("code", code);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void code(String multirequestToken) {
+			params.add("code", multirequestToken);
+		}
+	}
 
 	/**  Returns information about a coupon for subscription  */
-    public static RequestBuilder<Coupon> validateCoupon(int id, String code)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("code", code);
-
-        return new RequestBuilder<Coupon>(Coupon.class, "subscription", "validateCoupon", kparams);
-    }
+    public static ValidateCouponSubscriptionBuilder validateCoupon(int id, String code)  {
+		return new ValidateCouponSubscriptionBuilder(id, code);
+	}
 }

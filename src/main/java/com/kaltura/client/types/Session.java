@@ -27,12 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.enums.SessionType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,124 +42,151 @@ import com.google.gson.JsonObject;
 
 /**  Kaltura Session  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Session.Tokenizer.class)
 public class Session extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String ks();
+		String partnerId();
+		String userId();
+		String expiry();
+		String privileges();
+		String udid();
+		String createDate();
+	}
 
 	/**  KS  */
-    private String ks;
-	/**  Session type  */
-    private SessionType sessionType;
+	private String ks;
 	/**  Partner identifier  */
-    private Integer partnerId;
+	private Integer partnerId;
 	/**  User identifier  */
-    private String userId;
+	private String userId;
 	/**  Expiry  */
-    private Integer expiry;
+	private Integer expiry;
 	/**  Privileges  */
-    private String privileges;
+	private String privileges;
 	/**  UDID  */
-    private String udid;
+	private String udid;
 	/**  Create date  */
-    private Integer createDate;
+	private Integer createDate;
 
-    // ks:
-    public String getKs(){
-        return this.ks;
-    }
-    public void setKs(String ks){
-        this.ks = ks;
-    }
+	// ks:
+	public String getKs(){
+		return this.ks;
+	}
+	public void setKs(String ks){
+		this.ks = ks;
+	}
 
-    // sessionType:
-    public SessionType getSessionType(){
-        return this.sessionType;
-    }
-    public void setSessionType(SessionType sessionType){
-        this.sessionType = sessionType;
-    }
+	public void ks(String multirequestToken){
+		setToken("ks", multirequestToken);
+	}
 
-    // partnerId:
-    public Integer getPartnerId(){
-        return this.partnerId;
-    }
-    public void setPartnerId(Integer partnerId){
-        this.partnerId = partnerId;
-    }
+	// partnerId:
+	public Integer getPartnerId(){
+		return this.partnerId;
+	}
+	public void setPartnerId(Integer partnerId){
+		this.partnerId = partnerId;
+	}
 
-    // userId:
-    public String getUserId(){
-        return this.userId;
-    }
-    public void setUserId(String userId){
-        this.userId = userId;
-    }
+	public void partnerId(String multirequestToken){
+		setToken("partnerId", multirequestToken);
+	}
 
-    // expiry:
-    public Integer getExpiry(){
-        return this.expiry;
-    }
-    public void setExpiry(Integer expiry){
-        this.expiry = expiry;
-    }
+	// userId:
+	public String getUserId(){
+		return this.userId;
+	}
+	public void setUserId(String userId){
+		this.userId = userId;
+	}
 
-    // privileges:
-    public String getPrivileges(){
-        return this.privileges;
-    }
-    public void setPrivileges(String privileges){
-        this.privileges = privileges;
-    }
+	public void userId(String multirequestToken){
+		setToken("userId", multirequestToken);
+	}
 
-    // udid:
-    public String getUdid(){
-        return this.udid;
-    }
-    public void setUdid(String udid){
-        this.udid = udid;
-    }
+	// expiry:
+	public Integer getExpiry(){
+		return this.expiry;
+	}
+	public void setExpiry(Integer expiry){
+		this.expiry = expiry;
+	}
 
-    // createDate:
-    public Integer getCreateDate(){
-        return this.createDate;
-    }
-    public void setCreateDate(Integer createDate){
-        this.createDate = createDate;
-    }
+	public void expiry(String multirequestToken){
+		setToken("expiry", multirequestToken);
+	}
+
+	// privileges:
+	public String getPrivileges(){
+		return this.privileges;
+	}
+	public void setPrivileges(String privileges){
+		this.privileges = privileges;
+	}
+
+	public void privileges(String multirequestToken){
+		setToken("privileges", multirequestToken);
+	}
+
+	// udid:
+	public String getUdid(){
+		return this.udid;
+	}
+	public void setUdid(String udid){
+		this.udid = udid;
+	}
+
+	public void udid(String multirequestToken){
+		setToken("udid", multirequestToken);
+	}
+
+	// createDate:
+	public Integer getCreateDate(){
+		return this.createDate;
+	}
+	public void setCreateDate(Integer createDate){
+		this.createDate = createDate;
+	}
+
+	public void createDate(String multirequestToken){
+		setToken("createDate", multirequestToken);
+	}
 
 
-    public Session() {
-       super();
-    }
+	public Session() {
+		super();
+	}
 
-    public Session(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Session(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        ks = GsonParser.parseString(jsonObject.get("ks"));
-        sessionType = SessionType.get(GsonParser.parseInt(jsonObject.get("sessionType")));
-        partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
-        userId = GsonParser.parseString(jsonObject.get("userId"));
-        expiry = GsonParser.parseInt(jsonObject.get("expiry"));
-        privileges = GsonParser.parseString(jsonObject.get("privileges"));
-        udid = GsonParser.parseString(jsonObject.get("udid"));
-        createDate = GsonParser.parseInt(jsonObject.get("createDate"));
+		// set members values:
+		ks = GsonParser.parseString(jsonObject.get("ks"));
+		partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
+		userId = GsonParser.parseString(jsonObject.get("userId"));
+		expiry = GsonParser.parseInt(jsonObject.get("expiry"));
+		privileges = GsonParser.parseString(jsonObject.get("privileges"));
+		udid = GsonParser.parseString(jsonObject.get("udid"));
+		createDate = GsonParser.parseInt(jsonObject.get("createDate"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSession");
-        kparams.add("ks", this.ks);
-        kparams.add("sessionType", this.sessionType);
-        kparams.add("partnerId", this.partnerId);
-        kparams.add("userId", this.userId);
-        kparams.add("expiry", this.expiry);
-        kparams.add("privileges", this.privileges);
-        kparams.add("udid", this.udid);
-        kparams.add("createDate", this.createDate);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSession");
+		kparams.add("ks", this.ks);
+		kparams.add("partnerId", this.partnerId);
+		kparams.add("userId", this.userId);
+		kparams.add("expiry", this.expiry);
+		kparams.add("privileges", this.privileges);
+		kparams.add("udid", this.udid);
+		kparams.add("createDate", this.createDate);
+		return kparams;
+	}
 
 }
 

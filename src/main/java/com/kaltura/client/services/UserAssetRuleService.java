@@ -27,12 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.UserAssetRule;
 import com.kaltura.client.types.UserAssetRuleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,13 +39,18 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class UserAssetRuleService {
+	
+	public static class ListUserAssetRuleBuilder extends ListResponseRequestBuilder<UserAssetRule, UserAssetRule.Tokenizer, ListUserAssetRuleBuilder> {
+		
+		public ListUserAssetRuleBuilder(UserAssetRuleFilter filter) {
+			super(UserAssetRule.class, "userassetrule", "list");
+			params.add("filter", filter);
+		}
+	}
 
 	/**  Retrieve all the rules (parental, geo, device or user-type) that applies for
 	  this user and asset.  */
-    public static RequestBuilder<ListResponse<UserAssetRule>> list(UserAssetRuleFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new ListResponseRequestBuilder<UserAssetRule>(UserAssetRule.class, "userassetrule", "list", kparams);
-    }
+    public static ListUserAssetRuleBuilder list(UserAssetRuleFilter filter)  {
+		return new ListUserAssetRuleBuilder(filter);
+	}
 }

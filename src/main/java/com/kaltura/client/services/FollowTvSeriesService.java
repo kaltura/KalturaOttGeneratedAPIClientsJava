@@ -27,11 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.FollowTvSeries;
 import com.kaltura.client.types.FollowTvSeriesFilter;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -43,36 +41,55 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class FollowTvSeriesService {
+	
+	public static class AddFollowTvSeriesBuilder extends RequestBuilder<FollowTvSeries, FollowTvSeries.Tokenizer, AddFollowTvSeriesBuilder> {
+		
+		public AddFollowTvSeriesBuilder(FollowTvSeries followTvSeries) {
+			super(FollowTvSeries.class, "followtvseries", "add");
+			params.add("followTvSeries", followTvSeries);
+		}
+	}
 
 	/**  Add a user&amp;#39;s tv series follow.              Possible status codes:
 	  UserAlreadyFollowing = 8013, NotFound = 500007, InvalidAssetId = 4024  */
-    public static RequestBuilder<FollowTvSeries> add(FollowTvSeries followTvSeries)  {
-        Params kparams = new Params();
-        kparams.add("followTvSeries", followTvSeries);
-
-        return new RequestBuilder<FollowTvSeries>(FollowTvSeries.class, "followtvseries", "add", kparams);
-    }
+    public static AddFollowTvSeriesBuilder add(FollowTvSeries followTvSeries)  {
+		return new AddFollowTvSeriesBuilder(followTvSeries);
+	}
+	
+	public static class DeleteFollowTvSeriesBuilder extends RequestBuilder<Boolean, String, DeleteFollowTvSeriesBuilder> {
+		
+		public DeleteFollowTvSeriesBuilder(int assetId) {
+			super(Boolean.class, "followtvseries", "delete");
+			params.add("assetId", assetId);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+	}
 
 	/**  Delete a user&amp;#39;s tv series follow.              Possible status codes:
 	  UserNotFollowing = 8012, NotFound = 500007, InvalidAssetId = 4024,
 	  AnnouncementNotFound = 8006  */
-    public static RequestBuilder<Boolean> delete(int assetId)  {
-        Params kparams = new Params();
-        kparams.add("assetId", assetId);
+    public static DeleteFollowTvSeriesBuilder delete(int assetId)  {
+		return new DeleteFollowTvSeriesBuilder(assetId);
+	}
+	
+	public static class ListFollowTvSeriesBuilder extends ListResponseRequestBuilder<FollowTvSeries, FollowTvSeries.Tokenizer, ListFollowTvSeriesBuilder> {
+		
+		public ListFollowTvSeriesBuilder(FollowTvSeriesFilter filter, FilterPager pager) {
+			super(FollowTvSeries.class, "followtvseries", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "followtvseries", "delete", kparams);
-    }
-
-    public static RequestBuilder<ListResponse<FollowTvSeries>> list(FollowTvSeriesFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListFollowTvSeriesBuilder list(FollowTvSeriesFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  List user&amp;#39;s tv series follows.              Possible status codes:  */
-    public static RequestBuilder<ListResponse<FollowTvSeries>> list(FollowTvSeriesFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<FollowTvSeries>(FollowTvSeries.class, "followtvseries", "list", kparams);
-    }
+    public static ListFollowTvSeriesBuilder list(FollowTvSeriesFilter filter, FilterPager pager)  {
+		return new ListFollowTvSeriesBuilder(filter, pager);
+	}
 }

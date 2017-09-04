@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.SearchHistory;
 import com.kaltura.client.types.SearchHistoryFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -43,42 +41,61 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SearchHistoryService {
+	
+	public static class CleanSearchHistoryBuilder extends RequestBuilder<Boolean, String, CleanSearchHistoryBuilder> {
+		
+		public CleanSearchHistoryBuilder(SearchHistoryFilter filter) {
+			super(Boolean.class, "searchhistory", "clean");
+			params.add("filter", filter);
+		}
+	}
 
-    public static RequestBuilder<Boolean> clean()  {
-        return clean(null);
-    }
+	public static CleanSearchHistoryBuilder clean()  {
+		return clean(null);
+	}
 
 	/**  Clean the user’s search history  */
-    public static RequestBuilder<Boolean> clean(SearchHistoryFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "searchhistory", "clean", kparams);
-    }
+    public static CleanSearchHistoryBuilder clean(SearchHistoryFilter filter)  {
+		return new CleanSearchHistoryBuilder(filter);
+	}
+	
+	public static class DeleteSearchHistoryBuilder extends RequestBuilder<Boolean, String, DeleteSearchHistoryBuilder> {
+		
+		public DeleteSearchHistoryBuilder(String id) {
+			super(Boolean.class, "searchhistory", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Delete a specific search history.              Possible error code: 2032 -
 	  ItemNotFound  */
-    public static RequestBuilder<Boolean> delete(String id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
+    public static DeleteSearchHistoryBuilder delete(String id)  {
+		return new DeleteSearchHistoryBuilder(id);
+	}
+	
+	public static class ListSearchHistoryBuilder extends ListResponseRequestBuilder<SearchHistory, SearchHistory.Tokenizer, ListSearchHistoryBuilder> {
+		
+		public ListSearchHistoryBuilder(SearchHistoryFilter filter, FilterPager pager) {
+			super(SearchHistory.class, "searchhistory", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<Boolean>(Boolean.class, "searchhistory", "delete", kparams);
-    }
+	public static ListSearchHistoryBuilder list()  {
+		return list(null);
+	}
 
-    public static RequestBuilder<ListResponse<SearchHistory>> list()  {
-        return list(null);
-    }
-
-    public static RequestBuilder<ListResponse<SearchHistory>> list(SearchHistoryFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListSearchHistoryBuilder list(SearchHistoryFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Get user&amp;#39;s last search requests  */
-    public static RequestBuilder<ListResponse<SearchHistory>> list(SearchHistoryFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<SearchHistory>(SearchHistory.class, "searchhistory", "list", kparams);
-    }
+    public static ListSearchHistoryBuilder list(SearchHistoryFilter filter, FilterPager pager)  {
+		return new ListSearchHistoryBuilder(filter, pager);
+	}
 }

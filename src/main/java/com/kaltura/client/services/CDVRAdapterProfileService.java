@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.CDVRAdapterProfile;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,44 +39,81 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class CDVRAdapterProfileService {
+	
+	public static class AddCDVRAdapterProfileBuilder extends RequestBuilder<CDVRAdapterProfile, CDVRAdapterProfile.Tokenizer, AddCDVRAdapterProfileBuilder> {
+		
+		public AddCDVRAdapterProfileBuilder(CDVRAdapterProfile adapter) {
+			super(CDVRAdapterProfile.class, "cdvradapterprofile", "add");
+			params.add("adapter", adapter);
+		}
+	}
 
 	/**  Insert new C-DVR adapter for partner  */
-    public static RequestBuilder<CDVRAdapterProfile> add(CDVRAdapterProfile adapter)  {
-        Params kparams = new Params();
-        kparams.add("adapter", adapter);
-
-        return new RequestBuilder<CDVRAdapterProfile>(CDVRAdapterProfile.class, "cdvradapterprofile", "add", kparams);
-    }
+    public static AddCDVRAdapterProfileBuilder add(CDVRAdapterProfile adapter)  {
+		return new AddCDVRAdapterProfileBuilder(adapter);
+	}
+	
+	public static class DeleteCDVRAdapterProfileBuilder extends RequestBuilder<Boolean, String, DeleteCDVRAdapterProfileBuilder> {
+		
+		public DeleteCDVRAdapterProfileBuilder(int adapterId) {
+			super(Boolean.class, "cdvradapterprofile", "delete");
+			params.add("adapterId", adapterId);
+		}
+		
+		public void adapterId(String multirequestToken) {
+			params.add("adapterId", multirequestToken);
+		}
+	}
 
 	/**  Delete C-DVR adapter by C-DVR adapter id  */
-    public static RequestBuilder<Boolean> delete(int adapterId)  {
-        Params kparams = new Params();
-        kparams.add("adapterId", adapterId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "cdvradapterprofile", "delete", kparams);
-    }
+    public static DeleteCDVRAdapterProfileBuilder delete(int adapterId)  {
+		return new DeleteCDVRAdapterProfileBuilder(adapterId);
+	}
+	
+	public static class GenerateSharedSecretCDVRAdapterProfileBuilder extends RequestBuilder<CDVRAdapterProfile, CDVRAdapterProfile.Tokenizer, GenerateSharedSecretCDVRAdapterProfileBuilder> {
+		
+		public GenerateSharedSecretCDVRAdapterProfileBuilder(int adapterId) {
+			super(CDVRAdapterProfile.class, "cdvradapterprofile", "generateSharedSecret");
+			params.add("adapterId", adapterId);
+		}
+		
+		public void adapterId(String multirequestToken) {
+			params.add("adapterId", multirequestToken);
+		}
+	}
 
 	/**  Generate C-DVR adapter shared secret  */
-    public static RequestBuilder<CDVRAdapterProfile> generateSharedSecret(int adapterId)  {
-        Params kparams = new Params();
-        kparams.add("adapterId", adapterId);
-
-        return new RequestBuilder<CDVRAdapterProfile>(CDVRAdapterProfile.class, "cdvradapterprofile", "generateSharedSecret", kparams);
-    }
+    public static GenerateSharedSecretCDVRAdapterProfileBuilder generateSharedSecret(int adapterId)  {
+		return new GenerateSharedSecretCDVRAdapterProfileBuilder(adapterId);
+	}
+	
+	public static class ListCDVRAdapterProfileBuilder extends ListResponseRequestBuilder<CDVRAdapterProfile, CDVRAdapterProfile.Tokenizer, ListCDVRAdapterProfileBuilder> {
+		
+		public ListCDVRAdapterProfileBuilder() {
+			super(CDVRAdapterProfile.class, "cdvradapterprofile", "list");
+		}
+	}
 
 	/**  Returns all C-DVR adapters for partner  */
-    public static RequestBuilder<ListResponse<CDVRAdapterProfile>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<CDVRAdapterProfile>(CDVRAdapterProfile.class, "cdvradapterprofile", "list", kparams);
-    }
+    public static ListCDVRAdapterProfileBuilder list()  {
+		return new ListCDVRAdapterProfileBuilder();
+	}
+	
+	public static class UpdateCDVRAdapterProfileBuilder extends RequestBuilder<CDVRAdapterProfile, CDVRAdapterProfile.Tokenizer, UpdateCDVRAdapterProfileBuilder> {
+		
+		public UpdateCDVRAdapterProfileBuilder(int adapterId, CDVRAdapterProfile adapter) {
+			super(CDVRAdapterProfile.class, "cdvradapterprofile", "update");
+			params.add("adapterId", adapterId);
+			params.add("adapter", adapter);
+		}
+		
+		public void adapterId(String multirequestToken) {
+			params.add("adapterId", multirequestToken);
+		}
+	}
 
 	/**  Update C-DVR adapter details  */
-    public static RequestBuilder<CDVRAdapterProfile> update(int adapterId, CDVRAdapterProfile adapter)  {
-        Params kparams = new Params();
-        kparams.add("adapterId", adapterId);
-        kparams.add("adapter", adapter);
-
-        return new RequestBuilder<CDVRAdapterProfile>(CDVRAdapterProfile.class, "cdvradapterprofile", "update", kparams);
-    }
+    public static UpdateCDVRAdapterProfileBuilder update(int adapterId, CDVRAdapterProfile adapter)  {
+		return new UpdateCDVRAdapterProfileBuilder(adapterId, adapter);
+	}
 }

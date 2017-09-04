@@ -27,14 +27,14 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaFieldName;
 import com.kaltura.client.enums.MetaType;
-import com.kaltura.client.enums.AssetType;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -45,124 +45,168 @@ import com.google.gson.JsonObject;
 
 /**  Asset meta  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(Meta.Tokenizer.class)
 public class Meta extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String name();
+		String fieldName();
+		String type();
+		String assetType();
+		String features();
+		String id();
+		String parentId();
+		String partnerId();
+	}
 
 	/**  Meta name for the partner  */
-    private String name;
+	private String name;
 	/**  Meta system field name  */
-    private MetaFieldName fieldName;
+	private MetaFieldName fieldName;
 	/**  Meta value type  */
-    private MetaType type;
+	private MetaType type;
 	/**  Asset type this meta is related to  */
-    private AssetType assetType;
+	private AssetType assetType;
 	/**  List of supported features  */
-    private String features;
+	private String features;
 	/**  Meta id  */
-    private String id;
+	private String id;
 	/**  Parent meta id  */
-    private String parentId;
+	private String parentId;
 	/**  Partner Id  */
-    private Integer partnerId;
+	private Integer partnerId;
 
-    // name:
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-    // fieldName:
-    public MetaFieldName getFieldName(){
-        return this.fieldName;
-    }
-    public void setFieldName(MetaFieldName fieldName){
-        this.fieldName = fieldName;
-    }
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
-    // type:
-    public MetaType getType(){
-        return this.type;
-    }
-    public void setType(MetaType type){
-        this.type = type;
-    }
+	// fieldName:
+	public MetaFieldName getFieldName(){
+		return this.fieldName;
+	}
+	public void setFieldName(MetaFieldName fieldName){
+		this.fieldName = fieldName;
+	}
 
-    // assetType:
-    public AssetType getAssetType(){
-        return this.assetType;
-    }
-    public void setAssetType(AssetType assetType){
-        this.assetType = assetType;
-    }
+	public void fieldName(String multirequestToken){
+		setToken("fieldName", multirequestToken);
+	}
 
-    // features:
-    public String getFeatures(){
-        return this.features;
-    }
-    public void setFeatures(String features){
-        this.features = features;
-    }
+	// type:
+	public MetaType getType(){
+		return this.type;
+	}
+	public void setType(MetaType type){
+		this.type = type;
+	}
 
-    // id:
-    public String getId(){
-        return this.id;
-    }
-    public void setId(String id){
-        this.id = id;
-    }
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
 
-    // parentId:
-    public String getParentId(){
-        return this.parentId;
-    }
-    public void setParentId(String parentId){
-        this.parentId = parentId;
-    }
+	// assetType:
+	public AssetType getAssetType(){
+		return this.assetType;
+	}
+	public void setAssetType(AssetType assetType){
+		this.assetType = assetType;
+	}
 
-    // partnerId:
-    public Integer getPartnerId(){
-        return this.partnerId;
-    }
-    public void setPartnerId(Integer partnerId){
-        this.partnerId = partnerId;
-    }
+	public void assetType(String multirequestToken){
+		setToken("assetType", multirequestToken);
+	}
+
+	// features:
+	public String getFeatures(){
+		return this.features;
+	}
+	public void setFeatures(String features){
+		this.features = features;
+	}
+
+	public void features(String multirequestToken){
+		setToken("features", multirequestToken);
+	}
+
+	// id:
+	public String getId(){
+		return this.id;
+	}
+	public void setId(String id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// parentId:
+	public String getParentId(){
+		return this.parentId;
+	}
+	public void setParentId(String parentId){
+		this.parentId = parentId;
+	}
+
+	public void parentId(String multirequestToken){
+		setToken("parentId", multirequestToken);
+	}
+
+	// partnerId:
+	public Integer getPartnerId(){
+		return this.partnerId;
+	}
+	public void setPartnerId(Integer partnerId){
+		this.partnerId = partnerId;
+	}
+
+	public void partnerId(String multirequestToken){
+		setToken("partnerId", multirequestToken);
+	}
 
 
-    public Meta() {
-       super();
-    }
+	public Meta() {
+		super();
+	}
 
-    public Meta(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public Meta(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        name = GsonParser.parseString(jsonObject.get("name"));
-        fieldName = MetaFieldName.get(GsonParser.parseString(jsonObject.get("fieldName")));
-        type = MetaType.get(GsonParser.parseString(jsonObject.get("type")));
-        assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
-        features = GsonParser.parseString(jsonObject.get("features"));
-        id = GsonParser.parseString(jsonObject.get("id"));
-        parentId = GsonParser.parseString(jsonObject.get("parentId"));
-        partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
+		// set members values:
+		name = GsonParser.parseString(jsonObject.get("name"));
+		fieldName = MetaFieldName.get(GsonParser.parseString(jsonObject.get("fieldName")));
+		type = MetaType.get(GsonParser.parseString(jsonObject.get("type")));
+		assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
+		features = GsonParser.parseString(jsonObject.get("features"));
+		id = GsonParser.parseString(jsonObject.get("id"));
+		parentId = GsonParser.parseString(jsonObject.get("parentId"));
+		partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaMeta");
-        kparams.add("name", this.name);
-        kparams.add("fieldName", this.fieldName);
-        kparams.add("type", this.type);
-        kparams.add("assetType", this.assetType);
-        kparams.add("features", this.features);
-        kparams.add("id", this.id);
-        kparams.add("parentId", this.parentId);
-        kparams.add("partnerId", this.partnerId);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaMeta");
+		kparams.add("name", this.name);
+		kparams.add("fieldName", this.fieldName);
+		kparams.add("type", this.type);
+		kparams.add("assetType", this.assetType);
+		kparams.add("features", this.features);
+		kparams.add("id", this.id);
+		kparams.add("parentId", this.parentId);
+		kparams.add("partnerId", this.partnerId);
+		return kparams;
+	}
 
 }
 

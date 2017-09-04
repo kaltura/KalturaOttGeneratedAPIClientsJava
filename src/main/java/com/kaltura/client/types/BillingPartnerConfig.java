@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.enums.PartnerConfigurationType;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.PartnerConfigurationType;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,52 +42,66 @@ import com.google.gson.JsonObject;
 
 /**  Partner billing configuration  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BillingPartnerConfig.Tokenizer.class)
 public class BillingPartnerConfig extends PartnerConfiguration {
+	
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		String value();
+		String type();
+	}
 
 	/**  configuration value  */
-    private String value;
+	private String value;
 	/**  partner configuration type  */
-    private PartnerConfigurationType type;
+	private PartnerConfigurationType type;
 
-    // value:
-    public String getValue(){
-        return this.value;
-    }
-    public void setValue(String value){
-        this.value = value;
-    }
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
 
-    // type:
-    public PartnerConfigurationType getType(){
-        return this.type;
-    }
-    public void setType(PartnerConfigurationType type){
-        this.type = type;
-    }
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
+	}
+
+	// type:
+	public PartnerConfigurationType getType(){
+		return this.type;
+	}
+	public void setType(PartnerConfigurationType type){
+		this.type = type;
+	}
+
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
 
 
-    public BillingPartnerConfig() {
-       super();
-    }
+	public BillingPartnerConfig() {
+		super();
+	}
 
-    public BillingPartnerConfig(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public BillingPartnerConfig(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        value = GsonParser.parseString(jsonObject.get("value"));
-        type = PartnerConfigurationType.get(GsonParser.parseString(jsonObject.get("type")));
+		// set members values:
+		value = GsonParser.parseString(jsonObject.get("value"));
+		type = PartnerConfigurationType.get(GsonParser.parseString(jsonObject.get("type")));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaBillingPartnerConfig");
-        kparams.add("value", this.value);
-        kparams.add("type", this.type);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBillingPartnerConfig");
+		kparams.add("value", this.value);
+		kparams.add("type", this.type);
+		return kparams;
+	}
 
 }
 

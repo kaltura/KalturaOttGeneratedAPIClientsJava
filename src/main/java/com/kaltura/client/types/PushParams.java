@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,52 +41,66 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PushParams.Tokenizer.class)
 public class PushParams extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String token();
+		String externalToken();
+	}
 
 	/**  Token  */
-    private String token;
+	private String token;
 	/**  External token  */
-    private String externalToken;
+	private String externalToken;
 
-    // token:
-    public String getToken(){
-        return this.token;
-    }
-    public void setToken(String token){
-        this.token = token;
-    }
+	// token:
+	public String getToken(){
+		return this.token;
+	}
+	public void setToken(String token){
+		this.token = token;
+	}
 
-    // externalToken:
-    public String getExternalToken(){
-        return this.externalToken;
-    }
-    public void setExternalToken(String externalToken){
-        this.externalToken = externalToken;
-    }
+	public void token(String multirequestToken){
+		setToken("token", multirequestToken);
+	}
+
+	// externalToken:
+	public String getExternalToken(){
+		return this.externalToken;
+	}
+	public void setExternalToken(String externalToken){
+		this.externalToken = externalToken;
+	}
+
+	public void externalToken(String multirequestToken){
+		setToken("externalToken", multirequestToken);
+	}
 
 
-    public PushParams() {
-       super();
-    }
+	public PushParams() {
+		super();
+	}
 
-    public PushParams(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public PushParams(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        token = GsonParser.parseString(jsonObject.get("token"));
-        externalToken = GsonParser.parseString(jsonObject.get("externalToken"));
+		// set members values:
+		token = GsonParser.parseString(jsonObject.get("token"));
+		externalToken = GsonParser.parseString(jsonObject.get("externalToken"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaPushParams");
-        kparams.add("token", this.token);
-        kparams.add("externalToken", this.externalToken);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPushParams");
+		kparams.add("token", this.token);
+		kparams.add("externalToken", this.externalToken);
+		return kparams;
+	}
 
 }
 

@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.TimeShiftedTvPartnerSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,21 +38,31 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class TimeShiftedTvPartnerSettingsService {
+	
+	public static class GetTimeShiftedTvPartnerSettingsBuilder extends RequestBuilder<TimeShiftedTvPartnerSettings, TimeShiftedTvPartnerSettings.Tokenizer, GetTimeShiftedTvPartnerSettingsBuilder> {
+		
+		public GetTimeShiftedTvPartnerSettingsBuilder() {
+			super(TimeShiftedTvPartnerSettings.class, "timeshiftedtvpartnersettings", "get");
+		}
+	}
 
 	/**  Retrieve the account’s time-shifted TV settings (catch-up and C-DVR,
 	  Trick-play, Start-over)  */
-    public static RequestBuilder<TimeShiftedTvPartnerSettings> get()  {
-        Params kparams = new Params();
-
-        return new RequestBuilder<TimeShiftedTvPartnerSettings>(TimeShiftedTvPartnerSettings.class, "timeshiftedtvpartnersettings", "get", kparams);
-    }
+    public static GetTimeShiftedTvPartnerSettingsBuilder get()  {
+		return new GetTimeShiftedTvPartnerSettingsBuilder();
+	}
+	
+	public static class UpdateTimeShiftedTvPartnerSettingsBuilder extends RequestBuilder<Boolean, String, UpdateTimeShiftedTvPartnerSettingsBuilder> {
+		
+		public UpdateTimeShiftedTvPartnerSettingsBuilder(TimeShiftedTvPartnerSettings settings) {
+			super(Boolean.class, "timeshiftedtvpartnersettings", "update");
+			params.add("settings", settings);
+		}
+	}
 
 	/**  Configure the account’s time-shifted TV settings (catch-up and C-DVR,
 	  Trick-play, Start-over)  */
-    public static RequestBuilder<Boolean> update(TimeShiftedTvPartnerSettings settings)  {
-        Params kparams = new Params();
-        kparams.add("settings", settings);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "timeshiftedtvpartnersettings", "update", kparams);
-    }
+    public static UpdateTimeShiftedTvPartnerSettingsBuilder update(TimeShiftedTvPartnerSettings settings)  {
+		return new UpdateTimeShiftedTvPartnerSettingsBuilder(settings);
+	}
 }

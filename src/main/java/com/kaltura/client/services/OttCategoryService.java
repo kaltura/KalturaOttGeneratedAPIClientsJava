@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.OTTCategory;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,12 +38,21 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class OttCategoryService {
+	
+	public static class GetOttCategoryBuilder extends RequestBuilder<OTTCategory, OTTCategory.Tokenizer, GetOttCategoryBuilder> {
+		
+		public GetOttCategoryBuilder(int id) {
+			super(OTTCategory.class, "ottcategory", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
 
 	/**  Retrieve the list of categories (hierarchical) and their associated channels  */
-    public static RequestBuilder<OTTCategory> get(int id)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-
-        return new RequestBuilder<OTTCategory>(OTTCategory.class, "ottcategory", "get", kparams);
-    }
+    public static GetOttCategoryBuilder get(int id)  {
+		return new GetOttCategoryBuilder(id);
+	}
 }

@@ -27,10 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,23 +40,27 @@ import com.google.gson.JsonObject;
 
 /**  Subscription details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SubscriptionSwitchSet.Tokenizer.class)
 public class SubscriptionSwitchSet extends SubscriptionSet {
+	
+	public interface Tokenizer extends SubscriptionSet.Tokenizer {
+	}
 
 
 
-    public SubscriptionSwitchSet() {
-       super();
-    }
+	public SubscriptionSwitchSet() {
+		super();
+	}
 
-    public SubscriptionSwitchSet(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
-    }
+	public SubscriptionSwitchSet(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSubscriptionSwitchSet");
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSubscriptionSwitchSet");
+		return kparams;
+	}
 
 }
 

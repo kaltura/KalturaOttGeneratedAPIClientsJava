@@ -27,12 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.UserInterestTopic;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,64 +43,79 @@ import com.google.gson.JsonObject;
 
 /**  User interest topic  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(UserInterestTopic.Tokenizer.class)
 public class UserInterestTopic extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String metaId();
+		String value();
+		UserInterestTopic.Tokenizer parentTopic();
+	}
 
 	/**  Meta identifier  */
-    private String metaId;
+	private String metaId;
 	/**  Meta Value  */
-    private String value;
+	private String value;
 	/**  Parent topic  */
-    private UserInterestTopic parentTopic;
+	private UserInterestTopic parentTopic;
 
-    // metaId:
-    public String getMetaId(){
-        return this.metaId;
-    }
-    public void setMetaId(String metaId){
-        this.metaId = metaId;
-    }
+	// metaId:
+	public String getMetaId(){
+		return this.metaId;
+	}
+	public void setMetaId(String metaId){
+		this.metaId = metaId;
+	}
 
-    // value:
-    public String getValue(){
-        return this.value;
-    }
-    public void setValue(String value){
-        this.value = value;
-    }
+	public void metaId(String multirequestToken){
+		setToken("metaId", multirequestToken);
+	}
 
-    // parentTopic:
-    public UserInterestTopic getParentTopic(){
-        return this.parentTopic;
-    }
-    public void setParentTopic(UserInterestTopic parentTopic){
-        this.parentTopic = parentTopic;
-    }
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
+	}
+
+	// parentTopic:
+	public UserInterestTopic getParentTopic(){
+		return this.parentTopic;
+	}
+	public void setParentTopic(UserInterestTopic parentTopic){
+		this.parentTopic = parentTopic;
+	}
 
 
-    public UserInterestTopic() {
-       super();
-    }
+	public UserInterestTopic() {
+		super();
+	}
 
-    public UserInterestTopic(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public UserInterestTopic(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        metaId = GsonParser.parseString(jsonObject.get("metaId"));
-        value = GsonParser.parseString(jsonObject.get("value"));
-        parentTopic = GsonParser.parseObject(jsonObject.getAsJsonObject("parentTopic"), UserInterestTopic.class);
+		// set members values:
+		metaId = GsonParser.parseString(jsonObject.get("metaId"));
+		value = GsonParser.parseString(jsonObject.get("value"));
+		parentTopic = GsonParser.parseObject(jsonObject.getAsJsonObject("parentTopic"), UserInterestTopic.class);
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaUserInterestTopic");
-        kparams.add("metaId", this.metaId);
-        kparams.add("value", this.value);
-        kparams.add("parentTopic", this.parentTopic);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaUserInterestTopic");
+		kparams.add("metaId", this.metaId);
+		kparams.add("value", this.value);
+		kparams.add("parentTopic", this.parentTopic);
+		return kparams;
+	}
 
 }
 

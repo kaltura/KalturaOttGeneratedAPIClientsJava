@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,40 +41,49 @@ import com.google.gson.JsonObject;
 
 /**  A string representation to return an array of strings  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(StringValue.Tokenizer.class)
 public class StringValue extends Value {
+	
+	public interface Tokenizer extends Value.Tokenizer {
+		String value();
+	}
 
 	/**  Value  */
-    private String value;
+	private String value;
 
-    // value:
-    public String getValue(){
-        return this.value;
-    }
-    public void setValue(String value){
-        this.value = value;
-    }
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
+	}
 
 
-    public StringValue() {
-       super();
-    }
+	public StringValue() {
+		super();
+	}
 
-    public StringValue(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public StringValue(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        value = GsonParser.parseString(jsonObject.get("value"));
+		// set members values:
+		value = GsonParser.parseString(jsonObject.get("value"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaStringValue");
-        kparams.add("value", this.value);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaStringValue");
+		kparams.add("value", this.value);
+		return kparams;
+	}
 
 }
 

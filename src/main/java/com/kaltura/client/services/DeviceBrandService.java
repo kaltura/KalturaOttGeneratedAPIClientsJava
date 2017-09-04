@@ -27,11 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.DeviceBrand;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,11 +38,16 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class DeviceBrandService {
+	
+	public static class ListDeviceBrandBuilder extends ListResponseRequestBuilder<DeviceBrand, DeviceBrand.Tokenizer, ListDeviceBrandBuilder> {
+		
+		public ListDeviceBrandBuilder() {
+			super(DeviceBrand.class, "devicebrand", "list");
+		}
+	}
 
 	/**  Return a list of the available device brands.  */
-    public static RequestBuilder<ListResponse<DeviceBrand>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<DeviceBrand>(DeviceBrand.class, "devicebrand", "list", kparams);
-    }
+    public static ListDeviceBrandBuilder list()  {
+		return new ListDeviceBrandBuilder();
+	}
 }

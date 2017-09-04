@@ -27,10 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.types.HouseholdPaymentGateway;
 import com.kaltura.client.types.KeyValue;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PaymentGatewayConfiguration;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -44,58 +42,116 @@ import java.util.List;
  */
 
 public class HouseholdPaymentGatewayService {
+	
+	public static class DisableHouseholdPaymentGatewayBuilder extends RequestBuilder<Boolean, String, DisableHouseholdPaymentGatewayBuilder> {
+		
+		public DisableHouseholdPaymentGatewayBuilder(int paymentGatewayId) {
+			super(Boolean.class, "householdpaymentgateway", "disable");
+			params.add("paymentGatewayId", paymentGatewayId);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+	}
 
 	/**  Disable payment-gateway on the household  */
-    public static RequestBuilder<Boolean> disable(int paymentGatewayId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householdpaymentgateway", "disable", kparams);
-    }
+    public static DisableHouseholdPaymentGatewayBuilder disable(int paymentGatewayId)  {
+		return new DisableHouseholdPaymentGatewayBuilder(paymentGatewayId);
+	}
+	
+	public static class EnableHouseholdPaymentGatewayBuilder extends RequestBuilder<Boolean, String, EnableHouseholdPaymentGatewayBuilder> {
+		
+		public EnableHouseholdPaymentGatewayBuilder(int paymentGatewayId) {
+			super(Boolean.class, "householdpaymentgateway", "enable");
+			params.add("paymentGatewayId", paymentGatewayId);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+	}
 
 	/**  Enable a payment-gateway provider for the household.  */
-    public static RequestBuilder<Boolean> enable(int paymentGatewayId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householdpaymentgateway", "enable", kparams);
-    }
+    public static EnableHouseholdPaymentGatewayBuilder enable(int paymentGatewayId)  {
+		return new EnableHouseholdPaymentGatewayBuilder(paymentGatewayId);
+	}
+	
+	public static class GetChargeIDHouseholdPaymentGatewayBuilder extends RequestBuilder<String, String, GetChargeIDHouseholdPaymentGatewayBuilder> {
+		
+		public GetChargeIDHouseholdPaymentGatewayBuilder(String paymentGatewayExternalId) {
+			super(String.class, "householdpaymentgateway", "getChargeID");
+			params.add("paymentGatewayExternalId", paymentGatewayExternalId);
+		}
+		
+		public void paymentGatewayExternalId(String multirequestToken) {
+			params.add("paymentGatewayExternalId", multirequestToken);
+		}
+	}
 
 	/**  Get a household’s billing account identifier (charge ID) for a given payment
 	  gateway  */
-    public static RequestBuilder<String> getChargeID(String paymentGatewayExternalId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayExternalId", paymentGatewayExternalId);
-
-        return new RequestBuilder<String>(String.class, "householdpaymentgateway", "getChargeID", kparams);
-    }
+    public static GetChargeIDHouseholdPaymentGatewayBuilder getChargeID(String paymentGatewayExternalId)  {
+		return new GetChargeIDHouseholdPaymentGatewayBuilder(paymentGatewayExternalId);
+	}
+	
+	public static class InvokeHouseholdPaymentGatewayBuilder extends RequestBuilder<PaymentGatewayConfiguration, PaymentGatewayConfiguration.Tokenizer, InvokeHouseholdPaymentGatewayBuilder> {
+		
+		public InvokeHouseholdPaymentGatewayBuilder(int paymentGatewayId, String intent, List<KeyValue> extraParameters) {
+			super(PaymentGatewayConfiguration.class, "householdpaymentgateway", "invoke");
+			params.add("paymentGatewayId", paymentGatewayId);
+			params.add("intent", intent);
+			params.add("extraParameters", extraParameters);
+		}
+		
+		public void paymentGatewayId(String multirequestToken) {
+			params.add("paymentGatewayId", multirequestToken);
+		}
+		
+		public void intent(String multirequestToken) {
+			params.add("intent", multirequestToken);
+		}
+	}
 
 	/**  Gets the Payment Gateway Configuration for the payment gateway identifier given  */
-    public static RequestBuilder<PaymentGatewayConfiguration> invoke(int paymentGatewayId, String intent, List<KeyValue> extraParameters)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayId", paymentGatewayId);
-        kparams.add("intent", intent);
-        kparams.add("extraParameters", extraParameters);
-
-        return new RequestBuilder<PaymentGatewayConfiguration>(PaymentGatewayConfiguration.class, "householdpaymentgateway", "invoke", kparams);
-    }
+    public static InvokeHouseholdPaymentGatewayBuilder invoke(int paymentGatewayId, String intent, List<KeyValue> extraParameters)  {
+		return new InvokeHouseholdPaymentGatewayBuilder(paymentGatewayId, intent, extraParameters);
+	}
+	
+	public static class ListHouseholdPaymentGatewayBuilder extends ListResponseRequestBuilder<HouseholdPaymentGateway, HouseholdPaymentGateway.Tokenizer, ListHouseholdPaymentGatewayBuilder> {
+		
+		public ListHouseholdPaymentGatewayBuilder() {
+			super(HouseholdPaymentGateway.class, "householdpaymentgateway", "list");
+		}
+	}
 
 	/**  Get a list of all configured Payment Gateways providers available for the
 	  account. For each payment is provided with the household associated payment
 	  methods.  */
-    public static RequestBuilder<ListResponse<HouseholdPaymentGateway>> list()  {
-        Params kparams = new Params();
-
-        return new ListResponseRequestBuilder<HouseholdPaymentGateway>(HouseholdPaymentGateway.class, "householdpaymentgateway", "list", kparams);
-    }
+    public static ListHouseholdPaymentGatewayBuilder list()  {
+		return new ListHouseholdPaymentGatewayBuilder();
+	}
+	
+	public static class SetChargeIDHouseholdPaymentGatewayBuilder extends RequestBuilder<Boolean, String, SetChargeIDHouseholdPaymentGatewayBuilder> {
+		
+		public SetChargeIDHouseholdPaymentGatewayBuilder(String paymentGatewayExternalId, String chargeId) {
+			super(Boolean.class, "householdpaymentgateway", "setChargeID");
+			params.add("paymentGatewayExternalId", paymentGatewayExternalId);
+			params.add("chargeId", chargeId);
+		}
+		
+		public void paymentGatewayExternalId(String multirequestToken) {
+			params.add("paymentGatewayExternalId", multirequestToken);
+		}
+		
+		public void chargeId(String multirequestToken) {
+			params.add("chargeId", multirequestToken);
+		}
+	}
 
 	/**  Set user billing account identifier (charge ID), for a specific household and a
 	  specific payment gateway  */
-    public static RequestBuilder<Boolean> setChargeID(String paymentGatewayExternalId, String chargeId)  {
-        Params kparams = new Params();
-        kparams.add("paymentGatewayExternalId", paymentGatewayExternalId);
-        kparams.add("chargeId", chargeId);
-
-        return new RequestBuilder<Boolean>(Boolean.class, "householdpaymentgateway", "setChargeID", kparams);
-    }
+    public static SetChargeIDHouseholdPaymentGatewayBuilder setChargeID(String paymentGatewayExternalId, String chargeId)  {
+		return new SetChargeIDHouseholdPaymentGatewayBuilder(paymentGatewayExternalId, chargeId);
+	}
 }

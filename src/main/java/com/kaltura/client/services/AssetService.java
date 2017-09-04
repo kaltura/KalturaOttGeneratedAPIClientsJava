@@ -27,14 +27,13 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.types.AdsContext;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PlaybackContext;
 import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.SearchAssetFilter;
@@ -49,54 +48,113 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class AssetService {
+	
+	public static class CountAssetBuilder extends RequestBuilder<AssetCount, AssetCount.Tokenizer, CountAssetBuilder> {
+		
+		public CountAssetBuilder(SearchAssetFilter filter) {
+			super(AssetCount.class, "asset", "count");
+			params.add("filter", filter);
+		}
+	}
 
-    public static RequestBuilder<AssetCount> count()  {
-        return count(null);
-    }
+	public static CountAssetBuilder count()  {
+		return count(null);
+	}
 
 	/**  Returns a group-by result for media or EPG according to given filter. Lists
 	  values of each field and their respective count.  */
-    public static RequestBuilder<AssetCount> count(SearchAssetFilter filter)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-
-        return new RequestBuilder<AssetCount>(AssetCount.class, "asset", "count", kparams);
-    }
+    public static CountAssetBuilder count(SearchAssetFilter filter)  {
+		return new CountAssetBuilder(filter);
+	}
+	
+	public static class GetAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, GetAssetBuilder> {
+		
+		public GetAssetBuilder(String id, AssetReferenceType assetReferenceType) {
+			super(Asset.class, "asset", "get");
+			params.add("id", id);
+			params.add("assetReferenceType", assetReferenceType);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void assetReferenceType(String multirequestToken) {
+			params.add("assetReferenceType", multirequestToken);
+		}
+	}
 
 	/**  Returns media or EPG asset by media / EPG internal or external identifier  */
-    public static RequestBuilder<Asset> get(String id, AssetReferenceType assetReferenceType)  {
-        Params kparams = new Params();
-        kparams.add("id", id);
-        kparams.add("assetReferenceType", assetReferenceType);
+    public static GetAssetBuilder get(String id, AssetReferenceType assetReferenceType)  {
+		return new GetAssetBuilder(id, assetReferenceType);
+	}
+	
+	public static class GetAdsContextAssetBuilder extends RequestBuilder<AdsContext, AdsContext.Tokenizer, GetAdsContextAssetBuilder> {
+		
+		public GetAdsContextAssetBuilder(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams) {
+			super(AdsContext.class, "asset", "getAdsContext");
+			params.add("assetId", assetId);
+			params.add("assetType", assetType);
+			params.add("contextDataParams", contextDataParams);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void assetType(String multirequestToken) {
+			params.add("assetType", multirequestToken);
+		}
+	}
 
-        return new RequestBuilder<Asset>(Asset.class, "asset", "get", kparams);
-    }
+	/**  Returns the data for ads control  */
+    public static GetAdsContextAssetBuilder getAdsContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
+		return new GetAdsContextAssetBuilder(assetId, assetType, contextDataParams);
+	}
+	
+	public static class GetPlaybackContextAssetBuilder extends RequestBuilder<PlaybackContext, PlaybackContext.Tokenizer, GetPlaybackContextAssetBuilder> {
+		
+		public GetPlaybackContextAssetBuilder(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams) {
+			super(PlaybackContext.class, "asset", "getPlaybackContext");
+			params.add("assetId", assetId);
+			params.add("assetType", assetType);
+			params.add("contextDataParams", contextDataParams);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void assetType(String multirequestToken) {
+			params.add("assetType", multirequestToken);
+		}
+	}
 
 	/**  This action delivers all data relevant for player  */
-    public static RequestBuilder<PlaybackContext> getPlaybackContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
-        Params kparams = new Params();
-        kparams.add("assetId", assetId);
-        kparams.add("assetType", assetType);
-        kparams.add("contextDataParams", contextDataParams);
+    public static GetPlaybackContextAssetBuilder getPlaybackContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
+		return new GetPlaybackContextAssetBuilder(assetId, assetType, contextDataParams);
+	}
+	
+	public static class ListAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, ListAssetBuilder> {
+		
+		public ListAssetBuilder(AssetFilter filter, FilterPager pager) {
+			super(Asset.class, "asset", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
 
-        return new RequestBuilder<PlaybackContext>(PlaybackContext.class, "asset", "getPlaybackContext", kparams);
-    }
+	public static ListAssetBuilder list()  {
+		return list(null);
+	}
 
-    public static RequestBuilder<ListResponse<Asset>> list()  {
-        return list(null);
-    }
-
-    public static RequestBuilder<ListResponse<Asset>> list(AssetFilter filter)  {
-        return list(filter, null);
-    }
+	public static ListAssetBuilder list(AssetFilter filter)  {
+		return list(filter, null);
+	}
 
 	/**  Returns media or EPG assets. Filters by media identifiers or by EPG internal or
 	  external identifier.  */
-    public static RequestBuilder<ListResponse<Asset>> list(AssetFilter filter, FilterPager pager)  {
-        Params kparams = new Params();
-        kparams.add("filter", filter);
-        kparams.add("pager", pager);
-
-        return new ListResponseRequestBuilder<Asset>(Asset.class, "asset", "list", kparams);
-    }
+    public static ListAssetBuilder list(AssetFilter filter, FilterPager pager)  {
+		return new ListAssetBuilder(filter, pager);
+	}
 }

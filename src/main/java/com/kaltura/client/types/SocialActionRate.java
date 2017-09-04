@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,40 +40,49 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SocialActionRate.Tokenizer.class)
 public class SocialActionRate extends SocialAction {
+	
+	public interface Tokenizer extends SocialAction.Tokenizer {
+		String rate();
+	}
 
 	/**  The value of the rating  */
-    private Integer rate;
+	private Integer rate;
 
-    // rate:
-    public Integer getRate(){
-        return this.rate;
-    }
-    public void setRate(Integer rate){
-        this.rate = rate;
-    }
+	// rate:
+	public Integer getRate(){
+		return this.rate;
+	}
+	public void setRate(Integer rate){
+		this.rate = rate;
+	}
+
+	public void rate(String multirequestToken){
+		setToken("rate", multirequestToken);
+	}
 
 
-    public SocialActionRate() {
-       super();
-    }
+	public SocialActionRate() {
+		super();
+	}
 
-    public SocialActionRate(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SocialActionRate(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        rate = GsonParser.parseInt(jsonObject.get("rate"));
+		// set members values:
+		rate = GsonParser.parseInt(jsonObject.get("rate"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSocialActionRate");
-        kparams.add("rate", this.rate);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSocialActionRate");
+		kparams.add("rate", this.rate);
+		return kparams;
+	}
 
 }
 

@@ -27,11 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.types.ObjectBase;
 import com.google.gson.JsonObject;
-
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,111 +42,150 @@ import com.google.gson.JsonObject;
 
 /**  Image details  */
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(MediaImage.Tokenizer.class)
 public class MediaImage extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String ratio();
+		String width();
+		String height();
+		String url();
+		String version();
+		String id();
+		String isDefault();
+	}
 
 	/**  Image aspect ratio  */
-    private String ratio;
+	private String ratio;
 	/**  Image width  */
-    private Integer width;
+	private Integer width;
 	/**  Image height  */
-    private Integer height;
+	private Integer height;
 	/**  Image URL  */
-    private String url;
+	private String url;
 	/**  Image Version  */
-    private Integer version;
+	private Integer version;
 	/**  Image ID  */
-    private String id;
+	private String id;
 	/**  Determined whether image was taken from default configuration or not  */
-    private Boolean isDefault;
+	private Boolean isDefault;
 
-    // ratio:
-    public String getRatio(){
-        return this.ratio;
-    }
-    public void setRatio(String ratio){
-        this.ratio = ratio;
-    }
+	// ratio:
+	public String getRatio(){
+		return this.ratio;
+	}
+	public void setRatio(String ratio){
+		this.ratio = ratio;
+	}
 
-    // width:
-    public Integer getWidth(){
-        return this.width;
-    }
-    public void setWidth(Integer width){
-        this.width = width;
-    }
+	public void ratio(String multirequestToken){
+		setToken("ratio", multirequestToken);
+	}
 
-    // height:
-    public Integer getHeight(){
-        return this.height;
-    }
-    public void setHeight(Integer height){
-        this.height = height;
-    }
+	// width:
+	public Integer getWidth(){
+		return this.width;
+	}
+	public void setWidth(Integer width){
+		this.width = width;
+	}
 
-    // url:
-    public String getUrl(){
-        return this.url;
-    }
-    public void setUrl(String url){
-        this.url = url;
-    }
+	public void width(String multirequestToken){
+		setToken("width", multirequestToken);
+	}
 
-    // version:
-    public Integer getVersion(){
-        return this.version;
-    }
-    public void setVersion(Integer version){
-        this.version = version;
-    }
+	// height:
+	public Integer getHeight(){
+		return this.height;
+	}
+	public void setHeight(Integer height){
+		this.height = height;
+	}
 
-    // id:
-    public String getId(){
-        return this.id;
-    }
-    public void setId(String id){
-        this.id = id;
-    }
+	public void height(String multirequestToken){
+		setToken("height", multirequestToken);
+	}
 
-    // isDefault:
-    public Boolean getIsDefault(){
-        return this.isDefault;
-    }
-    public void setIsDefault(Boolean isDefault){
-        this.isDefault = isDefault;
-    }
+	// url:
+	public String getUrl(){
+		return this.url;
+	}
+	public void setUrl(String url){
+		this.url = url;
+	}
+
+	public void url(String multirequestToken){
+		setToken("url", multirequestToken);
+	}
+
+	// version:
+	public Integer getVersion(){
+		return this.version;
+	}
+	public void setVersion(Integer version){
+		this.version = version;
+	}
+
+	public void version(String multirequestToken){
+		setToken("version", multirequestToken);
+	}
+
+	// id:
+	public String getId(){
+		return this.id;
+	}
+	public void setId(String id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// isDefault:
+	public Boolean getIsDefault(){
+		return this.isDefault;
+	}
+	public void setIsDefault(Boolean isDefault){
+		this.isDefault = isDefault;
+	}
+
+	public void isDefault(String multirequestToken){
+		setToken("isDefault", multirequestToken);
+	}
 
 
-    public MediaImage() {
-       super();
-    }
+	public MediaImage() {
+		super();
+	}
 
-    public MediaImage(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public MediaImage(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        ratio = GsonParser.parseString(jsonObject.get("ratio"));
-        width = GsonParser.parseInt(jsonObject.get("width"));
-        height = GsonParser.parseInt(jsonObject.get("height"));
-        url = GsonParser.parseString(jsonObject.get("url"));
-        version = GsonParser.parseInt(jsonObject.get("version"));
-        id = GsonParser.parseString(jsonObject.get("id"));
-        isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
+		// set members values:
+		ratio = GsonParser.parseString(jsonObject.get("ratio"));
+		width = GsonParser.parseInt(jsonObject.get("width"));
+		height = GsonParser.parseInt(jsonObject.get("height"));
+		url = GsonParser.parseString(jsonObject.get("url"));
+		version = GsonParser.parseInt(jsonObject.get("version"));
+		id = GsonParser.parseString(jsonObject.get("id"));
+		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaMediaImage");
-        kparams.add("ratio", this.ratio);
-        kparams.add("width", this.width);
-        kparams.add("height", this.height);
-        kparams.add("url", this.url);
-        kparams.add("version", this.version);
-        kparams.add("isDefault", this.isDefault);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaMediaImage");
+		kparams.add("ratio", this.ratio);
+		kparams.add("width", this.width);
+		kparams.add("height", this.height);
+		kparams.add("url", this.url);
+		kparams.add("version", this.version);
+		kparams.add("isDefault", this.isDefault);
+		return kparams;
+	}
 
 }
 

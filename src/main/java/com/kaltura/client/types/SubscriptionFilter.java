@@ -27,10 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
-import com.google.gson.JsonObject;
-
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,64 +40,83 @@ import com.google.gson.JsonObject;
  */
 
 @SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SubscriptionFilter.Tokenizer.class)
 public class SubscriptionFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String subscriptionIdIn();
+		String mediaFileIdEqual();
+		String externalIdIn();
+	}
 
 	/**  Comma separated subscription IDs to get the subscriptions by  */
-    private String subscriptionIdIn;
+	private String subscriptionIdIn;
 	/**  Media-file ID to get the subscriptions by  */
-    private Integer mediaFileIdEqual;
+	private Integer mediaFileIdEqual;
 	/**  Comma separated subscription external IDs to get the subscriptions by  */
-    private String externalIdIn;
+	private String externalIdIn;
 
-    // subscriptionIdIn:
-    public String getSubscriptionIdIn(){
-        return this.subscriptionIdIn;
-    }
-    public void setSubscriptionIdIn(String subscriptionIdIn){
-        this.subscriptionIdIn = subscriptionIdIn;
-    }
+	// subscriptionIdIn:
+	public String getSubscriptionIdIn(){
+		return this.subscriptionIdIn;
+	}
+	public void setSubscriptionIdIn(String subscriptionIdIn){
+		this.subscriptionIdIn = subscriptionIdIn;
+	}
 
-    // mediaFileIdEqual:
-    public Integer getMediaFileIdEqual(){
-        return this.mediaFileIdEqual;
-    }
-    public void setMediaFileIdEqual(Integer mediaFileIdEqual){
-        this.mediaFileIdEqual = mediaFileIdEqual;
-    }
+	public void subscriptionIdIn(String multirequestToken){
+		setToken("subscriptionIdIn", multirequestToken);
+	}
 
-    // externalIdIn:
-    public String getExternalIdIn(){
-        return this.externalIdIn;
-    }
-    public void setExternalIdIn(String externalIdIn){
-        this.externalIdIn = externalIdIn;
-    }
+	// mediaFileIdEqual:
+	public Integer getMediaFileIdEqual(){
+		return this.mediaFileIdEqual;
+	}
+	public void setMediaFileIdEqual(Integer mediaFileIdEqual){
+		this.mediaFileIdEqual = mediaFileIdEqual;
+	}
+
+	public void mediaFileIdEqual(String multirequestToken){
+		setToken("mediaFileIdEqual", multirequestToken);
+	}
+
+	// externalIdIn:
+	public String getExternalIdIn(){
+		return this.externalIdIn;
+	}
+	public void setExternalIdIn(String externalIdIn){
+		this.externalIdIn = externalIdIn;
+	}
+
+	public void externalIdIn(String multirequestToken){
+		setToken("externalIdIn", multirequestToken);
+	}
 
 
-    public SubscriptionFilter() {
-       super();
-    }
+	public SubscriptionFilter() {
+		super();
+	}
 
-    public SubscriptionFilter(JsonObject jsonObject) throws APIException {
-        super(jsonObject);
+	public SubscriptionFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 
-        if(jsonObject == null) return;
+		if(jsonObject == null) return;
 
-        // set members values:
-        subscriptionIdIn = GsonParser.parseString(jsonObject.get("subscriptionIdIn"));
-        mediaFileIdEqual = GsonParser.parseInt(jsonObject.get("mediaFileIdEqual"));
-        externalIdIn = GsonParser.parseString(jsonObject.get("externalIdIn"));
+		// set members values:
+		subscriptionIdIn = GsonParser.parseString(jsonObject.get("subscriptionIdIn"));
+		mediaFileIdEqual = GsonParser.parseInt(jsonObject.get("mediaFileIdEqual"));
+		externalIdIn = GsonParser.parseString(jsonObject.get("externalIdIn"));
 
-    }
+	}
 
-    public Params toParams() {
-        Params kparams = super.toParams();
-        kparams.add("objectType", "KalturaSubscriptionFilter");
-        kparams.add("subscriptionIdIn", this.subscriptionIdIn);
-        kparams.add("mediaFileIdEqual", this.mediaFileIdEqual);
-        kparams.add("externalIdIn", this.externalIdIn);
-        return kparams;
-    }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSubscriptionFilter");
+		kparams.add("subscriptionIdIn", this.subscriptionIdIn);
+		kparams.add("mediaFileIdEqual", this.mediaFileIdEqual);
+		kparams.add("externalIdIn", this.externalIdIn);
+		return kparams;
+	}
 
 }
 
