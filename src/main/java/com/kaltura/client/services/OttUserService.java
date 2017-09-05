@@ -272,33 +272,6 @@ public class OttUserService {
 		return new LogoutOttUserBuilder();
 	}
 	
-	public static class RefreshSessionOttUserBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, RefreshSessionOttUserBuilder> {
-		
-		public RefreshSessionOttUserBuilder(String refreshToken, String udid) {
-			super(LoginSession.class, "ottuser", "refreshSession");
-			params.add("refreshToken", refreshToken);
-			params.add("udid", udid);
-		}
-		
-		public void refreshToken(String multirequestToken) {
-			params.add("refreshToken", multirequestToken);
-		}
-		
-		public void udid(String multirequestToken) {
-			params.add("udid", multirequestToken);
-		}
-	}
-
-	public static RefreshSessionOttUserBuilder refreshSession(String refreshToken)  {
-		return refreshSession(refreshToken, null);
-	}
-
-	/**  Returns new Kaltura session (ks) for the user, using the supplied refresh_token
-	  (only if it&amp;#39;s valid and not expired)  */
-    public static RefreshSessionOttUserBuilder refreshSession(String refreshToken, String udid)  {
-		return new RefreshSessionOttUserBuilder(refreshToken, udid);
-	}
-	
 	public static class RegisterOttUserBuilder extends RequestBuilder<OTTUser, OTTUser.Tokenizer, RegisterOttUserBuilder> {
 		
 		public RegisterOttUserBuilder(int partnerId, OTTUser user, String password) {

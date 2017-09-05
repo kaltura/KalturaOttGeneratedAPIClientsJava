@@ -31,6 +31,7 @@ import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,6 +41,23 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class AssetHistoryService {
+	
+	public static class CleanAssetHistoryBuilder extends NullRequestBuilder {
+		
+		public CleanAssetHistoryBuilder(AssetHistoryFilter filter) {
+			super("assethistory", "clean");
+			params.add("filter", filter);
+		}
+	}
+
+	public static CleanAssetHistoryBuilder clean()  {
+		return clean(null);
+	}
+
+	/**  Clean the user’s viewing history  */
+    public static CleanAssetHistoryBuilder clean(AssetHistoryFilter filter)  {
+		return new CleanAssetHistoryBuilder(filter);
+	}
 	
 	public static class ListAssetHistoryBuilder extends ListResponseRequestBuilder<AssetHistory, AssetHistory.Tokenizer, ListAssetHistoryBuilder> {
 		
