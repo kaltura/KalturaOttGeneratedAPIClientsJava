@@ -29,7 +29,6 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
-import com.kaltura.client.types.AdsContext;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
@@ -87,29 +86,6 @@ public class AssetService {
 	/**  Returns media or EPG asset by media / EPG internal or external identifier  */
     public static GetAssetBuilder get(String id, AssetReferenceType assetReferenceType)  {
 		return new GetAssetBuilder(id, assetReferenceType);
-	}
-	
-	public static class GetAdsContextAssetBuilder extends RequestBuilder<AdsContext, AdsContext.Tokenizer, GetAdsContextAssetBuilder> {
-		
-		public GetAdsContextAssetBuilder(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams) {
-			super(AdsContext.class, "asset", "getAdsContext");
-			params.add("assetId", assetId);
-			params.add("assetType", assetType);
-			params.add("contextDataParams", contextDataParams);
-		}
-		
-		public void assetId(String multirequestToken) {
-			params.add("assetId", multirequestToken);
-		}
-		
-		public void assetType(String multirequestToken) {
-			params.add("assetType", multirequestToken);
-		}
-	}
-
-	/**  Returns the data for ads control  */
-    public static GetAdsContextAssetBuilder getAdsContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
-		return new GetAdsContextAssetBuilder(assetId, assetType, contextDataParams);
 	}
 	
 	public static class GetPlaybackContextAssetBuilder extends RequestBuilder<PlaybackContext, PlaybackContext.Tokenizer, GetPlaybackContextAssetBuilder> {

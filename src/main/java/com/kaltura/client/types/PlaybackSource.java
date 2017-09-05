@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.AdsPolicy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -49,6 +50,8 @@ public class PlaybackSource extends MediaFile {
 		String format();
 		String protocols();
 		RequestBuilder.ListTokenizer<DrmPlaybackPluginData.Tokenizer> drm();
+		String adsPolicy();
+		String adsParam();
 	}
 
 	/**  Source format according to delivery profile streamer type (applehttp, mpegdash
@@ -59,6 +62,10 @@ public class PlaybackSource extends MediaFile {
 	private String protocols;
 	/**  DRM data object containing relevant license URL ,scheme name and certificate  */
 	private List<DrmPlaybackPluginData> drm;
+	/**  Ads policy  */
+	private AdsPolicy adsPolicy;
+	/**  The parameters to pass to the ads server  */
+	private String adsParam;
 
 	// format:
 	public String getFormat(){
@@ -92,6 +99,30 @@ public class PlaybackSource extends MediaFile {
 		this.drm = drm;
 	}
 
+	// adsPolicy:
+	public AdsPolicy getAdsPolicy(){
+		return this.adsPolicy;
+	}
+	public void setAdsPolicy(AdsPolicy adsPolicy){
+		this.adsPolicy = adsPolicy;
+	}
+
+	public void adsPolicy(String multirequestToken){
+		setToken("adsPolicy", multirequestToken);
+	}
+
+	// adsParam:
+	public String getAdsParam(){
+		return this.adsParam;
+	}
+	public void setAdsParam(String adsParam){
+		this.adsParam = adsParam;
+	}
+
+	public void adsParam(String multirequestToken){
+		setToken("adsParam", multirequestToken);
+	}
+
 
 	public PlaybackSource() {
 		super();
@@ -106,6 +137,8 @@ public class PlaybackSource extends MediaFile {
 		format = GsonParser.parseString(jsonObject.get("format"));
 		protocols = GsonParser.parseString(jsonObject.get("protocols"));
 		drm = GsonParser.parseArray(jsonObject.getAsJsonArray("drm"), DrmPlaybackPluginData.class);
+		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
+		adsParam = GsonParser.parseString(jsonObject.get("adsParam"));
 
 	}
 
@@ -115,6 +148,8 @@ public class PlaybackSource extends MediaFile {
 		kparams.add("format", this.format);
 		kparams.add("protocols", this.protocols);
 		kparams.add("drm", this.drm);
+		kparams.add("adsPolicy", this.adsPolicy);
+		kparams.add("adsParam", this.adsParam);
 		return kparams;
 	}
 
