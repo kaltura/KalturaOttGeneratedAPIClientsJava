@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,51 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+/**  Recording-asset info  */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(RecordingAsset.Tokenizer.class)
+public class RecordingAsset extends ProgramAsset {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public interface Tokenizer extends ProgramAsset.Tokenizer {
+		String recordingId();
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  Recording identifier  */
+	private String recordingId;
+
+	// recordingId:
+	public String getRecordingId(){
+		return this.recordingId;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+	public void setRecordingId(String recordingId){
+		this.recordingId = recordingId;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	public void recordingId(String multirequestToken){
+		setToken("recordingId", multirequestToken);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
+
+
+	public RecordingAsset() {
+		super();
 	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
+
+	public RecordingAsset(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
+
 	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaRecordingAsset");
+		kparams.add("recordingId", this.recordingId);
+		return kparams;
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
+
 }
+

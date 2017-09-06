@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,50 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PurchaseSession.Tokenizer.class)
+public class PurchaseSession extends Purchase {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public interface Tokenizer extends Purchase.Tokenizer {
+		String previewModuleId();
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  Preview module identifier (relevant only for subscription)  */
+	private Integer previewModuleId;
+
+	// previewModuleId:
+	public Integer getPreviewModuleId(){
+		return this.previewModuleId;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+	public void setPreviewModuleId(Integer previewModuleId){
+		this.previewModuleId = previewModuleId;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	public void previewModuleId(String multirequestToken){
+		setToken("previewModuleId", multirequestToken);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
+
+
+	public PurchaseSession() {
+		super();
 	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
+
+	public PurchaseSession(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		previewModuleId = GsonParser.parseInt(jsonObject.get("previewModuleId"));
+
 	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPurchaseSession");
+		kparams.add("previewModuleId", this.previewModuleId);
+		return kparams;
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
+
 }
+

@@ -25,9 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
+import com.kaltura.client.types.Subscription;
+import com.kaltura.client.types.SubscriptionFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +38,18 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+public class SubscriptionService {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public static class ListSubscriptionBuilder extends ListResponseRequestBuilder<Subscription, Subscription.Tokenizer, ListSubscriptionBuilder> {
+		
+		public ListSubscriptionBuilder(SubscriptionFilter filter) {
+			super(Subscription.class, "subscription", "list");
+			params.add("filter", filter);
+		}
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  Returns a list of subscriptions requested by Subscription ID or file ID  */
+    public static ListSubscriptionBuilder list(SubscriptionFilter filter)  {
+		return new ListSubscriptionBuilder(filter);
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
-	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
-	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
-	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
-	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
 }

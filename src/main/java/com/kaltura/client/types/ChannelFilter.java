@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,67 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ChannelFilter.Tokenizer.class)
+public class ChannelFilter extends AssetFilter {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public interface Tokenizer extends AssetFilter.Tokenizer {
+		String idEqual();
+		String kSql();
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  Channel Id  */
+	private Integer idEqual;
+	/**  KSQL expression  */
+	private String kSql;
+
+	// idEqual:
+	public Integer getIdEqual(){
+		return this.idEqual;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+	public void setIdEqual(Integer idEqual){
+		this.idEqual = idEqual;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
+
+	// kSql:
+	public String getKSql(){
+		return this.kSql;
 	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
+	public void setKSql(String kSql){
+		this.kSql = kSql;
 	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
+
+	public void kSql(String multirequestToken){
+		setToken("kSql", multirequestToken);
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
+
+
+	public ChannelFilter() {
+		super();
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
+
+	public ChannelFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+
 	}
-	
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaChannelFilter");
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("kSql", this.kSql);
+		return kparams;
+	}
+
 }
+

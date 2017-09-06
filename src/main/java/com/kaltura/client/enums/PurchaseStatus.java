@@ -25,9 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
-
-import com.kaltura.client.Params;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -35,80 +33,51 @@ import com.kaltura.client.Params;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum PurchaseStatus implements EnumAsString {
+	PPV_PURCHASED("ppv_purchased"),
+	FREE("free"),
+	FOR_PURCHASE_SUBSCRIPTION_ONLY("for_purchase_subscription_only"),
+	SUBSCRIPTION_PURCHASED("subscription_purchased"),
+	FOR_PURCHASE("for_purchase"),
+	SUBSCRIPTION_PURCHASED_WRONG_CURRENCY("subscription_purchased_wrong_currency"),
+	PRE_PAID_PURCHASED("pre_paid_purchased"),
+	GEO_COMMERCE_BLOCKED("geo_commerce_blocked"),
+	ENTITLED_TO_PREVIEW_MODULE("entitled_to_preview_module"),
+	FIRST_DEVICE_LIMITATION("first_device_limitation"),
+	COLLECTION_PURCHASED("collection_purchased"),
+	USER_SUSPENDED("user_suspended"),
+	NOT_FOR_PURCHASE("not_for_purchase"),
+	INVALID_CURRENCY("invalid_currency"),
+	CURRENCY_NOT_DEFINED_ON_PRICE_CODE("currency_not_defined_on_price_code");
 
-public abstract class RequestBuilderData {
-	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	private String value;
+
+	PurchaseStatus(String value) {
+		this.value = value;
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	@Override
+	public String getValue() {
+		return this.value;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+
+	public void setValue(String value) {
+		this.value = value;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
-	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
-	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
-	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
+
+	public static PurchaseStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over PurchaseStatus defined values and compare the inner value with the given one:
+		for(PurchaseStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return PurchaseStatus.values().length > 0 ? PurchaseStatus.values()[0]: null;
+   }
 }

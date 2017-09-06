@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,50 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SocialActionRate.Tokenizer.class)
+public class SocialActionRate extends SocialAction {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public interface Tokenizer extends SocialAction.Tokenizer {
+		String rate();
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  The value of the rating  */
+	private Integer rate;
+
+	// rate:
+	public Integer getRate(){
+		return this.rate;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+	public void setRate(Integer rate){
+		this.rate = rate;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	public void rate(String multirequestToken){
+		setToken("rate", multirequestToken);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
+
+
+	public SocialActionRate() {
+		super();
 	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
+
+	public SocialActionRate(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		rate = GsonParser.parseInt(jsonObject.get("rate"));
+
 	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSocialActionRate");
+		kparams.add("rate", this.rate);
+		return kparams;
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
+
 }
+

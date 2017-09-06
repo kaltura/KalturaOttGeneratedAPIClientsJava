@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
+import com.kaltura.client.types.AssetHistory;
+import com.kaltura.client.types.AssetHistoryFilter;
+import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,27 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+public class AssetHistoryService {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public static class ListAssetHistoryBuilder extends ListResponseRequestBuilder<AssetHistory, AssetHistory.Tokenizer, ListAssetHistoryBuilder> {
+		
+		public ListAssetHistoryBuilder(AssetHistoryFilter filter, FilterPager pager) {
+			super(AssetHistory.class, "assethistory", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	public static ListAssetHistoryBuilder list()  {
+		return list(null);
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+
+	public static ListAssetHistoryBuilder list(AssetHistoryFilter filter)  {
+		return list(filter, null);
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	/**  Get recently watched media for user, ordered by recently watched first.  */
+    public static ListAssetHistoryBuilder list(AssetHistoryFilter filter, FilterPager pager)  {
+		return new ListAssetHistoryBuilder(filter, pager);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
-	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
-	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
 }

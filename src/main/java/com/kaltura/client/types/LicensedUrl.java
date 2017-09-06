@@ -25,9 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +40,67 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(LicensedUrl.Tokenizer.class)
+public class LicensedUrl extends ObjectBase {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String mainUrl();
+		String altUrl();
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  Main licensed URL  */
+	private String mainUrl;
+	/**  An alternate URL to use in case the main fails  */
+	private String altUrl;
+
+	// mainUrl:
+	public String getMainUrl(){
+		return this.mainUrl;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+	public void setMainUrl(String mainUrl){
+		this.mainUrl = mainUrl;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	public void mainUrl(String multirequestToken){
+		setToken("mainUrl", multirequestToken);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
+
+	// altUrl:
+	public String getAltUrl(){
+		return this.altUrl;
 	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
+	public void setAltUrl(String altUrl){
+		this.altUrl = altUrl;
 	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
+
+	public void altUrl(String multirequestToken){
+		setToken("altUrl", multirequestToken);
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
+
+
+	public LicensedUrl() {
+		super();
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
+
+	public LicensedUrl(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		mainUrl = GsonParser.parseString(jsonObject.get("mainUrl"));
+		altUrl = GsonParser.parseString(jsonObject.get("altUrl"));
+
 	}
-	
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaLicensedUrl");
+		kparams.add("mainUrl", this.mainUrl);
+		kparams.add("altUrl", this.altUrl);
+		return kparams;
+	}
+
 }
+

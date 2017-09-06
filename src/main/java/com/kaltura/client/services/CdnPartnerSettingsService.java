@@ -25,9 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
+import com.kaltura.client.types.CDNPartnerSettings;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +37,30 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+public class CdnPartnerSettingsService {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public static class GetCdnPartnerSettingsBuilder extends RequestBuilder<CDNPartnerSettings, CDNPartnerSettings.Tokenizer, GetCdnPartnerSettingsBuilder> {
+		
+		public GetCdnPartnerSettingsBuilder() {
+			super(CDNPartnerSettings.class, "cdnpartnersettings", "get");
+		}
+	}
+
+	/**  Retrieve the partner’s CDN settings (default adapters)  */
+    public static GetCdnPartnerSettingsBuilder get()  {
+		return new GetCdnPartnerSettingsBuilder();
 	}
 	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+	public static class UpdateCdnPartnerSettingsBuilder extends RequestBuilder<CDNPartnerSettings, CDNPartnerSettings.Tokenizer, UpdateCdnPartnerSettingsBuilder> {
+		
+		public UpdateCdnPartnerSettingsBuilder(CDNPartnerSettings settings) {
+			super(CDNPartnerSettings.class, "cdnpartnersettings", "update");
+			params.add("settings", settings);
+		}
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+
+	/**  Configure the partner’s CDN settings (default adapters)  */
+    public static UpdateCdnPartnerSettingsBuilder update(CDNPartnerSettings settings)  {
+		return new UpdateCdnPartnerSettingsBuilder(settings);
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
-	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
-	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
-	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
 }
