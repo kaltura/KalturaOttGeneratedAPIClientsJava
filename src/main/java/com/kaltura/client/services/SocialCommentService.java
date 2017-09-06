@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
+import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.SocialComment;
+import com.kaltura.client.types.SocialCommentFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,23 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+public class SocialCommentService {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public static class ListSocialCommentBuilder extends ListResponseRequestBuilder<SocialComment, SocialComment.Tokenizer, ListSocialCommentBuilder> {
+		
+		public ListSocialCommentBuilder(SocialCommentFilter filter, FilterPager pager) {
+			super(SocialComment.class, "socialcomment", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	public static ListSocialCommentBuilder list(SocialCommentFilter filter)  {
+		return list(filter, null);
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+
+	/**  Get a list of all social comments filtered by asset ID and social platform  */
+    public static ListSocialCommentBuilder list(SocialCommentFilter filter, FilterPager pager)  {
+		return new ListSocialCommentBuilder(filter, pager);
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
-	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
-	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
-	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
 }

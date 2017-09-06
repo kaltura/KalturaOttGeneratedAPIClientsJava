@@ -25,9 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
-
-import com.kaltura.client.Params;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -35,80 +33,39 @@ import com.kaltura.client.Params;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum RecordingType implements EnumAsString {
+	SINGLE("SINGLE"),
+	SEASON("SEASON"),
+	SERIES("SERIES");
 
-public abstract class RequestBuilderData {
-	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	private String value;
+
+	RecordingType(String value) {
+		this.value = value;
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	@Override
+	public String getValue() {
+		return this.value;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+
+	public void setValue(String value) {
+		this.value = value;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
-	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
-	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
-	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
+
+	public static RecordingType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over RecordingType defined values and compare the inner value with the given one:
+		for(RecordingType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return RecordingType.values().length > 0 ? RecordingType.values()[0]: null;
+   }
 }

@@ -25,9 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.services;
 
-import com.kaltura.client.Params;
+import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.Report;
+import com.kaltura.client.types.ReportFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +40,41 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+public class ReportService {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public static class GetReportBuilder extends RequestBuilder<Report, Report.Tokenizer, GetReportBuilder> {
+		
+		public GetReportBuilder(String udid) {
+			super(Report.class, "report", "get");
+			params.add("udid", udid);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
+
+	/**  Return a device configuration retrieval log request for a specific device.  */
+    public static GetReportBuilder get(String udid)  {
+		return new GetReportBuilder(udid);
 	}
 	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+	public static class ListReportBuilder extends ListResponseRequestBuilder<Report, Report.Tokenizer, ListReportBuilder> {
+		
+		public ListReportBuilder(ReportFilter filter, FilterPager pager) {
+			super(Report.class, "report", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+
+	public static ListReportBuilder list(ReportFilter filter)  {
+		return list(filter, null);
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	/**  Return device configurations retrieval log. Supports paging and can be filtered
+	  with the parameter &amp;quot;FromData&amp;quot;.  */
+    public static ListReportBuilder list(ReportFilter filter, FilterPager pager)  {
+		return new ListReportBuilder(filter, pager);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
-	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
-	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
 }

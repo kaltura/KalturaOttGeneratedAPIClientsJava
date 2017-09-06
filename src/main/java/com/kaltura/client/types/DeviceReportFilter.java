@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,51 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+/**  Report filter  */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DeviceReportFilter.Tokenizer.class)
+public class DeviceReportFilter extends ReportFilter {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public interface Tokenizer extends ReportFilter.Tokenizer {
+		String lastAccessDateGreaterThanOrEqual();
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  Filter device configuration later than specific date  */
+	private Long lastAccessDateGreaterThanOrEqual;
+
+	// lastAccessDateGreaterThanOrEqual:
+	public Long getLastAccessDateGreaterThanOrEqual(){
+		return this.lastAccessDateGreaterThanOrEqual;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+	public void setLastAccessDateGreaterThanOrEqual(Long lastAccessDateGreaterThanOrEqual){
+		this.lastAccessDateGreaterThanOrEqual = lastAccessDateGreaterThanOrEqual;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	public void lastAccessDateGreaterThanOrEqual(String multirequestToken){
+		setToken("lastAccessDateGreaterThanOrEqual", multirequestToken);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
+
+
+	public DeviceReportFilter() {
+		super();
 	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
+
+	public DeviceReportFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		lastAccessDateGreaterThanOrEqual = GsonParser.parseLong(jsonObject.get("lastAccessDateGreaterThanOrEqual"));
+
 	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDeviceReportFilter");
+		kparams.add("lastAccessDateGreaterThanOrEqual", this.lastAccessDateGreaterThanOrEqual);
+		return kparams;
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
-	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
-	}
-	
+
 }
+

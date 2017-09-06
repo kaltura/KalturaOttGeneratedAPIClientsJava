@@ -25,9 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.utils.request;
+package com.kaltura.client.types;
 
+import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -36,79 +39,66 @@ import com.kaltura.client.Params;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+/**  KalturaPpvEntitlement  */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PpvEntitlement.Tokenizer.class)
+public class PpvEntitlement extends Entitlement {
 	
-	protected Params params = new Params();
-	
-	protected RequestBuilderData() {
+	public interface Tokenizer extends Entitlement.Tokenizer {
+		String mediaFileId();
+		String mediaId();
 	}
-	
-	/**
-	 * @param clientTag
-	 */
-	public void setClientTag(String clientTag){
-		params.add("clientTag", clientTag);
+
+	/**  Media file identifier  */
+	private Integer mediaFileId;
+	/**  Media identifier  */
+	private Integer mediaId;
+
+	// mediaFileId:
+	public Integer getMediaFileId(){
+		return this.mediaFileId;
 	}
-	
-	/**
-	 * @param apiVersion
-	 */
-	public void setApiVersion(String apiVersion){
-		params.add("apiVersion", apiVersion);
+	public void setMediaFileId(Integer mediaFileId){
+		this.mediaFileId = mediaFileId;
 	}
-	
-	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
-	 */
-	public void setPartnerId(Integer partnerId){
-		params.add("partnerId", partnerId);
+
+	public void mediaFileId(String multirequestToken){
+		setToken("mediaFileId", multirequestToken);
 	}
-	
-	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
-	 */
-	public void setUserId(Integer userId){
-		params.add("userId", userId);
+
+	// mediaId:
+	public Integer getMediaId(){
+		return this.mediaId;
 	}
-	
-	/**
-	 * Content language
-	 * 
-	 * @param language
-	 */
-	public void setLanguage(String language){
-		params.add("language", language);
+	public void setMediaId(Integer mediaId){
+		this.mediaId = mediaId;
 	}
-	
-	/**
-	 * Content currency
-	 * 
-	 * @param currency
-	 */
-	public void setCurrency(String currency){
-		params.add("currency", currency);
+
+	public void mediaId(String multirequestToken){
+		setToken("mediaId", multirequestToken);
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
-	 */
-	public void setKs(String ks){
-		params.add("ks", ks);
+
+
+	public PpvEntitlement() {
+		super();
 	}
-	
-	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
-	 */
-	public void setSessionId(String sessionId){
-		params.add("ks", sessionId);
+
+	public PpvEntitlement(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		mediaFileId = GsonParser.parseInt(jsonObject.get("mediaFileId"));
+		mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
+
 	}
-	
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPpvEntitlement");
+		return kparams;
+	}
+
 }
+
