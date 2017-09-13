@@ -41,9 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends AssetFilter {
+public class SearchAssetFilter extends BaseSearchAssetFilter {
 	
-	public interface Tokenizer extends AssetFilter.Tokenizer {
+	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
 		String kSql();
 		String typeIn();
 		String idIn();

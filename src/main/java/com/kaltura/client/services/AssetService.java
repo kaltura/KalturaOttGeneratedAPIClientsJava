@@ -32,14 +32,12 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
-import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.PlaybackContext;
 import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.SearchAssetFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -52,21 +50,20 @@ public class AssetService {
 	
 	public static class CountAssetBuilder extends RequestBuilder<AssetCount, AssetCount.Tokenizer, CountAssetBuilder> {
 		
-		public CountAssetBuilder(List<AssetGroupBy> groupBy, SearchAssetFilter filter) {
+		public CountAssetBuilder(SearchAssetFilter filter) {
 			super(AssetCount.class, "asset", "count");
-			params.add("groupBy", groupBy);
 			params.add("filter", filter);
 		}
 	}
 
-	public static CountAssetBuilder count(List<AssetGroupBy> groupBy)  {
-		return count(groupBy, null);
+	public static CountAssetBuilder count()  {
+		return count(null);
 	}
 
 	/**  Returns a group-by result for media or EPG according to given filter. Lists
 	  values of each field and their respective count.  */
-    public static CountAssetBuilder count(List<AssetGroupBy> groupBy, SearchAssetFilter filter)  {
-		return new CountAssetBuilder(groupBy, filter);
+    public static CountAssetBuilder count(SearchAssetFilter filter)  {
+		return new CountAssetBuilder(filter);
 	}
 	
 	public static class GetAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, GetAssetBuilder> {
