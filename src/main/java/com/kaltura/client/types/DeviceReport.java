@@ -61,7 +61,7 @@ public class DeviceReport extends Report {
 
 	/**  Partner unique identifier  */
 	private Integer partnerId;
-	/**  Configuration group identifier which the version configuration the devices last
+	/**  Configuration group identifier which the version configuration the device last
 	  received belongs to  */
 	private String configurationGroupId;
 	/**  Device unique identifier  */
