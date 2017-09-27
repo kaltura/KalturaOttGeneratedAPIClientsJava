@@ -50,6 +50,7 @@ public class RequestConfiguration extends ObjectBase {
 		String partnerId();
 		String userId();
 		String language();
+		String currency();
 		String ks();
 		BaseResponseProfile.Tokenizer responseProfile();
 	}
@@ -60,6 +61,8 @@ public class RequestConfiguration extends ObjectBase {
 	private Integer userId;
 	/**  Content language  */
 	private String language;
+	/**  Currency to be used  */
+	private String currency;
 	/**  Kaltura API session  */
 	private String ks;
 	/**  Kaltura response profile object  */
@@ -101,6 +104,18 @@ public class RequestConfiguration extends ObjectBase {
 		setToken("language", multirequestToken);
 	}
 
+	// currency:
+	public String getCurrency(){
+		return this.currency;
+	}
+	public void setCurrency(String currency){
+		this.currency = currency;
+	}
+
+	public void currency(String multirequestToken){
+		setToken("currency", multirequestToken);
+	}
+
 	// ks:
 	public String getKs(){
 		return this.ks;
@@ -135,6 +150,7 @@ public class RequestConfiguration extends ObjectBase {
 		partnerId = GsonParser.parseInt(jsonObject.get("partnerId"));
 		userId = GsonParser.parseInt(jsonObject.get("userId"));
 		language = GsonParser.parseString(jsonObject.get("language"));
+		currency = GsonParser.parseString(jsonObject.get("currency"));
 		ks = GsonParser.parseString(jsonObject.get("ks"));
 		responseProfile = GsonParser.parseObject(jsonObject.getAsJsonObject("responseProfile"), BaseResponseProfile.class);
 
@@ -146,6 +162,7 @@ public class RequestConfiguration extends ObjectBase {
 		kparams.add("partnerId", this.partnerId);
 		kparams.add("userId", this.userId);
 		kparams.add("language", this.language);
+		kparams.add("currency", this.currency);
 		kparams.add("ks", this.ks);
 		kparams.add("responseProfile", this.responseProfile);
 		return kparams;
