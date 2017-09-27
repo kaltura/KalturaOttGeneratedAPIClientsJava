@@ -47,12 +47,16 @@ public class FavoriteFilter extends Filter {
 	public interface Tokenizer extends Filter.Tokenizer {
 		String mediaTypeEqual();
 		String mediaIdIn();
+		String udidEqualCurrent();
 	}
 
 	/**  Media type to filter by the favorite assets  */
 	private Integer mediaTypeEqual;
 	/**  Media identifiers from which to filter the favorite assets  */
 	private String mediaIdIn;
+	/**  Indicates whether the results should be filtered by origin UDID using the
+	  current  */
+	private Boolean udidEqualCurrent;
 
 	// mediaTypeEqual:
 	public Integer getMediaTypeEqual(){
@@ -78,6 +82,18 @@ public class FavoriteFilter extends Filter {
 		setToken("mediaIdIn", multirequestToken);
 	}
 
+	// udidEqualCurrent:
+	public Boolean getUdidEqualCurrent(){
+		return this.udidEqualCurrent;
+	}
+	public void setUdidEqualCurrent(Boolean udidEqualCurrent){
+		this.udidEqualCurrent = udidEqualCurrent;
+	}
+
+	public void udidEqualCurrent(String multirequestToken){
+		setToken("udidEqualCurrent", multirequestToken);
+	}
+
 
 	public FavoriteFilter() {
 		super();
@@ -91,6 +107,7 @@ public class FavoriteFilter extends Filter {
 		// set members values:
 		mediaTypeEqual = GsonParser.parseInt(jsonObject.get("mediaTypeEqual"));
 		mediaIdIn = GsonParser.parseString(jsonObject.get("mediaIdIn"));
+		udidEqualCurrent = GsonParser.parseBoolean(jsonObject.get("udidEqualCurrent"));
 
 	}
 
@@ -99,6 +116,7 @@ public class FavoriteFilter extends Filter {
 		kparams.add("objectType", "KalturaFavoriteFilter");
 		kparams.add("mediaTypeEqual", this.mediaTypeEqual);
 		kparams.add("mediaIdIn", this.mediaIdIn);
+		kparams.add("udidEqualCurrent", this.udidEqualCurrent);
 		return kparams;
 	}
 
