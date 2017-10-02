@@ -75,7 +75,7 @@ public abstract class Social extends ObjectBase {
 	private String birthday;
 	/**  User model status              Possible values: UNKNOWN, OK, ERROR, NOACTION,
 	  NOTEXIST, CONFLICT, MERGE, MERGEOK, NEWUSER, MINFRIENDS, INVITEOK, INVITEERROR,
-	  ACCESSDENIED, WRONGPASSWORDORUSERNAME, UNMERGEOK  */
+	  ACCESSDENIED, WRONGPASSWORDORUSERNAME, UNMERGEOK, USEREMAILISMISSING  */
 	private String status;
 	/**  Profile picture URL  */
 	private String pictureUrl;
