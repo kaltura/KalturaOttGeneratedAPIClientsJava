@@ -52,6 +52,7 @@ public class SubscriptionEntitlement extends Entitlement {
 		String paymentGatewayId();
 		String paymentMethodId();
 		String scheduledSubscriptionId();
+		String isSuspended();
 	}
 
 	/**  The date of the next renewal (only for subscription)  */
@@ -69,6 +70,8 @@ public class SubscriptionEntitlement extends Entitlement {
 	private Integer paymentMethodId;
 	/**  Scheduled Subscription Identifier  */
 	private Long scheduledSubscriptionId;
+	/**  Indicates if the subscription suspended  */
+	private Boolean isSuspended;
 
 	// nextRenewalDate:
 	public Long getNextRenewalDate(){
@@ -154,6 +157,18 @@ public class SubscriptionEntitlement extends Entitlement {
 		setToken("scheduledSubscriptionId", multirequestToken);
 	}
 
+	// isSuspended:
+	public Boolean getIsSuspended(){
+		return this.isSuspended;
+	}
+	public void setIsSuspended(Boolean isSuspended){
+		this.isSuspended = isSuspended;
+	}
+
+	public void isSuspended(String multirequestToken){
+		setToken("isSuspended", multirequestToken);
+	}
+
 
 	public SubscriptionEntitlement() {
 		super();
@@ -172,6 +187,7 @@ public class SubscriptionEntitlement extends Entitlement {
 		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
 		paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
 		scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
+		isSuspended = GsonParser.parseBoolean(jsonObject.get("isSuspended"));
 
 	}
 
