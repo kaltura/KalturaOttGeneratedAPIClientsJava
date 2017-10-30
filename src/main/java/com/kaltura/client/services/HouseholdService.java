@@ -127,16 +127,25 @@ public class HouseholdService {
 	
 	public static class SuspendHouseholdBuilder extends RequestBuilder<Boolean, String, SuspendHouseholdBuilder> {
 		
-		public SuspendHouseholdBuilder() {
+		public SuspendHouseholdBuilder(int roleId) {
 			super(Boolean.class, "household", "suspend");
+			params.add("roleId", roleId);
 		}
+		
+		public void roleId(String multirequestToken) {
+			params.add("roleId", multirequestToken);
+		}
+	}
+
+	public static SuspendHouseholdBuilder suspend()  {
+		return suspend(Integer.MIN_VALUE);
 	}
 
 	/**  Suspend a given household service. Sets the household status to
 	  “suspended&amp;quot;.The household service settings are maintained for later
 	  resume  */
-    public static SuspendHouseholdBuilder suspend()  {
-		return new SuspendHouseholdBuilder();
+    public static SuspendHouseholdBuilder suspend(int roleId)  {
+		return new SuspendHouseholdBuilder(roleId);
 	}
 	
 	public static class UpdateHouseholdBuilder extends RequestBuilder<Household, Household.Tokenizer, UpdateHouseholdBuilder> {

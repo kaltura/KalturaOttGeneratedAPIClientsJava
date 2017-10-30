@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.UserRole;
 import com.kaltura.client.types.UserRoleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,6 +40,36 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class UserRoleService {
+	
+	public static class AddUserRoleBuilder extends RequestBuilder<UserRole, UserRole.Tokenizer, AddUserRoleBuilder> {
+		
+		public AddUserRoleBuilder(UserRole role) {
+			super(UserRole.class, "userrole", "add");
+			params.add("role", role);
+		}
+	}
+
+	/**  Creates a new role  */
+    public static AddUserRoleBuilder add(UserRole role)  {
+		return new AddUserRoleBuilder(role);
+	}
+	
+	public static class DeleteUserRoleBuilder extends RequestBuilder<Boolean, String, DeleteUserRoleBuilder> {
+		
+		public DeleteUserRoleBuilder(long id) {
+			super(Boolean.class, "userrole", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**  Delete role  */
+    public static DeleteUserRoleBuilder delete(long id)  {
+		return new DeleteUserRoleBuilder(id);
+	}
 	
 	public static class ListUserRoleBuilder extends ListResponseRequestBuilder<UserRole, UserRole.Tokenizer, ListUserRoleBuilder> {
 		
@@ -56,5 +87,23 @@ public class UserRoleService {
 	  roles  */
     public static ListUserRoleBuilder list(UserRoleFilter filter)  {
 		return new ListUserRoleBuilder(filter);
+	}
+	
+	public static class UpdateUserRoleBuilder extends RequestBuilder<UserRole, UserRole.Tokenizer, UpdateUserRoleBuilder> {
+		
+		public UpdateUserRoleBuilder(long id, UserRole role) {
+			super(UserRole.class, "userrole", "update");
+			params.add("id", id);
+			params.add("role", role);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**  Update role  */
+    public static UpdateUserRoleBuilder update(long id, UserRole role)  {
+		return new UpdateUserRoleBuilder(id, role);
 	}
 }

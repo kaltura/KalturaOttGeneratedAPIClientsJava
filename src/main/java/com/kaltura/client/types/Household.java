@@ -62,6 +62,7 @@ public class Household extends ObjectBase {
 		String frequencyNextDeviceAction();
 		String frequencyNextUserAction();
 		String restriction();
+		String roleId();
 	}
 
 	/**  Household identifier  */
@@ -92,6 +93,8 @@ public class Household extends ObjectBase {
 	private Long frequencyNextUserAction;
 	/**  Household restriction  */
 	private HouseholdRestriction restriction;
+	/**  suspended roleId  */
+	private Integer roleId;
 
 	// id:
 	public Long getId(){
@@ -261,6 +264,18 @@ public class Household extends ObjectBase {
 		setToken("restriction", multirequestToken);
 	}
 
+	// roleId:
+	public Integer getRoleId(){
+		return this.roleId;
+	}
+	public void setRoleId(Integer roleId){
+		this.roleId = roleId;
+	}
+
+	public void roleId(String multirequestToken){
+		setToken("roleId", multirequestToken);
+	}
+
 
 	public Household() {
 		super();
@@ -286,6 +301,7 @@ public class Household extends ObjectBase {
 		frequencyNextDeviceAction = GsonParser.parseLong(jsonObject.get("frequencyNextDeviceAction"));
 		frequencyNextUserAction = GsonParser.parseLong(jsonObject.get("frequencyNextUserAction"));
 		restriction = HouseholdRestriction.get(GsonParser.parseString(jsonObject.get("restriction")));
+		roleId = GsonParser.parseInt(jsonObject.get("roleId"));
 
 	}
 

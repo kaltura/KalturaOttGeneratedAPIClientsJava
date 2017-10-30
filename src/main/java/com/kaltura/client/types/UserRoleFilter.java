@@ -46,10 +46,13 @@ public class UserRoleFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String idIn();
+		String currentUserRoleIdsContains();
 	}
 
 	/**  Comma separated roles identifiers  */
 	private String idIn;
+	/**  Indicates whether the results should be filtered by userId using the current  */
+	private Boolean currentUserRoleIdsContains;
 
 	// idIn:
 	public String getIdIn(){
@@ -61,6 +64,18 @@ public class UserRoleFilter extends Filter {
 
 	public void idIn(String multirequestToken){
 		setToken("idIn", multirequestToken);
+	}
+
+	// currentUserRoleIdsContains:
+	public Boolean getCurrentUserRoleIdsContains(){
+		return this.currentUserRoleIdsContains;
+	}
+	public void setCurrentUserRoleIdsContains(Boolean currentUserRoleIdsContains){
+		this.currentUserRoleIdsContains = currentUserRoleIdsContains;
+	}
+
+	public void currentUserRoleIdsContains(String multirequestToken){
+		setToken("currentUserRoleIdsContains", multirequestToken);
 	}
 
 
@@ -75,6 +90,7 @@ public class UserRoleFilter extends Filter {
 
 		// set members values:
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		currentUserRoleIdsContains = GsonParser.parseBoolean(jsonObject.get("currentUserRoleIdsContains"));
 
 	}
 
@@ -82,6 +98,7 @@ public class UserRoleFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaUserRoleFilter");
 		kparams.add("idIn", this.idIn);
+		kparams.add("currentUserRoleIdsContains", this.currentUserRoleIdsContains);
 		return kparams;
 	}
 
