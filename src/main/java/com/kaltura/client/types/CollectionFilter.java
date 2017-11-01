@@ -39,52 +39,17 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**  Collection Filter  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ProductPriceFilter.Tokenizer.class)
-public class ProductPriceFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(CollectionFilter.Tokenizer.class)
+public class CollectionFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String subscriptionIdIn();
-		String fileIdIn();
 		String collectionIdIn();
-		String isLowest();
-		String couponCodeEqual();
 	}
 
-	/**  Comma separated subscriptions identifiers  */
-	private String subscriptionIdIn;
-	/**  Comma separated media files identifiers  */
-	private String fileIdIn;
-	/**  Comma separated collections identifiers  */
+	/**  Comma separated collection IDs  */
 	private String collectionIdIn;
-	/**  A flag that indicates if only the lowest price of an item should return  */
-	private Boolean isLowest;
-	/**  Discount coupon code  */
-	private String couponCodeEqual;
-
-	// subscriptionIdIn:
-	public String getSubscriptionIdIn(){
-		return this.subscriptionIdIn;
-	}
-	public void setSubscriptionIdIn(String subscriptionIdIn){
-		this.subscriptionIdIn = subscriptionIdIn;
-	}
-
-	public void subscriptionIdIn(String multirequestToken){
-		setToken("subscriptionIdIn", multirequestToken);
-	}
-
-	// fileIdIn:
-	public String getFileIdIn(){
-		return this.fileIdIn;
-	}
-	public void setFileIdIn(String fileIdIn){
-		this.fileIdIn = fileIdIn;
-	}
-
-	public void fileIdIn(String multirequestToken){
-		setToken("fileIdIn", multirequestToken);
-	}
 
 	// collectionIdIn:
 	public String getCollectionIdIn(){
@@ -98,57 +63,25 @@ public class ProductPriceFilter extends Filter {
 		setToken("collectionIdIn", multirequestToken);
 	}
 
-	// isLowest:
-	public Boolean getIsLowest(){
-		return this.isLowest;
-	}
-	public void setIsLowest(Boolean isLowest){
-		this.isLowest = isLowest;
-	}
 
-	public void isLowest(String multirequestToken){
-		setToken("isLowest", multirequestToken);
-	}
-
-	// couponCodeEqual:
-	public String getCouponCodeEqual(){
-		return this.couponCodeEqual;
-	}
-	public void setCouponCodeEqual(String couponCodeEqual){
-		this.couponCodeEqual = couponCodeEqual;
-	}
-
-	public void couponCodeEqual(String multirequestToken){
-		setToken("couponCodeEqual", multirequestToken);
-	}
-
-
-	public ProductPriceFilter() {
+	public CollectionFilter() {
 		super();
 	}
 
-	public ProductPriceFilter(JsonObject jsonObject) throws APIException {
+	public CollectionFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		subscriptionIdIn = GsonParser.parseString(jsonObject.get("subscriptionIdIn"));
-		fileIdIn = GsonParser.parseString(jsonObject.get("fileIdIn"));
 		collectionIdIn = GsonParser.parseString(jsonObject.get("collectionIdIn"));
-		isLowest = GsonParser.parseBoolean(jsonObject.get("isLowest"));
-		couponCodeEqual = GsonParser.parseString(jsonObject.get("couponCodeEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaProductPriceFilter");
-		kparams.add("subscriptionIdIn", this.subscriptionIdIn);
-		kparams.add("fileIdIn", this.fileIdIn);
+		kparams.add("objectType", "KalturaCollectionFilter");
 		kparams.add("collectionIdIn", this.collectionIdIn);
-		kparams.add("isLowest", this.isLowest);
-		kparams.add("couponCodeEqual", this.couponCodeEqual);
 		return kparams;
 	}
 
