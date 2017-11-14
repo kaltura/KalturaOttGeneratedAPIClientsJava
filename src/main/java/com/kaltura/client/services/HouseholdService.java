@@ -55,18 +55,13 @@ public class HouseholdService {
 	
 	public static class DeleteHouseholdBuilder extends RequestBuilder<Boolean, String, DeleteHouseholdBuilder> {
 		
-		public DeleteHouseholdBuilder(int id, boolean purge) {
+		public DeleteHouseholdBuilder(int id) {
 			super(Boolean.class, "household", "delete");
 			params.add("id", id);
-			params.add("purge", purge);
 		}
 		
 		public void id(String multirequestToken) {
 			params.add("id", multirequestToken);
-		}
-		
-		public void purge(String multirequestToken) {
-			params.add("purge", multirequestToken);
 		}
 	}
 
@@ -74,14 +69,10 @@ public class HouseholdService {
 		return delete(Integer.MIN_VALUE);
 	}
 
-	public static DeleteHouseholdBuilder delete(int id)  {
-		return delete(id, False);
-	}
-
 	/**  Fully delete a household. Delete all of the household information, including
 	  users, devices, entitlements, payment methods and notification date.  */
-    public static DeleteHouseholdBuilder delete(int id, boolean purge)  {
-		return new DeleteHouseholdBuilder(id, purge);
+    public static DeleteHouseholdBuilder delete(int id)  {
+		return new DeleteHouseholdBuilder(id);
 	}
 	
 	public static class GetHouseholdBuilder extends RequestBuilder<Household, Household.Tokenizer, GetHouseholdBuilder> {
