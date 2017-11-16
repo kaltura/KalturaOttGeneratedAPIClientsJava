@@ -29,9 +29,10 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -47,13 +48,13 @@ public class MultilingualStringValue extends Value {
 	
 	public interface Tokenizer extends Value.Tokenizer {
 		String value();
-		MultilingualString.Tokenizer multilingualValue();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualValue();
 	}
 
 	/**  Value  */
 	private String value;
 	/**  Value  */
-	private MultilingualString multilingualValue;
+	private List<TranslationToken> multilingualValue;
 
 	// value:
 	public String getValue(){
@@ -68,10 +69,10 @@ public class MultilingualStringValue extends Value {
 	}
 
 	// multilingualValue:
-	public MultilingualString getMultilingualValue(){
+	public List<TranslationToken> getMultilingualValue(){
 		return this.multilingualValue;
 	}
-	public void setMultilingualValue(MultilingualString multilingualValue){
+	public void setMultilingualValue(List<TranslationToken> multilingualValue){
 		this.multilingualValue = multilingualValue;
 	}
 
@@ -87,7 +88,7 @@ public class MultilingualStringValue extends Value {
 
 		// set members values:
 		value = GsonParser.parseString(jsonObject.get("value"));
-		multilingualValue = GsonParser.parseObject(jsonObject.getAsJsonObject("multilingualValue"), MultilingualString.class);
+		multilingualValue = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualValue"), TranslationToken.class);
 
 	}
 
