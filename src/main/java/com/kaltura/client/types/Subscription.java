@@ -31,7 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.types.DiscountModule;
-import com.kaltura.client.types.MultilingualString;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.PreviewModule;
 import com.kaltura.client.types.PriceDetails;
@@ -64,9 +63,9 @@ public class Subscription extends ObjectBase {
 		PriceDetails.Tokenizer price();
 		DiscountModule.Tokenizer discountModule();
 		String name();
-		MultilingualString.Tokenizer multilingualName();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String description();
-		MultilingualString.Tokenizer multilingualDescription();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualDescription();
 		String mediaId();
 		String prorityInOrder();
 		String pricePlanIds();
@@ -109,11 +108,11 @@ public class Subscription extends ObjectBase {
 	/**  Name of the subscription  */
 	private String name;
 	/**  Name of the subscription  */
-	private MultilingualString multilingualName;
+	private List<TranslationToken> multilingualName;
 	/**  description of the subscription  */
 	private String description;
 	/**  description of the subscription  */
-	private MultilingualString multilingualDescription;
+	private List<TranslationToken> multilingualDescription;
 	/**  Identifier of the media associated with the subscription  */
 	private Integer mediaId;
 	/**  Subscription order (when returned in methods that retrieve subscriptions)  */
@@ -269,10 +268,10 @@ public class Subscription extends ObjectBase {
 	}
 
 	// multilingualName:
-	public MultilingualString getMultilingualName(){
+	public List<TranslationToken> getMultilingualName(){
 		return this.multilingualName;
 	}
-	public void setMultilingualName(MultilingualString multilingualName){
+	public void setMultilingualName(List<TranslationToken> multilingualName){
 		this.multilingualName = multilingualName;
 	}
 
@@ -289,10 +288,10 @@ public class Subscription extends ObjectBase {
 	}
 
 	// multilingualDescription:
-	public MultilingualString getMultilingualDescription(){
+	public List<TranslationToken> getMultilingualDescription(){
 		return this.multilingualDescription;
 	}
-	public void setMultilingualDescription(MultilingualString multilingualDescription){
+	public void setMultilingualDescription(List<TranslationToken> multilingualDescription){
 		this.multilingualDescription = multilingualDescription;
 	}
 
@@ -502,9 +501,9 @@ public class Subscription extends ObjectBase {
 		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
 		discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
 		name = GsonParser.parseString(jsonObject.get("name"));
-		multilingualName = GsonParser.parseObject(jsonObject.getAsJsonObject("multilingualName"), MultilingualString.class);
+		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		description = GsonParser.parseString(jsonObject.get("description"));
-		multilingualDescription = GsonParser.parseObject(jsonObject.getAsJsonObject("multilingualDescription"), MultilingualString.class);
+		multilingualDescription = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualDescription"), TranslationToken.class);
 		mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
 		prorityInOrder = GsonParser.parseLong(jsonObject.get("prorityInOrder"));
 		pricePlanIds = GsonParser.parseString(jsonObject.get("pricePlanIds"));
