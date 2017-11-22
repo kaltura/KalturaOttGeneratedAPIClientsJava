@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,42 +38,51 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum DrmSchemeName implements EnumAsString {
-	PLAYREADY_CENC("PLAYREADY_CENC"),
-	WIDEVINE_CENC("WIDEVINE_CENC"),
-	FAIRPLAY("FAIRPLAY"),
-	WIDEVINE("WIDEVINE"),
-	PLAYREADY("PLAYREADY"),
-	CUSTOM_DRM("CUSTOM_DRM");
 
-	private String value;
-
-	DrmSchemeName(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(CustomDrmPlaybackPluginData.Tokenizer.class)
+public class CustomDrmPlaybackPluginData extends DrmPlaybackPluginData {
+	
+	public interface Tokenizer extends DrmPlaybackPluginData.Tokenizer {
+		String data();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**  Custom DRM license data  */
+	private String data;
+
+	// data:
+	public String getData(){
+		return this.data;
+	}
+	public void setData(String data){
+		this.data = data;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void data(String multirequestToken){
+		setToken("data", multirequestToken);
 	}
 
-	public static DrmSchemeName get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over DrmSchemeName defined values and compare the inner value with the given one:
-		for(DrmSchemeName item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return DrmSchemeName.values().length > 0 ? DrmSchemeName.values()[0]: null;
-   }
+
+	public CustomDrmPlaybackPluginData() {
+		super();
+	}
+
+	public CustomDrmPlaybackPluginData(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		data = GsonParser.parseString(jsonObject.get("data"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaCustomDrmPlaybackPluginData");
+		kparams.add("data", this.data);
+		return kparams;
+	}
+
 }
+
