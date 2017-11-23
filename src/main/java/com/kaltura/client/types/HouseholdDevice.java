@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.DeviceStatus;
+import com.kaltura.client.types.CustomDrmPlaybackPluginData;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -54,6 +55,7 @@ public class HouseholdDevice extends ObjectBase {
 		String activatedOn();
 		String status();
 		String deviceFamilyId();
+		CustomDrmPlaybackPluginData.Tokenizer drm();
 	}
 
 	/**  Household identifier  */
@@ -70,6 +72,8 @@ public class HouseholdDevice extends ObjectBase {
 	private DeviceStatus status;
 	/**  Device family id  */
 	private Long deviceFamilyId;
+	/**  Device DRM data  */
+	private CustomDrmPlaybackPluginData drm;
 
 	// householdId:
 	public Integer getHouseholdId(){
@@ -155,6 +159,14 @@ public class HouseholdDevice extends ObjectBase {
 		setToken("deviceFamilyId", multirequestToken);
 	}
 
+	// drm:
+	public CustomDrmPlaybackPluginData getDrm(){
+		return this.drm;
+	}
+	public void setDrm(CustomDrmPlaybackPluginData drm){
+		this.drm = drm;
+	}
+
 
 	public HouseholdDevice() {
 		super();
@@ -173,6 +185,7 @@ public class HouseholdDevice extends ObjectBase {
 		activatedOn = GsonParser.parseLong(jsonObject.get("activatedOn"));
 		status = DeviceStatus.get(GsonParser.parseString(jsonObject.get("status")));
 		deviceFamilyId = GsonParser.parseLong(jsonObject.get("deviceFamilyId"));
+		drm = GsonParser.parseObject(jsonObject.getAsJsonObject("drm"), CustomDrmPlaybackPluginData.class);
 
 	}
 
