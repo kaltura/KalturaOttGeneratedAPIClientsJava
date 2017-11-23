@@ -72,9 +72,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:kaltura/KalturaOttGeneratedAPIClientsJava.git</connection>
-        <developerConnection>scm:git:git@github.com:kaltura/KalturaOttGeneratedAPIClientsJava.git</developerConnection>
-        <url>scm:git:git@github.com:kaltura/KalturaOttGeneratedAPIClientsJava.git</url>
+        <connection>https://github.com/kaltura/KalturaOttGeneratedAPIClientsJava.git</connection>
+        <developerConnection>https://github.com/kaltura/KalturaOttGeneratedAPIClientsJava.git</developerConnection>
+        <url>https://github.com/kaltura/KalturaOttGeneratedAPIClientsJava.git</url>
     </scm>
 
     <!-- Libraries on which the KalturaClient depends -->
