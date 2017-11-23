@@ -163,7 +163,6 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <pushChanges>false</pushChanges>
                 </configuration>
             </plugin>
         </plugins>
