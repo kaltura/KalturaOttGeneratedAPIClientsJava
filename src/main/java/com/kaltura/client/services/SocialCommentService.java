@@ -33,7 +33,7 @@ import com.kaltura.client.types.SocialCommentFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -54,7 +54,12 @@ public class SocialCommentService {
 		return list(filter, null);
 	}
 
-	/**  Get a list of all social comments filtered by asset ID and social platform  */
+	/**
+	 * Get a list of all social comments filtered by asset ID and social platform
+	 * 
+	 * @param filter Country filter
+	 * @param pager Pager
+	 */
     public static ListSocialCommentBuilder list(SocialCommentFilter filter, FilterPager pager)  {
 		return new ListSocialCommentBuilder(filter, pager);
 	}

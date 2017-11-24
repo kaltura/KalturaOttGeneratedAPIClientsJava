@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Country details  */
+/**
+ * Country details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Country.Tokenizer.class)
 public class Country extends ObjectBase {
@@ -56,21 +58,37 @@ public class Country extends ObjectBase {
 		String vatPercent();
 	}
 
-	/**  Country identifier  */
+	/**
+	 * Country identifier
+	 */
 	private Integer id;
-	/**  Country name  */
+	/**
+	 * Country name
+	 */
 	private String name;
-	/**  Country code  */
+	/**
+	 * Country code
+	 */
 	private String code;
-	/**  The main language code in the country  */
+	/**
+	 * The main language code in the country
+	 */
 	private String mainLanguageCode;
-	/**  All the languages code that are supported in the country  */
+	/**
+	 * All the languages code that are supported in the country
+	 */
 	private String languagesCode;
-	/**  Currency code  */
+	/**
+	 * Currency code
+	 */
 	private String currency;
-	/**  Currency Sign  */
+	/**
+	 * Currency Sign
+	 */
 	private String currencySign;
-	/**  Vat Percent in the country  */
+	/**
+	 * Vat Percent in the country
+	 */
 	private Double vatPercent;
 
 	// id:

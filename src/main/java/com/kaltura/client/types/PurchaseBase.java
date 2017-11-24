@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,11 +51,17 @@ public class PurchaseBase extends ObjectBase {
 		String productType();
 	}
 
-	/**  Identifier for the package from which this content is offered  */
+	/**
+	 * Identifier for the package from which this content is offered
+	 */
 	private Integer productId;
-	/**  Identifier for the content to purchase. Relevant only if Product type = PPV  */
+	/**
+	 * Identifier for the content to purchase. Relevant only if Product type = PPV
+	 */
 	private Integer contentId;
-	/**  Package type. Possible values: PPV, Subscription, Collection  */
+	/**
+	 * Package type. Possible values: PPV, Subscription, Collection
+	 */
 	private TransactionType productType;
 
 	// productId:

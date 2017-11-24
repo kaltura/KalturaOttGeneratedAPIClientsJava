@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Purchase settings and PIN  */
+/**
+ * Purchase settings and PIN
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PurchaseSettings.Tokenizer.class)
 public class PurchaseSettings extends Pin {
@@ -49,7 +51,9 @@ public class PurchaseSettings extends Pin {
 		String permission();
 	}
 
-	/**  Purchase permission - block, ask or allow  */
+	/**
+	 * Purchase permission - block, ask or allow
+	 */
 	private PurchaseSettingsType permission;
 
 	// permission:

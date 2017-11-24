@@ -36,13 +36,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Meta filter  */
+/**
+ * Meta filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MetaFilter.Tokenizer.class)
 public class MetaFilter extends Filter {
@@ -54,13 +56,21 @@ public class MetaFilter extends Filter {
 		String assetTypeEqual();
 	}
 
-	/**  Meta system field name to filter by  */
+	/**
+	 * Meta system field name to filter by
+	 */
 	private MetaFieldName fieldNameEqual;
-	/**  Meta system field name to filter by  */
+	/**
+	 * Meta system field name to filter by
+	 */
 	private MetaFieldName fieldNameNotEqual;
-	/**  Meta type to filter by  */
+	/**
+	 * Meta type to filter by
+	 */
 	private MetaType typeEqual;
-	/**  Asset type to filter by  */
+	/**
+	 * Asset type to filter by
+	 */
 	private AssetType assetTypeEqual;
 
 	// fieldNameEqual:

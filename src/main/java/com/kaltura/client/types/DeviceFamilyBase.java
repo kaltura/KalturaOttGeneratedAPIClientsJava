@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Device family details  */
+/**
+ * Device family details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DeviceFamilyBase.Tokenizer.class)
 public class DeviceFamilyBase extends ObjectBase {
@@ -50,9 +52,13 @@ public class DeviceFamilyBase extends ObjectBase {
 		String name();
 	}
 
-	/**  Device family identifier  */
+	/**
+	 * Device family identifier
+	 */
 	private Long id;
-	/**  Device family name  */
+	/**
+	 * Device family name
+	 */
 	private String name;
 
 	// id:

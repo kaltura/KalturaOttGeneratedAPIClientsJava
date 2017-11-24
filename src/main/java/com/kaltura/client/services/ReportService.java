@@ -34,7 +34,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -54,7 +54,11 @@ public class ReportService {
 		}
 	}
 
-	/**  Return a device configuration retrieval log request for a specific device.  */
+	/**
+	 * Return a device configuration retrieval log request for a specific device.
+	 * 
+	 * @param udid Device UDID
+	 */
     public static GetReportBuilder get(String udid)  {
 		return new GetReportBuilder(udid);
 	}
@@ -72,8 +76,13 @@ public class ReportService {
 		return list(filter, null);
 	}
 
-	/**  Return device configurations retrieval log. Supports paging and can be filtered
-	  with the parameter &amp;quot;FromData&amp;quot;.  */
+	/**
+	 * Return device configurations retrieval log. Supports paging and can be filtered
+	  with the parameter &amp;quot;FromData&amp;quot;.
+	 * 
+	 * @param filter Filter option for from date (sec)
+	 * @param pager Page size and index
+	 */
     public static ListReportBuilder list(ReportFilter filter, FilterPager pager)  {
 		return new ListReportBuilder(filter, pager);
 	}

@@ -36,7 +36,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -57,24 +57,40 @@ public class Recording extends ObjectBase {
 		String updateDate();
 	}
 
-	/**  Kaltura unique ID representing the recording identifier  */
+	/**
+	 * Kaltura unique ID representing the recording identifier
+	 */
 	private Long id;
-	/**  Recording state:
-	  scheduled/recording/recorded/canceled/failed/does_not_exists/deleted  */
+	/**
+	 * Recording state:
+	  scheduled/recording/recorded/canceled/failed/does_not_exists/deleted
+	 */
 	private RecordingStatus status;
-	/**  Kaltura unique ID representing the program identifier  */
+	/**
+	 * Kaltura unique ID representing the program identifier
+	 */
 	private Long assetId;
-	/**  Recording Type: single/season/series  */
+	/**
+	 * Recording Type: single/season/series
+	 */
 	private RecordingType type;
-	/**  Specifies until when the recording is available for viewing. Date and time
-	  represented as epoch.  */
+	/**
+	 * Specifies until when the recording is available for viewing. Date and time
+	  represented as epoch.
+	 */
 	private Long viewableUntilDate;
-	/**  Specifies whether or not the recording is protected  */
+	/**
+	 * Specifies whether or not the recording is protected
+	 */
 	private Boolean isProtected;
-	/**  Specifies when was the recording created. Date and time represented as epoch.  */
+	/**
+	 * Specifies when was the recording created. Date and time represented as epoch.
+	 */
 	private Long createDate;
-	/**  Specifies when was the recording last updated. Date and time represented as
-	  epoch.  */
+	/**
+	 * Specifies when was the recording last updated. Date and time represented as
+	  epoch.
+	 */
 	private Long updateDate;
 
 	// id:

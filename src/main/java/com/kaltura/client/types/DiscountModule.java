@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Discount module  */
+/**
+ * Discount module
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DiscountModule.Tokenizer.class)
 public class DiscountModule extends ObjectBase {
@@ -51,11 +53,17 @@ public class DiscountModule extends ObjectBase {
 		String endDate();
 	}
 
-	/**  The discount percentage  */
+	/**
+	 * The discount percentage
+	 */
 	private Double percent;
-	/**  The first date the discount is available  */
+	/**
+	 * The first date the discount is available
+	 */
 	private Long startDate;
-	/**  The last date the discount is available  */
+	/**
+	 * The last date the discount is available
+	 */
 	private Long endDate;
 
 	// percent:

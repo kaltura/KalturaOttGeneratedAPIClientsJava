@@ -34,7 +34,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -50,7 +50,14 @@ public class AnnouncementService {
 		}
 	}
 
-	/**  Add a new future scheduled system announcement push notification  */
+	/**
+	 * Add a new future scheduled system announcement push notification
+	 * 
+	 * @param announcement The announcement to be added.
+	 *             timezone parameter should be taken from the 'name of timezone'
+	 * from: https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx
+	 *             Recipients values: All, LoggedIn, Guests
+	 */
     public static AddAnnouncementBuilder add(Announcement announcement)  {
 		return new AddAnnouncementBuilder(announcement);
 	}
@@ -67,7 +74,11 @@ public class AnnouncementService {
 		}
 	}
 
-	/**  Delete an existing announcing. Announcement cannot be delete while being sent.  */
+	/**
+	 * Delete an existing announcing. Announcement cannot be delete while being sent.
+	 * 
+	 * @param id Id of the announcement.
+	 */
     public static DeleteAnnouncementBuilder delete(long id)  {
 		return new DeleteAnnouncementBuilder(id);
 	}
@@ -79,7 +90,9 @@ public class AnnouncementService {
 		}
 	}
 
-	/**  Enable system announcements  */
+	/**
+	 * Enable system announcements
+	 */
     public static EnableSystemAnnouncementsAnnouncementBuilder enableSystemAnnouncements()  {
 		return new EnableSystemAnnouncementsAnnouncementBuilder();
 	}
@@ -97,7 +110,12 @@ public class AnnouncementService {
 		return list(filter, null);
 	}
 
-	/**  Lists all announcements in the system.  */
+	/**
+	 * Lists all announcements in the system.
+	 * 
+	 * @param filter Filter object
+	 * @param pager Paging the request
+	 */
     public static ListAnnouncementBuilder list(AnnouncementFilter filter, FilterPager pager)  {
 		return new ListAnnouncementBuilder(filter, pager);
 	}
@@ -115,8 +133,16 @@ public class AnnouncementService {
 		}
 	}
 
-	/**  Update an existing future system announcement push notification. Announcement
-	  can only be updated only before sending  */
+	/**
+	 * Update an existing future system announcement push notification. Announcement
+	  can only be updated only before sending
+	 * 
+	 * @param announcementId The announcement identifier
+	 * @param announcement The announcement to update.
+	 *             timezone parameter should be taken from the 'name of timezone'
+	 * from: https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx
+	 *             Recipients values: All, LoggedIn, Guests
+	 */
     public static UpdateAnnouncementBuilder update(int announcementId, Announcement announcement)  {
 		return new UpdateAnnouncementBuilder(announcementId, announcement);
 	}
@@ -138,7 +164,12 @@ public class AnnouncementService {
 		}
 	}
 
-	/**  Update a system announcement status  */
+	/**
+	 * Update a system announcement status
+	 * 
+	 * @param id Id of the announcement.
+	 * @param status Status to update to.
+	 */
     public static UpdateStatusAnnouncementBuilder updateStatus(long id, boolean status)  {
 		return new UpdateStatusAnnouncementBuilder(id, status);
 	}

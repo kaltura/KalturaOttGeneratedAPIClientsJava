@@ -32,7 +32,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,7 +48,11 @@ public class OssAdapterProfileService {
 		}
 	}
 
-	/**  Insert new OSS adapter for partner  */
+	/**
+	 * Insert new OSS adapter for partner
+	 * 
+	 * @param ossAdapter OSS adapter Object
+	 */
     public static AddOssAdapterProfileBuilder add(OSSAdapterProfile ossAdapter)  {
 		return new AddOssAdapterProfileBuilder(ossAdapter);
 	}
@@ -65,7 +69,11 @@ public class OssAdapterProfileService {
 		}
 	}
 
-	/**  Delete OSS adapter by OSS adapter id  */
+	/**
+	 * Delete OSS adapter by OSS adapter id
+	 * 
+	 * @param ossAdapterId OSS adapter identifier
+	 */
     public static DeleteOssAdapterProfileBuilder delete(int ossAdapterId)  {
 		return new DeleteOssAdapterProfileBuilder(ossAdapterId);
 	}
@@ -82,7 +90,11 @@ public class OssAdapterProfileService {
 		}
 	}
 
-	/**  Generate oss adapter shared secret  */
+	/**
+	 * Generate oss adapter shared secret
+	 * 
+	 * @param ossAdapterId OSS adapter identifier
+	 */
     public static GenerateSharedSecretOssAdapterProfileBuilder generateSharedSecret(int ossAdapterId)  {
 		return new GenerateSharedSecretOssAdapterProfileBuilder(ossAdapterId);
 	}
@@ -99,7 +111,11 @@ public class OssAdapterProfileService {
 		}
 	}
 
-	/**  Returns all OSS adapters for partner : id + name  */
+	/**
+	 * Returns all OSS adapters for partner : id + name
+	 * 
+	 * @param id OSS adapter identifier
+	 */
     public static GetOssAdapterProfileBuilder get(int id)  {
 		return new GetOssAdapterProfileBuilder(id);
 	}
@@ -111,7 +127,9 @@ public class OssAdapterProfileService {
 		}
 	}
 
-	/**  Returns all OSS adapters for partner : id + name  */
+	/**
+	 * Returns all OSS adapters for partner : id + name
+	 */
     public static ListOssAdapterProfileBuilder list()  {
 		return new ListOssAdapterProfileBuilder();
 	}
@@ -129,7 +147,12 @@ public class OssAdapterProfileService {
 		}
 	}
 
-	/**  Update OSS adapter details  */
+	/**
+	 * Update OSS adapter details
+	 * 
+	 * @param ossAdapterId OSS adapter identifier
+	 * @param ossAdapter OSS adapter Object
+	 */
     public static UpdateOssAdapterProfileBuilder update(int ossAdapterId, OSSAdapterProfile ossAdapter)  {
 		return new UpdateOssAdapterProfileBuilder(ossAdapterId, ossAdapter);
 	}

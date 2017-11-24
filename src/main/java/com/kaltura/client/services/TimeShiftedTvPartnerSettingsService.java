@@ -31,7 +31,7 @@ import com.kaltura.client.types.TimeShiftedTvPartnerSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -46,8 +46,10 @@ public class TimeShiftedTvPartnerSettingsService {
 		}
 	}
 
-	/**  Retrieve the account’s time-shifted TV settings (catch-up and C-DVR,
-	  Trick-play, Start-over)  */
+	/**
+	 * Retrieve the account’s time-shifted TV settings (catch-up and C-DVR,
+	  Trick-play, Start-over)
+	 */
     public static GetTimeShiftedTvPartnerSettingsBuilder get()  {
 		return new GetTimeShiftedTvPartnerSettingsBuilder();
 	}
@@ -60,8 +62,12 @@ public class TimeShiftedTvPartnerSettingsService {
 		}
 	}
 
-	/**  Configure the account’s time-shifted TV settings (catch-up and C-DVR,
-	  Trick-play, Start-over)  */
+	/**
+	 * Configure the account’s time-shifted TV settings (catch-up and C-DVR,
+	  Trick-play, Start-over)
+	 * 
+	 * @param settings Time shifted TV settings
+	 */
     public static UpdateTimeShiftedTvPartnerSettingsBuilder update(TimeShiftedTvPartnerSettings settings)  {
 		return new UpdateTimeShiftedTvPartnerSettingsBuilder(settings);
 	}

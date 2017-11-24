@@ -36,13 +36,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  OSS Adapter  */
+/**
+ * OSS Adapter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ExternalChannelProfile.Tokenizer.class)
 public class ExternalChannelProfile extends ObjectBase {
@@ -57,19 +59,33 @@ public class ExternalChannelProfile extends ObjectBase {
 		RequestBuilder.ListTokenizer<ChannelEnrichmentHolder.Tokenizer> enrichments();
 	}
 
-	/**  External channel id  */
+	/**
+	 * External channel id
+	 */
 	private Integer id;
-	/**  External channel name  */
+	/**
+	 * External channel name
+	 */
 	private String name;
-	/**  External channel active status  */
+	/**
+	 * External channel active status
+	 */
 	private Boolean isActive;
-	/**  External channel external identifier  */
+	/**
+	 * External channel external identifier
+	 */
 	private String externalIdentifier;
-	/**  Filter expression  */
+	/**
+	 * Filter expression
+	 */
 	private String filterExpression;
-	/**  Recommendation engine id  */
+	/**
+	 * Recommendation engine id
+	 */
 	private Integer recommendationEngineId;
-	/**  Enrichments  */
+	/**
+	 * Enrichments
+	 */
 	private List<ChannelEnrichmentHolder> enrichments;
 
 	// id:

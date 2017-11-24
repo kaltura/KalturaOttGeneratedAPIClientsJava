@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,13 +51,21 @@ public class PaymentMethodProfile extends ObjectBase {
 		String allowMultiInstance();
 	}
 
-	/**  Payment method identifier (internal)  */
+	/**
+	 * Payment method identifier (internal)
+	 */
 	private Integer id;
-	/**  Payment gateway identifier (internal)  */
+	/**
+	 * Payment gateway identifier (internal)
+	 */
 	private Integer paymentGatewayId;
-	/**  Payment method name  */
+	/**
+	 * Payment method name
+	 */
 	private String name;
-	/**  Indicates whether the payment method allow multiple instances  */
+	/**
+	 * Indicates whether the payment method allow multiple instances
+	 */
 	private Boolean allowMultiInstance;
 
 	// id:

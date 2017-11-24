@@ -31,7 +31,7 @@ import com.kaltura.client.types.Coupon;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,7 +51,11 @@ public class CouponService {
 		}
 	}
 
-	/**  Returns information about a coupon  */
+	/**
+	 * Returns information about a coupon
+	 * 
+	 * @param code Coupon code
+	 */
     public static GetCouponBuilder get(String code)  {
 		return new GetCouponBuilder(code);
 	}

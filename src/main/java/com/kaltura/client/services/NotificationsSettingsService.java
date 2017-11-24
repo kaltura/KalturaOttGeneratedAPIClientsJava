@@ -31,7 +31,7 @@ import com.kaltura.client.types.NotificationsSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -46,7 +46,9 @@ public class NotificationsSettingsService {
 		}
 	}
 
-	/**  Retrieve the user’s notification settings.  */
+	/**
+	 * Retrieve the user’s notification settings.
+	 */
     public static GetNotificationsSettingsBuilder get()  {
 		return new GetNotificationsSettingsBuilder();
 	}
@@ -59,7 +61,11 @@ public class NotificationsSettingsService {
 		}
 	}
 
-	/**  Update the user’s notification settings.  */
+	/**
+	 * Update the user’s notification settings.
+	 * 
+	 * @param settings Notifications settings
+	 */
     public static UpdateNotificationsSettingsBuilder update(NotificationsSettings settings)  {
 		return new UpdateNotificationsSettingsBuilder(settings);
 	}

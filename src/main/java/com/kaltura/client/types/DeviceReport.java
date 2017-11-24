@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -59,27 +59,49 @@ public class DeviceReport extends Report {
 		String operationSystem();
 	}
 
-	/**  Partner id  */
+	/**
+	 * Partner id
+	 */
 	private Integer partnerId;
-	/**  Configuration group id  */
+	/**
+	 * Configuration group id
+	 */
 	private String configurationGroupId;
-	/**  Device UDID  */
+	/**
+	 * Device UDID
+	 */
 	private String udid;
-	/**  Push parameters  */
+	/**
+	 * Push parameters
+	 */
 	private PushParams pushParameters;
-	/**  Version number  */
+	/**
+	 * Version number
+	 */
 	private String versionNumber;
-	/**  Version platform  */
+	/**
+	 * Version platform
+	 */
 	private Platform versionPlatform;
-	/**  Version application name  */
+	/**
+	 * Version application name
+	 */
 	private String versionAppName;
-	/**  Last access IP  */
+	/**
+	 * Last access IP
+	 */
 	private String lastAccessIP;
-	/**  Last access date  */
+	/**
+	 * Last access date
+	 */
 	private Long lastAccessDate;
-	/**  User agent  */
+	/**
+	 * User agent
+	 */
 	private String userAgent;
-	/**  Operation system  */
+	/**
+	 * Operation system
+	 */
 	private String operationSystem;
 
 	// partnerId:

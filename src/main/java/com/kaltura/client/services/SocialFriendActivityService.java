@@ -33,7 +33,7 @@ import com.kaltura.client.types.SocialFriendActivityFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -58,7 +58,12 @@ public class SocialFriendActivityService {
 		return list(filter, null);
 	}
 
-	/**  Get a list of the social friends activity for a user  */
+	/**
+	 * Get a list of the social friends activity for a user
+	 * 
+	 * @param filter Social friend activity filter
+	 * @param pager Pager
+	 */
     public static ListSocialFriendActivityBuilder list(SocialFriendActivityFilter filter, FilterPager pager)  {
 		return new ListSocialFriendActivityBuilder(filter, pager);
 	}

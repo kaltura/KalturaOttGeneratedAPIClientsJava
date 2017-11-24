@@ -32,7 +32,7 @@ import com.kaltura.client.types.RegionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,7 +48,11 @@ public class RegionService {
 		}
 	}
 
-	/**  Returns all regions for the partner  */
+	/**
+	 * Returns all regions for the partner
+	 * 
+	 * @param filter Regions filter
+	 */
     public static ListRegionBuilder list(RegionFilter filter)  {
 		return new ListRegionBuilder(filter);
 	}

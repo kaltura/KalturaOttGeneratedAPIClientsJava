@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -53,15 +53,25 @@ public class Topic extends ObjectBase {
 		String lastMessageSentDateSec();
 	}
 
-	/**  message id  */
+	/**
+	 * message id
+	 */
 	private String id;
-	/**  message  */
+	/**
+	 * message
+	 */
 	private String name;
-	/**  message  */
+	/**
+	 * message
+	 */
 	private String subscribersAmount;
-	/**  automaticIssueNotification  */
+	/**
+	 * automaticIssueNotification
+	 */
 	private TopicAutomaticIssueNotification automaticIssueNotification;
-	/**  lastMessageSentDateSec  */
+	/**
+	 * lastMessageSentDateSec
+	 */
 	private Long lastMessageSentDateSec;
 
 	// id:

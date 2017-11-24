@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Filtering Assets requests  */
+/**
+ * Filtering Assets requests
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BookmarkFilter.Tokenizer.class)
 public class BookmarkFilter extends Filter {
@@ -50,9 +52,13 @@ public class BookmarkFilter extends Filter {
 		String assetTypeEqual();
 	}
 
-	/**  Comma separated list of assets identifiers  */
+	/**
+	 * Comma separated list of assets identifiers
+	 */
 	private String assetIdIn;
-	/**  Asset type  */
+	/**
+	 * Asset type
+	 */
 	private AssetType assetTypeEqual;
 
 	// assetIdIn:

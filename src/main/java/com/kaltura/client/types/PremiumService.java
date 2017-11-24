@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Premium service  */
+/**
+ * Premium service
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PremiumService.Tokenizer.class)
 public class PremiumService extends ObjectBase {
@@ -50,9 +52,13 @@ public class PremiumService extends ObjectBase {
 		String name();
 	}
 
-	/**  Service identifier  */
+	/**
+	 * Service identifier
+	 */
 	private Long id;
-	/**  Service name / description  */
+	/**
+	 * Service name / description
+	 */
 	private String name;
 
 	// id:

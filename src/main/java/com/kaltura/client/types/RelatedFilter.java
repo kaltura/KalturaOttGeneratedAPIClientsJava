@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -49,7 +49,8 @@ public class RelatedFilter extends AssetFilter {
 		String typeIn();
 	}
 
-	/**  Search assets using dynamic criteria. Provided collection of nested expressions
+	/**
+	 * Search assets using dynamic criteria. Provided collection of nested expressions
 	  with key, comparison operators, value, and logical conjunction.             
 	  Possible keys: any Tag or Meta defined in the system and the following reserved
 	  keys: start_date, end_date.               epg_id, media_id - for specific asset
@@ -66,13 +67,18 @@ public class RelatedFilter extends AssetFilter {
 	  &amp;gt;=, &amp;lt;, &amp;lt;=, : (in). For alpha-numerical fields =, != (not),
 	  ~ (like), !~, ^ (starts with). Logical conjunction: and, or.              
 	  Search values are limited to 20 characters each.              (maximum length of
-	  entire filter is 2048 characters)  */
+	  entire filter is 2048 characters)
+	 */
 	private String kSql;
-	/**  the ID of the asset for which to return related assets  */
+	/**
+	 * the ID of the asset for which to return related assets
+	 */
 	private Integer idEqual;
-	/**  Comma separated list of asset types to search within.               Possible
+	/**
+	 * Comma separated list of asset types to search within.               Possible
 	  values: any media type ID (according to media type IDs defined dynamically in
-	  the system).              If omitted –   same type as the provided asset.  */
+	  the system).              If omitted –   same type as the provided asset.
+	 */
 	private String typeIn;
 
 	// kSql:

@@ -32,7 +32,7 @@ import com.kaltura.client.types.RegistryResponse;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -57,7 +57,13 @@ public class NotificationService {
 		}
 	}
 
-	/**  TBD  */
+	/**
+	 * TBD
+	 * 
+	 * @param identifier In case type is "announcement", identifier should be the announcement ID. In
+	 * case type is "system", identifier should be "login" (the login topic)
+	 * @param type "announcement" - TV-Series topic, "system" - login topic
+	 */
     public static RegisterNotificationBuilder register(String identifier, NotificationType type)  {
 		return new RegisterNotificationBuilder(identifier, type);
 	}
@@ -74,7 +80,11 @@ public class NotificationService {
 		}
 	}
 
-	/**  Registers the device push token to the push service  */
+	/**
+	 * Registers the device push token to the push service
+	 * 
+	 * @param pushToken The device-application pair authentication for push delivery
+	 */
     public static SetDevicePushTokenNotificationBuilder setDevicePushToken(String pushToken)  {
 		return new SetDevicePushTokenNotificationBuilder(pushToken);
 	}

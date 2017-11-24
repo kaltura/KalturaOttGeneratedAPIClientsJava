@@ -36,7 +36,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,9 +51,13 @@ public class LoginResponse extends ObjectBase {
 		LoginSession.Tokenizer loginSession();
 	}
 
-	/**  User  */
+	/**
+	 * User
+	 */
 	private OTTUser user;
-	/**  Kaltura login session details  */
+	/**
+	 * Kaltura login session details
+	 */
 	private LoginSession loginSession;
 
 	// user:

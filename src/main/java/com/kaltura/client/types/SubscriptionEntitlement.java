@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  KalturaSubscriptionEntitlement  */
+/**
+ * KalturaSubscriptionEntitlement
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SubscriptionEntitlement.Tokenizer.class)
 public class SubscriptionEntitlement extends Entitlement {
@@ -53,18 +55,30 @@ public class SubscriptionEntitlement extends Entitlement {
 		String paymentMethodId();
 	}
 
-	/**  The date of the next renewal (only for subscription)  */
+	/**
+	 * The date of the next renewal (only for subscription)
+	 */
 	private Long nextRenewalDate;
-	/**  Indicates whether the subscription is renewable in this purchase (only for
-	  subscription)  */
+	/**
+	 * Indicates whether the subscription is renewable in this purchase (only for
+	  subscription)
+	 */
 	private Boolean isRenewableForPurchase;
-	/**  Indicates whether a subscription is renewable (only for subscription)  */
+	/**
+	 * Indicates whether a subscription is renewable (only for subscription)
+	 */
 	private Boolean isRenewable;
-	/**  Indicates whether the user is currently in his grace period entitlement  */
+	/**
+	 * Indicates whether the user is currently in his grace period entitlement
+	 */
 	private Boolean isInGracePeriod;
-	/**  Payment Gateway identifier  */
+	/**
+	 * Payment Gateway identifier
+	 */
 	private Integer paymentGatewayId;
-	/**  Payment Method identifier  */
+	/**
+	 * Payment Method identifier
+	 */
 	private Integer paymentMethodId;
 
 	// nextRenewalDate:

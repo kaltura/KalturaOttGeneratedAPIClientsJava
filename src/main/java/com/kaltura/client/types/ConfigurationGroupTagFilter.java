@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Configuration group tag filter  */
+/**
+ * Configuration group tag filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ConfigurationGroupTagFilter.Tokenizer.class)
 public class ConfigurationGroupTagFilter extends Filter {
@@ -48,8 +50,10 @@ public class ConfigurationGroupTagFilter extends Filter {
 		String configurationGroupIdEqual();
 	}
 
-	/**  the ID of the configuration group for which to return related configurations
-	  group tags  */
+	/**
+	 * the ID of the configuration group for which to return related configurations
+	  group tags
+	 */
 	private String configurationGroupIdEqual;
 
 	// configurationGroupIdEqual:

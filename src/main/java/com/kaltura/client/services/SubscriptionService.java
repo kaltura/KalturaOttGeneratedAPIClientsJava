@@ -32,7 +32,7 @@ import com.kaltura.client.types.SubscriptionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,7 +48,11 @@ public class SubscriptionService {
 		}
 	}
 
-	/**  Returns a list of subscriptions requested by Subscription ID or file ID  */
+	/**
+	 * Returns a list of subscriptions requested by Subscription ID or file ID
+	 * 
+	 * @param filter Filter request
+	 */
     public static ListSubscriptionBuilder list(SubscriptionFilter filter)  {
 		return new ListSubscriptionBuilder(filter);
 	}

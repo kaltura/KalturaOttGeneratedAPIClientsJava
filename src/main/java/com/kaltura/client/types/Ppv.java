@@ -40,13 +40,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  PPV details  */
+/**
+ * PPV details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Ppv.Tokenizer.class)
 public class Ppv extends ObjectBase {
@@ -65,29 +67,51 @@ public class Ppv extends ObjectBase {
 		UsageModule.Tokenizer usageModule();
 	}
 
-	/**  PPV identifier  */
+	/**
+	 * PPV identifier
+	 */
 	private String id;
-	/**  the name for the ppv  */
+	/**
+	 * the name for the ppv
+	 */
 	private String name;
-	/**  The price of the ppv  */
+	/**
+	 * The price of the ppv
+	 */
 	private PriceDetails price;
-	/**  A list of file types identifiers that are supported in this ppv  */
+	/**
+	 * A list of file types identifiers that are supported in this ppv
+	 */
 	private List<IntegerValue> fileTypes;
-	/**  The internal discount module for the ppv  */
+	/**
+	 * The internal discount module for the ppv
+	 */
 	private DiscountModule discountModule;
-	/**  Coupons group for the ppv  */
+	/**
+	 * Coupons group for the ppv
+	 */
 	private CouponsGroup couponsGroup;
-	/**  A list of the descriptions of the ppv on different languages (language code and
-	  translation)  */
+	/**
+	 * A list of the descriptions of the ppv on different languages (language code and
+	  translation)
+	 */
 	private List<TranslationToken> descriptions;
-	/**  Product code for the ppv  */
+	/**
+	 * Product code for the ppv
+	 */
 	private String productCode;
-	/**  Indicates whether or not this ppv can be purchased standalone or only as part of
-	  a subscription  */
+	/**
+	 * Indicates whether or not this ppv can be purchased standalone or only as part of
+	  a subscription
+	 */
 	private Boolean isSubscriptionOnly;
-	/**  Indicates whether or not this ppv can be consumed only on the first device  */
+	/**
+	 * Indicates whether or not this ppv can be consumed only on the first device
+	 */
 	private Boolean firstDeviceLimitation;
-	/**  PPV usage module  */
+	/**
+	 * PPV usage module
+	 */
 	private UsageModule usageModule;
 
 	// id:

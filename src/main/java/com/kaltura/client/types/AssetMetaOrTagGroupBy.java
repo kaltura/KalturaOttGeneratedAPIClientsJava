@@ -33,14 +33,16 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Group by a tag or meta - according to the name that appears in the system
-  (similar to KSQL)  */
+/**
+ * Group by a tag or meta - according to the name that appears in the system
+  (similar to KSQL)
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetMetaOrTagGroupBy.Tokenizer.class)
 public class AssetMetaOrTagGroupBy extends AssetGroupBy {
@@ -49,8 +51,10 @@ public class AssetMetaOrTagGroupBy extends AssetGroupBy {
 		String value();
 	}
 
-	/**  Group by a tag or meta - according to the name that appears in the system
-	  (similar to KSQL)  */
+	/**
+	 * Group by a tag or meta - according to the name that appears in the system
+	  (similar to KSQL)
+	 */
 	private String value;
 
 	// value:

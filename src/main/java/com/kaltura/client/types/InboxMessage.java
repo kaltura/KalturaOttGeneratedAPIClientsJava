@@ -36,7 +36,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -55,17 +55,29 @@ public class InboxMessage extends ObjectBase {
 		String url();
 	}
 
-	/**  message id  */
+	/**
+	 * message id
+	 */
 	private String id;
-	/**  message  */
+	/**
+	 * message
+	 */
 	private String message;
-	/**  Status  */
+	/**
+	 * Status
+	 */
 	private InboxMessageStatus status;
-	/**  Type  */
+	/**
+	 * Type
+	 */
 	private InboxMessageType type;
-	/**  Created at  */
+	/**
+	 * Created at
+	 */
 	private Long createdAt;
-	/**  url  */
+	/**
+	 * url
+	 */
 	private String url;
 
 	// id:

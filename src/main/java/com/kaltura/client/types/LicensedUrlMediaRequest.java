@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,9 +48,13 @@ public class LicensedUrlMediaRequest extends LicensedUrlBaseRequest {
 		String baseUrl();
 	}
 
-	/**  Identifier of the content to get the link for (file identifier)  */
+	/**
+	 * Identifier of the content to get the link for (file identifier)
+	 */
 	private Integer contentId;
-	/**  Base URL for the licensed URLs  */
+	/**
+	 * Base URL for the licensed URLs
+	 */
 	private String baseUrl;
 
 	// contentId:

@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Slim user data  */
+/**
+ * Slim user data
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BaseOTTUser.Tokenizer.class)
 public class BaseOTTUser extends ObjectBase {
@@ -52,13 +54,21 @@ public class BaseOTTUser extends ObjectBase {
 		String lastName();
 	}
 
-	/**  User identifier  */
+	/**
+	 * User identifier
+	 */
 	private String id;
-	/**  Username  */
+	/**
+	 * Username
+	 */
 	private String username;
-	/**  First name  */
+	/**
+	 * First name
+	 */
 	private String firstName;
-	/**  Last name  */
+	/**
+	 * Last name
+	 */
 	private String lastName;
 
 	// id:

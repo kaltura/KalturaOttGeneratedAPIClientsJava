@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Country filter  */
+/**
+ * Country filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CountryFilter.Tokenizer.class)
 public class CountryFilter extends Filter {
@@ -50,11 +52,17 @@ public class CountryFilter extends Filter {
 		String ipEqualCurrent();
 	}
 
-	/**  Country identifiers  */
+	/**
+	 * Country identifiers
+	 */
 	private String idIn;
-	/**  Ip to identify the country  */
+	/**
+	 * Ip to identify the country
+	 */
 	private String ipEqual;
-	/**  Indicates if to get the IP from the request  */
+	/**
+	 * Indicates if to get the IP from the request
+	 */
 	private Boolean ipEqualCurrent;
 
 	// idIn:

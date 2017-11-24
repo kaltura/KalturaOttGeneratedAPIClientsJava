@@ -34,7 +34,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -50,8 +50,12 @@ public class ConfigurationGroupDeviceService {
 		}
 	}
 
-	/**  Associate a collection of devices to a configuration group. If a device is
-	  already associated to another group – old association is replaced  */
+	/**
+	 * Associate a collection of devices to a configuration group. If a device is
+	  already associated to another group – old association is replaced
+	 * 
+	 * @param configurationGroupDevice Configuration group device
+	 */
     public static AddConfigurationGroupDeviceBuilder add(ConfigurationGroupDevice configurationGroupDevice)  {
 		return new AddConfigurationGroupDeviceBuilder(configurationGroupDevice);
 	}
@@ -68,7 +72,11 @@ public class ConfigurationGroupDeviceService {
 		}
 	}
 
-	/**  Remove a device association  */
+	/**
+	 * Remove a device association
+	 * 
+	 * @param udid Device UDID
+	 */
     public static DeleteConfigurationGroupDeviceBuilder delete(String udid)  {
 		return new DeleteConfigurationGroupDeviceBuilder(udid);
 	}
@@ -85,7 +93,11 @@ public class ConfigurationGroupDeviceService {
 		}
 	}
 
-	/**  Return the configuration group to which a specific device is associated to  */
+	/**
+	 * Return the configuration group to which a specific device is associated to
+	 * 
+	 * @param udid Device UDID
+	 */
     public static GetConfigurationGroupDeviceBuilder get(String udid)  {
 		return new GetConfigurationGroupDeviceBuilder(udid);
 	}
@@ -103,7 +115,12 @@ public class ConfigurationGroupDeviceService {
 		return list(filter, null);
 	}
 
-	/**  Return the list of associated devices for a given configuration group  */
+	/**
+	 * Return the list of associated devices for a given configuration group
+	 * 
+	 * @param filter Filter option for configuration group identifier
+	 * @param pager Page size and index
+	 */
     public static ListConfigurationGroupDeviceBuilder list(ConfigurationGroupDeviceFilter filter, FilterPager pager)  {
 		return new ListConfigurationGroupDeviceBuilder(filter, pager);
 	}

@@ -35,7 +35,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,7 +51,11 @@ public class HouseholdDeviceService {
 		}
 	}
 
-	/**  Add device to household  */
+	/**
+	 * Add device to household
+	 * 
+	 * @param device Device
+	 */
     public static AddHouseholdDeviceBuilder add(HouseholdDevice device)  {
 		return new AddHouseholdDeviceBuilder(device);
 	}
@@ -73,7 +77,12 @@ public class HouseholdDeviceService {
 		}
 	}
 
-	/**  Registers a device to a household using pin code  */
+	/**
+	 * Registers a device to a household using pin code
+	 * 
+	 * @param deviceName Device name
+	 * @param pin Pin code
+	 */
     public static AddByPinHouseholdDeviceBuilder addByPin(String deviceName, String pin)  {
 		return new AddByPinHouseholdDeviceBuilder(deviceName, pin);
 	}
@@ -90,7 +99,11 @@ public class HouseholdDeviceService {
 		}
 	}
 
-	/**  Removes a device from household  */
+	/**
+	 * Removes a device from household
+	 * 
+	 * @param udid device UDID
+	 */
     public static DeleteHouseholdDeviceBuilder delete(String udid)  {
 		return new DeleteHouseholdDeviceBuilder(udid);
 	}
@@ -112,7 +125,12 @@ public class HouseholdDeviceService {
 		}
 	}
 
-	/**  Generates device pin to use when adding a device to household by pin  */
+	/**
+	 * Generates device pin to use when adding a device to household by pin
+	 * 
+	 * @param udid Device UDID
+	 * @param brandId Device brand identifier
+	 */
     public static GeneratePinHouseholdDeviceBuilder generatePin(String udid, int brandId)  {
 		return new GeneratePinHouseholdDeviceBuilder(udid, brandId);
 	}
@@ -124,7 +142,9 @@ public class HouseholdDeviceService {
 		}
 	}
 
-	/**  Returns device registration status to the supplied household  */
+	/**
+	 * Returns device registration status to the supplied household
+	 */
     public static GetHouseholdDeviceBuilder get()  {
 		return new GetHouseholdDeviceBuilder();
 	}
@@ -141,7 +161,11 @@ public class HouseholdDeviceService {
 		return list(null);
 	}
 
-	/**  Returns the devices within the household  */
+	/**
+	 * Returns the devices within the household
+	 * 
+	 * @param filter Household devices filter
+	 */
     public static ListHouseholdDeviceBuilder list(HouseholdDeviceFilter filter)  {
 		return new ListHouseholdDeviceBuilder(filter);
 	}
@@ -159,7 +183,12 @@ public class HouseholdDeviceService {
 		}
 	}
 
-	/**  Update the name of the device by UDID  */
+	/**
+	 * Update the name of the device by UDID
+	 * 
+	 * @param udid Device UDID
+	 * @param device Device object
+	 */
     public static UpdateHouseholdDeviceBuilder update(String udid, HouseholdDevice device)  {
 		return new UpdateHouseholdDeviceBuilder(udid, device);
 	}
@@ -181,7 +210,12 @@ public class HouseholdDeviceService {
 		}
 	}
 
-	/**  Update the name of the device by UDID  */
+	/**
+	 * Update the name of the device by UDID
+	 * 
+	 * @param udid Device UDID
+	 * @param status Device status
+	 */
     public static UpdateStatusHouseholdDeviceBuilder updateStatus(String udid, DeviceStatus status)  {
 		return new UpdateStatusHouseholdDeviceBuilder(udid, status);
 	}

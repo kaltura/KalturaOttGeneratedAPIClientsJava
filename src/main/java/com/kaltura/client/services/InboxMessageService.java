@@ -35,7 +35,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -55,7 +55,11 @@ public class InboxMessageService {
 		}
 	}
 
-	/**  TBD  */
+	/**
+	 * TBD
+	 * 
+	 * @param id message id
+	 */
     public static GetInboxMessageBuilder get(String id)  {
 		return new GetInboxMessageBuilder(id);
 	}
@@ -77,7 +81,12 @@ public class InboxMessageService {
 		return list(filter, null);
 	}
 
-	/**  List inbox messages  */
+	/**
+	 * List inbox messages
+	 * 
+	 * @param filter filter
+	 * @param pager Page size and index
+	 */
     public static ListInboxMessageBuilder list(InboxMessageFilter filter, FilterPager pager)  {
 		return new ListInboxMessageBuilder(filter, pager);
 	}
@@ -99,7 +108,12 @@ public class InboxMessageService {
 		}
 	}
 
-	/**  Updates the message status.  */
+	/**
+	 * Updates the message status.
+	 * 
+	 * @param id Message identifier
+	 * @param status Message status
+	 */
     public static UpdateStatusInboxMessageBuilder updateStatus(String id, InboxMessageStatus status)  {
 		return new UpdateStatusInboxMessageBuilder(id, status);
 	}

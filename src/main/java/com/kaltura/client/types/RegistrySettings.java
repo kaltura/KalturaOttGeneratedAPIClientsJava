@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -49,9 +49,13 @@ public class RegistrySettings extends ObjectBase {
 		String value();
 	}
 
-	/**  Permission item identifier  */
+	/**
+	 * Permission item identifier
+	 */
 	private String key;
-	/**  Permission item name  */
+	/**
+	 * Permission item name
+	 */
 	private String value;
 
 	// key:

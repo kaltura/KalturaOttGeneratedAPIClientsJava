@@ -36,7 +36,7 @@ import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -61,8 +61,13 @@ public class EntitlementService {
 		}
 	}
 
-	/**  Immediately cancel a subscription, PPV or collection. Cancel is possible only if
-	  within cancellation window and content not already consumed  */
+	/**
+	 * Immediately cancel a subscription, PPV or collection. Cancel is possible only if
+	  within cancellation window and content not already consumed
+	 * 
+	 * @param assetId The mediaFileID to cancel
+	 * @param transactionType The transaction type for the cancelation
+	 */
     public static CancelEntitlementBuilder cancel(int assetId, TransactionType transactionType)  {
 		return new CancelEntitlementBuilder(assetId, transactionType);
 	}
@@ -79,8 +84,12 @@ public class EntitlementService {
 		}
 	}
 
-	/**  Cancel a household service subscription at the next renewal. The subscription
-	  stays valid till the next renewal.  */
+	/**
+	 * Cancel a household service subscription at the next renewal. The subscription
+	  stays valid till the next renewal.
+	 * 
+	 * @param subscriptionId Subscription Code
+	 */
     public static CancelRenewalEntitlementBuilder cancelRenewal(String subscriptionId)  {
 		return new CancelRenewalEntitlementBuilder(subscriptionId);
 	}
@@ -92,9 +101,11 @@ public class EntitlementService {
 		}
 	}
 
-	/**  Reconcile the user household&amp;#39;s entitlements with an external
+	/**
+	 * Reconcile the user household&amp;#39;s entitlements with an external
 	  entitlements source. This request is frequency protected to avoid too frequent
-	  calls per household.  */
+	  calls per household.
+	 */
     public static ExternalReconcileEntitlementBuilder externalReconcile()  {
 		return new ExternalReconcileEntitlementBuilder();
 	}
@@ -116,8 +127,13 @@ public class EntitlementService {
 		}
 	}
 
-	/**  Immediately cancel a subscription, PPV or collection. Cancel applies regardless
-	  of cancellation window and content consumption status  */
+	/**
+	 * Immediately cancel a subscription, PPV or collection. Cancel applies regardless
+	  of cancellation window and content consumption status
+	 * 
+	 * @param assetId The mediaFileID to cancel
+	 * @param transactionType The transaction type for the cancelation
+	 */
     public static ForceCancelEntitlementBuilder forceCancel(int assetId, TransactionType transactionType)  {
 		return new ForceCancelEntitlementBuilder(assetId, transactionType);
 	}
@@ -153,7 +169,16 @@ public class EntitlementService {
 		return grant(productId, productType, history, 0);
 	}
 
-	/**  Grant household for an entitlement for a PPV or Subscription.  */
+	/**
+	 * Grant household for an entitlement for a PPV or Subscription.
+	 * 
+	 * @param productId Identifier for the product package from which this content is offered
+	 * @param productType Product package type. Possible values: PPV, Subscription, Collection
+	 * @param history Controls if the new entitlements grant will appear in the user’s history. True
+	 * – will add a history entry. False (or if ommited) – no history entry will be
+	 * added
+	 * @param contentId Identifier for the content. Relevant only if Product type = PPV
+	 */
     public static GrantEntitlementBuilder grant(int productId, TransactionType productType, boolean history, int contentId)  {
 		return new GrantEntitlementBuilder(productId, productType, history, contentId);
 	}
@@ -171,7 +196,12 @@ public class EntitlementService {
 		return list(filter, null);
 	}
 
-	/**  Gets all the entitled media items for a household  */
+	/**
+	 * Gets all the entitled media items for a household
+	 * 
+	 * @param filter Request filter
+	 * @param pager Request pager
+	 */
     public static ListEntitlementBuilder list(EntitlementFilter filter, FilterPager pager)  {
 		return new ListEntitlementBuilder(filter, pager);
 	}
@@ -198,8 +228,16 @@ public class EntitlementService {
 		}
 	}
 
-	/**  Swap current entitlement (subscription) with new entitlement (subscription) -
-	  only Grant  */
+	/**
+	 * Swap current entitlement (subscription) with new entitlement (subscription) -
+	  only Grant
+	 * 
+	 * @param currentProductId Identifier for the current product package
+	 * @param newProductId Identifier for the new product package
+	 * @param history Controls if the new entitlements swap will appear in the user’s history. True
+	 * – will add a history entry. False (or if ommited) – no history entry will be
+	 * added
+	 */
     public static SwapEntitlementBuilder swap(int currentProductId, int newProductId, boolean history)  {
 		return new SwapEntitlementBuilder(currentProductId, newProductId, history);
 	}
@@ -217,7 +255,12 @@ public class EntitlementService {
 		}
 	}
 
-	/**  Update Kaltura Entitelment by Purchase id  */
+	/**
+	 * Update Kaltura Entitelment by Purchase id
+	 * 
+	 * @param id Purchase Id
+	 * @param entitlement KalturaEntitlement object
+	 */
     public static UpdateEntitlementBuilder update(int id, Entitlement entitlement)  {
 		return new UpdateEntitlementBuilder(id, entitlement);
 	}

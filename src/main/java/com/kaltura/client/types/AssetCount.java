@@ -36,14 +36,16 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Asset count - represents a specific value of the field, its count and its sub
-  groups.  */
+/**
+ * Asset count - represents a specific value of the field, its count and its sub
+  groups.
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetCount.Tokenizer.class)
 public class AssetCount extends ObjectBase {
@@ -54,11 +56,17 @@ public class AssetCount extends ObjectBase {
 		RequestBuilder.ListTokenizer<AssetsCount.Tokenizer> subs();
 	}
 
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private String value;
-	/**  Count  */
+	/**
+	 * Count
+	 */
 	private Integer count;
-	/**  Sub groups  */
+	/**
+	 * Sub groups
+	 */
 	private List<AssetsCount> subs;
 
 	// value:

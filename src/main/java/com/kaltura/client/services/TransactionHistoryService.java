@@ -33,7 +33,7 @@ import com.kaltura.client.types.TransactionHistoryFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -58,7 +58,12 @@ public class TransactionHistoryService {
 		return list(filter, null);
 	}
 
-	/**  Gets user or household transaction history.  */
+	/**
+	 * Gets user or household transaction history.
+	 * 
+	 * @param filter Filter by household or user
+	 * @param pager Page size and index
+	 */
     public static ListTransactionHistoryBuilder list(TransactionHistoryFilter filter, FilterPager pager)  {
 		return new ListTransactionHistoryBuilder(filter, pager);
 	}

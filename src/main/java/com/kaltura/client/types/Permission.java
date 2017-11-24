@@ -36,7 +36,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,11 +52,17 @@ public class Permission extends ObjectBase {
 		RequestBuilder.ListTokenizer<PermissionItem.Tokenizer> permissionItems();
 	}
 
-	/**  Permission identifier  */
+	/**
+	 * Permission identifier
+	 */
 	private Long id;
-	/**  Permission name  */
+	/**
+	 * Permission name
+	 */
 	private String name;
-	/**  List of permission items associated with the permission  */
+	/**
+	 * List of permission items associated with the permission
+	 */
 	private List<PermissionItem> permissionItems;
 
 	// id:

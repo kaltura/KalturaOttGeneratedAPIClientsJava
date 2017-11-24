@@ -32,7 +32,7 @@ import com.kaltura.client.types.CurrencyFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,8 +48,12 @@ public class CurrencyService {
 		}
 	}
 
-	/**  Get the list of currencies for the partner with option to filter by currency
-	  codes  */
+	/**
+	 * Get the list of currencies for the partner with option to filter by currency
+	  codes
+	 * 
+	 * @param filter currency filter
+	 */
     public static ListCurrencyBuilder list(CurrencyFilter filter)  {
 		return new ListCurrencyBuilder(filter);
 	}

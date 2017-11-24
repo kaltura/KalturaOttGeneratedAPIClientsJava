@@ -31,7 +31,7 @@ import com.kaltura.client.types.PartnerConfiguration;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -47,7 +47,15 @@ public class PartnerConfigurationService {
 		}
 	}
 
-	/**  Update Partner Configuration  */
+	/**
+	 * Update Partner Configuration
+	 * 
+	 * @param configuration Partner Configuration
+	 *             possible configuration type: 
+	 *             "configuration": { "value": 0, "partner_configuration_type": {
+	 * "type": "OSSAdapter", "objectType": "KalturaPartnerConfigurationHolder" },
+	 *             "objectType": "KalturaBillingPartnerConfig"}
+	 */
     public static UpdatePartnerConfigurationBuilder update(PartnerConfiguration configuration)  {
 		return new UpdatePartnerConfigurationBuilder(configuration);
 	}

@@ -35,13 +35,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  PPV price details  */
+/**
+ * PPV price details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ItemPrice.Tokenizer.class)
 public class ItemPrice extends ProductPrice {
@@ -51,9 +53,13 @@ public class ItemPrice extends ProductPrice {
 		RequestBuilder.ListTokenizer<PPVItemPriceDetails.Tokenizer> ppvPriceDetails();
 	}
 
-	/**  Media file identifier  */
+	/**
+	 * Media file identifier
+	 */
 	private Integer fileId;
-	/**  PPV price details  */
+	/**
+	 * PPV price details
+	 */
 	private List<PPVItemPriceDetails> ppvPriceDetails;
 
 	// fileId:

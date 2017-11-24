@@ -33,13 +33,15 @@ import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Abstarct class - represents an asset parameter that can be used for grouping  */
+/**
+ * Abstarct class - represents an asset parameter that can be used for grouping
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetGroupBy.Tokenizer.class)
 public abstract class AssetGroupBy extends ObjectBase {

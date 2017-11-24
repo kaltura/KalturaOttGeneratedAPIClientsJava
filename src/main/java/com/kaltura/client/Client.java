@@ -30,7 +30,7 @@ package com.kaltura.client;
 import com.kaltura.client.utils.request.ConnectionConfiguration;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -42,19 +42,21 @@ public class Client extends ClientBase {
 	public Client(ConnectionConfiguration config) {
 		super(config);
 		
-		this.setClientTag("java:17-11-23");
+		this.setClientTag("java:17-11-24");
 		this.setApiVersion("4.3.25.22797");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
 	/**
-	 * @param clientTag client tag
+	 * @param clientTag Client tag
 	 */
 	public void setClientTag(String clientTag){
 		this.clientConfiguration.put("clientTag", clientTag);
 	}
 	
 	/**
+	 * Client tag
+	 * 
 	 * @return String
 	 */
 	public String getClientTag(){
@@ -73,6 +75,8 @@ public class Client extends ClientBase {
 	}
 	
 	/**
+	 * API version
+	 * 
 	 * @return String
 	 */
 	public String getApiVersion(){

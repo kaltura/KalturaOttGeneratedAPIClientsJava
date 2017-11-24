@@ -31,7 +31,7 @@ import com.kaltura.client.types.Ppv;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,7 +51,11 @@ public class PpvService {
 		}
 	}
 
-	/**  Returns ppv object by internal identifier  */
+	/**
+	 * Returns ppv object by internal identifier
+	 * 
+	 * @param id ppv identifier
+	 */
     public static GetPpvBuilder get(long id)  {
 		return new GetPpvBuilder(id);
 	}

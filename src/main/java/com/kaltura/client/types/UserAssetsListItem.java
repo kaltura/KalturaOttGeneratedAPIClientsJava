@@ -36,13 +36,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  An item of user asset list  */
+/**
+ * An item of user asset list
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(UserAssetsListItem.Tokenizer.class)
 public class UserAssetsListItem extends ObjectBase {
@@ -55,15 +57,25 @@ public class UserAssetsListItem extends ObjectBase {
 		String listType();
 	}
 
-	/**  Asset identifier  */
+	/**
+	 * Asset identifier
+	 */
 	private String id;
-	/**  The order index of the asset in the list  */
+	/**
+	 * The order index of the asset in the list
+	 */
 	private Integer orderIndex;
-	/**  The type of the asset  */
+	/**
+	 * The type of the asset
+	 */
 	private UserAssetsListItemType type;
-	/**  The identifier of the user who added the item to the list  */
+	/**
+	 * The identifier of the user who added the item to the list
+	 */
 	private String userId;
-	/**  The type of the list, all is not supported  */
+	/**
+	 * The type of the list, all is not supported
+	 */
 	private UserAssetsListType listType;
 
 	// id:

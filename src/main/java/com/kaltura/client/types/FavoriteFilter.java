@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Favorite request filter  */
+/**
+ * Favorite request filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(FavoriteFilter.Tokenizer.class)
 public class FavoriteFilter extends Filter {
@@ -49,9 +51,13 @@ public class FavoriteFilter extends Filter {
 		String mediaIdIn();
 	}
 
-	/**  Media type to filter by the favorite assets  */
+	/**
+	 * Media type to filter by the favorite assets
+	 */
 	private Integer mediaTypeEqual;
-	/**  Media identifiers from which to filter the favorite assets  */
+	/**
+	 * Media identifiers from which to filter the favorite assets
+	 */
 	private String mediaIdIn;
 
 	// mediaTypeEqual:

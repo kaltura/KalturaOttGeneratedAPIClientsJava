@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Language filter  */
+/**
+ * Language filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(LanguageFilter.Tokenizer.class)
 public class LanguageFilter extends Filter {
@@ -48,7 +50,9 @@ public class LanguageFilter extends Filter {
 		String codeIn();
 	}
 
-	/**  Language codes  */
+	/**
+	 * Language codes
+	 */
 	private String codeIn;
 
 	// codeIn:

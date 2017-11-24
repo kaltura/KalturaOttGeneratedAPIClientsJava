@@ -30,7 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -45,7 +45,9 @@ public class SystemService {
 		}
 	}
 
-	/**  Returns current server timestamp  */
+	/**
+	 * Returns current server timestamp
+	 */
     public static GetTimeSystemBuilder getTime()  {
 		return new GetTimeSystemBuilder();
 	}
@@ -57,7 +59,9 @@ public class SystemService {
 		}
 	}
 
-	/**  Returns current server version  */
+	/**
+	 * Returns current server version
+	 */
     public static GetVersionSystemBuilder getVersion()  {
 		return new GetVersionSystemBuilder();
 	}
@@ -69,7 +73,9 @@ public class SystemService {
 		}
 	}
 
-	/**  Returns true  */
+	/**
+	 * Returns true
+	 */
     public static PingSystemBuilder ping()  {
 		return new PingSystemBuilder();
 	}

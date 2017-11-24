@@ -36,7 +36,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -54,15 +54,25 @@ public class Region extends ObjectBase {
 		RequestBuilder.ListTokenizer<RegionalChannel.Tokenizer> linearChannels();
 	}
 
-	/**  Region identifier  */
+	/**
+	 * Region identifier
+	 */
 	private Integer id;
-	/**  Region name  */
+	/**
+	 * Region name
+	 */
 	private String name;
-	/**  Region external identifier  */
+	/**
+	 * Region external identifier
+	 */
 	private String externalId;
-	/**  Indicates whether this is the default region for the partner  */
+	/**
+	 * Indicates whether this is the default region for the partner
+	 */
 	private Boolean isDefault;
-	/**  List of associated linear channels  */
+	/**
+	 * List of associated linear channels
+	 */
 	private List<RegionalChannel> linearChannels;
 
 	// id:

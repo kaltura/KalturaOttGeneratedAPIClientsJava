@@ -37,13 +37,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Asset meta  */
+/**
+ * Asset meta
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Meta.Tokenizer.class)
 public class Meta extends ObjectBase {
@@ -55,13 +57,21 @@ public class Meta extends ObjectBase {
 		String assetType();
 	}
 
-	/**  Meta name for the partner  */
+	/**
+	 * Meta name for the partner
+	 */
 	private String name;
-	/**  Meta system field name  */
+	/**
+	 * Meta system field name
+	 */
 	private MetaFieldName fieldName;
-	/**  Meta value type  */
+	/**
+	 * Meta value type
+	 */
 	private MetaType type;
-	/**  Asset type this meta is related to  */
+	/**
+	 * Asset type this meta is related to
+	 */
 	private AssetType assetType;
 
 	// name:

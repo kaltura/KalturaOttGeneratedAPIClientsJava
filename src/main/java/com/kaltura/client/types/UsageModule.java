@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Pricing usage module  */
+/**
+ * Pricing usage module
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(UsageModule.Tokenizer.class)
 public class UsageModule extends ObjectBase {
@@ -57,26 +59,44 @@ public class UsageModule extends ObjectBase {
 		String isOfflinePlayback();
 	}
 
-	/**  Usage module identifier  */
+	/**
+	 * Usage module identifier
+	 */
 	private Long id;
-	/**  Usage module name  */
+	/**
+	 * Usage module name
+	 */
 	private String name;
-	/**  The maximum number of times an item in this usage module can be viewed  */
+	/**
+	 * The maximum number of times an item in this usage module can be viewed
+	 */
 	private Integer maxViewsNumber;
-	/**  The amount time an item is available for viewing since a user started watching
-	  the item  */
+	/**
+	 * The amount time an item is available for viewing since a user started watching
+	  the item
+	 */
 	private Integer viewLifeCycle;
-	/**  The amount time an item is available for viewing  */
+	/**
+	 * The amount time an item is available for viewing
+	 */
 	private Integer fullLifeCycle;
-	/**  Identifies a specific coupon linked to this object  */
+	/**
+	 * Identifies a specific coupon linked to this object
+	 */
 	private Integer couponId;
-	/**  Time period during which the end user can waive his rights to cancel a purchase.
-	  When the time period is passed, the purchase can no longer be cancelled  */
+	/**
+	 * Time period during which the end user can waive his rights to cancel a purchase.
+	  When the time period is passed, the purchase can no longer be cancelled
+	 */
 	private Integer waiverPeriod;
-	/**  Indicates whether or not the end user has the right to waive his rights to
-	  cancel a purchase  */
+	/**
+	 * Indicates whether or not the end user has the right to waive his rights to
+	  cancel a purchase
+	 */
 	private Boolean isWaiverEnabled;
-	/**  Indicates that usage is targeted for offline playback  */
+	/**
+	 * Indicates that usage is targeted for offline playback
+	 */
 	private Boolean isOfflinePlayback;
 
 	// id:

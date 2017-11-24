@@ -32,13 +32,15 @@ import com.kaltura.client.Params;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Kaltura Session  */
+/**
+ * Kaltura Session
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SessionInfo.Tokenizer.class)
 public class SessionInfo extends Session {

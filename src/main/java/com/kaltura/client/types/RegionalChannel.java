@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -49,9 +49,13 @@ public class RegionalChannel extends ObjectBase {
 		String channelNumber();
 	}
 
-	/**  The identifier of the linear media representing the channel  */
+	/**
+	 * The identifier of the linear media representing the channel
+	 */
 	private Integer linearChannelId;
-	/**  The number of the channel  */
+	/**
+	 * The number of the channel
+	 */
 	private Integer channelNumber;
 
 	// linearChannelId:

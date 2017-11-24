@@ -42,7 +42,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -63,8 +63,13 @@ public class AssetService {
 		return count(groupBy, null);
 	}
 
-	/**  Returns a group-by result for media or EPG according to given filter. Lists
-	  values of each field and their respective count.  */
+	/**
+	 * Returns a group-by result for media or EPG according to given filter. Lists
+	  values of each field and their respective count.
+	 * 
+	 * @param groupBy List of asset parameters to group by
+	 * @param filter Filtering the assets request
+	 */
     public static CountAssetBuilder count(List<AssetGroupBy> groupBy, SearchAssetFilter filter)  {
 		return new CountAssetBuilder(groupBy, filter);
 	}
@@ -86,7 +91,12 @@ public class AssetService {
 		}
 	}
 
-	/**  Returns media or EPG asset by media / EPG internal or external identifier  */
+	/**
+	 * Returns media or EPG asset by media / EPG internal or external identifier
+	 * 
+	 * @param id Asset identifier
+	 * @param assetReferenceType Asset type
+	 */
     public static GetAssetBuilder get(String id, AssetReferenceType assetReferenceType)  {
 		return new GetAssetBuilder(id, assetReferenceType);
 	}
@@ -109,7 +119,13 @@ public class AssetService {
 		}
 	}
 
-	/**  This action delivers all data relevant for player  */
+	/**
+	 * This action delivers all data relevant for player
+	 * 
+	 * @param assetId Asset identifier
+	 * @param assetType Asset type
+	 * @param contextDataParams Parameters for the request
+	 */
     public static GetPlaybackContextAssetBuilder getPlaybackContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
 		return new GetPlaybackContextAssetBuilder(assetId, assetType, contextDataParams);
 	}
@@ -131,8 +147,13 @@ public class AssetService {
 		return list(filter, null);
 	}
 
-	/**  Returns media or EPG assets. Filters by media identifiers or by EPG internal or
-	  external identifier.  */
+	/**
+	 * Returns media or EPG assets. Filters by media identifiers or by EPG internal or
+	  external identifier.
+	 * 
+	 * @param filter Filtering the assets request
+	 * @param pager Paging the request
+	 */
     public static ListAssetBuilder list(AssetFilter filter, FilterPager pager)  {
 		return new ListAssetBuilder(filter, pager);
 	}

@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  A string representation to return an array of ints  */
+/**
+ * A string representation to return an array of ints
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(IntegerValue.Tokenizer.class)
 public class IntegerValue extends Value {
@@ -48,7 +50,9 @@ public class IntegerValue extends Value {
 		String value();
 	}
 
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private Integer value;
 
 	// value:

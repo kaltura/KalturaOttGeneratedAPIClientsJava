@@ -38,13 +38,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Asset info  */
+/**
+ * Asset info
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Asset.Tokenizer.class)
 public abstract class Asset extends ObjectBase {
@@ -69,46 +71,80 @@ public abstract class Asset extends ObjectBase {
 		String externalId();
 	}
 
-	/**  Unique identifier for the asset  */
+	/**
+	 * Unique identifier for the asset
+	 */
 	private Long id;
-	/**  Identifies the asset type (EPG, Recording, Movie, TV Series, etc).              
+	/**
+	 * Identifies the asset type (EPG, Recording, Movie, TV Series, etc).              
 	  Possible values: 0 – EPG linear programs, 1 - Recording; or any asset type ID
-	  according to the asset types IDs defined in the system.  */
+	  according to the asset types IDs defined in the system.
+	 */
 	private Integer type;
-	/**  Asset name  */
+	/**
+	 * Asset name
+	 */
 	private String name;
-	/**  Asset name  */
+	/**
+	 * Asset name
+	 */
 	private MultilingualString multilingualName;
-	/**  Asset description  */
+	/**
+	 * Asset description
+	 */
 	private String description;
-	/**  Asset description  */
+	/**
+	 * Asset description
+	 */
 	private MultilingualString multilingualDescription;
-	/**  Collection of images details that can be used to represent this asset  */
+	/**
+	 * Collection of images details that can be used to represent this asset
+	 */
 	private List<MediaImage> images;
-	/**  Files  */
+	/**
+	 * Files
+	 */
 	private List<MediaFile> mediaFiles;
-	/**  Dynamic collection of key-value pairs according to the String Meta defined in
-	  the system  */
+	/**
+	 * Dynamic collection of key-value pairs according to the String Meta defined in
+	  the system
+	 */
 	private Map<String, Value> metas;
-	/**  Dynamic collection of key-value pairs according to the Tag Types defined in the
-	  system  */
+	/**
+	 * Dynamic collection of key-value pairs according to the Tag Types defined in the
+	  system
+	 */
 	private Map<String, MultilingualStringValueArray> tags;
-	/**  Date and time represented as epoch. For VOD – since when the asset is
+	/**
+	 * Date and time represented as epoch. For VOD – since when the asset is
 	  available in the catalog. For EPG/Linear – when the program is aired (can be
-	  in the future).  */
+	  in the future).
+	 */
 	private Long startDate;
-	/**  Date and time represented as epoch. For VOD – till when the asset be available
-	  in the catalog. For EPG/Linear – program end time and date  */
+	/**
+	 * Date and time represented as epoch. For VOD – till when the asset be available
+	  in the catalog. For EPG/Linear – program end time and date
+	 */
 	private Long endDate;
-	/**  Enable cDVR  */
+	/**
+	 * Enable cDVR
+	 */
 	private Boolean enableCdvr;
-	/**  Enable catch-up  */
+	/**
+	 * Enable catch-up
+	 */
 	private Boolean enableCatchUp;
-	/**  Enable start over  */
+	/**
+	 * Enable start over
+	 */
 	private Boolean enableStartOver;
-	/**  Enable trick-play  */
+	/**
+	 * Enable trick-play
+	 */
 	private Boolean enableTrickPlay;
-	/**  External identifier for the media file  */
+	/**
+	 * External identifier for the media file
+	 */
 	private String externalId;
 
 	// id:

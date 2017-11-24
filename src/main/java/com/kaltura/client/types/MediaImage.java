@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Image details  */
+/**
+ * Image details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MediaImage.Tokenizer.class)
 public class MediaImage extends ObjectBase {
@@ -55,19 +57,33 @@ public class MediaImage extends ObjectBase {
 		String isDefault();
 	}
 
-	/**  Image aspect ratio  */
+	/**
+	 * Image aspect ratio
+	 */
 	private String ratio;
-	/**  Image width  */
+	/**
+	 * Image width
+	 */
 	private Integer width;
-	/**  Image height  */
+	/**
+	 * Image height
+	 */
 	private Integer height;
-	/**  Image URL  */
+	/**
+	 * Image URL
+	 */
 	private String url;
-	/**  Image Version  */
+	/**
+	 * Image Version
+	 */
 	private Integer version;
-	/**  Image ID  */
+	/**
+	 * Image ID
+	 */
 	private String id;
-	/**  Determined whether image was taken from default configuration or not  */
+	/**
+	 * Determined whether image was taken from default configuration or not
+	 */
 	private Boolean isDefault;
 
 	// ratio:

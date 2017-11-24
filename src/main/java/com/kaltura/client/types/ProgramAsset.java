@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Program-asset info  */
+/**
+ * Program-asset info
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ProgramAsset.Tokenizer.class)
 public class ProgramAsset extends Asset {
@@ -52,15 +54,25 @@ public class ProgramAsset extends Asset {
 		String linearAssetId();
 	}
 
-	/**  EPG channel identifier  */
+	/**
+	 * EPG channel identifier
+	 */
 	private Long epgChannelId;
-	/**  EPG identifier  */
+	/**
+	 * EPG identifier
+	 */
 	private String epgId;
-	/**  Ralated media identifier  */
+	/**
+	 * Ralated media identifier
+	 */
 	private Long relatedMediaId;
-	/**  Unique identifier for the program  */
+	/**
+	 * Unique identifier for the program
+	 */
 	private String crid;
-	/**  Id of linear media asset  */
+	/**
+	 * Id of linear media asset
+	 */
 	private Long linearAssetId;
 
 	// epgChannelId:

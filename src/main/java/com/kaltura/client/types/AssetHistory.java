@@ -35,13 +35,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Watch history asset info  */
+/**
+ * Watch history asset info
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetHistory.Tokenizer.class)
 public class AssetHistory extends ObjectBase {
@@ -55,17 +57,29 @@ public class AssetHistory extends ObjectBase {
 		String finishedWatching();
 	}
 
-	/**  Asset identifier  */
+	/**
+	 * Asset identifier
+	 */
 	private Long assetId;
-	/**  Asset identifier  */
+	/**
+	 * Asset identifier
+	 */
 	private AssetType assetType;
-	/**  Position in seconds of the relevant asset  */
+	/**
+	 * Position in seconds of the relevant asset
+	 */
 	private Integer position;
-	/**  Duration in seconds of the relevant asset  */
+	/**
+	 * Duration in seconds of the relevant asset
+	 */
 	private Integer duration;
-	/**  The date when the media was last watched  */
+	/**
+	 * The date when the media was last watched
+	 */
 	private Long watchedDate;
-	/**  Boolean which specifies whether the user finished watching the movie or not  */
+	/**
+	 * Boolean which specifies whether the user finished watching the movie or not
+	 */
 	private Boolean finishedWatching;
 
 	// assetId:

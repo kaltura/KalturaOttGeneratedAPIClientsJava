@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,9 +48,13 @@ public class SocialNetworkComment extends SocialComment {
 		String authorImageUrl();
 	}
 
-	/**  Number of likes  */
+	/**
+	 * Number of likes
+	 */
 	private String likeCounter;
-	/**  The URL of the profile picture of the author of the comment  */
+	/**
+	 * The URL of the profile picture of the author of the comment
+	 */
 	private String authorImageUrl;
 
 	// likeCounter:

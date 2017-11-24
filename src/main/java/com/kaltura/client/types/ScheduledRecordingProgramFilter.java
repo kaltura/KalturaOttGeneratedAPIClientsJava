@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,13 +51,21 @@ public class ScheduledRecordingProgramFilter extends AssetFilter {
 		String endDateLessThanOrNull();
 	}
 
-	/**  The type of recordings to return  */
+	/**
+	 * The type of recordings to return
+	 */
 	private ScheduledRecordingAssetType recordingTypeEqual;
-	/**  Channels to filter by  */
+	/**
+	 * Channels to filter by
+	 */
 	private String channelsIn;
-	/**  start date  */
+	/**
+	 * start date
+	 */
 	private Long startDateGreaterThanOrNull;
-	/**  end date  */
+	/**
+	 * end date
+	 */
 	private Long endDateLessThanOrNull;
 
 	// recordingTypeEqual:

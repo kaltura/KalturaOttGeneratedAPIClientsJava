@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  KalturaPpvEntitlement  */
+/**
+ * KalturaPpvEntitlement
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PpvEntitlement.Tokenizer.class)
 public class PpvEntitlement extends Entitlement {
@@ -49,9 +51,13 @@ public class PpvEntitlement extends Entitlement {
 		String mediaId();
 	}
 
-	/**  Media file identifier  */
+	/**
+	 * Media file identifier
+	 */
 	private Integer mediaFileId;
-	/**  Media identifier  */
+	/**
+	 * Media identifier
+	 */
 	private Integer mediaId;
 
 	// mediaFileId:

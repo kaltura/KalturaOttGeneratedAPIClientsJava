@@ -33,7 +33,7 @@ import com.kaltura.client.types.UserAssetsListItem;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -49,7 +49,11 @@ public class UserAssetsListItemService {
 		}
 	}
 
-	/**  Adds a new item to user’s private asset list  */
+	/**
+	 * Adds a new item to user’s private asset list
+	 * 
+	 * @param userAssetsListItem A list item to add
+	 */
     public static AddUserAssetsListItemBuilder add(UserAssetsListItem userAssetsListItem)  {
 		return new AddUserAssetsListItemBuilder(userAssetsListItem);
 	}
@@ -71,7 +75,12 @@ public class UserAssetsListItemService {
 		}
 	}
 
-	/**  Deletes an item from user’s private asset list  */
+	/**
+	 * Deletes an item from user’s private asset list
+	 * 
+	 * @param assetId Asset id to delete
+	 * @param listType Asset list type to delete from
+	 */
     public static DeleteUserAssetsListItemBuilder delete(String assetId, UserAssetsListType listType)  {
 		return new DeleteUserAssetsListItemBuilder(assetId, listType);
 	}
@@ -98,7 +107,13 @@ public class UserAssetsListItemService {
 		}
 	}
 
-	/**  Get an item from user’s private asset list  */
+	/**
+	 * Get an item from user’s private asset list
+	 * 
+	 * @param assetId Asset id to get
+	 * @param listType Asset list type to get from
+	 * @param itemType item type to get
+	 */
     public static GetUserAssetsListItemBuilder get(String assetId, UserAssetsListType listType, UserAssetsListItemType itemType)  {
 		return new GetUserAssetsListItemBuilder(assetId, listType, itemType);
 	}

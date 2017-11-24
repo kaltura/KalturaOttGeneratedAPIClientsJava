@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -47,7 +47,9 @@ public class LicensedUrlRecordingRequest extends LicensedUrlBaseRequest {
 		String fileType();
 	}
 
-	/**  The file type for the URL  */
+	/**
+	 * The file type for the URL
+	 */
 	private String fileType;
 
 	// fileType:

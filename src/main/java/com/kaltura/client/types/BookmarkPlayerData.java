@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -53,15 +53,25 @@ public class BookmarkPlayerData extends ObjectBase {
 		String fileId();
 	}
 
-	/**  Action  */
+	/**
+	 * Action
+	 */
 	private BookmarkActionType action;
-	/**  Average Bitrate  */
+	/**
+	 * Average Bitrate
+	 */
 	private Integer averageBitrate;
-	/**  Total Bitrate  */
+	/**
+	 * Total Bitrate
+	 */
 	private Integer totalBitrate;
-	/**  Current Bitrate  */
+	/**
+	 * Current Bitrate
+	 */
 	private Integer currentBitrate;
-	/**  Identifier of the file  */
+	/**
+	 * Identifier of the file
+	 */
 	private Long fileId;
 
 	// action:

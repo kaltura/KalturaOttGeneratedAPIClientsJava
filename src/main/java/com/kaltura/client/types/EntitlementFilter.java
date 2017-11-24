@@ -35,13 +35,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Entitlements filter  */
+/**
+ * Entitlements filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EntitlementFilter.Tokenizer.class)
 public class EntitlementFilter extends Filter {
@@ -52,11 +54,17 @@ public class EntitlementFilter extends Filter {
 		String isExpiredEqual();
 	}
 
-	/**  The type of the entitlements to return  */
+	/**
+	 * The type of the entitlements to return
+	 */
 	private TransactionType entitlementTypeEqual;
-	/**  Reference type to filter by  */
+	/**
+	 * Reference type to filter by
+	 */
 	private EntityReferenceBy entityReferenceEqual;
-	/**  Is expired  */
+	/**
+	 * Is expired
+	 */
 	private Boolean isExpiredEqual;
 
 	// entitlementTypeEqual:

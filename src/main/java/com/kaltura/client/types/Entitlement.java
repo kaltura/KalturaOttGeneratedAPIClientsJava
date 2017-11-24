@@ -35,13 +35,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Entitlement  */
+/**
+ * Entitlement
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Entitlement.Tokenizer.class)
 public class Entitlement extends ObjectBase {
@@ -63,34 +65,62 @@ public class Entitlement extends ObjectBase {
 		String householdId();
 	}
 
-	/**  Purchase identifier (for subscriptions and collections only)  */
+	/**
+	 * Purchase identifier (for subscriptions and collections only)
+	 */
 	private Integer id;
-	/**  Entitlement identifier  */
+	/**
+	 * Entitlement identifier
+	 */
 	private String entitlementId;
-	/**  The current number of uses  */
+	/**
+	 * The current number of uses
+	 */
 	private Integer currentUses;
-	/**  The end date of the entitlement  */
+	/**
+	 * The end date of the entitlement
+	 */
 	private Long endDate;
-	/**  Current date  */
+	/**
+	 * Current date
+	 */
 	private Long currentDate;
-	/**  The last date the item was viewed  */
+	/**
+	 * The last date the item was viewed
+	 */
 	private Long lastViewDate;
-	/**  Purchase date  */
+	/**
+	 * Purchase date
+	 */
 	private Long purchaseDate;
-	/**  Payment Method  */
+	/**
+	 * Payment Method
+	 */
 	private PaymentMethodType paymentMethod;
-	/**  The UDID of the device from which the purchase was made  */
+	/**
+	 * The UDID of the device from which the purchase was made
+	 */
 	private String deviceUdid;
-	/**  The name of the device from which the purchase was made  */
+	/**
+	 * The name of the device from which the purchase was made
+	 */
 	private String deviceName;
-	/**  Indicates whether a cancelation window period is enabled  */
+	/**
+	 * Indicates whether a cancelation window period is enabled
+	 */
 	private Boolean isCancelationWindowEnabled;
-	/**  The maximum number of uses available for this item (only for subscription and
-	  PPV)  */
+	/**
+	 * The maximum number of uses available for this item (only for subscription and
+	  PPV)
+	 */
 	private Integer maxUses;
-	/**  The Identifier of the purchasing user  */
+	/**
+	 * The Identifier of the purchasing user
+	 */
 	private String userId;
-	/**  The Identifier of the purchasing household  */
+	/**
+	 * The Identifier of the purchasing household
+	 */
 	private Long householdId;
 
 	// id:

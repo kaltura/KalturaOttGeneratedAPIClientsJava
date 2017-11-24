@@ -30,7 +30,7 @@ package com.kaltura.client.utils.request;
 import com.kaltura.client.Params;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -44,68 +44,56 @@ public abstract class RequestBuilderData {
 	}
 	
 	/**
-	 * @param clientTag
+	 * @param clientTag Client tag
 	 */
 	public void setClientTag(String clientTag){
 		params.add("clientTag", clientTag);
 	}
 	
 	/**
-	 * @param apiVersion
+	 * @param apiVersion API version
 	 */
 	public void setApiVersion(String apiVersion){
 		params.add("apiVersion", apiVersion);
 	}
 	
 	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
+	 * @param partnerId Impersonated partner id
 	 */
 	public void setPartnerId(Integer partnerId){
 		params.add("partnerId", partnerId);
 	}
 	
 	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
+	 * @param userId Impersonated user id
 	 */
 	public void setUserId(Integer userId){
 		params.add("userId", userId);
 	}
 	
 	/**
-	 * Content language
-	 * 
-	 * @param language
+	 * @param language Content language
 	 */
 	public void setLanguage(String language){
 		params.add("language", language);
 	}
 	
 	/**
-	 * Content currency
-	 * 
-	 * @param currency
+	 * @param currency Content currency
 	 */
 	public void setCurrency(String currency){
 		params.add("currency", currency);
 	}
 	
 	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
+	 * @param ks Kaltura API session
 	 */
 	public void setKs(String ks){
 		params.add("ks", ks);
 	}
 	
 	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
+	 * @param sessionId Kaltura API session
 	 */
 	public void setSessionId(String sessionId){
 		params.add("ks", sessionId);

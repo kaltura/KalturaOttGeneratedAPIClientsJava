@@ -36,7 +36,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -54,17 +54,27 @@ public class PlaybackSource extends MediaFile {
 		String adsParam();
 	}
 
-	/**  Source format according to delivery profile streamer type (applehttp, mpegdash
-	  etc.)  */
+	/**
+	 * Source format according to delivery profile streamer type (applehttp, mpegdash
+	  etc.)
+	 */
 	private String format;
-	/**  Comma separated string according to deliveryProfile media protocols
-	  (&amp;#39;http,https&amp;#39; etc.)  */
+	/**
+	 * Comma separated string according to deliveryProfile media protocols
+	  (&amp;#39;http,https&amp;#39; etc.)
+	 */
 	private String protocols;
-	/**  DRM data object containing relevant license URL ,scheme name and certificate  */
+	/**
+	 * DRM data object containing relevant license URL ,scheme name and certificate
+	 */
 	private List<DrmPlaybackPluginData> drm;
-	/**  Ads policy  */
+	/**
+	 * Ads policy
+	 */
 	private AdsPolicy adsPolicy;
-	/**  The parameters to pass to the ads server  */
+	/**
+	 * The parameters to pass to the ads server
+	 */
 	private String adsParam;
 
 	// format:

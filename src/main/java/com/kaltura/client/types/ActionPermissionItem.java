@@ -37,7 +37,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -54,13 +54,21 @@ public class ActionPermissionItem extends ObjectBase {
 		String action();
 	}
 
-	/**  Social network  */
+	/**
+	 * Social network
+	 */
 	private SocialNetwork network;
-	/**  Action privacy  */
+	/**
+	 * Action privacy
+	 */
 	private SocialActionPrivacy actionPrivacy;
-	/**  Social privacy  */
+	/**
+	 * Social privacy
+	 */
 	private SocialPrivacy privacy;
-	/**  Action - separated with comma  */
+	/**
+	 * Action - separated with comma
+	 */
 	private String action;
 
 	// network:

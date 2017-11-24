@@ -37,7 +37,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,9 +52,13 @@ public class UserSocialActionResponse extends ObjectBase {
 		RequestBuilder.ListTokenizer<NetworkActionStatus.Tokenizer> failStatus();
 	}
 
-	/**  socialAction  */
+	/**
+	 * socialAction
+	 */
 	private SocialAction socialAction;
-	/**  List of action permission items  */
+	/**
+	 * List of action permission items
+	 */
 	private List<NetworkActionStatus> failStatus;
 
 	// socialAction:

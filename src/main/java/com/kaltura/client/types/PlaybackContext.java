@@ -36,7 +36,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,11 +52,17 @@ public class PlaybackContext extends ObjectBase {
 		RequestBuilder.ListTokenizer<AccessControlMessage.Tokenizer> messages();
 	}
 
-	/**  Sources  */
+	/**
+	 * Sources
+	 */
 	private List<PlaybackSource> sources;
-	/**  Actions  */
+	/**
+	 * Actions
+	 */
 	private List<RuleAction> actions;
-	/**  Messages  */
+	/**
+	 * Messages
+	 */
 	private List<AccessControlMessage> messages;
 
 	// sources:

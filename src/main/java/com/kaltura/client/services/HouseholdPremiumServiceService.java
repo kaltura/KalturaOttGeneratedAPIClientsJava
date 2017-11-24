@@ -31,7 +31,7 @@ import com.kaltura.client.types.HouseholdPremiumService;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -46,7 +46,9 @@ public class HouseholdPremiumServiceService {
 		}
 	}
 
-	/**  Returns all the premium services allowed for the household  */
+	/**
+	 * Returns all the premium services allowed for the household
+	 */
     public static ListHouseholdPremiumServiceBuilder list()  {
 		return new ListHouseholdPremiumServiceBuilder();
 	}

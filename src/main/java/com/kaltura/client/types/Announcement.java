@@ -36,7 +36,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -57,21 +57,37 @@ public class Announcement extends ObjectBase {
 		String id();
 	}
 
-	/**  Announcement name  */
+	/**
+	 * Announcement name
+	 */
 	private String name;
-	/**  Announcement message  */
+	/**
+	 * Announcement message
+	 */
 	private String message;
-	/**  Announcement enabled  */
+	/**
+	 * Announcement enabled
+	 */
 	private Boolean enabled;
-	/**  Announcement start time  */
+	/**
+	 * Announcement start time
+	 */
 	private Long startTime;
-	/**  Announcement time zone  */
+	/**
+	 * Announcement time zone
+	 */
 	private String timezone;
-	/**  Announcement status: NotSent=0/Sending=1/Sent=2/Aborted=3  */
+	/**
+	 * Announcement status: NotSent=0/Sending=1/Sent=2/Aborted=3
+	 */
 	private AnnouncementStatus status;
-	/**  Announcement recipients: All=0/LoggedIn=1/Guests=2/Other=3  */
+	/**
+	 * Announcement recipients: All=0/LoggedIn=1/Guests=2/Other=3
+	 */
 	private AnnouncementRecipientsType recipients;
-	/**  Announcement id  */
+	/**
+	 * Announcement id
+	 */
 	private Integer id;
 
 	// name:

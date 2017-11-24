@@ -31,7 +31,7 @@ import com.kaltura.client.types.CDNPartnerSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -46,7 +46,9 @@ public class CdnPartnerSettingsService {
 		}
 	}
 
-	/**  Retrieve the partner’s CDN settings (default adapters)  */
+	/**
+	 * Retrieve the partner’s CDN settings (default adapters)
+	 */
     public static GetCdnPartnerSettingsBuilder get()  {
 		return new GetCdnPartnerSettingsBuilder();
 	}
@@ -59,7 +61,11 @@ public class CdnPartnerSettingsService {
 		}
 	}
 
-	/**  Configure the partner’s CDN settings (default adapters)  */
+	/**
+	 * Configure the partner’s CDN settings (default adapters)
+	 * 
+	 * @param settings CDN partner settings
+	 */
     public static UpdateCdnPartnerSettingsBuilder update(CDNPartnerSettings settings)  {
 		return new UpdateCdnPartnerSettingsBuilder(settings);
 	}

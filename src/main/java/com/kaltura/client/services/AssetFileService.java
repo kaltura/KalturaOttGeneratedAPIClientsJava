@@ -35,7 +35,7 @@ import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -60,7 +60,12 @@ public class AssetFileService {
 		}
 	}
 
-	/**  get KalturaAssetFileContext  */
+	/**
+	 * get KalturaAssetFileContext
+	 * 
+	 * @param id Asset file identifier
+	 * @param contextType Kaltura Context Type (none = 0, recording = 1)
+	 */
     public static GetContextAssetFileBuilder getContext(String id, ContextType contextType)  {
 		return new GetContextAssetFileBuilder(id, contextType);
 	}
@@ -106,7 +111,16 @@ public class AssetFileService {
 		return playManifest(partnerId, assetId, assetType, assetFileId, contextType, null);
 	}
 
-	/**  Redirects to play manifest  */
+	/**
+	 * Redirects to play manifest
+	 * 
+	 * @param partnerId Partner identifier
+	 * @param assetId Asset identifier
+	 * @param assetType Asset type
+	 * @param assetFileId Asset file identifier
+	 * @param contextType Playback context type
+	 * @param ks Kaltura session for the user, not mandatory for anonymous user
+	 */
     public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks)  {
 		return new PlayManifestAssetFileBuilder(partnerId, assetId, assetType, assetFileId, contextType, ks);
 	}

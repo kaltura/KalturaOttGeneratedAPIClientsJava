@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Partner billing configuration  */
+/**
+ * Partner billing configuration
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BillingPartnerConfig.Tokenizer.class)
 public class BillingPartnerConfig extends PartnerConfiguration {
@@ -50,9 +52,13 @@ public class BillingPartnerConfig extends PartnerConfiguration {
 		String type();
 	}
 
-	/**  configuration value  */
+	/**
+	 * configuration value
+	 */
 	private String value;
-	/**  partner configuration type  */
+	/**
+	 * partner configuration type
+	 */
 	private PartnerConfigurationType type;
 
 	// value:

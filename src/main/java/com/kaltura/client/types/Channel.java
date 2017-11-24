@@ -36,13 +36,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Channel details  */
+/**
+ * Channel details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Channel.Tokenizer.class)
 public class Channel extends BaseChannel {
@@ -56,17 +58,29 @@ public class Channel extends BaseChannel {
 		String order();
 	}
 
-	/**  Cannel description  */
+	/**
+	 * Cannel description
+	 */
 	private String description;
-	/**  Channel images  */
+	/**
+	 * Channel images
+	 */
 	private List<MediaImage> images;
-	/**  Asset types in the channel.              -26 is EPG  */
+	/**
+	 * Asset types in the channel.              -26 is EPG
+	 */
 	private List<IntegerValue> assetTypes;
-	/**  Filter expression  */
+	/**
+	 * Filter expression
+	 */
 	private String filterExpression;
-	/**  active status  */
+	/**
+	 * active status
+	 */
 	private Boolean isActive;
-	/**  Channel order  */
+	/**
+	 * Channel order
+	 */
 	private AssetOrderBy order;
 
 	// description:

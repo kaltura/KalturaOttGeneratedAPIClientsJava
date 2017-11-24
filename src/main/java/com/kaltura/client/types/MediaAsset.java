@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Media-asset info  */
+/**
+ * Media-asset info
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MediaAsset.Tokenizer.class)
 public class MediaAsset extends Asset {
@@ -56,23 +58,41 @@ public class MediaAsset extends Asset {
 		String watchPermissionRule();
 	}
 
-	/**  External identifiers  */
+	/**
+	 * External identifiers
+	 */
 	private String externalIds;
-	/**  Catch-up buffer  */
+	/**
+	 * Catch-up buffer
+	 */
 	private Long catchUpBuffer;
-	/**  Trick-play buffer  */
+	/**
+	 * Trick-play buffer
+	 */
 	private Long trickPlayBuffer;
-	/**  Enable Recording playback for non entitled channel  */
+	/**
+	 * Enable Recording playback for non entitled channel
+	 */
 	private Boolean enableRecordingPlaybackNonEntitledChannel;
-	/**  Asset type description  */
+	/**
+	 * Asset type description
+	 */
 	private String typeDescription;
-	/**  Entry Identifier  */
+	/**
+	 * Entry Identifier
+	 */
 	private String entryId;
-	/**  Device rule  */
+	/**
+	 * Device rule
+	 */
 	private String deviceRule;
-	/**  Geo block rule  */
+	/**
+	 * Geo block rule
+	 */
 	private String geoBlockRule;
-	/**  Watch permission rule  */
+	/**
+	 * Watch permission rule
+	 */
 	private String watchPermissionRule;
 
 	// externalIds:

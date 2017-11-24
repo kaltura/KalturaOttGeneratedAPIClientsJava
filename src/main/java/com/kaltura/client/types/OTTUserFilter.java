@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  OTT User filter  */
+/**
+ * OTT User filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OTTUserFilter.Tokenizer.class)
 public class OTTUserFilter extends Filter {
@@ -50,11 +52,17 @@ public class OTTUserFilter extends Filter {
 		String idIn();
 	}
 
-	/**  Username  */
+	/**
+	 * Username
+	 */
 	private String usernameEqual;
-	/**  User external identifier  */
+	/**
+	 * User external identifier
+	 */
 	private String externalIdEqual;
-	/**  List of user identifiers separated by &amp;#39;,&amp;#39;  */
+	/**
+	 * List of user identifiers separated by &amp;#39;,&amp;#39;
+	 */
 	private String idIn;
 
 	// usernameEqual:

@@ -32,7 +32,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,7 +48,11 @@ public class CdnAdapterProfileService {
 		}
 	}
 
-	/**  Insert new CDN adapter for partner  */
+	/**
+	 * Insert new CDN adapter for partner
+	 * 
+	 * @param adapter CDN adapter object
+	 */
     public static AddCdnAdapterProfileBuilder add(CDNAdapterProfile adapter)  {
 		return new AddCdnAdapterProfileBuilder(adapter);
 	}
@@ -65,7 +69,11 @@ public class CdnAdapterProfileService {
 		}
 	}
 
-	/**  Delete CDN adapter by CDN adapter id  */
+	/**
+	 * Delete CDN adapter by CDN adapter id
+	 * 
+	 * @param adapterId CDN adapter identifier
+	 */
     public static DeleteCdnAdapterProfileBuilder delete(int adapterId)  {
 		return new DeleteCdnAdapterProfileBuilder(adapterId);
 	}
@@ -82,7 +90,11 @@ public class CdnAdapterProfileService {
 		}
 	}
 
-	/**  Generate CDN adapter shared secret  */
+	/**
+	 * Generate CDN adapter shared secret
+	 * 
+	 * @param adapterId CDN adapter identifier
+	 */
     public static GenerateSharedSecretCdnAdapterProfileBuilder generateSharedSecret(int adapterId)  {
 		return new GenerateSharedSecretCdnAdapterProfileBuilder(adapterId);
 	}
@@ -94,7 +106,9 @@ public class CdnAdapterProfileService {
 		}
 	}
 
-	/**  Returns all CDN adapters for partner  */
+	/**
+	 * Returns all CDN adapters for partner
+	 */
     public static ListCdnAdapterProfileBuilder list()  {
 		return new ListCdnAdapterProfileBuilder();
 	}
@@ -112,7 +126,12 @@ public class CdnAdapterProfileService {
 		}
 	}
 
-	/**  Update CDN adapter details  */
+	/**
+	 * Update CDN adapter details
+	 * 
+	 * @param adapterId CDN adapter id to update
+	 * @param adapter CDN adapter Object
+	 */
     public static UpdateCdnAdapterProfileBuilder update(int adapterId, CDNAdapterProfile adapter)  {
 		return new UpdateCdnAdapterProfileBuilder(adapterId, adapter);
 	}

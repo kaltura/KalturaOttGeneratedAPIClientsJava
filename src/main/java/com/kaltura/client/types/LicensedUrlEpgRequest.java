@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -49,9 +49,13 @@ public class LicensedUrlEpgRequest extends LicensedUrlMediaRequest {
 		String startDate();
 	}
 
-	/**  The stream type to get the URL for  */
+	/**
+	 * The stream type to get the URL for
+	 */
 	private StreamType streamType;
-	/**  The start date of the stream (epoch)  */
+	/**
+	 * The start date of the stream (epoch)
+	 */
 	private Long startDate;
 
 	// streamType:

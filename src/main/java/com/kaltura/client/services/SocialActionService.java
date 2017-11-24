@@ -37,7 +37,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -53,7 +53,11 @@ public class SocialActionService {
 		}
 	}
 
-	/**  Insert new user social action  */
+	/**
+	 * Insert new user social action
+	 * 
+	 * @param socialAction social Action Object
+	 */
     public static AddSocialActionBuilder add(SocialAction socialAction)  {
 		return new AddSocialActionBuilder(socialAction);
 	}
@@ -70,7 +74,11 @@ public class SocialActionService {
 		}
 	}
 
-	/**  delete user social action  */
+	/**
+	 * delete user social action
+	 * 
+	 * @param id social Action Id
+	 */
     public static DeleteSocialActionBuilder delete(String id)  {
 		return new DeleteSocialActionBuilder(id);
 	}
@@ -88,7 +96,12 @@ public class SocialActionService {
 		return list(filter, null);
 	}
 
-	/**  Get list of user social actions  */
+	/**
+	 * Get list of user social actions
+	 * 
+	 * @param filter social action filter
+	 * @param pager pager
+	 */
     public static ListSocialActionBuilder list(SocialActionFilter filter, FilterPager pager)  {
 		return new ListSocialActionBuilder(filter, pager);
 	}

@@ -36,13 +36,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  PPV price details  */
+/**
+ * PPV price details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PpvPrice.Tokenizer.class)
 public class PpvPrice extends ProductPrice {
@@ -67,44 +69,78 @@ public class PpvPrice extends ProductPrice {
 		String ppvProductCode();
 	}
 
-	/**  Media file identifier  */
+	/**
+	 * Media file identifier
+	 */
 	private Integer fileId;
-	/**  The associated PPV module identifier  */
+	/**
+	 * The associated PPV module identifier
+	 */
 	private String ppvModuleId;
-	/**  Denotes whether this object is available only as part of a subscription or can
-	  be sold separately  */
+	/**
+	 * Denotes whether this object is available only as part of a subscription or can
+	  be sold separately
+	 */
 	private Boolean isSubscriptionOnly;
-	/**  The full price of the item (with no discounts)  */
+	/**
+	 * The full price of the item (with no discounts)
+	 */
 	private Price fullPrice;
-	/**  The identifier of the relevant subscription  */
+	/**
+	 * The identifier of the relevant subscription
+	 */
 	private String subscriptionId;
-	/**  The identifier of the relevant collection  */
+	/**
+	 * The identifier of the relevant collection
+	 */
 	private String collectionId;
-	/**  The identifier of the relevant pre paid  */
+	/**
+	 * The identifier of the relevant pre paid
+	 */
 	private String prePaidId;
-	/**  A list of the descriptions of the PPV module on different languages (language
-	  code and translation)  */
+	/**
+	 * A list of the descriptions of the PPV module on different languages (language
+	  code and translation)
+	 */
 	private List<TranslationToken> ppvDescriptions;
-	/**  If the item already purchased - the identifier of the user (in the household)
-	  who purchased this item  */
+	/**
+	 * If the item already purchased - the identifier of the user (in the household)
+	  who purchased this item
+	 */
 	private String purchaseUserId;
-	/**  If the item already purchased - the identifier of the purchased file  */
+	/**
+	 * If the item already purchased - the identifier of the purchased file
+	 */
 	private Integer purchasedMediaFileId;
-	/**  Related media files identifiers (different types)  */
+	/**
+	 * Related media files identifiers (different types)
+	 */
 	private List<IntegerValue> relatedMediaFileIds;
-	/**  If the item already purchased - since when the user can start watching the item  */
+	/**
+	 * If the item already purchased - since when the user can start watching the item
+	 */
 	private Long startDate;
-	/**  If the item already purchased - until when the user can watch the item  */
+	/**
+	 * If the item already purchased - until when the user can watch the item
+	 */
 	private Long endDate;
-	/**  Discount end date  */
+	/**
+	 * Discount end date
+	 */
 	private Long discountEndDate;
-	/**  If the item already purchased and played - the name of the device on which it
-	  was first played  */
+	/**
+	 * If the item already purchased and played - the name of the device on which it
+	  was first played
+	 */
 	private String firstDeviceName;
-	/**  If waiver period is enabled - donates whether the user is still in the
-	  cancelation window  */
+	/**
+	 * If waiver period is enabled - donates whether the user is still in the
+	  cancelation window
+	 */
 	private Boolean isInCancelationPeriod;
-	/**  The PPV product code  */
+	/**
+	 * The PPV product code
+	 */
 	private String ppvProductCode;
 
 	// fileId:

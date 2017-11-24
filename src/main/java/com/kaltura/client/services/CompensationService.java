@@ -32,7 +32,7 @@ import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,8 +48,12 @@ public class CompensationService {
 		}
 	}
 
-	/**  Adds a new compensation for a household for a given number of iterations of a
-	  subscription renewal for a fixed amount / percentage of the renewal price.  */
+	/**
+	 * Adds a new compensation for a household for a given number of iterations of a
+	  subscription renewal for a fixed amount / percentage of the renewal price.
+	 * 
+	 * @param compensation Compensation parameters
+	 */
     public static AddCompensationBuilder add(Compensation compensation)  {
 		return new AddCompensationBuilder(compensation);
 	}
@@ -66,7 +70,11 @@ public class CompensationService {
 		}
 	}
 
-	/**  Delete a compensation by identifier  */
+	/**
+	 * Delete a compensation by identifier
+	 * 
+	 * @param id Compensation identifier
+	 */
     public static DeleteCompensationBuilder delete(long id)  {
 		return new DeleteCompensationBuilder(id);
 	}
@@ -83,7 +91,11 @@ public class CompensationService {
 		}
 	}
 
-	/**  Get a compensation by identifier  */
+	/**
+	 * Get a compensation by identifier
+	 * 
+	 * @param id Compensation identifier
+	 */
     public static GetCompensationBuilder get(long id)  {
 		return new GetCompensationBuilder(id);
 	}

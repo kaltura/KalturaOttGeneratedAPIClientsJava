@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,13 +52,21 @@ public class AssetStatisticsQuery extends ObjectBase {
 		String endDateGreaterThanOrEqual();
 	}
 
-	/**  Comma separated list of asset identifiers.  */
+	/**
+	 * Comma separated list of asset identifiers.
+	 */
 	private String assetIdIn;
-	/**  Asset type  */
+	/**
+	 * Asset type
+	 */
 	private AssetType assetTypeEqual;
-	/**  The beginning of the time window to get the statistics for (in epoch).  */
+	/**
+	 * The beginning of the time window to get the statistics for (in epoch).
+	 */
 	private Long startDateGreaterThanOrEqual;
-	/**  /// The end of the time window to get the statistics for (in epoch).  */
+	/**
+	 * /// The end of the time window to get the statistics for (in epoch).
+	 */
 	private Long endDateGreaterThanOrEqual;
 
 	// assetIdIn:

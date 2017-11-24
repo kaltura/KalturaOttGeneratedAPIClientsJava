@@ -38,13 +38,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Bulk export task  */
+/**
+ * Bulk export task
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ExportTask.Tokenizer.class)
 public class ExportTask extends ObjectBase {
@@ -62,29 +64,49 @@ public class ExportTask extends ObjectBase {
 		String isActive();
 	}
 
-	/**  Task identifier  */
+	/**
+	 * Task identifier
+	 */
 	private Long id;
-	/**  Alias for the task used to solicit an export using API  */
+	/**
+	 * Alias for the task used to solicit an export using API
+	 */
 	private String alias;
-	/**  Task display name  */
+	/**
+	 * Task display name
+	 */
 	private String name;
-	/**  The data type exported in this task  */
+	/**
+	 * The data type exported in this task
+	 */
 	private ExportDataType dataType;
-	/**  Filter to apply on the export, utilize KSQL.              Note: KSQL currently
-	  applies to media assets only. It cannot be used for USERS filtering  */
+	/**
+	 * Filter to apply on the export, utilize KSQL.              Note: KSQL currently
+	  applies to media assets only. It cannot be used for USERS filtering
+	 */
 	private String filter;
-	/**  Type of export batch – full or incremental  */
+	/**
+	 * Type of export batch – full or incremental
+	 */
 	private ExportType exportType;
-	/**  How often the export should occur, reasonable minimum threshold should apply,
-	  configurable in minutes  */
+	/**
+	 * How often the export should occur, reasonable minimum threshold should apply,
+	  configurable in minutes
+	 */
 	private Long frequency;
-	/**  The URL for sending a notification when the task&amp;#39;s export process is
-	  done  */
+	/**
+	 * The URL for sending a notification when the task&amp;#39;s export process is
+	  done
+	 */
 	private String notificationUrl;
-	/**  List of media type identifiers (as configured in TVM) to export. used only in
-	  case data_type = vod  */
+	/**
+	 * List of media type identifiers (as configured in TVM) to export. used only in
+	  case data_type = vod
+	 */
 	private List<IntegerValue> vodTypes;
-	/**  Indicates if the task is active or not  */
+	/**
+	 * Indicates if the task is active or not
+	 */
 	private Boolean isActive;
 
 	// id:

@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -53,15 +53,25 @@ public class TransactionStatus extends ObjectBase {
 		String failReason();
 	}
 
-	/**  Payment gateway adapter application state for the transaction to update  */
+	/**
+	 * Payment gateway adapter application state for the transaction to update
+	 */
 	private TransactionAdapterStatus adapterTransactionStatus;
-	/**  External transaction identifier  */
+	/**
+	 * External transaction identifier
+	 */
 	private String externalId;
-	/**  Payment gateway transaction status  */
+	/**
+	 * Payment gateway transaction status
+	 */
 	private String externalStatus;
-	/**  Payment gateway message  */
+	/**
+	 * Payment gateway message
+	 */
 	private String externalMessage;
-	/**  The reason the transaction failed  */
+	/**
+	 * The reason the transaction failed
+	 */
 	private Integer failReason;
 
 	// adapterTransactionStatus:

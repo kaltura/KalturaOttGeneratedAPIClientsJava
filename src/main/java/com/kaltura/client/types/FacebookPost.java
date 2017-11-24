@@ -35,7 +35,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -50,9 +50,13 @@ public class FacebookPost extends SocialNetworkComment {
 		String link();
 	}
 
-	/**  List of comments on the post  */
+	/**
+	 * List of comments on the post
+	 */
 	private List<SocialNetworkComment> comments;
-	/**  A link associated to the post  */
+	/**
+	 * A link associated to the post
+	 */
 	private String link;
 
 	// comments:

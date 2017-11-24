@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Bulk export tasks filter  */
+/**
+ * Bulk export tasks filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ExportTaskFilter.Tokenizer.class)
 public class ExportTaskFilter extends Filter {
@@ -48,7 +50,9 @@ public class ExportTaskFilter extends Filter {
 		String idIn();
 	}
 
-	/**  Comma separated tasks identifiers  */
+	/**
+	 * Comma separated tasks identifiers
+	 */
 	private String idIn;
 
 	// idIn:

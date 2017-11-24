@@ -32,7 +32,7 @@ import com.kaltura.client.types.AssetStatisticsQuery;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,7 +48,11 @@ public class AssetStatisticsService {
 		}
 	}
 
-	/**  Returns statistics for given list of assets by type and / or time period  */
+	/**
+	 * Returns statistics for given list of assets by type and / or time period
+	 * 
+	 * @param query Query for assets statistics
+	 */
     public static QueryAssetStatisticsBuilder query(AssetStatisticsQuery query)  {
 		return new QueryAssetStatisticsBuilder(query);
 	}

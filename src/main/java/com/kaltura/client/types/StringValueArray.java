@@ -36,7 +36,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -50,7 +50,9 @@ public class StringValueArray extends ObjectBase {
 		RequestBuilder.ListTokenizer<StringValue.Tokenizer> objects();
 	}
 
-	/**  List of string values  */
+	/**
+	 * List of string values
+	 */
 	private List<StringValue> objects;
 
 	// objects:

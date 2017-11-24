@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Transactions filter  */
+/**
+ * Transactions filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(TransactionHistoryFilter.Tokenizer.class)
 public class TransactionHistoryFilter extends Filter {
@@ -51,11 +53,17 @@ public class TransactionHistoryFilter extends Filter {
 		String endDateLessThanOrEqual();
 	}
 
-	/**  Reference type to filter by  */
+	/**
+	 * Reference type to filter by
+	 */
 	private EntityReferenceBy entityReferenceEqual;
-	/**  Filter transactions later than specific date  */
+	/**
+	 * Filter transactions later than specific date
+	 */
 	private Integer startDateGreaterThanOrEqual;
-	/**  Filter transactions earlier than specific date  */
+	/**
+	 * Filter transactions earlier than specific date
+	 */
 	private Integer endDateLessThanOrEqual;
 
 	// entityReferenceEqual:

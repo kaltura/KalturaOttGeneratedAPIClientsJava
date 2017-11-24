@@ -36,7 +36,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,11 +52,17 @@ public class UserRole extends ObjectBase {
 		RequestBuilder.ListTokenizer<Permission.Tokenizer> permissions();
 	}
 
-	/**  User role identifier  */
+	/**
+	 * User role identifier
+	 */
 	private Long id;
-	/**  User role name  */
+	/**
+	 * User role name
+	 */
 	private String name;
-	/**  List of permissions associated with the user role  */
+	/**
+	 * List of permissions associated with the user role
+	 */
 	private List<Permission> permissions;
 
 	// id:

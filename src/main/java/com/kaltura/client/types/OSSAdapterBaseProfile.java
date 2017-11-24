@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  OSS adapter basic  */
+/**
+ * OSS adapter basic
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OSSAdapterBaseProfile.Tokenizer.class)
 public class OSSAdapterBaseProfile extends ObjectBase {
@@ -50,9 +52,13 @@ public class OSSAdapterBaseProfile extends ObjectBase {
 		String name();
 	}
 
-	/**  OSS adapter id  */
+	/**
+	 * OSS adapter id
+	 */
 	private Integer id;
-	/**  OSS adapter name  */
+	/**
+	 * OSS adapter name
+	 */
 	private String name;
 
 	// id:

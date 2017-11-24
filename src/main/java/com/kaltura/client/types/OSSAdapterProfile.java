@@ -35,13 +35,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.Map;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  OSS Adapter  */
+/**
+ * OSS Adapter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OSSAdapterProfile.Tokenizer.class)
 public class OSSAdapterProfile extends OSSAdapterBaseProfile {
@@ -54,15 +56,25 @@ public class OSSAdapterProfile extends OSSAdapterBaseProfile {
 		String sharedSecret();
 	}
 
-	/**  OSS adapter active status  */
+	/**
+	 * OSS adapter active status
+	 */
 	private Boolean isActive;
-	/**  OSS adapter adapter URL  */
+	/**
+	 * OSS adapter adapter URL
+	 */
 	private String adapterUrl;
-	/**  OSS adapter extra parameters  */
+	/**
+	 * OSS adapter extra parameters
+	 */
 	private Map<String, StringValue> ossAdapterSettings;
-	/**  OSS adapter external identifier  */
+	/**
+	 * OSS adapter external identifier
+	 */
 	private String externalIdentifier;
-	/**  Shared Secret  */
+	/**
+	 * Shared Secret
+	 */
 	private String sharedSecret;
 
 	// isActive:

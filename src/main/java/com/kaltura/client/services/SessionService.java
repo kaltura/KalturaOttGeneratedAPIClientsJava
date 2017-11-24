@@ -32,7 +32,7 @@ import com.kaltura.client.types.Session;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -56,7 +56,11 @@ public class SessionService {
 		return get(null);
 	}
 
-	/**  Parses KS  */
+	/**
+	 * Parses KS
+	 * 
+	 * @param session Additional KS to parse, if not passed the user's KS will be parsed
+	 */
     public static GetSessionBuilder get(String session)  {
 		return new GetSessionBuilder(session);
 	}
@@ -68,7 +72,9 @@ public class SessionService {
 		}
 	}
 
-	/**  Revokes all the sessions (KS) of a given user  */
+	/**
+	 * Revokes all the sessions (KS) of a given user
+	 */
     public static RevokeSessionBuilder revoke()  {
 		return new RevokeSessionBuilder();
 	}
@@ -85,8 +91,12 @@ public class SessionService {
 		}
 	}
 
-	/**  Switching the user in the session by generating a new session for a new user
-	  within the same household  */
+	/**
+	 * Switching the user in the session by generating a new session for a new user
+	  within the same household
+	 * 
+	 * @param userIdToSwitch The identifier of the user to change
+	 */
     public static SwitchUserSessionBuilder switchUser(String userIdToSwitch)  {
 		return new SwitchUserSessionBuilder(userIdToSwitch);
 	}

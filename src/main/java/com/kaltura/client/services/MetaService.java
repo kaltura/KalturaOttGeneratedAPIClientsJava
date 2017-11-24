@@ -32,7 +32,7 @@ import com.kaltura.client.types.MetaFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,7 +52,11 @@ public class MetaService {
 		return list(null);
 	}
 
-	/**  Get the list of meta mappings for the partner  */
+	/**
+	 * Get the list of meta mappings for the partner
+	 * 
+	 * @param filter Meta filter
+	 */
     public static ListMetaBuilder list(MetaFilter filter)  {
 		return new ListMetaBuilder(filter);
 	}

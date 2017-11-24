@@ -32,7 +32,7 @@ import com.kaltura.client.types.PurchaseSettings;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,8 +52,12 @@ public class PurchaseSettingsService {
 		}
 	}
 
-	/**  Retrieve the purchase settings.              Includes specification of where
-	  these settings were defined – account, household or user  */
+	/**
+	 * Retrieve the purchase settings.              Includes specification of where
+	  these settings were defined – account, household or user
+	 * 
+	 * @param by Reference type to filter by
+	 */
     public static GetPurchaseSettingsBuilder get(EntityReferenceBy by)  {
 		return new GetPurchaseSettingsBuilder(by);
 	}
@@ -71,7 +75,12 @@ public class PurchaseSettingsService {
 		}
 	}
 
-	/**  Set a purchase PIN for the household or user  */
+	/**
+	 * Set a purchase PIN for the household or user
+	 * 
+	 * @param entityReference Reference type to filter by
+	 * @param settings New settings to apply
+	 */
     public static UpdatePurchaseSettingsBuilder update(EntityReferenceBy entityReference, PurchaseSettings settings)  {
 		return new UpdatePurchaseSettingsBuilder(entityReference, settings);
 	}

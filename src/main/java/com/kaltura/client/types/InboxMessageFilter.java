@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -49,11 +49,17 @@ public class InboxMessageFilter extends Filter {
 		String createdAtLessThanOrEqual();
 	}
 
-	/**  List of inbox message types to search within.  */
+	/**
+	 * List of inbox message types to search within.
+	 */
 	private String typeIn;
-	/**  createdAtGreaterThanOrEqual  */
+	/**
+	 * createdAtGreaterThanOrEqual
+	 */
 	private Long createdAtGreaterThanOrEqual;
-	/**  createdAtLessThanOrEqual  */
+	/**
+	 * createdAtLessThanOrEqual
+	 */
 	private Long createdAtLessThanOrEqual;
 
 	// typeIn:

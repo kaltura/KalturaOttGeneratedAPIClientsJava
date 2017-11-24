@@ -33,13 +33,15 @@ import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Partner  base configuration  */
+/**
+ * Partner  base configuration
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PartnerConfiguration.Tokenizer.class)
 public abstract class PartnerConfiguration extends ObjectBase {

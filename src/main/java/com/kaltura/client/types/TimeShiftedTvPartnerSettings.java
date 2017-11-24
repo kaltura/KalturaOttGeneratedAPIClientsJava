@@ -36,7 +36,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -70,52 +70,94 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		String recoveryGracePeriod();
 	}
 
-	/**  Is catch-up enabled  */
+	/**
+	 * Is catch-up enabled
+	 */
 	private Boolean catchUpEnabled;
-	/**  Is c-dvr enabled  */
+	/**
+	 * Is c-dvr enabled
+	 */
 	private Boolean cdvrEnabled;
-	/**  Is start-over enabled  */
+	/**
+	 * Is start-over enabled
+	 */
 	private Boolean startOverEnabled;
-	/**  Is trick-play enabled  */
+	/**
+	 * Is trick-play enabled
+	 */
 	private Boolean trickPlayEnabled;
-	/**  Is recording schedule window enabled  */
+	/**
+	 * Is recording schedule window enabled
+	 */
 	private Boolean recordingScheduleWindowEnabled;
-	/**  Is recording protection enabled  */
+	/**
+	 * Is recording protection enabled
+	 */
 	private Boolean protectionEnabled;
-	/**  Catch-up buffer length  */
+	/**
+	 * Catch-up buffer length
+	 */
 	private Long catchUpBufferLength;
-	/**  Trick play buffer length  */
+	/**
+	 * Trick play buffer length
+	 */
 	private Long trickPlayBufferLength;
-	/**  Recording schedule window. Indicates how long (in minutes) after the program
-	  starts it is allowed to schedule the recording  */
+	/**
+	 * Recording schedule window. Indicates how long (in minutes) after the program
+	  starts it is allowed to schedule the recording
+	 */
 	private Long recordingScheduleWindow;
-	/**  Indicates how long (in seconds) before the program starts the recording will
-	  begin  */
+	/**
+	 * Indicates how long (in seconds) before the program starts the recording will
+	  begin
+	 */
 	private Long paddingBeforeProgramStarts;
-	/**  Indicates how long (in seconds) after the program ends the recording will end  */
+	/**
+	 * Indicates how long (in seconds) after the program ends the recording will end
+	 */
 	private Long paddingAfterProgramEnds;
-	/**  Specify the time in days that a recording should be protected. Start time begins
-	  at protection request.  */
+	/**
+	 * Specify the time in days that a recording should be protected. Start time begins
+	  at protection request.
+	 */
 	private Integer protectionPeriod;
-	/**  Indicates how many percent of the quota can be used for protection  */
+	/**
+	 * Indicates how many percent of the quota can be used for protection
+	 */
 	private Integer protectionQuotaPercentage;
-	/**  Specify the time in days that a recording should be kept for user. Start time
-	  begins with the program end date.  */
+	/**
+	 * Specify the time in days that a recording should be kept for user. Start time
+	  begins with the program end date.
+	 */
 	private Integer recordingLifetimePeriod;
-	/**  The time in days before the recording lifetime is due from which the client
-	  should be able to warn user about deletion.  */
+	/**
+	 * The time in days before the recording lifetime is due from which the client
+	  should be able to warn user about deletion.
+	 */
 	private Integer cleanupNoticePeriod;
-	/**  Is recording of series enabled  */
+	/**
+	 * Is recording of series enabled
+	 */
 	private Boolean seriesRecordingEnabled;
-	/**  Is recording playback for non-entitled channel enables  */
+	/**
+	 * Is recording playback for non-entitled channel enables
+	 */
 	private Boolean nonEntitledChannelPlaybackEnabled;
-	/**  Is recording playback for non-existing channel enables  */
+	/**
+	 * Is recording playback for non-existing channel enables
+	 */
 	private Boolean nonExistingChannelPlaybackEnabled;
-	/**  Quota Policy  */
+	/**
+	 * Quota Policy
+	 */
 	private QuotaOveragePolicy quotaOveragePolicy;
-	/**  Protection Policy  */
+	/**
+	 * Protection Policy
+	 */
 	private ProtectionPolicy protectionPolicy;
-	/**  The time in days for recovery recording that was delete by Auto Delete .  */
+	/**
+	 * The time in days for recovery recording that was delete by Auto Delete .
+	 */
 	private Integer recoveryGracePeriod;
 
 	// catchUpEnabled:

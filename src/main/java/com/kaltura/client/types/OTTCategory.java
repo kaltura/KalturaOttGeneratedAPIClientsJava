@@ -36,13 +36,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Category details  */
+/**
+ * Category details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OTTCategory.Tokenizer.class)
 public class OTTCategory extends ObjectBase {
@@ -56,17 +58,29 @@ public class OTTCategory extends ObjectBase {
 		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
 	}
 
-	/**  Unique identifier for the category  */
+	/**
+	 * Unique identifier for the category
+	 */
 	private Long id;
-	/**  Category name  */
+	/**
+	 * Category name
+	 */
 	private String name;
-	/**  Category parent identifier  */
+	/**
+	 * Category parent identifier
+	 */
 	private Long parentCategoryId;
-	/**  Child categories  */
+	/**
+	 * Child categories
+	 */
 	private List<OTTCategory> childCategories;
-	/**  Category channels  */
+	/**
+	 * Category channels
+	 */
 	private List<Channel> channels;
-	/**  Category images  */
+	/**
+	 * Category images
+	 */
 	private List<MediaImage> images;
 
 	// id:

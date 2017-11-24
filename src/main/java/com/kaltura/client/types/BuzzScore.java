@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Buzz score  */
+/**
+ * Buzz score
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BuzzScore.Tokenizer.class)
 public class BuzzScore extends ObjectBase {
@@ -51,11 +53,17 @@ public class BuzzScore extends ObjectBase {
 		String avgScore();
 	}
 
-	/**  Normalized average score  */
+	/**
+	 * Normalized average score
+	 */
 	private Double normalizedAvgScore;
-	/**  Update date  */
+	/**
+	 * Update date
+	 */
 	private Long updateDate;
-	/**  Average score  */
+	/**
+	 * Average score
+	 */
 	private Double avgScore;
 
 	// normalizedAvgScore:

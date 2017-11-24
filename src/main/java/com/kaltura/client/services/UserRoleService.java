@@ -32,7 +32,7 @@ import com.kaltura.client.types.UserRoleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,8 +52,12 @@ public class UserRoleService {
 		return list(null);
 	}
 
-	/**  Retrieving user roles by identifiers, if filter is empty, returns all partner
-	  roles  */
+	/**
+	 * Retrieving user roles by identifiers, if filter is empty, returns all partner
+	  roles
+	 * 
+	 * @param filter User roles filter
+	 */
     public static ListUserRoleBuilder list(UserRoleFilter filter)  {
 		return new ListUserRoleBuilder(filter);
 	}

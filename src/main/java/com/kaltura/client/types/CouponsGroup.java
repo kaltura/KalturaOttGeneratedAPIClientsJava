@@ -37,13 +37,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Coupons group details  */
+/**
+ * Coupons group details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CouponsGroup.Tokenizer.class)
 public class CouponsGroup extends ObjectBase {
@@ -59,22 +61,38 @@ public class CouponsGroup extends ObjectBase {
 		String couponGroupType();
 	}
 
-	/**  Coupon group identifier  */
+	/**
+	 * Coupon group identifier
+	 */
 	private String id;
-	/**  Coupon group name  */
+	/**
+	 * Coupon group name
+	 */
 	private String name;
-	/**  A list of the descriptions of the coupon group on different languages (language
-	  code and translation)  */
+	/**
+	 * A list of the descriptions of the coupon group on different languages (language
+	  code and translation)
+	 */
 	private List<TranslationToken> descriptions;
-	/**  The first date the coupons in this coupons group are valid  */
+	/**
+	 * The first date the coupons in this coupons group are valid
+	 */
 	private Long startDate;
-	/**  The last date the coupons in this coupons group are valid  */
+	/**
+	 * The last date the coupons in this coupons group are valid
+	 */
 	private Long endDate;
-	/**  Maximum number of uses for each coupon in the group  */
+	/**
+	 * Maximum number of uses for each coupon in the group
+	 */
 	private Integer maxUsesNumber;
-	/**  Maximum number of uses for each coupon in the group on a renewable subscription  */
+	/**
+	 * Maximum number of uses for each coupon in the group on a renewable subscription
+	 */
 	private Integer maxUsesNumberOnRenewableSub;
-	/**  Type of the coupon group  */
+	/**
+	 * Type of the coupon group
+	 */
 	private CouponGroupType couponGroupType;
 
 	// id:

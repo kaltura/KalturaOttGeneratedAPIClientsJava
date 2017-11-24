@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -53,17 +53,29 @@ public class HouseholdPaymentMethod extends ObjectBase {
 		String paymentMethodProfileId();
 	}
 
-	/**  Household payment method identifier (internal)  */
+	/**
+	 * Household payment method identifier (internal)
+	 */
 	private Integer id;
-	/**  External identifier for the household payment method  */
+	/**
+	 * External identifier for the household payment method
+	 */
 	private String externalId;
-	/**  Payment-gateway identifier  */
+	/**
+	 * Payment-gateway identifier
+	 */
 	private Integer paymentGatewayId;
-	/**  Description of the payment method details  */
+	/**
+	 * Description of the payment method details
+	 */
 	private String details;
-	/**  indicates whether the payment method is set as default for the household  */
+	/**
+	 * indicates whether the payment method is set as default for the household
+	 */
 	private Boolean isDefault;
-	/**  Payment method profile identifier  */
+	/**
+	 * Payment method profile identifier
+	 */
 	private Integer paymentMethodProfileId;
 
 	// id:

@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Filtering recordings  */
+/**
+ * Filtering recordings
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RecordingFilter.Tokenizer.class)
 public class RecordingFilter extends Filter {
@@ -49,9 +51,13 @@ public class RecordingFilter extends Filter {
 		String filterExpression();
 	}
 
-	/**  Recording Statuses  */
+	/**
+	 * Recording Statuses
+	 */
 	private String statusIn;
-	/**  KSQL expression  */
+	/**
+	 * KSQL expression
+	 */
 	private String filterExpression;
 
 	// statusIn:

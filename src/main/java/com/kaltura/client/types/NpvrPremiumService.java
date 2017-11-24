@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Npvr Premium Service  */
+/**
+ * Npvr Premium Service
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(NpvrPremiumService.Tokenizer.class)
 public class NpvrPremiumService extends PremiumService {
@@ -48,7 +50,9 @@ public class NpvrPremiumService extends PremiumService {
 		String quotaInMinutes();
 	}
 
-	/**  Quota in minutes  */
+	/**
+	 * Quota in minutes
+	 */
 	private Long quotaInMinutes;
 
 	// quotaInMinutes:

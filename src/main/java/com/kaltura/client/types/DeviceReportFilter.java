@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Report filter  */
+/**
+ * Report filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DeviceReportFilter.Tokenizer.class)
 public class DeviceReportFilter extends ReportFilter {
@@ -48,7 +50,9 @@ public class DeviceReportFilter extends ReportFilter {
 		String lastAccessDateGreaterThanOrEqual();
 	}
 
-	/**  Filter device configuration later than specific date  */
+	/**
+	 * Filter device configuration later than specific date
+	 */
 	private Long lastAccessDateGreaterThanOrEqual;
 
 	// lastAccessDateGreaterThanOrEqual:

@@ -32,7 +32,7 @@ import com.kaltura.client.types.LanguageFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,8 +48,12 @@ public class LanguageService {
 		}
 	}
 
-	/**  Get the list of languages for the partner with option to filter by language
-	  codes  */
+	/**
+	 * Get the list of languages for the partner with option to filter by language
+	  codes
+	 * 
+	 * @param filter language filter
+	 */
     public static ListLanguageBuilder list(LanguageFilter filter)  {
 		return new ListLanguageBuilder(filter);
 	}

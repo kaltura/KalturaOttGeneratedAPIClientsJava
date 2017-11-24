@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -49,14 +49,20 @@ public class SearchExternalFilter extends AssetFilter {
 		String typeIn();
 	}
 
-	/**  Query  */
+	/**
+	 * Query
+	 */
 	private String query;
-	/**  UtcOffsetEqual  */
+	/**
+	 * UtcOffsetEqual
+	 */
 	private Integer utcOffsetEqual;
-	/**  Comma separated list of asset types to search within.               Possible
+	/**
+	 * Comma separated list of asset types to search within.               Possible
 	  values: 0 – EPG linear programs entries, any media type ID (according to media
 	  type IDs defined dynamically in the system).              If omitted – all
-	  types should be included.  */
+	  types should be included.
+	 */
 	private String typeIn;
 
 	// query:

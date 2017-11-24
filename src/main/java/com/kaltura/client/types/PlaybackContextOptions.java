@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -52,13 +52,21 @@ public class PlaybackContextOptions extends ObjectBase {
 		String context();
 	}
 
-	/**  Protocol of the specific media object (http / https).  */
+	/**
+	 * Protocol of the specific media object (http / https).
+	 */
 	private String mediaProtocol;
-	/**  Playback streamer type: applehttp, mpegdash, url.  */
+	/**
+	 * Playback streamer type: applehttp, mpegdash, url.
+	 */
 	private String streamerType;
-	/**  List of comma separated media file IDs  */
+	/**
+	 * List of comma separated media file IDs
+	 */
 	private String assetFileIds;
-	/**  Playback context type  */
+	/**
+	 * Playback context type
+	 */
 	private PlaybackContextType context;
 
 	// mediaProtocol:

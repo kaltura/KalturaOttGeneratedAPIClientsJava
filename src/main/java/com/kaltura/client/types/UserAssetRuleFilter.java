@@ -33,13 +33,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  User asset rule filter  */
+/**
+ * User asset rule filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(UserAssetRuleFilter.Tokenizer.class)
 public class UserAssetRuleFilter extends Filter {
@@ -49,9 +51,13 @@ public class UserAssetRuleFilter extends Filter {
 		String assetTypeEqual();
 	}
 
-	/**  Asset identifier to filter by  */
+	/**
+	 * Asset identifier to filter by
+	 */
 	private Long assetIdEqual;
-	/**  Asset type to filter by - 0 = EPG, 1 = media  */
+	/**
+	 * Asset type to filter by - 0 = EPG, 1 = media
+	 */
 	private Integer assetTypeEqual;
 
 	// assetIdEqual:

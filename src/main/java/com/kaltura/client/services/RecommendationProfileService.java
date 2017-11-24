@@ -32,7 +32,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,7 +48,11 @@ public class RecommendationProfileService {
 		}
 	}
 
-	/**  Insert new recommendation engine for partner  */
+	/**
+	 * Insert new recommendation engine for partner
+	 * 
+	 * @param recommendationEngine recommendation engine Object
+	 */
     public static AddRecommendationProfileBuilder add(RecommendationProfile recommendationEngine)  {
 		return new AddRecommendationProfileBuilder(recommendationEngine);
 	}
@@ -65,7 +69,11 @@ public class RecommendationProfileService {
 		}
 	}
 
-	/**  Delete recommendation engine by recommendation engine id  */
+	/**
+	 * Delete recommendation engine by recommendation engine id
+	 * 
+	 * @param id recommendation engine Identifier
+	 */
     public static DeleteRecommendationProfileBuilder delete(int id)  {
 		return new DeleteRecommendationProfileBuilder(id);
 	}
@@ -82,7 +90,11 @@ public class RecommendationProfileService {
 		}
 	}
 
-	/**  Generate recommendation engine  shared secret  */
+	/**
+	 * Generate recommendation engine  shared secret
+	 * 
+	 * @param recommendationEngineId recommendation engine Identifier
+	 */
     public static GenerateSharedSecretRecommendationProfileBuilder generateSharedSecret(int recommendationEngineId)  {
 		return new GenerateSharedSecretRecommendationProfileBuilder(recommendationEngineId);
 	}
@@ -94,7 +106,9 @@ public class RecommendationProfileService {
 		}
 	}
 
-	/**  Returns all recommendation engines for partner  */
+	/**
+	 * Returns all recommendation engines for partner
+	 */
     public static ListRecommendationProfileBuilder list()  {
 		return new ListRecommendationProfileBuilder();
 	}
@@ -112,7 +126,12 @@ public class RecommendationProfileService {
 		}
 	}
 
-	/**  Update recommendation engine details  */
+	/**
+	 * Update recommendation engine details
+	 * 
+	 * @param recommendationEngineId recommendation engine identifier
+	 * @param recommendationEngine recommendation engine Object
+	 */
     public static UpdateRecommendationProfileBuilder update(int recommendationEngineId, RecommendationProfile recommendationEngine)  {
 		return new UpdateRecommendationProfileBuilder(recommendationEngineId, recommendationEngine);
 	}

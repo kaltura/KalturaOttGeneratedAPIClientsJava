@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Container for translation  */
+/**
+ * Container for translation
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(TranslationToken.Tokenizer.class)
 public class TranslationToken extends ObjectBase {
@@ -50,9 +52,13 @@ public class TranslationToken extends ObjectBase {
 		String value();
 	}
 
-	/**  Language code  */
+	/**
+	 * Language code
+	 */
 	private String language;
-	/**  Translated value  */
+	/**
+	 * Translated value
+	 */
 	private String value;
 
 	// language:

@@ -36,13 +36,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Household limitations details  */
+/**
+ * Household limitations details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdLimitations.Tokenizer.class)
 public class HouseholdLimitations extends ObjectBase {
@@ -61,27 +63,49 @@ public class HouseholdLimitations extends ObjectBase {
 		RequestBuilder.ListTokenizer<HouseholdDeviceFamilyLimitations.Tokenizer> deviceFamiliesLimitations();
 	}
 
-	/**  Household limitation module identifier  */
+	/**
+	 * Household limitation module identifier
+	 */
 	private Integer id;
-	/**  Household limitation module name  */
+	/**
+	 * Household limitation module name
+	 */
 	private String name;
-	/**  Max number of streams allowed for the household  */
+	/**
+	 * Max number of streams allowed for the household
+	 */
 	private Integer concurrentLimit;
-	/**  Max number of devices allowed for the household  */
+	/**
+	 * Max number of devices allowed for the household
+	 */
 	private Integer deviceLimit;
-	/**  Allowed device change frequency code  */
+	/**
+	 * Allowed device change frequency code
+	 */
 	private Integer deviceFrequency;
-	/**  Allowed device change frequency description  */
+	/**
+	 * Allowed device change frequency description
+	 */
 	private String deviceFrequencyDescription;
-	/**  Allowed user change frequency code  */
+	/**
+	 * Allowed user change frequency code
+	 */
 	private Integer userFrequency;
-	/**  Allowed user change frequency description  */
+	/**
+	 * Allowed user change frequency description
+	 */
 	private String userFrequencyDescription;
-	/**  Allowed NPVR Quota in Seconds  */
+	/**
+	 * Allowed NPVR Quota in Seconds
+	 */
 	private Integer npvrQuotaInSeconds;
-	/**  Max number of users allowed for the household  */
+	/**
+	 * Max number of users allowed for the household
+	 */
 	private Integer usersLimit;
-	/**  Device families limitations  */
+	/**
+	 * Device families limitations
+	 */
 	private List<HouseholdDeviceFamilyLimitations> deviceFamiliesLimitations;
 
 	// id:

@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Define client optional configurations  */
+/**
+ * Define client optional configurations
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ClientConfiguration.Tokenizer.class)
 public class ClientConfiguration extends ObjectBase {
@@ -50,9 +52,13 @@ public class ClientConfiguration extends ObjectBase {
 		String apiVersion();
 	}
 
-	/**  Client Tag  */
+	/**
+	 * Client Tag
+	 */
 	private String clientTag;
-	/**  API client version  */
+	/**
+	 * API client version
+	 */
 	private String apiVersion;
 
 	// clientTag:

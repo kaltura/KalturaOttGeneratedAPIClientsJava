@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,11 +48,15 @@ public class ExternalReceipt extends PurchaseBase {
 		String paymentGatewayName();
 	}
 
-	/**  A unique identifier that was provided by the In-App billing service to validate
-	  the purchase  */
+	/**
+	 * A unique identifier that was provided by the In-App billing service to validate
+	  the purchase
+	 */
 	private String receiptId;
-	/**  The payment gateway name for the In-App billing service to be used. Possible
-	  values: Google/Apple  */
+	/**
+	 * The payment gateway name for the In-App billing service to be used. Possible
+	  values: Google/Apple
+	 */
 	private String paymentGatewayName;
 
 	// receiptId:

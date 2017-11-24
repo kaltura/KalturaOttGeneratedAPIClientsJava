@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -54,18 +54,30 @@ public class MessageTemplate extends ObjectBase {
 		String url();
 	}
 
-	/**  The message template with placeholders  */
+	/**
+	 * The message template with placeholders
+	 */
 	private String message;
-	/**  Default date format for the date &amp;amp; time entries used in the template  */
+	/**
+	 * Default date format for the date &amp;amp; time entries used in the template
+	 */
 	private String dateFormat;
-	/**  Template type. Possible values: Series  */
+	/**
+	 * Template type. Possible values: Series
+	 */
 	private OTTAssetType assetType;
-	/**  Sound file name to play upon message arrival to the device (if supported by
-	  target device)  */
+	/**
+	 * Sound file name to play upon message arrival to the device (if supported by
+	  target device)
+	 */
 	private String sound;
-	/**  an optional action  */
+	/**
+	 * an optional action
+	 */
 	private String action;
-	/**  URL template for deep linking. Example - /app/location/{mediaId}  */
+	/**
+	 * URL template for deep linking. Example - /app/location/{mediaId}
+	 */
 	private String url;
 
 	// message:

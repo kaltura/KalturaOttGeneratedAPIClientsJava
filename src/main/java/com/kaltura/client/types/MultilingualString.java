@@ -36,13 +36,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Translated string  */
+/**
+ * Translated string
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MultilingualString.Tokenizer.class)
 public class MultilingualString extends ObjectBase {
@@ -51,7 +53,9 @@ public class MultilingualString extends ObjectBase {
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> values();
 	}
 
-	/**  All values in different languages  */
+	/**
+	 * All values in different languages
+	 */
 	private List<TranslationToken> values;
 
 	// values:

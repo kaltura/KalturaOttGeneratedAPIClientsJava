@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,10 +48,14 @@ public class SubscriptionFilter extends Filter {
 		String mediaFileIdEqual();
 	}
 
-	/**  Comma separated subscription identifiers or file identifier (only 1) to get the
-	  subscriptions by  */
+	/**
+	 * Comma separated subscription identifiers or file identifier (only 1) to get the
+	  subscriptions by
+	 */
 	private String subscriptionIdIn;
-	/**  Media-file identifier to get the subscriptions by  */
+	/**
+	 * Media-file identifier to get the subscriptions by
+	 */
 	private Integer mediaFileIdEqual;
 
 	// subscriptionIdIn:

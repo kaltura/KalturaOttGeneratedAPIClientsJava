@@ -32,7 +32,7 @@ import com.kaltura.client.types.ProductPriceFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,9 +48,13 @@ public class ProductPriceService {
 		}
 	}
 
-	/**  Returns a price and a purchase status for each subscription or/and media file,
+	/**
+	 * Returns a price and a purchase status for each subscription or/and media file,
 	  for a given user (if passed) and with the consideration of a coupon code (if
-	  passed).  */
+	  passed).
+	 * 
+	 * @param filter Request filter
+	 */
     public static ListProductPriceBuilder list(ProductPriceFilter filter)  {
 		return new ListProductPriceBuilder(filter);
 	}

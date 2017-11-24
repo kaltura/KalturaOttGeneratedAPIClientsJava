@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -50,11 +50,17 @@ public class HouseholdQuota extends ObjectBase {
 		String availableQuota();
 	}
 
-	/**  Household identifier  */
+	/**
+	 * Household identifier
+	 */
 	private Long householdId;
-	/**  Total quota that is allocated to the household  */
+	/**
+	 * Total quota that is allocated to the household
+	 */
 	private Integer totalQuota;
-	/**  Available quota that household has remaining  */
+	/**
+	 * Available quota that household has remaining
+	 */
 	private Integer availableQuota;
 
 	// householdId:

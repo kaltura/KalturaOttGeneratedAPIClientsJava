@@ -32,7 +32,7 @@ import com.kaltura.client.types.LicensedUrlBaseRequest;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -48,7 +48,11 @@ public class LicensedUrlService {
 		}
 	}
 
-	/**  Get the URL for playing an asset - program, media or recording  */
+	/**
+	 * Get the URL for playing an asset - program, media or recording
+	 * 
+	 * @param request Licensed URL request parameters
+	 */
     public static GetLicensedUrlBuilder get(LicensedUrlBaseRequest request)  {
 		return new GetLicensedUrlBuilder(request);
 	}

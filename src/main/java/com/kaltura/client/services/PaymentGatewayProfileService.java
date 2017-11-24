@@ -35,7 +35,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,7 +51,11 @@ public class PaymentGatewayProfileService {
 		}
 	}
 
-	/**  Insert new payment gateway for partner  */
+	/**
+	 * Insert new payment gateway for partner
+	 * 
+	 * @param paymentGateway Payment Gateway Object
+	 */
     public static AddPaymentGatewayProfileBuilder add(PaymentGatewayProfile paymentGateway)  {
 		return new AddPaymentGatewayProfileBuilder(paymentGateway);
 	}
@@ -68,7 +72,11 @@ public class PaymentGatewayProfileService {
 		}
 	}
 
-	/**  Delete payment gateway by payment gateway id  */
+	/**
+	 * Delete payment gateway by payment gateway id
+	 * 
+	 * @param paymentGatewayId Payment Gateway Identifier
+	 */
     public static DeletePaymentGatewayProfileBuilder delete(int paymentGatewayId)  {
 		return new DeletePaymentGatewayProfileBuilder(paymentGatewayId);
 	}
@@ -85,7 +93,11 @@ public class PaymentGatewayProfileService {
 		}
 	}
 
-	/**  Generate payment gateway shared secret  */
+	/**
+	 * Generate payment gateway shared secret
+	 * 
+	 * @param paymentGatewayId Payment gateway identifier
+	 */
     public static GenerateSharedSecretPaymentGatewayProfileBuilder generateSharedSecret(int paymentGatewayId)  {
 		return new GenerateSharedSecretPaymentGatewayProfileBuilder(paymentGatewayId);
 	}
@@ -108,7 +120,16 @@ public class PaymentGatewayProfileService {
 		}
 	}
 
-	/**  Gets the Payment Gateway Configuration for the payment gateway identifier given  */
+	/**
+	 * Gets the Payment Gateway Configuration for the payment gateway identifier given
+	 * 
+	 * @param alias The payemnt gateway for which to return the registration URL/s for the
+	 * household. If omitted – return the regisration URL for the household for the
+	 * default payment gateway
+	 * @param intent Represent the client’s intent for working with the payment gateway. Intent
+	 * options to be coordinated with the applicable payment gateway adapter.
+	 * @param extraParameters Additional parameters to send to the payment gateway adapter.
+	 */
     public static GetConfigurationPaymentGatewayProfileBuilder getConfiguration(String alias, String intent, List<KeyValue> extraParameters)  {
 		return new GetConfigurationPaymentGatewayProfileBuilder(alias, intent, extraParameters);
 	}
@@ -120,7 +141,9 @@ public class PaymentGatewayProfileService {
 		}
 	}
 
-	/**  Returns all payment gateways for partner : id + name  */
+	/**
+	 * Returns all payment gateways for partner : id + name
+	 */
     public static ListPaymentGatewayProfileBuilder list()  {
 		return new ListPaymentGatewayProfileBuilder();
 	}
@@ -138,7 +161,12 @@ public class PaymentGatewayProfileService {
 		}
 	}
 
-	/**  Update payment gateway details  */
+	/**
+	 * Update payment gateway details
+	 * 
+	 * @param paymentGatewayId Payment Gateway Identifier
+	 * @param paymentGateway Payment Gateway Object
+	 */
     public static UpdatePaymentGatewayProfileBuilder update(int paymentGatewayId, PaymentGatewayProfile paymentGateway)  {
 		return new UpdatePaymentGatewayProfileBuilder(paymentGatewayId, paymentGateway);
 	}

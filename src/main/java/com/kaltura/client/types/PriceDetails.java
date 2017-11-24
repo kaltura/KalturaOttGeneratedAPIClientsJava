@@ -37,13 +37,15 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Price details  */
+/**
+ * Price details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PriceDetails.Tokenizer.class)
 public class PriceDetails extends ObjectBase {
@@ -55,14 +57,22 @@ public class PriceDetails extends ObjectBase {
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
 	}
 
-	/**  The price code identifier  */
+	/**
+	 * The price code identifier
+	 */
 	private Integer id;
-	/**  The price code name  */
+	/**
+	 * The price code name
+	 */
 	private String name;
-	/**  The price  */
+	/**
+	 * The price
+	 */
 	private Price price;
-	/**  A list of the descriptions for this price on different languages (language code
-	  and translation)  */
+	/**
+	 * A list of the descriptions for this price on different languages (language code
+	  and translation)
+	 */
 	private List<TranslationToken> descriptions;
 
 	// id:

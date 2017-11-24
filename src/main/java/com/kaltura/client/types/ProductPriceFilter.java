@@ -33,7 +33,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -50,13 +50,21 @@ public class ProductPriceFilter extends Filter {
 		String couponCodeEqual();
 	}
 
-	/**  Comma separated subscriptions identifiers  */
+	/**
+	 * Comma separated subscriptions identifiers
+	 */
 	private String subscriptionIdIn;
-	/**  Comma separated media files identifiers  */
+	/**
+	 * Comma separated media files identifiers
+	 */
 	private String fileIdIn;
-	/**  A flag that indicates if only the lowest price of an item should return  */
+	/**
+	 * A flag that indicates if only the lowest price of an item should return
+	 */
 	private Boolean isLowest;
-	/**  Discount coupon code  */
+	/**
+	 * Discount coupon code
+	 */
 	private String couponCodeEqual;
 
 	// subscriptionIdIn:

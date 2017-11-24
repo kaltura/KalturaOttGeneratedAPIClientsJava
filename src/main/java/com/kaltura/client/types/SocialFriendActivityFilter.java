@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -50,11 +50,17 @@ public class SocialFriendActivityFilter extends Filter {
 		String actionTypeIn();
 	}
 
-	/**  Asset ID to filter by  */
+	/**
+	 * Asset ID to filter by
+	 */
 	private Long assetIdEqual;
-	/**  Asset type to filter by, currently only VOD (media)  */
+	/**
+	 * Asset type to filter by, currently only VOD (media)
+	 */
 	private AssetType assetTypeEqual;
-	/**  Comma separated list of social actions to filter by  */
+	/**
+	 * Comma separated list of social actions to filter by
+	 */
 	private String actionTypeIn;
 
 	// assetIdEqual:

@@ -35,7 +35,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -55,7 +55,11 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	/**  Disable payment-gateway on the household  */
+	/**
+	 * Disable payment-gateway on the household
+	 * 
+	 * @param paymentGatewayId Payment Gateway Identifier
+	 */
     public static DisableHouseholdPaymentGatewayBuilder disable(int paymentGatewayId)  {
 		return new DisableHouseholdPaymentGatewayBuilder(paymentGatewayId);
 	}
@@ -72,7 +76,11 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	/**  Enable a payment-gateway provider for the household.  */
+	/**
+	 * Enable a payment-gateway provider for the household.
+	 * 
+	 * @param paymentGatewayId Payment Gateway Identifier
+	 */
     public static EnableHouseholdPaymentGatewayBuilder enable(int paymentGatewayId)  {
 		return new EnableHouseholdPaymentGatewayBuilder(paymentGatewayId);
 	}
@@ -89,8 +97,12 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	/**  Get a household’s billing account identifier (charge ID) for a given payment
-	  gateway  */
+	/**
+	 * Get a household’s billing account identifier (charge ID) for a given payment
+	  gateway
+	 * 
+	 * @param paymentGatewayExternalId External identifier for the payment gateway
+	 */
     public static GetChargeIDHouseholdPaymentGatewayBuilder getChargeID(String paymentGatewayExternalId)  {
 		return new GetChargeIDHouseholdPaymentGatewayBuilder(paymentGatewayExternalId);
 	}
@@ -113,7 +125,16 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	/**  Gets the Payment Gateway Configuration for the payment gateway identifier given  */
+	/**
+	 * Gets the Payment Gateway Configuration for the payment gateway identifier given
+	 * 
+	 * @param paymentGatewayId The payemnt gateway for which to return the registration URL/s for the
+	 * household. If omitted – return the regisration URL for the household for the
+	 * default payment gateway
+	 * @param intent Represent the client’s intent for working with the payment gateway. Intent
+	 * options to be coordinated with the applicable payment gateway adapter.
+	 * @param extraParameters Additional parameters to send to the payment gateway adapter.
+	 */
     public static InvokeHouseholdPaymentGatewayBuilder invoke(int paymentGatewayId, String intent, List<KeyValue> extraParameters)  {
 		return new InvokeHouseholdPaymentGatewayBuilder(paymentGatewayId, intent, extraParameters);
 	}
@@ -125,9 +146,11 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	/**  Get a list of all configured Payment Gateways providers available for the
+	/**
+	 * Get a list of all configured Payment Gateways providers available for the
 	  account. For each payment is provided with the household associated payment
-	  methods.  */
+	  methods.
+	 */
     public static ListHouseholdPaymentGatewayBuilder list()  {
 		return new ListHouseholdPaymentGatewayBuilder();
 	}
@@ -149,8 +172,14 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	/**  Set user billing account identifier (charge ID), for a specific household and a
-	  specific payment gateway  */
+	/**
+	 * Set user billing account identifier (charge ID), for a specific household and a
+	  specific payment gateway
+	 * 
+	 * @param paymentGatewayExternalId External identifier for the payment gateway
+	 * @param chargeId The billing user account identifier for this household at the given payment
+	 * gateway
+	 */
     public static SetChargeIDHouseholdPaymentGatewayBuilder setChargeID(String paymentGatewayExternalId, String chargeId)  {
 		return new SetChargeIDHouseholdPaymentGatewayBuilder(paymentGatewayExternalId, chargeId);
 	}

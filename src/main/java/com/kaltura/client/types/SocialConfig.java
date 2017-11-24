@@ -33,13 +33,15 @@ import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Returns social configuration for the partner  */
+/**
+ * Returns social configuration for the partner
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SocialConfig.Tokenizer.class)
 public class SocialConfig extends ObjectBase {

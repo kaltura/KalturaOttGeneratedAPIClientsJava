@@ -35,13 +35,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Kaltura Session  */
+/**
+ * Kaltura Session
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Session.Tokenizer.class)
 public class Session extends ObjectBase {
@@ -57,21 +59,37 @@ public class Session extends ObjectBase {
 		String createDate();
 	}
 
-	/**  KS  */
+	/**
+	 * KS
+	 */
 	private String ks;
-	/**  Session type  */
+	/**
+	 * Session type
+	 */
 	private SessionType sessionType;
-	/**  Partner identifier  */
+	/**
+	 * Partner identifier
+	 */
 	private Integer partnerId;
-	/**  User identifier  */
+	/**
+	 * User identifier
+	 */
 	private String userId;
-	/**  Expiry  */
+	/**
+	 * Expiry
+	 */
 	private Integer expiry;
-	/**  Privileges  */
+	/**
+	 * Privileges
+	 */
 	private String privileges;
-	/**  UDID  */
+	/**
+	 * UDID
+	 */
 	private String udid;
-	/**  Create date  */
+	/**
+	 * Create date
+	 */
 	private Integer createDate;
 
 	// ks:

@@ -34,7 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,13 +51,21 @@ public class SocialComment extends ObjectBase {
 		String writer();
 	}
 
-	/**  Comment header  */
+	/**
+	 * Comment header
+	 */
 	private String header;
-	/**  Comment body  */
+	/**
+	 * Comment body
+	 */
 	private String text;
-	/**  Comment creation date  */
+	/**
+	 * Comment creation date
+	 */
 	private Long createDate;
-	/**  The writer of the comment  */
+	/**
+	 * The writer of the comment
+	 */
 	private String writer;
 
 	// header:

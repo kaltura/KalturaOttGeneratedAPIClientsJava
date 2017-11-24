@@ -34,13 +34,15 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Device pin  */
+/**
+ * Device pin
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DevicePin.Tokenizer.class)
 public class DevicePin extends ObjectBase {
@@ -49,7 +51,9 @@ public class DevicePin extends ObjectBase {
 		String pin();
 	}
 
-	/**  Device pin  */
+	/**
+	 * Device pin
+	 */
 	private String pin;
 
 	// pin:

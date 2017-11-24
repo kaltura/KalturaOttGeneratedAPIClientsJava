@@ -35,7 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -51,11 +51,17 @@ public class SocialFriendActivity extends ObjectBase {
 		SocialAction.Tokenizer socialAction();
 	}
 
-	/**  The full name of the user who did the social action  */
+	/**
+	 * The full name of the user who did the social action
+	 */
 	private String userFullName;
-	/**  The URL of the profile picture of the user who did the social action  */
+	/**
+	 * The URL of the profile picture of the user who did the social action
+	 */
 	private String userPictureUrl;
-	/**  The social action  */
+	/**
+	 * The social action
+	 */
 	private SocialAction socialAction;
 
 	// userFullName:

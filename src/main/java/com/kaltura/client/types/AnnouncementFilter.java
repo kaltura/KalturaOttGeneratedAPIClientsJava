@@ -32,13 +32,15 @@ import com.kaltura.client.Params;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  order announcements  */
+/**
+ * order announcements
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AnnouncementFilter.Tokenizer.class)
 public class AnnouncementFilter extends Filter {
