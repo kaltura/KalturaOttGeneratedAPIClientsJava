@@ -49,11 +49,17 @@ public class SubscriptionFilter extends Filter {
 		String externalIdIn();
 	}
 
-	/**  Comma separated subscription IDs to get the subscriptions by  */
+	/**
+	 * Comma separated subscription IDs to get the subscriptions by
+	 */
 	private String subscriptionIdIn;
-	/**  Media-file ID to get the subscriptions by  */
+	/**
+	 * Media-file ID to get the subscriptions by
+	 */
 	private Integer mediaFileIdEqual;
-	/**  Comma separated subscription external IDs to get the subscriptions by  */
+	/**
+	 * Comma separated subscription external IDs to get the subscriptions by
+	 */
 	private String externalIdIn;
 
 	// subscriptionIdIn:

@@ -48,7 +48,11 @@ public class CollectionService {
 		}
 	}
 
-	/**  Returns a list of subscriptions requested by Subscription ID or file ID  */
+	/**
+	 * Returns a list of subscriptions requested by Subscription ID or file ID
+	 * 
+	 * @param filter Filter request
+	 */
     public static ListCollectionBuilder list(CollectionFilter filter)  {
 		return new ListCollectionBuilder(filter);
 	}

@@ -58,7 +58,12 @@ public class TransactionHistoryService {
 		return list(filter, null);
 	}
 
-	/**  Gets user or household transaction history.  */
+	/**
+	 * Gets user or household transaction history.
+	 * 
+	 * @param filter Filter by household or user
+	 * @param pager Page size and index
+	 */
     public static ListTransactionHistoryBuilder list(TransactionHistoryFilter filter, FilterPager pager)  {
 		return new ListTransactionHistoryBuilder(filter, pager);
 	}

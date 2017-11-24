@@ -53,16 +53,26 @@ public class Bookmark extends SlimAsset {
 		BookmarkPlayerData.Tokenizer playerData();
 	}
 
-	/**  User identifier  */
+	/**
+	 * User identifier
+	 */
 	private String userId;
-	/**  The position of the user in the specific asset (in seconds)  */
+	/**
+	 * The position of the user in the specific asset (in seconds)
+	 */
 	private Integer position;
-	/**  Indicates who is the owner of this position  */
+	/**
+	 * Indicates who is the owner of this position
+	 */
 	private PositionOwner positionOwner;
-	/**  Specifies whether the user&amp;#39;s current position exceeded 95% of the
-	  duration  */
+	/**
+	 * Specifies whether the user&amp;#39;s current position exceeded 95% of the
+	  duration
+	 */
 	private Boolean finishedWatching;
-	/**  Insert only player data  */
+	/**
+	 * Insert only player data
+	 */
 	private BookmarkPlayerData playerData;
 
 	// userId:

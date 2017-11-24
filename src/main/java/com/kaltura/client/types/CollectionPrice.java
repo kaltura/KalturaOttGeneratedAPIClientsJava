@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Collection price details  */
+/**
+ * Collection price details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CollectionPrice.Tokenizer.class)
 public class CollectionPrice extends ProductPrice {

@@ -53,15 +53,25 @@ public class Topic extends ObjectBase {
 		String lastMessageSentDateSec();
 	}
 
-	/**  message id  */
+	/**
+	 * message id
+	 */
 	private String id;
-	/**  message  */
+	/**
+	 * message
+	 */
 	private String name;
-	/**  message  */
+	/**
+	 * message
+	 */
 	private String subscribersAmount;
-	/**  automaticIssueNotification  */
+	/**
+	 * automaticIssueNotification
+	 */
 	private TopicAutomaticIssueNotification automaticIssueNotification;
-	/**  lastMessageSentDateSec  */
+	/**
+	 * lastMessageSentDateSec
+	 */
 	private Long lastMessageSentDateSec;
 
 	// id:

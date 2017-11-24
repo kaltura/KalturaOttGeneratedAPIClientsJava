@@ -47,7 +47,11 @@ public class EmailService {
 		}
 	}
 
-	/**  Sends email notification  */
+	/**
+	 * Sends email notification
+	 * 
+	 * @param emailMessage email details
+	 */
     public static SendEmailBuilder send(EmailMessage emailMessage)  {
 		return new SendEmailBuilder(emailMessage);
 	}

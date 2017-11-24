@@ -50,11 +50,17 @@ public class ConfigurationGroupTag extends ObjectBase {
 		String tag();
 	}
 
-	/**  Configuration group identifier  */
+	/**
+	 * Configuration group identifier
+	 */
 	private String configurationGroupId;
-	/**  Partner identifier  */
+	/**
+	 * Partner identifier
+	 */
 	private Integer partnerId;
-	/**  Tag  */
+	/**
+	 * Tag
+	 */
 	private String tag;
 
 	// configurationGroupId:

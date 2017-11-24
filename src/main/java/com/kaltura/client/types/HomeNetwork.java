@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Home network details  */
+/**
+ * Home network details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HomeNetwork.Tokenizer.class)
 public class HomeNetwork extends ObjectBase {
@@ -52,13 +54,21 @@ public class HomeNetwork extends ObjectBase {
 		String isActive();
 	}
 
-	/**  Home network identifier  */
+	/**
+	 * Home network identifier
+	 */
 	private String externalId;
-	/**  Home network name  */
+	/**
+	 * Home network name
+	 */
 	private String name;
-	/**  Home network description  */
+	/**
+	 * Home network description
+	 */
 	private String description;
-	/**  Is home network is active  */
+	/**
+	 * Is home network is active
+	 */
 	private Boolean isActive;
 
 	// externalId:

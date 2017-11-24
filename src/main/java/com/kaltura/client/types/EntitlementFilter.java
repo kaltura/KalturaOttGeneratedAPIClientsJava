@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Entitlements filter  */
+/**
+ * Entitlements filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EntitlementFilter.Tokenizer.class)
 public class EntitlementFilter extends Filter {
@@ -52,11 +54,17 @@ public class EntitlementFilter extends Filter {
 		String isExpiredEqual();
 	}
 
-	/**  The type of the entitlements to return  */
+	/**
+	 * The type of the entitlements to return
+	 */
 	private TransactionType entitlementTypeEqual;
-	/**  Reference type to filter by  */
+	/**
+	 * Reference type to filter by
+	 */
 	private EntityReferenceBy entityReferenceEqual;
-	/**  Is expired  */
+	/**
+	 * Is expired
+	 */
 	private Boolean isExpiredEqual;
 
 	// entitlementTypeEqual:

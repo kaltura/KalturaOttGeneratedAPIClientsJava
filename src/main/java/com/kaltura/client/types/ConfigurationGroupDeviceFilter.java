@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Configuration group device filter  */
+/**
+ * Configuration group device filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ConfigurationGroupDeviceFilter.Tokenizer.class)
 public class ConfigurationGroupDeviceFilter extends Filter {
@@ -48,8 +50,10 @@ public class ConfigurationGroupDeviceFilter extends Filter {
 		String configurationGroupIdEqual();
 	}
 
-	/**  the ID of the configuration group for which to return related configurations
-	  group devices  */
+	/**
+	 * the ID of the configuration group for which to return related configurations
+	  group devices
+	 */
 	private String configurationGroupIdEqual;
 
 	// configurationGroupIdEqual:

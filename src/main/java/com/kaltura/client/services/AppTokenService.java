@@ -48,7 +48,11 @@ public class AppTokenService {
 		}
 	}
 
-	/**  Add new application authentication token  */
+	/**
+	 * Add new application authentication token
+	 * 
+	 * @param appToken Application token
+	 */
     public static AddAppTokenBuilder add(AppToken appToken)  {
 		return new AddAppTokenBuilder(appToken);
 	}
@@ -65,7 +69,11 @@ public class AppTokenService {
 		}
 	}
 
-	/**  Delete application authentication token by id  */
+	/**
+	 * Delete application authentication token by id
+	 * 
+	 * @param id Application token identifier
+	 */
     public static DeleteAppTokenBuilder delete(String id)  {
 		return new DeleteAppTokenBuilder(id);
 	}
@@ -82,7 +90,11 @@ public class AppTokenService {
 		}
 	}
 
-	/**  Get application authentication token by id  */
+	/**
+	 * Get application authentication token by id
+	 * 
+	 * @param id Application token identifier
+	 */
     public static GetAppTokenBuilder get(String id)  {
 		return new GetAppTokenBuilder(id);
 	}
@@ -131,7 +143,18 @@ public class AppTokenService {
 		return startSession(id, tokenHash, userId, expiry, null);
 	}
 
-	/**  Starts a new KS (Kaltura Session) based on application authentication token id  */
+	/**
+	 * Starts a new KS (Kaltura Session) based on application authentication token id
+	 * 
+	 * @param id application token id
+	 * @param tokenHash hashed token - current KS concatenated with the application token hashed using
+	 * the application token ‘hashType’
+	 * @param userId session user id, will be ignored if a different user id already defined on the
+	 * application token
+	 * @param expiry session expiry (in seconds), could be overwritten by shorter expiry of the
+	 * application token and the session-expiry that defined on the application token
+	 * @param udid Device UDID
+	 */
     public static StartSessionAppTokenBuilder startSession(String id, String tokenHash, String userId, int expiry, String udid)  {
 		return new StartSessionAppTokenBuilder(id, tokenHash, userId, expiry, udid);
 	}

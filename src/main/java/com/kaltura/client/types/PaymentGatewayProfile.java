@@ -41,7 +41,9 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Payment gateway profile  */
+/**
+ * Payment gateway profile
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PaymentGatewayProfile.Tokenizer.class)
 public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
@@ -61,29 +63,53 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		String renewStartMinutes();
 	}
 
-	/**  Payment gateway is active status  */
+	/**
+	 * Payment gateway is active status
+	 */
 	private Integer isActive;
-	/**  Payment gateway adapter URL  */
+	/**
+	 * Payment gateway adapter URL
+	 */
 	private String adapterUrl;
-	/**  Payment gateway transact URL  */
+	/**
+	 * Payment gateway transact URL
+	 */
 	private String transactUrl;
-	/**  Payment gateway status URL  */
+	/**
+	 * Payment gateway status URL
+	 */
 	private String statusUrl;
-	/**  Payment gateway renew URL  */
+	/**
+	 * Payment gateway renew URL
+	 */
 	private String renewUrl;
-	/**  Payment gateway extra parameters  */
+	/**
+	 * Payment gateway extra parameters
+	 */
 	private Map<String, StringValue> paymentGatewaySettings;
-	/**  Payment gateway external identifier  */
+	/**
+	 * Payment gateway external identifier
+	 */
 	private String externalIdentifier;
-	/**  Pending Interval in minutes  */
+	/**
+	 * Pending Interval in minutes
+	 */
 	private Integer pendingInterval;
-	/**  Pending Retries  */
+	/**
+	 * Pending Retries
+	 */
 	private Integer pendingRetries;
-	/**  Shared Secret  */
+	/**
+	 * Shared Secret
+	 */
 	private String sharedSecret;
-	/**  Renew Interval Minutes  */
+	/**
+	 * Renew Interval Minutes
+	 */
 	private Integer renewIntervalMinutes;
-	/**  Renew Start Minutes  */
+	/**
+	 * Renew Start Minutes
+	 */
 	private Integer renewStartMinutes;
 
 	// isActive:

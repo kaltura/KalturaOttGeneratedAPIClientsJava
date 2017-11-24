@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  A string representation to return an array of longs  */
+/**
+ * A string representation to return an array of longs
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(LongValue.Tokenizer.class)
 public class LongValue extends Value {
@@ -48,7 +50,9 @@ public class LongValue extends Value {
 		String value();
 	}
 
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private Long value;
 
 	// value:

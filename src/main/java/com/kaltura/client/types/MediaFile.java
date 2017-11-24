@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Media file details  */
+/**
+ * Media file details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MediaFile.Tokenizer.class)
 public class MediaFile extends ObjectBase {
@@ -63,33 +65,61 @@ public class MediaFile extends ObjectBase {
 		String productCode();
 	}
 
-	/**  Unique identifier for the asset  */
+	/**
+	 * Unique identifier for the asset
+	 */
 	private Integer assetId;
-	/**  File unique identifier  */
+	/**
+	 * File unique identifier
+	 */
 	private Integer id;
-	/**  Device types as defined in the system  */
+	/**
+	 * Device types as defined in the system
+	 */
 	private String type;
-	/**  URL of the media file to be played  */
+	/**
+	 * URL of the media file to be played
+	 */
 	private String url;
-	/**  Duration of the media file  */
+	/**
+	 * Duration of the media file
+	 */
 	private Long duration;
-	/**  External identifier for the media file  */
+	/**
+	 * External identifier for the media file
+	 */
 	private String externalId;
-	/**  Billing type  */
+	/**
+	 * Billing type
+	 */
 	private String billingType;
-	/**  Quality  */
+	/**
+	 * Quality
+	 */
 	private String quality;
-	/**  Handling type  */
+	/**
+	 * Handling type
+	 */
 	private String handlingType;
-	/**  CDN name  */
+	/**
+	 * CDN name
+	 */
 	private String cdnName;
-	/**  CDN code  */
+	/**
+	 * CDN code
+	 */
 	private String cdnCode;
-	/**  Alt CDN code  */
+	/**
+	 * Alt CDN code
+	 */
 	private String altCdnCode;
-	/**  PPV Module  */
+	/**
+	 * PPV Module
+	 */
 	private StringValueArray ppvModules;
-	/**  Product code  */
+	/**
+	 * Product code
+	 */
 	private String productCode;
 
 	// assetId:

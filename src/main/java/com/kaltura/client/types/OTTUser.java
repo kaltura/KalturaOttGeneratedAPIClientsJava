@@ -44,7 +44,9 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  User  */
+/**
+ * User
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OTTUser.Tokenizer.class)
 public class OTTUser extends BaseOTTUser {
@@ -66,33 +68,61 @@ public class OTTUser extends BaseOTTUser {
 		String userState();
 	}
 
-	/**  Household identifier  */
+	/**
+	 * Household identifier
+	 */
 	private Integer householdId;
-	/**  Email  */
+	/**
+	 * Email
+	 */
 	private String email;
-	/**  Address  */
+	/**
+	 * Address
+	 */
 	private String address;
-	/**  City  */
+	/**
+	 * City
+	 */
 	private String city;
-	/**  Country identifier  */
+	/**
+	 * Country identifier
+	 */
 	private Integer countryId;
-	/**  Zip code  */
+	/**
+	 * Zip code
+	 */
 	private String zip;
-	/**  Phone  */
+	/**
+	 * Phone
+	 */
 	private String phone;
-	/**  Affiliate code  */
+	/**
+	 * Affiliate code
+	 */
 	private String affiliateCode;
-	/**  External user identifier  */
+	/**
+	 * External user identifier
+	 */
 	private String externalId;
-	/**  User type  */
+	/**
+	 * User type
+	 */
 	private OTTUserType userType;
-	/**  Dynamic data  */
+	/**
+	 * Dynamic data
+	 */
 	private Map<String, StringValue> dynamicData;
-	/**  Is the user the household master  */
+	/**
+	 * Is the user the household master
+	 */
 	private Boolean isHouseholdMaster;
-	/**  Suspension state  */
+	/**
+	 * Suspension state
+	 */
 	private HouseholdSuspensionState suspensionState;
-	/**  User state  */
+	/**
+	 * User state
+	 */
 	private UserState userState;
 
 	// householdId:

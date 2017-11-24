@@ -58,23 +58,41 @@ public class EmailMessage extends ObjectBase {
 		RequestBuilder.ListTokenizer<KeyValue.Tokenizer> extraParameters();
 	}
 
-	/**  email template name  */
+	/**
+	 * email template name
+	 */
 	private String templateName;
-	/**  email subject  */
+	/**
+	 * email subject
+	 */
 	private String subject;
-	/**  first name  */
+	/**
+	 * first name
+	 */
 	private String firstName;
-	/**  last name  */
+	/**
+	 * last name
+	 */
 	private String lastName;
-	/**  sender name  */
+	/**
+	 * sender name
+	 */
 	private String senderName;
-	/**  sender from  */
+	/**
+	 * sender from
+	 */
 	private String senderFrom;
-	/**  sender to  */
+	/**
+	 * sender to
+	 */
 	private String senderTo;
-	/**  bcc address - seperated by comma  */
+	/**
+	 * bcc address - seperated by comma
+	 */
 	private String bccAddress;
-	/**  extra parameters  */
+	/**
+	 * extra parameters
+	 */
 	private List<KeyValue> extraParameters;
 
 	// templateName:

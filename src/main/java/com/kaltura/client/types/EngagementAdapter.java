@@ -41,7 +41,9 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Engagement Adapter  */
+/**
+ * Engagement Adapter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EngagementAdapter.Tokenizer.class)
 public class EngagementAdapter extends EngagementAdapterBase {
@@ -54,15 +56,25 @@ public class EngagementAdapter extends EngagementAdapterBase {
 		String sharedSecret();
 	}
 
-	/**  Engagement adapter active status  */
+	/**
+	 * Engagement adapter active status
+	 */
 	private Boolean isActive;
-	/**  Engagement adapter adapter URL  */
+	/**
+	 * Engagement adapter adapter URL
+	 */
 	private String adapterUrl;
-	/**  Engagement provider adapter URL  */
+	/**
+	 * Engagement provider adapter URL
+	 */
 	private String providerUrl;
-	/**  Engagement adapter extra parameters  */
+	/**
+	 * Engagement adapter extra parameters
+	 */
 	private Map<String, StringValue> engagementAdapterSettings;
-	/**  Shared Secret  */
+	/**
+	 * Shared Secret
+	 */
 	private String sharedSecret;
 
 	// isActive:

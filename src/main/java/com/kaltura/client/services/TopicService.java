@@ -55,7 +55,11 @@ public class TopicService {
 		}
 	}
 
-	/**  Deleted a topic  */
+	/**
+	 * Deleted a topic
+	 * 
+	 * @param id Topic identifier
+	 */
     public static DeleteTopicBuilder delete(int id)  {
 		return new DeleteTopicBuilder(id);
 	}
@@ -72,7 +76,11 @@ public class TopicService {
 		}
 	}
 
-	/**  Gets a topic  */
+	/**
+	 * Gets a topic
+	 * 
+	 * @param id Topic identifier
+	 */
     public static GetTopicBuilder get(int id)  {
 		return new GetTopicBuilder(id);
 	}
@@ -94,7 +102,12 @@ public class TopicService {
 		return list(filter, null);
 	}
 
-	/**  Get list of topics  */
+	/**
+	 * Get list of topics
+	 * 
+	 * @param filter Topics filter
+	 * @param pager Page size and index
+	 */
     public static ListTopicBuilder list(TopicFilter filter, FilterPager pager)  {
 		return new ListTopicBuilder(filter, pager);
 	}
@@ -116,7 +129,17 @@ public class TopicService {
 		}
 	}
 
-	/**  Updates a topic &amp;quot;automatic issue notification&amp;quot; behavior.  */
+	/**
+	 * Updates a topic &amp;quot;automatic issue notification&amp;quot; behavior.
+	 * 
+	 * @param id Topic identifier
+	 * @param automaticIssueNotification Behavior options:
+	 *              Inherit = 0: Take value from partner notification settings
+	 *              Yes = 1: Issue a notification massage when a new episode is
+	 * available on the catalog
+	 *              No = 2: Do send a notification message when a new episode is
+	 * available on the catalog
+	 */
     public static UpdateStatusTopicBuilder updateStatus(int id, TopicAutomaticIssueNotification automaticIssueNotification)  {
 		return new UpdateStatusTopicBuilder(id, automaticIssueNotification);
 	}

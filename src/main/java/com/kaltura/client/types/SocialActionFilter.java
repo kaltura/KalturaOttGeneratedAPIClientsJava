@@ -50,11 +50,17 @@ public class SocialActionFilter extends Filter {
 		String actionTypeIn();
 	}
 
-	/**  Comma separated list of asset identifiers.  */
+	/**
+	 * Comma separated list of asset identifiers.
+	 */
 	private String assetIdIn;
-	/**  Asset Type  */
+	/**
+	 * Asset Type
+	 */
 	private AssetType assetTypeEqual;
-	/**  Comma separated list of social actions to filter by  */
+	/**
+	 * Comma separated list of social actions to filter by
+	 */
 	private String actionTypeIn;
 
 	// assetIdIn:

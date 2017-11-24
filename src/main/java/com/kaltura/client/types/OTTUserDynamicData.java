@@ -42,7 +42,9 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  User dynamic data  */
+/**
+ * User dynamic data
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OTTUserDynamicData.Tokenizer.class)
 public class OTTUserDynamicData extends ObjectBase {
@@ -52,9 +54,13 @@ public class OTTUserDynamicData extends ObjectBase {
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 	}
 
-	/**  User identifier  */
+	/**
+	 * User identifier
+	 */
 	private String userId;
-	/**  Dynamic data  */
+	/**
+	 * Dynamic data
+	 */
 	private Map<String, StringValue> dynamicData;
 
 	// userId:

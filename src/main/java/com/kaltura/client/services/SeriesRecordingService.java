@@ -49,7 +49,11 @@ public class SeriesRecordingService {
 		}
 	}
 
-	/**  Issue a record request for a complete season or series  */
+	/**
+	 * Issue a record request for a complete season or series
+	 * 
+	 * @param recording SeriesRecording Object
+	 */
     public static AddSeriesRecordingBuilder add(SeriesRecording recording)  {
 		return new AddSeriesRecordingBuilder(recording);
 	}
@@ -66,8 +70,12 @@ public class SeriesRecordingService {
 		}
 	}
 
-	/**  Cancel a previously requested series recording. Cancel series recording can be
-	  called for recording in status Scheduled or Recording Only  */
+	/**
+	 * Cancel a previously requested series recording. Cancel series recording can be
+	  called for recording in status Scheduled or Recording Only
+	 * 
+	 * @param id Series Recording identifier
+	 */
     public static CancelSeriesRecordingBuilder cancel(long id)  {
 		return new CancelSeriesRecordingBuilder(id);
 	}
@@ -89,7 +97,12 @@ public class SeriesRecordingService {
 		}
 	}
 
-	/**  Cancel EPG recording that was recorded as part of series  */
+	/**
+	 * Cancel EPG recording that was recorded as part of series
+	 * 
+	 * @param id Series Recording identifier
+	 * @param epgId epg program identifier
+	 */
     public static CancelByEpgIdSeriesRecordingBuilder cancelByEpgId(long id, long epgId)  {
 		return new CancelByEpgIdSeriesRecordingBuilder(id, epgId);
 	}
@@ -111,7 +124,12 @@ public class SeriesRecordingService {
 		}
 	}
 
-	/**  Cancel Season recording epgs that was recorded as part of series  */
+	/**
+	 * Cancel Season recording epgs that was recorded as part of series
+	 * 
+	 * @param id Series Recording identifier
+	 * @param seasonNumber Season Number
+	 */
     public static CancelBySeasonNumberSeriesRecordingBuilder cancelBySeasonNumber(long id, long seasonNumber)  {
 		return new CancelBySeasonNumberSeriesRecordingBuilder(id, seasonNumber);
 	}
@@ -128,8 +146,12 @@ public class SeriesRecordingService {
 		}
 	}
 
-	/**  Delete series recording(s). Delete series recording can be called recordings in
-	  any status  */
+	/**
+	 * Delete series recording(s). Delete series recording can be called recordings in
+	  any status
+	 * 
+	 * @param id Series Recording identifier
+	 */
     public static DeleteSeriesRecordingBuilder delete(long id)  {
 		return new DeleteSeriesRecordingBuilder(id);
 	}
@@ -151,7 +173,12 @@ public class SeriesRecordingService {
 		}
 	}
 
-	/**  Delete Season recording epgs that was recorded as part of series  */
+	/**
+	 * Delete Season recording epgs that was recorded as part of series
+	 * 
+	 * @param id Series Recording identifier
+	 * @param seasonNumber Season Number
+	 */
     public static DeleteBySeasonNumberSeriesRecordingBuilder deleteBySeasonNumber(long id, int seasonNumber)  {
 		return new DeleteBySeasonNumberSeriesRecordingBuilder(id, seasonNumber);
 	}
@@ -168,8 +195,13 @@ public class SeriesRecordingService {
 		return list(null);
 	}
 
-	/**  Return a list of series recordings for the household with optional filter by
-	  status and KSQL.  */
+	/**
+	 * Return a list of series recordings for the household with optional filter by
+	  status and KSQL.
+	 * 
+	 * @param filter Filter parameters for filtering out the result - support order by only -
+	 * START_DATE_ASC, START_DATE_DESC, ID_ASC,ID_DESC,SERIES_ID_ASC, SERIES_ID_DESC
+	 */
     public static ListSeriesRecordingBuilder list(SeriesRecordingFilter filter)  {
 		return new ListSeriesRecordingBuilder(filter);
 	}

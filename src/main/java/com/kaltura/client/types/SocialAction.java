@@ -55,17 +55,29 @@ public class SocialAction extends ObjectBase {
 		String url();
 	}
 
-	/**  social action document id  */
+	/**
+	 * social action document id
+	 */
 	private String id;
-	/**  Action type  */
+	/**
+	 * Action type
+	 */
 	private SocialActionType actionType;
-	/**  EPOC based timestamp for when the action occurred  */
+	/**
+	 * EPOC based timestamp for when the action occurred
+	 */
 	private Long time;
-	/**  ID of the asset that was acted upon  */
+	/**
+	 * ID of the asset that was acted upon
+	 */
 	private Long assetId;
-	/**  Type of the asset that was acted upon, currently only VOD (media)  */
+	/**
+	 * Type of the asset that was acted upon, currently only VOD (media)
+	 */
 	private AssetType assetType;
-	/**  The value of the url  */
+	/**
+	 * The value of the url
+	 */
 	private String url;
 
 	// id:

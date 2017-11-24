@@ -49,11 +49,17 @@ public class SeriesReminder extends Reminder {
 		String epgChannelId();
 	}
 
-	/**  Series identifier  */
+	/**
+	 * Series identifier
+	 */
 	private String seriesId;
-	/**  Season number  */
+	/**
+	 * Season number
+	 */
 	private Long seasonNumber;
-	/**  EPG channel identifier  */
+	/**
+	 * EPG channel identifier
+	 */
 	private Long epgChannelId;
 
 	// seriesId:

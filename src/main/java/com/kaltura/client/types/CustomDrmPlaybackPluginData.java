@@ -47,7 +47,9 @@ public class CustomDrmPlaybackPluginData extends DrmPlaybackPluginData {
 		String data();
 	}
 
-	/**  Custom DRM license data  */
+	/**
+	 * Custom DRM license data
+	 */
 	private String data;
 
 	// data:

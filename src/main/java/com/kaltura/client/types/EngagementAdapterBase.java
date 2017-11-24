@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Engagement adapter basic  */
+/**
+ * Engagement adapter basic
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EngagementAdapterBase.Tokenizer.class)
 public class EngagementAdapterBase extends ObjectBase {
@@ -50,9 +52,13 @@ public class EngagementAdapterBase extends ObjectBase {
 		String name();
 	}
 
-	/**  Engagement adapter id  */
+	/**
+	 * Engagement adapter id
+	 */
 	private Integer id;
-	/**  Engagement adapter name  */
+	/**
+	 * Engagement adapter name
+	 */
 	private String name;
 
 	// id:

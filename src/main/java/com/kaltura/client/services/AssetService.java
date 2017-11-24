@@ -61,8 +61,12 @@ public class AssetService {
 		return count(null);
 	}
 
-	/**  Returns a group-by result for media or EPG according to given filter. Lists
-	  values of each field and their respective count.  */
+	/**
+	 * Returns a group-by result for media or EPG according to given filter. Lists
+	  values of each field and their respective count.
+	 * 
+	 * @param filter Filtering the assets request
+	 */
     public static CountAssetBuilder count(SearchAssetFilter filter)  {
 		return new CountAssetBuilder(filter);
 	}
@@ -84,7 +88,12 @@ public class AssetService {
 		}
 	}
 
-	/**  Returns media or EPG asset by media / EPG internal or external identifier  */
+	/**
+	 * Returns media or EPG asset by media / EPG internal or external identifier
+	 * 
+	 * @param id Asset identifier
+	 * @param assetReferenceType Asset type
+	 */
     public static GetAssetBuilder get(String id, AssetReferenceType assetReferenceType)  {
 		return new GetAssetBuilder(id, assetReferenceType);
 	}
@@ -107,7 +116,13 @@ public class AssetService {
 		}
 	}
 
-	/**  Returns the data for ads control  */
+	/**
+	 * Returns the data for ads control
+	 * 
+	 * @param assetId Asset identifier
+	 * @param assetType Asset type
+	 * @param contextDataParams Parameters for the request
+	 */
     public static GetAdsContextAssetBuilder getAdsContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
 		return new GetAdsContextAssetBuilder(assetId, assetType, contextDataParams);
 	}
@@ -130,7 +145,13 @@ public class AssetService {
 		}
 	}
 
-	/**  This action delivers all data relevant for player  */
+	/**
+	 * This action delivers all data relevant for player
+	 * 
+	 * @param assetId Asset identifier
+	 * @param assetType Asset type
+	 * @param contextDataParams Parameters for the request
+	 */
     public static GetPlaybackContextAssetBuilder getPlaybackContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
 		return new GetPlaybackContextAssetBuilder(assetId, assetType, contextDataParams);
 	}
@@ -152,8 +173,13 @@ public class AssetService {
 		return list(filter, null);
 	}
 
-	/**  Returns media or EPG assets. Filters by media identifiers or by EPG internal or
-	  external identifier.  */
+	/**
+	 * Returns media or EPG assets. Filters by media identifiers or by EPG internal or
+	  external identifier.
+	 * 
+	 * @param filter Filtering the assets request
+	 * @param pager Paging the request
+	 */
     public static ListAssetBuilder list(AssetFilter filter, FilterPager pager)  {
 		return new ListAssetBuilder(filter, pager);
 	}

@@ -46,7 +46,9 @@ public class HouseholdPremiumServiceService {
 		}
 	}
 
-	/**  Returns all the premium services allowed for the household  */
+	/**
+	 * Returns all the premium services allowed for the household
+	 */
     public static ListHouseholdPremiumServiceBuilder list()  {
 		return new ListHouseholdPremiumServiceBuilder();
 	}

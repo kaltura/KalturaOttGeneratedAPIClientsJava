@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  OTT User filter  */
+/**
+ * OTT User filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OTTUserFilter.Tokenizer.class)
 public class OTTUserFilter extends Filter {
@@ -50,11 +52,17 @@ public class OTTUserFilter extends Filter {
 		String idIn();
 	}
 
-	/**  Username  */
+	/**
+	 * Username
+	 */
 	private String usernameEqual;
-	/**  User external identifier  */
+	/**
+	 * User external identifier
+	 */
 	private String externalIdEqual;
-	/**  List of user identifiers separated by &amp;#39;,&amp;#39;  */
+	/**
+	 * List of user identifiers separated by &amp;#39;,&amp;#39;
+	 */
 	private String idIn;
 
 	// usernameEqual:

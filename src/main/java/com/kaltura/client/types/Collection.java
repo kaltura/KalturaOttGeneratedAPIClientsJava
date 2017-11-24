@@ -44,7 +44,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Collection  */
+/**
+ * Collection
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Collection.Tokenizer.class)
 public class Collection extends ObjectBase {
@@ -66,33 +68,61 @@ public class Collection extends ObjectBase {
 		String priceDetailsId();
 	}
 
-	/**  Collection identifier  */
+	/**
+	 * Collection identifier
+	 */
 	private String id;
-	/**  A list of channels associated with this collection  */
+	/**
+	 * A list of channels associated with this collection
+	 */
 	private List<BaseChannel> channels;
-	/**  The first date the collection is available for purchasing  */
+	/**
+	 * The first date the collection is available for purchasing
+	 */
 	private Long startDate;
-	/**  The last date the collection is available for purchasing  */
+	/**
+	 * The last date the collection is available for purchasing
+	 */
 	private Long endDate;
-	/**  The internal discount module for the subscription  */
+	/**
+	 * The internal discount module for the subscription
+	 */
 	private DiscountModule discountModule;
-	/**  Name of the subscription  */
+	/**
+	 * Name of the subscription
+	 */
 	private String name;
-	/**  Name of the subscription  */
+	/**
+	 * Name of the subscription
+	 */
 	private List<TranslationToken> multilingualName;
-	/**  description of the subscription  */
+	/**
+	 * description of the subscription
+	 */
 	private String description;
-	/**  description of the subscription  */
+	/**
+	 * description of the subscription
+	 */
 	private List<TranslationToken> multilingualDescription;
-	/**  Collection usage module  */
+	/**
+	 * Collection usage module
+	 */
 	private UsageModule usageModule;
-	/**  List of Coupons group  */
+	/**
+	 * List of Coupons group
+	 */
 	private List<CouponsGroup> couponsGroups;
-	/**  External ID  */
+	/**
+	 * External ID
+	 */
 	private String externalId;
-	/**  List of Collection product codes  */
+	/**
+	 * List of Collection product codes
+	 */
 	private List<ProductCode> productCodes;
-	/**  The ID of the price details associated with this collection  */
+	/**
+	 * The ID of the price details associated with this collection
+	 */
 	private Long priceDetailsId;
 
 	// id:

@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Collection Filter  */
+/**
+ * Collection Filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CollectionFilter.Tokenizer.class)
 public class CollectionFilter extends Filter {
@@ -49,9 +51,13 @@ public class CollectionFilter extends Filter {
 		String mediaFileIdEqual();
 	}
 
-	/**  Comma separated collection IDs  */
+	/**
+	 * Comma separated collection IDs
+	 */
 	private String collectionIdIn;
-	/**  Media-file ID to get the subscriptions by  */
+	/**
+	 * Media-file ID to get the subscriptions by
+	 */
 	private Integer mediaFileIdEqual;
 
 	// collectionIdIn:

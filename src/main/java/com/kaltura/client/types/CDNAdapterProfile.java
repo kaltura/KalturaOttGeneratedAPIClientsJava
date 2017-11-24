@@ -42,7 +42,9 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  CDN Adapter  */
+/**
+ * CDN Adapter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CDNAdapterProfile.Tokenizer.class)
 public class CDNAdapterProfile extends ObjectBase {
@@ -58,21 +60,37 @@ public class CDNAdapterProfile extends ObjectBase {
 		String sharedSecret();
 	}
 
-	/**  CDN adapter identifier  */
+	/**
+	 * CDN adapter identifier
+	 */
 	private Integer id;
-	/**  CDNR adapter name  */
+	/**
+	 * CDNR adapter name
+	 */
 	private String name;
-	/**  CDN adapter active status  */
+	/**
+	 * CDN adapter active status
+	 */
 	private Boolean isActive;
-	/**  CDN adapter URL  */
+	/**
+	 * CDN adapter URL
+	 */
 	private String adapterUrl;
-	/**  CDN adapter base URL  */
+	/**
+	 * CDN adapter base URL
+	 */
 	private String baseUrl;
-	/**  CDN adapter settings  */
+	/**
+	 * CDN adapter settings
+	 */
 	private Map<String, StringValue> settings;
-	/**  CDN adapter alias  */
+	/**
+	 * CDN adapter alias
+	 */
 	private String systemName;
-	/**  CDN shared secret  */
+	/**
+	 * CDN shared secret
+	 */
 	private String sharedSecret;
 
 	// id:

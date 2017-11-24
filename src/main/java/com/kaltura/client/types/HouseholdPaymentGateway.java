@@ -52,13 +52,21 @@ public class HouseholdPaymentGateway extends ObjectBase {
 		String selectedBy();
 	}
 
-	/**  payment gateway id  */
+	/**
+	 * payment gateway id
+	 */
 	private Integer id;
-	/**  payment gateway name  */
+	/**
+	 * payment gateway name
+	 */
 	private String name;
-	/**  Payment gateway default (true/false)  */
+	/**
+	 * Payment gateway default (true/false)
+	 */
 	private Boolean isDefault;
-	/**  distinction payment gateway selected by account or household  */
+	/**
+	 * distinction payment gateway selected by account or household
+	 */
 	private HouseholdPaymentGatewaySelectedBy selectedBy;
 
 	// id:

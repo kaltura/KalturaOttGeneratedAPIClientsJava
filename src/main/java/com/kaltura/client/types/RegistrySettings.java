@@ -49,9 +49,13 @@ public class RegistrySettings extends ObjectBase {
 		String value();
 	}
 
-	/**  Permission item identifier  */
+	/**
+	 * Permission item identifier
+	 */
 	private String key;
-	/**  Permission item name  */
+	/**
+	 * Permission item name
+	 */
 	private String value;
 
 	// key:

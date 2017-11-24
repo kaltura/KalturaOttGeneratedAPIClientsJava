@@ -49,7 +49,11 @@ public class ExportTaskService {
 		}
 	}
 
-	/**  Adds a new bulk export task  */
+	/**
+	 * Adds a new bulk export task
+	 * 
+	 * @param task The task model to add
+	 */
     public static AddExportTaskBuilder add(ExportTask task)  {
 		return new AddExportTaskBuilder(task);
 	}
@@ -66,7 +70,11 @@ public class ExportTaskService {
 		}
 	}
 
-	/**  Deletes an existing bulk export task by task identifier  */
+	/**
+	 * Deletes an existing bulk export task by task identifier
+	 * 
+	 * @param id The identifier of the task to delete
+	 */
     public static DeleteExportTaskBuilder delete(long id)  {
 		return new DeleteExportTaskBuilder(id);
 	}
@@ -83,7 +91,11 @@ public class ExportTaskService {
 		}
 	}
 
-	/**  Gets an existing bulk export task by task identifier  */
+	/**
+	 * Gets an existing bulk export task by task identifier
+	 * 
+	 * @param id The identifier of the task to get
+	 */
     public static GetExportTaskBuilder get(long id)  {
 		return new GetExportTaskBuilder(id);
 	}
@@ -100,7 +112,11 @@ public class ExportTaskService {
 		return list(null);
 	}
 
-	/**  Returns bulk export tasks by tasks identifiers  */
+	/**
+	 * Returns bulk export tasks by tasks identifiers
+	 * 
+	 * @param filter Bulk export tasks filter
+	 */
     public static ListExportTaskBuilder list(ExportTaskFilter filter)  {
 		return new ListExportTaskBuilder(filter);
 	}
@@ -118,7 +134,12 @@ public class ExportTaskService {
 		}
 	}
 
-	/**  Updates an existing bulk export task by task identifier  */
+	/**
+	 * Updates an existing bulk export task by task identifier
+	 * 
+	 * @param id The task id to update
+	 * @param task The task model to update
+	 */
     public static UpdateExportTaskBuilder update(long id, ExportTask task)  {
 		return new UpdateExportTaskBuilder(id, task);
 	}

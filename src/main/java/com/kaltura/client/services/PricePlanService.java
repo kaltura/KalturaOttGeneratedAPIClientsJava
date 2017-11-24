@@ -53,7 +53,11 @@ public class PricePlanService {
 		return list(null);
 	}
 
-	/**  Returns a list of price plans by IDs  */
+	/**
+	 * Returns a list of price plans by IDs
+	 * 
+	 * @param filter Filter request
+	 */
     public static ListPricePlanBuilder list(PricePlanFilter filter)  {
 		return new ListPricePlanBuilder(filter);
 	}
@@ -71,7 +75,12 @@ public class PricePlanService {
 		}
 	}
 
-	/**  Updates a price plan  */
+	/**
+	 * Updates a price plan
+	 * 
+	 * @param id Price plan ID
+	 * @param pricePlan Price plan to update
+	 */
     public static UpdatePricePlanBuilder update(long id, PricePlan pricePlan)  {
 		return new UpdatePricePlanBuilder(id, pricePlan);
 	}

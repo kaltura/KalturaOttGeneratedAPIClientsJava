@@ -51,15 +51,25 @@ public class ProductPriceFilter extends Filter {
 		String couponCodeEqual();
 	}
 
-	/**  Comma separated subscriptions identifiers  */
+	/**
+	 * Comma separated subscriptions identifiers
+	 */
 	private String subscriptionIdIn;
-	/**  Comma separated media files identifiers  */
+	/**
+	 * Comma separated media files identifiers
+	 */
 	private String fileIdIn;
-	/**  Comma separated collections identifiers  */
+	/**
+	 * Comma separated collections identifiers
+	 */
 	private String collectionIdIn;
-	/**  A flag that indicates if only the lowest price of an item should return  */
+	/**
+	 * A flag that indicates if only the lowest price of an item should return
+	 */
 	private Boolean isLowest;
-	/**  Discount coupon code  */
+	/**
+	 * Discount coupon code
+	 */
 	private String couponCodeEqual;
 
 	// subscriptionIdIn:

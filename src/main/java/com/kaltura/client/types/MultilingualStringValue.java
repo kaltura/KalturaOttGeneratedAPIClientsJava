@@ -41,7 +41,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Array of translated strings  */
+/**
+ * Array of translated strings
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MultilingualStringValue.Tokenizer.class)
 public class MultilingualStringValue extends Value {
@@ -51,9 +53,13 @@ public class MultilingualStringValue extends Value {
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualValue();
 	}
 
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private String value;
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private List<TranslationToken> multilingualValue;
 
 	// value:

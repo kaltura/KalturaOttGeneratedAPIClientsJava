@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Abstarct class - represents an asset parameter that can be used for grouping  */
+/**
+ * Abstarct class - represents an asset parameter that can be used for grouping
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetGroupBy.Tokenizer.class)
 public abstract class AssetGroupBy extends ObjectBase {

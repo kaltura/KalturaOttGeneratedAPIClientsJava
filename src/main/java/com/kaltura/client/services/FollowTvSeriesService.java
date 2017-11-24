@@ -50,8 +50,12 @@ public class FollowTvSeriesService {
 		}
 	}
 
-	/**  Add a user&amp;#39;s tv series follow.              Possible status codes:
-	  UserAlreadyFollowing = 8013, NotFound = 500007, InvalidAssetId = 4024  */
+	/**
+	 * Add a user&amp;#39;s tv series follow.              Possible status codes:
+	  UserAlreadyFollowing = 8013, NotFound = 500007, InvalidAssetId = 4024
+	 * 
+	 * @param followTvSeries Follow series request parameters
+	 */
     public static AddFollowTvSeriesBuilder add(FollowTvSeries followTvSeries)  {
 		return new AddFollowTvSeriesBuilder(followTvSeries);
 	}
@@ -68,9 +72,13 @@ public class FollowTvSeriesService {
 		}
 	}
 
-	/**  Delete a user&amp;#39;s tv series follow.              Possible status codes:
+	/**
+	 * Delete a user&amp;#39;s tv series follow.              Possible status codes:
 	  UserNotFollowing = 8012, NotFound = 500007, InvalidAssetId = 4024,
-	  AnnouncementNotFound = 8006  */
+	  AnnouncementNotFound = 8006
+	 * 
+	 * @param assetId Asset identifier
+	 */
     public static DeleteFollowTvSeriesBuilder delete(int assetId)  {
 		return new DeleteFollowTvSeriesBuilder(assetId);
 	}
@@ -88,7 +96,12 @@ public class FollowTvSeriesService {
 		return list(filter, null);
 	}
 
-	/**  List user&amp;#39;s tv series follows.              Possible status codes:  */
+	/**
+	 * List user&amp;#39;s tv series follows.              Possible status codes:
+	 * 
+	 * @param filter Follow TV series filter
+	 * @param pager pager
+	 */
     public static ListFollowTvSeriesBuilder list(FollowTvSeriesFilter filter, FilterPager pager)  {
 		return new ListFollowTvSeriesBuilder(filter, pager);
 	}

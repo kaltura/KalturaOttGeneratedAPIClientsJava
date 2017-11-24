@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  order announcements  */
+/**
+ * order announcements
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AnnouncementFilter.Tokenizer.class)
 public class AnnouncementFilter extends Filter {

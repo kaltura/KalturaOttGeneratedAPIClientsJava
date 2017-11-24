@@ -49,9 +49,13 @@ public class DrmPlaybackPluginData extends PluginData {
 		String licenseURL();
 	}
 
-	/**  Scheme  */
+	/**
+	 * Scheme
+	 */
 	private DrmSchemeName scheme;
-	/**  License URL  */
+	/**
+	 * License URL
+	 */
 	private String licenseURL;
 
 	// scheme:

@@ -50,7 +50,9 @@ public class AdsContext extends ObjectBase {
 		RequestBuilder.ListTokenizer<AdsSource.Tokenizer> sources();
 	}
 
-	/**  Sources  */
+	/**
+	 * Sources
+	 */
 	private List<AdsSource> sources;
 
 	// sources:

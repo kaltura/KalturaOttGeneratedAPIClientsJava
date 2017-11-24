@@ -69,7 +69,13 @@ public class OttUserService {
 		}
 	}
 
-	/**  Activate the account by activation token  */
+	/**
+	 * Activate the account by activation token
+	 * 
+	 * @param partnerId The partner ID
+	 * @param username Username of the user to activate
+	 * @param activationToken Activation token of the user
+	 */
     public static ActivateOttUserBuilder activate(int partnerId, String username, String activationToken)  {
 		return new ActivateOttUserBuilder(partnerId, username, activationToken);
 	}
@@ -86,7 +92,11 @@ public class OttUserService {
 		}
 	}
 
-	/**  Edit user details.  */
+	/**
+	 * Edit user details.
+	 * 
+	 * @param roleId The role identifier to add
+	 */
     public static AddRoleOttUserBuilder addRole(long roleId)  {
 		return new AddRoleOttUserBuilder(roleId);
 	}
@@ -112,7 +122,12 @@ public class OttUserService {
 		return anonymousLogin(partnerId, null);
 	}
 
-	/**  Returns tokens (KS and refresh token) for anonymous access  */
+	/**
+	 * Returns tokens (KS and refresh token) for anonymous access
+	 * 
+	 * @param partnerId The partner ID
+	 * @param udid The caller device's UDID
+	 */
     public static AnonymousLoginOttUserBuilder anonymousLogin(int partnerId, String udid)  {
 		return new AnonymousLoginOttUserBuilder(partnerId, udid);
 	}
@@ -124,8 +139,10 @@ public class OttUserService {
 		}
 	}
 
-	/**  Permanently delete a user. User to delete cannot be an exclusive household
-	  master, and cannot be default user.  */
+	/**
+	 * Permanently delete a user. User to delete cannot be an exclusive household
+	  master, and cannot be default user.
+	 */
     public static DeleteOttUserBuilder delete()  {
 		return new DeleteOttUserBuilder();
 	}
@@ -137,7 +154,9 @@ public class OttUserService {
 		}
 	}
 
-	/**  Retrieving users&amp;#39; data  */
+	/**
+	 * Retrieving users&amp;#39; data
+	 */
     public static GetOttUserBuilder get()  {
 		return new GetOttUserBuilder();
 	}
@@ -149,7 +168,9 @@ public class OttUserService {
 		}
 	}
 
-	/**  Returns the identifier of the user encrypted with SHA1 using configured key  */
+	/**
+	 * Returns the identifier of the user encrypted with SHA1 using configured key
+	 */
     public static GetEncryptedUserIdOttUserBuilder getEncryptedUserId()  {
 		return new GetEncryptedUserIdOttUserBuilder();
 	}
@@ -166,8 +187,12 @@ public class OttUserService {
 		return list(null);
 	}
 
-	/**  Retrieve user by external identifier or username or if filter is null all user
-	  in the master or the user itself  */
+	/**
+	 * Retrieve user by external identifier or username or if filter is null all user
+	  in the master or the user itself
+	 * 
+	 * @param filter Filter request
+	 */
     public static ListOttUserBuilder list(OTTUserFilter filter)  {
 		return new ListOttUserBuilder(filter);
 	}
@@ -216,7 +241,15 @@ public class OttUserService {
 		return login(partnerId, username, password, extraParams, null);
 	}
 
-	/**  login with user name and password.  */
+	/**
+	 * login with user name and password.
+	 * 
+	 * @param partnerId Partner Identifier
+	 * @param username user name
+	 * @param password password
+	 * @param extraParams extra params
+	 * @param udid Device UDID
+	 */
     public static LoginOttUserBuilder login(int partnerId, String username, String password, Map<String, StringValue> extraParams, String udid)  {
 		return new LoginOttUserBuilder(partnerId, username, password, extraParams, udid);
 	}
@@ -256,7 +289,14 @@ public class OttUserService {
 		return loginWithPin(partnerId, pin, udid, null);
 	}
 
-	/**  User sign-in via a time-expired sign-in PIN.  */
+	/**
+	 * User sign-in via a time-expired sign-in PIN.
+	 * 
+	 * @param partnerId Partner Identifier
+	 * @param pin pin code
+	 * @param udid Device UDID
+	 * @param secret Additional security parameter to validate the login
+	 */
     public static LoginWithPinOttUserBuilder loginWithPin(int partnerId, String pin, String udid, String secret)  {
 		return new LoginWithPinOttUserBuilder(partnerId, pin, udid, secret);
 	}
@@ -268,7 +308,9 @@ public class OttUserService {
 		}
 	}
 
-	/**  Logout the calling user.  */
+	/**
+	 * Logout the calling user.
+	 */
     public static LogoutOttUserBuilder logout()  {
 		return new LogoutOttUserBuilder();
 	}
@@ -291,7 +333,13 @@ public class OttUserService {
 		}
 	}
 
-	/**  Sign up a new user.  */
+	/**
+	 * Sign up a new user.
+	 * 
+	 * @param partnerId Partner identifier
+	 * @param user The user model to add
+	 * @param password password
+	 */
     public static RegisterOttUserBuilder register(int partnerId, OTTUser user, String password)  {
 		return new RegisterOttUserBuilder(partnerId, user, password);
 	}
@@ -313,7 +361,12 @@ public class OttUserService {
 		}
 	}
 
-	/**  Resend the activation token to a user  */
+	/**
+	 * Resend the activation token to a user
+	 * 
+	 * @param partnerId The partner ID
+	 * @param username Username of the user to activate
+	 */
     public static ResendActivationTokenOttUserBuilder resendActivationToken(int partnerId, String username)  {
 		return new ResendActivationTokenOttUserBuilder(partnerId, username);
 	}
@@ -335,7 +388,12 @@ public class OttUserService {
 		}
 	}
 
-	/**  Send an e-mail with URL to enable the user to set new password.  */
+	/**
+	 * Send an e-mail with URL to enable the user to set new password.
+	 * 
+	 * @param partnerId Partner Identifier
+	 * @param username user name
+	 */
     public static ResetPasswordOttUserBuilder resetPassword(int partnerId, String username)  {
 		return new ResetPasswordOttUserBuilder(partnerId, username);
 	}
@@ -362,8 +420,14 @@ public class OttUserService {
 		}
 	}
 
-	/**  Renew the user&amp;#39;s password after validating the token that sent as part
-	  of URL in e-mail.  */
+	/**
+	 * Renew the user&amp;#39;s password after validating the token that sent as part
+	  of URL in e-mail.
+	 * 
+	 * @param partnerId Partner Identifier
+	 * @param token Token that sent by e-mail
+	 * @param password New password
+	 */
     public static SetInitialPasswordOttUserBuilder setInitialPassword(int partnerId, String token, String password)  {
 		return new SetInitialPasswordOttUserBuilder(partnerId, token, password);
 	}
@@ -385,7 +449,12 @@ public class OttUserService {
 		return update(user, null);
 	}
 
-	/**  Update user information  */
+	/**
+	 * Update user information
+	 * 
+	 * @param user User data (includes basic and dynamic data)
+	 * @param id User ID
+	 */
     public static UpdateOttUserBuilder update(OTTUser user, String id)  {
 		return new UpdateOttUserBuilder(user, id);
 	}
@@ -403,7 +472,12 @@ public class OttUserService {
 		}
 	}
 
-	/**  Update user dynamic data  */
+	/**
+	 * Update user dynamic data
+	 * 
+	 * @param key Type of dynamicData
+	 * @param value Value of dynamicData
+	 */
     public static UpdateDynamicDataOttUserBuilder updateDynamicData(String key, StringValue value)  {
 		return new UpdateDynamicDataOttUserBuilder(key, value);
 	}
@@ -430,7 +504,13 @@ public class OttUserService {
 		}
 	}
 
-	/**  Given a user name and existing password, change to a new password.  */
+	/**
+	 * Given a user name and existing password, change to a new password.
+	 * 
+	 * @param username user name
+	 * @param oldPassword old password
+	 * @param newPassword new password
+	 */
     public static UpdateLoginDataOttUserBuilder updateLoginData(String username, String oldPassword, String newPassword)  {
 		return new UpdateLoginDataOttUserBuilder(username, oldPassword, newPassword);
 	}
@@ -452,7 +532,12 @@ public class OttUserService {
 		}
 	}
 
-	/**  Update the user&amp;#39;s existing password.  */
+	/**
+	 * Update the user&amp;#39;s existing password.
+	 * 
+	 * @param userId User Identifier
+	 * @param password new password
+	 */
     public static UpdatePasswordOttUserBuilder updatePassword(int userId, String password)  {
 		return new UpdatePasswordOttUserBuilder(userId, password);
 	}

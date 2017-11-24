@@ -40,8 +40,10 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  The KalturaFilterPager object enables paging management to be applied upon
-  service list actions  */
+/**
+ * The KalturaFilterPager object enables paging management to be applied upon
+  service list actions
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(FilterPager.Tokenizer.class)
 public class FilterPager extends ObjectBase {
@@ -51,11 +53,15 @@ public class FilterPager extends ObjectBase {
 		String pageIndex();
 	}
 
-	/**  The number of objects to retrieve. Possible range 1 ≤ value ≤ 50. If omitted
+	/**
+	 * The number of objects to retrieve. Possible range 1 ≤ value ≤ 50. If omitted
 	  or value &amp;lt; 1 - will be set to 25. If a value &amp;gt; 50 provided –
-	  will be set to 50  */
+	  will be set to 50
+	 */
 	private Integer pageSize;
-	/**  The page number for which {pageSize} of objects should be retrieved  */
+	/**
+	 * The page number for which {pageSize} of objects should be retrieved
+	 */
 	private Integer pageIndex;
 
 	// pageSize:

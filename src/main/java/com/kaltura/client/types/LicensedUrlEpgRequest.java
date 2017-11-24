@@ -49,9 +49,13 @@ public class LicensedUrlEpgRequest extends LicensedUrlMediaRequest {
 		String startDate();
 	}
 
-	/**  The stream type to get the URL for  */
+	/**
+	 * The stream type to get the URL for
+	 */
 	private StreamType streamType;
-	/**  The start date of the stream (epoch)  */
+	/**
+	 * The start date of the stream (epoch)
+	 */
 	private Long startDate;
 
 	// streamType:

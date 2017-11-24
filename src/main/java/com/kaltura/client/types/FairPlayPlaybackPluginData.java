@@ -47,7 +47,9 @@ public class FairPlayPlaybackPluginData extends DrmPlaybackPluginData {
 		String certificate();
 	}
 
-	/**  Custom data string  */
+	/**
+	 * Custom data string
+	 */
 	private String certificate;
 
 	// certificate:

@@ -42,7 +42,9 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  C-DVR Adapter  */
+/**
+ * C-DVR Adapter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CDVRAdapterProfile.Tokenizer.class)
 public class CDVRAdapterProfile extends ObjectBase {
@@ -58,21 +60,37 @@ public class CDVRAdapterProfile extends ObjectBase {
 		String dynamicLinksSupport();
 	}
 
-	/**  C-DVR adapter identifier  */
+	/**
+	 * C-DVR adapter identifier
+	 */
 	private Integer id;
-	/**  C-DVR adapter name  */
+	/**
+	 * C-DVR adapter name
+	 */
 	private String name;
-	/**  C-DVR adapter active status  */
+	/**
+	 * C-DVR adapter active status
+	 */
 	private Boolean isActive;
-	/**  C-DVR adapter adapter URL  */
+	/**
+	 * C-DVR adapter adapter URL
+	 */
 	private String adapterUrl;
-	/**  C-DVR adapter extra parameters  */
+	/**
+	 * C-DVR adapter extra parameters
+	 */
 	private Map<String, StringValue> settings;
-	/**  C-DVR adapter external identifier  */
+	/**
+	 * C-DVR adapter external identifier
+	 */
 	private String externalIdentifier;
-	/**  C-DVR shared secret  */
+	/**
+	 * C-DVR shared secret
+	 */
 	private String sharedSecret;
-	/**  Indicates whether the C-DVR adapter supports dynamic URLs  */
+	/**
+	 * Indicates whether the C-DVR adapter supports dynamic URLs
+	 */
 	private Boolean dynamicLinksSupport;
 
 	// id:

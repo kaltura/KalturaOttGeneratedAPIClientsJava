@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  KalturaSubscriptionEntitlement  */
+/**
+ * KalturaSubscriptionEntitlement
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SubscriptionEntitlement.Tokenizer.class)
 public class SubscriptionEntitlement extends Entitlement {
@@ -55,22 +57,38 @@ public class SubscriptionEntitlement extends Entitlement {
 		String isSuspended();
 	}
 
-	/**  The date of the next renewal (only for subscription)  */
+	/**
+	 * The date of the next renewal (only for subscription)
+	 */
 	private Long nextRenewalDate;
-	/**  Indicates whether the subscription is renewable in this purchase (only for
-	  subscription)  */
+	/**
+	 * Indicates whether the subscription is renewable in this purchase (only for
+	  subscription)
+	 */
 	private Boolean isRenewableForPurchase;
-	/**  Indicates whether a subscription is renewable (only for subscription)  */
+	/**
+	 * Indicates whether a subscription is renewable (only for subscription)
+	 */
 	private Boolean isRenewable;
-	/**  Indicates whether the user is currently in his grace period entitlement  */
+	/**
+	 * Indicates whether the user is currently in his grace period entitlement
+	 */
 	private Boolean isInGracePeriod;
-	/**  Payment Gateway identifier  */
+	/**
+	 * Payment Gateway identifier
+	 */
 	private Integer paymentGatewayId;
-	/**  Payment Method identifier  */
+	/**
+	 * Payment Method identifier
+	 */
 	private Integer paymentMethodId;
-	/**  Scheduled Subscription Identifier  */
+	/**
+	 * Scheduled Subscription Identifier
+	 */
 	private Long scheduledSubscriptionId;
-	/**  Indicates if the subscription suspended  */
+	/**
+	 * Indicates if the subscription suspended
+	 */
 	private Boolean isSuspended;
 
 	// nextRenewalDate:

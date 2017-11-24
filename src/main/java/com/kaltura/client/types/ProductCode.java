@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Product Code  */
+/**
+ * Product Code
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ProductCode.Tokenizer.class)
 public class ProductCode extends ObjectBase {
@@ -50,9 +52,13 @@ public class ProductCode extends ObjectBase {
 		String code();
 	}
 
-	/**  Provider Name  */
+	/**
+	 * Provider Name
+	 */
 	private String inappProvider;
-	/**  Product Code  */
+	/**
+	 * Product Code
+	 */
 	private String code;
 
 	// inappProvider:

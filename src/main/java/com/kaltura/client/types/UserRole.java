@@ -51,13 +51,21 @@ public class UserRole extends ObjectBase {
 		String excludedPermissionNames();
 	}
 
-	/**  User role identifier  */
+	/**
+	 * User role identifier
+	 */
 	private Long id;
-	/**  User role name  */
+	/**
+	 * User role name
+	 */
 	private String name;
-	/**  permissions associated with the user role  */
+	/**
+	 * permissions associated with the user role
+	 */
 	private String permissionNames;
-	/**  permissions associated with the user role in is_exclueded = true  */
+	/**
+	 * permissions associated with the user role in is_exclueded = true
+	 */
 	private String excludedPermissionNames;
 
 	// id:

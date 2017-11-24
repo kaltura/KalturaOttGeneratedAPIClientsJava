@@ -52,13 +52,21 @@ public class AdsSource extends ObjectBase {
 		String adsParam();
 	}
 
-	/**  File unique identifier  */
+	/**
+	 * File unique identifier
+	 */
 	private Integer id;
-	/**  Device types as defined in the system  */
+	/**
+	 * Device types as defined in the system
+	 */
 	private String type;
-	/**  Ads policy  */
+	/**
+	 * Ads policy
+	 */
 	private AdsPolicy adsPolicy;
-	/**  The parameters to pass to the ads server  */
+	/**
+	 * The parameters to pass to the ads server
+	 */
 	private String adsParam;
 
 	// id:

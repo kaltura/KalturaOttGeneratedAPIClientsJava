@@ -50,7 +50,11 @@ public class SubscriptionService {
 		}
 	}
 
-	/**  Returns a list of subscriptions requested by Subscription ID or file ID  */
+	/**
+	 * Returns a list of subscriptions requested by Subscription ID or file ID
+	 * 
+	 * @param filter Filter request
+	 */
     public static ListSubscriptionBuilder list(SubscriptionFilter filter)  {
 		return new ListSubscriptionBuilder(filter);
 	}
@@ -72,7 +76,12 @@ public class SubscriptionService {
 		}
 	}
 
-	/**  Returns information about a coupon for subscription  */
+	/**
+	 * Returns information about a coupon for subscription
+	 * 
+	 * @param id subscription id
+	 * @param code coupon code
+	 */
     public static ValidateCouponSubscriptionBuilder validateCoupon(int id, String code)  {
 		return new ValidateCouponSubscriptionBuilder(id, code);
 	}

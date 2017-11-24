@@ -51,13 +51,21 @@ public class ScheduledRecordingProgramFilter extends AssetFilter {
 		String endDateLessThanOrNull();
 	}
 
-	/**  The type of recordings to return  */
+	/**
+	 * The type of recordings to return
+	 */
 	private ScheduledRecordingAssetType recordingTypeEqual;
-	/**  Channels to filter by  */
+	/**
+	 * Channels to filter by
+	 */
 	private String channelsIn;
-	/**  start date  */
+	/**
+	 * start date
+	 */
 	private Long startDateGreaterThanOrNull;
-	/**  end date  */
+	/**
+	 * end date
+	 */
 	private Long endDateLessThanOrNull;
 
 	// recordingTypeEqual:

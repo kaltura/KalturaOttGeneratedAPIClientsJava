@@ -50,7 +50,9 @@ public class PaymentGatewayConfiguration extends ObjectBase {
 		RequestBuilder.ListTokenizer<KeyValue.Tokenizer> paymentGatewayConfiguration();
 	}
 
-	/**  Payment gateway configuration  */
+	/**
+	 * Payment gateway configuration
+	 */
 	private List<KeyValue> paymentGatewayConfiguration;
 
 	// paymentGatewayConfiguration:

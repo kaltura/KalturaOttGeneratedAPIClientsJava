@@ -55,7 +55,11 @@ public class InboxMessageService {
 		}
 	}
 
-	/**  TBD  */
+	/**
+	 * TBD
+	 * 
+	 * @param id message id
+	 */
     public static GetInboxMessageBuilder get(String id)  {
 		return new GetInboxMessageBuilder(id);
 	}
@@ -77,7 +81,12 @@ public class InboxMessageService {
 		return list(filter, null);
 	}
 
-	/**  List inbox messages  */
+	/**
+	 * List inbox messages
+	 * 
+	 * @param filter filter
+	 * @param pager Page size and index
+	 */
     public static ListInboxMessageBuilder list(InboxMessageFilter filter, FilterPager pager)  {
 		return new ListInboxMessageBuilder(filter, pager);
 	}
@@ -99,7 +108,12 @@ public class InboxMessageService {
 		}
 	}
 
-	/**  Updates the message status.  */
+	/**
+	 * Updates the message status.
+	 * 
+	 * @param id Message identifier
+	 * @param status Message status
+	 */
     public static UpdateStatusInboxMessageBuilder updateStatus(String id, InboxMessageStatus status)  {
 		return new UpdateStatusInboxMessageBuilder(id, status);
 	}

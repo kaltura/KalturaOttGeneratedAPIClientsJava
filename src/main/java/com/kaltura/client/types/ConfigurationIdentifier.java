@@ -49,9 +49,13 @@ public class ConfigurationIdentifier extends ObjectBase {
 		String name();
 	}
 
-	/**  Identifier  */
+	/**
+	 * Identifier
+	 */
 	private String id;
-	/**  Name  */
+	/**
+	 * Name
+	 */
 	private String name;
 
 	// id:
