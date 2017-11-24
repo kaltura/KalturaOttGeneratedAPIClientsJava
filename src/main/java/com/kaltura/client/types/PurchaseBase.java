@@ -51,11 +51,17 @@ public class PurchaseBase extends ObjectBase {
 		String productType();
 	}
 
-	/**  Identifier for the package from which this content is offered  */
+	/**
+	 * Identifier for the package from which this content is offered
+	 */
 	private Integer productId;
-	/**  Identifier for the content to purchase. Relevant only if Product type = PPV  */
+	/**
+	 * Identifier for the content to purchase. Relevant only if Product type = PPV
+	 */
 	private Integer contentId;
-	/**  Package type. Possible values: PPV, Subscription, Collection  */
+	/**
+	 * Package type. Possible values: PPV, Subscription, Collection
+	 */
 	private TransactionType productType;
 
 	// productId:

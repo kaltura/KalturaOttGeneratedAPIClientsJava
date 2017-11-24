@@ -44,7 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Billing Transaction  */
+/**
+ * Billing Transaction
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BillingTransaction.Tokenizer.class)
 public class BillingTransaction extends ObjectBase {
@@ -67,35 +69,65 @@ public class BillingTransaction extends ObjectBase {
 		String remarks();
 	}
 
-	/**  Reciept Code  */
+	/**
+	 * Reciept Code
+	 */
 	private String recieptCode;
-	/**  Purchased Item Name  */
+	/**
+	 * Purchased Item Name
+	 */
 	private String purchasedItemName;
-	/**  Purchased Item Code  */
+	/**
+	 * Purchased Item Code
+	 */
 	private String purchasedItemCode;
-	/**  Item Type  */
+	/**
+	 * Item Type
+	 */
 	private BillingItemsType itemType;
-	/**  Billing Action  */
+	/**
+	 * Billing Action
+	 */
 	private BillingAction billingAction;
-	/**  price  */
+	/**
+	 * price
+	 */
 	private Price price;
-	/**  Action Date  */
+	/**
+	 * Action Date
+	 */
 	private Long actionDate;
-	/**  Start Date  */
+	/**
+	 * Start Date
+	 */
 	private Long startDate;
-	/**  End Date  */
+	/**
+	 * End Date
+	 */
 	private Long endDate;
-	/**  Payment Method  */
+	/**
+	 * Payment Method
+	 */
 	private PaymentMethodType paymentMethod;
-	/**  Payment Method Extra Details  */
+	/**
+	 * Payment Method Extra Details
+	 */
 	private String paymentMethodExtraDetails;
-	/**  Is Recurring  */
+	/**
+	 * Is Recurring
+	 */
 	private Boolean isRecurring;
-	/**  Billing Provider Ref  */
+	/**
+	 * Billing Provider Ref
+	 */
 	private Integer billingProviderRef;
-	/**  Purchase ID  */
+	/**
+	 * Purchase ID
+	 */
 	private Integer purchaseId;
-	/**  Remarks  */
+	/**
+	 * Remarks
+	 */
 	private String remarks;
 
 	// recieptCode:

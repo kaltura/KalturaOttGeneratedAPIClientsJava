@@ -49,8 +49,12 @@ public class BookmarkService {
 		}
 	}
 
-	/**  Report player position and action for the user on the watched asset. Player
-	  position is used to later allow resume watching.  */
+	/**
+	 * Report player position and action for the user on the watched asset. Player
+	  position is used to later allow resume watching.
+	 * 
+	 * @param bookmark Bookmark details
+	 */
     public static AddBookmarkBuilder add(Bookmark bookmark)  {
 		return new AddBookmarkBuilder(bookmark);
 	}
@@ -63,11 +67,15 @@ public class BookmarkService {
 		}
 	}
 
-	/**  Returns player position record/s for the requested asset and the requesting
+	/**
+	 * Returns player position record/s for the requested asset and the requesting
 	  user.               If default user makes the request – player position
 	  records are provided for all of the users in the household.              If
 	  non-default user makes the request - player position records are provided for
-	  the requesting user and the default user of the household.  */
+	  the requesting user and the default user of the household.
+	 * 
+	 * @param filter Filter option for the last position
+	 */
     public static ListBookmarkBuilder list(BookmarkFilter filter)  {
 		return new ListBookmarkBuilder(filter);
 	}

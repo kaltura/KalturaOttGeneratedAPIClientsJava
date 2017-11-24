@@ -55,17 +55,29 @@ public class InboxMessage extends ObjectBase {
 		String url();
 	}
 
-	/**  message id  */
+	/**
+	 * message id
+	 */
 	private String id;
-	/**  message  */
+	/**
+	 * message
+	 */
 	private String message;
-	/**  Status  */
+	/**
+	 * Status
+	 */
 	private InboxMessageStatus status;
-	/**  Type  */
+	/**
+	 * Type
+	 */
 	private InboxMessageType type;
-	/**  Created at  */
+	/**
+	 * Created at
+	 */
 	private Long createdAt;
-	/**  url  */
+	/**
+	 * url
+	 */
 	private String url;
 
 	// id:

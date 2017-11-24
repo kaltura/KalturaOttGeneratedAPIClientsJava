@@ -47,7 +47,9 @@ public class SocialActionRate extends SocialAction {
 		String rate();
 	}
 
-	/**  The value of the rating  */
+	/**
+	 * The value of the rating
+	 */
 	private Integer rate;
 
 	// rate:

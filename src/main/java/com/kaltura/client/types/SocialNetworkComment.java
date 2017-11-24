@@ -48,9 +48,13 @@ public class SocialNetworkComment extends SocialComment {
 		String authorImageUrl();
 	}
 
-	/**  Number of likes  */
+	/**
+	 * Number of likes
+	 */
 	private String likeCounter;
-	/**  The URL of the profile picture of the author of the comment  */
+	/**
+	 * The URL of the profile picture of the author of the comment
+	 */
 	private String authorImageUrl;
 
 	// likeCounter:

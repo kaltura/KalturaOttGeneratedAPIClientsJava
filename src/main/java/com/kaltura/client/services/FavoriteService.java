@@ -49,7 +49,11 @@ public class FavoriteService {
 		}
 	}
 
-	/**  Add media to user&amp;#39;s favorite list  */
+	/**
+	 * Add media to user&amp;#39;s favorite list
+	 * 
+	 * @param favorite Favorite details.
+	 */
     public static AddFavoriteBuilder add(Favorite favorite)  {
 		return new AddFavoriteBuilder(favorite);
 	}
@@ -66,7 +70,11 @@ public class FavoriteService {
 		}
 	}
 
-	/**  Remove media from user&amp;#39;s favorite list  */
+	/**
+	 * Remove media from user&amp;#39;s favorite list
+	 * 
+	 * @param id Media identifier
+	 */
     public static DeleteFavoriteBuilder delete(int id)  {
 		return new DeleteFavoriteBuilder(id);
 	}
@@ -83,7 +91,11 @@ public class FavoriteService {
 		return list(null);
 	}
 
-	/**  Retrieving users&amp;#39; favorites  */
+	/**
+	 * Retrieving users&amp;#39; favorites
+	 * 
+	 * @param filter Request filter
+	 */
     public static ListFavoriteBuilder list(FavoriteFilter filter)  {
 		return new ListFavoriteBuilder(filter);
 	}

@@ -49,7 +49,11 @@ public class HouseholdUserService {
 		}
 	}
 
-	/**  Adds a user to household  */
+	/**
+	 * Adds a user to household
+	 * 
+	 * @param householdUser User details to add
+	 */
     public static AddHouseholdUserBuilder add(HouseholdUser householdUser)  {
 		return new AddHouseholdUserBuilder(householdUser);
 	}
@@ -66,7 +70,11 @@ public class HouseholdUserService {
 		}
 	}
 
-	/**  Removes a user from household  */
+	/**
+	 * Removes a user from household
+	 * 
+	 * @param id The identifier of the user to delete
+	 */
     public static DeleteHouseholdUserBuilder delete(String id)  {
 		return new DeleteHouseholdUserBuilder(id);
 	}
@@ -83,7 +91,11 @@ public class HouseholdUserService {
 		return list(null);
 	}
 
-	/**  Returns the users within the household  */
+	/**
+	 * Returns the users within the household
+	 * 
+	 * @param filter Household user filter
+	 */
     public static ListHouseholdUserBuilder list(HouseholdUserFilter filter)  {
 		return new ListHouseholdUserBuilder(filter);
 	}

@@ -51,13 +51,21 @@ public class PushMessage extends ObjectBase {
 		String url();
 	}
 
-	/**  Push text  */
+	/**
+	 * Push text
+	 */
 	private String message;
-	/**  Push sound  */
+	/**
+	 * Push sound
+	 */
 	private String sound;
-	/**  Push action  */
+	/**
+	 * Push action
+	 */
 	private String action;
-	/**  Push URL  */
+	/**
+	 * Push URL
+	 */
 	private String url;
 
 	// message:

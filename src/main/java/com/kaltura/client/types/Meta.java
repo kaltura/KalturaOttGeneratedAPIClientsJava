@@ -43,7 +43,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Asset meta  */
+/**
+ * Asset meta
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Meta.Tokenizer.class)
 public class Meta extends ObjectBase {
@@ -59,21 +61,37 @@ public class Meta extends ObjectBase {
 		String partnerId();
 	}
 
-	/**  Meta name for the partner  */
+	/**
+	 * Meta name for the partner
+	 */
 	private String name;
-	/**  Meta system field name  */
+	/**
+	 * Meta system field name
+	 */
 	private MetaFieldName fieldName;
-	/**  Meta value type  */
+	/**
+	 * Meta value type
+	 */
 	private MetaType type;
-	/**  Asset type this meta is related to  */
+	/**
+	 * Asset type this meta is related to
+	 */
 	private AssetType assetType;
-	/**  List of supported features  */
+	/**
+	 * List of supported features
+	 */
 	private String features;
-	/**  Meta id  */
+	/**
+	 * Meta id
+	 */
 	private String id;
-	/**  Parent meta id  */
+	/**
+	 * Parent meta id
+	 */
 	private String parentId;
-	/**  Partner Id  */
+	/**
+	 * Partner Id
+	 */
 	private Integer partnerId;
 
 	// name:

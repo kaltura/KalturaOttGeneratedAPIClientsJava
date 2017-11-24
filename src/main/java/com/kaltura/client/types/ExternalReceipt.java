@@ -48,11 +48,15 @@ public class ExternalReceipt extends PurchaseBase {
 		String paymentGatewayName();
 	}
 
-	/**  A unique identifier that was provided by the In-App billing service to validate
-	  the purchase  */
+	/**
+	 * A unique identifier that was provided by the In-App billing service to validate
+	  the purchase
+	 */
 	private String receiptId;
-	/**  The payment gateway name for the In-App billing service to be used. Possible
-	  values: Google/Apple  */
+	/**
+	 * The payment gateway name for the In-App billing service to be used. Possible
+	  values: Google/Apple
+	 */
 	private String paymentGatewayName;
 
 	// receiptId:

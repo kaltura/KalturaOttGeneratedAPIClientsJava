@@ -57,27 +57,47 @@ public abstract class Social extends ObjectBase {
 		String pictureUrl();
 	}
 
-	/**  Facebook identifier  */
+	/**
+	 * Facebook identifier
+	 */
 	private String id;
-	/**  Full name  */
+	/**
+	 * Full name
+	 */
 	private String name;
-	/**  First name  */
+	/**
+	 * First name
+	 */
 	private String firstName;
-	/**  Last name  */
+	/**
+	 * Last name
+	 */
 	private String lastName;
-	/**  User email  */
+	/**
+	 * User email
+	 */
 	private String email;
-	/**  Gender  */
+	/**
+	 * Gender
+	 */
 	private String gender;
-	/**  User identifier  */
+	/**
+	 * User identifier
+	 */
 	private String userId;
-	/**  User birthday  */
+	/**
+	 * User birthday
+	 */
 	private String birthday;
-	/**  User model status              Possible values: UNKNOWN, OK, ERROR, NOACTION,
+	/**
+	 * User model status              Possible values: UNKNOWN, OK, ERROR, NOACTION,
 	  NOTEXIST, CONFLICT, MERGE, MERGEOK, NEWUSER, MINFRIENDS, INVITEOK, INVITEERROR,
-	  ACCESSDENIED, WRONGPASSWORDORUSERNAME, UNMERGEOK  */
+	  ACCESSDENIED, WRONGPASSWORDORUSERNAME, UNMERGEOK
+	 */
 	private String status;
-	/**  Profile picture URL  */
+	/**
+	 * Profile picture URL
+	 */
 	private String pictureUrl;
 
 	// id:

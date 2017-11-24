@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Subscription details  */
+/**
+ * Subscription details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SubscriptionSwitchSet.Tokenizer.class)
 public class SubscriptionSwitchSet extends SubscriptionSet {

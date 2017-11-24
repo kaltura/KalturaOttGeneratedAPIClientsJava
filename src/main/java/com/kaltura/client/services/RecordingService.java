@@ -50,7 +50,11 @@ public class RecordingService {
 		}
 	}
 
-	/**  Issue a record request for a program  */
+	/**
+	 * Issue a record request for a program
+	 * 
+	 * @param recording Recording Object
+	 */
     public static AddRecordingBuilder add(Recording recording)  {
 		return new AddRecordingBuilder(recording);
 	}
@@ -67,8 +71,12 @@ public class RecordingService {
 		}
 	}
 
-	/**  Cancel a previously requested recording. Cancel recording can be called for
-	  recording in status Scheduled or Recording Only  */
+	/**
+	 * Cancel a previously requested recording. Cancel recording can be called for
+	  recording in status Scheduled or Recording Only
+	 * 
+	 * @param id Recording identifier
+	 */
     public static CancelRecordingBuilder cancel(long id)  {
 		return new CancelRecordingBuilder(id);
 	}
@@ -85,8 +93,12 @@ public class RecordingService {
 		}
 	}
 
-	/**  Delete one or more user recording(s). Delete recording can be called only for
-	  recordings in status Recorded  */
+	/**
+	 * Delete one or more user recording(s). Delete recording can be called only for
+	  recordings in status Recorded
+	 * 
+	 * @param id Recording identifier
+	 */
     public static DeleteRecordingBuilder delete(long id)  {
 		return new DeleteRecordingBuilder(id);
 	}
@@ -103,7 +115,11 @@ public class RecordingService {
 		}
 	}
 
-	/**  Returns recording object by internal identifier  */
+	/**
+	 * Returns recording object by internal identifier
+	 * 
+	 * @param id Recording identifier
+	 */
     public static GetRecordingBuilder get(long id)  {
 		return new GetRecordingBuilder(id);
 	}
@@ -125,8 +141,13 @@ public class RecordingService {
 		return list(filter, null);
 	}
 
-	/**  Return a list of recordings for the household with optional filter by status and
-	  KSQL.  */
+	/**
+	 * Return a list of recordings for the household with optional filter by status and
+	  KSQL.
+	 * 
+	 * @param filter Filter parameters for filtering out the result
+	 * @param pager Page size and index
+	 */
     public static ListRecordingBuilder list(RecordingFilter filter, FilterPager pager)  {
 		return new ListRecordingBuilder(filter, pager);
 	}
@@ -143,8 +164,12 @@ public class RecordingService {
 		}
 	}
 
-	/**  Protects an existing recording from the cleanup process for the defined
-	  protection period  */
+	/**
+	 * Protects an existing recording from the cleanup process for the defined
+	  protection period
+	 * 
+	 * @param id Recording identifier
+	 */
     public static ProtectRecordingBuilder protect(long id)  {
 		return new ProtectRecordingBuilder(id);
 	}

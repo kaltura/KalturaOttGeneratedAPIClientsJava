@@ -54,18 +54,30 @@ public class MessageTemplate extends ObjectBase {
 		String url();
 	}
 
-	/**  The message template with placeholders  */
+	/**
+	 * The message template with placeholders
+	 */
 	private String message;
-	/**  Default date format for the date &amp;amp; time entries used in the template  */
+	/**
+	 * Default date format for the date &amp;amp; time entries used in the template
+	 */
 	private String dateFormat;
-	/**  Template type. Possible values: Series, Reminder,Churn, SeriesReminder  */
+	/**
+	 * Template type. Possible values: Series, Reminder,Churn, SeriesReminder
+	 */
 	private MessageTemplateType messageType;
-	/**  Sound file name to play upon message arrival to the device (if supported by
-	  target device)  */
+	/**
+	 * Sound file name to play upon message arrival to the device (if supported by
+	  target device)
+	 */
 	private String sound;
-	/**  an optional action  */
+	/**
+	 * an optional action
+	 */
 	private String action;
-	/**  URL template for deep linking. Example - /app/location/{mediaId}  */
+	/**
+	 * URL template for deep linking. Example - /app/location/{mediaId}
+	 */
 	private String url;
 
 	// message:

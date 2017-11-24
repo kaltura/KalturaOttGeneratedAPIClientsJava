@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Transactions filter  */
+/**
+ * Transactions filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(TransactionHistoryFilter.Tokenizer.class)
 public class TransactionHistoryFilter extends Filter {
@@ -51,11 +53,17 @@ public class TransactionHistoryFilter extends Filter {
 		String endDateLessThanOrEqual();
 	}
 
-	/**  Reference type to filter by  */
+	/**
+	 * Reference type to filter by
+	 */
 	private EntityReferenceBy entityReferenceEqual;
-	/**  Filter transactions later than specific date  */
+	/**
+	 * Filter transactions later than specific date
+	 */
 	private Integer startDateGreaterThanOrEqual;
-	/**  Filter transactions earlier than specific date  */
+	/**
+	 * Filter transactions earlier than specific date
+	 */
 	private Integer endDateLessThanOrEqual;
 
 	// entityReferenceEqual:

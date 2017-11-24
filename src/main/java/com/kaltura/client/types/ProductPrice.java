@@ -54,13 +54,21 @@ public abstract class ProductPrice extends ObjectBase {
 		String purchaseStatus();
 	}
 
-	/**  Product identifier  */
+	/**
+	 * Product identifier
+	 */
 	private String productId;
-	/**  Product Type  */
+	/**
+	 * Product Type
+	 */
 	private TransactionType productType;
-	/**  Product price  */
+	/**
+	 * Product price
+	 */
 	private Price price;
-	/**  Product purchase status  */
+	/**
+	 * Product purchase status
+	 */
 	private PurchaseStatus purchaseStatus;
 
 	// productId:

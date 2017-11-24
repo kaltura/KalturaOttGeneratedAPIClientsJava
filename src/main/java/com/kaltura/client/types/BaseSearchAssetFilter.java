@@ -49,7 +49,9 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		RequestBuilder.ListTokenizer<AssetGroupBy.Tokenizer> groupBy();
 	}
 
-	/**  groupBy  */
+	/**
+	 * groupBy
+	 */
 	private List<AssetGroupBy> groupBy;
 
 	// groupBy:

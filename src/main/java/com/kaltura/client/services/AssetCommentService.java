@@ -50,7 +50,11 @@ public class AssetCommentService {
 		}
 	}
 
-	/**  Add asset comments by asset id  */
+	/**
+	 * Add asset comments by asset id
+	 * 
+	 * @param comment comment
+	 */
     public static AddAssetCommentBuilder add(AssetComment comment)  {
 		return new AddAssetCommentBuilder(comment);
 	}
@@ -68,7 +72,12 @@ public class AssetCommentService {
 		return list(filter, null);
 	}
 
-	/**  Returns asset comments by asset id  */
+	/**
+	 * Returns asset comments by asset id
+	 * 
+	 * @param filter Filtering the assets comments request
+	 * @param pager Page size and index
+	 */
     public static ListAssetCommentBuilder list(AssetCommentFilter filter, FilterPager pager)  {
 		return new ListAssetCommentBuilder(filter, pager);
 	}

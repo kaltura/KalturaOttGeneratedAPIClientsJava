@@ -46,8 +46,10 @@ public class TimeShiftedTvPartnerSettingsService {
 		}
 	}
 
-	/**  Retrieve the account’s time-shifted TV settings (catch-up and C-DVR,
-	  Trick-play, Start-over)  */
+	/**
+	 * Retrieve the account’s time-shifted TV settings (catch-up and C-DVR,
+	  Trick-play, Start-over)
+	 */
     public static GetTimeShiftedTvPartnerSettingsBuilder get()  {
 		return new GetTimeShiftedTvPartnerSettingsBuilder();
 	}
@@ -60,8 +62,12 @@ public class TimeShiftedTvPartnerSettingsService {
 		}
 	}
 
-	/**  Configure the account’s time-shifted TV settings (catch-up and C-DVR,
-	  Trick-play, Start-over)  */
+	/**
+	 * Configure the account’s time-shifted TV settings (catch-up and C-DVR,
+	  Trick-play, Start-over)
+	 * 
+	 * @param settings Time shifted TV settings
+	 */
     public static UpdateTimeShiftedTvPartnerSettingsBuilder update(TimeShiftedTvPartnerSettings settings)  {
 		return new UpdateTimeShiftedTvPartnerSettingsBuilder(settings);
 	}

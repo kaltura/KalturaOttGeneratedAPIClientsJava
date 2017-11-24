@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  OSS adapter basic  */
+/**
+ * OSS adapter basic
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OSSAdapterBaseProfile.Tokenizer.class)
 public class OSSAdapterBaseProfile extends ObjectBase {
@@ -50,9 +52,13 @@ public class OSSAdapterBaseProfile extends ObjectBase {
 		String name();
 	}
 
-	/**  OSS adapter id  */
+	/**
+	 * OSS adapter id
+	 */
 	private Integer id;
-	/**  OSS adapter name  */
+	/**
+	 * OSS adapter name
+	 */
 	private String name;
 
 	// id:

@@ -56,19 +56,33 @@ public class ConfigurationGroup extends ObjectBase {
 		RequestBuilder.ListTokenizer<ConfigurationIdentifier.Tokenizer> configurationIdentifiers();
 	}
 
-	/**  Configuration group identifier  */
+	/**
+	 * Configuration group identifier
+	 */
 	private String id;
-	/**  Configuration group name  */
+	/**
+	 * Configuration group name
+	 */
 	private String name;
-	/**  Partner id  */
+	/**
+	 * Partner id
+	 */
 	private Integer partnerId;
-	/**  Is default  */
+	/**
+	 * Is default
+	 */
 	private Boolean isDefault;
-	/**  tags  */
+	/**
+	 * tags
+	 */
 	private List<StringValue> tags;
-	/**  Number of devices  */
+	/**
+	 * Number of devices
+	 */
 	private Long numberOfDevices;
-	/**  Configuration identifiers  */
+	/**
+	 * Configuration identifiers
+	 */
 	private List<ConfigurationIdentifier> configurationIdentifiers;
 
 	// id:

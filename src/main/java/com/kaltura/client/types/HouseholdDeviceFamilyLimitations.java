@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Device family limitations details  */
+/**
+ * Device family limitations details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdDeviceFamilyLimitations.Tokenizer.class)
 public class HouseholdDeviceFamilyLimitations extends DeviceFamilyBase {
@@ -50,11 +52,17 @@ public class HouseholdDeviceFamilyLimitations extends DeviceFamilyBase {
 		String concurrentLimit();
 	}
 
-	/**  Allowed device change frequency code  */
+	/**
+	 * Allowed device change frequency code
+	 */
 	private Integer frequency;
-	/**  Max number of devices allowed for this family  */
+	/**
+	 * Max number of devices allowed for this family
+	 */
 	private Integer deviceLimit;
-	/**  Max number of streams allowed for this family  */
+	/**
+	 * Max number of streams allowed for this family
+	 */
 	private Integer concurrentLimit;
 
 	// frequency:

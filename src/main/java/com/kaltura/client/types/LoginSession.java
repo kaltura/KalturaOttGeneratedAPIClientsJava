@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Login response  */
+/**
+ * Login response
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(LoginSession.Tokenizer.class)
 public class LoginSession extends ObjectBase {
@@ -49,7 +51,9 @@ public class LoginSession extends ObjectBase {
 		String ks();
 	}
 
-	/**  Access token in a KS format  */
+	/**
+	 * Access token in a KS format
+	 */
 	private String ks;
 
 	// ks:

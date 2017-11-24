@@ -47,7 +47,9 @@ public class PaymentMethodProfileFilter extends Filter {
 		String paymentGatewayIdEqual();
 	}
 
-	/**  Payment gateway identifier to list the payment methods for  */
+	/**
+	 * Payment gateway identifier to list the payment methods for
+	 */
 	private Integer paymentGatewayIdEqual;
 
 	// paymentGatewayIdEqual:

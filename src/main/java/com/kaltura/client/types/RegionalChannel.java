@@ -49,9 +49,13 @@ public class RegionalChannel extends ObjectBase {
 		String channelNumber();
 	}
 
-	/**  The identifier of the linear media representing the channel  */
+	/**
+	 * The identifier of the linear media representing the channel
+	 */
 	private Integer linearChannelId;
-	/**  The number of the channel  */
+	/**
+	 * The number of the channel
+	 */
 	private Integer channelNumber;
 
 	// linearChannelId:

@@ -46,7 +46,9 @@ public class DeviceFamilyService {
 		}
 	}
 
-	/**  Return a list of the available device families.  */
+	/**
+	 * Return a list of the available device families.
+	 */
     public static ListDeviceFamilyBuilder list()  {
 		return new ListDeviceFamilyBuilder();
 	}

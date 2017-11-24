@@ -51,9 +51,13 @@ public class LoginResponse extends ObjectBase {
 		LoginSession.Tokenizer loginSession();
 	}
 
-	/**  User  */
+	/**
+	 * User
+	 */
 	private OTTUser user;
-	/**  Kaltura login session details  */
+	/**
+	 * Kaltura login session details
+	 */
 	private LoginSession loginSession;
 
 	// user:

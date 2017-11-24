@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  User interest topic  */
+/**
+ * User interest topic
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(UserInterestTopic.Tokenizer.class)
 public class UserInterestTopic extends ObjectBase {
@@ -52,11 +54,17 @@ public class UserInterestTopic extends ObjectBase {
 		UserInterestTopic.Tokenizer parentTopic();
 	}
 
-	/**  Meta identifier  */
+	/**
+	 * Meta identifier
+	 */
 	private String metaId;
-	/**  Meta Value  */
+	/**
+	 * Meta Value
+	 */
 	private String value;
-	/**  Parent topic  */
+	/**
+	 * Parent topic
+	 */
 	private UserInterestTopic parentTopic;
 
 	// metaId:

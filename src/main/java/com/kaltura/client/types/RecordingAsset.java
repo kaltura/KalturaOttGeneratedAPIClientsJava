@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Recording-asset info  */
+/**
+ * Recording-asset info
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RecordingAsset.Tokenizer.class)
 public class RecordingAsset extends ProgramAsset {
@@ -48,7 +50,9 @@ public class RecordingAsset extends ProgramAsset {
 		String recordingId();
 	}
 
-	/**  Recording identifier  */
+	/**
+	 * Recording identifier
+	 */
 	private String recordingId;
 
 	// recordingId:

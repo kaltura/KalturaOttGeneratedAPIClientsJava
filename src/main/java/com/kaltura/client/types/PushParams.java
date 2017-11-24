@@ -49,9 +49,13 @@ public class PushParams extends ObjectBase {
 		String externalToken();
 	}
 
-	/**  Token  */
+	/**
+	 * Token
+	 */
 	private String token;
-	/**  External token  */
+	/**
+	 * External token
+	 */
 	private String externalToken;
 
 	// token:

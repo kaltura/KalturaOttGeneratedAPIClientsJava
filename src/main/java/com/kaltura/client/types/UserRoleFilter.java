@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  User roles filter  */
+/**
+ * User roles filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(UserRoleFilter.Tokenizer.class)
 public class UserRoleFilter extends Filter {
@@ -48,7 +50,9 @@ public class UserRoleFilter extends Filter {
 		String idIn();
 	}
 
-	/**  Comma separated roles identifiers  */
+	/**
+	 * Comma separated roles identifiers
+	 */
 	private String idIn;
 
 	// idIn:

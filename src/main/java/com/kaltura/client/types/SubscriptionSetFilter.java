@@ -48,9 +48,13 @@ public class SubscriptionSetFilter extends Filter {
 		String subscriptionIdContains();
 	}
 
-	/**  Comma separated identifiers  */
+	/**
+	 * Comma separated identifiers
+	 */
 	private String idIn;
-	/**  Comma separated subscription identifiers  */
+	/**
+	 * Comma separated subscription identifiers
+	 */
 	private String subscriptionIdContains;
 
 	// idIn:

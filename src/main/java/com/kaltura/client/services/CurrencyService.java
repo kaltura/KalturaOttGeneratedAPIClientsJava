@@ -48,8 +48,12 @@ public class CurrencyService {
 		}
 	}
 
-	/**  Get the list of currencies for the partner with option to filter by currency
-	  codes  */
+	/**
+	 * Get the list of currencies for the partner with option to filter by currency
+	  codes
+	 * 
+	 * @param filter currency filter
+	 */
     public static ListCurrencyBuilder list(CurrencyFilter filter)  {
 		return new ListCurrencyBuilder(filter);
 	}

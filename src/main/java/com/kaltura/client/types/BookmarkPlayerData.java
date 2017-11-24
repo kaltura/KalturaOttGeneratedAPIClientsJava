@@ -53,15 +53,25 @@ public class BookmarkPlayerData extends ObjectBase {
 		String fileId();
 	}
 
-	/**  Action  */
+	/**
+	 * Action
+	 */
 	private BookmarkActionType action;
-	/**  Average Bitrate  */
+	/**
+	 * Average Bitrate
+	 */
 	private Integer averageBitrate;
-	/**  Total Bitrate  */
+	/**
+	 * Total Bitrate
+	 */
 	private Integer totalBitrate;
-	/**  Current Bitrate  */
+	/**
+	 * Current Bitrate
+	 */
 	private Integer currentBitrate;
-	/**  Identifier of the file  */
+	/**
+	 * Identifier of the file
+	 */
 	private Long fileId;
 
 	// action:

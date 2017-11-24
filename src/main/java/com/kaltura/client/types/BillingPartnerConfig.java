@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Partner billing configuration  */
+/**
+ * Partner billing configuration
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BillingPartnerConfig.Tokenizer.class)
 public class BillingPartnerConfig extends PartnerConfiguration {
@@ -50,9 +52,13 @@ public class BillingPartnerConfig extends PartnerConfiguration {
 		String type();
 	}
 
-	/**  configuration value  */
+	/**
+	 * configuration value
+	 */
 	private String value;
-	/**  partner configuration type  */
+	/**
+	 * partner configuration type
+	 */
 	private PartnerConfigurationType type;
 
 	// value:

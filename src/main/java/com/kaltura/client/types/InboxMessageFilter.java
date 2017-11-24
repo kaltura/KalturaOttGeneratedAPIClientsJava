@@ -49,11 +49,17 @@ public class InboxMessageFilter extends Filter {
 		String createdAtLessThanOrEqual();
 	}
 
-	/**  List of inbox message types to search within.  */
+	/**
+	 * List of inbox message types to search within.
+	 */
 	private String typeIn;
-	/**  createdAtGreaterThanOrEqual  */
+	/**
+	 * createdAtGreaterThanOrEqual
+	 */
 	private Long createdAtGreaterThanOrEqual;
-	/**  createdAtLessThanOrEqual  */
+	/**
+	 * createdAtLessThanOrEqual
+	 */
 	private Long createdAtLessThanOrEqual;
 
 	// typeIn:

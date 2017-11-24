@@ -51,13 +51,21 @@ public class PaymentMethodProfile extends ObjectBase {
 		String allowMultiInstance();
 	}
 
-	/**  Payment method identifier (internal)  */
+	/**
+	 * Payment method identifier (internal)
+	 */
 	private Integer id;
-	/**  Payment gateway identifier (internal)  */
+	/**
+	 * Payment gateway identifier (internal)
+	 */
 	private Integer paymentGatewayId;
-	/**  Payment method name  */
+	/**
+	 * Payment method name
+	 */
 	private String name;
-	/**  Indicates whether the payment method allow multiple instances  */
+	/**
+	 * Indicates whether the payment method allow multiple instances
+	 */
 	private Boolean allowMultiInstance;
 
 	// id:

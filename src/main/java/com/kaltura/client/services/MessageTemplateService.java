@@ -52,7 +52,11 @@ public class MessageTemplateService {
 		}
 	}
 
-	/**  Retrieve a message template used in push notifications and inbox  */
+	/**
+	 * Retrieve a message template used in push notifications and inbox
+	 * 
+	 * @param messageType possible values: Asset type – Series, Reminder,Churn
+	 */
     public static GetMessageTemplateBuilder get(MessageTemplateType messageType)  {
 		return new GetMessageTemplateBuilder(messageType);
 	}
@@ -70,7 +74,12 @@ public class MessageTemplateService {
 		}
 	}
 
-	/**  Set the account’s push notifications and inbox messages templates  */
+	/**
+	 * Set the account’s push notifications and inbox messages templates
+	 * 
+	 * @param messageType The asset type to update its template
+	 * @param template The actual message with placeholders to be presented to the user
+	 */
     public static UpdateMessageTemplateBuilder update(MessageTemplateType messageType, MessageTemplate template)  {
 		return new UpdateMessageTemplateBuilder(messageType, template);
 	}

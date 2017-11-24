@@ -50,11 +50,17 @@ public class AssetFileContext extends ObjectBase {
 		String isOfflinePlayBack();
 	}
 
-	/**  viewLifeCycle  */
+	/**
+	 * viewLifeCycle
+	 */
 	private String viewLifeCycle;
-	/**  fullLifeCycle  */
+	/**
+	 * fullLifeCycle
+	 */
 	private String fullLifeCycle;
-	/**  isOfflinePlayBack  */
+	/**
+	 * isOfflinePlayBack
+	 */
 	private Boolean isOfflinePlayBack;
 
 	// viewLifeCycle:

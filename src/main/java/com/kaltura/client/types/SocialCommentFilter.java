@@ -52,13 +52,21 @@ public class SocialCommentFilter extends Filter {
 		String createDateGreaterThan();
 	}
 
-	/**  Asset ID to filter by  */
+	/**
+	 * Asset ID to filter by
+	 */
 	private Long assetIdEqual;
-	/**  Asset type to filter by, currently only VOD (media)  */
+	/**
+	 * Asset type to filter by, currently only VOD (media)
+	 */
 	private AssetType assetTypeEqual;
-	/**  Comma separated list of social actions to filter by  */
+	/**
+	 * Comma separated list of social actions to filter by
+	 */
 	private SocialPlatform socialPlatformEqual;
-	/**  The create date from which to get the comments  */
+	/**
+	 * The create date from which to get the comments
+	 */
 	private Long createDateGreaterThan;
 
 	// assetIdEqual:

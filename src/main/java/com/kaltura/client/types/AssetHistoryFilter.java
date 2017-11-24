@@ -51,20 +51,28 @@ public class AssetHistoryFilter extends Filter {
 		String daysLessThanOrEqual();
 	}
 
-	/**  Comma separated list of asset types to search within.              Possible
+	/**
+	 * Comma separated list of asset types to search within.              Possible
 	  values: 0 – EPG linear programs entries, any media type ID (according to media
 	  type IDs defined dynamically in the system).              If omitted – all
-	  types should be included.  */
+	  types should be included.
+	 */
 	private String typeIn;
-	/**  Comma separated list of asset identifiers.  */
+	/**
+	 * Comma separated list of asset identifiers.
+	 */
 	private String assetIdIn;
-	/**  Which type of recently watched media to include in the result – those that
+	/**
+	 * Which type of recently watched media to include in the result – those that
 	  finished watching, those that are in progress or both.              If omitted
 	  or specified filter = all – return all types.              Allowed values:
 	  progress – return medias that are in-progress, done – return medias that
-	  finished watching.  */
+	  finished watching.
+	 */
 	private WatchStatus statusEqual;
-	/**  How many days back to return the watched media. If omitted, default to 7 days  */
+	/**
+	 * How many days back to return the watched media. If omitted, default to 7 days
+	 */
 	private Integer daysLessThanOrEqual;
 
 	// typeIn:

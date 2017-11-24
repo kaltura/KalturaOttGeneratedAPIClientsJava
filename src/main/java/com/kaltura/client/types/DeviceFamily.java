@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Device family details  */
+/**
+ * Device family details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DeviceFamily.Tokenizer.class)
 public class DeviceFamily extends DeviceFamilyBase {

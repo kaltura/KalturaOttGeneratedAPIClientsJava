@@ -48,10 +48,14 @@ public class SubscriptionFilter extends Filter {
 		String mediaFileIdEqual();
 	}
 
-	/**  Comma separated subscription identifiers or file identifier (only 1) to get the
-	  subscriptions by  */
+	/**
+	 * Comma separated subscription identifiers or file identifier (only 1) to get the
+	  subscriptions by
+	 */
 	private String subscriptionIdIn;
-	/**  Media-file identifier to get the subscriptions by  */
+	/**
+	 * Media-file identifier to get the subscriptions by
+	 */
 	private Integer mediaFileIdEqual;
 
 	// subscriptionIdIn:

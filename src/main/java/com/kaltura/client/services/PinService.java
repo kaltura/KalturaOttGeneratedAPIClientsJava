@@ -67,9 +67,15 @@ public class PinService {
 		return get(by, type, Integer.MIN_VALUE);
 	}
 
-	/**  Retrieve the parental or purchase PIN that applies for the household or user.
+	/**
+	 * Retrieve the parental or purchase PIN that applies for the household or user.
 	  Includes specification of where the PIN was defined at – account, household or
-	  user  level  */
+	  user  level
+	 * 
+	 * @param by Reference type to filter by
+	 * @param type The PIN type to retrieve
+	 * @param ruleId Rule ID - for PIN per rule (MediaCorp): BEO-1923
+	 */
     public static GetPinBuilder get(EntityReferenceBy by, PinType type, int ruleId)  {
 		return new GetPinBuilder(by, type, ruleId);
 	}
@@ -101,7 +107,14 @@ public class PinService {
 		return update(by, type, pin, Integer.MIN_VALUE);
 	}
 
-	/**  Set the parental or purchase PIN that applies for the user or the household.  */
+	/**
+	 * Set the parental or purchase PIN that applies for the user or the household.
+	 * 
+	 * @param by Reference type to filter by
+	 * @param type The PIN type to retrieve
+	 * @param pin PIN to set
+	 * @param ruleId Rule ID - for PIN per rule (MediaCorp): BEO-1923
+	 */
     public static UpdatePinBuilder update(EntityReferenceBy by, PinType type, Pin pin, int ruleId)  {
 		return new UpdatePinBuilder(by, type, pin, ruleId);
 	}
@@ -132,7 +145,13 @@ public class PinService {
 		return validate(pin, type, Integer.MIN_VALUE);
 	}
 
-	/**  Validate a purchase or parental PIN for a user.  */
+	/**
+	 * Validate a purchase or parental PIN for a user.
+	 * 
+	 * @param pin PIN to validate
+	 * @param type The PIN type to retrieve
+	 * @param ruleId Rule ID - for PIN per rule (MediaCorp): BEO-1923
+	 */
     public static ValidatePinBuilder validate(String pin, PinType type, int ruleId)  {
 		return new ValidatePinBuilder(pin, type, ruleId);
 	}

@@ -48,9 +48,13 @@ public class SeriesReminderFilter extends ReminderFilter {
 		String epgChannelIdEqual();
 	}
 
-	/**  Comma separated series IDs  */
+	/**
+	 * Comma separated series IDs
+	 */
 	private String seriesIdIn;
-	/**  EPG channel ID  */
+	/**
+	 * EPG channel ID
+	 */
 	private Long epgChannelIdEqual;
 
 	// seriesIdIn:

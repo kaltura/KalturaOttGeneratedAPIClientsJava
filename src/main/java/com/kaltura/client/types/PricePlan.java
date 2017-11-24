@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Price plan  */
+/**
+ * Price plan
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PricePlan.Tokenizer.class)
 public class PricePlan extends UsageModule {
@@ -51,14 +53,22 @@ public class PricePlan extends UsageModule {
 		String discountId();
 	}
 
-	/**  Denotes whether or not this object can be renewed  */
+	/**
+	 * Denotes whether or not this object can be renewed
+	 */
 	private Boolean isRenewable;
-	/**  Defines the number of times the module will be renewed (for the life_cycle
-	  period)  */
+	/**
+	 * Defines the number of times the module will be renewed (for the life_cycle
+	  period)
+	 */
 	private Integer renewalsNumber;
-	/**  Unique identifier associated with this object&amp;#39;s price  */
+	/**
+	 * Unique identifier associated with this object&amp;#39;s price
+	 */
 	private Integer priceId;
-	/**  The discount module identifier of the price plan  */
+	/**
+	 * The discount module identifier of the price plan
+	 */
 	private Long discountId;
 
 	// isRenewable:

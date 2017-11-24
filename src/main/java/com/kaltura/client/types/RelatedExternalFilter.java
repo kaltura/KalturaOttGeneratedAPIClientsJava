@@ -50,16 +50,24 @@ public class RelatedExternalFilter extends AssetFilter {
 		String freeText();
 	}
 
-	/**  the External ID of the asset for which to return related assets  */
+	/**
+	 * the External ID of the asset for which to return related assets
+	 */
 	private Integer idEqual;
-	/**  Comma separated list of asset types to search within.               Possible
+	/**
+	 * Comma separated list of asset types to search within.               Possible
 	  values: 0 – EPG linear programs entries, any media type ID (according to media
 	  type IDs defined dynamically in the system).              If omitted – all
-	  types should be included.  */
+	  types should be included.
+	 */
 	private String typeIn;
-	/**  UtcOffsetEqual  */
+	/**
+	 * UtcOffsetEqual
+	 */
 	private Integer utcOffsetEqual;
-	/**  FreeText  */
+	/**
+	 * FreeText
+	 */
 	private String freeText;
 
 	// idEqual:

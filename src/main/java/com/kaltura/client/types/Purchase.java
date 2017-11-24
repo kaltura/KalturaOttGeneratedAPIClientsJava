@@ -52,20 +52,32 @@ public class Purchase extends PurchaseBase {
 		String adapterData();
 	}
 
-	/**  Identifier for paying currency, according to ISO 4217  */
+	/**
+	 * Identifier for paying currency, according to ISO 4217
+	 */
 	private String currency;
-	/**  Net sum to charge – as a one-time transaction. Price must match the previously
-	  provided price for the specified content.  */
+	/**
+	 * Net sum to charge – as a one-time transaction. Price must match the previously
+	  provided price for the specified content.
+	 */
 	private Double price;
-	/**  Identifier for a pre-entered payment method. If not provided – the
-	  household’s default payment method is used  */
+	/**
+	 * Identifier for a pre-entered payment method. If not provided – the
+	  household’s default payment method is used
+	 */
 	private Integer paymentMethodId;
-	/**  Identifier for a pre-associated payment gateway. If not provided – the
-	  account’s default payment gateway is used  */
+	/**
+	 * Identifier for a pre-associated payment gateway. If not provided – the
+	  account’s default payment gateway is used
+	 */
 	private Integer paymentGatewayId;
-	/**  Coupon code  */
+	/**
+	 * Coupon code
+	 */
 	private String coupon;
-	/**  Additional data for the adapter  */
+	/**
+	 * Additional data for the adapter
+	 */
 	private String adapterData;
 
 	// currency:

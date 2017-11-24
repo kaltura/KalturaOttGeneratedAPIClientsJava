@@ -54,7 +54,11 @@ public class SearchHistoryService {
 		return clean(null);
 	}
 
-	/**  Clean the user’s search history  */
+	/**
+	 * Clean the user’s search history
+	 * 
+	 * @param filter Filter of search history
+	 */
     public static CleanSearchHistoryBuilder clean(SearchHistoryFilter filter)  {
 		return new CleanSearchHistoryBuilder(filter);
 	}
@@ -71,8 +75,12 @@ public class SearchHistoryService {
 		}
 	}
 
-	/**  Delete a specific search history.              Possible error code: 2032 -
-	  ItemNotFound  */
+	/**
+	 * Delete a specific search history.              Possible error code: 2032 -
+	  ItemNotFound
+	 * 
+	 * @param id ID of the search history reference as shown in the list action
+	 */
     public static DeleteSearchHistoryBuilder delete(String id)  {
 		return new DeleteSearchHistoryBuilder(id);
 	}
@@ -94,7 +102,14 @@ public class SearchHistoryService {
 		return list(filter, null);
 	}
 
-	/**  Get user&amp;#39;s last search requests  */
+	/**
+	 * Get user&amp;#39;s last search requests
+	 * 
+	 * @param filter Filter parameters for filtering out the result
+	 * @param pager Page size and index. Number of assets to return per page. Possible range 5 ≤
+	 * size ≥ 50. If omitted - will be set to 25. If a value &gt; 50 provided –
+	 * will set to 50&gt;
+	 */
     public static ListSearchHistoryBuilder list(SearchHistoryFilter filter, FilterPager pager)  {
 		return new ListSearchHistoryBuilder(filter, pager);
 	}

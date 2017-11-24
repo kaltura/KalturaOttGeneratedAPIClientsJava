@@ -41,7 +41,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  PPV price details  */
+/**
+ * PPV price details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ItemPrice.Tokenizer.class)
 public class ItemPrice extends ProductPrice {
@@ -51,9 +53,13 @@ public class ItemPrice extends ProductPrice {
 		RequestBuilder.ListTokenizer<PPVItemPriceDetails.Tokenizer> ppvPriceDetails();
 	}
 
-	/**  Media file identifier  */
+	/**
+	 * Media file identifier
+	 */
 	private Integer fileId;
-	/**  PPV price details  */
+	/**
+	 * PPV price details
+	 */
 	private List<PPVItemPriceDetails> ppvPriceDetails;
 
 	// fileId:

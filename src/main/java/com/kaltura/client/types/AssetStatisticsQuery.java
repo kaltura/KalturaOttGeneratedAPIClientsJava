@@ -52,13 +52,21 @@ public class AssetStatisticsQuery extends ObjectBase {
 		String endDateGreaterThanOrEqual();
 	}
 
-	/**  Comma separated list of asset identifiers.  */
+	/**
+	 * Comma separated list of asset identifiers.
+	 */
 	private String assetIdIn;
-	/**  Asset type  */
+	/**
+	 * Asset type
+	 */
 	private AssetType assetTypeEqual;
-	/**  The beginning of the time window to get the statistics for (in epoch).  */
+	/**
+	 * The beginning of the time window to get the statistics for (in epoch).
+	 */
 	private Long startDateGreaterThanOrEqual;
-	/**  /// The end of the time window to get the statistics for (in epoch).  */
+	/**
+	 * /// The end of the time window to get the statistics for (in epoch).
+	 */
 	private Long endDateGreaterThanOrEqual;
 
 	// assetIdIn:

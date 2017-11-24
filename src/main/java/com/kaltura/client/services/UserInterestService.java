@@ -48,7 +48,11 @@ public class UserInterestService {
 		}
 	}
 
-	/**  Insert new user interest for partner user  */
+	/**
+	 * Insert new user interest for partner user
+	 * 
+	 * @param userInterest User interest Object
+	 */
     public static AddUserInterestBuilder add(UserInterest userInterest)  {
 		return new AddUserInterestBuilder(userInterest);
 	}
@@ -65,7 +69,11 @@ public class UserInterestService {
 		}
 	}
 
-	/**  Delete new user interest for partner user  */
+	/**
+	 * Delete new user interest for partner user
+	 * 
+	 * @param id User interest identifier
+	 */
     public static DeleteUserInterestBuilder delete(String id)  {
 		return new DeleteUserInterestBuilder(id);
 	}
@@ -77,7 +85,9 @@ public class UserInterestService {
 		}
 	}
 
-	/**  Returns all Engagement for partner  */
+	/**
+	 * Returns all Engagement for partner
+	 */
     public static ListUserInterestBuilder list()  {
 		return new ListUserInterestBuilder();
 	}

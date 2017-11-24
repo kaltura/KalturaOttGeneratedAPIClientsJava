@@ -48,7 +48,11 @@ public class EngagementAdapterService {
 		}
 	}
 
-	/**  Insert new Engagement adapter for partner  */
+	/**
+	 * Insert new Engagement adapter for partner
+	 * 
+	 * @param engagementAdapter Engagement adapter Object
+	 */
     public static AddEngagementAdapterBuilder add(EngagementAdapter engagementAdapter)  {
 		return new AddEngagementAdapterBuilder(engagementAdapter);
 	}
@@ -65,7 +69,11 @@ public class EngagementAdapterService {
 		}
 	}
 
-	/**  Delete Engagement adapter by Engagement adapter id  */
+	/**
+	 * Delete Engagement adapter by Engagement adapter id
+	 * 
+	 * @param id Engagement adapter identifier
+	 */
     public static DeleteEngagementAdapterBuilder delete(int id)  {
 		return new DeleteEngagementAdapterBuilder(id);
 	}
@@ -82,7 +90,11 @@ public class EngagementAdapterService {
 		}
 	}
 
-	/**  Generate engagement adapter shared secret  */
+	/**
+	 * Generate engagement adapter shared secret
+	 * 
+	 * @param id Engagement adapter identifier
+	 */
     public static GenerateSharedSecretEngagementAdapterBuilder generateSharedSecret(int id)  {
 		return new GenerateSharedSecretEngagementAdapterBuilder(id);
 	}
@@ -99,7 +111,11 @@ public class EngagementAdapterService {
 		}
 	}
 
-	/**  Returns all Engagement adapters for partner : id + name  */
+	/**
+	 * Returns all Engagement adapters for partner : id + name
+	 * 
+	 * @param id Engagement adapter identifier
+	 */
     public static GetEngagementAdapterBuilder get(int id)  {
 		return new GetEngagementAdapterBuilder(id);
 	}
@@ -111,7 +127,9 @@ public class EngagementAdapterService {
 		}
 	}
 
-	/**  Returns all Engagement adapters for partner : id + name  */
+	/**
+	 * Returns all Engagement adapters for partner : id + name
+	 */
     public static ListEngagementAdapterBuilder list()  {
 		return new ListEngagementAdapterBuilder();
 	}
@@ -129,7 +147,12 @@ public class EngagementAdapterService {
 		}
 	}
 
-	/**  Update Engagement adapter details  */
+	/**
+	 * Update Engagement adapter details
+	 * 
+	 * @param id Engagement adapter identifier
+	 * @param engagementAdapter Engagement adapter Object
+	 */
     public static UpdateEngagementAdapterBuilder update(int id, EngagementAdapter engagementAdapter)  {
 		return new UpdateEngagementAdapterBuilder(id, engagementAdapter);
 	}

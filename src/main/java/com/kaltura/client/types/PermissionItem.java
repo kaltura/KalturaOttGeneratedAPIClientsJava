@@ -49,9 +49,13 @@ public class PermissionItem extends ObjectBase {
 		String name();
 	}
 
-	/**  Permission item identifier  */
+	/**
+	 * Permission item identifier
+	 */
 	private Long id;
-	/**  Permission item name  */
+	/**
+	 * Permission item name
+	 */
 	private String name;
 
 	// id:

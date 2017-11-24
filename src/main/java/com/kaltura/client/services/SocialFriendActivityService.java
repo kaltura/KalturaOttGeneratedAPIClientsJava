@@ -58,7 +58,12 @@ public class SocialFriendActivityService {
 		return list(filter, null);
 	}
 
-	/**  Get a list of the social friends activity for a user  */
+	/**
+	 * Get a list of the social friends activity for a user
+	 * 
+	 * @param filter Social friend activity filter
+	 * @param pager Pager
+	 */
     public static ListSocialFriendActivityBuilder list(SocialFriendActivityFilter filter, FilterPager pager)  {
 		return new ListSocialFriendActivityBuilder(filter, pager);
 	}

@@ -52,11 +52,17 @@ public class PlaybackContext extends ObjectBase {
 		RequestBuilder.ListTokenizer<AccessControlMessage.Tokenizer> messages();
 	}
 
-	/**  Sources  */
+	/**
+	 * Sources
+	 */
 	private List<PlaybackSource> sources;
-	/**  Actions  */
+	/**
+	 * Actions
+	 */
 	private List<RuleAction> actions;
-	/**  Messages  */
+	/**
+	 * Messages
+	 */
 	private List<AccessControlMessage> messages;
 
 	// sources:

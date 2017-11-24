@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  KalturaPpvEntitlement  */
+/**
+ * KalturaPpvEntitlement
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PpvEntitlement.Tokenizer.class)
 public class PpvEntitlement extends Entitlement {
@@ -49,9 +51,13 @@ public class PpvEntitlement extends Entitlement {
 		String mediaId();
 	}
 
-	/**  Media file identifier  */
+	/**
+	 * Media file identifier
+	 */
 	private Integer mediaFileId;
-	/**  Media identifier  */
+	/**
+	 * Media identifier
+	 */
 	private Integer mediaId;
 
 	// mediaFileId:

@@ -48,8 +48,12 @@ public class LanguageService {
 		}
 	}
 
-	/**  Get the list of languages for the partner with option to filter by language
-	  codes  */
+	/**
+	 * Get the list of languages for the partner with option to filter by language
+	  codes
+	 * 
+	 * @param filter language filter
+	 */
     public static ListLanguageBuilder list(LanguageFilter filter)  {
 		return new ListLanguageBuilder(filter);
 	}

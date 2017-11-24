@@ -51,7 +51,11 @@ public class HouseholdLimitationsService {
 		}
 	}
 
-	/**  Get the limitation module by id  */
+	/**
+	 * Get the limitation module by id
+	 * 
+	 * @param id Household limitations module identifier
+	 */
     public static GetHouseholdLimitationsBuilder get(int id)  {
 		return new GetHouseholdLimitationsBuilder(id);
 	}

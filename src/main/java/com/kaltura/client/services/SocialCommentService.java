@@ -54,7 +54,12 @@ public class SocialCommentService {
 		return list(filter, null);
 	}
 
-	/**  Get a list of all social comments filtered by asset ID and social platform  */
+	/**
+	 * Get a list of all social comments filtered by asset ID and social platform
+	 * 
+	 * @param filter Country filter
+	 * @param pager Pager
+	 */
     public static ListSocialCommentBuilder list(SocialCommentFilter filter, FilterPager pager)  {
 		return new ListSocialCommentBuilder(filter, pager);
 	}

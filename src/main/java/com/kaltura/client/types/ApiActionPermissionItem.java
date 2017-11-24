@@ -48,9 +48,13 @@ public class ApiActionPermissionItem extends PermissionItem {
 		String action();
 	}
 
-	/**  API service name  */
+	/**
+	 * API service name
+	 */
 	private String service;
-	/**  API action name  */
+	/**
+	 * API action name
+	 */
 	private String action;
 
 	// service:

@@ -50,11 +50,17 @@ public class ApiParameterPermissionItem extends PermissionItem {
 		String action();
 	}
 
-	/**  API object name  */
+	/**
+	 * API object name
+	 */
 	private String object;
-	/**  API parameter name  */
+	/**
+	 * API parameter name
+	 */
 	private String parameter;
-	/**  API action type  */
+	/**
+	 * API action type
+	 */
 	private ApiParameterPermissionItemAction action;
 
 	// object:

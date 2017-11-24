@@ -47,7 +47,11 @@ public class ChannelService {
 		}
 	}
 
-	/**  Insert new channel for partner. Currently supports only KSQL channel  */
+	/**
+	 * Insert new channel for partner. Currently supports only KSQL channel
+	 * 
+	 * @param channel KSQL channel Object
+	 */
     public static AddChannelBuilder add(Channel channel)  {
 		return new AddChannelBuilder(channel);
 	}
@@ -64,7 +68,11 @@ public class ChannelService {
 		}
 	}
 
-	/**  Delete channel by its channel id  */
+	/**
+	 * Delete channel by its channel id
+	 * 
+	 * @param channelId channel identifier
+	 */
     public static DeleteChannelBuilder delete(int channelId)  {
 		return new DeleteChannelBuilder(channelId);
 	}
@@ -81,7 +89,11 @@ public class ChannelService {
 		}
 	}
 
-	/**  Returns channel info  */
+	/**
+	 * Returns channel info
+	 * 
+	 * @param id Channel Identifier
+	 */
     public static GetChannelBuilder get(int id)  {
 		return new GetChannelBuilder(id);
 	}
@@ -99,7 +111,12 @@ public class ChannelService {
 		}
 	}
 
-	/**  Update channel details. Currently supports only KSQL channel  */
+	/**
+	 * Update channel details. Currently supports only KSQL channel
+	 * 
+	 * @param channelId Channel identifier
+	 * @param channel KSQL channel Object
+	 */
     public static UpdateChannelBuilder update(int channelId, Channel channel)  {
 		return new UpdateChannelBuilder(channelId, channel);
 	}

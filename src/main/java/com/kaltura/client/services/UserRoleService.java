@@ -52,8 +52,12 @@ public class UserRoleService {
 		return list(null);
 	}
 
-	/**  Retrieving user roles by identifiers, if filter is empty, returns all partner
-	  roles  */
+	/**
+	 * Retrieving user roles by identifiers, if filter is empty, returns all partner
+	  roles
+	 * 
+	 * @param filter User roles filter
+	 */
     public static ListUserRoleBuilder list(UserRoleFilter filter)  {
 		return new ListUserRoleBuilder(filter);
 	}

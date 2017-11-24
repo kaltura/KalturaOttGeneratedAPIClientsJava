@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  A string representation to return an array of booleans  */
+/**
+ * A string representation to return an array of booleans
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BooleanValue.Tokenizer.class)
 public class BooleanValue extends Value {
@@ -48,7 +50,9 @@ public class BooleanValue extends Value {
 		String value();
 	}
 
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private Boolean value;
 
 	// value:

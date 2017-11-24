@@ -51,11 +51,17 @@ public class Reminder extends ObjectBase {
 		String type();
 	}
 
-	/**  Reminder name  */
+	/**
+	 * Reminder name
+	 */
 	private String name;
-	/**  Reminder id  */
+	/**
+	 * Reminder id
+	 */
 	private Integer id;
-	/**  Reminder type  */
+	/**
+	 * Reminder type
+	 */
 	private ReminderType type;
 
 	// name:
