@@ -47,7 +47,9 @@ public class AssetReminder extends Reminder {
 		String assetId();
 	}
 
-	/**  Asset id  */
+	/**
+	 * Asset id
+	 */
 	private Long assetId;
 
 	// assetId:

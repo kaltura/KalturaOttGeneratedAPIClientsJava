@@ -52,8 +52,12 @@ public class PurchaseSettingsService {
 		}
 	}
 
-	/**  Retrieve the purchase settings.              Includes specification of where
-	  these settings were defined – account, household or user  */
+	/**
+	 * Retrieve the purchase settings.              Includes specification of where
+	  these settings were defined – account, household or user
+	 * 
+	 * @param by Reference type to filter by
+	 */
     public static GetPurchaseSettingsBuilder get(EntityReferenceBy by)  {
 		return new GetPurchaseSettingsBuilder(by);
 	}
@@ -71,7 +75,12 @@ public class PurchaseSettingsService {
 		}
 	}
 
-	/**  Set a purchase PIN for the household or user  */
+	/**
+	 * Set a purchase PIN for the household or user
+	 * 
+	 * @param entityReference Reference type to filter by
+	 * @param settings New settings to apply
+	 */
     public static UpdatePurchaseSettingsBuilder update(EntityReferenceBy entityReference, PurchaseSettings settings)  {
 		return new UpdatePurchaseSettingsBuilder(entityReference, settings);
 	}

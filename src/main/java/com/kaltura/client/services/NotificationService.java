@@ -58,7 +58,13 @@ public class NotificationService {
 		}
 	}
 
-	/**  TBD  */
+	/**
+	 * TBD
+	 * 
+	 * @param identifier In case type is "announcement", identifier should be the announcement ID. In
+	 * case type is "system", identifier should be "login" (the login topic)
+	 * @param type "announcement" - TV-Series topic, "system" - login topic
+	 */
     public static RegisterNotificationBuilder register(String identifier, NotificationType type)  {
 		return new RegisterNotificationBuilder(identifier, type);
 	}
@@ -76,7 +82,12 @@ public class NotificationService {
 		}
 	}
 
-	/**  Sends push notification to user devices  */
+	/**
+	 * Sends push notification to user devices
+	 * 
+	 * @param userId User identifications
+	 * @param pushMessage Message push data
+	 */
     public static SendPushNotificationBuilder sendPush(int userId, PushMessage pushMessage)  {
 		return new SendPushNotificationBuilder(userId, pushMessage);
 	}
@@ -93,7 +104,11 @@ public class NotificationService {
 		}
 	}
 
-	/**  Registers the device push token to the push service  */
+	/**
+	 * Registers the device push token to the push service
+	 * 
+	 * @param pushToken The device-application pair authentication for push delivery
+	 */
     public static SetDevicePushTokenNotificationBuilder setDevicePushToken(String pushToken)  {
 		return new SetDevicePushTokenNotificationBuilder(pushToken);
 	}

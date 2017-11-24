@@ -47,8 +47,10 @@ public abstract class PersistedFilter extends Filter {
 		String name();
 	}
 
-	/**  Name for the presisted filter. If empty, no action will be done. If has value,
-	  the filter will be saved and persisted in user&amp;#39;s search history.  */
+	/**
+	 * Name for the presisted filter. If empty, no action will be done. If has value,
+	  the filter will be saved and persisted in user&amp;#39;s search history.
+	 */
 	private String name;
 
 	// name:

@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Device pin  */
+/**
+ * Device pin
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DevicePin.Tokenizer.class)
 public class DevicePin extends ObjectBase {
@@ -49,7 +51,9 @@ public class DevicePin extends ObjectBase {
 		String pin();
 	}
 
-	/**  Device pin  */
+	/**
+	 * Device pin
+	 */
 	private String pin;
 
 	// pin:

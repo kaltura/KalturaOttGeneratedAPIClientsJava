@@ -47,7 +47,9 @@ public class SubscriptionDependencySetFilter extends SubscriptionSetFilter {
 		String baseSubscriptionIdIn();
 	}
 
-	/**  Comma separated identifiers  */
+	/**
+	 * Comma separated identifiers
+	 */
 	private String baseSubscriptionIdIn;
 
 	// baseSubscriptionIdIn:

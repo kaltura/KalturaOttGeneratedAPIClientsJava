@@ -50,11 +50,17 @@ public class ConfigurationGroupDevice extends ObjectBase {
 		String udid();
 	}
 
-	/**  Configuration group id  */
+	/**
+	 * Configuration group id
+	 */
 	private String configurationGroupId;
-	/**  Partner id  */
+	/**
+	 * Partner id
+	 */
 	private Integer partnerId;
-	/**  Device UDID  */
+	/**
+	 * Device UDID
+	 */
 	private String udid;
 
 	// configurationGroupId:

@@ -47,7 +47,8 @@ public class AssetReminderFilter extends ReminderFilter {
 		String kSql();
 	}
 
-	/**  Search assets using dynamic criteria. Provided collection of nested expressions
+	/**
+	 * Search assets using dynamic criteria. Provided collection of nested expressions
 	  with key, comparison operators, value, and logical conjunction.             
 	  Possible keys: any Tag or Meta defined in the system and the following reserved
 	  keys: start_date, end_date.               epg_id, media_id - for specific asset
@@ -67,7 +68,8 @@ public class AssetReminderFilter extends ReminderFilter {
 	  =, != (not), ~ (like), !~, ^ (any word starts with), ^= (phrase starts with), +
 	  (exists), !+ (not exists).              Logical conjunction: and, or.           
 	     Search values are limited to 20 characters each.              (maximum length
-	  of entire filter is 2048 characters)  */
+	  of entire filter is 2048 characters)
+	 */
 	private String kSql;
 
 	// kSql:

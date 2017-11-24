@@ -51,7 +51,11 @@ public class CouponService {
 		}
 	}
 
-	/**  Returns information about a coupon  */
+	/**
+	 * Returns information about a coupon
+	 * 
+	 * @param code Coupon code
+	 */
     public static GetCouponBuilder get(String code)  {
 		return new GetCouponBuilder(code);
 	}

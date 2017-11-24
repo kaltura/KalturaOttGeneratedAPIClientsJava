@@ -50,7 +50,9 @@ public class StringValueArray extends ObjectBase {
 		RequestBuilder.ListTokenizer<StringValue.Tokenizer> objects();
 	}
 
-	/**  List of string values  */
+	/**
+	 * List of string values
+	 */
 	private List<StringValue> objects;
 
 	// objects:

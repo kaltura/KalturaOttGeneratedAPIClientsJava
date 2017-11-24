@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Compensation request parameters  */
+/**
+ * Compensation request parameters
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Compensation.Tokenizer.class)
 public class Compensation extends ObjectBase {
@@ -56,19 +58,33 @@ public class Compensation extends ObjectBase {
 		String purchaseId();
 	}
 
-	/**  Compensation identifier  */
+	/**
+	 * Compensation identifier
+	 */
 	private Long id;
-	/**  Subscription identifier  */
+	/**
+	 * Subscription identifier
+	 */
 	private Long subscriptionId;
-	/**  Compensation type  */
+	/**
+	 * Compensation type
+	 */
 	private CompensationType compensationType;
-	/**  Compensation amount  */
+	/**
+	 * Compensation amount
+	 */
 	private Double amount;
-	/**  The number of renewals for compensation  */
+	/**
+	 * The number of renewals for compensation
+	 */
 	private Integer totalRenewalIterations;
-	/**  The number of renewals the compensation was already applied on  */
+	/**
+	 * The number of renewals the compensation was already applied on
+	 */
 	private Integer appliedRenewalIterations;
-	/**  Purchase identifier  */
+	/**
+	 * Purchase identifier
+	 */
 	private Integer purchaseId;
 
 	// id:

@@ -47,7 +47,9 @@ public class GroupPermission extends Permission {
 		String group();
 	}
 
-	/**  Permission identifier  */
+	/**
+	 * Permission identifier
+	 */
 	private String group;
 
 	// group:

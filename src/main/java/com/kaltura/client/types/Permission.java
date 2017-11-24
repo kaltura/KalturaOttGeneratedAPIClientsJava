@@ -52,11 +52,17 @@ public class Permission extends ObjectBase {
 		RequestBuilder.ListTokenizer<PermissionItem.Tokenizer> permissionItems();
 	}
 
-	/**  Permission identifier  */
+	/**
+	 * Permission identifier
+	 */
 	private Long id;
-	/**  Permission name  */
+	/**
+	 * Permission name
+	 */
 	private String name;
-	/**  List of permission items associated with the permission  */
+	/**
+	 * List of permission items associated with the permission
+	 */
 	private List<PermissionItem> permissionItems;
 
 	// id:

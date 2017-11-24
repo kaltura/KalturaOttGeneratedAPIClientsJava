@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Slim Asset Details  */
+/**
+ * Slim Asset Details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SlimAsset.Tokenizer.class)
 public class SlimAsset extends ObjectBase {
@@ -51,9 +53,13 @@ public class SlimAsset extends ObjectBase {
 		String type();
 	}
 
-	/**  Internal identifier of the asset  */
+	/**
+	 * Internal identifier of the asset
+	 */
 	private String id;
-	/**  The type of the asset. Possible values: media, recording, epg  */
+	/**
+	 * The type of the asset. Possible values: media, recording, epg
+	 */
 	private AssetType type;
 
 	// id:

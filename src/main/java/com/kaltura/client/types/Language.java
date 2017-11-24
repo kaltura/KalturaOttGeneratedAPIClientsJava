@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Language details  */
+/**
+ * Language details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Language.Tokenizer.class)
 public class Language extends ObjectBase {
@@ -53,15 +55,25 @@ public class Language extends ObjectBase {
 		String isDefault();
 	}
 
-	/**  Language name  */
+	/**
+	 * Language name
+	 */
 	private String name;
-	/**  Language system name  */
+	/**
+	 * Language system name
+	 */
 	private String systemName;
-	/**  Language code  */
+	/**
+	 * Language code
+	 */
 	private String code;
-	/**  Language direction (LTR/RTL)  */
+	/**
+	 * Language direction (LTR/RTL)
+	 */
 	private String direction;
-	/**  Is the default language of the account  */
+	/**
+	 * Is the default language of the account
+	 */
 	private Boolean isDefault;
 
 	// name:

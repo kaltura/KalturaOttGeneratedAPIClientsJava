@@ -52,7 +52,11 @@ public class PriceDetailsService {
 		return list(null);
 	}
 
-	/**  Returns the list of available prices, can be filtered by price IDs  */
+	/**
+	 * Returns the list of available prices, can be filtered by price IDs
+	 * 
+	 * @param filter Filter
+	 */
     public static ListPriceDetailsBuilder list(PriceDetailsFilter filter)  {
 		return new ListPriceDetailsBuilder(filter);
 	}

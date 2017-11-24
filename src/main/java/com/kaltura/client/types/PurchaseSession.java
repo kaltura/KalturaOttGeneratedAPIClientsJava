@@ -47,7 +47,9 @@ public class PurchaseSession extends Purchase {
 		String previewModuleId();
 	}
 
-	/**  Preview module identifier (relevant only for subscription)  */
+	/**
+	 * Preview module identifier (relevant only for subscription)
+	 */
 	private Integer previewModuleId;
 
 	// previewModuleId:

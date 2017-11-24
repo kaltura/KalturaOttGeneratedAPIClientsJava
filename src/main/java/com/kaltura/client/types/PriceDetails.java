@@ -43,7 +43,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Price details  */
+/**
+ * Price details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PriceDetails.Tokenizer.class)
 public class PriceDetails extends ObjectBase {
@@ -56,16 +58,26 @@ public class PriceDetails extends ObjectBase {
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
 	}
 
-	/**  The price code identifier  */
+	/**
+	 * The price code identifier
+	 */
 	private Integer id;
-	/**  The price code name  */
+	/**
+	 * The price code name
+	 */
 	private String name;
-	/**  The price  */
+	/**
+	 * The price
+	 */
 	private Price price;
-	/**  Multi currency prices for all countries and currencies  */
+	/**
+	 * Multi currency prices for all countries and currencies
+	 */
 	private List<Price> multiCurrencyPrice;
-	/**  A list of the descriptions for this price on different languages (language code
-	  and translation)  */
+	/**
+	 * A list of the descriptions for this price on different languages (language code
+	  and translation)
+	 */
 	private List<TranslationToken> descriptions;
 
 	// id:

@@ -50,11 +50,17 @@ public class SubscriptionSetFilter extends Filter {
 		String typeEqual();
 	}
 
-	/**  Comma separated identifiers  */
+	/**
+	 * Comma separated identifiers
+	 */
 	private String idIn;
-	/**  Comma separated subscription identifiers  */
+	/**
+	 * Comma separated subscription identifiers
+	 */
 	private String subscriptionIdContains;
-	/**  Subscription Type  */
+	/**
+	 * Subscription Type
+	 */
 	private SubscriptionSetType typeEqual;
 
 	// idIn:

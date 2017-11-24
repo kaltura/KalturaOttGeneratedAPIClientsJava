@@ -46,7 +46,9 @@ public class NotificationsPartnerSettingsService {
 		}
 	}
 
-	/**  Retrieve the partner notification settings.  */
+	/**
+	 * Retrieve the partner notification settings.
+	 */
     public static GetNotificationsPartnerSettingsBuilder get()  {
 		return new GetNotificationsPartnerSettingsBuilder();
 	}
@@ -59,7 +61,11 @@ public class NotificationsPartnerSettingsService {
 		}
 	}
 
-	/**  Update the account notification settings  */
+	/**
+	 * Update the account notification settings
+	 * 
+	 * @param settings Account notification settings model
+	 */
     public static UpdateNotificationsPartnerSettingsBuilder update(NotificationsPartnerSettings settings)  {
 		return new UpdateNotificationsPartnerSettingsBuilder(settings);
 	}

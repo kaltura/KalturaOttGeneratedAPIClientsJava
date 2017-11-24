@@ -55,9 +55,13 @@ public class UserLoginPinService {
 		return add(null);
 	}
 
-	/**  Generate a time and usage expiry login-PIN that can allow a single login per
+	/**
+	 * Generate a time and usage expiry login-PIN that can allow a single login per
 	  PIN. If an active login-PIN already exists. Calling this API again for same user
-	  will add another login-PIN  */
+	  will add another login-PIN
+	 * 
+	 * @param secret Additional security parameter for optional enhanced security
+	 */
     public static AddUserLoginPinBuilder add(String secret)  {
 		return new AddUserLoginPinBuilder(secret);
 	}
@@ -74,7 +78,11 @@ public class UserLoginPinService {
 		}
 	}
 
-	/**  Immediately deletes a given pre set login pin code for the user.  */
+	/**
+	 * Immediately deletes a given pre set login pin code for the user.
+	 * 
+	 * @param pinCode Login pin code to expire
+	 */
     public static DeleteUserLoginPinBuilder delete(String pinCode)  {
 		return new DeleteUserLoginPinBuilder(pinCode);
 	}
@@ -86,7 +94,9 @@ public class UserLoginPinService {
 		}
 	}
 
-	/**  Immediately expire all active login-PINs for a user  */
+	/**
+	 * Immediately expire all active login-PINs for a user
+	 */
     public static DeleteAllUserLoginPinBuilder deleteAll()  {
 		return new DeleteAllUserLoginPinBuilder();
 	}
@@ -112,9 +122,14 @@ public class UserLoginPinService {
 		return update(pinCode, null);
 	}
 
-	/**  Set a time and usage expiry login-PIN that can allow a single login per PIN. If
+	/**
+	 * Set a time and usage expiry login-PIN that can allow a single login per PIN. If
 	  an active login-PIN already exists. Calling this API again for same user will
-	  add another login-PIN  */
+	  add another login-PIN
+	 * 
+	 * @param pinCode Device Identifier
+	 * @param secret Additional security parameter to validate the login
+	 */
     public static UpdateUserLoginPinBuilder update(String pinCode, String secret)  {
 		return new UpdateUserLoginPinBuilder(pinCode, secret);
 	}

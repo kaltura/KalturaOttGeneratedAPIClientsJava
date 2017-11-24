@@ -49,10 +49,14 @@ public class NotificationsSettings extends ObjectBase {
 		String pushFollowEnabled();
 	}
 
-	/**  Specify if the user want to receive push notifications or not  */
+	/**
+	 * Specify if the user want to receive push notifications or not
+	 */
 	private Boolean pushNotificationEnabled;
-	/**  Specify if the user will be notified for followed content via push. (requires
-	  push_notification_enabled to be enabled)  */
+	/**
+	 * Specify if the user will be notified for followed content via push. (requires
+	  push_notification_enabled to be enabled)
+	 */
 	private Boolean pushFollowEnabled;
 
 	// pushNotificationEnabled:

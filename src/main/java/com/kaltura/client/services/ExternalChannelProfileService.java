@@ -48,7 +48,11 @@ public class ExternalChannelProfileService {
 		}
 	}
 
-	/**  Insert new External channel for partner  */
+	/**
+	 * Insert new External channel for partner
+	 * 
+	 * @param externalChannel External channel Object
+	 */
     public static AddExternalChannelProfileBuilder add(ExternalChannelProfile externalChannel)  {
 		return new AddExternalChannelProfileBuilder(externalChannel);
 	}
@@ -65,7 +69,11 @@ public class ExternalChannelProfileService {
 		}
 	}
 
-	/**  Delete External channel by External channel id  */
+	/**
+	 * Delete External channel by External channel id
+	 * 
+	 * @param externalChannelId External channel identifier
+	 */
     public static DeleteExternalChannelProfileBuilder delete(int externalChannelId)  {
 		return new DeleteExternalChannelProfileBuilder(externalChannelId);
 	}
@@ -77,7 +85,9 @@ public class ExternalChannelProfileService {
 		}
 	}
 
-	/**  Returns all External channels for partner  */
+	/**
+	 * Returns all External channels for partner
+	 */
     public static ListExternalChannelProfileBuilder list()  {
 		return new ListExternalChannelProfileBuilder();
 	}
@@ -95,7 +105,12 @@ public class ExternalChannelProfileService {
 		}
 	}
 
-	/**  Update External channel details  */
+	/**
+	 * Update External channel details
+	 * 
+	 * @param externalChannelId External channel identifier
+	 * @param externalChannel External channel Object
+	 */
     public static UpdateExternalChannelProfileBuilder update(int externalChannelId, ExternalChannelProfile externalChannel)  {
 		return new UpdateExternalChannelProfileBuilder(externalChannelId, externalChannel);
 	}

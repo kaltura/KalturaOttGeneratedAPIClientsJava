@@ -43,19 +43,21 @@ public class Client extends ClientBase {
 	public Client(ConnectionConfiguration config) {
 		super(config);
 		
-		this.setClientTag("java:17-11-23");
-		this.setApiVersion("4.5.13.23383");
+		this.setClientTag("java:17-11-24");
+		this.setApiVersion("4.5.14.28850");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
 	/**
-	 * @param clientTag
+	 * @param clientTag Client tag
 	 */
 	public void setClientTag(String clientTag){
 		this.clientConfiguration.put("clientTag", clientTag);
 	}
 	
 	/**
+	 * Client tag
+	 * 
 	 * @return String
 	 */
 	public String getClientTag(){
@@ -67,13 +69,15 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * @param apiVersion
+	 * @param apiVersion API Version
 	 */
 	public void setApiVersion(String apiVersion){
 		this.clientConfiguration.put("apiVersion", apiVersion);
 	}
 	
 	/**
+	 * API Version
+	 * 
 	 * @return String
 	 */
 	public String getApiVersion(){
@@ -85,9 +89,7 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * Impersonated partner id
-	 * 
-	 * @param partnerId
+	 * @param partnerId Impersonated partner id
 	 */
 	public void setPartnerId(Integer partnerId){
 		this.requestConfiguration.put("partnerId", partnerId);
@@ -107,9 +109,7 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * Impersonated user id
-	 * 
-	 * @param userId
+	 * @param userId Impersonated user id
 	 */
 	public void setUserId(Integer userId){
 		this.requestConfiguration.put("userId", userId);
@@ -129,9 +129,7 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * Content language
-	 * 
-	 * @param language
+	 * @param language Content language
 	 */
 	public void setLanguage(String language){
 		this.requestConfiguration.put("language", language);
@@ -151,9 +149,7 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * Content currency
-	 * 
-	 * @param currency
+	 * @param currency Content currency
 	 */
 	public void setCurrency(String currency){
 		this.requestConfiguration.put("currency", currency);
@@ -173,9 +169,7 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * Kaltura API session
-	 * 
-	 * @param ks
+	 * @param ks Kaltura API session
 	 */
 	public void setKs(String ks){
 		this.requestConfiguration.put("ks", ks);
@@ -195,9 +189,7 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * Kaltura API session
-	 * 
-	 * @param sessionId
+	 * @param sessionId Kaltura API session
 	 */
 	public void setSessionId(String sessionId){
 		this.requestConfiguration.put("ks", sessionId);
@@ -217,9 +209,7 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * Response profile - this attribute will be automatically unset after every API call
-	 * 
-	 * @param responseProfile
+	 * @param responseProfile Response profile - this attribute will be automatically unset after every API call
 	 */
 	public void setResponseProfile(BaseResponseProfile responseProfile){
 		this.requestConfiguration.put("responseProfile", responseProfile);

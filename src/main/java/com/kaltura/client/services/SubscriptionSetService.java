@@ -49,7 +49,11 @@ public class SubscriptionSetService {
 		}
 	}
 
-	/**  Add a new subscriptionSet  */
+	/**
+	 * Add a new subscriptionSet
+	 * 
+	 * @param subscriptionSet SubscriptionSet Object
+	 */
     public static AddSubscriptionSetBuilder add(SubscriptionSet subscriptionSet)  {
 		return new AddSubscriptionSetBuilder(subscriptionSet);
 	}
@@ -66,7 +70,11 @@ public class SubscriptionSetService {
 		}
 	}
 
-	/**  Delete a subscriptionSet  */
+	/**
+	 * Delete a subscriptionSet
+	 * 
+	 * @param id SubscriptionSet Identifier
+	 */
     public static DeleteSubscriptionSetBuilder delete(long id)  {
 		return new DeleteSubscriptionSetBuilder(id);
 	}
@@ -83,7 +91,11 @@ public class SubscriptionSetService {
 		}
 	}
 
-	/**  Get the subscriptionSet according to the Identifier  */
+	/**
+	 * Get the subscriptionSet according to the Identifier
+	 * 
+	 * @param id SubscriptionSet Identifier
+	 */
     public static GetSubscriptionSetBuilder get(long id)  {
 		return new GetSubscriptionSetBuilder(id);
 	}
@@ -100,7 +112,11 @@ public class SubscriptionSetService {
 		return list(null);
 	}
 
-	/**  Returns a list of subscriptionSets requested by ids or subscription ids  */
+	/**
+	 * Returns a list of subscriptionSets requested by ids or subscription ids
+	 * 
+	 * @param filter SubscriptionSet filter
+	 */
     public static ListSubscriptionSetBuilder list(SubscriptionSetFilter filter)  {
 		return new ListSubscriptionSetBuilder(filter);
 	}
@@ -118,7 +134,12 @@ public class SubscriptionSetService {
 		}
 	}
 
-	/**  Update the subscriptionSet  */
+	/**
+	 * Update the subscriptionSet
+	 * 
+	 * @param id SubscriptionSet Identifier
+	 * @param subscriptionSet SubscriptionSet Object
+	 */
     public static UpdateSubscriptionSetBuilder update(long id, SubscriptionSet subscriptionSet)  {
 		return new UpdateSubscriptionSetBuilder(id, subscriptionSet);
 	}

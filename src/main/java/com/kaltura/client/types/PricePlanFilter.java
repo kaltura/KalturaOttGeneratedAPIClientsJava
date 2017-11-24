@@ -47,7 +47,9 @@ public class PricePlanFilter extends Filter {
 		String idIn();
 	}
 
-	/**  Comma separated price plans identifiers  */
+	/**
+	 * Comma separated price plans identifiers
+	 */
 	private String idIn;
 
 	// idIn:

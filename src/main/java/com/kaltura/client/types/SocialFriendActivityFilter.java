@@ -50,11 +50,17 @@ public class SocialFriendActivityFilter extends Filter {
 		String actionTypeIn();
 	}
 
-	/**  Asset ID to filter by  */
+	/**
+	 * Asset ID to filter by
+	 */
 	private Long assetIdEqual;
-	/**  Asset type to filter by, currently only VOD (media)  */
+	/**
+	 * Asset type to filter by, currently only VOD (media)
+	 */
 	private AssetType assetTypeEqual;
-	/**  Comma separated list of social actions to filter by  */
+	/**
+	 * Comma separated list of social actions to filter by
+	 */
 	private String actionTypeIn;
 
 	// assetIdEqual:

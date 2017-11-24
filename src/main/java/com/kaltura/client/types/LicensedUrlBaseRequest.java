@@ -48,7 +48,9 @@ public class LicensedUrlBaseRequest extends ObjectBase {
 		String assetId();
 	}
 
-	/**  Asset identifier  */
+	/**
+	 * Asset identifier
+	 */
 	private String assetId;
 
 	// assetId:

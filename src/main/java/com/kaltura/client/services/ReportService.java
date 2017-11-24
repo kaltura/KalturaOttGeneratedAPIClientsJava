@@ -54,7 +54,11 @@ public class ReportService {
 		}
 	}
 
-	/**  Return a device configuration retrieval log request for a specific device.  */
+	/**
+	 * Return a device configuration retrieval log request for a specific device.
+	 * 
+	 * @param udid Device UDID
+	 */
     public static GetReportBuilder get(String udid)  {
 		return new GetReportBuilder(udid);
 	}
@@ -72,8 +76,13 @@ public class ReportService {
 		return list(filter, null);
 	}
 
-	/**  Return device configurations retrieval log. Supports paging and can be filtered
-	  with the parameter &amp;quot;FromData&amp;quot;.  */
+	/**
+	 * Return device configurations retrieval log. Supports paging and can be filtered
+	  with the parameter &amp;quot;FromData&amp;quot;.
+	 * 
+	 * @param filter Filter option for from date (sec)
+	 * @param pager Page size and index
+	 */
     public static ListReportBuilder list(ReportFilter filter, FilterPager pager)  {
 		return new ListReportBuilder(filter, pager);
 	}

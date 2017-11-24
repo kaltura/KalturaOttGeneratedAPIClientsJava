@@ -42,7 +42,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  OSS Adapter  */
+/**
+ * OSS Adapter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ExternalChannelProfile.Tokenizer.class)
 public class ExternalChannelProfile extends ObjectBase {
@@ -57,19 +59,33 @@ public class ExternalChannelProfile extends ObjectBase {
 		RequestBuilder.ListTokenizer<ChannelEnrichmentHolder.Tokenizer> enrichments();
 	}
 
-	/**  External channel id  */
+	/**
+	 * External channel id
+	 */
 	private Integer id;
-	/**  External channel name  */
+	/**
+	 * External channel name
+	 */
 	private String name;
-	/**  External channel active status  */
+	/**
+	 * External channel active status
+	 */
 	private Boolean isActive;
-	/**  External channel external identifier  */
+	/**
+	 * External channel external identifier
+	 */
 	private String externalIdentifier;
-	/**  Filter expression  */
+	/**
+	 * Filter expression
+	 */
 	private String filterExpression;
-	/**  Recommendation engine id  */
+	/**
+	 * Recommendation engine id
+	 */
 	private Integer recommendationEngineId;
-	/**  Enrichments  */
+	/**
+	 * Enrichments
+	 */
 	private List<ChannelEnrichmentHolder> enrichments;
 
 	// id:

@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Group by a field that is defined in enum  */
+/**
+ * Group by a field that is defined in enum
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetFieldGroupBy.Tokenizer.class)
 public class AssetFieldGroupBy extends AssetGroupBy {
@@ -49,7 +51,9 @@ public class AssetFieldGroupBy extends AssetGroupBy {
 		String value();
 	}
 
-	/**  Group by a specific field that is defined in enum  */
+	/**
+	 * Group by a specific field that is defined in enum
+	 */
 	private GroupByField value;
 
 	// value:

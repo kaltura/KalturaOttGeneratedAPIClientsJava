@@ -42,7 +42,9 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  PaymentGW  */
+/**
+ * PaymentGW
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RecommendationProfile.Tokenizer.class)
 public class RecommendationProfile extends ObjectBase {
@@ -57,19 +59,33 @@ public class RecommendationProfile extends ObjectBase {
 		String sharedSecret();
 	}
 
-	/**  recommendation engine id  */
+	/**
+	 * recommendation engine id
+	 */
 	private Integer id;
-	/**  recommendation engine name  */
+	/**
+	 * recommendation engine name
+	 */
 	private String name;
-	/**  recommendation engine is active status  */
+	/**
+	 * recommendation engine is active status
+	 */
 	private Boolean isActive;
-	/**  recommendation engine adapter URL  */
+	/**
+	 * recommendation engine adapter URL
+	 */
 	private String adapterUrl;
-	/**  recommendation engine extra parameters  */
+	/**
+	 * recommendation engine extra parameters
+	 */
 	private Map<String, StringValue> recommendationEngineSettings;
-	/**  recommendation engine external identifier  */
+	/**
+	 * recommendation engine external identifier
+	 */
 	private String externalIdentifier;
-	/**  Shared Secret  */
+	/**
+	 * Shared Secret
+	 */
 	private String sharedSecret;
 
 	// id:

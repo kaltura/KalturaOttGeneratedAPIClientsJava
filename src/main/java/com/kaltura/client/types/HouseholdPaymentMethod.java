@@ -53,17 +53,29 @@ public class HouseholdPaymentMethod extends ObjectBase {
 		String paymentMethodProfileId();
 	}
 
-	/**  Household payment method identifier (internal)  */
+	/**
+	 * Household payment method identifier (internal)
+	 */
 	private Integer id;
-	/**  External identifier for the household payment method  */
+	/**
+	 * External identifier for the household payment method
+	 */
 	private String externalId;
-	/**  Payment-gateway identifier  */
+	/**
+	 * Payment-gateway identifier
+	 */
 	private Integer paymentGatewayId;
-	/**  Description of the payment method details  */
+	/**
+	 * Description of the payment method details
+	 */
 	private String details;
-	/**  indicates whether the payment method is set as default for the household  */
+	/**
+	 * indicates whether the payment method is set as default for the household
+	 */
 	private Boolean isDefault;
-	/**  Payment method profile identifier  */
+	/**
+	 * Payment method profile identifier
+	 */
 	private Integer paymentMethodProfileId;
 
 	// id:

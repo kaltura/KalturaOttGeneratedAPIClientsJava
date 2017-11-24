@@ -54,13 +54,21 @@ public class ActionPermissionItem extends ObjectBase {
 		String action();
 	}
 
-	/**  Social network  */
+	/**
+	 * Social network
+	 */
 	private SocialNetwork network;
-	/**  Action privacy  */
+	/**
+	 * Action privacy
+	 */
 	private SocialActionPrivacy actionPrivacy;
-	/**  Social privacy  */
+	/**
+	 * Social privacy
+	 */
 	private SocialPrivacy privacy;
-	/**  Action - separated with comma  */
+	/**
+	 * Action - separated with comma
+	 */
 	private String action;
 
 	// network:

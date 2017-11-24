@@ -52,11 +52,17 @@ public class UserRole extends ObjectBase {
 		RequestBuilder.ListTokenizer<Permission.Tokenizer> permissions();
 	}
 
-	/**  User role identifier  */
+	/**
+	 * User role identifier
+	 */
 	private Long id;
-	/**  User role name  */
+	/**
+	 * User role name
+	 */
 	private String name;
-	/**  List of permissions associated with the user role  */
+	/**
+	 * List of permissions associated with the user role
+	 */
 	private List<Permission> permissions;
 
 	// id:

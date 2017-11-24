@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Currency filter  */
+/**
+ * Currency filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CurrencyFilter.Tokenizer.class)
 public class CurrencyFilter extends Filter {
@@ -48,7 +50,9 @@ public class CurrencyFilter extends Filter {
 		String codeIn();
 	}
 
-	/**  Currency codes  */
+	/**
+	 * Currency codes
+	 */
 	private String codeIn;
 
 	// codeIn:

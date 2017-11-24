@@ -49,7 +49,8 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		String idIn();
 	}
 
-	/**  Search assets using dynamic criteria. Provided collection of nested expressions
+	/**
+	 * Search assets using dynamic criteria. Provided collection of nested expressions
 	  with key, comparison operators, value, and logical conjunction.             
 	  Possible keys: any Tag or Meta defined in the system and the following reserved
 	  keys: start_date, end_date.               epg_id, media_id - for specific asset
@@ -69,14 +70,19 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	  =, != (not), ~ (like), !~, ^ (any word starts with), ^= (phrase starts with), +
 	  (exists), !+ (not exists).              Logical conjunction: and, or.           
 	     Search values are limited to 20 characters each.              (maximum length
-	  of entire filter is 2048 characters)  */
+	  of entire filter is 2048 characters)
+	 */
 	private String kSql;
-	/**  Comma separated list of asset types to search within.               Possible
+	/**
+	 * Comma separated list of asset types to search within.               Possible
 	  values: 0 – EPG linear programs entries; 1 - Recordings; Any media type ID
 	  (according to media type IDs defined dynamically in the system).              If
-	  omitted – all types should be included.  */
+	  omitted – all types should be included.
+	 */
 	private String typeIn;
-	/**  Comma separated list of EPG channel ids to search within.  */
+	/**
+	 * Comma separated list of EPG channel ids to search within.
+	 */
 	private String idIn;
 
 	// kSql:

@@ -48,7 +48,9 @@ public class ParentalRuleFilter extends Filter {
 		String entityReferenceEqual();
 	}
 
-	/**  Reference type to filter by  */
+	/**
+	 * Reference type to filter by
+	 */
 	private EntityReferenceBy entityReferenceEqual;
 
 	// entityReferenceEqual:

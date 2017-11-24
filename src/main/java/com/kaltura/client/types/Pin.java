@@ -42,7 +42,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  PIN and its origin of definition  */
+/**
+ * PIN and its origin of definition
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Pin.Tokenizer.class)
 public class Pin extends ObjectBase {
@@ -53,11 +55,17 @@ public class Pin extends ObjectBase {
 		String type();
 	}
 
-	/**  PIN code  */
+	/**
+	 * PIN code
+	 */
 	private String pin;
-	/**  Where the PIN was defined at – account, household or user  */
+	/**
+	 * Where the PIN was defined at – account, household or user
+	 */
 	private RuleLevel origin;
-	/**  PIN type  */
+	/**
+	 * PIN type
+	 */
 	private PinType type;
 
 	// pin:

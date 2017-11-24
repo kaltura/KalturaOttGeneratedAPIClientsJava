@@ -51,11 +51,17 @@ public class SocialFriendActivity extends ObjectBase {
 		SocialAction.Tokenizer socialAction();
 	}
 
-	/**  The full name of the user who did the social action  */
+	/**
+	 * The full name of the user who did the social action
+	 */
 	private String userFullName;
-	/**  The URL of the profile picture of the user who did the social action  */
+	/**
+	 * The URL of the profile picture of the user who did the social action
+	 */
 	private String userPictureUrl;
-	/**  The social action  */
+	/**
+	 * The social action
+	 */
 	private SocialAction socialAction;
 
 	// userFullName:

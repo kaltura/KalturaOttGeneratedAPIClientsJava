@@ -49,8 +49,12 @@ public class ConfigurationGroupTagService {
 		}
 	}
 
-	/**  Add a new tag to a configuration group. If this tag is already associated to
-	  another group, request fails  */
+	/**
+	 * Add a new tag to a configuration group. If this tag is already associated to
+	  another group, request fails
+	 * 
+	 * @param configurationGroupTag Configuration group tag
+	 */
     public static AddConfigurationGroupTagBuilder add(ConfigurationGroupTag configurationGroupTag)  {
 		return new AddConfigurationGroupTagBuilder(configurationGroupTag);
 	}
@@ -67,7 +71,11 @@ public class ConfigurationGroupTagService {
 		}
 	}
 
-	/**  Remove a tag association from configuration group  */
+	/**
+	 * Remove a tag association from configuration group
+	 * 
+	 * @param tag Tag
+	 */
     public static DeleteConfigurationGroupTagBuilder delete(String tag)  {
 		return new DeleteConfigurationGroupTagBuilder(tag);
 	}
@@ -84,7 +92,11 @@ public class ConfigurationGroupTagService {
 		}
 	}
 
-	/**  Return the configuration group the tag is associated to  */
+	/**
+	 * Return the configuration group the tag is associated to
+	 * 
+	 * @param tag Tag
+	 */
     public static GetConfigurationGroupTagBuilder get(String tag)  {
 		return new GetConfigurationGroupTagBuilder(tag);
 	}
@@ -97,7 +109,11 @@ public class ConfigurationGroupTagService {
 		}
 	}
 
-	/**  Return list of tags for a configuration group  */
+	/**
+	 * Return list of tags for a configuration group
+	 * 
+	 * @param filter Filter option for configuration group identifier
+	 */
     public static ListConfigurationGroupTagBuilder list(ConfigurationGroupTagFilter filter)  {
 		return new ListConfigurationGroupTagBuilder(filter);
 	}

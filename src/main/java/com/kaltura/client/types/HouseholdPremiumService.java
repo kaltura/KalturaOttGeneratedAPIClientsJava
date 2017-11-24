@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Houshold premium service  */
+/**
+ * Houshold premium service
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdPremiumService.Tokenizer.class)
 public class HouseholdPremiumService extends PremiumService {

@@ -59,27 +59,49 @@ public class DeviceReport extends Report {
 		String operationSystem();
 	}
 
-	/**  Partner id  */
+	/**
+	 * Partner id
+	 */
 	private Integer partnerId;
-	/**  Configuration group id  */
+	/**
+	 * Configuration group id
+	 */
 	private String configurationGroupId;
-	/**  Device UDID  */
+	/**
+	 * Device UDID
+	 */
 	private String udid;
-	/**  Push parameters  */
+	/**
+	 * Push parameters
+	 */
 	private PushParams pushParameters;
-	/**  Version number  */
+	/**
+	 * Version number
+	 */
 	private String versionNumber;
-	/**  Version platform  */
+	/**
+	 * Version platform
+	 */
 	private Platform versionPlatform;
-	/**  Version application name  */
+	/**
+	 * Version application name
+	 */
 	private String versionAppName;
-	/**  Last access IP  */
+	/**
+	 * Last access IP
+	 */
 	private String lastAccessIP;
-	/**  Last access date  */
+	/**
+	 * Last access date
+	 */
 	private Long lastAccessDate;
-	/**  User agent  */
+	/**
+	 * User agent
+	 */
 	private String userAgent;
-	/**  Operation system  */
+	/**
+	 * Operation system
+	 */
 	private String operationSystem;
 
 	// partnerId:

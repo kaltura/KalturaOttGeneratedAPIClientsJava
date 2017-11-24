@@ -59,25 +59,43 @@ public class SeriesRecording extends ObjectBase {
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> excludedSeasons();
 	}
 
-	/**  Kaltura unique ID representing the series recording identifier  */
+	/**
+	 * Kaltura unique ID representing the series recording identifier
+	 */
 	private Long id;
-	/**  Kaltura EpgId  */
+	/**
+	 * Kaltura EpgId
+	 */
 	private Long epgId;
-	/**  Kaltura ChannelId  */
+	/**
+	 * Kaltura ChannelId
+	 */
 	private Long channelId;
-	/**  Kaltura SeriesId  */
+	/**
+	 * Kaltura SeriesId
+	 */
 	private String seriesId;
-	/**  Kaltura SeasonNumber  */
+	/**
+	 * Kaltura SeasonNumber
+	 */
 	private Integer seasonNumber;
-	/**  Recording Type: single/series/season  */
+	/**
+	 * Recording Type: single/series/season
+	 */
 	private RecordingType type;
-	/**  Specifies when was the series recording created. Date and time represented as
-	  epoch.  */
+	/**
+	 * Specifies when was the series recording created. Date and time represented as
+	  epoch.
+	 */
 	private Long createDate;
-	/**  Specifies when was the series recording last updated. Date and time represented
-	  as epoch.  */
+	/**
+	 * Specifies when was the series recording last updated. Date and time represented
+	  as epoch.
+	 */
 	private Long updateDate;
-	/**  List of the season numbers to exclude.  */
+	/**
+	 * List of the season numbers to exclude.
+	 */
 	private List<IntegerValue> excludedSeasons;
 
 	// id:

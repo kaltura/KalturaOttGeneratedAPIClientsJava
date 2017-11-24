@@ -54,7 +54,11 @@ public class SocialService {
 		}
 	}
 
-	/**  List social accounts  */
+	/**
+	 * List social accounts
+	 * 
+	 * @param type Social network type
+	 */
     public static GetSocialBuilder get(SocialNetwork type)  {
 		return new GetSocialBuilder(type);
 	}
@@ -81,8 +85,14 @@ public class SocialService {
 		}
 	}
 
-	/**  Return the user object with social information according to a provided external
-	  social token  */
+	/**
+	 * Return the user object with social information according to a provided external
+	  social token
+	 * 
+	 * @param partnerId Partner identifier
+	 * @param token Social token
+	 * @param type Social network type
+	 */
     public static GetByTokenSocialBuilder getByToken(int partnerId, String token, SocialNetwork type)  {
 		return new GetByTokenSocialBuilder(partnerId, token, type);
 	}
@@ -108,7 +118,12 @@ public class SocialService {
 		return getConfiguration(type, Integer.MIN_VALUE);
 	}
 
-	/**  Retrieve the social network’s configuration information  */
+	/**
+	 * Retrieve the social network’s configuration information
+	 * 
+	 * @param type Social network type
+	 * @param partnerId Partner identifier
+	 */
     public static GetConfigurationSocialBuilder getConfiguration(SocialNetwork type, int partnerId)  {
 		return new GetConfigurationSocialBuilder(type, partnerId);
 	}
@@ -144,7 +159,14 @@ public class SocialService {
 		return login(partnerId, token, type, null);
 	}
 
-	/**  Login using social token  */
+	/**
+	 * Login using social token
+	 * 
+	 * @param partnerId Partner identifier
+	 * @param token Social token
+	 * @param type Social network
+	 * @param udid Device UDID
+	 */
     public static LoginSocialBuilder login(int partnerId, String token, SocialNetwork type, String udid)  {
 		return new LoginSocialBuilder(partnerId, token, type, udid);
 	}
@@ -166,7 +188,12 @@ public class SocialService {
 		}
 	}
 
-	/**  Connect an existing user in the system to an external social network user  */
+	/**
+	 * Connect an existing user in the system to an external social network user
+	 * 
+	 * @param token social token
+	 * @param type Social network type
+	 */
     public static MergeSocialBuilder merge(String token, SocialNetwork type)  {
 		return new MergeSocialBuilder(token, type);
 	}
@@ -202,7 +229,14 @@ public class SocialService {
 		return register(partnerId, token, type, null);
 	}
 
-	/**  Create a new user in the system using a provided external social token  */
+	/**
+	 * Create a new user in the system using a provided external social token
+	 * 
+	 * @param partnerId Partner identifier
+	 * @param token social token
+	 * @param type Social network type
+	 * @param email User email
+	 */
     public static RegisterSocialBuilder register(int partnerId, String token, SocialNetwork type, String email)  {
 		return new RegisterSocialBuilder(partnerId, token, type, email);
 	}
@@ -219,7 +253,11 @@ public class SocialService {
 		}
 	}
 
-	/**  Disconnect an existing user in the system from its external social network user  */
+	/**
+	 * Disconnect an existing user in the system from its external social network user
+	 * 
+	 * @param type Social network type
+	 */
     public static UnmergeSocialBuilder unmerge(SocialNetwork type)  {
 		return new UnmergeSocialBuilder(type);
 	}
@@ -232,7 +270,11 @@ public class SocialService {
 		}
 	}
 
-	/**  Set the user social network’s configuration information  */
+	/**
+	 * Set the user social network’s configuration information
+	 * 
+	 * @param configuration The social action settings
+	 */
     public static UpdateConfigurationSocialBuilder UpdateConfiguration(SocialConfig configuration)  {
 		return new UpdateConfigurationSocialBuilder(configuration);
 	}

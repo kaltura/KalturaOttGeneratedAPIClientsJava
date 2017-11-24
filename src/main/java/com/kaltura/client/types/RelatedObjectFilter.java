@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Define KalturaRelatedObjectFilter  */
+/**
+ * Define KalturaRelatedObjectFilter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RelatedObjectFilter.Tokenizer.class)
 public abstract class RelatedObjectFilter extends Filter {

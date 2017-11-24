@@ -48,7 +48,11 @@ public class HomeNetworkService {
 		}
 	}
 
-	/**  Add a new home network to a household  */
+	/**
+	 * Add a new home network to a household
+	 * 
+	 * @param homeNetwork Home network to add
+	 */
     public static AddHomeNetworkBuilder add(HomeNetwork homeNetwork)  {
 		return new AddHomeNetworkBuilder(homeNetwork);
 	}
@@ -65,7 +69,11 @@ public class HomeNetworkService {
 		}
 	}
 
-	/**  Delete household’s existing home network  */
+	/**
+	 * Delete household’s existing home network
+	 * 
+	 * @param externalId The network to update
+	 */
     public static DeleteHomeNetworkBuilder delete(String externalId)  {
 		return new DeleteHomeNetworkBuilder(externalId);
 	}
@@ -77,7 +85,9 @@ public class HomeNetworkService {
 		}
 	}
 
-	/**  Retrieve the household’s home networks  */
+	/**
+	 * Retrieve the household’s home networks
+	 */
     public static ListHomeNetworkBuilder list()  {
 		return new ListHomeNetworkBuilder();
 	}
@@ -95,7 +105,12 @@ public class HomeNetworkService {
 		}
 	}
 
-	/**  Update and existing home network for a household  */
+	/**
+	 * Update and existing home network for a household
+	 * 
+	 * @param externalId Home network identifier
+	 * @param homeNetwork Home network to update
+	 */
     public static UpdateHomeNetworkBuilder update(String externalId, HomeNetwork homeNetwork)  {
 		return new UpdateHomeNetworkBuilder(externalId, homeNetwork);
 	}

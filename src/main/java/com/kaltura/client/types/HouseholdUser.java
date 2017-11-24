@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Household user  */
+/**
+ * Household user
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdUser.Tokenizer.class)
 public class HouseholdUser extends ObjectBase {
@@ -55,18 +57,30 @@ public class HouseholdUser extends ObjectBase {
 		String isDefault();
 	}
 
-	/**  The identifier of the household  */
+	/**
+	 * The identifier of the household
+	 */
 	private Integer householdId;
-	/**  The identifier of the user  */
+	/**
+	 * The identifier of the user
+	 */
 	private String userId;
-	/**  True if the user added as master use  */
+	/**
+	 * True if the user added as master use
+	 */
 	private Boolean isMaster;
-	/**  The username of the household master for adding a user in status pending for the
-	  household master to approve  */
+	/**
+	 * The username of the household master for adding a user in status pending for the
+	  household master to approve
+	 */
 	private String householdMasterUsername;
-	/**  The status of the user in the household  */
+	/**
+	 * The status of the user in the household
+	 */
 	private HouseholdUserStatus status;
-	/**  True if the user is a default user  */
+	/**
+	 * True if the user is a default user
+	 */
 	private Boolean isDefault;
 
 	// householdId:

@@ -48,7 +48,11 @@ public class RegionService {
 		}
 	}
 
-	/**  Returns all regions for the partner  */
+	/**
+	 * Returns all regions for the partner
+	 * 
+	 * @param filter Regions filter
+	 */
     public static ListRegionBuilder list(RegionFilter filter)  {
 		return new ListRegionBuilder(filter);
 	}

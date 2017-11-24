@@ -46,7 +46,9 @@ public class CdnPartnerSettingsService {
 		}
 	}
 
-	/**  Retrieve the partner’s CDN settings (default adapters)  */
+	/**
+	 * Retrieve the partner’s CDN settings (default adapters)
+	 */
     public static GetCdnPartnerSettingsBuilder get()  {
 		return new GetCdnPartnerSettingsBuilder();
 	}
@@ -59,7 +61,11 @@ public class CdnPartnerSettingsService {
 		}
 	}
 
-	/**  Configure the partner’s CDN settings (default adapters)  */
+	/**
+	 * Configure the partner’s CDN settings (default adapters)
+	 * 
+	 * @param settings CDN partner settings
+	 */
     public static UpdateCdnPartnerSettingsBuilder update(CDNPartnerSettings settings)  {
 		return new UpdateCdnPartnerSettingsBuilder(settings);
 	}

@@ -42,7 +42,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Household details  */
+/**
+ * Household details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Household.Tokenizer.class)
 public class Household extends ObjectBase {
@@ -64,33 +66,61 @@ public class Household extends ObjectBase {
 		String restriction();
 	}
 
-	/**  Household identifier  */
+	/**
+	 * Household identifier
+	 */
 	private Long id;
-	/**  Household name  */
+	/**
+	 * Household name
+	 */
 	private String name;
-	/**  Household description  */
+	/**
+	 * Household description
+	 */
 	private String description;
-	/**  Household external identifier  */
+	/**
+	 * Household external identifier
+	 */
 	private String externalId;
-	/**  Household limitation module identifier  */
+	/**
+	 * Household limitation module identifier
+	 */
 	private Integer householdLimitationsId;
-	/**  The max number of the devices that can be added to the household  */
+	/**
+	 * The max number of the devices that can be added to the household
+	 */
 	private Integer devicesLimit;
-	/**  The max number of the users that can be added to the household  */
+	/**
+	 * The max number of the users that can be added to the household
+	 */
 	private Integer usersLimit;
-	/**  The max number of concurrent streams in the household  */
+	/**
+	 * The max number of concurrent streams in the household
+	 */
 	private Integer concurrentLimit;
-	/**  The households region identifier  */
+	/**
+	 * The households region identifier
+	 */
 	private Integer regionId;
-	/**  Household state  */
+	/**
+	 * Household state
+	 */
 	private HouseholdState state;
-	/**  Is household frequency enabled  */
+	/**
+	 * Is household frequency enabled
+	 */
 	private Boolean isFrequencyEnabled;
-	/**  The next time a device is allowed to be removed from the household (epoch)  */
+	/**
+	 * The next time a device is allowed to be removed from the household (epoch)
+	 */
 	private Long frequencyNextDeviceAction;
-	/**  The next time a user is allowed to be removed from the household (epoch)  */
+	/**
+	 * The next time a user is allowed to be removed from the household (epoch)
+	 */
 	private Long frequencyNextUserAction;
-	/**  Household restriction  */
+	/**
+	 * Household restriction
+	 */
 	private HouseholdRestriction restriction;
 
 	// id:

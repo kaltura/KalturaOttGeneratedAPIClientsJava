@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Kaltura Session  */
+/**
+ * Kaltura Session
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SessionInfo.Tokenizer.class)
 public class SessionInfo extends Session {

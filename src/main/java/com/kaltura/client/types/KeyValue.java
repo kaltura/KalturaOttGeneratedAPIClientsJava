@@ -49,9 +49,13 @@ public class KeyValue extends ObjectBase {
 		String value();
 	}
 
-	/**  Key  */
+	/**
+	 * Key
+	 */
 	private String key;
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private String value;
 
 	// key:

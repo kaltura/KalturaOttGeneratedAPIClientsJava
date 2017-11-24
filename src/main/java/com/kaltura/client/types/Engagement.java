@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Engagement  */
+/**
+ * Engagement
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Engagement.Tokenizer.class)
 public class Engagement extends ObjectBase {
@@ -58,23 +60,41 @@ public class Engagement extends ObjectBase {
 		String couponGroupId();
 	}
 
-	/**  Engagement id  */
+	/**
+	 * Engagement id
+	 */
 	private Integer id;
-	/**  Total number of recipients  */
+	/**
+	 * Total number of recipients
+	 */
 	private Integer totalNumberOfRecipients;
-	/**  Engagement type  */
+	/**
+	 * Engagement type
+	 */
 	private EngagementType type;
-	/**  Engagement adapter id  */
+	/**
+	 * Engagement adapter id
+	 */
 	private Integer adapterId;
-	/**  Engagement adapter dynamic data  */
+	/**
+	 * Engagement adapter dynamic data
+	 */
 	private String adapterDynamicData;
-	/**  Interval (seconds)  */
+	/**
+	 * Interval (seconds)
+	 */
 	private Integer intervalSeconds;
-	/**  Manual User list  */
+	/**
+	 * Manual User list
+	 */
 	private String userList;
-	/**  Send time (seconds)  */
+	/**
+	 * Send time (seconds)
+	 */
 	private Long sendTimeInSeconds;
-	/**  Coupon GroupId  */
+	/**
+	 * Coupon GroupId
+	 */
 	private Integer couponGroupId;
 
 	// id:

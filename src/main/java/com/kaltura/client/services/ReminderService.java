@@ -51,7 +51,11 @@ public class ReminderService {
 		}
 	}
 
-	/**  Add a new future reminder  */
+	/**
+	 * Add a new future reminder
+	 * 
+	 * @param reminder The reminder to be added.
+	 */
     public static AddReminderBuilder add(Reminder reminder)  {
 		return new AddReminderBuilder(reminder);
 	}
@@ -73,7 +77,12 @@ public class ReminderService {
 		}
 	}
 
-	/**  Delete a reminder. Reminder cannot be delete while being sent.  */
+	/**
+	 * Delete a reminder. Reminder cannot be delete while being sent.
+	 * 
+	 * @param id Id of the reminder.
+	 * @param type Reminder type.
+	 */
     public static DeleteReminderBuilder delete(long id, ReminderType type)  {
 		return new DeleteReminderBuilder(id, type);
 	}
@@ -91,7 +100,12 @@ public class ReminderService {
 		return list(filter, null);
 	}
 
-	/**  Return a list of reminders with optional filter by KSQL.  */
+	/**
+	 * Return a list of reminders with optional filter by KSQL.
+	 * 
+	 * @param filter Filter object
+	 * @param pager Paging the request
+	 */
     public static ListReminderBuilder list(ReminderFilter filter, FilterPager pager)  {
 		return new ListReminderBuilder(filter, pager);
 	}
