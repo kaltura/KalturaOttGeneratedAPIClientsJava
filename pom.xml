@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kaltura</groupId>
 	<artifactId>KalturaOttApiClient</artifactId>
-	<version>4.3.25.22818-SNAPSHOT</version>
+	<version>4.3.25.22819-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<properties>
 		<java.version>1.7</java.version>
@@ -220,6 +220,20 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<tags>
+						<tag>
+							<name>date</name>
+							<placement>X</placement>
+							<head>Date:</head>
+						</tag>
+						<tag>
+							<name>hide</name>
+							<placement>X</placement>
+							<head></head>
+						</tag>
+					</tags>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
