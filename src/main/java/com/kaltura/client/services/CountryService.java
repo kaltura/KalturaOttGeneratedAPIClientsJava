@@ -48,8 +48,12 @@ public class CountryService {
 		}
 	}
 
-	/**  Get the list of countries for the partner with option to filter by countries
-	  identifiers  */
+	/**
+	 * Get the list of countries for the partner with option to filter by countries
+	  identifiers
+	 * 
+	 * @param filter Country filter
+	 */
     public static ListCountryBuilder list(CountryFilter filter)  {
 		return new ListCountryBuilder(filter);
 	}

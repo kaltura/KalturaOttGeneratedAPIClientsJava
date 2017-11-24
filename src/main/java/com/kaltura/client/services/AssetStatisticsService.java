@@ -48,7 +48,11 @@ public class AssetStatisticsService {
 		}
 	}
 
-	/**  Returns statistics for given list of assets by type and / or time period  */
+	/**
+	 * Returns statistics for given list of assets by type and / or time period
+	 * 
+	 * @param query Query for assets statistics
+	 */
     public static QueryAssetStatisticsBuilder query(AssetStatisticsQuery query)  {
 		return new QueryAssetStatisticsBuilder(query);
 	}

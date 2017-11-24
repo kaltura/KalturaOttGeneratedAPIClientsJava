@@ -46,7 +46,9 @@ public class HouseholdQuotaService {
 		}
 	}
 
-	/**  Returns the household&amp;#39;s quota data  */
+	/**
+	 * Returns the household&amp;#39;s quota data
+	 */
     public static GetHouseholdQuotaBuilder get()  {
 		return new GetHouseholdQuotaBuilder();
 	}

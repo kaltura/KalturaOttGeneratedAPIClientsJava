@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Favorite details  */
+/**
+ * Favorite details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Favorite.Tokenizer.class)
 public class Favorite extends ObjectBase {
@@ -51,11 +53,17 @@ public class Favorite extends ObjectBase {
 		String createDate();
 	}
 
-	/**  AssetInfo Model  */
+	/**
+	 * AssetInfo Model
+	 */
 	private Long assetId;
-	/**  Extra Value  */
+	/**
+	 * Extra Value
+	 */
 	private String extraData;
-	/**  Specifies when was the favorite created. Date and time represented as epoch.  */
+	/**
+	 * Specifies when was the favorite created. Date and time represented as epoch.
+	 */
 	private Long createDate;
 
 	// assetId:

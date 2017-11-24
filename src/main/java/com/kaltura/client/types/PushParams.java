@@ -49,10 +49,14 @@ public class PushParams extends ObjectBase {
 		String externalToken();
 	}
 
-	/**  Device-Application push token  */
+	/**
+	 * Device-Application push token
+	 */
 	private String token;
-	/**  External device token as received from external push provider in exchange for
-	  the device token  */
+	/**
+	 * External device token as received from external push provider in exchange for
+	  the device token
+	 */
 	private String externalToken;
 
 	// token:

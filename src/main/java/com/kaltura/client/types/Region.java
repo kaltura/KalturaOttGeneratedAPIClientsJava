@@ -54,15 +54,25 @@ public class Region extends ObjectBase {
 		RequestBuilder.ListTokenizer<RegionalChannel.Tokenizer> linearChannels();
 	}
 
-	/**  Region identifier  */
+	/**
+	 * Region identifier
+	 */
 	private Integer id;
-	/**  Region name  */
+	/**
+	 * Region name
+	 */
 	private String name;
-	/**  Region external identifier  */
+	/**
+	 * Region external identifier
+	 */
 	private String externalId;
-	/**  Indicates whether this is the default region for the partner  */
+	/**
+	 * Indicates whether this is the default region for the partner
+	 */
 	private Boolean isDefault;
-	/**  List of associated linear channels  */
+	/**
+	 * List of associated linear channels
+	 */
 	private List<RegionalChannel> linearChannels;
 
 	// id:

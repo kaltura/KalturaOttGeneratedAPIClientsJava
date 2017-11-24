@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Define base profile response -  optional configurations  */
+/**
+ * Define base profile response -  optional configurations
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BaseResponseProfile.Tokenizer.class)
 public abstract class BaseResponseProfile extends ObjectBase {

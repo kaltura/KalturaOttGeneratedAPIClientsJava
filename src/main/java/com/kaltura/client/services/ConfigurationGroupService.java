@@ -48,7 +48,11 @@ public class ConfigurationGroupService {
 		}
 	}
 
-	/**  Add a new configuration group  */
+	/**
+	 * Add a new configuration group
+	 * 
+	 * @param configurationGroup Configuration group
+	 */
     public static AddConfigurationGroupBuilder add(ConfigurationGroup configurationGroup)  {
 		return new AddConfigurationGroupBuilder(configurationGroup);
 	}
@@ -65,8 +69,12 @@ public class ConfigurationGroupService {
 		}
 	}
 
-	/**  Remove a configuration group, including its tags, device configurations and
-	  devices associations  */
+	/**
+	 * Remove a configuration group, including its tags, device configurations and
+	  devices associations
+	 * 
+	 * @param id Configuration group identifier
+	 */
     public static DeleteConfigurationGroupBuilder delete(String id)  {
 		return new DeleteConfigurationGroupBuilder(id);
 	}
@@ -83,8 +91,12 @@ public class ConfigurationGroupService {
 		}
 	}
 
-	/**  Return the configuration group details, including group identifiers, tags, and
-	  number of associated devices, and list of device configuration  */
+	/**
+	 * Return the configuration group details, including group identifiers, tags, and
+	  number of associated devices, and list of device configuration
+	 * 
+	 * @param id Configuration group identifier
+	 */
     public static GetConfigurationGroupBuilder get(String id)  {
 		return new GetConfigurationGroupBuilder(id);
 	}
@@ -96,7 +108,9 @@ public class ConfigurationGroupService {
 		}
 	}
 
-	/**  Return the list of configuration groups  */
+	/**
+	 * Return the list of configuration groups
+	 */
     public static ListConfigurationGroupBuilder list()  {
 		return new ListConfigurationGroupBuilder();
 	}
@@ -114,7 +128,12 @@ public class ConfigurationGroupService {
 		}
 	}
 
-	/**  Update configuration group name  */
+	/**
+	 * Update configuration group name
+	 * 
+	 * @param id Configuration group identifier
+	 * @param configurationGroup Configuration group
+	 */
     public static UpdateConfigurationGroupBuilder update(String id, ConfigurationGroup configurationGroup)  {
 		return new UpdateConfigurationGroupBuilder(id, configurationGroup);
 	}

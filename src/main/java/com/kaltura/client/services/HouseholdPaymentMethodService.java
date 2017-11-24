@@ -48,7 +48,11 @@ public class HouseholdPaymentMethodService {
 		}
 	}
 
-	/**  Add a new payment method for household  */
+	/**
+	 * Add a new payment method for household
+	 * 
+	 * @param householdPaymentMethod Household payment method
+	 */
     public static AddHouseholdPaymentMethodBuilder add(HouseholdPaymentMethod householdPaymentMethod)  {
 		return new AddHouseholdPaymentMethodBuilder(householdPaymentMethod);
 	}
@@ -70,7 +74,12 @@ public class HouseholdPaymentMethodService {
 		}
 	}
 
-	/**  Force remove of a payment method of the household.  */
+	/**
+	 * Force remove of a payment method of the household.
+	 * 
+	 * @param paymentGatewayId Payment Gateway Identifier
+	 * @param paymentMethodId Payment method Identifier
+	 */
     public static ForceRemoveHouseholdPaymentMethodBuilder forceRemove(int paymentGatewayId, int paymentMethodId)  {
 		return new ForceRemoveHouseholdPaymentMethodBuilder(paymentGatewayId, paymentMethodId);
 	}
@@ -82,7 +91,9 @@ public class HouseholdPaymentMethodService {
 		}
 	}
 
-	/**  Get a list of all payment methods of the household.  */
+	/**
+	 * Get a list of all payment methods of the household.
+	 */
     public static ListHouseholdPaymentMethodBuilder list()  {
 		return new ListHouseholdPaymentMethodBuilder();
 	}
@@ -104,7 +115,12 @@ public class HouseholdPaymentMethodService {
 		}
 	}
 
-	/**  Removes a payment method of the household.  */
+	/**
+	 * Removes a payment method of the household.
+	 * 
+	 * @param paymentGatewayId Payment Gateway Identifier
+	 * @param paymentMethodId Payment method Identifier
+	 */
     public static RemoveHouseholdPaymentMethodBuilder remove(int paymentGatewayId, int paymentMethodId)  {
 		return new RemoveHouseholdPaymentMethodBuilder(paymentGatewayId, paymentMethodId);
 	}
@@ -126,7 +142,12 @@ public class HouseholdPaymentMethodService {
 		}
 	}
 
-	/**  Set a payment method as default for the household.  */
+	/**
+	 * Set a payment method as default for the household.
+	 * 
+	 * @param paymentGatewayId Payment Gateway Identifier
+	 * @param paymentMethodId Payment method Identifier
+	 */
     public static SetAsDefaultHouseholdPaymentMethodBuilder setAsDefault(int paymentGatewayId, int paymentMethodId)  {
 		return new SetAsDefaultHouseholdPaymentMethodBuilder(paymentGatewayId, paymentMethodId);
 	}

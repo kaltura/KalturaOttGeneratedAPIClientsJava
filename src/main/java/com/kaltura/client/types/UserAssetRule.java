@@ -41,8 +41,10 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  User asset rule - representing different type of rules on an asset(Parental,
-  Geo, User Type, Device)  */
+/**
+ * User asset rule - representing different type of rules on an asset(Parental,
+  Geo, User Type, Device)
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(UserAssetRule.Tokenizer.class)
 public class UserAssetRule extends ObjectBase {
@@ -54,13 +56,21 @@ public class UserAssetRule extends ObjectBase {
 		String description();
 	}
 
-	/**  Unique rule identifier  */
+	/**
+	 * Unique rule identifier
+	 */
 	private Long id;
-	/**  Rule type - possible values: Rule type – Parental, Geo, UserType, Device  */
+	/**
+	 * Rule type - possible values: Rule type – Parental, Geo, UserType, Device
+	 */
 	private RuleType ruleType;
-	/**  Rule display name  */
+	/**
+	 * Rule display name
+	 */
 	private String name;
-	/**  Additional description for the specific rule  */
+	/**
+	 * Additional description for the specific rule
+	 */
 	private String description;
 
 	// id:

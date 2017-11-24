@@ -42,7 +42,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Define specific base profile response  */
+/**
+ * Define specific base profile response
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DetachedResponseProfile.Tokenizer.class)
 public class DetachedResponseProfile extends BaseResponseProfile {
@@ -53,11 +55,17 @@ public class DetachedResponseProfile extends BaseResponseProfile {
 		RequestBuilder.ListTokenizer<DetachedResponseProfile.Tokenizer> relatedProfiles();
 	}
 
-	/**  name  */
+	/**
+	 * name
+	 */
 	private String name;
-	/**  filter  */
+	/**
+	 * filter
+	 */
 	private RelatedObjectFilter filter;
-	/**  relatedProfiles  */
+	/**
+	 * relatedProfiles
+	 */
 	private List<DetachedResponseProfile> relatedProfiles;
 
 	// name:

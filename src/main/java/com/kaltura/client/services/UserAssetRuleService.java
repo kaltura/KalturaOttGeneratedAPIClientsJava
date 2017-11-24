@@ -48,8 +48,12 @@ public class UserAssetRuleService {
 		}
 	}
 
-	/**  Retrieve all the rules (parental, geo, device or user-type) that applies for
-	  this user and asset.  */
+	/**
+	 * Retrieve all the rules (parental, geo, device or user-type) that applies for
+	  this user and asset.
+	 * 
+	 * @param filter Filter
+	 */
     public static ListUserAssetRuleBuilder list(UserAssetRuleFilter filter)  {
 		return new ListUserAssetRuleBuilder(filter);
 	}

@@ -54,7 +54,15 @@ public class PersonalFeedService {
 		return list(filter, null);
 	}
 
-	/**  List user&amp;#39;s feeds.              Possible status codes:  */
+	/**
+	 * List user&amp;#39;s feeds.              Possible status codes:
+	 * 
+	 * @param filter Required sort option to apply for the identified assets. If omitted – will use
+	 * relevancy.
+	 *             Possible values: relevancy, a_to_z, z_to_a, views, ratings, votes,
+	 * newest.
+	 * @param pager Page size and index
+	 */
     public static ListPersonalFeedBuilder list(PersonalFeedFilter filter, FilterPager pager)  {
 		return new ListPersonalFeedBuilder(filter, pager);
 	}

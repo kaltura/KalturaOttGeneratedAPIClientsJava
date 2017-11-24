@@ -49,7 +49,11 @@ public class PaymentMethodProfileService {
 		}
 	}
 
-	/**  TBD  */
+	/**
+	 * TBD
+	 * 
+	 * @param paymentMethod Payment method to add
+	 */
     public static AddPaymentMethodProfileBuilder add(PaymentMethodProfile paymentMethod)  {
 		return new AddPaymentMethodProfileBuilder(paymentMethod);
 	}
@@ -66,7 +70,11 @@ public class PaymentMethodProfileService {
 		}
 	}
 
-	/**  Delete payment method profile  */
+	/**
+	 * Delete payment method profile
+	 * 
+	 * @param paymentMethodId Payment method identifier to delete
+	 */
     public static DeletePaymentMethodProfileBuilder delete(int paymentMethodId)  {
 		return new DeletePaymentMethodProfileBuilder(paymentMethodId);
 	}
@@ -79,7 +87,11 @@ public class PaymentMethodProfileService {
 		}
 	}
 
-	/**  TBD  */
+	/**
+	 * TBD
+	 * 
+	 * @param filter Payment gateway method profile filter
+	 */
     public static ListPaymentMethodProfileBuilder list(PaymentMethodProfileFilter filter)  {
 		return new ListPaymentMethodProfileBuilder(filter);
 	}
@@ -97,7 +109,12 @@ public class PaymentMethodProfileService {
 		}
 	}
 
-	/**  Update payment method  */
+	/**
+	 * Update payment method
+	 * 
+	 * @param paymentMethodId Payment method identifier to update
+	 * @param paymentMethod Payment method to update
+	 */
     public static UpdatePaymentMethodProfileBuilder update(int paymentMethodId, PaymentMethodProfile paymentMethod)  {
 		return new UpdatePaymentMethodProfileBuilder(paymentMethodId, paymentMethod);
 	}

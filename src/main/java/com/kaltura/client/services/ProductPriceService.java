@@ -48,9 +48,13 @@ public class ProductPriceService {
 		}
 	}
 
-	/**  Returns a price and a purchase status for each subscription or/and media file,
+	/**
+	 * Returns a price and a purchase status for each subscription or/and media file,
 	  for a given user (if passed) and with the consideration of a coupon code (if
-	  passed).  */
+	  passed).
+	 * 
+	 * @param filter Request filter
+	 */
     public static ListProductPriceBuilder list(ProductPriceFilter filter)  {
 		return new ListProductPriceBuilder(filter);
 	}

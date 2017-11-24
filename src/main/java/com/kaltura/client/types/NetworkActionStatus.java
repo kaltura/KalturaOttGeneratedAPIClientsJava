@@ -51,9 +51,13 @@ public class NetworkActionStatus extends ObjectBase {
 		String network();
 	}
 
-	/**  Status  */
+	/**
+	 * Status
+	 */
 	private SocialStatus status;
-	/**  Social network  */
+	/**
+	 * Social network
+	 */
 	private SocialNetwork network;
 
 	// status:

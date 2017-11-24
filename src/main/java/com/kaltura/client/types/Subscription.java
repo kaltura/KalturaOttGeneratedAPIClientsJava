@@ -46,7 +46,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Subscription details  */
+/**
+ * Subscription details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Subscription.Tokenizer.class)
 public class Subscription extends ObjectBase {
@@ -85,70 +87,132 @@ public class Subscription extends ObjectBase {
 		String isCancellationBlocked();
 	}
 
-	/**  Subscription identifier  */
+	/**
+	 * Subscription identifier
+	 */
 	private String id;
-	/**  A list of channels associated with this subscription  */
+	/**
+	 * A list of channels associated with this subscription
+	 */
 	private List<BaseChannel> channels;
-	/**  The first date the subscription is available for purchasing  */
+	/**
+	 * The first date the subscription is available for purchasing
+	 */
 	private Long startDate;
-	/**  The last date the subscription is available for purchasing  */
+	/**
+	 * The last date the subscription is available for purchasing
+	 */
 	private Long endDate;
-	/**  A list of file types identifiers that are supported in this subscription  */
+	/**
+	 * A list of file types identifiers that are supported in this subscription
+	 */
 	private List<IntegerValue> fileTypes;
-	/**  Denotes whether or not this subscription can be renewed  */
+	/**
+	 * Denotes whether or not this subscription can be renewed
+	 */
 	private Boolean isRenewable;
-	/**  Defines the number of times this subscription will be renewed  */
+	/**
+	 * Defines the number of times this subscription will be renewed
+	 */
 	private Integer renewalsNumber;
-	/**  Indicates whether the subscription will renew forever  */
+	/**
+	 * Indicates whether the subscription will renew forever
+	 */
 	private Boolean isInfiniteRenewal;
-	/**  The price of the subscription  */
+	/**
+	 * The price of the subscription
+	 */
 	private PriceDetails price;
-	/**  The internal discount module for the subscription  */
+	/**
+	 * The internal discount module for the subscription
+	 */
 	private DiscountModule discountModule;
-	/**  Name of the subscription  */
+	/**
+	 * Name of the subscription
+	 */
 	private String name;
-	/**  Name of the subscription  */
+	/**
+	 * Name of the subscription
+	 */
 	private List<TranslationToken> multilingualName;
-	/**  description of the subscription  */
+	/**
+	 * description of the subscription
+	 */
 	private String description;
-	/**  description of the subscription  */
+	/**
+	 * description of the subscription
+	 */
 	private List<TranslationToken> multilingualDescription;
-	/**  Identifier of the media associated with the subscription  */
+	/**
+	 * Identifier of the media associated with the subscription
+	 */
 	private Integer mediaId;
-	/**  Subscription order (when returned in methods that retrieve subscriptions)  */
+	/**
+	 * Subscription order (when returned in methods that retrieve subscriptions)
+	 */
 	private Long prorityInOrder;
-	/**  Comma separated subscription price plan IDs  */
+	/**
+	 * Comma separated subscription price plan IDs
+	 */
 	private String pricePlanIds;
-	/**  Subscription preview module  */
+	/**
+	 * Subscription preview module
+	 */
 	private PreviewModule previewModule;
-	/**  The household limitation module identifier associated with this subscription  */
+	/**
+	 * The household limitation module identifier associated with this subscription
+	 */
 	private Integer householdLimitationsId;
-	/**  The subscription grace period in minutes  */
+	/**
+	 * The subscription grace period in minutes
+	 */
 	private Integer gracePeriodMinutes;
-	/**  List of premium services included in the subscription  */
+	/**
+	 * List of premium services included in the subscription
+	 */
 	private List<PremiumService> premiumServices;
-	/**  The maximum number of times an item in this usage module can be viewed  */
+	/**
+	 * The maximum number of times an item in this usage module can be viewed
+	 */
 	private Integer maxViewsNumber;
-	/**  The amount time an item is available for viewing since a user started watching
-	  the item  */
+	/**
+	 * The amount time an item is available for viewing since a user started watching
+	  the item
+	 */
 	private Integer viewLifeCycle;
-	/**  Time period during which the end user can waive his rights to cancel a purchase.
-	  When the time period is passed, the purchase can no longer be cancelled  */
+	/**
+	 * Time period during which the end user can waive his rights to cancel a purchase.
+	  When the time period is passed, the purchase can no longer be cancelled
+	 */
 	private Integer waiverPeriod;
-	/**  Indicates whether or not the end user has the right to waive his rights to
-	  cancel a purchase  */
+	/**
+	 * Indicates whether or not the end user has the right to waive his rights to
+	  cancel a purchase
+	 */
 	private Boolean isWaiverEnabled;
-	/**  List of permitted user types for the subscription  */
+	/**
+	 * List of permitted user types for the subscription
+	 */
 	private List<OTTUserType> userTypes;
-	/**  List of Coupons group  */
+	/**
+	 * List of Coupons group
+	 */
 	private List<CouponsGroup> couponsGroups;
-	/**  List of Subscription product codes  */
+	/**
+	 * List of Subscription product codes
+	 */
 	private List<ProductCode> productCodes;
-	/**  Dependency Type  */
+	/**
+	 * Dependency Type
+	 */
 	private SubscriptionDependencyType dependencyType;
-	/**  External ID  */
+	/**
+	 * External ID
+	 */
 	private String externalId;
-	/**  Is cancellation blocked for the subscription  */
+	/**
+	 * Is cancellation blocked for the subscription
+	 */
 	private Boolean isCancellationBlocked;
 
 	// id:

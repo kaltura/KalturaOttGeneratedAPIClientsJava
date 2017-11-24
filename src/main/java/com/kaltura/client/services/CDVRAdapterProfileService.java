@@ -48,7 +48,11 @@ public class CDVRAdapterProfileService {
 		}
 	}
 
-	/**  Insert new C-DVR adapter for partner  */
+	/**
+	 * Insert new C-DVR adapter for partner
+	 * 
+	 * @param adapter C-DVR adapter object
+	 */
     public static AddCDVRAdapterProfileBuilder add(CDVRAdapterProfile adapter)  {
 		return new AddCDVRAdapterProfileBuilder(adapter);
 	}
@@ -65,7 +69,11 @@ public class CDVRAdapterProfileService {
 		}
 	}
 
-	/**  Delete C-DVR adapter by C-DVR adapter id  */
+	/**
+	 * Delete C-DVR adapter by C-DVR adapter id
+	 * 
+	 * @param adapterId C-DVR adapter identifier
+	 */
     public static DeleteCDVRAdapterProfileBuilder delete(int adapterId)  {
 		return new DeleteCDVRAdapterProfileBuilder(adapterId);
 	}
@@ -82,7 +90,11 @@ public class CDVRAdapterProfileService {
 		}
 	}
 
-	/**  Generate C-DVR adapter shared secret  */
+	/**
+	 * Generate C-DVR adapter shared secret
+	 * 
+	 * @param adapterId C-DVR adapter identifier
+	 */
     public static GenerateSharedSecretCDVRAdapterProfileBuilder generateSharedSecret(int adapterId)  {
 		return new GenerateSharedSecretCDVRAdapterProfileBuilder(adapterId);
 	}
@@ -94,7 +106,9 @@ public class CDVRAdapterProfileService {
 		}
 	}
 
-	/**  Returns all C-DVR adapters for partner  */
+	/**
+	 * Returns all C-DVR adapters for partner
+	 */
     public static ListCDVRAdapterProfileBuilder list()  {
 		return new ListCDVRAdapterProfileBuilder();
 	}
@@ -112,7 +126,12 @@ public class CDVRAdapterProfileService {
 		}
 	}
 
-	/**  Update C-DVR adapter details  */
+	/**
+	 * Update C-DVR adapter details
+	 * 
+	 * @param adapterId C-DVR adapter identifier
+	 * @param adapter C-DVR adapter Object
+	 */
     public static UpdateCDVRAdapterProfileBuilder update(int adapterId, CDVRAdapterProfile adapter)  {
 		return new UpdateCDVRAdapterProfileBuilder(adapterId, adapter);
 	}

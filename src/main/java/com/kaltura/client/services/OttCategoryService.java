@@ -51,7 +51,11 @@ public class OttCategoryService {
 		}
 	}
 
-	/**  Retrieve the list of categories (hierarchical) and their associated channels  */
+	/**
+	 * Retrieve the list of categories (hierarchical) and their associated channels
+	 * 
+	 * @param id Category Identifier
+	 */
     public static GetOttCategoryBuilder get(int id)  {
 		return new GetOttCategoryBuilder(id);
 	}

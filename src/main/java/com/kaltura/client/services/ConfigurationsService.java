@@ -50,7 +50,11 @@ public class ConfigurationsService {
 		}
 	}
 
-	/**  Add a new device configuration to a configuration group  */
+	/**
+	 * Add a new device configuration to a configuration group
+	 * 
+	 * @param configurations Device configuration
+	 */
     public static AddConfigurationsBuilder add(Configurations configurations)  {
 		return new AddConfigurationsBuilder(configurations);
 	}
@@ -67,7 +71,11 @@ public class ConfigurationsService {
 		}
 	}
 
-	/**  Delete a device configuration  */
+	/**
+	 * Delete a device configuration
+	 * 
+	 * @param id Configuration identifier
+	 */
     public static DeleteConfigurationsBuilder delete(String id)  {
 		return new DeleteConfigurationsBuilder(id);
 	}
@@ -84,7 +92,11 @@ public class ConfigurationsService {
 		}
 	}
 
-	/**  Return the device configuration  */
+	/**
+	 * Return the device configuration
+	 * 
+	 * @param id Configuration identifier
+	 */
     public static GetConfigurationsBuilder get(String id)  {
 		return new GetConfigurationsBuilder(id);
 	}
@@ -97,7 +109,11 @@ public class ConfigurationsService {
 		}
 	}
 
-	/**  Return a list of device configurations of a configuration group  */
+	/**
+	 * Return a list of device configurations of a configuration group
+	 * 
+	 * @param filter Filter option for configuration group id.
+	 */
     public static ListConfigurationsBuilder list(ConfigurationsFilter filter)  {
 		return new ListConfigurationsBuilder(filter);
 	}
@@ -143,8 +159,17 @@ public class ConfigurationsService {
 		return serveByDevice(applicationName, clientVersion, platform, udid, tag, 0);
 	}
 
-	/**  Return a device configuration applicable for a specific device (UDID), app name,
-	  software version, platform and optionally a configuration group’s tag  */
+	/**
+	 * Return a device configuration applicable for a specific device (UDID), app name,
+	  software version, platform and optionally a configuration group’s tag
+	 * 
+	 * @param applicationName Application name
+	 * @param clientVersion Client version
+	 * @param platform platform
+	 * @param udid Device UDID
+	 * @param tag Tag
+	 * @param partnerId Partner Id
+	 */
     public static ServeByDeviceConfigurationsBuilder serveByDevice(String applicationName, String clientVersion, String platform, String udid, String tag, int partnerId)  {
 		return new ServeByDeviceConfigurationsBuilder(applicationName, clientVersion, platform, udid, tag, partnerId);
 	}
@@ -162,7 +187,12 @@ public class ConfigurationsService {
 		}
 	}
 
-	/**  Update device configuration  */
+	/**
+	 * Update device configuration
+	 * 
+	 * @param id Configuration identifier
+	 * @param configurations configuration to update
+	 */
     public static UpdateConfigurationsBuilder update(String id, Configurations configurations)  {
 		return new UpdateConfigurationsBuilder(id, configurations);
 	}

@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Search history info  */
+/**
+ * Search history info
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SearchHistory.Tokenizer.class)
 public class SearchHistory extends ObjectBase {
@@ -56,21 +58,37 @@ public class SearchHistory extends ObjectBase {
 		String deviceId();
 	}
 
-	/**  Search ID  */
+	/**
+	 * Search ID
+	 */
 	private String id;
-	/**  Search name  */
+	/**
+	 * Search name
+	 */
 	private String name;
-	/**  Filter  */
+	/**
+	 * Filter
+	 */
 	private String filter;
-	/**  Search language  */
+	/**
+	 * Search language
+	 */
 	private String language;
-	/**  When search was performed  */
+	/**
+	 * When search was performed
+	 */
 	private Long createdAt;
-	/**  Kaltura OTT Service  */
+	/**
+	 * Kaltura OTT Service
+	 */
 	private String service;
-	/**  Kaltura OTT Service Action  */
+	/**
+	 * Kaltura OTT Service Action
+	 */
 	private String action;
-	/**  Unique Device ID  */
+	/**
+	 * Unique Device ID
+	 */
 	private String deviceId;
 
 	// id:

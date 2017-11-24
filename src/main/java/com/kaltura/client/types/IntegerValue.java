@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  A string representation to return an array of ints  */
+/**
+ * A string representation to return an array of ints
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(IntegerValue.Tokenizer.class)
 public class IntegerValue extends Value {
@@ -48,7 +50,9 @@ public class IntegerValue extends Value {
 		String value();
 	}
 
-	/**  Value  */
+	/**
+	 * Value
+	 */
 	private Integer value;
 
 	// value:

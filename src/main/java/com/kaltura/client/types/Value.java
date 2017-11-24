@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  A representation to return an array of values  */
+/**
+ * A representation to return an array of values
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Value.Tokenizer.class)
 public abstract class Value extends ObjectBase {
@@ -49,7 +51,9 @@ public abstract class Value extends ObjectBase {
 		String description();
 	}
 
-	/**  Description  */
+	/**
+	 * Description
+	 */
 	private String description;
 
 	// description:

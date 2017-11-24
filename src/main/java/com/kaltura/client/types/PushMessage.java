@@ -51,14 +51,22 @@ public class PushMessage extends ObjectBase {
 		String url();
 	}
 
-	/**  The message that will be presented to the user.  */
+	/**
+	 * The message that will be presented to the user.
+	 */
 	private String message;
-	/**  Optional. Can be used to change the default push sound on the user device.  */
+	/**
+	 * Optional. Can be used to change the default push sound on the user device.
+	 */
 	private String sound;
-	/**  Optional. Used to change the default action of the application when a push is
-	  received.  */
+	/**
+	 * Optional. Used to change the default action of the application when a push is
+	  received.
+	 */
 	private String action;
-	/**  Optional. Used to direct the application to the relevant page.  */
+	/**
+	 * Optional. Used to direct the application to the relevant page.
+	 */
 	private String url;
 
 	// message:

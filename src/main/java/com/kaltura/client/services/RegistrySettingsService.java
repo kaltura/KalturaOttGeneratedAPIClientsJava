@@ -46,7 +46,9 @@ public class RegistrySettingsService {
 		}
 	}
 
-	/**  Retrieve the registry settings.  */
+	/**
+	 * Retrieve the registry settings.
+	 */
     public static ListRegistrySettingsBuilder list()  {
 		return new ListRegistrySettingsBuilder();
 	}

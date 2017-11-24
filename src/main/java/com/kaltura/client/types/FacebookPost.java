@@ -50,9 +50,13 @@ public class FacebookPost extends SocialNetworkComment {
 		String link();
 	}
 
-	/**  List of comments on the post  */
+	/**
+	 * List of comments on the post
+	 */
 	private List<SocialNetworkComment> comments;
-	/**  A link associated to the post  */
+	/**
+	 * A link associated to the post
+	 */
 	private String link;
 
 	// comments:

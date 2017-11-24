@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Preview module  */
+/**
+ * Preview module
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PreviewModule.Tokenizer.class)
 public class PreviewModule extends ObjectBase {
@@ -52,14 +54,22 @@ public class PreviewModule extends ObjectBase {
 		String nonRenewablePeriod();
 	}
 
-	/**  Preview module identifier  */
+	/**
+	 * Preview module identifier
+	 */
 	private Long id;
-	/**  Preview module name  */
+	/**
+	 * Preview module name
+	 */
 	private String name;
-	/**  Preview module life cycle - for how long the preview module is active  */
+	/**
+	 * Preview module life cycle - for how long the preview module is active
+	 */
 	private Integer lifeCycle;
-	/**  The time you can&amp;#39;t buy the item to which the preview module is assigned
-	  to again  */
+	/**
+	 * The time you can&amp;#39;t buy the item to which the preview module is assigned
+	  to again
+	 */
 	private Integer nonRenewablePeriod;
 
 	// id:

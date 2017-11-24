@@ -53,8 +53,12 @@ public class TransactionService {
 		}
 	}
 
-	/**  downgrade specific subscription for a household. entitlements will be updated on
-	  the existing subscription end date.  */
+	/**
+	 * downgrade specific subscription for a household. entitlements will be updated on
+	  the existing subscription end date.
+	 * 
+	 * @param purchase Purchase properties
+	 */
     public static DowngradeTransactionBuilder downgrade(Purchase purchase)  {
 		return new DowngradeTransactionBuilder(purchase);
 	}
@@ -67,7 +71,11 @@ public class TransactionService {
 		}
 	}
 
-	/**  Retrieve the purchase session identifier  */
+	/**
+	 * Retrieve the purchase session identifier
+	 * 
+	 * @param purchaseSession Purchase properties
+	 */
     public static GetPurchaseSessionIdTransactionBuilder getPurchaseSessionId(PurchaseSession purchaseSession)  {
 		return new GetPurchaseSessionIdTransactionBuilder(purchaseSession);
 	}
@@ -80,8 +88,12 @@ public class TransactionService {
 		}
 	}
 
-	/**  Purchase specific product or subscription for a household. Upon successful
-	  charge entitlements to use the requested product or subscription are granted.  */
+	/**
+	 * Purchase specific product or subscription for a household. Upon successful
+	  charge entitlements to use the requested product or subscription are granted.
+	 * 
+	 * @param purchase Purchase properties
+	 */
     public static PurchaseTransactionBuilder purchase(Purchase purchase)  {
 		return new PurchaseTransactionBuilder(purchase);
 	}
@@ -103,8 +115,13 @@ public class TransactionService {
 		}
 	}
 
-	/**  This method shall set the waiver flag on the user entitlement table and the
-	  waiver date field to the current date.  */
+	/**
+	 * This method shall set the waiver flag on the user entitlement table and the
+	  waiver date field to the current date.
+	 * 
+	 * @param assetId Asset identifier
+	 * @param transactionType The transaction type
+	 */
     public static SetWaiverTransactionBuilder setWaiver(int assetId, TransactionType transactionType)  {
 		return new SetWaiverTransactionBuilder(assetId, transactionType);
 	}
@@ -132,7 +149,15 @@ public class TransactionService {
 		}
 	}
 
-	/**  Updates a pending purchase transaction state.  */
+	/**
+	 * Updates a pending purchase transaction state.
+	 * 
+	 * @param paymentGatewayId Payment gateway identifier
+	 * @param externalTransactionId external transaction identifier
+	 * @param signature Security signature to validate the caller is a payment gateway adapter
+	 * application
+	 * @param status Status properties
+	 */
     public static UpdateStatusTransactionBuilder updateStatus(String paymentGatewayId, String externalTransactionId, String signature, TransactionStatus status)  {
 		return new UpdateStatusTransactionBuilder(paymentGatewayId, externalTransactionId, signature, status);
 	}
@@ -145,8 +170,12 @@ public class TransactionService {
 		}
 	}
 
-	/**  upgrade specific subscription for a household. Upon successful charge
-	  entitlements to use the requested product or subscription are granted.  */
+	/**
+	 * upgrade specific subscription for a household. Upon successful charge
+	  entitlements to use the requested product or subscription are granted.
+	 * 
+	 * @param purchase Purchase properties
+	 */
     public static UpgradeTransactionBuilder upgrade(Purchase purchase)  {
 		return new UpgradeTransactionBuilder(purchase);
 	}
@@ -159,8 +188,12 @@ public class TransactionService {
 		}
 	}
 
-	/**  Verifies PPV/Subscription/Collection client purchase (such as InApp) and
-	  entitles the user.  */
+	/**
+	 * Verifies PPV/Subscription/Collection client purchase (such as InApp) and
+	  entitles the user.
+	 * 
+	 * @param externalReceipt Receipt properties
+	 */
     public static ValidateReceiptTransactionBuilder validateReceipt(ExternalReceipt externalReceipt)  {
 		return new ValidateReceiptTransactionBuilder(externalReceipt);
 	}

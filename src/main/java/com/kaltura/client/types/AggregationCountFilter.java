@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Kaltura Aggregation CountFilter  */
+/**
+ * Kaltura Aggregation CountFilter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AggregationCountFilter.Tokenizer.class)
 public class AggregationCountFilter extends RelatedObjectFilter {

@@ -49,7 +49,11 @@ public class UserRoleService {
 		}
 	}
 
-	/**  Creates a new role  */
+	/**
+	 * Creates a new role
+	 * 
+	 * @param role Role to add
+	 */
     public static AddUserRoleBuilder add(UserRole role)  {
 		return new AddUserRoleBuilder(role);
 	}
@@ -66,7 +70,11 @@ public class UserRoleService {
 		}
 	}
 
-	/**  Delete role  */
+	/**
+	 * Delete role
+	 * 
+	 * @param id Role id to delete
+	 */
     public static DeleteUserRoleBuilder delete(long id)  {
 		return new DeleteUserRoleBuilder(id);
 	}
@@ -83,8 +91,12 @@ public class UserRoleService {
 		return list(null);
 	}
 
-	/**  Retrieving user roles by identifiers, if filter is empty, returns all partner
-	  roles  */
+	/**
+	 * Retrieving user roles by identifiers, if filter is empty, returns all partner
+	  roles
+	 * 
+	 * @param filter User roles filter
+	 */
     public static ListUserRoleBuilder list(UserRoleFilter filter)  {
 		return new ListUserRoleBuilder(filter);
 	}
@@ -102,7 +114,12 @@ public class UserRoleService {
 		}
 	}
 
-	/**  Update role  */
+	/**
+	 * Update role
+	 * 
+	 * @param id Role Id
+	 * @param role Role to Update
+	 */
     public static UpdateUserRoleBuilder update(long id, UserRole role)  {
 		return new UpdateUserRoleBuilder(id, role);
 	}

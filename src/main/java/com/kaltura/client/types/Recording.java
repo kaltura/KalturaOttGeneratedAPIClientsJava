@@ -57,24 +57,40 @@ public class Recording extends ObjectBase {
 		String updateDate();
 	}
 
-	/**  Kaltura unique ID representing the recording identifier  */
+	/**
+	 * Kaltura unique ID representing the recording identifier
+	 */
 	private Long id;
-	/**  Recording state:
-	  scheduled/recording/recorded/canceled/failed/does_not_exists/deleted  */
+	/**
+	 * Recording state:
+	  scheduled/recording/recorded/canceled/failed/does_not_exists/deleted
+	 */
 	private RecordingStatus status;
-	/**  Kaltura unique ID representing the program identifier  */
+	/**
+	 * Kaltura unique ID representing the program identifier
+	 */
 	private Long assetId;
-	/**  Recording Type: single/season/series  */
+	/**
+	 * Recording Type: single/season/series
+	 */
 	private RecordingType type;
-	/**  Specifies until when the recording is available for viewing. Date and time
-	  represented as epoch.  */
+	/**
+	 * Specifies until when the recording is available for viewing. Date and time
+	  represented as epoch.
+	 */
 	private Long viewableUntilDate;
-	/**  Specifies whether or not the recording is protected  */
+	/**
+	 * Specifies whether or not the recording is protected
+	 */
 	private Boolean isProtected;
-	/**  Specifies when was the recording created. Date and time represented as epoch.  */
+	/**
+	 * Specifies when was the recording created. Date and time represented as epoch.
+	 */
 	private Long createDate;
-	/**  Specifies when was the recording last updated. Date and time represented as
-	  epoch.  */
+	/**
+	 * Specifies when was the recording last updated. Date and time represented as
+	  epoch.
+	 */
 	private Long updateDate;
 
 	// id:

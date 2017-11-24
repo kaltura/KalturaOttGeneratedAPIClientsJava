@@ -45,7 +45,9 @@ public class SystemService {
 		}
 	}
 
-	/**  Returns current server timestamp  */
+	/**
+	 * Returns current server timestamp
+	 */
     public static GetTimeSystemBuilder getTime()  {
 		return new GetTimeSystemBuilder();
 	}
@@ -57,7 +59,9 @@ public class SystemService {
 		}
 	}
 
-	/**  Returns current server version  */
+	/**
+	 * Returns current server version
+	 */
     public static GetVersionSystemBuilder getVersion()  {
 		return new GetVersionSystemBuilder();
 	}
@@ -69,7 +73,9 @@ public class SystemService {
 		}
 	}
 
-	/**  Returns true  */
+	/**
+	 * Returns true
+	 */
     public static PingSystemBuilder ping()  {
 		return new PingSystemBuilder();
 	}

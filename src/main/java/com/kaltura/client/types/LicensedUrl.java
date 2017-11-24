@@ -49,9 +49,13 @@ public class LicensedUrl extends ObjectBase {
 		String altUrl();
 	}
 
-	/**  Main licensed URL  */
+	/**
+	 * Main licensed URL
+	 */
 	private String mainUrl;
-	/**  An alternate URL to use in case the main fails  */
+	/**
+	 * An alternate URL to use in case the main fails
+	 */
 	private String altUrl;
 
 	// mainUrl:

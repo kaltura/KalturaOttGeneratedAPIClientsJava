@@ -47,7 +47,9 @@ public class HouseholdUserFilter extends Filter {
 		String householdIdEqual();
 	}
 
-	/**  The identifier of the household  */
+	/**
+	 * The identifier of the household
+	 */
 	private Integer householdIdEqual;
 
 	// householdIdEqual:

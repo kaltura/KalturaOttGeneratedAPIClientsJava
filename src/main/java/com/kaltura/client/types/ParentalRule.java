@@ -44,7 +44,9 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Parental rule  */
+/**
+ * Parental rule
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ParentalRule.Tokenizer.class)
 public class ParentalRule extends ObjectBase {
@@ -64,29 +66,53 @@ public class ParentalRule extends ObjectBase {
 		String origin();
 	}
 
-	/**  Unique parental rule identifier  */
+	/**
+	 * Unique parental rule identifier
+	 */
 	private Long id;
-	/**  Rule display name  */
+	/**
+	 * Rule display name
+	 */
 	private String name;
-	/**  Explanatory description  */
+	/**
+	 * Explanatory description
+	 */
 	private String description;
-	/**  Rule order within the full list of rules  */
+	/**
+	 * Rule order within the full list of rules
+	 */
 	private Integer order;
-	/**  Media asset tag ID to in which to look for corresponding trigger values  */
+	/**
+	 * Media asset tag ID to in which to look for corresponding trigger values
+	 */
 	private Integer mediaTag;
-	/**  EPG asset tag ID to in which to look for corresponding trigger values  */
+	/**
+	 * EPG asset tag ID to in which to look for corresponding trigger values
+	 */
 	private Integer epgTag;
-	/**  Content that correspond to this rule is not available for guests  */
+	/**
+	 * Content that correspond to this rule is not available for guests
+	 */
 	private Boolean blockAnonymousAccess;
-	/**  Rule type – Movies, TV series or both  */
+	/**
+	 * Rule type – Movies, TV series or both
+	 */
 	private ParentalRuleType ruleType;
-	/**  Media tag values that trigger rule  */
+	/**
+	 * Media tag values that trigger rule
+	 */
 	private List<StringValue> mediaTagValues;
-	/**  EPG tag values that trigger rule  */
+	/**
+	 * EPG tag values that trigger rule
+	 */
 	private List<StringValue> epgTagValues;
-	/**  Is the rule the default rule of the account  */
+	/**
+	 * Is the rule the default rule of the account
+	 */
 	private Boolean isDefault;
-	/**  Where was this rule defined account, household or user  */
+	/**
+	 * Where was this rule defined account, household or user
+	 */
 	private RuleLevel origin;
 
 	// id:

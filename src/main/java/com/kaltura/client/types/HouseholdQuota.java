@@ -50,11 +50,17 @@ public class HouseholdQuota extends ObjectBase {
 		String availableQuota();
 	}
 
-	/**  Household identifier  */
+	/**
+	 * Household identifier
+	 */
 	private Long householdId;
-	/**  Total quota that is allocated to the household  */
+	/**
+	 * Total quota that is allocated to the household
+	 */
 	private Integer totalQuota;
-	/**  Available quota that household has remaining  */
+	/**
+	 * Available quota that household has remaining
+	 */
 	private Integer availableQuota;
 
 	// householdId:

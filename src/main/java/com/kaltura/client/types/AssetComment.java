@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Asset Comment  */
+/**
+ * Asset Comment
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetComment.Tokenizer.class)
 public class AssetComment extends SocialComment {
@@ -52,13 +54,21 @@ public class AssetComment extends SocialComment {
 		String subHeader();
 	}
 
-	/**  Comment ID  */
+	/**
+	 * Comment ID
+	 */
 	private Integer id;
-	/**  Asset identifier  */
+	/**
+	 * Asset identifier
+	 */
 	private Integer assetId;
-	/**  Asset Type  */
+	/**
+	 * Asset Type
+	 */
 	private AssetType assetType;
-	/**  Sub Header  */
+	/**
+	 * Sub Header
+	 */
 	private String subHeader;
 
 	// id:

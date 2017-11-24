@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Asset statistics  */
+/**
+ * Asset statistics
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetStatistics.Tokenizer.class)
 public class AssetStatistics extends ObjectBase {
@@ -55,17 +57,29 @@ public class AssetStatistics extends ObjectBase {
 		BuzzScore.Tokenizer buzzScore();
 	}
 
-	/**  Unique identifier for the asset  */
+	/**
+	 * Unique identifier for the asset
+	 */
 	private Integer assetId;
-	/**  Total number of likes for this asset  */
+	/**
+	 * Total number of likes for this asset
+	 */
 	private Integer likes;
-	/**  Total number of views for this asset  */
+	/**
+	 * Total number of views for this asset
+	 */
 	private Integer views;
-	/**  Number of people that rated the asset  */
+	/**
+	 * Number of people that rated the asset
+	 */
 	private Integer ratingCount;
-	/**  Average rating for the asset  */
+	/**
+	 * Average rating for the asset
+	 */
 	private Double rating;
-	/**  Buzz score  */
+	/**
+	 * Buzz score
+	 */
 	private BuzzScore buzzScore;
 
 	// assetId:

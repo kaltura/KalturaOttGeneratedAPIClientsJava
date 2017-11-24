@@ -38,7 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Filtering recordings  */
+/**
+ * Filtering recordings
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SeriesRecordingFilter.Tokenizer.class)
 public class SeriesRecordingFilter extends Filter {

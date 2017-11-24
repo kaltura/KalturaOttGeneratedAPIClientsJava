@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Partner  base configuration  */
+/**
+ * Partner  base configuration
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PartnerConfiguration.Tokenizer.class)
 public abstract class PartnerConfiguration extends ObjectBase {

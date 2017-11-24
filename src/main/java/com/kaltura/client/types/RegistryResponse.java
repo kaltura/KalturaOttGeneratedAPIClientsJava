@@ -50,11 +50,17 @@ public class RegistryResponse extends ObjectBase {
 		String url();
 	}
 
-	/**  Announcement Id  */
+	/**
+	 * Announcement Id
+	 */
 	private Long announcementId;
-	/**  Key  */
+	/**
+	 * Key
+	 */
 	private String key;
-	/**  URL  */
+	/**
+	 * URL
+	 */
 	private String url;
 
 	// announcementId:

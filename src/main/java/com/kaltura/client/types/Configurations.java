@@ -57,23 +57,41 @@ public class Configurations extends ObjectBase {
 		String content();
 	}
 
-	/**  Configuration id  */
+	/**
+	 * Configuration id
+	 */
 	private String id;
-	/**  Partner id  */
+	/**
+	 * Partner id
+	 */
 	private Integer partnerId;
-	/**  Configuration group id  */
+	/**
+	 * Configuration group id
+	 */
 	private String configurationGroupId;
-	/**  Application name  */
+	/**
+	 * Application name
+	 */
 	private String appName;
-	/**  Client version  */
+	/**
+	 * Client version
+	 */
 	private String clientVersion;
-	/**  Platform: Android/iOS/WindowsPhone/Blackberry/STB/CTV/Other  */
+	/**
+	 * Platform: Android/iOS/WindowsPhone/Blackberry/STB/CTV/Other
+	 */
 	private Platform platform;
-	/**  External push id  */
+	/**
+	 * External push id
+	 */
 	private String externalPushId;
-	/**  Is force update  */
+	/**
+	 * Is force update
+	 */
 	private Boolean isForceUpdate;
-	/**  Content  */
+	/**
+	 * Content
+	 */
 	private String content;
 
 	// id:

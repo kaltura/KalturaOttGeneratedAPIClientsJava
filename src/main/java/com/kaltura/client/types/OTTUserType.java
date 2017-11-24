@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  User type  */
+/**
+ * User type
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OTTUserType.Tokenizer.class)
 public class OTTUserType extends ObjectBase {
@@ -50,9 +52,13 @@ public class OTTUserType extends ObjectBase {
 		String description();
 	}
 
-	/**  User type identifier  */
+	/**
+	 * User type identifier
+	 */
 	private Integer id;
-	/**  User type description  */
+	/**
+	 * User type description
+	 */
 	private String description;
 
 	// id:

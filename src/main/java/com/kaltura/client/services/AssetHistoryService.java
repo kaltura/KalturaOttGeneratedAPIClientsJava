@@ -54,7 +54,11 @@ public class AssetHistoryService {
 		return clean(null);
 	}
 
-	/**  Clean the user’s viewing history  */
+	/**
+	 * Clean the user’s viewing history
+	 * 
+	 * @param filter List of assets identifier
+	 */
     public static CleanAssetHistoryBuilder clean(AssetHistoryFilter filter)  {
 		return new CleanAssetHistoryBuilder(filter);
 	}
@@ -76,7 +80,14 @@ public class AssetHistoryService {
 		return list(filter, null);
 	}
 
-	/**  Get recently watched media for user, ordered by recently watched first.  */
+	/**
+	 * Get recently watched media for user, ordered by recently watched first.
+	 * 
+	 * @param filter Filter parameters for filtering out the result
+	 * @param pager Page size and index. Number of assets to return per page. Possible range 5 ≤
+	 * size ≥ 50. If omitted - will be set to 25. If a value &gt; 50 provided –
+	 * will set to 50
+	 */
     public static ListAssetHistoryBuilder list(AssetHistoryFilter filter, FilterPager pager)  {
 		return new ListAssetHistoryBuilder(filter, pager);
 	}

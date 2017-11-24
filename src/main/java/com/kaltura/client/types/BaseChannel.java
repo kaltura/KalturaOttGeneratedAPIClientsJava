@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Slim channel  */
+/**
+ * Slim channel
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BaseChannel.Tokenizer.class)
 public class BaseChannel extends ObjectBase {
@@ -50,9 +52,13 @@ public class BaseChannel extends ObjectBase {
 		String name();
 	}
 
-	/**  Unique identifier for the channel  */
+	/**
+	 * Unique identifier for the channel
+	 */
 	private Long id;
-	/**  Channel name  */
+	/**
+	 * Channel name
+	 */
 	private String name;
 
 	// id:

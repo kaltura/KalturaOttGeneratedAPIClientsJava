@@ -53,22 +53,34 @@ public class Transaction extends ObjectBase {
 		String createdAt();
 	}
 
-	/**  Kaltura unique ID representing the transaction  */
+	/**
+	 * Kaltura unique ID representing the transaction
+	 */
 	private String id;
-	/**  Transaction reference ID received from the payment gateway.               Value
-	  is available only if the payment gateway provides this information.  */
+	/**
+	 * Transaction reference ID received from the payment gateway.               Value
+	  is available only if the payment gateway provides this information.
+	 */
 	private String paymentGatewayReferenceId;
-	/**  Response ID received from by the payment gateway.               Value is
-	  available only if the payment gateway provides this information.  */
+	/**
+	 * Response ID received from by the payment gateway.               Value is
+	  available only if the payment gateway provides this information.
+	 */
 	private String paymentGatewayResponseId;
-	/**  Transaction state: OK/Pending/Failed  */
+	/**
+	 * Transaction state: OK/Pending/Failed
+	 */
 	private String state;
-	/**  Adapter failure reason code              Insufficient funds = 20, Invalid
+	/**
+	 * Adapter failure reason code              Insufficient funds = 20, Invalid
 	  account = 21, User unknown = 22, Reason unknown = 23, Unknown payment gateway
 	  response = 24,              No response from payment gateway = 25, Exceeded
-	  retry limit = 26, Illegal client request = 27, Expired = 28  */
+	  retry limit = 26, Illegal client request = 27, Expired = 28
+	 */
 	private Integer failReasonCode;
-	/**  Entitlement creation date  */
+	/**
+	 * Entitlement creation date
+	 */
 	private Integer createdAt;
 
 	// id:

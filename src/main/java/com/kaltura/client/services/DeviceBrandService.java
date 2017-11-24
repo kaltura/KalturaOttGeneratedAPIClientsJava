@@ -46,7 +46,9 @@ public class DeviceBrandService {
 		}
 	}
 
-	/**  Return a list of the available device brands.  */
+	/**
+	 * Return a list of the available device brands.
+	 */
     public static ListDeviceBrandBuilder list()  {
 		return new ListDeviceBrandBuilder();
 	}

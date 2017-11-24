@@ -51,7 +51,11 @@ public class PpvService {
 		}
 	}
 
-	/**  Returns ppv object by internal identifier  */
+	/**
+	 * Returns ppv object by internal identifier
+	 * 
+	 * @param id ppv identifier
+	 */
     public static GetPpvBuilder get(long id)  {
 		return new GetPpvBuilder(id);
 	}

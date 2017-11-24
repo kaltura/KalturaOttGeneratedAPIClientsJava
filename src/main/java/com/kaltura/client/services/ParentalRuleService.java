@@ -59,8 +59,13 @@ public class ParentalRuleService {
 		}
 	}
 
-	/**  Disables a parental rule that was previously defined by the household master.
-	  Disable can be at specific user or household level.  */
+	/**
+	 * Disables a parental rule that was previously defined by the household master.
+	  Disable can be at specific user or household level.
+	 * 
+	 * @param ruleId Rule Identifier
+	 * @param entityReference Reference type to filter by
+	 */
     public static DisableParentalRuleBuilder disable(long ruleId, EntityReferenceBy entityReference)  {
 		return new DisableParentalRuleBuilder(ruleId, entityReference);
 	}
@@ -77,8 +82,12 @@ public class ParentalRuleService {
 		}
 	}
 
-	/**  Disables a parental rule that was defined at account level. Disable can be at
-	  specific user or household level.  */
+	/**
+	 * Disables a parental rule that was defined at account level. Disable can be at
+	  specific user or household level.
+	 * 
+	 * @param entityReference Reference type to filter by
+	 */
     public static DisableDefaultParentalRuleBuilder disableDefault(EntityReferenceBy entityReference)  {
 		return new DisableDefaultParentalRuleBuilder(entityReference);
 	}
@@ -100,7 +109,12 @@ public class ParentalRuleService {
 		}
 	}
 
-	/**  Enable a parental rules for a user  */
+	/**
+	 * Enable a parental rules for a user
+	 * 
+	 * @param ruleId Rule Identifier
+	 * @param entityReference Reference type to filter by
+	 */
     public static EnableParentalRuleBuilder enable(long ruleId, EntityReferenceBy entityReference)  {
 		return new EnableParentalRuleBuilder(ruleId, entityReference);
 	}
@@ -113,9 +127,13 @@ public class ParentalRuleService {
 		}
 	}
 
-	/**  Return the parental rules that applies for the user or household. Can include
+	/**
+	 * Return the parental rules that applies for the user or household. Can include
 	  rules that have been associated in account, household, or user level.           
-	    Association level is also specified in the response.  */
+	    Association level is also specified in the response.
+	 * 
+	 * @param filter Filter
+	 */
     public static ListParentalRuleBuilder list(ParentalRuleFilter filter)  {
 		return new ListParentalRuleBuilder(filter);
 	}

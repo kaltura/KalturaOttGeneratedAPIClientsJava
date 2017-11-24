@@ -59,29 +59,51 @@ public class DeviceReport extends Report {
 		String operationSystem();
 	}
 
-	/**  Partner unique identifier  */
+	/**
+	 * Partner unique identifier
+	 */
 	private Integer partnerId;
-	/**  Configuration group identifier which the version configuration the device last
-	  received belongs to  */
+	/**
+	 * Configuration group identifier which the version configuration the device last
+	  received belongs to
+	 */
 	private String configurationGroupId;
-	/**  Device unique identifier  */
+	/**
+	 * Device unique identifier
+	 */
 	private String udid;
-	/**  Device-Application push parameters  */
+	/**
+	 * Device-Application push parameters
+	 */
 	private PushParams pushParameters;
-	/**  Application version number  */
+	/**
+	 * Application version number
+	 */
 	private String versionNumber;
-	/**  Application version type  */
+	/**
+	 * Application version type
+	 */
 	private Platform versionPlatform;
-	/**  Application version name  */
+	/**
+	 * Application version name
+	 */
 	private String versionAppName;
-	/**  Last access IP  */
+	/**
+	 * Last access IP
+	 */
 	private String lastAccessIP;
-	/**  Last device configuration request date  */
+	/**
+	 * Last device configuration request date
+	 */
 	private Long lastAccessDate;
-	/**  request header property  */
+	/**
+	 * request header property
+	 */
 	private String userAgent;
-	/**  Request header property              Incase value cannot be found - returns
-	  &amp;quot;Unknown 0.0&amp;quot;  */
+	/**
+	 * Request header property              Incase value cannot be found - returns
+	  &amp;quot;Unknown 0.0&amp;quot;
+	 */
 	private String operationSystem;
 
 	// partnerId:

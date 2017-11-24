@@ -49,7 +49,11 @@ public class EngagementService {
 		}
 	}
 
-	/**  Insert new Engagement for partner  */
+	/**
+	 * Insert new Engagement for partner
+	 * 
+	 * @param engagement Engagement adapter Object
+	 */
     public static AddEngagementBuilder add(Engagement engagement)  {
 		return new AddEngagementBuilder(engagement);
 	}
@@ -66,7 +70,11 @@ public class EngagementService {
 		}
 	}
 
-	/**  Delete engagement by engagement adapter id  */
+	/**
+	 * Delete engagement by engagement adapter id
+	 * 
+	 * @param id Engagement identifier
+	 */
     public static DeleteEngagementBuilder delete(int id)  {
 		return new DeleteEngagementBuilder(id);
 	}
@@ -83,7 +91,11 @@ public class EngagementService {
 		}
 	}
 
-	/**  Return engagement  */
+	/**
+	 * Return engagement
+	 * 
+	 * @param id Engagement identifier
+	 */
     public static GetEngagementBuilder get(int id)  {
 		return new GetEngagementBuilder(id);
 	}
@@ -96,7 +108,11 @@ public class EngagementService {
 		}
 	}
 
-	/**  Returns all Engagement for partner  */
+	/**
+	 * Returns all Engagement for partner
+	 * 
+	 * @param filter filter
+	 */
     public static ListEngagementBuilder list(EngagementFilter filter)  {
 		return new ListEngagementBuilder(filter);
 	}

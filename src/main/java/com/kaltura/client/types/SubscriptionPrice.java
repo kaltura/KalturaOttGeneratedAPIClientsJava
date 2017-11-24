@@ -39,7 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Subscription price details  */
+/**
+ * Subscription price details
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SubscriptionPrice.Tokenizer.class)
 public class SubscriptionPrice extends ProductPrice {
@@ -48,8 +50,10 @@ public class SubscriptionPrice extends ProductPrice {
 		String endDate();
 	}
 
-	/**  If the item related to unified billing cycle purchased - until when the this
-	  price is relevant  */
+	/**
+	 * If the item related to unified billing cycle purchased - until when the this
+	  price is relevant
+	 */
 	private Long endDate;
 
 	// endDate:

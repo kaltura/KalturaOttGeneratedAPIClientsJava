@@ -53,7 +53,11 @@ public class MetaService {
 		return list(null);
 	}
 
-	/**  Get the list of meta mappings for the partner  */
+	/**
+	 * Get the list of meta mappings for the partner
+	 * 
+	 * @param filter Meta filter
+	 */
     public static ListMetaBuilder list(MetaFilter filter)  {
 		return new ListMetaBuilder(filter);
 	}
@@ -71,7 +75,12 @@ public class MetaService {
 		}
 	}
 
-	/**  Update meta&amp;#39;s user interest  */
+	/**
+	 * Update meta&amp;#39;s user interest
+	 * 
+	 * @param id Meta identifier
+	 * @param meta Meta
+	 */
     public static UpdateMetaBuilder update(String id, Meta meta)  {
 		return new UpdateMetaBuilder(id, meta);
 	}

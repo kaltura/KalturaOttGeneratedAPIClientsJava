@@ -48,9 +48,13 @@ public class LicensedUrlMediaRequest extends LicensedUrlBaseRequest {
 		String baseUrl();
 	}
 
-	/**  Identifier of the content to get the link for (file identifier)  */
+	/**
+	 * Identifier of the content to get the link for (file identifier)
+	 */
 	private Integer contentId;
-	/**  Base URL for the licensed URLs  */
+	/**
+	 * Base URL for the licensed URLs
+	 */
 	private String baseUrl;
 
 	// contentId:

@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Filtering Assets requests  */
+/**
+ * Filtering Assets requests
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BookmarkFilter.Tokenizer.class)
 public class BookmarkFilter extends Filter {
@@ -50,9 +52,13 @@ public class BookmarkFilter extends Filter {
 		String assetTypeEqual();
 	}
 
-	/**  Comma separated list of assets identifiers  */
+	/**
+	 * Comma separated list of assets identifiers
+	 */
 	private String assetIdIn;
-	/**  Asset type  */
+	/**
+	 * Asset type
+	 */
 	private AssetType assetTypeEqual;
 
 	// assetIdIn:

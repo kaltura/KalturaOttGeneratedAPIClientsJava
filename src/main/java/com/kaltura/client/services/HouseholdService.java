@@ -48,7 +48,11 @@ public class HouseholdService {
 		}
 	}
 
-	/**  Creates a household for the user  */
+	/**
+	 * Creates a household for the user
+	 * 
+	 * @param household Household object
+	 */
     public static AddHouseholdBuilder add(Household household)  {
 		return new AddHouseholdBuilder(household);
 	}
@@ -69,8 +73,12 @@ public class HouseholdService {
 		return delete(Integer.MIN_VALUE);
 	}
 
-	/**  Fully delete a household. Delete all of the household information, including
-	  users, devices, entitlements, payment methods and notification date.  */
+	/**
+	 * Fully delete a household. Delete all of the household information, including
+	  users, devices, entitlements, payment methods and notification date.
+	 * 
+	 * @param id Household identifier
+	 */
     public static DeleteHouseholdBuilder delete(int id)  {
 		return new DeleteHouseholdBuilder(id);
 	}
@@ -91,7 +99,11 @@ public class HouseholdService {
 		return get(Integer.MIN_VALUE);
 	}
 
-	/**  Returns the household model  */
+	/**
+	 * Returns the household model
+	 * 
+	 * @param id Household identifier
+	 */
     public static GetHouseholdBuilder get(int id)  {
 		return new GetHouseholdBuilder(id);
 	}
@@ -108,7 +120,12 @@ public class HouseholdService {
 		}
 	}
 
-	/**  Reset a household’s time limitation for removing user or device  */
+	/**
+	 * Reset a household’s time limitation for removing user or device
+	 * 
+	 * @param frequencyType Possible values: devices – reset the device change frequency. 
+	 *             users – reset the user add/remove frequency
+	 */
     public static ResetFrequencyHouseholdBuilder resetFrequency(HouseholdFrequencyType frequencyType)  {
 		return new ResetFrequencyHouseholdBuilder(frequencyType);
 	}
@@ -120,7 +137,9 @@ public class HouseholdService {
 		}
 	}
 
-	/**  Resumed a given household service to its previous service settings  */
+	/**
+	 * Resumed a given household service to its previous service settings
+	 */
     public static ResumeHouseholdBuilder resume()  {
 		return new ResumeHouseholdBuilder();
 	}
@@ -141,9 +160,13 @@ public class HouseholdService {
 		return suspend(Integer.MIN_VALUE);
 	}
 
-	/**  Suspend a given household service. Sets the household status to
+	/**
+	 * Suspend a given household service. Sets the household status to
 	  “suspended&amp;quot;.The household service settings are maintained for later
-	  resume  */
+	  resume
+	 * 
+	 * @param roleId roleId
+	 */
     public static SuspendHouseholdBuilder suspend(int roleId)  {
 		return new SuspendHouseholdBuilder(roleId);
 	}
@@ -156,7 +179,11 @@ public class HouseholdService {
 		}
 	}
 
-	/**  Update the household name and description  */
+	/**
+	 * Update the household name and description
+	 * 
+	 * @param household Household object
+	 */
     public static UpdateHouseholdBuilder update(Household household)  {
 		return new UpdateHouseholdBuilder(household);
 	}

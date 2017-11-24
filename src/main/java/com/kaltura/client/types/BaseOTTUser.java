@@ -40,7 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Slim user data  */
+/**
+ * Slim user data
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BaseOTTUser.Tokenizer.class)
 public class BaseOTTUser extends ObjectBase {
@@ -52,13 +54,21 @@ public class BaseOTTUser extends ObjectBase {
 		String lastName();
 	}
 
-	/**  User identifier  */
+	/**
+	 * User identifier
+	 */
 	private String id;
-	/**  Username  */
+	/**
+	 * Username
+	 */
 	private String username;
-	/**  First name  */
+	/**
+	 * First name
+	 */
 	private String firstName;
-	/**  Last name  */
+	/**
+	 * Last name
+	 */
 	private String lastName;
 
 	// id:

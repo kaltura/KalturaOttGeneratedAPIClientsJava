@@ -41,7 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**  Application token  */
+/**
+ * Application token
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AppToken.Tokenizer.class)
 public class AppToken extends ObjectBase {
@@ -57,23 +59,39 @@ public class AppToken extends ObjectBase {
 		String sessionUserId();
 	}
 
-	/**  The id of the application token  */
+	/**
+	 * The id of the application token
+	 */
 	private String id;
-	/**  Expiry time of current token (unix timestamp in seconds)  */
+	/**
+	 * Expiry time of current token (unix timestamp in seconds)
+	 */
 	private Integer expiry;
-	/**  Partner identifier  */
+	/**
+	 * Partner identifier
+	 */
 	private Integer partnerId;
-	/**  Expiry duration of KS (Kaltura Session) that created using the current token (in
-	  seconds)  */
+	/**
+	 * Expiry duration of KS (Kaltura Session) that created using the current token (in
+	  seconds)
+	 */
 	private Integer sessionDuration;
-	/**  The hash type of the token  */
+	/**
+	 * The hash type of the token
+	 */
 	private AppTokenHashType hashType;
-	/**  Comma separated privileges to be applied on KS (Kaltura Session) that created
-	  using the current token  */
+	/**
+	 * Comma separated privileges to be applied on KS (Kaltura Session) that created
+	  using the current token
+	 */
 	private String sessionPrivileges;
-	/**  The application token  */
+	/**
+	 * The application token
+	 */
 	private String token;
-	/**  User id of KS (Kaltura Session) that created using the current token  */
+	/**
+	 * User id of KS (Kaltura Session) that created using the current token
+	 */
 	private String sessionUserId;
 
 	// id:
