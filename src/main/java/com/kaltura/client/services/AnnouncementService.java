@@ -34,7 +34,7 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
- * This class was generated using exec.php
+ * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -54,8 +54,8 @@ public class AnnouncementService {
 	 * Add a new future scheduled system announcement push notification
 	 * 
 	 * @param announcement The announcement to be added.
-	 *             timezone parameter should be taken from the 'name of timezone'
-	 * from: https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx
+	 *             timezone parameter should be taken from the 'name of timezone' from:
+	 * https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx
 	 *             Recipients values: All, LoggedIn, Guests
 	 */
     public static AddAnnouncementBuilder add(Announcement announcement)  {
@@ -139,8 +139,8 @@ public class AnnouncementService {
 	 * 
 	 * @param announcementId The announcement identifier
 	 * @param announcement The announcement to update.
-	 *             timezone parameter should be taken from the 'name of timezone'
-	 * from: https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx
+	 *             timezone parameter should be taken from the 'name of timezone' from:
+	 * https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx
 	 *             Recipients values: All, LoggedIn, Guests
 	 */
     public static UpdateAnnouncementBuilder update(int announcementId, Announcement announcement)  {

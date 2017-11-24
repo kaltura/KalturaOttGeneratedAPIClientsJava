@@ -30,7 +30,7 @@ package com.kaltura.client.utils.request;
 import com.kaltura.client.Params;
 
 /**
- * This class was generated using exec.php
+ * This class was generated using clients-generator\exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -44,14 +44,14 @@ public abstract class RequestBuilderData {
 	}
 	
 	/**
-	 * @param clientTag Client tag
+	 * @param clientTag 
 	 */
 	public void setClientTag(String clientTag){
 		params.add("clientTag", clientTag);
 	}
 	
 	/**
-	 * @param apiVersion API version
+	 * @param apiVersion 
 	 */
 	public void setApiVersion(String apiVersion){
 		params.add("apiVersion", apiVersion);
