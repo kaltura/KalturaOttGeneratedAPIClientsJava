@@ -61,6 +61,7 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		String sharedSecret();
 		String renewIntervalMinutes();
 		String renewStartMinutes();
+		String externalVerification();
 	}
 
 	/**
@@ -111,6 +112,10 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 	 * Renew Start Minutes
 	 */
 	private Integer renewStartMinutes;
+	/**
+	 * Payment gateway external verification
+	 */
+	private Boolean externalVerification;
 
 	// isActive:
 	public Integer getIsActive(){
@@ -252,6 +257,18 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		setToken("renewStartMinutes", multirequestToken);
 	}
 
+	// externalVerification:
+	public Boolean getExternalVerification(){
+		return this.externalVerification;
+	}
+	public void setExternalVerification(Boolean externalVerification){
+		this.externalVerification = externalVerification;
+	}
+
+	public void externalVerification(String multirequestToken){
+		setToken("externalVerification", multirequestToken);
+	}
+
 
 	public PaymentGatewayProfile() {
 		super();
@@ -275,6 +292,7 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
 		renewIntervalMinutes = GsonParser.parseInt(jsonObject.get("renewIntervalMinutes"));
 		renewStartMinutes = GsonParser.parseInt(jsonObject.get("renewStartMinutes"));
+		externalVerification = GsonParser.parseBoolean(jsonObject.get("externalVerification"));
 
 	}
 
@@ -293,6 +311,7 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		kparams.add("sharedSecret", this.sharedSecret);
 		kparams.add("renewIntervalMinutes", this.renewIntervalMinutes);
 		kparams.add("renewStartMinutes", this.renewStartMinutes);
+		kparams.add("externalVerification", this.externalVerification);
 		return kparams;
 	}
 
