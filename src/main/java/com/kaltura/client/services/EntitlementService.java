@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.types.Entitlement;
 import com.kaltura.client.types.EntitlementFilter;
+import com.kaltura.client.types.EntitlementRenewal;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
@@ -157,6 +158,27 @@ public class EntitlementService {
 	 */
     public static ForceCancelEntitlementBuilder forceCancel(int assetId, TransactionType transactionType)  {
 		return new ForceCancelEntitlementBuilder(assetId, transactionType);
+	}
+	
+	public static class GetNextRenewalEntitlementBuilder extends RequestBuilder<EntitlementRenewal, EntitlementRenewal.Tokenizer, GetNextRenewalEntitlementBuilder> {
+		
+		public GetNextRenewalEntitlementBuilder(int id) {
+			super(EntitlementRenewal.class, "entitlement", "getNextRenewal");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Returns the data about the next renewal
+	 * 
+	 * @param id Purchase Id
+	 */
+    public static GetNextRenewalEntitlementBuilder getNextRenewal(int id)  {
+		return new GetNextRenewalEntitlementBuilder(id);
 	}
 	
 	public static class GrantEntitlementBuilder extends RequestBuilder<Boolean, String, GrantEntitlementBuilder> {

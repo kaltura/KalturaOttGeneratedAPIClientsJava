@@ -53,7 +53,7 @@ public class SubscriptionEntitlement extends Entitlement {
 		String isInGracePeriod();
 		String paymentGatewayId();
 		String paymentMethodId();
-		String scheduledSubscriptionId();
+		String unifiedPaymentId();
 		String isSuspended();
 	}
 
@@ -83,9 +83,9 @@ public class SubscriptionEntitlement extends Entitlement {
 	 */
 	private Integer paymentMethodId;
 	/**
-	 * Scheduled Subscription Identifier
+	 * Unified payment identifier
 	 */
-	private Long scheduledSubscriptionId;
+	private Long unifiedPaymentId;
 	/**
 	 * Indicates if the subscription suspended
 	 */
@@ -163,16 +163,16 @@ public class SubscriptionEntitlement extends Entitlement {
 		setToken("paymentMethodId", multirequestToken);
 	}
 
-	// scheduledSubscriptionId:
-	public Long getScheduledSubscriptionId(){
-		return this.scheduledSubscriptionId;
+	// unifiedPaymentId:
+	public Long getUnifiedPaymentId(){
+		return this.unifiedPaymentId;
 	}
-	public void setScheduledSubscriptionId(Long scheduledSubscriptionId){
-		this.scheduledSubscriptionId = scheduledSubscriptionId;
+	public void setUnifiedPaymentId(Long unifiedPaymentId){
+		this.unifiedPaymentId = unifiedPaymentId;
 	}
 
-	public void scheduledSubscriptionId(String multirequestToken){
-		setToken("scheduledSubscriptionId", multirequestToken);
+	public void unifiedPaymentId(String multirequestToken){
+		setToken("unifiedPaymentId", multirequestToken);
 	}
 
 	// isSuspended:
@@ -204,7 +204,7 @@ public class SubscriptionEntitlement extends Entitlement {
 		isInGracePeriod = GsonParser.parseBoolean(jsonObject.get("isInGracePeriod"));
 		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
 		paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
-		scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
+		unifiedPaymentId = GsonParser.parseLong(jsonObject.get("unifiedPaymentId"));
 		isSuspended = GsonParser.parseBoolean(jsonObject.get("isSuspended"));
 
 	}
@@ -214,7 +214,7 @@ public class SubscriptionEntitlement extends Entitlement {
 		kparams.add("objectType", "KalturaSubscriptionEntitlement");
 		kparams.add("paymentGatewayId", this.paymentGatewayId);
 		kparams.add("paymentMethodId", this.paymentMethodId);
-		kparams.add("scheduledSubscriptionId", this.scheduledSubscriptionId);
+		kparams.add("unifiedPaymentId", this.unifiedPaymentId);
 		return kparams;
 	}
 
