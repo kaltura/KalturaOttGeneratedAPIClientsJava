@@ -47,18 +47,18 @@ public class EntitlementService {
 	
 	public static class CancelEntitlementBuilder extends RequestBuilder<Boolean, String, CancelEntitlementBuilder> {
 		
-		public CancelEntitlementBuilder(int assetId, TransactionType transactionType) {
+		public CancelEntitlementBuilder(int assetId, TransactionType productType) {
 			super(Boolean.class, "entitlement", "cancel");
 			params.add("assetId", assetId);
-			params.add("transactionType", transactionType);
+			params.add("productType", productType);
 		}
 		
 		public void assetId(String multirequestToken) {
 			params.add("assetId", multirequestToken);
 		}
 		
-		public void transactionType(String multirequestToken) {
-			params.add("transactionType", multirequestToken);
+		public void productType(String multirequestToken) {
+			params.add("productType", multirequestToken);
 		}
 	}
 
@@ -67,10 +67,10 @@ public class EntitlementService {
 	  within cancellation window and content not already consumed
 	 * 
 	 * @param assetId The mediaFileID to cancel
-	 * @param transactionType The transaction type for the cancelation
+	 * @param productType The product type for the cancelation
 	 */
-    public static CancelEntitlementBuilder cancel(int assetId, TransactionType transactionType)  {
-		return new CancelEntitlementBuilder(assetId, transactionType);
+    public static CancelEntitlementBuilder cancel(int assetId, TransactionType productType)  {
+		return new CancelEntitlementBuilder(assetId, productType);
 	}
 	
 	public static class CancelRenewalEntitlementBuilder extends NullRequestBuilder {
@@ -134,18 +134,18 @@ public class EntitlementService {
 	
 	public static class ForceCancelEntitlementBuilder extends RequestBuilder<Boolean, String, ForceCancelEntitlementBuilder> {
 		
-		public ForceCancelEntitlementBuilder(int assetId, TransactionType transactionType) {
+		public ForceCancelEntitlementBuilder(int assetId, TransactionType productType) {
 			super(Boolean.class, "entitlement", "forceCancel");
 			params.add("assetId", assetId);
-			params.add("transactionType", transactionType);
+			params.add("productType", productType);
 		}
 		
 		public void assetId(String multirequestToken) {
 			params.add("assetId", multirequestToken);
 		}
 		
-		public void transactionType(String multirequestToken) {
-			params.add("transactionType", multirequestToken);
+		public void productType(String multirequestToken) {
+			params.add("productType", multirequestToken);
 		}
 	}
 
@@ -154,10 +154,10 @@ public class EntitlementService {
 	  of cancellation window and content consumption status
 	 * 
 	 * @param assetId The mediaFileID to cancel
-	 * @param transactionType The transaction type for the cancelation
+	 * @param productType The product type for the cancelation
 	 */
-    public static ForceCancelEntitlementBuilder forceCancel(int assetId, TransactionType transactionType)  {
-		return new ForceCancelEntitlementBuilder(assetId, transactionType);
+    public static ForceCancelEntitlementBuilder forceCancel(int assetId, TransactionType productType)  {
+		return new ForceCancelEntitlementBuilder(assetId, productType);
 	}
 	
 	public static class GetNextRenewalEntitlementBuilder extends RequestBuilder<EntitlementRenewal, EntitlementRenewal.Tokenizer, GetNextRenewalEntitlementBuilder> {
