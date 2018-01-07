@@ -108,6 +108,28 @@ public class HouseholdService {
 		return new GetHouseholdBuilder(id);
 	}
 	
+	public static class PurgeHouseholdBuilder extends RequestBuilder<Boolean, String, PurgeHouseholdBuilder> {
+		
+		public PurgeHouseholdBuilder(int id) {
+			super(Boolean.class, "household", "purge");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Purge a household. Delete all of the household information, including users,
+	  devices, entitlements, payment methods and notification date.
+	 * 
+	 * @param id Household identifier
+	 */
+    public static PurgeHouseholdBuilder purge(int id)  {
+		return new PurgeHouseholdBuilder(id);
+	}
+	
 	public static class ResetFrequencyHouseholdBuilder extends RequestBuilder<Household, Household.Tokenizer, ResetFrequencyHouseholdBuilder> {
 		
 		public ResetFrequencyHouseholdBuilder(HouseholdFrequencyType frequencyType) {
