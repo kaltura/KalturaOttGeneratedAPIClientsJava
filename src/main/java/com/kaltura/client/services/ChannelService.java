@@ -28,6 +28,9 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.Channel;
+import com.kaltura.client.types.ChannelsFilter;
+import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -96,6 +99,33 @@ public class ChannelService {
 	 */
     public static GetChannelBuilder get(int id)  {
 		return new GetChannelBuilder(id);
+	}
+	
+	public static class ListChannelBuilder extends ListResponseRequestBuilder<Channel, Channel.Tokenizer, ListChannelBuilder> {
+		
+		public ListChannelBuilder(ChannelsFilter filter, FilterPager pager) {
+			super(Channel.class, "channel", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
+
+	public static ListChannelBuilder list()  {
+		return list(null);
+	}
+
+	public static ListChannelBuilder list(ChannelsFilter filter)  {
+		return list(filter, null);
+	}
+
+	/**
+	 * Get the list of tags for the partner
+	 * 
+	 * @param filter Filter
+	 * @param pager Page size and index
+	 */
+    public static ListChannelBuilder list(ChannelsFilter filter, FilterPager pager)  {
+		return new ListChannelBuilder(filter, pager);
 	}
 	
 	public static class UpdateChannelBuilder extends RequestBuilder<Channel, Channel.Tokenizer, UpdateChannelBuilder> {

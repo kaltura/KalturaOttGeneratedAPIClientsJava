@@ -38,7 +38,8 @@ public enum DrmSchemeName implements EnumAsString {
 	WIDEVINE_CENC("WIDEVINE_CENC"),
 	FAIRPLAY("FAIRPLAY"),
 	WIDEVINE("WIDEVINE"),
-	PLAYREADY("PLAYREADY");
+	PLAYREADY("PLAYREADY"),
+	CUSTOM_DRM("CUSTOM_DRM");
 
 	private String value;
 

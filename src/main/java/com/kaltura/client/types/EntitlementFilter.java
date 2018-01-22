@@ -49,7 +49,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class EntitlementFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String entitlementTypeEqual();
+		String productTypeEqual();
 		String entityReferenceEqual();
 		String isExpiredEqual();
 	}
@@ -57,7 +57,7 @@ public class EntitlementFilter extends Filter {
 	/**
 	 * The type of the entitlements to return
 	 */
-	private TransactionType entitlementTypeEqual;
+	private TransactionType productTypeEqual;
 	/**
 	 * Reference type to filter by
 	 */
@@ -67,16 +67,16 @@ public class EntitlementFilter extends Filter {
 	 */
 	private Boolean isExpiredEqual;
 
-	// entitlementTypeEqual:
-	public TransactionType getEntitlementTypeEqual(){
-		return this.entitlementTypeEqual;
+	// productTypeEqual:
+	public TransactionType getProductTypeEqual(){
+		return this.productTypeEqual;
 	}
-	public void setEntitlementTypeEqual(TransactionType entitlementTypeEqual){
-		this.entitlementTypeEqual = entitlementTypeEqual;
+	public void setProductTypeEqual(TransactionType productTypeEqual){
+		this.productTypeEqual = productTypeEqual;
 	}
 
-	public void entitlementTypeEqual(String multirequestToken){
-		setToken("entitlementTypeEqual", multirequestToken);
+	public void productTypeEqual(String multirequestToken){
+		setToken("productTypeEqual", multirequestToken);
 	}
 
 	// entityReferenceEqual:
@@ -114,7 +114,7 @@ public class EntitlementFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		entitlementTypeEqual = TransactionType.get(GsonParser.parseString(jsonObject.get("entitlementTypeEqual")));
+		productTypeEqual = TransactionType.get(GsonParser.parseString(jsonObject.get("productTypeEqual")));
 		entityReferenceEqual = EntityReferenceBy.get(GsonParser.parseString(jsonObject.get("entityReferenceEqual")));
 		isExpiredEqual = GsonParser.parseBoolean(jsonObject.get("isExpiredEqual"));
 
@@ -123,7 +123,7 @@ public class EntitlementFilter extends Filter {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaEntitlementFilter");
-		kparams.add("entitlementTypeEqual", this.entitlementTypeEqual);
+		kparams.add("productTypeEqual", this.productTypeEqual);
 		kparams.add("entityReferenceEqual", this.entityReferenceEqual);
 		kparams.add("isExpiredEqual", this.isExpiredEqual);
 		return kparams;

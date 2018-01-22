@@ -46,6 +46,7 @@ public class ProductPriceFilter extends Filter {
 	public interface Tokenizer extends Filter.Tokenizer {
 		String subscriptionIdIn();
 		String fileIdIn();
+		String collectionIdIn();
 		String isLowest();
 		String couponCodeEqual();
 	}
@@ -58,6 +59,10 @@ public class ProductPriceFilter extends Filter {
 	 * Comma separated media files identifiers
 	 */
 	private String fileIdIn;
+	/**
+	 * Comma separated collections identifiers
+	 */
+	private String collectionIdIn;
 	/**
 	 * A flag that indicates if only the lowest price of an item should return
 	 */
@@ -89,6 +94,18 @@ public class ProductPriceFilter extends Filter {
 
 	public void fileIdIn(String multirequestToken){
 		setToken("fileIdIn", multirequestToken);
+	}
+
+	// collectionIdIn:
+	public String getCollectionIdIn(){
+		return this.collectionIdIn;
+	}
+	public void setCollectionIdIn(String collectionIdIn){
+		this.collectionIdIn = collectionIdIn;
+	}
+
+	public void collectionIdIn(String multirequestToken){
+		setToken("collectionIdIn", multirequestToken);
 	}
 
 	// isLowest:
@@ -128,6 +145,7 @@ public class ProductPriceFilter extends Filter {
 		// set members values:
 		subscriptionIdIn = GsonParser.parseString(jsonObject.get("subscriptionIdIn"));
 		fileIdIn = GsonParser.parseString(jsonObject.get("fileIdIn"));
+		collectionIdIn = GsonParser.parseString(jsonObject.get("collectionIdIn"));
 		isLowest = GsonParser.parseBoolean(jsonObject.get("isLowest"));
 		couponCodeEqual = GsonParser.parseString(jsonObject.get("couponCodeEqual"));
 
@@ -138,6 +156,7 @@ public class ProductPriceFilter extends Filter {
 		kparams.add("objectType", "KalturaProductPriceFilter");
 		kparams.add("subscriptionIdIn", this.subscriptionIdIn);
 		kparams.add("fileIdIn", this.fileIdIn);
+		kparams.add("collectionIdIn", this.collectionIdIn);
 		kparams.add("isLowest", this.isLowest);
 		kparams.add("couponCodeEqual", this.couponCodeEqual);
 		return kparams;

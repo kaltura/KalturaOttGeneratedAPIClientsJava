@@ -67,7 +67,7 @@ public class Price extends ObjectBase {
 	 */
 	private String currencySign;
 	/**
-	 * Currency
+	 * Country ID
 	 */
 	private Long countryId;
 

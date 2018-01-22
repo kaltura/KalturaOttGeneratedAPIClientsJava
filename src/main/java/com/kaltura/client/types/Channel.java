@@ -29,8 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AssetOrderBy;
-import com.kaltura.client.types.AssetGroupBy;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -48,46 +47,95 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Channel.Tokenizer.class)
-public class Channel extends BaseChannel {
+public abstract class Channel extends ObjectBase {
 	
-	public interface Tokenizer extends BaseChannel.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
+		String systemName();
 		String description();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualDescription();
 		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
-		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> assetTypes();
-		String filterExpression();
 		String isActive();
-		String order();
-		AssetGroupBy.Tokenizer groupBy();
 	}
 
 	/**
-	 * Cannel description
+	 * Unique identifier for the channel
+	 */
+	private Long id;
+	/**
+	 * Channel name
+	 */
+	private String name;
+	/**
+	 * Channel name
+	 */
+	private List<TranslationToken> multilingualName;
+	/**
+	 * Channel system name
+	 */
+	private String systemName;
+	/**
+	 * Channel description
 	 */
 	private String description;
+	/**
+	 * Channel description
+	 */
+	private List<TranslationToken> multilingualDescription;
 	/**
 	 * Channel images
 	 */
 	private List<MediaImage> images;
 	/**
-	 * Asset types in the channel.              -26 is EPG
-	 */
-	private List<IntegerValue> assetTypes;
-	/**
-	 * Filter expression
-	 */
-	private String filterExpression;
-	/**
 	 * active status
 	 */
 	private Boolean isActive;
-	/**
-	 * Channel order
-	 */
-	private AssetOrderBy order;
-	/**
-	 * Channel group by
-	 */
-	private AssetGroupBy groupBy;
+
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// multilingualName:
+	public List<TranslationToken> getMultilingualName(){
+		return this.multilingualName;
+	}
+	public void setMultilingualName(List<TranslationToken> multilingualName){
+		this.multilingualName = multilingualName;
+	}
+
+	// systemName:
+	public String getSystemName(){
+		return this.systemName;
+	}
+	public void setSystemName(String systemName){
+		this.systemName = systemName;
+	}
+
+	public void systemName(String multirequestToken){
+		setToken("systemName", multirequestToken);
+	}
 
 	// description:
 	public String getDescription(){
@@ -101,32 +149,20 @@ public class Channel extends BaseChannel {
 		setToken("description", multirequestToken);
 	}
 
+	// multilingualDescription:
+	public List<TranslationToken> getMultilingualDescription(){
+		return this.multilingualDescription;
+	}
+	public void setMultilingualDescription(List<TranslationToken> multilingualDescription){
+		this.multilingualDescription = multilingualDescription;
+	}
+
 	// images:
 	public List<MediaImage> getImages(){
 		return this.images;
 	}
 	public void setImages(List<MediaImage> images){
 		this.images = images;
-	}
-
-	// assetTypes:
-	public List<IntegerValue> getAssetTypes(){
-		return this.assetTypes;
-	}
-	public void setAssetTypes(List<IntegerValue> assetTypes){
-		this.assetTypes = assetTypes;
-	}
-
-	// filterExpression:
-	public String getFilterExpression(){
-		return this.filterExpression;
-	}
-	public void setFilterExpression(String filterExpression){
-		this.filterExpression = filterExpression;
-	}
-
-	public void filterExpression(String multirequestToken){
-		setToken("filterExpression", multirequestToken);
 	}
 
 	// isActive:
@@ -141,26 +177,6 @@ public class Channel extends BaseChannel {
 		setToken("isActive", multirequestToken);
 	}
 
-	// order:
-	public AssetOrderBy getOrder(){
-		return this.order;
-	}
-	public void setOrder(AssetOrderBy order){
-		this.order = order;
-	}
-
-	public void order(String multirequestToken){
-		setToken("order", multirequestToken);
-	}
-
-	// groupBy:
-	public AssetGroupBy getGroupBy(){
-		return this.groupBy;
-	}
-	public void setGroupBy(AssetGroupBy groupBy){
-		this.groupBy = groupBy;
-	}
-
 
 	public Channel() {
 		super();
@@ -172,26 +188,27 @@ public class Channel extends BaseChannel {
 		if(jsonObject == null) return;
 
 		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
+		systemName = GsonParser.parseString(jsonObject.get("systemName"));
 		description = GsonParser.parseString(jsonObject.get("description"));
+		multilingualDescription = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualDescription"), TranslationToken.class);
 		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
-		assetTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("assetTypes"), IntegerValue.class);
-		filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
-		order = AssetOrderBy.get(GsonParser.parseString(jsonObject.get("order")));
-		groupBy = GsonParser.parseObject(jsonObject.getAsJsonObject("groupBy"), AssetGroupBy.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaChannel");
+		kparams.add("name", this.name);
+		kparams.add("multilingualName", this.multilingualName);
+		kparams.add("systemName", this.systemName);
 		kparams.add("description", this.description);
+		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("images", this.images);
-		kparams.add("assetTypes", this.assetTypes);
-		kparams.add("filterExpression", this.filterExpression);
 		kparams.add("isActive", this.isActive);
-		kparams.add("order", this.order);
-		kparams.add("groupBy", this.groupBy);
 		return kparams;
 	}
 

@@ -50,7 +50,7 @@ public class Entitlement extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
-		String entitlementId();
+		String productId();
 		String currentUses();
 		String endDate();
 		String currentDate();
@@ -70,9 +70,9 @@ public class Entitlement extends ObjectBase {
 	 */
 	private Integer id;
 	/**
-	 * Entitlement identifier
+	 * Product identifier
 	 */
-	private String entitlementId;
+	private String productId;
 	/**
 	 * The current number of uses
 	 */
@@ -135,16 +135,16 @@ public class Entitlement extends ObjectBase {
 		setToken("id", multirequestToken);
 	}
 
-	// entitlementId:
-	public String getEntitlementId(){
-		return this.entitlementId;
+	// productId:
+	public String getProductId(){
+		return this.productId;
 	}
-	public void setEntitlementId(String entitlementId){
-		this.entitlementId = entitlementId;
+	public void setProductId(String productId){
+		this.productId = productId;
 	}
 
-	public void entitlementId(String multirequestToken){
-		setToken("entitlementId", multirequestToken);
+	public void productId(String multirequestToken){
+		setToken("productId", multirequestToken);
 	}
 
 	// currentUses:
@@ -303,7 +303,7 @@ public class Entitlement extends ObjectBase {
 
 		// set members values:
 		id = GsonParser.parseInt(jsonObject.get("id"));
-		entitlementId = GsonParser.parseString(jsonObject.get("entitlementId"));
+		productId = GsonParser.parseString(jsonObject.get("productId"));
 		currentUses = GsonParser.parseInt(jsonObject.get("currentUses"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 		currentDate = GsonParser.parseLong(jsonObject.get("currentDate"));

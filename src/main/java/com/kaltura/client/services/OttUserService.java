@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.types.OTTUser;
+import com.kaltura.client.types.OTTUserDynamicData;
 import com.kaltura.client.types.OTTUserFilter;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -456,6 +457,29 @@ public class OttUserService {
 	 */
     public static UpdateOttUserBuilder update(OTTUser user, String id)  {
 		return new UpdateOttUserBuilder(user, id);
+	}
+	
+	public static class UpdateDynamicDataOttUserBuilder extends RequestBuilder<OTTUserDynamicData, OTTUserDynamicData.Tokenizer, UpdateDynamicDataOttUserBuilder> {
+		
+		public UpdateDynamicDataOttUserBuilder(String key, StringValue value) {
+			super(OTTUserDynamicData.class, "ottuser", "updateDynamicData");
+			params.add("key", key);
+			params.add("value", value);
+		}
+		
+		public void key(String multirequestToken) {
+			params.add("key", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update user dynamic data
+	 * 
+	 * @param key Type of dynamicData
+	 * @param value Value of dynamicData
+	 */
+    public static UpdateDynamicDataOttUserBuilder updateDynamicData(String key, StringValue value)  {
+		return new UpdateDynamicDataOttUserBuilder(key, value);
 	}
 	
 	public static class UpdateLoginDataOttUserBuilder extends RequestBuilder<Boolean, String, UpdateLoginDataOttUserBuilder> {
