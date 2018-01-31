@@ -47,6 +47,9 @@ public class Ratio extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
+		String height();
+		String width();
+		String acceptedErrorMarginPrecentage();
 	}
 
 	/**
@@ -57,6 +60,19 @@ public class Ratio extends ObjectBase {
 	 * Name
 	 */
 	private String name;
+	/**
+	 * Height
+	 */
+	private Integer height;
+	/**
+	 * Width
+	 */
+	private Integer width;
+	/**
+	 * Accepted error margin precentage of an image uploaded for this ratio            
+	   0 - no validation, everything accepted
+	 */
+	private Integer acceptedErrorMarginPrecentage;
 
 	// id:
 	public Long getId(){
@@ -82,6 +98,42 @@ public class Ratio extends ObjectBase {
 		setToken("name", multirequestToken);
 	}
 
+	// height:
+	public Integer getHeight(){
+		return this.height;
+	}
+	public void setHeight(Integer height){
+		this.height = height;
+	}
+
+	public void height(String multirequestToken){
+		setToken("height", multirequestToken);
+	}
+
+	// width:
+	public Integer getWidth(){
+		return this.width;
+	}
+	public void setWidth(Integer width){
+		this.width = width;
+	}
+
+	public void width(String multirequestToken){
+		setToken("width", multirequestToken);
+	}
+
+	// acceptedErrorMarginPrecentage:
+	public Integer getAcceptedErrorMarginPrecentage(){
+		return this.acceptedErrorMarginPrecentage;
+	}
+	public void setAcceptedErrorMarginPrecentage(Integer acceptedErrorMarginPrecentage){
+		this.acceptedErrorMarginPrecentage = acceptedErrorMarginPrecentage;
+	}
+
+	public void acceptedErrorMarginPrecentage(String multirequestToken){
+		setToken("acceptedErrorMarginPrecentage", multirequestToken);
+	}
+
 
 	public Ratio() {
 		super();
@@ -95,6 +147,9 @@ public class Ratio extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
+		height = GsonParser.parseInt(jsonObject.get("height"));
+		width = GsonParser.parseInt(jsonObject.get("width"));
+		acceptedErrorMarginPrecentage = GsonParser.parseInt(jsonObject.get("acceptedErrorMarginPrecentage"));
 
 	}
 
@@ -102,6 +157,9 @@ public class Ratio extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRatio");
 		kparams.add("name", this.name);
+		kparams.add("height", this.height);
+		kparams.add("width", this.width);
+		kparams.add("acceptedErrorMarginPrecentage", this.acceptedErrorMarginPrecentage);
 		return kparams;
 	}
 
