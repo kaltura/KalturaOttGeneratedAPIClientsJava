@@ -60,6 +60,7 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		String churnMailSubject();
 		String senderEmail();
 		String mailSenderName();
+		String mailNotificationAdapterId();
 	}
 
 	/**
@@ -122,6 +123,10 @@ public class NotificationsPartnerSettings extends ObjectBase {
 	 * Mail sender name
 	 */
 	private String mailSenderName;
+	/**
+	 * Mail notification adapter identifier
+	 */
+	private Long mailNotificationAdapterId;
 
 	// pushNotificationEnabled:
 	public Boolean getPushNotificationEnabled(){
@@ -303,6 +308,18 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		setToken("mailSenderName", multirequestToken);
 	}
 
+	// mailNotificationAdapterId:
+	public Long getMailNotificationAdapterId(){
+		return this.mailNotificationAdapterId;
+	}
+	public void setMailNotificationAdapterId(Long mailNotificationAdapterId){
+		this.mailNotificationAdapterId = mailNotificationAdapterId;
+	}
+
+	public void mailNotificationAdapterId(String multirequestToken){
+		setToken("mailNotificationAdapterId", multirequestToken);
+	}
+
 
 	public NotificationsPartnerSettings() {
 		super();
@@ -329,6 +346,7 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		churnMailSubject = GsonParser.parseString(jsonObject.get("churnMailSubject"));
 		senderEmail = GsonParser.parseString(jsonObject.get("senderEmail"));
 		mailSenderName = GsonParser.parseString(jsonObject.get("mailSenderName"));
+		mailNotificationAdapterId = GsonParser.parseLong(jsonObject.get("mailNotificationAdapterId"));
 
 	}
 
@@ -350,6 +368,7 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		kparams.add("churnMailSubject", this.churnMailSubject);
 		kparams.add("senderEmail", this.senderEmail);
 		kparams.add("mailSenderName", this.mailSenderName);
+		kparams.add("mailNotificationAdapterId", this.mailNotificationAdapterId);
 		return kparams;
 	}
 

@@ -56,6 +56,7 @@ public class Announcement extends ObjectBase {
 		String recipients();
 		String id();
 		String imageUrl();
+		String includeMail();
 	}
 
 	/**
@@ -94,6 +95,10 @@ public class Announcement extends ObjectBase {
 	 * Announcement image URL, relevant for system announcements
 	 */
 	private String imageUrl;
+	/**
+	 * Include Mail
+	 */
+	private Boolean includeMail;
 
 	// name:
 	public String getName(){
@@ -203,6 +208,18 @@ public class Announcement extends ObjectBase {
 		setToken("imageUrl", multirequestToken);
 	}
 
+	// includeMail:
+	public Boolean getIncludeMail(){
+		return this.includeMail;
+	}
+	public void setIncludeMail(Boolean includeMail){
+		this.includeMail = includeMail;
+	}
+
+	public void includeMail(String multirequestToken){
+		setToken("includeMail", multirequestToken);
+	}
+
 
 	public Announcement() {
 		super();
@@ -223,6 +240,7 @@ public class Announcement extends ObjectBase {
 		recipients = AnnouncementRecipientsType.get(GsonParser.parseString(jsonObject.get("recipients")));
 		id = GsonParser.parseInt(jsonObject.get("id"));
 		imageUrl = GsonParser.parseString(jsonObject.get("imageUrl"));
+		includeMail = GsonParser.parseBoolean(jsonObject.get("includeMail"));
 
 	}
 
@@ -236,6 +254,7 @@ public class Announcement extends ObjectBase {
 		kparams.add("timezone", this.timezone);
 		kparams.add("recipients", this.recipients);
 		kparams.add("imageUrl", this.imageUrl);
+		kparams.add("includeMail", this.includeMail);
 		return kparams;
 	}
 
