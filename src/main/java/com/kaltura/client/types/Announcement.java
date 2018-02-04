@@ -57,6 +57,8 @@ public class Announcement extends ObjectBase {
 		String id();
 		String imageUrl();
 		String includeMail();
+		String mailTemplate();
+		String mailSubject();
 	}
 
 	/**
@@ -99,6 +101,14 @@ public class Announcement extends ObjectBase {
 	 * Include Mail
 	 */
 	private Boolean includeMail;
+	/**
+	 * Mail Template
+	 */
+	private String mailTemplate;
+	/**
+	 * Mail Subject
+	 */
+	private String mailSubject;
 
 	// name:
 	public String getName(){
@@ -220,6 +230,30 @@ public class Announcement extends ObjectBase {
 		setToken("includeMail", multirequestToken);
 	}
 
+	// mailTemplate:
+	public String getMailTemplate(){
+		return this.mailTemplate;
+	}
+	public void setMailTemplate(String mailTemplate){
+		this.mailTemplate = mailTemplate;
+	}
+
+	public void mailTemplate(String multirequestToken){
+		setToken("mailTemplate", multirequestToken);
+	}
+
+	// mailSubject:
+	public String getMailSubject(){
+		return this.mailSubject;
+	}
+	public void setMailSubject(String mailSubject){
+		this.mailSubject = mailSubject;
+	}
+
+	public void mailSubject(String multirequestToken){
+		setToken("mailSubject", multirequestToken);
+	}
+
 
 	public Announcement() {
 		super();
@@ -241,6 +275,8 @@ public class Announcement extends ObjectBase {
 		id = GsonParser.parseInt(jsonObject.get("id"));
 		imageUrl = GsonParser.parseString(jsonObject.get("imageUrl"));
 		includeMail = GsonParser.parseBoolean(jsonObject.get("includeMail"));
+		mailTemplate = GsonParser.parseString(jsonObject.get("mailTemplate"));
+		mailSubject = GsonParser.parseString(jsonObject.get("mailSubject"));
 
 	}
 
@@ -255,6 +291,8 @@ public class Announcement extends ObjectBase {
 		kparams.add("recipients", this.recipients);
 		kparams.add("imageUrl", this.imageUrl);
 		kparams.add("includeMail", this.includeMail);
+		kparams.add("mailTemplate", this.mailTemplate);
+		kparams.add("mailSubject", this.mailSubject);
 		return kparams;
 	}
 
