@@ -54,6 +54,7 @@ public class MessageTemplate extends ObjectBase {
 		String url();
 		String mailTemplate();
 		String mailSubject();
+		String ratioId();
 	}
 
 	/**
@@ -89,6 +90,10 @@ public class MessageTemplate extends ObjectBase {
 	 * Mail subject
 	 */
 	private String mailSubject;
+	/**
+	 * Ratio identifier
+	 */
+	private String ratioId;
 
 	// message:
 	public String getMessage(){
@@ -186,6 +191,18 @@ public class MessageTemplate extends ObjectBase {
 		setToken("mailSubject", multirequestToken);
 	}
 
+	// ratioId:
+	public String getRatioId(){
+		return this.ratioId;
+	}
+	public void setRatioId(String ratioId){
+		this.ratioId = ratioId;
+	}
+
+	public void ratioId(String multirequestToken){
+		setToken("ratioId", multirequestToken);
+	}
+
 
 	public MessageTemplate() {
 		super();
@@ -205,6 +222,7 @@ public class MessageTemplate extends ObjectBase {
 		url = GsonParser.parseString(jsonObject.get("url"));
 		mailTemplate = GsonParser.parseString(jsonObject.get("mailTemplate"));
 		mailSubject = GsonParser.parseString(jsonObject.get("mailSubject"));
+		ratioId = GsonParser.parseString(jsonObject.get("ratioId"));
 
 	}
 
@@ -219,6 +237,7 @@ public class MessageTemplate extends ObjectBase {
 		kparams.add("url", this.url);
 		kparams.add("mailTemplate", this.mailTemplate);
 		kparams.add("mailSubject", this.mailSubject);
+		kparams.add("ratioId", this.ratioId);
 		return kparams;
 	}
 
