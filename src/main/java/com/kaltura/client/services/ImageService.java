@@ -31,7 +31,6 @@ import com.kaltura.client.types.ContentResource;
 import com.kaltura.client.types.Image;
 import com.kaltura.client.types.ImageFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -102,10 +101,10 @@ public class ImageService {
 		return new ListImageBuilder(filter);
 	}
 	
-	public static class SetContentImageBuilder extends NullRequestBuilder {
+	public static class SetContentImageBuilder extends RequestBuilder<Boolean, String, SetContentImageBuilder> {
 		
 		public SetContentImageBuilder(long id, ContentResource content) {
-			super("image", "setContent");
+			super(Boolean.class, "image", "setContent");
 			params.add("id", id);
 			params.add("content", content);
 		}
