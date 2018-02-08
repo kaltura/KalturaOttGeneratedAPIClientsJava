@@ -69,4 +69,33 @@ public class NotificationsSettingsService {
     public static UpdateNotificationsSettingsBuilder update(NotificationsSettings settings)  {
 		return new UpdateNotificationsSettingsBuilder(settings);
 	}
+	
+	public static class UpdateNotificationsSettingsBuilder extends RequestBuilder<Boolean, String, UpdateNotificationsSettingsBuilder> {
+		
+		public UpdateNotificationsSettingsBuilder(NotificationsSettings settings, String token, int partnerId) {
+			super(Boolean.class, "notificationssettings", "update");
+			params.add("settings", settings);
+			params.add("token", token);
+			params.add("partnerId", partnerId);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update the user’s notification settings.
+	 * 
+	 * @param settings Notifications settings
+	 * @param token User's token identifier
+	 * @param partnerId Partner identifier
+	 */
+    public static UpdateNotificationsSettingsBuilder update(NotificationsSettings settings, String token, int partnerId)  {
+		return new UpdateNotificationsSettingsBuilder(settings, token, partnerId);
+	}
 }

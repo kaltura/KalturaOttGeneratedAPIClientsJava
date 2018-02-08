@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.UserInterest;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -76,6 +77,39 @@ public class UserInterestService {
 	 */
     public static DeleteUserInterestBuilder delete(String id)  {
 		return new DeleteUserInterestBuilder(id);
+	}
+	
+	public static class DeleteWithTokenUserInterestBuilder extends NullRequestBuilder {
+		
+		public DeleteWithTokenUserInterestBuilder(String id, String token, int partnerId) {
+			super("userinterest", "deleteWithToken");
+			params.add("id", id);
+			params.add("token", token);
+			params.add("partnerId", partnerId);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete new user interest for partner user
+	 * 
+	 * @param id User interest identifier
+	 * @param token User's token identifier
+	 * @param partnerId Partner identifier
+	 */
+    public static DeleteWithTokenUserInterestBuilder deleteWithToken(String id, String token, int partnerId)  {
+		return new DeleteWithTokenUserInterestBuilder(id, token, partnerId);
 	}
 	
 	public static class ListUserInterestBuilder extends ListResponseRequestBuilder<UserInterest, UserInterest.Tokenizer, ListUserInterestBuilder> {
