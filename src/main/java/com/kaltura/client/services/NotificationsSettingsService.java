@@ -70,10 +70,10 @@ public class NotificationsSettingsService {
 		return new UpdateNotificationsSettingsBuilder(settings);
 	}
 	
-	public static class UpdateNotificationsSettingsBuilder extends RequestBuilder<Boolean, String, UpdateNotificationsSettingsBuilder> {
+	public static class UpdateWithTokenNotificationsSettingsBuilder extends RequestBuilder<Boolean, String, UpdateWithTokenNotificationsSettingsBuilder> {
 		
-		public UpdateNotificationsSettingsBuilder(NotificationsSettings settings, String token, int partnerId) {
-			super(Boolean.class, "notificationssettings", "update");
+		public UpdateWithTokenNotificationsSettingsBuilder(NotificationsSettings settings, String token, int partnerId) {
+			super(Boolean.class, "notificationssettings", "updateWithToken");
 			params.add("settings", settings);
 			params.add("token", token);
 			params.add("partnerId", partnerId);
@@ -95,7 +95,7 @@ public class NotificationsSettingsService {
 	 * @param token User's token identifier
 	 * @param partnerId Partner identifier
 	 */
-    public static UpdateNotificationsSettingsBuilder update(NotificationsSettings settings, String token, int partnerId)  {
-		return new UpdateNotificationsSettingsBuilder(settings, token, partnerId);
+    public static UpdateWithTokenNotificationsSettingsBuilder updateWithToken(NotificationsSettings settings, String token, int partnerId)  {
+		return new UpdateWithTokenNotificationsSettingsBuilder(settings, token, partnerId);
 	}
 }
