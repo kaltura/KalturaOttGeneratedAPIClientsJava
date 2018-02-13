@@ -51,7 +51,8 @@ public class ChannelService {
 	}
 
 	/**
-	 * Insert new channel for partner. Currently supports only KSQL channel
+	 * Insert new channel for partner. Supports KalturaDynamicChannel or
+	  KalturaManualChannel
 	 * 
 	 * @param channel KSQL channel Object
 	 */
@@ -142,7 +143,7 @@ public class ChannelService {
 	}
 
 	/**
-	 * Update channel details. Currently supports only KSQL channel
+	 * Update channel details. Supports KalturaDynamicChannel or KalturaManualChannel
 	 * 
 	 * @param channelId Channel identifier
 	 * @param channel KSQL channel Object

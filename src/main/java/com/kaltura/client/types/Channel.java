@@ -60,6 +60,8 @@ public class Channel extends ObjectBase {
 		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
 		String isActive();
 		ChannelOrder.Tokenizer orderBy();
+		String createDate();
+		String updateDate();
 	}
 
 	/**
@@ -98,6 +100,14 @@ public class Channel extends ObjectBase {
 	 * Channel order by
 	 */
 	private ChannelOrder orderBy;
+	/**
+	 * Specifies when was the Channel was created. Date and time represented as epoch.
+	 */
+	private Long createDate;
+	/**
+	 * Specifies when was the Channel last updated. Date and time represented as epoch.
+	 */
+	private Long updateDate;
 
 	// id:
 	public Long getId(){
@@ -191,6 +201,30 @@ public class Channel extends ObjectBase {
 		this.orderBy = orderBy;
 	}
 
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	public void setCreateDate(Long createDate){
+		this.createDate = createDate;
+	}
+
+	public void createDate(String multirequestToken){
+		setToken("createDate", multirequestToken);
+	}
+
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	public void setUpdateDate(Long updateDate){
+		this.updateDate = updateDate;
+	}
+
+	public void updateDate(String multirequestToken){
+		setToken("updateDate", multirequestToken);
+	}
+
 
 	public Channel() {
 		super();
@@ -211,6 +245,8 @@ public class Channel extends ObjectBase {
 		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), ChannelOrder.class);
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 
