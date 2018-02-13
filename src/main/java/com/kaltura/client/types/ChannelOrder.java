@@ -29,6 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ChannelOrderBy;
+import com.kaltura.client.types.DynamicOrderBy;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,51 +42,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Channel order details
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(ChannelOrder.Tokenizer.class)
+public class ChannelOrder extends ObjectBase {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		String mediaIds();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		DynamicOrderBy.Tokenizer dynamicOrderBy();
+		String orderBy();
 	}
 
 	/**
-	 * A list of comma separated media ids associated with this channel, according to
-	  the order of the medias in the channel.
+	 * Channel dynamic order by (meta)
 	 */
-	private String mediaIds;
+	private DynamicOrderBy dynamicOrderBy;
+	/**
+	 * Channel order by
+	 */
+	private ChannelOrderBy orderBy;
 
-	// mediaIds:
-	public String getMediaIds(){
-		return this.mediaIds;
+	// dynamicOrderBy:
+	public DynamicOrderBy getDynamicOrderBy(){
+		return this.dynamicOrderBy;
 	}
-	public void setMediaIds(String mediaIds){
-		this.mediaIds = mediaIds;
+	public void setDynamicOrderBy(DynamicOrderBy dynamicOrderBy){
+		this.dynamicOrderBy = dynamicOrderBy;
 	}
 
-	public void mediaIds(String multirequestToken){
-		setToken("mediaIds", multirequestToken);
+	// orderBy:
+	public ChannelOrderBy getOrderBy(){
+		return this.orderBy;
+	}
+	public void setOrderBy(ChannelOrderBy orderBy){
+		this.orderBy = orderBy;
+	}
+
+	public void orderBy(String multirequestToken){
+		setToken("orderBy", multirequestToken);
 	}
 
 
-	public ManualChannel() {
+	public ChannelOrder() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public ChannelOrder(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
+		dynamicOrderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("dynamicOrderBy"), DynamicOrderBy.class);
+		orderBy = ChannelOrderBy.get(GsonParser.parseString(jsonObject.get("orderBy")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("mediaIds", this.mediaIds);
+		kparams.add("objectType", "KalturaChannelOrder");
+		kparams.add("dynamicOrderBy", this.dynamicOrderBy);
+		kparams.add("orderBy", this.orderBy);
 		return kparams;
 	}
 
