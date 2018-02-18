@@ -94,7 +94,7 @@ public class ChannelService {
 	}
 
 	/**
-	 * Returns channel info
+	 * Returns channel
 	 * 
 	 * @param id Channel Identifier
 	 */
