@@ -48,6 +48,7 @@ public class NotificationsSettings extends ObjectBase {
 		String pushNotificationEnabled();
 		String pushFollowEnabled();
 		String mailEnabled();
+		String smsEnabled();
 	}
 
 	/**
@@ -60,9 +61,13 @@ public class NotificationsSettings extends ObjectBase {
 	 */
 	private Boolean pushFollowEnabled;
 	/**
-	 * Specify if the user want to receive mail notifications or not
+	 * Specify if the user wants to receive mail notifications or not
 	 */
 	private Boolean mailEnabled;
+	/**
+	 * Specify if the user wants to receive SMS notifications or not
+	 */
+	private Boolean smsEnabled;
 
 	// pushNotificationEnabled:
 	public Boolean getPushNotificationEnabled(){
@@ -100,6 +105,18 @@ public class NotificationsSettings extends ObjectBase {
 		setToken("mailEnabled", multirequestToken);
 	}
 
+	// smsEnabled:
+	public Boolean getSmsEnabled(){
+		return this.smsEnabled;
+	}
+	public void setSmsEnabled(Boolean smsEnabled){
+		this.smsEnabled = smsEnabled;
+	}
+
+	public void smsEnabled(String multirequestToken){
+		setToken("smsEnabled", multirequestToken);
+	}
+
 
 	public NotificationsSettings() {
 		super();
@@ -114,6 +131,7 @@ public class NotificationsSettings extends ObjectBase {
 		pushNotificationEnabled = GsonParser.parseBoolean(jsonObject.get("pushNotificationEnabled"));
 		pushFollowEnabled = GsonParser.parseBoolean(jsonObject.get("pushFollowEnabled"));
 		mailEnabled = GsonParser.parseBoolean(jsonObject.get("mailEnabled"));
+		smsEnabled = GsonParser.parseBoolean(jsonObject.get("smsEnabled"));
 
 	}
 
@@ -123,6 +141,7 @@ public class NotificationsSettings extends ObjectBase {
 		kparams.add("pushNotificationEnabled", this.pushNotificationEnabled);
 		kparams.add("pushFollowEnabled", this.pushFollowEnabled);
 		kparams.add("mailEnabled", this.mailEnabled);
+		kparams.add("smsEnabled", this.smsEnabled);
 		return kparams;
 	}
 
