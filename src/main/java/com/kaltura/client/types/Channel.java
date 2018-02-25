@@ -258,7 +258,6 @@ public class Channel extends ObjectBase {
 		kparams.add("systemName", this.systemName);
 		kparams.add("description", this.description);
 		kparams.add("multilingualDescription", this.multilingualDescription);
-		kparams.add("images", this.images);
 		kparams.add("isActive", this.isActive);
 		kparams.add("orderBy", this.orderBy);
 		return kparams;
