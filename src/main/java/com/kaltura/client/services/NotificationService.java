@@ -92,6 +92,27 @@ public class NotificationService {
 		return new SendPushNotificationBuilder(userId, pushMessage);
 	}
 	
+	public static class SendSmsNotificationBuilder extends RequestBuilder<Boolean, String, SendSmsNotificationBuilder> {
+		
+		public SendSmsNotificationBuilder(String message) {
+			super(Boolean.class, "notification", "sendSms");
+			params.add("message", message);
+		}
+		
+		public void message(String multirequestToken) {
+			params.add("message", multirequestToken);
+		}
+	}
+
+	/**
+	 * Sends SMS notification to user
+	 * 
+	 * @param message Message to send
+	 */
+    public static SendSmsNotificationBuilder sendSms(String message)  {
+		return new SendSmsNotificationBuilder(message);
+	}
+	
 	public static class SetDevicePushTokenNotificationBuilder extends RequestBuilder<Boolean, String, SetDevicePushTokenNotificationBuilder> {
 		
 		public SetDevicePushTokenNotificationBuilder(String pushToken) {

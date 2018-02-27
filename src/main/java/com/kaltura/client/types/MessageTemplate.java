@@ -52,6 +52,9 @@ public class MessageTemplate extends ObjectBase {
 		String sound();
 		String action();
 		String url();
+		String mailTemplate();
+		String mailSubject();
+		String ratioId();
 	}
 
 	/**
@@ -79,6 +82,18 @@ public class MessageTemplate extends ObjectBase {
 	 * URL template for deep linking. Example - /app/location/{mediaId}
 	 */
 	private String url;
+	/**
+	 * Mail template name
+	 */
+	private String mailTemplate;
+	/**
+	 * Mail subject
+	 */
+	private String mailSubject;
+	/**
+	 * Ratio identifier
+	 */
+	private String ratioId;
 
 	// message:
 	public String getMessage(){
@@ -152,6 +167,42 @@ public class MessageTemplate extends ObjectBase {
 		setToken("url", multirequestToken);
 	}
 
+	// mailTemplate:
+	public String getMailTemplate(){
+		return this.mailTemplate;
+	}
+	public void setMailTemplate(String mailTemplate){
+		this.mailTemplate = mailTemplate;
+	}
+
+	public void mailTemplate(String multirequestToken){
+		setToken("mailTemplate", multirequestToken);
+	}
+
+	// mailSubject:
+	public String getMailSubject(){
+		return this.mailSubject;
+	}
+	public void setMailSubject(String mailSubject){
+		this.mailSubject = mailSubject;
+	}
+
+	public void mailSubject(String multirequestToken){
+		setToken("mailSubject", multirequestToken);
+	}
+
+	// ratioId:
+	public String getRatioId(){
+		return this.ratioId;
+	}
+	public void setRatioId(String ratioId){
+		this.ratioId = ratioId;
+	}
+
+	public void ratioId(String multirequestToken){
+		setToken("ratioId", multirequestToken);
+	}
+
 
 	public MessageTemplate() {
 		super();
@@ -169,6 +220,9 @@ public class MessageTemplate extends ObjectBase {
 		sound = GsonParser.parseString(jsonObject.get("sound"));
 		action = GsonParser.parseString(jsonObject.get("action"));
 		url = GsonParser.parseString(jsonObject.get("url"));
+		mailTemplate = GsonParser.parseString(jsonObject.get("mailTemplate"));
+		mailSubject = GsonParser.parseString(jsonObject.get("mailSubject"));
+		ratioId = GsonParser.parseString(jsonObject.get("ratioId"));
 
 	}
 
@@ -181,6 +235,9 @@ public class MessageTemplate extends ObjectBase {
 		kparams.add("sound", this.sound);
 		kparams.add("action", this.action);
 		kparams.add("url", this.url);
+		kparams.add("mailTemplate", this.mailTemplate);
+		kparams.add("mailSubject", this.mailSubject);
+		kparams.add("ratioId", this.ratioId);
 		return kparams;
 	}
 

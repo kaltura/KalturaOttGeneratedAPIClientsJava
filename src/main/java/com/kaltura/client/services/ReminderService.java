@@ -32,6 +32,7 @@ import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Reminder;
 import com.kaltura.client.types.ReminderFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -85,6 +86,45 @@ public class ReminderService {
 	 */
     public static DeleteReminderBuilder delete(long id, ReminderType type)  {
 		return new DeleteReminderBuilder(id, type);
+	}
+	
+	public static class DeleteWithTokenReminderBuilder extends NullRequestBuilder {
+		
+		public DeleteWithTokenReminderBuilder(long id, ReminderType type, String token, int partnerId) {
+			super("reminder", "deleteWithToken");
+			params.add("id", id);
+			params.add("type", type);
+			params.add("token", token);
+			params.add("partnerId", partnerId);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void type(String multirequestToken) {
+			params.add("type", multirequestToken);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete a reminder. Reminder cannot be delete while being sent.
+	 * 
+	 * @param id Id of the reminder.
+	 * @param type Reminder type.
+	 * @param token User's token identifier
+	 * @param partnerId Partner identifier
+	 */
+    public static DeleteWithTokenReminderBuilder deleteWithToken(long id, ReminderType type, String token, int partnerId)  {
+		return new DeleteWithTokenReminderBuilder(id, type, token, partnerId);
 	}
 	
 	public static class ListReminderBuilder extends ListResponseRequestBuilder<Reminder, Reminder.Tokenizer, ListReminderBuilder> {
