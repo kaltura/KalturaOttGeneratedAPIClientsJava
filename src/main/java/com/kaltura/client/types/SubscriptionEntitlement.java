@@ -232,8 +232,6 @@ public class SubscriptionEntitlement extends Entitlement {
 		kparams.add("objectType", "KalturaSubscriptionEntitlement");
 		kparams.add("paymentGatewayId", this.paymentGatewayId);
 		kparams.add("paymentMethodId", this.paymentMethodId);
-		kparams.add("scheduledSubscriptionId", this.scheduledSubscriptionId);
-		kparams.add("unifiedPaymentId", this.unifiedPaymentId);
 		return kparams;
 	}
 

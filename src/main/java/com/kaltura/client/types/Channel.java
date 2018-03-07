@@ -51,6 +51,7 @@ import java.util.List;
 public class Channel extends BaseChannel {
 	
 	public interface Tokenizer extends BaseChannel.Tokenizer {
+		String name();
 		String description();
 		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> assetTypes();
@@ -60,6 +61,10 @@ public class Channel extends BaseChannel {
 		AssetGroupBy.Tokenizer groupBy();
 	}
 
+	/**
+	 * Channel name
+	 */
+	private String name;
 	/**
 	 * Cannel description
 	 */
@@ -88,6 +93,18 @@ public class Channel extends BaseChannel {
 	 * Channel group by
 	 */
 	private AssetGroupBy groupBy;
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
 
 	// description:
 	public String getDescription(){
@@ -172,6 +189,7 @@ public class Channel extends BaseChannel {
 		if(jsonObject == null) return;
 
 		// set members values:
+		name = GsonParser.parseString(jsonObject.get("name"));
 		description = GsonParser.parseString(jsonObject.get("description"));
 		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
 		assetTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("assetTypes"), IntegerValue.class);
@@ -185,6 +203,7 @@ public class Channel extends BaseChannel {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaChannel");
+		kparams.add("name", this.name);
 		kparams.add("description", this.description);
 		kparams.add("images", this.images);
 		kparams.add("assetTypes", this.assetTypes);
