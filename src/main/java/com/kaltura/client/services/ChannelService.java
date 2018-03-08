@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2018  Kaltura Inc.
+// Copyright (C) 2006-2017  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -131,24 +131,24 @@ public class ChannelService {
 	
 	public static class UpdateChannelBuilder extends RequestBuilder<Channel, Channel.Tokenizer, UpdateChannelBuilder> {
 		
-		public UpdateChannelBuilder(int channelId, Channel channel) {
+		public UpdateChannelBuilder(int id, Channel channel) {
 			super(Channel.class, "channel", "update");
-			params.add("channelId", channelId);
+			params.add("id", id);
 			params.add("channel", channel);
 		}
 		
-		public void channelId(String multirequestToken) {
-			params.add("channelId", multirequestToken);
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
 	/**
 	 * Update channel details. Supports KalturaDynamicChannel or KalturaManualChannel
 	 * 
-	 * @param channelId Channel identifier
+	 * @param id Channel identifier
 	 * @param channel KSQL channel Object
 	 */
-    public static UpdateChannelBuilder update(int channelId, Channel channel)  {
-		return new UpdateChannelBuilder(channelId, channel);
+    public static UpdateChannelBuilder update(int id, Channel channel)  {
+		return new UpdateChannelBuilder(id, channel);
 	}
 }
