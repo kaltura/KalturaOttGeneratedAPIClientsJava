@@ -1,0 +1,19 @@
+{
+  "$id": "KalturaLoginResponse",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "user": {"$ref": "KalturaOttUser_Schema.json#/definitions/KalturaOTTUser"},
+        "loginSession": {
+          "$ref": "KalturaLoginSession_Schema.json#/definitions/KalturaLoginSession"
+        },
+        "objectType": {"type": "string", "enum": ["KalturaLoginResponse"]}
+      },
+      "required": ["user", "loginSession", "objectType"]
+    },
+    "executionTime": {"type": "number", "minimum": 0}
+  },
+  "required": ["result", "executionTime"]
+}

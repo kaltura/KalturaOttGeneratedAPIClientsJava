@@ -1,0 +1,35 @@
+{
+  "$id": "KalturaBillingTransactionListResponse",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "KalturaBillingTransaction_Schema.json#/definitions/KalturaBillingTransaction"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "objectType": {
+          "type": "string",
+          "enum": [
+            "KalturaBillingTransactionListResponse"
+          ]
+        }
+      },
+      "required": [
+        "objects",
+        "totalCount",
+        "objectType"
+      ]
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  }
+}

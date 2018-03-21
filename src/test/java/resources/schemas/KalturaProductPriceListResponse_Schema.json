@@ -1,0 +1,38 @@
+{
+  "$id": "KalturaProductPriceListResponse",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "objects": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "KalturaSubscriptionPrice_Schema.json#/definitions/KalturaSubscriptionPrice" },
+              { "$ref": "KalturaPpvPrice_Schema.json#/definitions/KalturaPpvPrice" }
+            ]
+          }},
+        "totalCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "objectType": {
+          "type": "string",
+          "enum": ["KalturaProductPriceListResponse"]
+        }
+      },
+      "required": [
+        "objects",
+        "totalCount",
+        "objectType"
+      ]
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result"
+  ]
+}

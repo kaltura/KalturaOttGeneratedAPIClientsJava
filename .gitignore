@@ -2,3 +2,5 @@ build
 .idea
 *.iml
 .gradle
+target/
+src/test/java/resources/test.properties

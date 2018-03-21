@@ -1,0 +1,29 @@
+{
+  "$id": "KalturaEntitlementListResponse",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "objects": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "KalturaPpvEntitlement_Schema.json#/definitions/KalturaPpvEntitlement"
+              },
+              {
+                "$ref": "KalturaSubscriptionEntitlement_Schema.json#/definitions/KalturaSubscriptionEntitlement"
+              }
+            ]
+          }
+        },
+        "totalCount": {"type": "integer", "minimum": 0},
+        "objectType": {"type": "string", "enum": ["KalturaEntitlementListResponse"]}
+      },
+      "required": ["objects", "totalCount", "objectType"]
+    },
+    "executionTime": {"type": "number"}
+  },
+  "required": ["result"]
+}
