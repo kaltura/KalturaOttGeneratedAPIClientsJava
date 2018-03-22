@@ -29,14 +29,14 @@ public class Sandbox extends BaseTest {
     @BeforeClass
     public void sandbox_tests_setup() {
         user = generateOttUser();
-        OttUserService.RegisterOttUserBuilder registerOttUserBuilder = register(PARTNER_ID, user, password);
+        RegisterOttUserBuilder registerOttUserBuilder = register(PARTNER_ID, user, password);
         APIOkRequestsExecutor.getExecutor().queue(registerOttUserBuilder.build(client));
     }
 
     private Response<LoginResponse> sandboxLoginTest() {
         final AtomicBoolean done = new AtomicBoolean(false);
 
-        OttUserService.LoginOttUserBuilder loginOttUserBuilder = login(PARTNER_ID, user.getUsername(), password)
+        LoginOttUserBuilder loginOttUserBuilder = login(PARTNER_ID, user.getUsername(), password)
                 .setCompletion((ApiCompletion<LoginResponse>) result -> {
                     if (result.isSuccess()) {
                         assertThat(result.results.getLoginSession()).isNotNull();

@@ -1,74 +1,85 @@
 package com.kaltura.client.test.servicesImpl;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.kaltura.client.Logger;
-import com.kaltura.client.types.*;
-import com.kaltura.client.utils.GsonParser;
-import org.json.JSONObject;
+import com.kaltura.client.APIOkRequestsExecutor;
+import com.kaltura.client.types.LoginResponse;
+import com.kaltura.client.types.LoginSession;
+import com.kaltura.client.types.OTTUser;
+import com.kaltura.client.types.StringValue;
+import com.kaltura.client.utils.response.base.ApiCompletion;
+import com.kaltura.client.utils.response.base.Response;
 
-import java.util.Optional;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static com.kaltura.client.services.OttUserService.*;
+import static com.kaltura.client.services.OttUserService.login;
+import static com.kaltura.client.test.tests.BaseTest.client;
+import static org.awaitility.Awaitility.await;
 
 public class OttUserServiceImpl {
-
-    private static final String SERVICE = "ottUser";
-
-    private static final String LOGIN_ACTION = "login";
-    private static final String ANONYMOUSLOGIN_ACTION = "anonymousLogin";
-    private static final String REGISTER_ACTION = "register";
-    private static final String ACTIVATE_ACTION = "activate";
-    private static final String DELETE_ACTION = "delete";
-    private static final String LIST_ACTION = "list";
 
     private static final String LOGIN_RESPONSE_SCHEMA = "KalturaLoginResponse_Schema.json";
     private static final String LOGIN_SESSION_SCHEMA = "KalturaLoginSession_Schema.json";
     private static final String OTT_USER_SCHEMA = "KalturaOttUser_Schema.json";
 
+    private static Response<LoginResponse> loginResponse;
+    private static Response<OTTUser> ottUserResponse;
+    private static Response<LoginSession> loginSessionResponse;
 
-    public static void login(String username, String password, Optional<String> udid, Optional<JsonObject> extra_params) {
 
+    public static Response<LoginResponse> loginImpl(int partnerId, String username, String password, Map<String, StringValue> extraParams, String udid) {
+        final AtomicBoolean done = new AtomicBoolean(false);
+
+        LoginOttUserBuilder loginOttUserBuilder = login(partnerId, username, password, extraParams, udid)
+                .setCompletion((ApiCompletion<LoginResponse>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+//                        MatcherAssert.assertThat(result.results.toParams().toString(), matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
+                    }
+                    loginResponse = result;
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(loginOttUserBuilder.build(client));
+        await().untilTrue(done);
+
+        return loginResponse;
     }
 
-//    public static <T> T anonymousLogin(Optional<String> udid) {
-//        String body = anonymousLoginRequestBuilder(udid);
-//        Response response = setPostRequest(body, SERVICE, ANONYMOUSLOGIN_ACTION);
-//
-//        if (isApiException(response)) {
-//            return (T) getApiException(response);
-//        } else {
-//            assertThat(response.asString(), matchesJsonSchemaInClasspath(LOGIN_SESSION_SCHEMA));
-//            try {
-//                return GsonParser.parseObject(response.asString(), (Class<T>) LoginSession.class);
-//            } catch (APIException e) {
-//                Logger.getLogger(OttUserService.class).error("LoginSession.class parse error");
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//    }
-//
-//    public static <T> T register(OTTUser ottUser, String password) {
-//        String body = registerRequestBuilder(ottUser, password);
-//        Response response = setPostRequest(body, SERVICE, REGISTER_ACTION);
-//
-//        if (isApiException(response)) {
-//            return (T) getApiException(response);
-//        } else {
-//            assertThat(response.asString(), matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
-//            try {
-//                return GsonParser.parseObject(response.asString(), (Class<T>) OTTUser.class);
-//            } catch (APIException e) {
-//                Logger.getLogger(OttUserService.class).error("OTTUser.class parse error");
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//    }
-//
-//    // TODO: 3/15/2018 ask Max if we need to expose partnerId to the crud function level
+    public static Response<OTTUser> registerImpl(int partnerId, OTTUser user, String password) {
+        final AtomicBoolean done = new AtomicBoolean(false);
+
+        RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, user, password)
+                .setCompletion((ApiCompletion<OTTUser>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+                    }
+                    ottUserResponse = result;
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(registerOttUserBuilder.build(client));
+        await().untilTrue(done);
+
+        return ottUserResponse;
+    }
+
+    public static Response<LoginSession> anonymousLoginImpl(int partnerId, String udid) {
+        final AtomicBoolean done = new AtomicBoolean(false);
+
+        AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = anonymousLogin(partnerId, udid)
+                .setCompletion((ApiCompletion<LoginSession>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+                    }
+                    loginSessionResponse = result;
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(anonymousLoginOttUserBuilder.build(client));
+        await().untilTrue(done);
+
+        return loginSessionResponse;
+    }
+
+
 //    public static <T> T activate(String ks, String username, String activationToken) {
 //        String body = activateRequestBuilder(ks, username, activationToken);
 //        Response response = setPostRequest(body, SERVICE, ACTIVATE_ACTION);
@@ -178,67 +189,6 @@ public class OttUserServiceImpl {
 //    public static <T> T updateLoginData(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
-//    }
-//
-//    ////////////////////////
-//    /////help functions/////
-//    ////////////////////////
-//    private static String loginRequestBuilder(String username, String password, Optional<String> udid, Optional<JSONObject> extra_params) {
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject
-//                .put("partnerId", partner_id)
-//                .put("apiVersion", api_version)
-//                .put("username", username)
-//                .put("password", password);
-//
-//        udid.ifPresent(s -> jsonObject.put("udid", s));
-//        extra_params.ifPresent(jsonObject1 -> jsonObject.put("extra_params", jsonObject1));
-////        String argument = optionalArgument.or("reasonable default");
-//
-//        return jsonObject.toString();
-//    }
-//
-//    private static String anonymousLoginRequestBuilder(Optional<String> udid) {
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject
-//                .put("apiVersion", api_version)
-//                .put("partnerId", partner_id);
-//
-//        udid.ifPresent(s -> jsonObject.put("udid", s));
-//
-//        return jsonObject.toString();
-//    }
-//
-//    //TODO: add later fields "userType": OTTUserType and "dynamicData": map of StringValue if needed
-//    private static String registerRequestBuilder(OTTUser ottUser, String password) {
-//        JsonObject jsonObject = new JsonObject();
-//        jsonObject.addProperty("apiVersion", api_version);
-//        jsonObject.addProperty("partnerId", partner_id);
-//        jsonObject.addProperty("password", password);
-//
-//        JsonElement element = new Gson().fromJson(ottUser.toParams().toString(), JsonElement.class);
-//        jsonObject.add("user", element);
-//
-//        return jsonObject.toString();
-//    }
-//
-//    private static String activateRequestBuilder(String ks, String username, String activationToken) {
-//        JSONObject jsonObject = getBaseRequestBody(ks);
-//        jsonObject
-//                .put("partnerId", partner_id)
-//                .put("username", username)
-//                .put("activationToken", activationToken);
-//
-//        return jsonObject.toString();
-//    }
-//
-//    private static String listRequestBuilder(String ks, Optional<OTTUserFilter> ottUserFilter) {
-//        JsonObject jsonObject = getBaseRequestBodyGson(ks);
-//        if (ottUserFilter.isPresent()) {
-//            JsonElement element = new Gson().fromJson(ottUserFilter.get().toParams().toString(), JsonElement.class);
-//            jsonObject.add("filter", element);
-//        }
-//        return jsonObject.toString();
 //    }
 }
 
