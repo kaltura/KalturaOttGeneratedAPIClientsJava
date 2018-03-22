@@ -38,4 +38,5 @@ public class Config {
     // https://dzone.com/articles/how-to-automatically-skip-tests-based-on-defects-s
     // TODO: 3/19/2018 update readme file with project structure and list of services
     // TODO: 3/19/2018 find how to run specific tests according to api version
+    // TODO: 3/22/2018 ask Elram where to open the apiException meesage not equal to description issue
 }

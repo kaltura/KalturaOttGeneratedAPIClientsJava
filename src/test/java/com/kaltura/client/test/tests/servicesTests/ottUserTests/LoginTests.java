@@ -38,21 +38,30 @@ public class LoginTests extends BaseTest {
         assertThat(loginResponse.results.getUser().getUsername()).isEqualTo(user.getUsername());
     }
 
-    @Description("ottUser/action/login - login with wrong password")
+    @Description("ottUser/action/login - login with wrong password - error 1011")
     @Test
     public void login_with_wrong_password() {
         loginResponse = loginImpl(PARTNER_ID, user.getUsername(), password + "1", null, null);
+
         assertThat(loginResponse.results).isNull();
-        assertThat(loginResponse.error.getCode()).isEqualTo("1011");
-        assertThat(loginResponse.error.getMessage()).isEqualTo("Wrong username or password");
+        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1011).getCode());
     }
 
-    @Description("ottUser/action/login - login with wrong username")
+    @Description("ottUser/action/login - login with wrong username - error 2000")
     @Test
     public void login_with_wrong_username() {
         loginResponse = loginImpl(PARTNER_ID, user.getUsername() + "1", password, null, null);
+
         assertThat(loginResponse.results).isNull();
-        assertThat(loginResponse.error.getCode()).isEqualTo("2000");
-        assertThat(loginResponse.error.getMessage()).isEqualTo("User does not exist");
+        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2000).getCode());
+    }
+
+    @Description("ottUser/action/login - login with wrong partnerId - error 500006")
+    @Test()
+    public void login_with_wrong_partnerId() {
+        loginResponse = loginImpl(PARTNER_ID + 1, user.getUsername(), password, null, null);
+
+        assertThat(loginResponse.results).isNull();
+        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500006).getCode());
     }
 }
