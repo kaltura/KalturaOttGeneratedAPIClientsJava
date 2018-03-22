@@ -49,12 +49,17 @@ public class BaseChannel extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
+		String name();
 	}
 
 	/**
 	 * Unique identifier for the channel
 	 */
 	private Long id;
+	/**
+	 * Channel name
+	 */
+	private String name;
 
 	// id:
 	public Long getId(){
@@ -66,6 +71,18 @@ public class BaseChannel extends ObjectBase {
 
 	public void id(String multirequestToken){
 		setToken("id", multirequestToken);
+	}
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
 
@@ -80,12 +97,14 @@ public class BaseChannel extends ObjectBase {
 
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBaseChannel");
+		kparams.add("name", this.name);
 		return kparams;
 	}
 

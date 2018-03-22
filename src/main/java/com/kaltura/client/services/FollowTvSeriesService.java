@@ -31,7 +31,6 @@ import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.FollowTvSeries;
 import com.kaltura.client.types.FollowTvSeriesFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -82,39 +81,6 @@ public class FollowTvSeriesService {
 	 */
     public static DeleteFollowTvSeriesBuilder delete(int assetId)  {
 		return new DeleteFollowTvSeriesBuilder(assetId);
-	}
-	
-	public static class DeleteWithTokenFollowTvSeriesBuilder extends NullRequestBuilder {
-		
-		public DeleteWithTokenFollowTvSeriesBuilder(int assetId, String token, int partnerId) {
-			super("followtvseries", "deleteWithToken");
-			params.add("assetId", assetId);
-			params.add("token", token);
-			params.add("partnerId", partnerId);
-		}
-		
-		public void assetId(String multirequestToken) {
-			params.add("assetId", multirequestToken);
-		}
-		
-		public void token(String multirequestToken) {
-			params.add("token", multirequestToken);
-		}
-		
-		public void partnerId(String multirequestToken) {
-			params.add("partnerId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete a user&amp;#39;s tv series follow.
-	 * 
-	 * @param assetId Asset identifier
-	 * @param token User's token identifier
-	 * @param partnerId Partner identifier
-	 */
-    public static DeleteWithTokenFollowTvSeriesBuilder deleteWithToken(int assetId, String token, int partnerId)  {
-		return new DeleteWithTokenFollowTvSeriesBuilder(assetId, token, partnerId);
 	}
 	
 	public static class ListFollowTvSeriesBuilder extends ListResponseRequestBuilder<FollowTvSeries, FollowTvSeries.Tokenizer, ListFollowTvSeriesBuilder> {

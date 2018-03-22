@@ -56,10 +56,6 @@ public class Announcement extends ObjectBase {
 		String recipients();
 		String id();
 		String imageUrl();
-		String includeMail();
-		String mailTemplate();
-		String mailSubject();
-		String includeSms();
 	}
 
 	/**
@@ -98,22 +94,6 @@ public class Announcement extends ObjectBase {
 	 * Announcement image URL, relevant for system announcements
 	 */
 	private String imageUrl;
-	/**
-	 * Include Mail
-	 */
-	private Boolean includeMail;
-	/**
-	 * Mail Template
-	 */
-	private String mailTemplate;
-	/**
-	 * Mail Subject
-	 */
-	private String mailSubject;
-	/**
-	 * Include SMS
-	 */
-	private Boolean includeSms;
 
 	// name:
 	public String getName(){
@@ -223,54 +203,6 @@ public class Announcement extends ObjectBase {
 		setToken("imageUrl", multirequestToken);
 	}
 
-	// includeMail:
-	public Boolean getIncludeMail(){
-		return this.includeMail;
-	}
-	public void setIncludeMail(Boolean includeMail){
-		this.includeMail = includeMail;
-	}
-
-	public void includeMail(String multirequestToken){
-		setToken("includeMail", multirequestToken);
-	}
-
-	// mailTemplate:
-	public String getMailTemplate(){
-		return this.mailTemplate;
-	}
-	public void setMailTemplate(String mailTemplate){
-		this.mailTemplate = mailTemplate;
-	}
-
-	public void mailTemplate(String multirequestToken){
-		setToken("mailTemplate", multirequestToken);
-	}
-
-	// mailSubject:
-	public String getMailSubject(){
-		return this.mailSubject;
-	}
-	public void setMailSubject(String mailSubject){
-		this.mailSubject = mailSubject;
-	}
-
-	public void mailSubject(String multirequestToken){
-		setToken("mailSubject", multirequestToken);
-	}
-
-	// includeSms:
-	public Boolean getIncludeSms(){
-		return this.includeSms;
-	}
-	public void setIncludeSms(Boolean includeSms){
-		this.includeSms = includeSms;
-	}
-
-	public void includeSms(String multirequestToken){
-		setToken("includeSms", multirequestToken);
-	}
-
 
 	public Announcement() {
 		super();
@@ -291,10 +223,6 @@ public class Announcement extends ObjectBase {
 		recipients = AnnouncementRecipientsType.get(GsonParser.parseString(jsonObject.get("recipients")));
 		id = GsonParser.parseInt(jsonObject.get("id"));
 		imageUrl = GsonParser.parseString(jsonObject.get("imageUrl"));
-		includeMail = GsonParser.parseBoolean(jsonObject.get("includeMail"));
-		mailTemplate = GsonParser.parseString(jsonObject.get("mailTemplate"));
-		mailSubject = GsonParser.parseString(jsonObject.get("mailSubject"));
-		includeSms = GsonParser.parseBoolean(jsonObject.get("includeSms"));
 
 	}
 
@@ -308,10 +236,6 @@ public class Announcement extends ObjectBase {
 		kparams.add("timezone", this.timezone);
 		kparams.add("recipients", this.recipients);
 		kparams.add("imageUrl", this.imageUrl);
-		kparams.add("includeMail", this.includeMail);
-		kparams.add("mailTemplate", this.mailTemplate);
-		kparams.add("mailSubject", this.mailSubject);
-		kparams.add("includeSms", this.includeSms);
 		return kparams;
 	}
 
