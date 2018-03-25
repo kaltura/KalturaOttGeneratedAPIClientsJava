@@ -47,6 +47,7 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		String kSql();
 		String typeIn();
 		String idIn();
+		String excludeWatched();
 	}
 
 	/**
@@ -85,6 +86,10 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	 * Comma separated list of EPG channel ids to search within.
 	 */
 	private String idIn;
+	/**
+	 * Exclude watched asset.
+	 */
+	private Boolean excludeWatched;
 
 	// kSql:
 	public String getKSql(){
@@ -122,6 +127,18 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		setToken("idIn", multirequestToken);
 	}
 
+	// excludeWatched:
+	public Boolean getExcludeWatched(){
+		return this.excludeWatched;
+	}
+	public void setExcludeWatched(Boolean excludeWatched){
+		this.excludeWatched = excludeWatched;
+	}
+
+	public void excludeWatched(String multirequestToken){
+		setToken("excludeWatched", multirequestToken);
+	}
+
 
 	public SearchAssetFilter() {
 		super();
@@ -136,6 +153,7 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
 
 	}
 
@@ -145,6 +163,7 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		kparams.add("kSql", this.kSql);
 		kparams.add("typeIn", this.typeIn);
 		kparams.add("idIn", this.idIn);
+		kparams.add("excludeWatched", this.excludeWatched);
 		return kparams;
 	}
 
