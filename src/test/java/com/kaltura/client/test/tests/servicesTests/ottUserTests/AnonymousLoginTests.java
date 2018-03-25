@@ -7,7 +7,7 @@ import com.kaltura.client.utils.response.base.Response;
 import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.helper.Config.PARTNER_ID;
+import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnonymousLoginTests extends BaseTest {

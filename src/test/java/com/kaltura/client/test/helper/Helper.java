@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.kaltura.client.test.helper.Config.API_URL_VERSION;
+import static com.kaltura.client.test.helper.Properties.API_URL_VERSION;
 
 public class Helper {
 

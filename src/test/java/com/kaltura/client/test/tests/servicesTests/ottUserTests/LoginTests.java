@@ -9,8 +9,8 @@ import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.helper.Config.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.helper.Config.PARTNER_ID;
+import static com.kaltura.client.test.helper.Properties.GLOBAL_USER_PASSWORD;
+import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.loginImpl;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.registerImpl;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +23,7 @@ public class LoginTests extends BaseTest {
     private Response<LoginResponse> loginResponse;
 
     @BeforeClass
-    public void ottUser_tests_setup() {
+    public void ottUser_login_tests_setup() {
         user = Helper.generateOttUser();
         registerImpl(PARTNER_ID, user, password);
     }

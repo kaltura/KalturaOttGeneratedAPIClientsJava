@@ -1,13 +1,14 @@
 package com.kaltura.client.test.helper;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.kaltura.client.test.helper.Config.*;
+import static com.kaltura.client.test.helper.Properties.*;
 
 public class DBHelper {
 
@@ -20,16 +21,30 @@ public class DBHelper {
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
 
 
-    public static String getActivationToken(String username) throws SQLException {
+    public static String getActivationToken(String username) {
         openConnection();
-        rs = stam.executeQuery(String.format(ACTIVATION_TOKEN_SELECT, username));
-        rs.next();
-        String activationToke = rs.getString("ACTIVATION_TOKEN");
+        try {
+            rs = stam.executeQuery(String.format(ACTIVATION_TOKEN_SELECT, username));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String activationToken = null;
+        try {
+            activationToken = rs.getString("ACTIVATION_TOKEN");
+        } catch (SQLException e) {
+            e.printStackTrace();
+//            Logger.getLogger(DBHelper.class).error("activationToken can't be null");
+        }
         closeConnection();
-        return activationToke;
+        return activationToken;
     }
 
-    private static void openConnection() throws SQLException {
+    private static void openConnection() {
         dataSource = new SQLServerDataSource();
         dataSource.setUser(getProperty(DB_USER));
         dataSource.setPassword(getProperty(DB_PASSWORD));
@@ -37,14 +52,33 @@ public class DBHelper {
         dataSource.setApplicationIntent("ReadOnly");
         dataSource.setMultiSubnetFailover(true);
 
-        conn = dataSource.getConnection();
-        stam = conn.createStatement();
-
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLServerException e) {
+            e.printStackTrace();
+        }
+        try {
+            stam = conn.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private static void closeConnection() throws SQLException {
-        rs.close();
-        stam.close();
-        conn.close();
+    private static void closeConnection() {
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            stam.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

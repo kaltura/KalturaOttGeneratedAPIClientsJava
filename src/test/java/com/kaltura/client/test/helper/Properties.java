@@ -1,32 +1,37 @@
 package com.kaltura.client.test.helper;
 
+import com.kaltura.client.types.Household;
+import com.kaltura.client.types.OTTUser;
+
 import java.util.ResourceBundle;
 
-public class Config {
+public class Properties {
 
-    private static ResourceBundle resourceBundle;
-
-    //url properties
+    // Url properties
     public static final String API_BASE_URL = "http://34.249.122.223:8080";
     public static final String API_URL_VERSION = "v4_8";
 
-    //db properties
+    // DB properties
     // TODO: 3/19/2018 encrypt db username and password in test.properties file
     public static final String DB_URL = "db_url";
     public static final String DB_USER = "db_user";
     public static final String DB_PASSWORD = "db_password";
 
-    //request properties
+    // Request properties
     public static final int PARTNER_ID = 203;
     public static final String API_REQUEST_VERSION = "4.8.1";
 
-    //global user properties
+    // Global user properties
     public static final String GLOBAL_USER_PASSWORD = "password";
+
+    // Automation shared household
+    public static Household sharedHousehold;
+    public static OTTUser administratorUser, managerUser, operatorUser, masterUser;
+    public static String administratorUserKS, managerUserKS, operatorUserKS, masterUserKS;
 
 
     public static String getProperty(String propertyKey) {
-        if (resourceBundle == null)
-            resourceBundle = ResourceBundle.getBundle("test");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("test");
         return resourceBundle.getString(propertyKey);
     }
 

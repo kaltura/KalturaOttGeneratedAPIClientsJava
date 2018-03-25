@@ -18,6 +18,8 @@ import static org.awaitility.Awaitility.await;
 
 public class OttUserServiceImpl {
 
+    private static final AtomicBoolean done = new AtomicBoolean(false);
+
     private static final String LOGIN_RESPONSE_SCHEMA = "KalturaLoginResponse_Schema.json";
     private static final String LOGIN_SESSION_SCHEMA = "KalturaLoginSession_Schema.json";
     private static final String OTT_USER_SCHEMA = "KalturaOttUser_Schema.json";
@@ -25,11 +27,11 @@ public class OttUserServiceImpl {
     private static Response<LoginResponse> loginResponse;
     private static Response<OTTUser> ottUserResponse;
     private static Response<LoginSession> loginSessionResponse;
+    private static Response<Boolean> booleanResponse;
 
 
+    //login
     public static Response<LoginResponse> loginImpl(int partnerId, String username, String password, Map<String, StringValue> extraParams, String udid) {
-        final AtomicBoolean done = new AtomicBoolean(false);
-
         LoginOttUserBuilder loginOttUserBuilder = login(partnerId, username, password, extraParams, udid)
                 .setCompletion((ApiCompletion<LoginResponse>) result -> {
                     if (result.isSuccess()) {
@@ -41,13 +43,13 @@ public class OttUserServiceImpl {
                 });
         APIOkRequestsExecutor.getExecutor().queue(loginOttUserBuilder.build(client));
         await().untilTrue(done);
+        done.set(false);
 
         return loginResponse;
     }
 
+    //register
     public static Response<OTTUser> registerImpl(int partnerId, OTTUser user, String password) {
-        final AtomicBoolean done = new AtomicBoolean(false);
-
         RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, user, password)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     if (result.isSuccess()) {
@@ -58,13 +60,13 @@ public class OttUserServiceImpl {
                 });
         APIOkRequestsExecutor.getExecutor().queue(registerOttUserBuilder.build(client));
         await().untilTrue(done);
+        done.set(false);
 
         return ottUserResponse;
     }
 
+    //anonymousLogin
     public static Response<LoginSession> anonymousLoginImpl(int partnerId, String udid) {
-        final AtomicBoolean done = new AtomicBoolean(false);
-
         AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = anonymousLogin(partnerId, udid)
                 .setCompletion((ApiCompletion<LoginSession>) result -> {
                     if (result.isSuccess()) {
@@ -75,51 +77,63 @@ public class OttUserServiceImpl {
                 });
         APIOkRequestsExecutor.getExecutor().queue(anonymousLoginOttUserBuilder.build(client));
         await().untilTrue(done);
+        done.set(false);
 
         return loginSessionResponse;
     }
 
+    //activate
+    public static Response<OTTUser> activateImpl(int partnerId, String username, String activationToken) {
+        ActivateOttUserBuilder activateOttUserBuilder = activate(partnerId, username, activationToken)
+                .setCompletion((ApiCompletion<OTTUser>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+                    }
+                    ottUserResponse = result;
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(activateOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
 
-//    public static <T> T activate(String ks, String username, String activationToken) {
-//        String body = activateRequestBuilder(ks, username, activationToken);
-//        Response response = setPostRequest(body, SERVICE, ACTIVATE_ACTION);
-//
-//        if (isApiException(response)) {
-//            return (T) getApiException(response);
-//        } else {
-//            assertThat(response.asString(), matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
-//        }
-//        try {
-//            return GsonParser.parseObject(response.asString(), (Class<T>) OTTUser.class);
-//        } catch (APIException e) {
-//            Logger.getLogger(OttUserService.class).error("OTTUser parse error");
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public static <T> T addRole(String ks, int roleId) {
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }
-//
-//    public static <T> T delete(String ks) {
-//        String body = getBaseRequestBody(ks).toString();
-//        Response response = setPostRequest(body, SERVICE, DELETE_ACTION);
-//
-//        if (isApiException(response)) {
-//            return (T) getApiException(response);
-//        } else {
-//            try {
-//                assertThat(response.asString(), matchesJsonSchemaInClasspath(BOOLEAN_RESPONSE_SCHEMA));
-//                return GsonParser.parseObject(response.asString(), (Class<T>) Boolean.class);
-//            } catch (APIException e) {
-//                Logger.getLogger(OttUserService.class).error("Boolean.class parse error");
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//    }
+        return ottUserResponse;
+    }
+
+    //addRole
+    public static Response<Boolean> addRoleImpl(String ks, int roleId) {
+        AddRoleOttUserBuilder addRoleOttUserBuilder = addRole(roleId)
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+                    }
+                    booleanResponse = result;
+                    client.setKs(ks);
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(addRoleOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return booleanResponse;
+    }
+
+    //delete
+    public static Response<Boolean> deleteImpl(String ks) {
+        DeleteOttUserBuilder deleteOttUserBuilder = delete()
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+                    }
+                    booleanResponse = result;
+                    client.setKs(ks);
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return booleanResponse;
+    }
 //
 //    public static <T> T get(String ks) {
 //        // TODO: 3/19/2018 implement function
