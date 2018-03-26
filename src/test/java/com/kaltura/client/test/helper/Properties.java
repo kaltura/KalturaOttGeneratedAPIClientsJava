@@ -1,11 +1,10 @@
 package com.kaltura.client.test.helper;
 
-import com.kaltura.client.types.Household;
-import com.kaltura.client.types.OTTUser;
-
 import java.util.ResourceBundle;
 
 public class Properties {
+
+    private static ResourceBundle resourceBundle;
 
     // Url properties
     public static final String API_BASE_URL = "http://34.249.122.223:8080";
@@ -13,25 +12,36 @@ public class Properties {
 
     // DB properties
     // TODO: 3/19/2018 encrypt db username and password in test.properties file
-    public static final String DB_URL = "db_url";
-    public static final String DB_USER = "db_user";
-    public static final String DB_PASSWORD = "db_password";
+    static final String DB_URL = "db_url";
+    static final String DB_USER = "db_user";
+    static final String DB_PASSWORD = "db_password";
 
     // Request properties
     public static final int PARTNER_ID = 203;
     public static final String API_REQUEST_VERSION = "4.8.1";
 
     // Global user properties
+    public static final String ADMINISTRATOR_USERNAME = "administrator_user_username";
+    public static final String ADMINISTRATOR_PASSWORD = "administrator_user_password";
+
+    public static final String OPERATOR_USERNAME = "operator_user_username";
+    public static final String OPERATOR_PASSWORD = "operator_user_password";
+
+    public static final String MANAGER_USERNAME = "manager_user_username";
+    public static final String MANAGER_PASSWORD = "manager_user_password";
+
     public static final String GLOBAL_USER_PASSWORD = "password";
 
-    // Automation shared household
-    public static Household sharedHousehold;
-    public static OTTUser administratorUser, managerUser, operatorUser, masterUser;
-    public static String administratorUserKS, managerUserKS, operatorUserKS, masterUserKS;
+//    // Automation shared household
+//    public static Household sharedHousehold;
+//    public static OTTUser administratorUser, managerUser, operatorUser, masterUser;
+//    public static String administratorUserKS, managerUserKS, operatorUserKS, masterUserKS;
 
 
     public static String getProperty(String propertyKey) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("test");
+        if (resourceBundle == null)
+            resourceBundle = ResourceBundle.getBundle("test");
+
         return resourceBundle.getString(propertyKey);
     }
 

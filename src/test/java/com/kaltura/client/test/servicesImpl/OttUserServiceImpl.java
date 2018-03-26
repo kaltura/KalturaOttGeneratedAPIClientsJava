@@ -1,10 +1,7 @@
 package com.kaltura.client.test.servicesImpl;
 
 import com.kaltura.client.APIOkRequestsExecutor;
-import com.kaltura.client.types.LoginResponse;
-import com.kaltura.client.types.LoginSession;
-import com.kaltura.client.types.OTTUser;
-import com.kaltura.client.types.StringValue;
+import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -28,6 +25,7 @@ public class OttUserServiceImpl {
     private static Response<OTTUser> ottUserResponse;
     private static Response<LoginSession> loginSessionResponse;
     private static Response<Boolean> booleanResponse;
+    private static Response<ListResponse<OTTUser>> ottUserListResponse;
 
 
     //login
@@ -100,7 +98,7 @@ public class OttUserServiceImpl {
     }
 
     //addRole
-    public static Response<Boolean> addRoleImpl(String ks, int roleId) {
+    public static Response<Boolean> addRoleImpl(String ks, int userId, int roleId) {
         AddRoleOttUserBuilder addRoleOttUserBuilder = addRole(roleId)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     if (result.isSuccess()) {
@@ -108,6 +106,7 @@ public class OttUserServiceImpl {
                     }
                     booleanResponse = result;
                     client.setKs(ks);
+                    client.setUserId(userId);
                     done.set(true);
                 });
         APIOkRequestsExecutor.getExecutor().queue(addRoleOttUserBuilder.build(client));
@@ -118,7 +117,7 @@ public class OttUserServiceImpl {
     }
 
     //delete
-    public static Response<Boolean> deleteImpl(String ks) {
+    public static Response<Boolean> deleteImpl(String ks, int userId) {
         DeleteOttUserBuilder deleteOttUserBuilder = delete()
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     if (result.isSuccess()) {
@@ -126,6 +125,7 @@ public class OttUserServiceImpl {
                     }
                     booleanResponse = result;
                     client.setKs(ks);
+                    client.setUserId(userId);
                     done.set(true);
                 });
         APIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
@@ -134,37 +134,41 @@ public class OttUserServiceImpl {
 
         return booleanResponse;
     }
-//
-//    public static <T> T get(String ks) {
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }
-//
-//    public static <T> T getEncryptedUserId(String ks) {
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }
-//
-///*    public static <T> T list(String ks, Optional<OTTUserFilter> ottUserFilter) {
-//        String body = listRequestBuilder(ks, ottUserFilter);
-//        Response response = setPostRequest(body, SERVICE, LIST_ACTION);
-//
-//        if (isApiException(response)) {
-//            return (T) getApiException(response);
-//        } else {
-//            try {
-//                assertThat(response.asString(), matchesJsonSchemaInClasspath(BOOLEAN_RESPONSE_SCHEMA));
-//                return GsonParser.parseListResponse(response.asString(), OTTUser.class);
-//            } catch (APIException e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//        // KalturaOTTUserListResponse
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }*/
-//
+
+    public static Response<OTTUser> getImpl(String ks) {
+        GetOttUserBuilder getOttUserBuilder = get()
+                .setCompletion((ApiCompletion<OTTUser>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+                    }
+                    ottUserResponse = result;
+                    client.setKs(ks);
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(getOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return ottUserResponse;
+    }
+
+    public static Response<ListResponse<OTTUser>> listImpl(String ks, OTTUserFilter ottUserFilter) {
+        ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)
+                .setCompletion((ApiCompletion<ListResponse<OTTUser>>) result -> {
+                    if (result.isSuccess()) {
+                        // TODO: 3/22/2018 fix schema assertions
+                    }
+                    ottUserListResponse = result;
+                    client.setKs(ks);
+                    done.set(true);
+                });
+        APIOkRequestsExecutor.getExecutor().queue(listOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return ottUserListResponse;
+    }
+
 //    public static <T> T loginWithPin(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
@@ -201,6 +205,11 @@ public class OttUserServiceImpl {
 //    }
 //
 //    public static <T> T updateLoginData(String ks) {
+//        // TODO: 3/19/2018 implement function
+//        return null;
+//    }
+//
+//    public static <T> T getEncryptedUserId(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
