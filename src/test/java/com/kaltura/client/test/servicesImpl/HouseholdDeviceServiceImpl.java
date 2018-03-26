@@ -27,10 +27,11 @@ public class HouseholdDeviceServiceImpl {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
                     }
-                    client.setKs(ks);
                     householdDeviceResponse = result;
                     done.set(true);
                 });
+
+        addHouseholdDeviceBuilder.setKs(ks);
         APIOkRequestsExecutor.getExecutor().queue(addHouseholdDeviceBuilder.build(client));
         await().untilTrue(done);
         done.set(false);

@@ -12,19 +12,19 @@ public class DeleteTests extends BaseTest {
     @BeforeClass
     public void ottUser_login_tests_setup() {
 
-
-//        HouseholdUserFilter filter = new HouseholdUserFilter();
-//        filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
-//
-//        Response<ListResponse<HouseholdUser>> users = HouseholdUserServiceImpl.listImpl(administratorKS, filter);
-//        System.out.println(users.results.getTotalCount());
     }
 
     @Description("ottUser/action/delete - delete")
     @Test
     private void delete() {
         Household household = Utils.createHouseHold(2, 0);
-        System.out.println(household.getId());
+        System.out.println(String.valueOf(household.getId()));
+
+//        HouseholdUserFilter filter = new HouseholdUserFilter();
+//        filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
+//
+//        Response<ListResponse<HouseholdUser>> users = HouseholdUserServiceImpl.listImpl(administratorKS, filter);
+//        System.out.println(users.results.getTotalCount());
 
 //        deleteImpl(adminKS, Integer.parseInt(user.getId()));
         // TODO: 3/25/2018 finish test 

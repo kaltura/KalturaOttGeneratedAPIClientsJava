@@ -28,10 +28,11 @@ public class HouseholdUserServiceImpl {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
                     }
-                    client.setKs(ks);
                     householdUserResponse = result;
                     done.set(true);
                 });
+
+        addHouseholdUserBuilder.setKs(ks);
         APIOkRequestsExecutor.getExecutor().queue(addHouseholdUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -45,10 +46,11 @@ public class HouseholdUserServiceImpl {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
                     }
-                    client.setKs(ks);
                     householdUserListResponse = result;
                     done.set(true);
                 });
+
+        listHouseholdUserBuilder.setKs(ks);
         APIOkRequestsExecutor.getExecutor().queue(listHouseholdUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);

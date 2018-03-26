@@ -39,6 +39,7 @@ public class OttUserServiceImpl {
                     loginResponse = result;
                     done.set(true);
                 });
+
         APIOkRequestsExecutor.getExecutor().queue(loginOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -56,6 +57,7 @@ public class OttUserServiceImpl {
                     ottUserResponse = result;
                     done.set(true);
                 });
+
         APIOkRequestsExecutor.getExecutor().queue(registerOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -73,6 +75,7 @@ public class OttUserServiceImpl {
                     loginSessionResponse = result;
                     done.set(true);
                 });
+
         APIOkRequestsExecutor.getExecutor().queue(anonymousLoginOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -90,6 +93,7 @@ public class OttUserServiceImpl {
                     ottUserResponse = result;
                     done.set(true);
                 });
+
         APIOkRequestsExecutor.getExecutor().queue(activateOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -105,10 +109,11 @@ public class OttUserServiceImpl {
                         // TODO: 3/22/2018 fix schema assertions
                     }
                     booleanResponse = result;
-                    client.setKs(ks);
-                    client.setUserId(userId);
                     done.set(true);
                 });
+
+        addRoleOttUserBuilder.setKs(ks);
+        addRoleOttUserBuilder.setUserId(userId);
         APIOkRequestsExecutor.getExecutor().queue(addRoleOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -124,10 +129,11 @@ public class OttUserServiceImpl {
                         // TODO: 3/22/2018 fix schema assertions
                     }
                     booleanResponse = result;
-                    client.setKs(ks);
-                    client.setUserId(userId);
                     done.set(true);
                 });
+
+        deleteOttUserBuilder.setKs(ks);
+        deleteOttUserBuilder.setUserId(userId);
         APIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -142,9 +148,10 @@ public class OttUserServiceImpl {
                         // TODO: 3/22/2018 fix schema assertions
                     }
                     ottUserResponse = result;
-                    client.setKs(ks);
                     done.set(true);
                 });
+
+        getOttUserBuilder.setKs(ks);
         APIOkRequestsExecutor.getExecutor().queue(getOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -159,9 +166,10 @@ public class OttUserServiceImpl {
                         // TODO: 3/22/2018 fix schema assertions
                     }
                     ottUserListResponse = result;
-                    client.setKs(ks);
                     done.set(true);
                 });
+
+        listOttUserBuilder.setKs(ks);
         APIOkRequestsExecutor.getExecutor().queue(listOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);

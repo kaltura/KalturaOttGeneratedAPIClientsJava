@@ -26,10 +26,11 @@ public class HouseholdServiceImpl {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
                     }
-                    client.setKs(ks);
                     householdResponse = result;
                     done.set(true);
                 });
+
+        addHouseholdBuilder.setKs(ks);
         APIOkRequestsExecutor.getExecutor().queue(addHouseholdBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
