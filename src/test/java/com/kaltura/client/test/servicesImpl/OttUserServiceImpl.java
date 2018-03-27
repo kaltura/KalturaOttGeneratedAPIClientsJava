@@ -34,20 +34,17 @@ public class OttUserServiceImpl {
     public static Response<LoginResponse> login(int partnerId, String username, String password, @Nullable Map<String, StringValue> extraParams, @Nullable String udid) {
         LoginOttUserBuilder loginOttUserBuilder = OttUserService.login(partnerId, username, password, extraParams, udid)
                 .setCompletion((ApiCompletion<LoginResponse>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-//                        MatcherAssert.assertThat(result.results.toParams().toString(), matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
-                    }
                     loginResponse = result;
                     done.set(true);
                 });
 
         TestAPIOkRequestsExecutor.getExecutor().queue(loginOttUserBuilder.build(client));
         await().untilTrue(done);
-        if (done.get()) {
+        done.set(false);
+
+        if (loginResponse.isSuccess()) {
             MatcherAssert.assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
         }
-        done.set(false);
 
         return loginResponse;
     }

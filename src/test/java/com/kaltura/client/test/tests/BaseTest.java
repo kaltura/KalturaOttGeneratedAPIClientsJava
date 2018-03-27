@@ -2,8 +2,6 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
-import com.kaltura.client.ILogger;
-import com.kaltura.client.Logger;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
@@ -16,7 +14,6 @@ import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
-    protected static ILogger logger = Logger.getLogger("java-test");
     public static Client client;
     private Response<LoginResponse> loginResponse;
 
