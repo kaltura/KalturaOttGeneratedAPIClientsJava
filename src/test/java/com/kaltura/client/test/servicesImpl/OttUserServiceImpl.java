@@ -1,15 +1,16 @@
 package com.kaltura.client.test.servicesImpl;
 
 import com.kaltura.client.CustomAPIOkRequestsExecutor;
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 import org.hamcrest.MatcherAssert;
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import static com.kaltura.client.services.OttUserService.*;
-import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.tests.BaseTest.client;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
@@ -30,8 +31,8 @@ public class OttUserServiceImpl {
 
 
     //login
-    public static Response<LoginResponse> loginImpl(int partnerId, String username, String password, Map<String, StringValue> extraParams, String udid) {
-        LoginOttUserBuilder loginOttUserBuilder = login(partnerId, username, password, extraParams, udid)
+    public static Response<LoginResponse> login(int partnerId, String username, String password, @Nullable Map<String, StringValue> extraParams, @Nullable String udid) {
+        LoginOttUserBuilder loginOttUserBuilder = OttUserService.login(partnerId, username, password, extraParams, udid)
                 .setCompletion((ApiCompletion<LoginResponse>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
@@ -52,8 +53,8 @@ public class OttUserServiceImpl {
     }
 
     //register
-    public static Response<OTTUser> registerImpl(int partnerId, OTTUser user, String password) {
-        RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, user, password)
+    public static Response<OTTUser> register(int partnerId, OTTUser user, String password) {
+        RegisterOttUserBuilder registerOttUserBuilder = OttUserService.register(partnerId, user, password)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
@@ -70,8 +71,8 @@ public class OttUserServiceImpl {
     }
 
     //anonymousLogin
-    public static Response<LoginSession> anonymousLoginImpl(int partnerId, String udid) {
-        AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = anonymousLogin(partnerId, udid)
+    public static Response<LoginSession> anonymousLogin(int partnerId, @Nullable String udid) {
+        AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = OttUserService.anonymousLogin(partnerId, udid)
                 .setCompletion((ApiCompletion<LoginSession>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
@@ -88,8 +89,8 @@ public class OttUserServiceImpl {
     }
 
     //activate
-    public static Response<OTTUser> activateImpl(int partnerId, String username, String activationToken) {
-        ActivateOttUserBuilder activateOttUserBuilder = activate(partnerId, username, activationToken)
+    public static Response<OTTUser> activate(int partnerId, String username, String activationToken) {
+        ActivateOttUserBuilder activateOttUserBuilder = OttUserService.activate(partnerId, username, activationToken)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
@@ -106,18 +107,16 @@ public class OttUserServiceImpl {
     }
 
     //addRole
-    public static Response<Boolean> addRoleImpl(String ks, int userId, int roleId) {
-        AddRoleOttUserBuilder addRoleOttUserBuilder = addRole(roleId)
+    public static Response<Boolean> addRole(String ks, Optional<Integer> userId, int roleId) {
+        AddRoleOttUserBuilder addRoleOttUserBuilder = OttUserService.addRole(roleId)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     booleanResponse = result;
                     done.set(true);
                 });
 
         addRoleOttUserBuilder.setKs(ks);
-        addRoleOttUserBuilder.setUserId(userId);
+        userId.ifPresent(addRoleOttUserBuilder::setUserId);
+
         CustomAPIOkRequestsExecutor.getExecutor().queue(addRoleOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -126,18 +125,15 @@ public class OttUserServiceImpl {
     }
 
     //delete
-    public static Response<Boolean> deleteImpl(String ks, Integer userId) {
-        DeleteOttUserBuilder deleteOttUserBuilder = delete()
+    public static Response<Boolean> delete(String ks, Optional<Integer> userId) {
+        DeleteOttUserBuilder deleteOttUserBuilder = OttUserService.delete()
                 .setCompletion((ApiCompletion<Boolean>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     booleanResponse = result;
                     done.set(true);
                 });
 
         deleteOttUserBuilder.setKs(ks);
-        deleteOttUserBuilder.setUserId(userId);
+        userId.ifPresent(deleteOttUserBuilder::setUserId);
 
         CustomAPIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -146,8 +142,8 @@ public class OttUserServiceImpl {
         return booleanResponse;
     }
 
-    public static Response<OTTUser> getImpl(String ks, Optional<Integer> userId) {
-        GetOttUserBuilder getOttUserBuilder = get()
+    public static Response<OTTUser> get(String ks, Optional<Integer> userId) {
+        GetOttUserBuilder getOttUserBuilder = OttUserService.get()
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
@@ -166,8 +162,8 @@ public class OttUserServiceImpl {
         return ottUserResponse;
     }
 
-    public static Response<ListResponse<OTTUser>> listImpl(String ks, OTTUserFilter ottUserFilter) {
-        ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)
+    public static Response<ListResponse<OTTUser>> list(String ks, @Nullable OTTUserFilter ottUserFilter) {
+        ListOttUserBuilder listOttUserBuilder = OttUserService.list(ottUserFilter)
                 .setCompletion((ApiCompletion<ListResponse<OTTUser>>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions

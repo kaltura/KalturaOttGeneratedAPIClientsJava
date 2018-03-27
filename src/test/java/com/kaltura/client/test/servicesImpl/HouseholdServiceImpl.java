@@ -1,10 +1,12 @@
 package com.kaltura.client.test.servicesImpl;
 
 import com.kaltura.client.APIOkRequestsExecutor;
+import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.types.Household;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.HouseholdService.*;
@@ -20,8 +22,8 @@ public class HouseholdServiceImpl {
 
 
     //add
-    public static Response<Household> addImpl(String ks, Household household) {
-        AddHouseholdBuilder addHouseholdBuilder = add(household)
+    public static Response<Household> add(String ks, Household household) {
+        AddHouseholdBuilder addHouseholdBuilder = HouseholdService.add(household)
                 .setCompletion((ApiCompletion<Household>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
@@ -39,8 +41,8 @@ public class HouseholdServiceImpl {
     }
 
     //delete
-    public static Response<Boolean> deleteImpl(String ks, int householdId) {
-        DeleteHouseholdBuilder deleteHouseholdBuilder = delete(householdId)
+    public static Response<Boolean> delete(String ks, @Nullable int householdId) {
+        DeleteHouseholdBuilder deleteHouseholdBuilder = HouseholdService.delete(householdId)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
