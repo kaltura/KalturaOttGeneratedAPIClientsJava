@@ -4,23 +4,20 @@ import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.helper.Helper;
-import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.test.helper.Properties.*;
+import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.loginImpl;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
     protected static ILogger logger = Logger.getLogger("java-test");
     public static Client client;
-    private List<APIException> exceptions;
     private Response<LoginResponse> loginResponse;
 
     public static String administratorKS, operatorKS, managerKS;
@@ -38,29 +35,14 @@ public class BaseTest {
         // Set default awaitility timeout
         setDefaultTimeout(15, TimeUnit.SECONDS);
 
-        // Get api exception list from schema xml
-        exceptions = Helper.getApiExceptionList();
-
-/*        // Login with shared users
+        // Login with shared users
         loginResponse = loginImpl(PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
         administratorKS = loginResponse.results.getLoginSession().getKs();
 
-        loginResponse = loginImpl(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
-        operatorKS = loginResponse.results.getLoginSession().getKs();
-
-        loginResponse = loginImpl(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
-        managerKS = loginResponse.results.getLoginSession().getKs();*/
+//        loginResponse = loginImpl(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
+//        operatorKS = loginResponse.results.getLoginSession().getKs();
+//
+//        loginResponse = loginImpl(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
+//        managerKS = loginResponse.results.getLoginSession().getKs();
     }
-
-    // Help functions
-    public APIException getAPIExceptionFromList(int code) {
-        for (APIException exception : exceptions) {
-            if (exception.getCode().equals(String.valueOf(code))) {
-                return exception;
-            }
-        }
-        logger.error("No such error code in the API schema");
-        return null;
-    }
-
 }

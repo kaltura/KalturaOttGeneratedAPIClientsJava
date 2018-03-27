@@ -1,6 +1,5 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
-import com.kaltura.client.test.helper.Helper;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
@@ -9,6 +8,8 @@ import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.helper.Helper.generateOttUser;
+import static com.kaltura.client.test.helper.Helper.getAPIExceptionFromList;
 import static com.kaltura.client.test.helper.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.loginImpl;
@@ -24,7 +25,7 @@ public class LoginTests extends BaseTest {
 
     @BeforeClass
     public void ottUser_login_tests_setup() {
-        user = Helper.generateOttUser();
+        user = generateOttUser();
         registerImpl(PARTNER_ID, user, password);
     }
 

@@ -1,5 +1,6 @@
 package com.kaltura.client.test.helper;
 
+import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.OTTUser;
 import org.w3c.dom.Document;
@@ -56,8 +57,22 @@ public class Helper {
         return sb.toString().toLowerCase();
     }
 
+    //get api exception
+    public static APIException getAPIExceptionFromList(int code) {
+        getApiExceptionList();
+
+        for (APIException exception : exceptions) {
+            if (exception.getCode().equals(String.valueOf(code))) {
+                return exception;
+            }
+        }
+
+        Logger.getLogger(Helper.class).error("No such error code in the API schema");
+        return null;
+    }
+
     //generate apiException list base on the api schema
-    public static List<APIException> getApiExceptionList() {
+    private static List<APIException> getApiExceptionList() {
         if (exceptions == null) {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = null;

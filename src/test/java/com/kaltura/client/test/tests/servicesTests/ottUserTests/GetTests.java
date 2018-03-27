@@ -9,6 +9,8 @@ import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Optional;
+
 import static com.kaltura.client.test.helper.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.getImpl;
@@ -34,7 +36,7 @@ public class GetTests extends BaseTest {
     @Description("ottUser/action/get - get")
     @Test
     private void get() {
-        Response<OTTUser> ottUserResponse = getImpl(loginResponse.results.getLoginSession().getKs());
+        Response<OTTUser> ottUserResponse = getImpl(loginResponse.results.getLoginSession().getKs(), Optional.empty());
         assertThat(loginResponse.error).isNull();
         assertThat(ottUserResponse.results).isEqualToComparingFieldByField(user);
     }

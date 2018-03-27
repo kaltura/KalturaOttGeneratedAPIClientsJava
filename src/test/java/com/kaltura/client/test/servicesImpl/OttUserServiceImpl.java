@@ -6,6 +6,7 @@ import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.OttUserService.*;
@@ -122,7 +123,7 @@ public class OttUserServiceImpl {
     }
 
     //delete
-    public static Response<Boolean> deleteImpl(String ks, int userId) {
+    public static Response<Boolean> deleteImpl(String ks, Integer userId) {
         DeleteOttUserBuilder deleteOttUserBuilder = delete()
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     if (result.isSuccess()) {
@@ -134,6 +135,7 @@ public class OttUserServiceImpl {
 
         deleteOttUserBuilder.setKs(ks);
         deleteOttUserBuilder.setUserId(userId);
+
         APIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -141,7 +143,7 @@ public class OttUserServiceImpl {
         return booleanResponse;
     }
 
-    public static Response<OTTUser> getImpl(String ks) {
+    public static Response<OTTUser> getImpl(String ks, Optional<Integer> userId) {
         GetOttUserBuilder getOttUserBuilder = get()
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     if (result.isSuccess()) {
@@ -152,6 +154,8 @@ public class OttUserServiceImpl {
                 });
 
         getOttUserBuilder.setKs(ks);
+        userId.ifPresent(getOttUserBuilder::setUserId);
+
         APIOkRequestsExecutor.getExecutor().queue(getOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);

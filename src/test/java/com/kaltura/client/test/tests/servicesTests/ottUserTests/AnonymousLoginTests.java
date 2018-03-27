@@ -7,6 +7,7 @@ import com.kaltura.client.utils.response.base.Response;
 import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.helper.Helper.getAPIExceptionFromList;
 import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
