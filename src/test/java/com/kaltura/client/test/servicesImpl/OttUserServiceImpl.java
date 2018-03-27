@@ -1,24 +1,24 @@
 package com.kaltura.client.test.servicesImpl;
 
-import com.kaltura.client.APIOkRequestsExecutor;
+import com.kaltura.client.CustomAPIOkRequestsExecutor;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
-
+import org.hamcrest.MatcherAssert;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.tests.BaseTest.client;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
 
 public class OttUserServiceImpl {
 
     private static final AtomicBoolean done = new AtomicBoolean(false);
 
-    private static final String LOGIN_RESPONSE_SCHEMA = "KalturaLoginResponse_Schema.json";
+    private static final String LOGIN_RESPONSE_SCHEMA = "schemas/KalturaLoginResponse_Schema.json";
     private static final String LOGIN_SESSION_SCHEMA = "KalturaLoginSession_Schema.json";
     private static final String OTT_USER_SCHEMA = "KalturaOttUser_Schema.json";
 
@@ -41,8 +41,11 @@ public class OttUserServiceImpl {
                     done.set(true);
                 });
 
-        APIOkRequestsExecutor.getExecutor().queue(loginOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(loginOttUserBuilder.build(client));
         await().untilTrue(done);
+        if (done.get()) {
+            MatcherAssert.assertThat(CustomAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
+        }
         done.set(false);
 
         return loginResponse;
@@ -59,7 +62,7 @@ public class OttUserServiceImpl {
                     done.set(true);
                 });
 
-        APIOkRequestsExecutor.getExecutor().queue(registerOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(registerOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
@@ -77,7 +80,7 @@ public class OttUserServiceImpl {
                     done.set(true);
                 });
 
-        APIOkRequestsExecutor.getExecutor().queue(anonymousLoginOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(anonymousLoginOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
@@ -95,7 +98,7 @@ public class OttUserServiceImpl {
                     done.set(true);
                 });
 
-        APIOkRequestsExecutor.getExecutor().queue(activateOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(activateOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
@@ -115,7 +118,7 @@ public class OttUserServiceImpl {
 
         addRoleOttUserBuilder.setKs(ks);
         addRoleOttUserBuilder.setUserId(userId);
-        APIOkRequestsExecutor.getExecutor().queue(addRoleOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(addRoleOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
@@ -136,7 +139,7 @@ public class OttUserServiceImpl {
         deleteOttUserBuilder.setKs(ks);
         deleteOttUserBuilder.setUserId(userId);
 
-        APIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
@@ -156,7 +159,7 @@ public class OttUserServiceImpl {
         getOttUserBuilder.setKs(ks);
         userId.ifPresent(getOttUserBuilder::setUserId);
 
-        APIOkRequestsExecutor.getExecutor().queue(getOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(getOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
@@ -174,7 +177,7 @@ public class OttUserServiceImpl {
                 });
 
         listOttUserBuilder.setKs(ks);
-        APIOkRequestsExecutor.getExecutor().queue(listOttUserBuilder.build(client));
+        CustomAPIOkRequestsExecutor.getExecutor().queue(listOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
