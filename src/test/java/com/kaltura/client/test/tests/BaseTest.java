@@ -8,7 +8,7 @@ import org.testng.annotations.BeforeSuite;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.kaltura.client.test.helper.Properties.*;
+import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 

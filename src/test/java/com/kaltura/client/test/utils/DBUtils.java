@@ -1,4 +1,4 @@
-package com.kaltura.client.test.helper;
+package com.kaltura.client.test.utils;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.kaltura.client.test.helper.Properties.*;
+import static com.kaltura.client.test.Properties.*;
 
-public class DBHelper {
+public class DBUtils extends BaseUtils {
 
     private static SQLServerDataSource dataSource;
     private static Connection conn;
@@ -38,7 +38,7 @@ public class DBHelper {
             activationToken = rs.getString("ACTIVATION_TOKEN");
         } catch (SQLException e) {
             e.printStackTrace();
-//            Logger.getLogger(DBHelper.class).error("activationToken can't be null");
+//            Logger.getLogger(DBUtils.class).error("activationToken can't be null");
         }
         closeConnection();
         return activationToken;

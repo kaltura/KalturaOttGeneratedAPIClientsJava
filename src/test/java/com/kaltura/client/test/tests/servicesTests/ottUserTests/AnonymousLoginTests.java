@@ -7,15 +7,15 @@ import com.kaltura.client.utils.response.base.Response;
 import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.helper.Helper.getAPIExceptionFromList;
-import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
+import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnonymousLoginTests extends BaseTest {
 
     @Description("ottUser/action/anonymousLogin - anonymousLogin")
     @Test()
-    public void anonymousLogin() {
+    private void anonymousLogin() {
         Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(PARTNER_ID, null);
         assertThat(loginSessionResponse.error).isNull();
         assertThat(loginSessionResponse.results.getKs()).isNotNull();
@@ -23,7 +23,7 @@ public class AnonymousLoginTests extends BaseTest {
 
     @Description("ottUser/action/anonymousLogin - anonymousLogin with wrong partnerId - error 500006")
     @Test()
-    public void anonymousLogin_with_wrong_partnerId() {
+    private void anonymousLogin_with_wrong_partnerId() {
         Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(PARTNER_ID + 1, null);
 
         assertThat(loginSessionResponse.results).isNull();

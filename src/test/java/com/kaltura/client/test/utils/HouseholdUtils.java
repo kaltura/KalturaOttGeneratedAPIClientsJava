@@ -1,21 +1,25 @@
-package com.kaltura.client.test.tests.utils;
+package com.kaltura.client.test.utils;
 
+import com.kaltura.client.Logger;
 import com.kaltura.client.test.servicesImpl.HouseholdDeviceServiceImpl;
 import com.kaltura.client.test.servicesImpl.HouseholdServiceImpl;
 import com.kaltura.client.test.servicesImpl.HouseholdUserServiceImpl;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.util.List;
 import java.util.Random;
 
-import static com.kaltura.client.test.helper.Helper.generateOttUser;
-import static com.kaltura.client.test.helper.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
+import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
+import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
+import static com.kaltura.client.test.tests.BaseTest.administratorKS;
+import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
-public class Utils {
+public class HouseholdUtils extends BaseUtils {
 
+    // create household
     public static Household createHouseHold(int numberOfUsersInHoushold, int numberOfDevicesInHousehold) {
 
         // create and register
@@ -57,5 +61,41 @@ public class Utils {
         }
 
         return household;
+    }
+
+    // get users list from given household
+    public static List<HouseholdUser> getUsersListFromHouseHold(Household household) {
+        HouseholdUserFilter filter = new HouseholdUserFilter();
+        filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
+        Response<ListResponse<HouseholdUser>> usersResponse = HouseholdUserServiceImpl.list(administratorKS, filter);
+        return usersResponse.results.getObjects();
+    }
+
+    // get master user from given household
+    public static HouseholdUser getMasterUserFromHousehold(Household household) {
+        List<HouseholdUser> users = getUsersListFromHouseHold(household);
+
+        for (HouseholdUser user : users) {
+            if (user.getIsMaster() != null && user.getIsMaster()) {
+                return user;
+            }
+        }
+
+        Logger.getLogger(BaseUtils.class).error("can't find master user in household");
+        return null;
+    }
+
+    // get default user from given household
+    public static HouseholdUser getDefaultUserFromHousehold(Household household) {
+        List<HouseholdUser> users = getUsersListFromHouseHold(household);
+
+        for (HouseholdUser user : users) {
+            if (user.getIsDefault() != null && user.getIsDefault()) {
+                return user;
+            }
+        }
+
+        Logger.getLogger(BaseUtils.class).error("can't find default user in household");
+        return null;
     }
 }

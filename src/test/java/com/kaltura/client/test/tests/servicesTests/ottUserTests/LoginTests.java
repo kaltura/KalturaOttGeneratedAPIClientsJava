@@ -9,11 +9,11 @@ import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.helper.Helper.generateOttUser;
-import static com.kaltura.client.test.helper.Helper.getAPIExceptionFromList;
-import static com.kaltura.client.test.helper.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
+import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
+import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
+import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginTests extends BaseTest {
@@ -24,7 +24,7 @@ public class LoginTests extends BaseTest {
     private Response<LoginResponse> loginResponse;
 
     @BeforeClass
-    public void ottUser_login_tests_setup() {
+    private void ottUser_login_tests_setup() {
         user = generateOttUser();
         register(PARTNER_ID, user, password);
     }
@@ -41,7 +41,7 @@ public class LoginTests extends BaseTest {
 
     @Description("ottUser/action/login - login with wrong password - error 1011")
     @Test
-    public void login_with_wrong_password() {
+    private void login_with_wrong_password() {
         loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password + "1", null, null);
 
         assertThat(loginResponse.results).isNull();
@@ -50,7 +50,7 @@ public class LoginTests extends BaseTest {
 
     @Description("ottUser/action/login - login with wrong username - error 2000")
     @Test
-    public void login_with_wrong_username() {
+    private void login_with_wrong_username() {
         loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername() + "1", password, null, null);
 
         assertThat(loginResponse.results).isNull();
@@ -59,7 +59,7 @@ public class LoginTests extends BaseTest {
 
     @Description("ottUser/action/login - login with wrong partnerId - error 500006")
     @Test()
-    public void login_with_wrong_partnerId() {
+    private void login_with_wrong_partnerId() {
         loginResponse = OttUserServiceImpl.login(PARTNER_ID + 1, user.getUsername(), password, null, null);
 
         assertThat(loginResponse.results).isNull();

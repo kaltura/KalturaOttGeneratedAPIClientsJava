@@ -15,10 +15,10 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kaltura.client.test.helper.Helper.generateOttUser;
-import static com.kaltura.client.test.helper.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
+import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
+import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
+import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class AddRoleTests extends BaseTest {
 

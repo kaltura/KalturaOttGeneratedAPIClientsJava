@@ -3,8 +3,8 @@
 <suite name="Main Suite" parallel="false" preserve-order="true">
     <test name="Services Tests">
         <packages>
-            <package name="servicesTests.*"/>
-            <package name="featureTests.*"/>
+            <package name="com.kaltura.client.test.tests.servicesTests.*"/>
+            <package name="com.kaltura.client.test.tests.servicesTests.*"/>
         </packages>
     </test>
 </suite>
