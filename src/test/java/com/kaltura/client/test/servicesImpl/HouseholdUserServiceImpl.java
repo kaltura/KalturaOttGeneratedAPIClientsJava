@@ -27,9 +27,6 @@ public class HouseholdUserServiceImpl {
     public static Response<HouseholdUser> add(String ks, HouseholdUser householdUser) {
         AddHouseholdUserBuilder addHouseholdUserBuilder = HouseholdUserService.add(householdUser)
                 .setCompletion((ApiCompletion<HouseholdUser>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     householdUserResponse = result;
                     done.set(true);
                 });
@@ -39,15 +36,16 @@ public class HouseholdUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
+        if (householdUserResponse.isSuccess()) {
+            // TODO: 3/22/2018 fix schema assertions
+        }
+
         return householdUserResponse;
     }
 
     public static Response<ListResponse<HouseholdUser>> list(String ks, @Nullable HouseholdUserFilter householdUserFilter) {
         ListHouseholdUserBuilder listHouseholdUserBuilder = HouseholdUserService.list(householdUserFilter)
                 .setCompletion((ApiCompletion<ListResponse<HouseholdUser>>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     householdUserListResponse = result;
                     done.set(true);
                 });
@@ -56,6 +54,10 @@ public class HouseholdUserServiceImpl {
         APIOkRequestsExecutor.getExecutor().queue(listHouseholdUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
+
+        if (householdUserListResponse.isSuccess()) {
+            // TODO: 3/22/2018 fix schema assertions
+        }
 
         return householdUserListResponse;
     }

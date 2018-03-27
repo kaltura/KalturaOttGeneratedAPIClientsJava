@@ -23,9 +23,6 @@ public class HouseholdDeviceServiceImpl {
     public static Response<HouseholdDevice> add(String ks, HouseholdDevice householdDevice) {
         AddHouseholdDeviceBuilder addHouseholdDeviceBuilder = HouseholdDeviceService.add(householdDevice)
                 .setCompletion((ApiCompletion<HouseholdDevice>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     householdDeviceResponse = result;
                     done.set(true);
                 });
@@ -34,6 +31,10 @@ public class HouseholdDeviceServiceImpl {
         APIOkRequestsExecutor.getExecutor().queue(addHouseholdDeviceBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
+
+        if (householdDeviceResponse.isSuccess()) {
+            // TODO: 3/22/2018 fix schema assertions
+        }
 
         return householdDeviceResponse;
     }

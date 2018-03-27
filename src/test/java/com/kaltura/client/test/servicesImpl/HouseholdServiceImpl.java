@@ -25,9 +25,6 @@ public class HouseholdServiceImpl {
     public static Response<Household> add(String ks, Household household) {
         AddHouseholdBuilder addHouseholdBuilder = HouseholdService.add(household)
                 .setCompletion((ApiCompletion<Household>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     householdResponse = result;
                     done.set(true);
                 });
@@ -36,6 +33,10 @@ public class HouseholdServiceImpl {
         APIOkRequestsExecutor.getExecutor().queue(addHouseholdBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
+
+        if (householdResponse.isSuccess()) {
+            // TODO: 3/22/2018 fix schema assertions
+        }
 
         return householdResponse;
     }

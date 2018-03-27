@@ -5,23 +5,25 @@ import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
-import org.hamcrest.MatcherAssert;
+
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.tests.BaseTest.client;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class OttUserServiceImpl {
 
     private static final AtomicBoolean done = new AtomicBoolean(false);
 
     private static final String LOGIN_RESPONSE_SCHEMA = "schemas/KalturaLoginResponse_Schema.json";
-    private static final String LOGIN_SESSION_SCHEMA = "KalturaLoginSession_Schema.json";
-    private static final String OTT_USER_SCHEMA = "KalturaOttUser_Schema.json";
+    private static final String LOGIN_SESSION_SCHEMA = "schemas/KalturaLoginSession_Schema.json";
+    private static final String OTT_USER_SCHEMA = "schemas/KalturaOttUser_Schema.json";
 
     private static Response<LoginResponse> loginResponse;
     private static Response<OTTUser> ottUserResponse;
@@ -43,7 +45,7 @@ public class OttUserServiceImpl {
         done.set(false);
 
         if (loginResponse.isSuccess()) {
-            MatcherAssert.assertThat(CustomAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
+            assertThat(CustomAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
         }
 
         return loginResponse;
@@ -53,9 +55,6 @@ public class OttUserServiceImpl {
     public static Response<OTTUser> register(int partnerId, OTTUser user, String password) {
         RegisterOttUserBuilder registerOttUserBuilder = OttUserService.register(partnerId, user, password)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     ottUserResponse = result;
                     done.set(true);
                 });
@@ -64,6 +63,10 @@ public class OttUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
+        if (ottUserResponse.isSuccess()) {
+            assertThat(CustomAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
+        }
+
         return ottUserResponse;
     }
 
@@ -71,9 +74,6 @@ public class OttUserServiceImpl {
     public static Response<LoginSession> anonymousLogin(int partnerId, @Nullable String udid) {
         AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = OttUserService.anonymousLogin(partnerId, udid)
                 .setCompletion((ApiCompletion<LoginSession>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     loginSessionResponse = result;
                     done.set(true);
                 });
@@ -82,6 +82,10 @@ public class OttUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
+        if (loginSessionResponse.isSuccess()) {
+            assertThat(CustomAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_SESSION_SCHEMA));
+        }
+
         return loginSessionResponse;
     }
 
@@ -89,9 +93,6 @@ public class OttUserServiceImpl {
     public static Response<OTTUser> activate(int partnerId, String username, String activationToken) {
         ActivateOttUserBuilder activateOttUserBuilder = OttUserService.activate(partnerId, username, activationToken)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     ottUserResponse = result;
                     done.set(true);
                 });
@@ -99,6 +100,10 @@ public class OttUserServiceImpl {
         CustomAPIOkRequestsExecutor.getExecutor().queue(activateOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
+
+        if (ottUserResponse.isSuccess()) {
+            assertThat(CustomAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
+        }
 
         return ottUserResponse;
     }
@@ -142,9 +147,6 @@ public class OttUserServiceImpl {
     public static Response<OTTUser> get(String ks, Optional<Integer> userId) {
         GetOttUserBuilder getOttUserBuilder = OttUserService.get()
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     ottUserResponse = result;
                     done.set(true);
                 });
@@ -156,15 +158,16 @@ public class OttUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
+        if (ottUserResponse.isSuccess()) {
+            assertThat(CustomAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
+        }
+
         return ottUserResponse;
     }
 
     public static Response<ListResponse<OTTUser>> list(String ks, @Nullable OTTUserFilter ottUserFilter) {
         ListOttUserBuilder listOttUserBuilder = OttUserService.list(ottUserFilter)
                 .setCompletion((ApiCompletion<ListResponse<OTTUser>>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/22/2018 fix schema assertions
-                    }
                     ottUserListResponse = result;
                     done.set(true);
                 });
@@ -173,6 +176,10 @@ public class OttUserServiceImpl {
         CustomAPIOkRequestsExecutor.getExecutor().queue(listOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
+
+        if (ottUserListResponse.isSuccess()) {
+            // TODO: 3/22/2018 fix schema assertions
+        }
 
         return ottUserListResponse;
     }

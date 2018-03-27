@@ -25,18 +25,18 @@ public class UserRoleServiceImpl {
     public static Response<ListResponse<UserRole>> list(String ks, @Nullable UserRoleFilter filter) {
         ListUserRoleBuilder listUserRoleBuilder = UserRoleService.list(filter)
                 .setCompletion((ApiCompletion<ListResponse<UserRole>>) result -> {
-                    if (result.isSuccess()) {
-                        // TODO: 3/27/2018 fix schema assertions
-                    }
                     userRoleListResponse = result;
                     done.set(true);
                 });
 
         listUserRoleBuilder.setKs(ks);
-
         APIOkRequestsExecutor.getExecutor().queue(listUserRoleBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
+
+        if (userRoleListResponse.isSuccess()) {
+            // TODO: 3/27/2018 fix schema assertions
+        }
 
         return userRoleListResponse;
     }
