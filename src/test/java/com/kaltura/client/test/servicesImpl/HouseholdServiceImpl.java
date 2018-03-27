@@ -1,7 +1,7 @@
 package com.kaltura.client.test.servicesImpl;
 
-import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.services.HouseholdService;
+import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.Household;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
@@ -9,7 +9,8 @@ import com.kaltura.client.utils.response.base.Response;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.kaltura.client.services.HouseholdService.*;
+import static com.kaltura.client.services.HouseholdService.AddHouseholdBuilder;
+import static com.kaltura.client.services.HouseholdService.DeleteHouseholdBuilder;
 import static com.kaltura.client.test.tests.BaseTest.client;
 import static org.awaitility.Awaitility.await;
 
@@ -30,7 +31,7 @@ public class HouseholdServiceImpl {
                 });
 
         addHouseholdBuilder.setKs(ks);
-        APIOkRequestsExecutor.getExecutor().queue(addHouseholdBuilder.build(client));
+        TestAPIOkRequestsExecutor.getExecutor().queue(addHouseholdBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
@@ -50,7 +51,7 @@ public class HouseholdServiceImpl {
                 });
 
         deleteHouseholdBuilder.setKs(ks);
-        APIOkRequestsExecutor.getExecutor().queue(deleteHouseholdBuilder.build(client));
+        TestAPIOkRequestsExecutor.getExecutor().queue(deleteHouseholdBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
