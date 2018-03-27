@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeSuite;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.test.helper.Properties.*;
-import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.loginImpl;
+import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -36,13 +36,13 @@ public class BaseTest {
         setDefaultTimeout(15, TimeUnit.SECONDS);
 
         // Login with shared users
-        loginResponse = loginImpl(PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
+        loginResponse = login(PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
         administratorKS = loginResponse.results.getLoginSession().getKs();
 
-//        loginResponse = loginImpl(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
+//        loginResponse = login(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
 //        operatorKS = loginResponse.results.getLoginSession().getKs();
 //
-//        loginResponse = loginImpl(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
+//        loginResponse = login(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
 //        managerKS = loginResponse.results.getLoginSession().getKs();
     }
 }

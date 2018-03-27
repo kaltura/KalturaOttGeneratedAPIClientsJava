@@ -16,7 +16,7 @@ public class AnonymousLoginTests extends BaseTest {
     @Description("ottUser/action/anonymousLogin - anonymousLogin")
     @Test()
     public void anonymousLogin() {
-        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLoginImpl(PARTNER_ID, null);
+        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(PARTNER_ID, null);
         assertThat(loginSessionResponse.error).isNull();
         assertThat(loginSessionResponse.results.getKs()).isNotNull();
     }
@@ -24,7 +24,7 @@ public class AnonymousLoginTests extends BaseTest {
     @Description("ottUser/action/anonymousLogin - anonymousLogin with wrong partnerId - error 500006")
     @Test()
     public void anonymousLogin_with_wrong_partnerId() {
-        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLoginImpl(PARTNER_ID + 1, null);
+        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(PARTNER_ID + 1, null);
 
         assertThat(loginSessionResponse.results).isNull();
         assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500006).getCode());

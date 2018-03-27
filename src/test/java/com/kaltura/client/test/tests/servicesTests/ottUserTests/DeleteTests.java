@@ -2,6 +2,7 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.test.servicesImpl.HouseholdServiceImpl;
 import com.kaltura.client.test.servicesImpl.HouseholdUserServiceImpl;
+import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.utils.Utils;
 import com.kaltura.client.types.*;
@@ -31,21 +32,21 @@ public class DeleteTests extends BaseTest {
         household = Utils.createHouseHold(2, 0);
         HouseholdUserFilter filter = new HouseholdUserFilter();
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
-        Response<ListResponse<HouseholdUser>> usersResponse = HouseholdUserServiceImpl.listImpl(administratorKS, filter);
+        Response<ListResponse<HouseholdUser>> usersResponse = HouseholdUserServiceImpl.list(administratorKS, filter);
         users = usersResponse.results.getObjects();
     }
 
     @Description("ottUser/action/delete - delete")
     @Test
     private void delete() {
-        Response<OTTUser> ottUserResponse = registerImpl(PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
+        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
         OTTUser user = ottUserResponse.results;
 
-        Response<Boolean> booleanResponse = deleteImpl(administratorKS, Integer.valueOf(user.getId()));
+        Response<Boolean> booleanResponse = OttUserServiceImpl.delete(administratorKS, Optional.of(Integer.valueOf(user.getId())));
         boolean result = booleanResponse.results;
         assertThat(result).isTrue();
 
-        ottUserResponse = getImpl(administratorKS, Optional.of(Integer.valueOf(user.getId())));
+        ottUserResponse = get(administratorKS, Optional.of(Integer.valueOf(user.getId())));
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500004).getCode());
         assertThat(ottUserResponse.results).isNull();
     }
@@ -62,7 +63,7 @@ public class DeleteTests extends BaseTest {
             }
         }
 
-        Response<Boolean> booleanResponse = deleteImpl(administratorKS, Integer.valueOf(householdUser.getUserId()));
+        Response<Boolean> booleanResponse = OttUserServiceImpl.delete(administratorKS, Optional.of(Integer.valueOf(householdUser.getUserId())));
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2031).getCode());
     }
@@ -79,14 +80,14 @@ public class DeleteTests extends BaseTest {
             }
         }
 
-        Response<Boolean> booleanResponse = deleteImpl(administratorKS, Integer.valueOf(householdUser.getUserId()));
+        Response<Boolean> booleanResponse = OttUserServiceImpl.delete(administratorKS, Optional.of(Integer.valueOf(householdUser.getUserId())));
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2030).getCode());
     }
 
     @AfterClass
     private void ottUser_delete_tests_tearDown() {
-        HouseholdServiceImpl.deleteImpl(administratorKS, Math.toIntExact(household.getId()));
+        HouseholdServiceImpl.delete(administratorKS, Math.toIntExact(household.getId()));
     }
 
 }

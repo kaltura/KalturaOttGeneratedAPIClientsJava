@@ -3,6 +3,7 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 import com.kaltura.client.enums.UserState;
 import com.kaltura.client.test.helper.DBHelper;
 import com.kaltura.client.test.helper.Helper;
+import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
@@ -24,8 +25,8 @@ public class ActivateTests extends BaseTest {
     @BeforeClass
     public void ottUser_activate_tests_setup() {
         user = Helper.generateOttUser();
-        registerImpl(PARTNER_ID, user, password);
-        loginImpl(PARTNER_ID, user.getUsername(), password, null, null);
+        register(PARTNER_ID, user, password);
+        login(PARTNER_ID, user.getUsername(), password, null, null);
     }
 
     @Description("ottUser/action/activate - activate")
@@ -35,7 +36,7 @@ public class ActivateTests extends BaseTest {
         if (activationToken == null)
             fail("activationToken can't be null");
 
-        Response<OTTUser> ottUserResponse = activateImpl(PARTNER_ID, user.getUsername(),activationToken);
+        Response<OTTUser> ottUserResponse = OttUserServiceImpl.activate(PARTNER_ID, user.getUsername(),activationToken);
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results.getUserState()).isEqualTo(UserState.OK);
     }

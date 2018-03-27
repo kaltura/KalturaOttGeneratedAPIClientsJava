@@ -1,12 +1,14 @@
 package com.kaltura.client.test.servicesImpl;
 
 import com.kaltura.client.APIOkRequestsExecutor;
+import com.kaltura.client.services.HouseholdUserService;
 import com.kaltura.client.types.HouseholdUser;
 import com.kaltura.client.types.HouseholdUserFilter;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.HouseholdUserService.*;
@@ -22,8 +24,8 @@ public class HouseholdUserServiceImpl {
 
 
     //add
-    public static Response<HouseholdUser> addImpl(String ks, HouseholdUser householdUser) {
-        AddHouseholdUserBuilder addHouseholdUserBuilder = add(householdUser)
+    public static Response<HouseholdUser> add(String ks, HouseholdUser householdUser) {
+        AddHouseholdUserBuilder addHouseholdUserBuilder = HouseholdUserService.add(householdUser)
                 .setCompletion((ApiCompletion<HouseholdUser>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions
@@ -40,8 +42,8 @@ public class HouseholdUserServiceImpl {
         return householdUserResponse;
     }
 
-    public static Response<ListResponse<HouseholdUser>> listImpl(String ks, HouseholdUserFilter householdUserFilter) {
-        ListHouseholdUserBuilder listHouseholdUserBuilder = list(householdUserFilter)
+    public static Response<ListResponse<HouseholdUser>> list(String ks, @Nullable HouseholdUserFilter householdUserFilter) {
+        ListHouseholdUserBuilder listHouseholdUserBuilder = HouseholdUserService.list(householdUserFilter)
                 .setCompletion((ApiCompletion<ListResponse<HouseholdUser>>) result -> {
                     if (result.isSuccess()) {
                         // TODO: 3/22/2018 fix schema assertions

@@ -15,7 +15,7 @@ public class ListTests extends BaseTest {
         household.getId();
 
         // TODO: 3/25/2018 finish test impl 
-//        listImpl()
+//        list()
 //
 //        assertThat(loginResponse.results).isNull();
 //        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1011).getCode());
