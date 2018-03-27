@@ -1,5 +1,8 @@
-package com.kaltura.client;
+package com.kaltura.client.test;
 
+import com.kaltura.client.APIOkRequestsExecutor;
+import com.kaltura.client.ILogger;
+import com.kaltura.client.Logger;
 import com.kaltura.client.utils.ErrorElement;
 import com.kaltura.client.utils.request.ExecutedRequest;
 import com.kaltura.client.utils.request.RequestElement;
@@ -11,18 +14,18 @@ import java.io.IOException;
  * @hide
  */
 // that class was implemented to get access to full response body as it's superclass APIOkRequestsExecutor doesn't allow to do it
-public class CustomAPIOkRequestsExecutor extends APIOkRequestsExecutor {
+public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
 
 
-    public static final String TAG = "CustomAPIOkRequestsExecutor";
+    public static final String TAG = "TestAPIOkRequestsExecutor";
     private static ILogger logger = Logger.getLogger(TAG);
-    protected static CustomAPIOkRequestsExecutor self;
+    protected static TestAPIOkRequestsExecutor self;
 
     public static String fullResponseAsString = "";
 
-    public static CustomAPIOkRequestsExecutor getExecutor() {
+    public static TestAPIOkRequestsExecutor getExecutor() {
         if (self == null) {
-            self = new CustomAPIOkRequestsExecutor();
+            self = new TestAPIOkRequestsExecutor();
         }
         return self;
     }
