@@ -24,12 +24,15 @@ public class GetTests extends BaseTest {
     private String password = GLOBAL_USER_PASSWORD;
 
     private Response<LoginResponse> loginResponse;
+    private Response<OTTUser> ottUserResponse;
 
     @BeforeClass
     private void ottUser_login_tests_setup() {
         user = generateOttUser();
-        register(PARTNER_ID, user, password);
+        ottUserResponse = register(PARTNER_ID, user, password);
+
         loginResponse = login(PARTNER_ID, user.getUsername(), password, null, null);
+        user = loginResponse.results.getUser();
     }
 
     // get tests
@@ -37,8 +40,8 @@ public class GetTests extends BaseTest {
     @Test
     private void get() {
         // TODO: 3/27/2018 fix get test
-        Response<OTTUser> ottUserResponse = OttUserServiceImpl.get(loginResponse.results.getLoginSession().getKs(), Optional.empty());
+        ottUserResponse = OttUserServiceImpl.get(loginResponse.results.getLoginSession().getKs(), Optional.empty());
         assertThat(loginResponse.error).isNull();
-        assertThat(ottUserResponse.results).isEqualToComparingFieldByField(user);
+        assertThat(ottUserResponse.results).isEqualToIgnoringGivenFields(user, "userState", "userType");
     }
 }
