@@ -17,7 +17,7 @@ public class BaseTest {
     public static Client client;
     private Response<LoginResponse> loginResponse;
 
-    public static String administratorKS, operatorKS, managerKS;
+    public static String administratorKs, operatorKS, managerKS;
 
     @BeforeSuite
     public void setup() {
@@ -34,7 +34,7 @@ public class BaseTest {
 
         // Login with shared users
         loginResponse = login(PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
-        administratorKS = loginResponse.results.getLoginSession().getKs();
+        administratorKs = loginResponse.results.getLoginSession().getKs();
 
 //        loginResponse = login(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
 //        operatorKS = loginResponse.results.getLoginSession().getKs();

@@ -1,7 +1,11 @@
 package com.kaltura.client.test.utils;
 
+import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
+import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
+import com.kaltura.client.utils.response.base.Response;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class OttUserUtils extends BaseUtils {
@@ -25,5 +29,10 @@ public class OttUserUtils extends BaseUtils {
         user.setCountryId(r.nextInt(30 - 1) + 1);
 
         return user;
+    }
+
+    public static String getUserNameFromId(int userId) {
+        Response<OTTUser> userResponse = OttUserServiceImpl.get(BaseTest.administratorKs, Optional.of(userId));
+        return userResponse.results.getUsername();
     }
 }

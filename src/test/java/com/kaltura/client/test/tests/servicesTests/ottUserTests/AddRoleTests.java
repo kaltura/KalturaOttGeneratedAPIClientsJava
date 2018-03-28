@@ -35,12 +35,12 @@ public class AddRoleTests extends BaseTest {
     @Test(enabled = false)
     // TODO: 3/27/2018 finish and fix test 
     private void addRole() {
-        OttUserServiceImpl.addRole(administratorKS, Optional.of(Integer.valueOf(user.getId())), 3);
+        OttUserServiceImpl.addRole(administratorKs, Optional.of(Integer.valueOf(user.getId())), 3);
 
         UserRoleFilter filter = new UserRoleFilter();
         filter.setIdIn(user.getId());
 
-        Response<ListResponse<UserRole>> userRoleListResponse = UserRoleServiceImpl.list(administratorKS, filter);
+        Response<ListResponse<UserRole>> userRoleListResponse = UserRoleServiceImpl.list(administratorKs, filter);
         List<UserRole> userRoles = userRoleListResponse.results.getObjects();
 
         for (UserRole userRole : userRoles) {
