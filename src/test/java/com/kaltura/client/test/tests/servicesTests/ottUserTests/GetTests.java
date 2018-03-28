@@ -1,6 +1,5 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
-import com.kaltura.client.test.helper.Helper;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
@@ -12,10 +11,11 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
-import static com.kaltura.client.test.helper.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.helper.Properties.PARTNER_ID;
+import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
+import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
+import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetTests extends BaseTest {
@@ -26,8 +26,8 @@ public class GetTests extends BaseTest {
     private Response<LoginResponse> loginResponse;
 
     @BeforeClass
-    public void ottUser_login_tests_setup() {
-        user = Helper.generateOttUser();
+    private void ottUser_login_tests_setup() {
+        user = generateOttUser();
         register(PARTNER_ID, user, password);
         loginResponse = login(PARTNER_ID, user.getUsername(), password, null, null);
     }
@@ -36,6 +36,7 @@ public class GetTests extends BaseTest {
     @Description("ottUser/action/get - get")
     @Test
     private void get() {
+        // TODO: 3/27/2018 fix get test
         Response<OTTUser> ottUserResponse = OttUserServiceImpl.get(loginResponse.results.getLoginSession().getKs(), Optional.empty());
         assertThat(loginResponse.error).isNull();
         assertThat(ottUserResponse.results).isEqualToComparingFieldByField(user);

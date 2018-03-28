@@ -188,42 +188,42 @@ public class OttUserServiceImpl {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
-//
+
 //    public static <T> T logout(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
-//
-//    public static <T> T refreshSession(String ks) {
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }
-//
+
+    public static void refreshSession(String ks) {
+        // TODO: 3/19/2018 check why missing from client library
+
+    }
+
 //    public static <T> T resendActivationToken(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
-//
+
 //    public static <T> T resetPassword(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
-//
+
 //    public static <T> T setInitialPassword(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
-//
+
 //    public static <T> T update(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
-//
+
 //    public static <T> T updateLoginData(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
-//
+
 //    public static <T> T getEncryptedUserId(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;

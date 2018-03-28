@@ -1,8 +1,7 @@
-package com.kaltura.client.test.helper;
+package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
-import com.kaltura.client.types.OTTUser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -17,35 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.kaltura.client.test.helper.Properties.API_URL_VERSION;
+import static com.kaltura.client.test.Properties.API_URL_VERSION;
 
-public class Helper {
+public class BaseUtils {
 
     private static final String API_SCHEMA_URL = "https://api-preprod.ott.kaltura.com/" + API_URL_VERSION + "/clientlibs/KalturaClient.xml";
     private static List<APIException> exceptions;
 
-    //generate ottUser
-    public static OTTUser generateOttUser() {
-        long millis = System.currentTimeMillis();
-        String randomString = getRandomString();
-        String emailPrefix = "qaott2018" + "+";
-        String emailDomain = "@gmail.com";
-        String stamp = randomString + millis;
 
-        OTTUser user = new OTTUser();
-        user.setUsername(stamp);
-        user.setFirstName(randomString);
-        user.setLastName(String.valueOf(millis));
-        user.setEmail(emailPrefix + stamp + emailDomain);
-        user.setAddress(randomString + " fake address");
-        user.setCity(randomString + " fake city");
-        Random r = new Random();
-        user.setCountryId(r.nextInt(30 - 1) + 1);
-
-        return user;
-    }
-
-    //generate random string
+    // generate random string
     public static String getRandomString() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder sb = new StringBuilder();
@@ -57,7 +36,7 @@ public class Helper {
         return sb.toString().toLowerCase();
     }
 
-    //get api exception
+    // get api exception
     public static APIException getAPIExceptionFromList(int code) {
         getApiExceptionList();
 
@@ -67,11 +46,11 @@ public class Helper {
             }
         }
 
-        Logger.getLogger(Helper.class).error("No such error code in the API schema");
+        Logger.getLogger(BaseUtils.class).error("No such error code in the API schema");
         return null;
     }
 
-    //generate apiException list base on the api schema
+    // generate apiException list base on the api schema
     private static List<APIException> getApiExceptionList() {
         if (exceptions == null) {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -101,5 +80,4 @@ public class Helper {
         }
         return exceptions;
     }
-
 }

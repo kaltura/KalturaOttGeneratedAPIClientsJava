@@ -1,7 +1,7 @@
 package com.kaltura.client.test.servicesImpl;
 
-import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.services.HouseholdDeviceService;
+import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.HouseholdDevice;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
@@ -28,7 +28,7 @@ public class HouseholdDeviceServiceImpl {
                 });
 
         addHouseholdDeviceBuilder.setKs(ks);
-        APIOkRequestsExecutor.getExecutor().queue(addHouseholdDeviceBuilder.build(client));
+        TestAPIOkRequestsExecutor.getExecutor().queue(addHouseholdDeviceBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 

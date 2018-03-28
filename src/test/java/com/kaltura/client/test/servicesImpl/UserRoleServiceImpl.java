@@ -1,7 +1,7 @@
 package com.kaltura.client.test.servicesImpl;
 
-import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.services.UserRoleService;
+import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.UserRole;
 import com.kaltura.client.types.UserRoleFilter;
@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.UserRoleService.ListUserRoleBuilder;
-import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.tests.BaseTest.client;
 import static org.awaitility.Awaitility.await;
 
 public class UserRoleServiceImpl {
@@ -30,7 +30,7 @@ public class UserRoleServiceImpl {
                 });
 
         listUserRoleBuilder.setKs(ks);
-        APIOkRequestsExecutor.getExecutor().queue(listUserRoleBuilder.build(client));
+        TestAPIOkRequestsExecutor.getExecutor().queue(listUserRoleBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 
