@@ -17,6 +17,7 @@ public class AnonymousLoginTests extends BaseTest {
     @Test()
     private void anonymousLogin() {
         Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(PARTNER_ID, null);
+
         assertThat(loginSessionResponse.error).isNull();
         assertThat(loginSessionResponse.results.getKs()).isNotNull();
     }

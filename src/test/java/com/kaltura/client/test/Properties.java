@@ -32,11 +32,6 @@ public class Properties {
 
     public static final String GLOBAL_USER_PASSWORD = "password";
 
-//    // Automation shared household
-//    public static Household sharedHousehold;
-//    public static OTTUser administratorUser, managerUser, operatorUser, masterUser;
-//    public static String administratorUserKS, managerUserKS, operatorUserKS, masterUserKS;
-
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null)

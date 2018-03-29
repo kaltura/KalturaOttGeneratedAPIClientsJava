@@ -1,7 +1,7 @@
 package com.kaltura.client.test.servicesImpl;
 
-import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.services.OttUserService;
+import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
@@ -32,7 +32,7 @@ public class OttUserServiceImpl {
     private static Response<ListResponse<OTTUser>> ottUserListResponse;
 
 
-    //login
+    // login
     public static Response<LoginResponse> login(int partnerId, String username, String password, @Nullable Map<String, StringValue> extraParams, @Nullable String udid) {
         LoginOttUserBuilder loginOttUserBuilder = OttUserService.login(partnerId, username, password, extraParams, udid)
                 .setCompletion((ApiCompletion<LoginResponse>) result -> {
@@ -51,7 +51,7 @@ public class OttUserServiceImpl {
         return loginResponse;
     }
 
-    //register
+    // register
     public static Response<OTTUser> register(int partnerId, OTTUser user, String password) {
         RegisterOttUserBuilder registerOttUserBuilder = OttUserService.register(partnerId, user, password)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
@@ -70,7 +70,7 @@ public class OttUserServiceImpl {
         return ottUserResponse;
     }
 
-    //anonymousLogin
+    // anonymousLogin
     public static Response<LoginSession> anonymousLogin(int partnerId, @Nullable String udid) {
         AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = OttUserService.anonymousLogin(partnerId, udid)
                 .setCompletion((ApiCompletion<LoginSession>) result -> {
@@ -89,7 +89,7 @@ public class OttUserServiceImpl {
         return loginSessionResponse;
     }
 
-    //activate
+    // activate
     public static Response<OTTUser> activate(int partnerId, String username, String activationToken) {
         ActivateOttUserBuilder activateOttUserBuilder = OttUserService.activate(partnerId, username, activationToken)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
@@ -108,7 +108,7 @@ public class OttUserServiceImpl {
         return ottUserResponse;
     }
 
-    //addRole
+    // addRole
     public static Response<Boolean> addRole(String ks, Optional<Integer> userId, int roleId) {
         AddRoleOttUserBuilder addRoleOttUserBuilder = OttUserService.addRole(roleId)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
@@ -126,7 +126,7 @@ public class OttUserServiceImpl {
         return booleanResponse;
     }
 
-    //delete
+    // delete
     public static Response<Boolean> delete(String ks, Optional<Integer> userId) {
         DeleteOttUserBuilder deleteOttUserBuilder = OttUserService.delete()
                 .setCompletion((ApiCompletion<Boolean>) result -> {
@@ -144,6 +144,7 @@ public class OttUserServiceImpl {
         return booleanResponse;
     }
 
+    // get
     public static Response<OTTUser> get(String ks, Optional<Integer> userId) {
         GetOttUserBuilder getOttUserBuilder = OttUserService.get()
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
@@ -165,6 +166,7 @@ public class OttUserServiceImpl {
         return ottUserResponse;
     }
 
+    // list
     public static Response<ListResponse<OTTUser>> list(String ks, @Nullable OTTUserFilter ottUserFilter) {
         ListOttUserBuilder listOttUserBuilder = OttUserService.list(ottUserFilter)
                 .setCompletion((ApiCompletion<ListResponse<OTTUser>>) result -> {
@@ -184,19 +186,42 @@ public class OttUserServiceImpl {
         return ottUserListResponse;
     }
 
-//    public static <T> T loginWithPin(String ks) {
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }
+    // loginWithPin
+    public static Response<LoginResponse> loginWithPin(int partnerId, String pin, @Nullable String udid, String secret) {
 
-//    public static <T> T logout(String ks) {
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }
+        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = OttUserService.loginWithPin(partnerId, pin, udid, secret)
+                .setCompletion((ApiCompletion<LoginResponse>) result -> {
+                    loginResponse = result;
+                    done.set(true);
+                });
 
-    public static void refreshSession(String ks) {
-        // TODO: 3/19/2018 check why missing from client library
+        TestAPIOkRequestsExecutor.getExecutor().queue(loginWithPinOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
 
+        if (loginResponse.isSuccess()) {
+            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
+        }
+
+        return loginResponse;
+    }
+
+    // logout
+    public static Response<Boolean> logout(String ks, Optional<Integer> userId) {
+        LogoutOttUserBuilder logoutOttUserBuilder = OttUserService.logout()
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    booleanResponse = result;
+                    done.set(true);
+                });
+
+        logoutOttUserBuilder.setKs(ks);
+        userId.ifPresent(logoutOttUserBuilder::setUserId);
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(logoutOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return booleanResponse;
     }
 
 //    public static <T> T resendActivationToken(String ks) {

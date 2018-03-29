@@ -27,6 +27,5 @@ public class Sandbox extends BaseTest {
 
         int assetId = new XmlPath(xml).getInt("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID");
         System.out.println("!!! " + assetId);
-
     }
 }
