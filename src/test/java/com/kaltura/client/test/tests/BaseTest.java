@@ -50,8 +50,8 @@ public class BaseTest {
         loginResponse = login(PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
         administratorKs = loginResponse.results.getLoginSession().getKs();
 
-//        loginResponse = login(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
-//        operatorKs = loginResponse.results.getLoginSession().getKs();
+        loginResponse = login(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
+        operatorKs = loginResponse.results.getLoginSession().getKs();
 
 //        loginResponse = login(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
 //        managerKs = loginResponse.results.getLoginSession().getKs();

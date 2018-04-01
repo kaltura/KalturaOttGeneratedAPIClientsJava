@@ -19,7 +19,7 @@ public class ListTests extends BaseTest {
     public void listSubscriptionTest() {
         ProductPriceFilter filter = new ProductPriceFilter();
         // TODO: fix! filter.setSubscriptionIdIn(five_min_renewable_subscription_id);
-        Response<ListResponse<ProductPrice>> productPriceList = list(operatorKS, filter, Optional.empty());
+        Response<ListResponse<ProductPrice>> productPriceList = list(operatorKs, filter, Optional.empty());
         // TODO: fix! assertThat(productPriceList.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(five_min_renewable_subscription_id);
         assertThat(productPriceList.results.getObjects().get(0).getPurchaseStatus() == PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceList.results.getObjects().get(0).getPrice().getAmount() > 0);
