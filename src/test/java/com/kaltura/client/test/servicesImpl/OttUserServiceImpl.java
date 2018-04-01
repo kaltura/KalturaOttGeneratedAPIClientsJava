@@ -31,6 +31,7 @@ public class OttUserServiceImpl {
     private static Response<Boolean> booleanResponse;
     private static Response<ListResponse<OTTUser>> ottUserListResponse;
     private static Response<StringValue> stringValueResponse;
+    private static Response<OTTUserDynamicData> ottUserDynamicDataResponse;
 
 
     // activate
@@ -279,11 +280,26 @@ public class OttUserServiceImpl {
         return booleanResponse;
     }
 
-//    // setInitialPassword
-//    public static void setInitialPassword(String ks) {
-//        // TODO: 3/19/2018 implement function
-//    }
+    // setInitialPassword
+    public static Response<OTTUser> setInitialPassword(int partnerId, String token, String password) {
+        SetInitialPasswordOttUserBuilder setInitialPasswordOttUserBuilder = OttUserService.setInitialPassword(partnerId, token, password)
+                .setCompletion((ApiCompletion<OTTUser>) result -> {
+                    ottUserResponse = result;
+                    done.set(true);
+                });
 
+        TestAPIOkRequestsExecutor.getExecutor().queue(setInitialPasswordOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        if (ottUserResponse.isSuccess()) {
+            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
+        }
+
+        return ottUserResponse;
+    }
+
+    // update
     public static Response<OTTUser> update(String ks, OTTUser user, @Nullable String id) {
         UpdateOttUserBuilder updateOttUserBuilder = OttUserService.update(user, id)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
@@ -304,15 +320,35 @@ public class OttUserServiceImpl {
         return ottUserResponse;
     }
 
-//    public static void updateDynamicData() {
-//        // TODO: 3/19/2018 implement function
-//    }
+    // updateDynamicData
+    public static Response<OTTUserDynamicData> updateDynamicData(String ks, Optional<Integer> userId, String key, StringValue value) {
+        UpdateDynamicDataOttUserBuilder updateDynamicDataOttUserBuilder = OttUserService.updateDynamicData(key, value)
+                .setCompletion((ApiCompletion<OTTUserDynamicData>) result -> {
+                    ottUserDynamicDataResponse = result;
+                    done.set(true);
+                });
 
+        updateDynamicDataOttUserBuilder.setKs(ks);
+        userId.ifPresent(updateDynamicDataOttUserBuilder::setUserId);
+        
+        TestAPIOkRequestsExecutor.getExecutor().queue(updateDynamicDataOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+        
+        if (ottUserDynamicDataResponse.isSuccess()) {
+            // TODO: 4/1/2018 add schema assertion 
+        }
+        
+        return ottUserDynamicDataResponse;
+    }
+
+    // updateLoginData
 //    public static <T> T updateLoginData(String ks) {
 //        // TODO: 3/19/2018 implement function
 //        return null;
 //    }
 
+    // updatePassword
 //    public static void updatePassword() {
 //        // TODO: 3/19/2018 implement function
 //    }

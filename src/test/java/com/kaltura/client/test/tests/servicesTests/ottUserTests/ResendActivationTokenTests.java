@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.DBUtils;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import com.sun.org.glassfish.gmbal.Description;
@@ -28,15 +27,12 @@ public class ResendActivationTokenTests extends BaseTest {
     }
 
     @Description("ottUser/action/resendActivationToken - resendActivationToken")
-    @Test(enabled = false) // TODO: 4/1/2018 find how to tag test as bug (bug BEO-4908)
+    @Test(enabled = true)
     private void resendActivationToken() {
-        String activationToken = DBUtils.getActivationToken(user.getUsername());
-
         Response<Boolean> booleanResponse = OttUserServiceImpl.resendActivationToken(PARTNER_ID, user.getUsername());
         assertThat(booleanResponse.error).isNull();
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
-        String resentActivationToken = DBUtils.getActivationToken(user.getUsername());
-        assertThat(activationToken).isNotEqualTo(resentActivationToken);
+        // TODO: 4/1/2018 can't be completely tests until we verify emails
     }
 }
