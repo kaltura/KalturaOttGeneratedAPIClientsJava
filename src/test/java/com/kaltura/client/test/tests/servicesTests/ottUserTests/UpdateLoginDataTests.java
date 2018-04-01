@@ -50,4 +50,23 @@ public class UpdateLoginDataTests extends BaseTest {
         assertThat(loginResponse.error).isNull();
         assertThat(loginResponse.results.getLoginSession().getKs()).isNotNull();
     }
+
+    @Description("ottUser/action/updateLoginData - updateLoginData with administratorKs")
+    @Test
+    private void updateLoginData_with_administratorKs() {
+        booleanResponse = OttUserServiceImpl.updateLoginData(administratorKs, user.getUsername(), password, password + 1);
+
+        assertThat(booleanResponse.error).isNull();
+        assertThat(booleanResponse.results.booleanValue()).isTrue();
+
+        // try login with old password
+        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password, null, null);
+        assertThat(loginResponse.results).isNull();
+        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1011).getCode());
+
+        // try login with new password
+        loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password + 1, null, null);
+        assertThat(loginResponse.error).isNull();
+        assertThat(loginResponse.results.getLoginSession().getKs()).isNotNull();
+    }
 }
