@@ -343,10 +343,21 @@ public class OttUserServiceImpl {
     }
 
     // updateLoginData
-//    public static <T> T updateLoginData(String ks) {
-//        // TODO: 3/19/2018 implement function
-//        return null;
-//    }
+    public static Response<Boolean> updateLoginData(String ks, String username, String oldPassword, String newPassword) {
+        UpdateLoginDataOttUserBuilder updateLoginDataOttUserBuilder = OttUserService.updateLoginData(username, oldPassword, newPassword)
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    booleanResponse = result;
+                    done.set(true);
+                });
+
+        updateLoginDataOttUserBuilder.setKs(ks);
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(updateLoginDataOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return booleanResponse;
+    }
 
     // updatePassword
 //    public static void updatePassword() {
