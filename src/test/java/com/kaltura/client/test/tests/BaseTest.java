@@ -24,7 +24,7 @@ public class BaseTest {
     public static Client client;
     private Response<LoginResponse> loginResponse;
 
-    public static String administratorKs, operatorKS, managerKS;
+    public static String administratorKs, operatorKs, managerKs;
 
     // shared household
     public static Household sharedHousehold;
@@ -44,17 +44,17 @@ public class BaseTest {
         client.setApiVersion(API_REQUEST_VERSION);
 
         // Set default awaitility timeout
-        setDefaultTimeout(15, TimeUnit.SECONDS);
+        setDefaultTimeout(20, TimeUnit.SECONDS);
 
         // Login with shared users
         loginResponse = login(PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
         administratorKs = loginResponse.results.getLoginSession().getKs();
 
 //        loginResponse = login(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
-//        operatorKS = loginResponse.results.getLoginSession().getKs();
-//
+//        operatorKs = loginResponse.results.getLoginSession().getKs();
+
 //        loginResponse = login(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
-//        managerKS = loginResponse.results.getLoginSession().getKs();
+//        managerKs = loginResponse.results.getLoginSession().getKs();
 
         // Set project shared HH and users
 //        initSharedHousehold();
