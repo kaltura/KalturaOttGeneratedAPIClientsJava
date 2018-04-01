@@ -330,15 +330,15 @@ public class OttUserServiceImpl {
 
         updateDynamicDataOttUserBuilder.setKs(ks);
         userId.ifPresent(updateDynamicDataOttUserBuilder::setUserId);
-        
+
         TestAPIOkRequestsExecutor.getExecutor().queue(updateDynamicDataOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-        
+
         if (ottUserDynamicDataResponse.isSuccess()) {
             // TODO: 4/1/2018 add schema assertion 
         }
-        
+
         return ottUserDynamicDataResponse;
     }
 
@@ -360,9 +360,21 @@ public class OttUserServiceImpl {
     }
 
     // updatePassword
-//    public static void updatePassword() {
-//        // TODO: 3/19/2018 implement function
-//    }
+    public static Response<Boolean> updatePassword(String ks, int partnerId, String username) {
+        ResetPasswordOttUserBuilder resetPasswordOttUserBuilder = OttUserService.resetPassword(partnerId, username)
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    booleanResponse = result;
+                    done.set(true);
+                });
+
+        resetPasswordOttUserBuilder.setKs(ks);
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(resetPasswordOttUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return booleanResponse;
+    }
 }
 
 
