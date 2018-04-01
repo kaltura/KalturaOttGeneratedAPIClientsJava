@@ -33,6 +33,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
     @SuppressWarnings("rawtypes")
     @Override
 	protected ResponseElement onGotResponse(Response response, RequestElement action) {
+        logger.debug("Request Headers\n" + action.getHeaders().toString());
         String requestId = getRequestId(response);
 
         if (!response.isSuccessful()) { // in case response has failure status
