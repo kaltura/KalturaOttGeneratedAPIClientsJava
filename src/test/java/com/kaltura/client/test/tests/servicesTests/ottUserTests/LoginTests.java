@@ -25,15 +25,15 @@ public class LoginTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_login_tests_setup() {
-        user = generateOttUser();
-        register(PARTNER_ID, user, password);
+        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+        user = ottUserResponse.results;
     }
 
-    // login tests
     @Description("ottUser/action/login - login")
     @Test
     private void login() {
         loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password, null, null);
+
         assertThat(loginResponse.error).isNull();
         assertThat(loginResponse.results.getLoginSession()).isNotNull();
         assertThat(loginResponse.results.getUser().getUsername()).isEqualTo(user.getUsername());

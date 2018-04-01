@@ -9,39 +9,34 @@ import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Optional;
-
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
-import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetTests extends BaseTest {
+public class ResetPasswordTests extends BaseTest {
 
     private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
 
-    private Response<LoginResponse> loginResponse;
-    private Response<OTTUser> ottUserResponse;
+    private Response<Boolean> booleanResponse;
 
     @BeforeClass
-    private void ottUser_login_tests_setup() {
-        ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+    private void ottUser_resetPassword_tests_setup() {
+        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
         user = ottUserResponse.results;
-
-        loginResponse = login(PARTNER_ID, user.getUsername(), password, null, null);
-        user = loginResponse.results.getUser();
     }
 
-    // get tests
-    @Description("ottUser/action/get - get")
-    @Test
-    private void get() {
-        // TODO: 3/27/2018 fix get test
-        ottUserResponse = OttUserServiceImpl.get(loginResponse.results.getLoginSession().getKs(), Optional.empty());
-        assertThat(loginResponse.error).isNull();
-        assertThat(ottUserResponse.results).isEqualToIgnoringGivenFields(user, "userState", "userType");
+    @Description("ottUser/action/resetPassword - resetPassword")
+    @Test(enabled = false)
+    private void resetPassword() {
+        booleanResponse = OttUserServiceImpl.resetPassword(PARTNER_ID, administratorKs, user.getUsername());
+
+        assertThat(booleanResponse.error).isNull();
+        assertThat(booleanResponse.results.booleanValue()).isTrue();
+
+        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password, null, null);
+        // TODO: 4/1/2018 finsih the test after bug BEO-4884 will be fixed
     }
 }

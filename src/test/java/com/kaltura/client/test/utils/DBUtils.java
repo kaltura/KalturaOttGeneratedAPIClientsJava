@@ -1,5 +1,6 @@
 package com.kaltura.client.test.utils;
 
+import com.kaltura.client.Logger;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
@@ -38,7 +39,7 @@ public class DBUtils extends BaseUtils {
             activationToken = rs.getString("ACTIVATION_TOKEN");
         } catch (SQLException e) {
             e.printStackTrace();
-//            Logger.getLogger(DBUtils.class).error("activationToken can't be null");
+            Logger.getLogger(DBUtils.class).error("activationToken can't be null");
         }
         closeConnection();
         return activationToken;

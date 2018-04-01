@@ -41,11 +41,11 @@ public class DeleteTests extends BaseTest {
         Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
         OTTUser user = ottUserResponse.results;
 
-        Response<Boolean> booleanResponse = OttUserServiceImpl.delete(administratorKS, Optional.of(Integer.valueOf(user.getId())));
+        Response<Boolean> booleanResponse = OttUserServiceImpl.delete(administratorKs, Optional.of(Integer.valueOf(user.getId())));
         boolean result = booleanResponse.results;
         assertThat(result).isTrue();
 
-        ottUserResponse = get(administratorKS, Optional.of(Integer.valueOf(user.getId())));
+        ottUserResponse = get(administratorKs, Optional.of(Integer.valueOf(user.getId())));
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500004).getCode());
         assertThat(ottUserResponse.results).isNull();
     }
@@ -54,7 +54,7 @@ public class DeleteTests extends BaseTest {
     @Test(enabled = true)
     private void delete_master_user() {
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
-        booleanResponse = OttUserServiceImpl.delete(administratorKS, Optional.of(Integer.valueOf(masterUser.getUserId())));
+        booleanResponse = OttUserServiceImpl.delete(administratorKs, Optional.of(Integer.valueOf(masterUser.getUserId())));
 
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2031).getCode());
@@ -64,7 +64,7 @@ public class DeleteTests extends BaseTest {
     @Test(enabled = true)
     private void delete_default_user() {
         HouseholdUser defaultUser = getDefaultUserFromHousehold(household);
-        booleanResponse = OttUserServiceImpl.delete(administratorKS, Optional.of(Integer.valueOf(defaultUser.getUserId())));
+        booleanResponse = OttUserServiceImpl.delete(administratorKs, Optional.of(Integer.valueOf(defaultUser.getUserId())));
 
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2030).getCode());
@@ -72,7 +72,7 @@ public class DeleteTests extends BaseTest {
 
     @AfterClass
     private void ottUser_delete_tests_tearDown() {
-        HouseholdServiceImpl.delete(administratorKS, Math.toIntExact(household.getId()));
+        HouseholdServiceImpl.delete(administratorKs, Math.toIntExact(household.getId()));
     }
 
 }

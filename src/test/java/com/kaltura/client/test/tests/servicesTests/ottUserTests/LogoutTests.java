@@ -2,6 +2,7 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
@@ -18,30 +19,34 @@ import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetTests extends BaseTest {
+public class LogoutTests extends BaseTest {
 
     private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
 
     private Response<LoginResponse> loginResponse;
-    private Response<OTTUser> ottUserResponse;
+    private Response<Boolean> booleanResponse;
+
 
     @BeforeClass
-    private void ottUser_login_tests_setup() {
-        ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+    private void ottUser_logout_tests_setup() {
+        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
         user = ottUserResponse.results;
-
-        loginResponse = login(PARTNER_ID, user.getUsername(), password, null, null);
-        user = loginResponse.results.getUser();
     }
 
-    // get tests
-    @Description("ottUser/action/get - get")
+    @Description("ottUser/action/logout - logout")
     @Test
-    private void get() {
-        // TODO: 3/27/2018 fix get test
-        ottUserResponse = OttUserServiceImpl.get(loginResponse.results.getLoginSession().getKs(), Optional.empty());
-        assertThat(loginResponse.error).isNull();
-        assertThat(ottUserResponse.results).isEqualToIgnoringGivenFields(user, "userState", "userType");
+    private void logout() {
+        loginResponse = login(PARTNER_ID, user.getUsername(), password, null, null);
+        String ks = loginResponse.results.getLoginSession().getKs();
+
+        booleanResponse = OttUserServiceImpl.logout(ks, Optional.empty());
+        assertThat(booleanResponse.error).isNull();
+        assertThat(booleanResponse.results.booleanValue()).isTrue();
+
+        Response<OTTUser> ottUserResponse = OttUserServiceImpl.get(ks, Optional.empty());
+        assertThat(ottUserResponse.results).isNull();
+        assertThat(ottUserResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(500016).getCode());
     }
+
 }

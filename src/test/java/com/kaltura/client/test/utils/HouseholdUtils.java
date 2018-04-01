@@ -14,7 +14,7 @@ import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
-import static com.kaltura.client.test.tests.BaseTest.administratorKS;
+import static com.kaltura.client.test.tests.BaseTest.administratorKs;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class HouseholdUtils extends BaseUtils {
@@ -67,7 +67,7 @@ public class HouseholdUtils extends BaseUtils {
     public static List<HouseholdUser> getUsersListFromHouseHold(Household household) {
         HouseholdUserFilter filter = new HouseholdUserFilter();
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
-        Response<ListResponse<HouseholdUser>> usersResponse = HouseholdUserServiceImpl.list(administratorKS, filter);
+        Response<ListResponse<HouseholdUser>> usersResponse = HouseholdUserServiceImpl.list(administratorKs, filter);
         return usersResponse.results.getObjects();
     }
 
