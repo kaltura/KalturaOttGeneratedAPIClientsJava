@@ -7,7 +7,8 @@ import com.kaltura.client.utils.ErrorElement;
 import com.kaltura.client.utils.request.ExecutedRequest;
 import com.kaltura.client.utils.request.RequestElement;
 import com.kaltura.client.utils.response.base.ResponseElement;
-import okhttp3.*;
+import okhttp3.Response;
+
 import java.io.IOException;
 
 /**
@@ -33,7 +34,10 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
     @SuppressWarnings("rawtypes")
     @Override
 	protected ResponseElement onGotResponse(Response response, RequestElement action) {
+
+        // print request headers
 //        logger.debug("request headers\n" + action.getHeaders().toString());
+
         String requestId = getRequestId(response);
 
         if (!response.isSuccessful()) { // in case response has failure status
@@ -48,12 +52,27 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 logger.error("failed to retrieve the response body!");
             }
 
+            // print response body
             logger.debug("response body:\n" + responseString);
-            logger.debug("response headers:\n" + response.headers());
 
-            fullResponseAsString = responseString.substring(0);
+            // print response headers
+//            logger.debug("response headers:\n" + response.headers());
 
-            return new ExecutedRequest().requestId(requestId).response(responseString).code(response.code()).success(responseString != null);
+            fullResponseAsString = responseString;
+
+            ResponseElement responseElement = new ExecutedRequest().requestId(requestId).response(responseString).code(response.code()).success(responseString != null);
+            com.kaltura.client.utils.response.base.Response response1 = action.parseResponse(responseElement);
+
+            String s1 = "schemas/";
+            String s2 = response1.results.getClass().getSimpleName();
+            String s3 = ".json";
+
+            String schema = s1 + s2 + s3;
+            System.out.println("here!!! " + schema);
+
+//            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(schema));
+
+            return responseElement;
         }
     }
 }
