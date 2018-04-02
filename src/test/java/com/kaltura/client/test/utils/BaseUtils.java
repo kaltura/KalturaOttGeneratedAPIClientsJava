@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kaltura.client.test.Properties.API_URL_VERSION;
 
@@ -23,6 +24,11 @@ public class BaseUtils {
     private static final String API_SCHEMA_URL = "https://api-preprod.ott.kaltura.com/" + API_URL_VERSION + "/clientlibs/KalturaClient.xml";
     private static List<APIException> exceptions;
 
+    // generate string containing prefix and random long suffix
+    public static String getRandomValue(String prefix, long maxValue) {
+        long randomLongValue = ThreadLocalRandom.current().nextLong(maxValue);
+        return prefix + randomLongValue;
+    }
 
     // generate random string
     public static String getRandomString() {
