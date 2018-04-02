@@ -9,6 +9,8 @@ public class Properties {
     // Url properties
     public static final String API_BASE_URL = "http://34.249.122.223:8080";
     public static final String API_URL_VERSION = "v4_8";
+    public static final String SOAP_BASE_URL = "http://34.249.122.223:8030";
+    public static final String INGEST_REPORT_URL = "http://34.249.122.223:5823";
 
     // DB properties
     // TODO: 3/19/2018 encrypt db username and password in test.properties file
@@ -31,6 +33,29 @@ public class Properties {
     public static final String MANAGER_PASSWORD = "manager_user_password";
 
     public static final String GLOBAL_USER_PASSWORD = "password";
+
+    // file types
+    public static final String WEB_FILE_TYPE = "web_file_type";
+    public static final String MOBILE_FILE_TYPE = "mobile_file_type";
+
+    // ingest
+    public static final String INGEST_USER_NAME = "ingest_user_username";
+    public static final String INGEST_USER_PASSWORD = "ingest_user_password";
+
+    public static final String INGEST_ACTION_INSERT = "insert";
+
+    // price codes
+    public static final String AMOUNT_4_99_EUR = "amount_4_99_eur"; // 4.99
+    public static final String CURRENCY_EUR = "EUR";
+
+    // usage modules
+    public static final String ONE_DAY_USAGE_MODULE = "one_day_usage_module"; // module has 1 Day life cycles, 0 maximum views and 5 minute waiver
+
+    // product codes
+    public static final String DEFAULT_PRODUCT_CODE = "default_product_code";
+
+    // discount modules
+    public static final String FIFTY_PERCENTS_ILS_DISCOUNT_NAME = "fifty_percents_ils_discount_name";
 
 
     public static String getProperty(String propertyKey) {
