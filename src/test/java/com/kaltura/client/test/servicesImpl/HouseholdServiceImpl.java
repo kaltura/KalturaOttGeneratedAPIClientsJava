@@ -22,7 +22,7 @@ public class HouseholdServiceImpl {
     private static Response<Boolean> booleanResponse;
 
 
-    //add
+    // add
     public static Response<Household> add(String ks, Household household) {
         AddHouseholdBuilder addHouseholdBuilder = HouseholdService.add(household)
                 .setCompletion((ApiCompletion<Household>) result -> {
@@ -35,14 +35,10 @@ public class HouseholdServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        if (householdResponse.isSuccess()) {
-            // TODO: 3/22/2018 fix schema assertions
-        }
-
         return householdResponse;
     }
 
-    //delete
+    // delete
     public static Response<Boolean> delete(String ks, @Nullable int householdId) {
         DeleteHouseholdBuilder deleteHouseholdBuilder = HouseholdService.delete(householdId)
                 .setCompletion((ApiCompletion<Boolean>) result -> {

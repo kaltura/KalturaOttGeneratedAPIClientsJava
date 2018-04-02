@@ -1,5 +1,5 @@
 {
-  "$id": "KalturaBillingTransactionListResponse",
+  "$id": "ListResponse_HouseholdUser",
   "type": "object",
   "properties": {
     "result": {
@@ -8,7 +8,7 @@
         "objects": {
           "type": "array",
           "items": {
-            "$ref": "KalturaBillingTransaction_Schema.json#/definitions/KalturaBillingTransaction"
+            "$ref": "HouseholdUser.json#/definitions/HouseholdUser"
           }
         },
         "totalCount": {
@@ -18,7 +18,7 @@
         "objectType": {
           "type": "string",
           "enum": [
-            "KalturaBillingTransactionListResponse"
+            "KalturaHouseholdUserListResponse"
           ]
         }
       },

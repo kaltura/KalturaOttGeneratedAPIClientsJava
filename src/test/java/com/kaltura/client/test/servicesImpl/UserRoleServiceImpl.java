@@ -34,10 +34,6 @@ public class UserRoleServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        if (userRoleListResponse.isSuccess()) {
-            // TODO: 3/27/2018 fix schema assertions
-        }
-
         return userRoleListResponse;
     }
 }

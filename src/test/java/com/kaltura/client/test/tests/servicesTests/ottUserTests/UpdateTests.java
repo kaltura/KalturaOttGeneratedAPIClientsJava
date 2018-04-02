@@ -62,7 +62,7 @@ public class UpdateTests extends BaseTest {
     }
 
     @Description("ottUser/action/update - update with administratorKs")
-    @Test
+    @Test(enabled = false) // TODO: 4/2/2018 bug BEO-4919 
     private void update_with_administratorKs() {
 
         // update

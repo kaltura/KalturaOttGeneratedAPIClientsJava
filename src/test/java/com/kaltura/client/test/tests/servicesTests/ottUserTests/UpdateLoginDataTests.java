@@ -6,7 +6,6 @@ import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import com.sun.org.glassfish.gmbal.Description;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
@@ -18,20 +17,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateLoginDataTests extends BaseTest {
 
-    private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
-
     private Response<Boolean> booleanResponse;
-
-    @BeforeClass
-    private void ottUser_updateLoginData_tests_setup() {
-        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
-        user = ottUserResponse.results;
-    }
+    private Response<OTTUser> ottUserResponse;
 
     @Description("ottUser/action/updateLoginData - updateLoginData")
     @Test
     private void updateLoginData() {
+        ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+        OTTUser user = ottUserResponse.results;
+
         Response<LoginResponse> loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password, null, null);
         String ks = loginResponse.results.getLoginSession().getKs();
 
@@ -54,6 +49,9 @@ public class UpdateLoginDataTests extends BaseTest {
     @Description("ottUser/action/updateLoginData - updateLoginData with administratorKs")
     @Test
     private void updateLoginData_with_administratorKs() {
+        ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+        OTTUser user = ottUserResponse.results;
+
         booleanResponse = OttUserServiceImpl.updateLoginData(administratorKs, user.getUsername(), password, password + 1);
 
         assertThat(booleanResponse.error).isNull();

@@ -27,7 +27,7 @@ public class ResendActivationTokenTests extends BaseTest {
     }
 
     @Description("ottUser/action/resendActivationToken - resendActivationToken")
-    @Test(enabled = true)
+    @Test(enabled = false)
     private void resendActivationToken() {
         Response<Boolean> booleanResponse = OttUserServiceImpl.resendActivationToken(PARTNER_ID, user.getUsername());
         assertThat(booleanResponse.error).isNull();

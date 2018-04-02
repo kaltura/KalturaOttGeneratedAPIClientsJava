@@ -3,6 +3,7 @@ package com.kaltura.client.test;
 import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.ErrorElement;
 import com.kaltura.client.utils.request.ExecutedRequest;
 import com.kaltura.client.utils.request.RequestElement;
@@ -10,6 +11,9 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 import okhttp3.Response;
 
 import java.io.IOException;
+
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @hide
@@ -22,8 +26,6 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
     private static ILogger logger = Logger.getLogger(TAG);
     protected static TestAPIOkRequestsExecutor self;
 
-    public static String fullResponseAsString = "";
-
     public static TestAPIOkRequestsExecutor getExecutor() {
         if (self == null) {
             self = new TestAPIOkRequestsExecutor();
@@ -33,7 +35,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
 
     @SuppressWarnings("rawtypes")
     @Override
-	protected ResponseElement onGotResponse(Response response, RequestElement action) {
+    protected ResponseElement onGotResponse(Response response, RequestElement action) {
 
         // print request headers
 //        logger.debug("request headers\n" + action.getHeaders().toString());
@@ -58,19 +60,26 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
             // print response headers
 //            logger.debug("response headers:\n" + response.headers());
 
-            fullResponseAsString = responseString;
-
             ResponseElement responseElement = new ExecutedRequest().requestId(requestId).response(responseString).code(response.code()).success(responseString != null);
             com.kaltura.client.utils.response.base.Response response1 = action.parseResponse(responseElement);
 
-            String s1 = "schemas/";
-            String s2 = response1.results.getClass().getSimpleName();
-            String s3 = ".json";
+            if (response1.isSuccess()) {
+                String s1 = "schemas/";
+                String s3 = ".json";
+                String s2 = response1.results.getClass().getSimpleName();
 
-            String schema = s1 + s2 + s3;
-            System.out.println("here!!! " + schema);
+                if (s2.equals("ListResponse")) {
+                    com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response1;
+                    String s = listResponse.results.getObjects().get(0).getClass().getSimpleName();
+                    s2 = s2 + "_" + s;
+                }
 
-//            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(schema));
+                String schema = s1 + s2 + s3;
+
+                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug("Start " + schema + " schema assertion!");
+                assertThat(responseString, matchesJsonSchemaInClasspath(schema));
+                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug("Finish " + schema + " schema assertion!");
+            }
 
             return responseElement;
         }

@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaOTTUser",
+  "$id": "OTTUser",
   "definitions": {
-    "KalturaOTTUser": {
+    "OTTUser": {
       "type": "object",
       "properties": {
         "householdId": {"type": "integer", "minimum": 0},
@@ -43,7 +43,7 @@
   "type": "object",
   "properties": {
     "result": {
-      "$ref": "#/definitions/KalturaOTTUser"
+      "$ref": "#/definitions/OTTUser"
     },
     "executionTime": {"type": "number"}
   },

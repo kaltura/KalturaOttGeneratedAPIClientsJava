@@ -1,8 +1,7 @@
 {
-  "$id": "KalturaHouseholdUser",
-  "type": "object",
-  "properties": {
-    "result": {
+  "$id": "HouseholdUser",
+  "definitions": {
+    "HouseholdUser": {
       "type": "object",
       "properties": {
         "householdId": {
@@ -28,16 +27,10 @@
       "required": [
         "householdId",
         "userId",
-        "isMaster",
         "status",
         "objectType"
       ]
-    },
-    "executionTime": {
-      "type": "number"
     }
   },
-  "required": [
-    "result"
-  ]
+  "ref": "#/definitions/HouseholdUser"
 }

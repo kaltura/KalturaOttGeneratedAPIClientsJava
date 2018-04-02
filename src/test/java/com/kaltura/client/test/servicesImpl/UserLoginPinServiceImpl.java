@@ -36,10 +36,6 @@ public class UserLoginPinServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        if (userLoginPinResponse.isSuccess()) {
-            // TODO: 3/22/2018 fix schema assertions
-        }
-
         return userLoginPinResponse;
     }
 
@@ -93,10 +89,6 @@ public class UserLoginPinServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(updateUserLoginPinBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (userLoginPinResponse.isSuccess()) {
-            // TODO: 3/22/2018 fix schema assertions
-        }
 
         return userLoginPinResponse;
     }

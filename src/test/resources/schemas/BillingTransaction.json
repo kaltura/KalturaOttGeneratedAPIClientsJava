@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaBillingTransaction",
+  "$id": "BillingTransaction",
   "definitions": {
-    "KalturaBillingTransaction": {
+    "BillingTransaction": {
       "type": "object",
       "properties": {
         "userId": {
@@ -31,7 +31,7 @@
           "minLength": 1
         },
         "price": {
-          "$ref": "KalturaPrice_Schema.json#/definitions/KalturaPrice"
+          "$ref": "Price.json#/definitions/Price"
         },
         "actionDate": {
           "type": "integer",
@@ -100,5 +100,5 @@
       ]
     }
   },
-  "$ref": "#/definitions/KalturaBillingTransaction"
+  "$ref": "#/definitions/BillingTransaction"
 }

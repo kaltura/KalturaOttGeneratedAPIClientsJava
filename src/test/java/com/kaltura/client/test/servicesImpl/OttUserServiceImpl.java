@@ -13,17 +13,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.tests.BaseTest.client;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class OttUserServiceImpl {
 
     private static final AtomicBoolean done = new AtomicBoolean(false);
-
-    private static final String LOGIN_RESPONSE_SCHEMA = "schemas/KalturaLoginResponse_Schema.json";
-    private static final String LOGIN_SESSION_SCHEMA = "schemas/KalturaLoginSession_Schema.json";
-    private static final String OTT_USER_SCHEMA = "schemas/KalturaOttUser_Schema.json";
 
     private static Response<LoginResponse> loginResponse;
     private static Response<OTTUser> ottUserResponse;
@@ -45,10 +39,6 @@ public class OttUserServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(activateOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (ottUserResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
-        }
 
         return ottUserResponse;
     }
@@ -82,10 +72,6 @@ public class OttUserServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(anonymousLoginOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (loginSessionResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_SESSION_SCHEMA));
-        }
 
         return loginSessionResponse;
     }
@@ -123,10 +109,6 @@ public class OttUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        if (ottUserResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
-        }
-
         return ottUserResponse;
     }
 
@@ -145,11 +127,6 @@ public class OttUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        if (stringValueResponse.isSuccess()) {
-            // TODO: 4/1/2018 add schema assertion
-//            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(stringValueResponse));
-        }
-
         return stringValueResponse;
     }
 
@@ -166,10 +143,6 @@ public class OttUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        if (ottUserListResponse.isSuccess()) {
-            // TODO: 3/22/2018 fix schema assertions
-        }
-
         return ottUserListResponse;
     }
 
@@ -184,10 +157,6 @@ public class OttUserServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(loginOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (loginResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
-        }
 
         return loginResponse;
     }
@@ -204,10 +173,6 @@ public class OttUserServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(loginWithPinOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (loginResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(LOGIN_RESPONSE_SCHEMA));
-        }
 
         return loginResponse;
     }
@@ -241,10 +206,6 @@ public class OttUserServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(registerOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (ottUserResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
-        }
 
         return ottUserResponse;
     }
@@ -292,10 +253,6 @@ public class OttUserServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        if (ottUserResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
-        }
-
         return ottUserResponse;
     }
 
@@ -312,10 +269,6 @@ public class OttUserServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(updateOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (ottUserResponse.isSuccess()) {
-            assertThat(TestAPIOkRequestsExecutor.fullResponseAsString, matchesJsonSchemaInClasspath(OTT_USER_SCHEMA));
-        }
 
         return ottUserResponse;
     }
@@ -334,10 +287,6 @@ public class OttUserServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(updateDynamicDataOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (ottUserDynamicDataResponse.isSuccess()) {
-            // TODO: 4/1/2018 add schema assertion 
-        }
 
         return ottUserDynamicDataResponse;
     }

@@ -49,4 +49,5 @@ public class Properties {
     // TODO: 3/19/2018 update readme file with project structure and list of services
     // TODO: 3/19/2018 find how to run specific tests according to api version
     // TODO: 3/22/2018 ask Elram where to open the apiException meesage not equal to description issue
+    // TODO: 4/2/2018 integrate allure reports and annotate known issues / bugs 
 }

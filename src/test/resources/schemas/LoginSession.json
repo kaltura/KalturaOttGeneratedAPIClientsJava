@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaLoginSession",
+  "$id": "LoginSession",
   "definitions": {
-    "KalturaLoginSession": {
+    "LoginSession": {
       "type": "object",
       "properties": {
         "ks": {"type": "string", "minLength": 10},
@@ -13,7 +13,7 @@
   "type": "object",
   "properties": {
     "result": {
-      "$ref": "#/definitions/KalturaLoginSession"
+      "$ref": "#/definitions/LoginSession"
     }
   },
   "executionTime": {"type": "number"},

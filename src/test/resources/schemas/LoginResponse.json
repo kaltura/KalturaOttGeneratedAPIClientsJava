@@ -1,13 +1,13 @@
 {
-  "$id": "KalturaLoginResponse",
+  "$id": "LoginResponse",
   "type": "object",
   "properties": {
     "result": {
       "type": "object",
       "properties": {
-        "user": {"$ref": "KalturaOttUser_Schema.json#/definitions/KalturaOTTUser"},
+        "user": {"$ref": "OttUser.json#/definitions/OTTUser"},
         "loginSession": {
-          "$ref": "KalturaLoginSession_Schema.json#/definitions/KalturaLoginSession"
+          "$ref": "LoginSession.json#/definitions/LoginSession"
         },
         "objectType": {"type": "string", "enum": ["KalturaLoginResponse"]}
       },

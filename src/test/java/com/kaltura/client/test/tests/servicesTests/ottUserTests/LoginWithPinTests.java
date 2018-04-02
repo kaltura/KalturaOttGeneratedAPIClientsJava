@@ -59,7 +59,7 @@ public class LoginWithPinTests extends BaseTest {
     }
 
     @Description("ottUser/action/loginWithPin - loginWithPin with expired pinCode - error 2004")
-    @Test
+    @Test(enabled = true)
     private void loginWithPin_with_expired_pinCode() {
         userLoginPinResponse = UserLoginPinServiceImpl.add(administratorKs, Integer.parseInt(user.getId()), SECRET);
 

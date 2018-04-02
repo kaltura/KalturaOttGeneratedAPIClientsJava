@@ -19,7 +19,7 @@ public class HouseholdDeviceServiceImpl {
     private static Response<HouseholdDevice> householdDeviceResponse;
 
 
-    //add
+    // add
     public static Response<HouseholdDevice> add(String ks, HouseholdDevice householdDevice) {
         AddHouseholdDeviceBuilder addHouseholdDeviceBuilder = HouseholdDeviceService.add(householdDevice)
                 .setCompletion((ApiCompletion<HouseholdDevice>) result -> {
@@ -31,10 +31,6 @@ public class HouseholdDeviceServiceImpl {
         TestAPIOkRequestsExecutor.getExecutor().queue(addHouseholdDeviceBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
-
-        if (householdDeviceResponse.isSuccess()) {
-            // TODO: 3/22/2018 fix schema assertions
-        }
 
         return householdDeviceResponse;
     }
