@@ -19,8 +19,9 @@ public class IngestPPVUtils extends BaseUtils {
         String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
         HashMap headermap = new HashMap<>();
         headermap.put("Content-Type", "text/xml;charset=UTF-8");
-        headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestBusinessModules\"");
-        String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
+        headermap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
+
+        String reqBody = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
                 "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_USER_NAME) + "</tem:username><tem:password>" + getProperty(INGEST_USER_PASSWORD) + "</tem:password><tem:xml>" +
@@ -29,11 +30,13 @@ public class IngestPPVUtils extends BaseUtils {
                 "                 ]]></tem:xml></tem:IngestBusinessModules>\n" +
                 "   </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
+
         Response resp = RestAssured.given()
                 .log().all()
                 .headers(headermap)
                 .body(reqBody)
                 .post(url);
+
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         System.out.println("ReportId = " + reportId);
 
@@ -41,6 +44,7 @@ public class IngestPPVUtils extends BaseUtils {
         resp = RestAssured.given()
                 .log().all()
                 .get(url);
+
         System.out.println(resp.asString());
         System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
 

@@ -29,6 +29,7 @@ public class ProductPriceServiceImpl {
                     done.set(true);
                 });
 
+        // TODO: 4/2/2018 ask Max for what  Optional<String> currency
         TestAPIOkRequestsExecutor.getExecutor().queue(productPriceBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
