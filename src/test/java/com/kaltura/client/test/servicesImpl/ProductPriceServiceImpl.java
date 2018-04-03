@@ -23,6 +23,10 @@ public class ProductPriceServiceImpl {
 
     // list
     public static Response<ListResponse<ProductPrice>> list(String ks, ProductPriceFilter filter, Optional<String> currency) {
+        client.setKs(ks);
+        if (currency.isPresent()) {
+            client.setCurrency(currency.get());
+        }
         ListProductPriceBuilder productPriceBuilder = ProductPriceService.list(filter)
                 .setCompletion((ApiCompletion<ListResponse<ProductPrice>>) result -> {
                     productPriceResponse = result;
