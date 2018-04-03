@@ -3,7 +3,9 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.types.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import static com.kaltura.client.test.Properties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
@@ -41,26 +43,31 @@ public class IngestPPVUtils extends BaseUtils {
         resp = RestAssured.given()
                 .log().all()
                 .get(url);
-        System.out.println(resp.asString());
-        System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
+        //System.out.println(resp.asString());
+        //System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
+        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "");
 
-        // TODO: complete it
         Ppv ppv = new Ppv();
-        //ppv.setDescriptions();
-        /*PriceDetails priceDetails = new PriceDetails();
-        Price price1 = new Price();
-        price1.setAmount(price);
-        price1.setCurrency(currency);
-        priceDetails.setPrice(price1);
-        ppv.setPrice(priceDetails);*/
-        /*UsageModule usageModule1 = new UsageModule();
-        usageModule1.setName(usageModule);
-        ppv.setUsageModule(usageModule1);*/
-        //ppv.setIsSubscriptionOnly(isSubscriptionOnly);
-        //ppv.setFirstDeviceLimitation(isFirstDeviceLimitation);
-        //ppv.setProductCode(productCode);
+        ppv.setId(id);
+        List<TranslationToken> descriptions = new ArrayList<>();
+        TranslationToken translationToken = new TranslationToken();
+        translationToken.setValue(description);
+        descriptions.add(translationToken);
+        ppv.setDescriptions(descriptions);
+        PriceDetails priceDetails = new PriceDetails();
+        Price priceObj = new Price();
+        priceObj.setAmount(price);
+        priceObj.setCurrency(currency);
+        priceDetails.setPrice(priceObj);
+        ppv.setPrice(priceDetails);
+        UsageModule usageModuleObj = new UsageModule();
+        usageModuleObj.setName(usageModule);
+        ppv.setUsageModule(usageModuleObj);
+        ppv.setIsSubscriptionOnly(isSubscriptionOnly);
+        ppv.setFirstDeviceLimitation(isFirstDeviceLimitation);
+        ppv.setProductCode(productCode);
 
-        return null;
+        return ppv;
     }
 
     private static String buildIngestPpvXML(String action, String ppvCode, boolean isActive, String description, String discount,
