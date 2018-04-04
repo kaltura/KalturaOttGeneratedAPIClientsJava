@@ -6,10 +6,36 @@ import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import static com.kaltura.client.test.Properties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestPPVUtils extends BaseUtils {
+
+
+    // way to ingest PPV using predefined default values for any of input parameters
+    public static Ppv ingestPPVWithDefaultValues(Optional<String> action, Optional<Boolean> isActive, Optional<String> description,
+                                                 Optional<String> discount, Optional<Double> price, Optional<String> currency,
+                                                 Optional<String> usageModule, Optional<Boolean> isSubscriptionOnly,
+                                                 Optional<Boolean> isFirstDeviceLimitation, Optional<String> productCode,
+                                                 Optional<String> firstFileType, Optional<String> secondFileType) {
+        String actionValue = action.isPresent() ? action.get() : "insert";
+        boolean isActiveValue = isActive.isPresent() ? isActive.get() : true;
+        String descriptionValue = description.isPresent() ? description.get() : "My ingest PPV";
+        String discountValue = discount.isPresent() ? discount.get() : getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME);
+        double priceValue = price.isPresent() ? price.get() : Double.valueOf(getProperty(AMOUNT_4_99_EUR));
+        String currencyValue = currency.isPresent() ? currency.get() : getProperty(CURRENCY_EUR);
+        String usageModuleValue = usageModule.isPresent() ? usageModule.get() : getProperty(ONE_DAY_USAGE_MODULE);
+        boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;
+        boolean isFirstDeviceLimitationValue = isFirstDeviceLimitation.isPresent() ? isFirstDeviceLimitation.get() : false;
+        String productCodeValue = productCode.isPresent() ? productCode.get() : getProperty(DEFAULT_PRODUCT_CODE);
+        String firstFileTypeValue = firstFileType.isPresent() ? firstFileType.get() : getProperty(WEB_FILE_TYPE);
+        String secondFileTypeValue = secondFileType.isPresent() ? secondFileType.get() : getProperty(MOBILE_FILE_TYPE);
+
+        return ingestPPV(actionValue, isActiveValue, descriptionValue, discountValue, priceValue, currencyValue,
+                usageModuleValue, isSubscriptionOnlyValue, isFirstDeviceLimitationValue, productCodeValue,
+                firstFileTypeValue, secondFileTypeValue);
+    }
 
     // ingest new PPV
     public static Ppv ingestPPV(String action, boolean isActive, String description, String discount,
