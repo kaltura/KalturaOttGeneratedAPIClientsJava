@@ -34,6 +34,11 @@ public class Properties {
 
     public static final String GLOBAL_USER_PASSWORD = "password";
 
+    // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts
+    public static final String MOVIE_MEDIA_TYPE = "Movie";
+    public static final String EPISODE_MEDIA_TYPE = "Episode";
+    public static final String LINEAR_MEDIA_TYPE = "Linear";
+
     // file types
     public static final String WEB_FILE_TYPE = "web_file_type";
     public static final String MOBILE_FILE_TYPE = "mobile_file_type";
@@ -43,6 +48,8 @@ public class Properties {
     public static final String INGEST_USER_PASSWORD = "ingest_user_password";
 
     public static final String INGEST_ACTION_INSERT = "insert";
+
+    public static final String INGEST_VOD_DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
 
     // price codes
     public static final String AMOUNT_4_99_EUR = "amount_4_99_eur"; // 4.99

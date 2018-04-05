@@ -7,6 +7,7 @@ import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
 import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.IngestPPVUtils;
+import com.kaltura.client.test.utils.IngestVODUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -30,6 +31,11 @@ public class ListTests extends BaseTest {
         entitlementPpvsFilter.setProductTypeEqual(TransactionType.PPV);
         entitlementPpvsFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         entitlementPpvsFilter.setIsExpiredEqual(false);
+
+        MediaAsset mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty());
+        System.out.println("INGESTED VOD: " + mediaAsset.getId());
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")

@@ -63,7 +63,7 @@ public class IngestPPVUtils extends BaseUtils {
                 .body(reqBody)
                 .post(url);
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
-        System.out.println("ReportId = " + reportId);
+        //System.out.println("ReportId = " + reportId);
 
         url = INGEST_REPORT_URL + "/" + PARTNER_ID + "/" + reportId;
         resp = RestAssured.given()
