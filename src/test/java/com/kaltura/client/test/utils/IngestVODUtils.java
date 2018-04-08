@@ -1,14 +1,24 @@
 package com.kaltura.client.test.utils;
 
+import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
+import com.kaltura.client.types.APIException;
+import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import com.kaltura.client.utils.response.base.Response;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.Properties.INGEST_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.getProperty;
+import static com.kaltura.client.test.tests.BaseTest.anonymousKs;
 import static io.restassured.path.xml.XmlPath.from;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Awaitility.fieldIn;
+import static org.hamcrest.Matchers.equalTo;
 
 public class IngestVODUtils extends BaseUtils {
 
@@ -37,12 +47,12 @@ public class IngestVODUtils extends BaseUtils {
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
                 "      <tem:IngestTvinciData><tem:request><userName>" + getProperty(INGEST_USER_NAME) + "</userName><passWord>" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data>" +
-                "         <![CDATA[" + buildIngestVodXml(coguid, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
+                "         <![CDATA[" + buildIngestVodXml(coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
                                     catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue) +
                 "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
                 "   </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
-        Response resp = RestAssured.given()
+        io.restassured.response.Response resp = RestAssured.given()
                 .log().all()
                 .headers(headermap)
                 .body(reqBody)
@@ -56,10 +66,22 @@ public class IngestVODUtils extends BaseUtils {
         mediaAsset.setDescription(descriptionValue);
         //mediaAsset.setStartDate(startDate);
         //mediaAsset.setEndDate(endDate);
+
+        await().atMost(30, TimeUnit.SECONDS).until(isDataReturned(id));
+        Response<Asset> mediaAssetDetails = AssetServiceImpl.get(anonymousKs, id, AssetReferenceType.MEDIA);
+        mediaAsset.setMediaFiles(mediaAssetDetails.results.getMediaFiles());
         return mediaAsset;
     }
 
-    private static String buildIngestVodXml(Optional<String> coguid, boolean isActive, String name, String thumbUrl,
+    private static Callable<Boolean> isDataReturned(String mediaId) {
+        return new Callable<Boolean>() {
+            public Boolean call() throws Exception {
+                return AssetServiceImpl.get(anonymousKs, mediaId, AssetReferenceType.MEDIA).error == null;
+            }
+        };
+    }
+
+    private static String buildIngestVodXml(String coguid, boolean isActive, String name, String thumbUrl,
                                             String description, String catalogStartDate, String catalogEndDate,
                                             String startDate, String endDate, String mediaType, String ppvWebName,
                                             String ppvMobileName) {

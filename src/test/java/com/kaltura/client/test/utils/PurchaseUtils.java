@@ -25,7 +25,7 @@ public class PurchaseUtils {
         if (fileId.isPresent()) {
             internalFileId = fileId.get();
         } else {
-            Response<Asset> mediaAsset = AssetServiceImpl.getAsset(ks, String.valueOf(mediaId.get()), AssetReferenceType.MEDIA);
+            Response<Asset> mediaAsset = AssetServiceImpl.get(ks, String.valueOf(mediaId.get()), AssetReferenceType.MEDIA);
             internalFileId = mediaAsset.results.getMediaFiles().get(0).getId();
         }
 

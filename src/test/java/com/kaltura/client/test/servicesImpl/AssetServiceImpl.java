@@ -18,7 +18,7 @@ public class AssetServiceImpl {
     private static Response<Asset> assetResponse;
 
     // list
-    public static Response<Asset> getAsset(String ks, String id, AssetReferenceType assetReferenceType) {
+    public static Response<Asset> get(String ks, String id, AssetReferenceType assetReferenceType) {
         client.setKs(ks);
         GetAssetBuilder assetBuilder = AssetService.get(id, assetReferenceType)
                 .setCompletion((ApiCompletion<Asset>) result -> {
