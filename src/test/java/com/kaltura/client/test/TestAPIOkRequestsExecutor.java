@@ -71,7 +71,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 if (s2.equals("ListResponse")) {
                     com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response1;
                     if (listResponse.results.getTotalCount() == 0) {
-                        return null;
+                        return responseElement;
                     }
 
                     String s = listResponse.results.getObjects().get(0).getClass().getSimpleName();

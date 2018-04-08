@@ -1,21 +1,18 @@
 package com.kaltura.client.test.tests.servicesTests.productPriceTests;
 
 import com.kaltura.client.enums.*;
-import com.kaltura.client.services.EntitlementService;
-import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
 import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.IngestPPVUtils;
-import com.kaltura.client.test.utils.IngestVODUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import com.sun.org.glassfish.gmbal.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import java.util.Optional;
-import static com.kaltura.client.test.Properties.*;
+
 import static com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl.list;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +55,7 @@ public class ListTests extends BaseTest {
     }
 
     @Description("productPrice/action/list - ppv test")
-    @Test(enabled = false) // as failed
+    @Test(enabled = true) // as failed
     public void ppvTest() {
         /*Ppv ppv = IngestPPVUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
                 Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(ONE_DAY_USAGE_MODULE), false, false,
