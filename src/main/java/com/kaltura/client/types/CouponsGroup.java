@@ -59,6 +59,7 @@ public class CouponsGroup extends ObjectBase {
 		String maxUsesNumber();
 		String maxUsesNumberOnRenewableSub();
 		String couponGroupType();
+		String maxHouseholdUses();
 	}
 
 	/**
@@ -94,6 +95,10 @@ public class CouponsGroup extends ObjectBase {
 	 * Type of the coupon group
 	 */
 	private CouponGroupType couponGroupType;
+	/**
+	 * Maximum number of uses per household for each coupon in the group
+	 */
+	private Integer maxHouseholdUses;
 
 	// id:
 	public String getId(){
@@ -187,6 +192,18 @@ public class CouponsGroup extends ObjectBase {
 		setToken("couponGroupType", multirequestToken);
 	}
 
+	// maxHouseholdUses:
+	public Integer getMaxHouseholdUses(){
+		return this.maxHouseholdUses;
+	}
+	public void setMaxHouseholdUses(Integer maxHouseholdUses){
+		this.maxHouseholdUses = maxHouseholdUses;
+	}
+
+	public void maxHouseholdUses(String multirequestToken){
+		setToken("maxHouseholdUses", multirequestToken);
+	}
+
 
 	public CouponsGroup() {
 		super();
@@ -206,6 +223,7 @@ public class CouponsGroup extends ObjectBase {
 		maxUsesNumber = GsonParser.parseInt(jsonObject.get("maxUsesNumber"));
 		maxUsesNumberOnRenewableSub = GsonParser.parseInt(jsonObject.get("maxUsesNumberOnRenewableSub"));
 		couponGroupType = CouponGroupType.get(GsonParser.parseString(jsonObject.get("couponGroupType")));
+		maxHouseholdUses = GsonParser.parseInt(jsonObject.get("maxHouseholdUses"));
 
 	}
 
@@ -219,6 +237,7 @@ public class CouponsGroup extends ObjectBase {
 		kparams.add("maxUsesNumber", this.maxUsesNumber);
 		kparams.add("maxUsesNumberOnRenewableSub", this.maxUsesNumberOnRenewableSub);
 		kparams.add("couponGroupType", this.couponGroupType);
+		kparams.add("maxHouseholdUses", this.maxHouseholdUses);
 		return kparams;
 	}
 
