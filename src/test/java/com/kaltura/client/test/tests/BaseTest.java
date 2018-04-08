@@ -3,16 +3,17 @@ package com.kaltura.client.test.tests;
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
-import com.kaltura.client.types.Household;
-import com.kaltura.client.types.HouseholdUser;
-import com.kaltura.client.types.LoginResponse;
+import com.kaltura.client.test.utils.IngestVODUtils;
+import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.anonymousLogin;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHouseHold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
@@ -23,14 +24,17 @@ public class BaseTest {
 
     public static Client client;
     private Response<LoginResponse> loginResponse;
+    private Response<LoginSession> loginSession;
 
-    public static String administratorKs, operatorKs, managerKs;
+    public static String administratorKs, operatorKs, managerKs, anonymousKs;
 
     // shared household
     public static Household sharedHousehold;
     public static HouseholdUser sharedMasterUser, sharedUser;
     public static String sharedMasterUserKs, sharedUserKs;
 
+    // shared VOD
+    public static MediaAsset mediaAsset;
 
     @BeforeSuite
     public void setup() {
@@ -56,8 +60,16 @@ public class BaseTest {
 //        loginResponse = login(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
 //        managerKs = loginResponse.results.getLoginSession().getKs();
 
+        loginSession = anonymousLogin(PARTNER_ID, null);
+        anonymousKs = loginSession.results.getKs();
+
         // Set project shared HH and users
-//        initSharedHousehold();
+        initSharedHousehold();
+
+        mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty());
+        System.out.println("INGESTED VOD: " + mediaAsset.getId());
 
         Logger.getLogger(BaseTest.class).debug("Finish Setup!");
     }

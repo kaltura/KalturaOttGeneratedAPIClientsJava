@@ -32,10 +32,6 @@ public class ListTests extends BaseTest {
         entitlementPpvsFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         entitlementPpvsFilter.setIsExpiredEqual(false);
 
-        MediaAsset mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty());
-        System.out.println("INGESTED VOD: " + mediaAsset.getId());
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")
@@ -62,7 +58,7 @@ public class ListTests extends BaseTest {
     }
 
     @Description("productPrice/action/list - ppv test")
-    @Test(enabled = false) // as requires ingest VOD
+    @Test(enabled = false) // as failed
     public void ppvTest() {
         /*Ppv ppv = IngestPPVUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
                 Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(ONE_DAY_USAGE_MODULE), false, false,
@@ -71,20 +67,23 @@ public class ListTests extends BaseTest {
         assertThat(entitlementListBeforePurchase.results.getTotalCount() == 0);
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
-        // TODO: needed ingest VOD ppFilter.setFileIdIn(String.valueOf(shared_vod_web_file_id));
+        int webMediaFileId = mediaAsset.getMediaFiles().get(0).getId();
+        int mobileMediaFileId = mediaAsset.getMediaFiles().get(1).getId();
+        ppFilter.setFileIdIn(String.valueOf(webMediaFileId));
         ppFilter.setIsLowest(false);
         Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(sharedMasterUserKs, ppFilter, Optional.empty());
         assertThat(productPriceListBeforePurchase.results.getTotalCount() == 1);
         assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getPurchaseStatus() == PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductType() == TransactionType.PPV);
-        // TODO: needed ingest VOD assertThat(((PpvPrice)productPriceListBeforePurchase.results.getObjects().get(0)).getFileId() == shared_vod_web_file_id);
+        assertThat(((PpvPrice)productPriceListBeforePurchase.results.getObjects().get(0)).getFileId() == webMediaFileId);
 
-        // TODO: needed ingest VOD PurchaseUtils.purchasePpv(sharedMasterUserKs, Optional.empty(), Optional.of(shared_vod_web_file_id), Optional.empty());
+        PurchaseUtils.purchasePpv(sharedMasterUserKs, Optional.empty(), Optional.of(webMediaFileId), Optional.empty());
 
         Response<ListResponse<Entitlement>> entitlementListAfterPurchase = EntitlementServiceImpl.list(sharedMasterUserKs, entitlementPpvsFilter, Optional.empty());
+        System.out.println(entitlementListAfterPurchase.results.getTotalCount());
         assertThat(entitlementListAfterPurchase.results.getTotalCount() == 1);
-        // TODO: needed ingest VOD assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaFileId() == shared_vod_web_file_id);
-        // TODO: needed ingest VOD assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaId() == media_id_2);
+        assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaFileId() == webMediaFileId);
+        assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaId() == mediaAsset.getId().intValue());
         assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getEndDate() >
                 entitlementListAfterPurchase.results.getObjects().get(0).getCurrentDate());
         assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getPaymentMethod().equals(PaymentMethodType.OFFLINE) ||
@@ -93,12 +92,12 @@ public class ListTests extends BaseTest {
         Response<ListResponse<ProductPrice>> productPriceListAfterPurchase = ProductPriceServiceImpl.list(sharedMasterUserKs, ppFilter, Optional.empty());
         assertThat(productPriceListAfterPurchase.results.getTotalCount() == 1);
         assertThat(productPriceListAfterPurchase.results.getObjects().get(0).getPurchaseStatus() == PurchaseStatus.PPV_PURCHASED);
-        // TODO: needed ingest VOD assertThat(((PpvPrice) productPriceListAfterPurchase.results.getObjects().get(0)).getFileId() == shared_vod_web_file_id);
+        assertThat(((PpvPrice) productPriceListAfterPurchase.results.getObjects().get(0)).getFileId() == webMediaFileId);
 
-        // TODO: needed ingest VOD ppFilter.setFileIdIn(String.valueOf(shared_vod_mobile_file_id));
+        ppFilter.setFileIdIn(String.valueOf(mobileMediaFileId));
         Response<ListResponse<ProductPrice>> productPriceListAfterPurchaseForAnotherFileFromTheSameMedia = ProductPriceServiceImpl.list(sharedMasterUserKs, ppFilter, Optional.empty());
         assertThat(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getTotalCount() == 1);
         assertThat(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0).getPurchaseStatus() == PurchaseStatus.PPV_PURCHASED);
-        // TODO: needed ingest VOD assertThat(((PpvPrice) productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0)).getFileId() == shared_vod_mobile_file_id);
+        assertThat(((PpvPrice) productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0)).getFileId() == mobileMediaFileId);
     }
 }
