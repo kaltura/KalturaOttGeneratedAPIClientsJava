@@ -19,12 +19,13 @@ public class TransactionServiceImpl {
 
     // list
     public static Response<Transaction> purchase(String ks, Purchase purchase) {
-        client.setKs(ks);
         PurchaseTransactionBuilder purchaseBuilder = TransactionService.purchase(purchase)
                 .setCompletion((ApiCompletion<Transaction>) result -> {
                     purchaseResponse = result;
                     done.set(true);
                 });
+
+        purchaseBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(purchaseBuilder.build(client));
         await().untilTrue(done);
