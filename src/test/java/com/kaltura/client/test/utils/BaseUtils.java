@@ -6,13 +6,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,6 +25,21 @@ public class BaseUtils {
 
     private static final String API_SCHEMA_URL = "https://api-preprod.ott.kaltura.com/" + API_URL_VERSION + "/clientlibs/KalturaClient.xml";
     private static List<APIException> exceptions;
+
+    // to get e.g. yesterday date in specific date format need call the method so: getOffsetDateInFormat(-1, pattern);
+    public static String getOffsetDateInFormat(int offsetDay, String pattern) {
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        Calendar cal = Calendar.getInstance();
+        if (offsetDay != 0) {
+            cal.add(Calendar.DATE, offsetDay);
+        }
+        return dateFormat.format(cal.getTime());
+    }
+
+    // generate current data String in specified format
+    public static String getCurrentDataInFormat(String pattern) {
+        return getOffsetDateInFormat(0, pattern);
+    }
 
     // generate string containing prefix and random long suffix
     public static String getRandomValue(String prefix, long maxValue) {
