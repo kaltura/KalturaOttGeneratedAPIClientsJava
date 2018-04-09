@@ -10,10 +10,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "KalturaPpvEntitlement_Schema.json#/definitions/KalturaPpvEntitlement"
+                "$ref": "PpvEntitlement.json#/definitions/KalturaPpvEntitlement"
               },
               {
-                "$ref": "KalturaSubscriptionEntitlement_Schema.json#/definitions/KalturaSubscriptionEntitlement"
+                "$ref": "SubscriptionEntitlement.json#/definitions/KalturaSubscriptionEntitlement"
               }
             ]
           }

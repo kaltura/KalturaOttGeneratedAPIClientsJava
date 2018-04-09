@@ -5,7 +5,7 @@
       "type": "object",
       "properties": {
         "price": {
-          "$ref": "KalturaPrice_Schema.json#/definitions/KalturaPrice"
+          "$ref": "Price.json#/definitions/KalturaPrice"
         },
         "purchaseStatus": {
           "type": "string",

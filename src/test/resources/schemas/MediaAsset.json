@@ -152,22 +152,22 @@
           "type": "object",
           "properties": {
             "Free": {
-              "$ref": "KalturaMultilingualStringValueArray_Schema.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
             },
             "Genre": {
-              "$ref": "KalturaMultilingualStringValueArray_Schema.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
             },
             "Parental Rating": {
-              "$ref": "KalturaMultilingualStringValueArray_Schema.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
             },
             "Director": {
-              "$ref": "KalturaMultilingualStringValueArray_Schema.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
             },
             "Country": {
-              "$ref": "KalturaMultilingualStringValueArray_Schema.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
             },
             "Series name": {
-              "$ref": "KalturaMultilingualStringValueArray_Schema.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
             }
           }
         },
