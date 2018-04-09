@@ -3,6 +3,7 @@ package com.kaltura.client.test.tests.servicesTests.bookmarkTests;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
+import com.kaltura.client.enums.PositionOwner;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
 import com.kaltura.client.test.servicesImpl.BookmarkServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
@@ -17,15 +18,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AddTests extends BaseTest {
 
-    // TODO: 09/04/2018  - once implemented use asset from ingest and not hardcoded
     private long assetId;
     private AssetType type;
     private int fileId;
     private BookmarkActionType actionType;
+    private int position = 0;
 
     @BeforeClass
     private void add_tests_before_class() {
         assetId = mediaAsset.getId();
+
         type = AssetType.get("MEDIA");
         AssetReferenceType assetReferenceType = AssetReferenceType.get("MEDIA");
         Response<Asset> assetResponse = AssetServiceImpl.get(sharedMasterUserKs,String.valueOf(assetId),assetReferenceType);
@@ -33,14 +35,14 @@ public class AddTests extends BaseTest {
         actionType = BookmarkActionType.get("FIRST_PLAY");
     }
 
-    @Description("bookmark/action/add - add")
+    @Description("bookmark/action/add - basic functionality")
     @Test
     private void add() {
 
         Bookmark bookmark = new Bookmark();
         bookmark.setType(type);
         bookmark.setId(String.valueOf(assetId));
-        bookmark.setPosition(0);
+        bookmark.setPosition(position);
 
         BookmarkPlayerData playerData = new BookmarkPlayerData();
         playerData.setAction(actionType);
@@ -61,11 +63,28 @@ public class AddTests extends BaseTest {
         bookmarkFilter.setOrderBy("POSITION_ASC");
         bookmarkFilter.setAssetTypeEqual(type);
 
-        Response<ListResponse<Bookmark>> listResponse = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
-        
-        String test123 = listResponse.results.getObjects().get(0).getId();
-        assertThat (test123.equals((String.valueOf(fileId))));
+        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        Bookmark bookmark1 = bookmarkListResponse.results.getObjects().get(0);
 
+        // Assertions
+        // ***********************************************
+
+        // Match content of asset id
+        assertThat( bookmark1.getId()).isEqualTo(String.valueOf(assetId));
+
+        // Match content of asset position
+        assertThat(bookmark1.getPosition()).isEqualTo(this.position);
+
+        // verify finishedWatching = false
+        assertThat(bookmark1.getFinishedWatching()).isFalse();
+
+        // Verify positionOwner = user
+        assertThat(bookmark1.getPositionOwner()).isEqualTo(PositionOwner.USER);
+
+        // Verify asset type = media
+        assertThat(bookmark1.getType()).isEqualTo(AssetType.MEDIA);
+
+        // Verify total count = 1
+        assertThat(bookmarkListResponse.results.getTotalCount()).isEqualTo(1);
     }
-
 }
