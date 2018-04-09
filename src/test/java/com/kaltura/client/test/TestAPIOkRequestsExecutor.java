@@ -70,17 +70,18 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
 
                 if (s2.equals("ListResponse")) {
                     com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response1;
+                    if (listResponse.results.getTotalCount() == 0) {
+                        return responseElement;
+                    }
+
                     String s = listResponse.results.getObjects().get(0).getClass().getSimpleName();
                     s2 = s2 + "_" + s;
                 }
 
                 String schema = s1 + s2 + s3;
-
-                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug("Start " + schema + " schema assertion!");
+                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(schema);
                 assertThat(responseString, matchesJsonSchemaInClasspath(schema));
-                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug("Finish " + schema + " schema assertion!");
             }
-
             return responseElement;
         }
     }

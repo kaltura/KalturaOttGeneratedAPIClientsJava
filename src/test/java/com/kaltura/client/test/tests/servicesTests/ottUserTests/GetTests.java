@@ -39,7 +39,6 @@ public class GetTests extends BaseTest {
     @Description("ottUser/action/get - get")
     @Test
     private void get() {
-        // TODO: 3/27/2018 fix get test
         ottUserResponse = OttUserServiceImpl.get(loginResponse.results.getLoginSession().getKs(), Optional.empty());
         assertThat(loginResponse.error).isNull();
         assertThat(ottUserResponse.results).isEqualToIgnoringGivenFields(user, "userState", "userType");

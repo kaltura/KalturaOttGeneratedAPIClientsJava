@@ -66,9 +66,8 @@ public class BaseTest {
         // Set project shared HH and users
         initSharedHousehold();
 
-        mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty());
+        mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         System.out.println("INGESTED VOD: " + mediaAsset.getId());
 
         Logger.getLogger(BaseTest.class).debug("Finish Setup!");

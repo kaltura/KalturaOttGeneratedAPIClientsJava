@@ -19,12 +19,13 @@ public class AssetServiceImpl {
 
     // list
     public static Response<Asset> get(String ks, String id, AssetReferenceType assetReferenceType) {
-        client.setKs(ks);
         GetAssetBuilder assetBuilder = AssetService.get(id, assetReferenceType)
                 .setCompletion((ApiCompletion<Asset>) result -> {
                     assetResponse = result;
                     done.set(true);
                 });
+
+        assetBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(assetBuilder.build(client));
         await().untilTrue(done);
