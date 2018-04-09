@@ -4,6 +4,7 @@ import com.kaltura.client.enums.UserState;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.DBUtils;
+import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import com.sun.org.glassfish.gmbal.Description;
