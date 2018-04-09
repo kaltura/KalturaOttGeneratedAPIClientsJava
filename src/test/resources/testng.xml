@@ -4,7 +4,13 @@
     <test name="Services Tests">
         <packages>
             <package name="com.kaltura.client.test.tests.servicesTests.*"/>
-            <package name="com.kaltura.client.test.tests.servicesTests.*"/>
         </packages>
+        <!--<classes>-->
+            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.LoginTests" >-->
+                <!--<methods>-->
+                    <!--<include name="login" />-->
+                <!--</methods>-->
+            <!--</class>-->
+        <!--</classes>-->
     </test>
 </suite>

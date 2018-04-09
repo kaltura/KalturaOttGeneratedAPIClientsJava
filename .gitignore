@@ -5,3 +5,4 @@ build
 target/
 src/test/java/resources/test.properties
 allure-results/
+.allure/

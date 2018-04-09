@@ -230,9 +230,16 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
+                    <properties>
+                        <property>
+                            <name>usedefaultlisteners</name>
+                            <value>false</value>
+                        </property>
+                    </properties>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>src\test\resources\testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <reportsDirectory>${project.basedir}/target</reportsDirectory>
                     <testFailureIgnore>true</testFailureIgnore>
                     <argLine>
                          -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -305,18 +312,17 @@
                 </executions>
             </plugin>
 
-        </plugins>
-    </build>
-
-    <reporting>
-        <excludeDefaults>true</excludeDefaults>
-        <plugins>
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.9</version>
+                <configuration>
+                    <reportDirectory>${basedir}/target/allure-report</reportDirectory>
+                </configuration>
+                <!-- to generate report after build run command: mvn clean test allure:serve or mvn clean test allure:report -->
             </plugin>
+
         </plugins>
-    </reporting>
+    </build>
 
 </project>
