@@ -1,0 +1,62 @@
+{
+  "$id": "ListResponse",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "objects": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "PpvEntitlement.json#/definitions/KalturaPpvEntitlement"
+              },
+              {
+                "$ref": "SubscriptionEntitlement.json#/definitions/KalturaSubscriptionEntitlement"
+              },
+              {
+                "$ref": "BillingTransaction.json#/definitions/BillingTransaction"
+              },
+              {
+                "$ref": "HouseholdUser.json#/definitions/HouseholdUser"
+              },
+              {
+                "$ref": "OTTUser.json#/definitions/OTTUser"
+              },
+              {
+                "$ref": "SubscriptionPrice.json#/definitions/KalturaSubscriptionPrice"
+              },
+              {
+                "$ref": "PpvPrice.json#/definitions/KalturaPpvPrice"
+              }
+            ]
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "objectType": {
+          "type": "string",
+          "enum": [
+            "KalturaEntitlementListResponse",
+            "KalturaBillingTransactionListResponse",
+            "KalturaHouseholdUserListResponse",
+            "KalturaOTTUserListResponse",
+            "KalturaProductPriceListResponse"
+          ]
+        }
+      },
+      "required": [
+        "objects",
+        "totalCount",
+        "objectType"
+      ]
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": ["result"]
+}

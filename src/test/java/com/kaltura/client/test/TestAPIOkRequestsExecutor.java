@@ -68,21 +68,6 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 String s3 = ".json";
                 String s2 = response1.results.getClass().getSimpleName();
 
-                if (s2.equals("ListResponse")) {
-                    com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response1;
-                    if (listResponse.results.getTotalCount() == 0) {
-                        return responseElement;
-                    }
-
-                    String s = listResponse.results.getObjects().get(0).getClass().getSimpleName();
-                    String parentClassName = listResponse.results.getObjects().get(0).getClass().getSuperclass().getSimpleName();
-                    if (!("ObjectBase".equals(parentClassName) || parentClassName == null)) {
-                        s2 = s2 + "_" + parentClassName;
-                    } else {
-                        s2 = s2 + "_" + s;
-                    }
-                }
-
                 String schema = s1 + s2 + s3;
                 Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(s2 + " schema");
                 assertThat(responseString, matchesJsonSchemaInClasspath(schema));
