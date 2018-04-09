@@ -19,18 +19,18 @@ public class IngestPPVUtils extends BaseUtils {
                                                  Optional<String> usageModule, Optional<Boolean> isSubscriptionOnly,
                                                  Optional<Boolean> isFirstDeviceLimitation, Optional<String> productCode,
                                                  Optional<String> firstFileType, Optional<String> secondFileType) {
-        String actionValue = action.isPresent() ? action.get() : "insert";
+        String actionValue = action.orElse("insert");
         boolean isActiveValue = isActive.isPresent() ? isActive.get() : true;
-        String descriptionValue = description.isPresent() ? description.get() : "My ingest PPV";
-        String discountValue = discount.isPresent() ? discount.get() : getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME);
-        double priceValue = price.isPresent() ? price.get() : Double.valueOf(getProperty(AMOUNT_4_99_EUR));
-        String currencyValue = currency.isPresent() ? currency.get() : getProperty(CURRENCY_EUR);
-        String usageModuleValue = usageModule.isPresent() ? usageModule.get() : getProperty(ONE_DAY_USAGE_MODULE);
+        String descriptionValue = description.orElse("My ingest PPV");
+        String discountValue = discount.orElseGet(() -> getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME));
+        double priceValue = price.orElseGet(() -> Double.valueOf(getProperty(AMOUNT_4_99_EUR)));
+        String currencyValue = currency.orElseGet(() -> getProperty(CURRENCY_EUR));
+        String usageModuleValue = usageModule.orElseGet(() -> getProperty(ONE_DAY_USAGE_MODULE));
         boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;
         boolean isFirstDeviceLimitationValue = isFirstDeviceLimitation.isPresent() ? isFirstDeviceLimitation.get() : false;
-        String productCodeValue = productCode.isPresent() ? productCode.get() : getProperty(DEFAULT_PRODUCT_CODE);
-        String firstFileTypeValue = firstFileType.isPresent() ? firstFileType.get() : getProperty(WEB_FILE_TYPE);
-        String secondFileTypeValue = secondFileType.isPresent() ? secondFileType.get() : getProperty(MOBILE_FILE_TYPE);
+        String productCodeValue = productCode.orElseGet(() -> getProperty(DEFAULT_PRODUCT_CODE));
+        String firstFileTypeValue = firstFileType.orElseGet(() -> getProperty(WEB_FILE_TYPE));
+        String secondFileTypeValue = secondFileType.orElseGet(() -> getProperty(MOBILE_FILE_TYPE));
 
         return ingestPPV(actionValue, isActiveValue, descriptionValue, discountValue, priceValue, currencyValue,
                 usageModuleValue, isSubscriptionOnlyValue, isFirstDeviceLimitationValue, productCodeValue,

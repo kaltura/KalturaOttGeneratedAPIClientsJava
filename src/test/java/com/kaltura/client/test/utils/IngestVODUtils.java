@@ -2,23 +2,20 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
-import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
+import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
+
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-import com.kaltura.client.utils.response.base.Response;
+
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.Properties.INGEST_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.anonymousKs;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.awaitility.Awaitility.await;
-import static org.awaitility.Awaitility.fieldIn;
-import static org.hamcrest.Matchers.equalTo;
 
 public class IngestVODUtils extends BaseUtils {
 
@@ -27,17 +24,17 @@ public class IngestVODUtils extends BaseUtils {
                                        Optional<String> thumbUrl, Optional<String> description, Optional<String> catalogStartDate,
                                        Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate,
                                        Optional<String> mediaType, Optional<String> ppvWebName, Optional<String> ppvMobileName) {
-        String coguidValue = coguid.isPresent() ? coguid.get() : getCurrentDataInFormat("yyMMddHHmmssSS");
-        String nameValue = name.isPresent() ? name.get() : MOVIE_MEDIA_TYPE + "_" + coguidValue;
-        String thumbUrlValue = thumbUrl.isPresent() ? thumbUrl.get() : INGEST_VOD_DEFAULT_THUMB;
-        String descriptionValue = description.isPresent() ? description.get() : "description of " + coguidValue;
-        String catalogStartDateValue = catalogStartDate.isPresent() ? catalogStartDate.get() : getOffsetDateInFormat( -1, "dd/MM/yyyy hh:mm:ss");
-        String catalogEndDateValue = catalogEndDate.isPresent() ? catalogEndDate.get() : "14/10/2099 17:00:00";
-        String startDateValue = startDate.isPresent() ? startDate.get() : getOffsetDateInFormat( -1, "dd/MM/yyyy hh:mm:ss");
-        String endDateValue = endDate.isPresent() ? endDate.get() : "14/10/2099 17:00:00";
-        String mediaTypeValue = mediaType.isPresent() ? mediaType.get() : MOVIE_MEDIA_TYPE;
-        String ppvWebNameValue = ppvWebName.isPresent() ? ppvWebName.get() : "Shai_Regression_PPV"; // TODO: update on any generated value
-        String ppvMobileNameValue = ppvMobileName.isPresent() ? ppvMobileName.get() : "Shai_Regression_PPV"; // TODO: update on any generated value
+        String coguidValue = coguid.orElseGet(() -> getCurrentDataInFormat("yyMMddHHmmssSS"));
+        String nameValue = name.orElseGet(() -> MOVIE_MEDIA_TYPE + "_" + coguidValue);
+        String thumbUrlValue = thumbUrl.orElse(INGEST_VOD_DEFAULT_THUMB);
+        String descriptionValue = description.orElseGet(() -> "description of " + coguidValue);
+        String catalogStartDateValue = catalogStartDate.orElseGet(() -> getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss"));
+        String catalogEndDateValue = catalogEndDate.orElse("14/10/2099 17:00:00");
+        String startDateValue = startDate.orElseGet(() -> getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss"));
+        String endDateValue = endDate.orElse("14/10/2099 17:00:00");
+        String mediaTypeValue = mediaType.orElse(MOVIE_MEDIA_TYPE);
+        String ppvWebNameValue = ppvWebName.orElse("Shai_Regression_PPV"); // TODO: update on any generated value
+        String ppvMobileNameValue = ppvMobileName.orElse("Shai_Regression_PPV"); // TODO: update on any generated value
         // TODO: check if ingest url is the same for all ingest actions
         String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
         HashMap headermap = new HashMap<>();
@@ -74,11 +71,7 @@ public class IngestVODUtils extends BaseUtils {
     }
 
     private static Callable<Boolean> isDataReturned(String mediaId) {
-        return new Callable<Boolean>() {
-            public Boolean call() throws Exception {
-                return AssetServiceImpl.get(anonymousKs, mediaId, AssetReferenceType.MEDIA).error == null;
-            }
-        };
+        return () -> AssetServiceImpl.get(anonymousKs, mediaId, AssetReferenceType.MEDIA).error == null;
     }
 
     private static String buildIngestVodXml(String coguid, boolean isActive, String name, String thumbUrl,
