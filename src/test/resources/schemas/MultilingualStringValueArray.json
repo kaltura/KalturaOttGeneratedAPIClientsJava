@@ -1,7 +1,7 @@
 {
   "$id": "KalturaMediaAsset",
   "definitions": {
-    "KalturaMultilingualStringValueArray": {
+    "MultilingualStringValueArray": {
       "type": "object",
       "properties": {
         "objects": {
@@ -28,5 +28,5 @@
       }
     }
   },
-  "$ref": "#/definitions/KalturaMultilingualStringValueArray"
+  "$ref": "#/definitions/MultilingualStringValueArray"
 }
