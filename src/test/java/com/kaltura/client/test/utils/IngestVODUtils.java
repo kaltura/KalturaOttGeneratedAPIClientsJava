@@ -2,7 +2,6 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
-import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.RestAssured;
@@ -17,8 +16,6 @@ import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.anonymousKs;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.awaitility.Awaitility.await;
-import static org.awaitility.Awaitility.fieldIn;
-import static org.hamcrest.Matchers.equalTo;
 
 public class IngestVODUtils extends BaseUtils {
 
@@ -74,11 +71,7 @@ public class IngestVODUtils extends BaseUtils {
     }
 
     private static Callable<Boolean> isDataReturned(String mediaId) {
-        return new Callable<Boolean>() {
-            public Boolean call() throws Exception {
-                return AssetServiceImpl.get(anonymousKs, mediaId, AssetReferenceType.MEDIA).error == null;
-            }
-        };
+        return () -> AssetServiceImpl.get(anonymousKs, mediaId, AssetReferenceType.MEDIA).error == null;
     }
 
     private static String buildIngestVodXml(String coguid, boolean isActive, String name, String thumbUrl,
