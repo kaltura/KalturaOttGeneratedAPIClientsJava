@@ -28,7 +28,7 @@ public class ListTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_list_tests_setup() {
-        household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, 1);
+        household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, 1, false);
     }
 
     @Description("ottUser/action/list - list from master ks")

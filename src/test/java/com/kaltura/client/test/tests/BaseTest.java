@@ -75,7 +75,7 @@ public class BaseTest {
     }
 
     private void initSharedHousehold() {
-        sharedHousehold = createHouseHold(2, 2);
+        sharedHousehold = createHouseHold(2, 2, false);
         List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
         for (HouseholdUser user : sharedHouseholdUsers) {
             if (user.getIsMaster() != null && user.getIsMaster()) {

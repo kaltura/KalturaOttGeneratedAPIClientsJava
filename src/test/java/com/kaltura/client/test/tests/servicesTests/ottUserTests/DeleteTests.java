@@ -32,7 +32,7 @@ public class DeleteTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_delete_tests_setup() {
-        household = HouseholdUtils.createHouseHold(2, 0);
+        household = HouseholdUtils.createHouseHold(2, 0, false);
     }
 
     @Description("ottUser/action/delete - delete")
