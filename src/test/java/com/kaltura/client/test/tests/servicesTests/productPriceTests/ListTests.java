@@ -7,7 +7,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
-import com.sun.org.glassfish.gmbal.Description;
+import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -84,9 +84,6 @@ public class ListTests extends BaseTest {
         assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaId()).isEqualTo(mediaAsset.getId().intValue());
         assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getEndDate())
                 .isGreaterThan(entitlementListAfterPurchase.results.getObjects().get(0).getCurrentDate());
-
-//        MatcherAssert.assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getPaymentMethod(),
-//                anyOf(is(PaymentMethodType.OFFLINE), is(PaymentMethodType.UNKNOWN)));
 
         assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getPaymentMethod()).isIn(PaymentMethodType.OFFLINE, PaymentMethodType.UNKNOWN);
 

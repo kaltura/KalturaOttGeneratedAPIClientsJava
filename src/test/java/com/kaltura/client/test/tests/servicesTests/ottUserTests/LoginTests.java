@@ -5,7 +5,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
-import com.sun.org.glassfish.gmbal.Description;
+import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

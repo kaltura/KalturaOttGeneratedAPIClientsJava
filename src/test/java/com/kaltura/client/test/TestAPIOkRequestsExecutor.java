@@ -79,7 +79,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 }
 
                 String schema = s1 + s2 + s3;
-                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(schema);
+                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(s2 + " schema");
                 assertThat(responseString, matchesJsonSchemaInClasspath(schema));
             }
             return responseElement;
