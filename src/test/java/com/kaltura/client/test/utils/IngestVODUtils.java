@@ -64,7 +64,7 @@ public class IngestVODUtils extends BaseUtils {
         //mediaAsset.setStartDate(startDate);
         //mediaAsset.setEndDate(endDate);
 
-        await().atMost(30, TimeUnit.SECONDS).until(isDataReturned(id));
+        await().pollInterval(3, TimeUnit.SECONDS).atMost(30, TimeUnit.SECONDS).until(isDataReturned(id));
         Response<Asset> mediaAssetDetails = AssetServiceImpl.get(anonymousKs, id, AssetReferenceType.MEDIA);
         mediaAsset.setMediaFiles(mediaAssetDetails.results.getMediaFiles());
         return mediaAsset;
