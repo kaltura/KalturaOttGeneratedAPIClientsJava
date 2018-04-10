@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.CouponGenerationOptions;
 import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.StringValueArray;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -83,6 +84,20 @@ public class CouponsGroupService {
 	 */
     public static GetCouponsGroupBuilder get(long id)  {
 		return new GetCouponsGroupBuilder(id);
+	}
+	
+	public static class ListCouponsGroupBuilder extends ListResponseRequestBuilder<CouponsGroup, CouponsGroup.Tokenizer, ListCouponsGroupBuilder> {
+		
+		public ListCouponsGroupBuilder() {
+			super(CouponsGroup.class, "couponsgroup", "list");
+		}
+	}
+
+	/**
+	 * Returns information about partner coupons groups
+	 */
+    public static ListCouponsGroupBuilder list()  {
+		return new ListCouponsGroupBuilder();
 	}
 	
 	public static class UpdateCouponsGroupBuilder extends RequestBuilder<CouponsGroup, CouponsGroup.Tokenizer, UpdateCouponsGroupBuilder> {
