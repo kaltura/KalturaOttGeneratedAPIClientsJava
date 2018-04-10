@@ -84,4 +84,27 @@ public class CouponsGroupService {
     public static GetCouponsGroupBuilder get(long id)  {
 		return new GetCouponsGroupBuilder(id);
 	}
+	
+	public static class UpdateCouponsGroupBuilder extends RequestBuilder<CouponsGroup, CouponsGroup.Tokenizer, UpdateCouponsGroupBuilder> {
+		
+		public UpdateCouponsGroupBuilder(int id, CouponsGroup couponsGroup) {
+			super(CouponsGroup.class, "couponsgroup", "update");
+			params.add("id", id);
+			params.add("couponsGroup", couponsGroup);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update coupons group
+	 * 
+	 * @param id Coupons group identifier
+	 * @param couponsGroup Coupons group
+	 */
+    public static UpdateCouponsGroupBuilder update(int id, CouponsGroup couponsGroup)  {
+		return new UpdateCouponsGroupBuilder(id, couponsGroup);
+	}
 }
