@@ -11,6 +11,9 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -68,24 +71,14 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 String s3 = ".json";
                 String s2 = response1.results.getClass().getSimpleName();
 
-                if (s2.equals("ListResponse")) {
-                    com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response1;
-                    if (listResponse.results.getTotalCount() == 0) {
-                        return responseElement;
-                    }
-
-                    String s = listResponse.results.getObjects().get(0).getClass().getSimpleName();
-                    String parentClassName = listResponse.results.getObjects().get(0).getClass().getSuperclass().getSimpleName();
-                    if (!("ObjectBase".equals(parentClassName) || parentClassName == null)) {
-                        s2 = s2 + "_" + parentClassName;
-                    } else {
-                        s2 = s2 + "_" + s;
-                    }
-                }
-
                 String schema = s1 + s2 + s3;
                 Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(s2 + " schema");
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                Date date = new Date();
+                System.out.println("BEFORE VALIDATION: " + formatter.format(date));
                 assertThat(responseString, matchesJsonSchemaInClasspath(schema));
+                date = new Date();
+                System.out.println("AFTER VALIDATION: " + formatter.format(date));
             }
             return responseElement;
         }
