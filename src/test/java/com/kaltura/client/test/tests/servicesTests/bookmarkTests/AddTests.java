@@ -63,7 +63,7 @@ public class AddTests extends BaseTest {
         bookmarkFilter.setOrderBy("POSITION_ASC");
         bookmarkFilter.setAssetTypeEqual(type);
 
-        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(sharedMasterUserKs, bookmarkFilter);
         Bookmark bookmark1 = bookmarkListResponse.results.getObjects().get(0);
 
         // Assertions

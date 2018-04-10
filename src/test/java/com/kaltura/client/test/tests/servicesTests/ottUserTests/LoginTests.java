@@ -29,8 +29,8 @@ public class LoginTests extends BaseTest {
         user = ottUserResponse.results;
     }
 
-    @Description("ottUser/action/login - login")
-    @Test
+//    @Issue("BEO-4933")
+    @Test(description = "ottUser/action/login - login")
     private void login() {
         loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password, null, null);
 

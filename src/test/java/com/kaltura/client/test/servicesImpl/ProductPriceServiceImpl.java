@@ -23,14 +23,12 @@ public class ProductPriceServiceImpl {
 
     // list
     public static Response<ListResponse<ProductPrice>> list(String ks, ProductPriceFilter filter, Optional<String> currency) {
-        // TODO: 4/2/2018 ask Max why change client.ks insted of roductPriceBuilder.setKs(ks);
         ListProductPriceBuilder productPriceBuilder = ProductPriceService.list(filter)
                 .setCompletion((ApiCompletion<ListResponse<ProductPrice>>) result -> {
                     productPriceResponse = result;
                     done.set(true);
                 });
 
-        // TODO: 4/2/2018 ask Max for what Optional<String> currency
         productPriceBuilder.setKs(ks);
         currency.ifPresent(productPriceBuilder::setCurrency);
 

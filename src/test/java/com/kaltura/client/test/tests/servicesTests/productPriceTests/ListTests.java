@@ -31,7 +31,7 @@ public class ListTests extends BaseTest {
 
     @Description("productPrice/action/list - subscription test by Operator without currency")
     @Test(enabled = false) // as used in feature tests
-    public void listSubscriptionTest() {
+    public void list_subscription() {
         ProductPriceFilter filter = new ProductPriceFilter();
         // TODO: fix! filter.setSubscriptionIdIn(five_min_renewable_subscription_id);
         Response<ListResponse<ProductPrice>> productPriceList = list(operatorKs, filter, Optional.empty());
@@ -42,7 +42,7 @@ public class ListTests extends BaseTest {
 
     @Description("productPrice/action/list - without required fields (subscriptionIdIn, collectionIdIn and fileIdIn are empty)")
     @Test()
-    public void listWithoutRequiredFieldsTest() {
+    public void list_without_required_fields() {
         ProductPriceFilter filter = new ProductPriceFilter();
         Response<ListResponse<ProductPrice>> productPriceResponse = list(operatorKs, filter, Optional.empty());
         // TODO: should we create enums for error codes and their messages? A: Yes if library doesn't contain them
@@ -54,7 +54,7 @@ public class ListTests extends BaseTest {
 
     @Description("productPrice/action/list - ppv test")
     @Test(enabled = false) // as failed
-    public void ppvTest() {
+    public void ppv() {
         /*Ppv ppv = IngestPPVUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
                 Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(ONE_DAY_USAGE_MODULE), false, false,
                 getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
