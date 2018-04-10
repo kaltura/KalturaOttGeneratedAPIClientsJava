@@ -23,46 +23,57 @@ public class AddTests extends BaseTest {
     private int fileId;
     private BookmarkActionType actionType;
     private int position = 0;
+    // instantiate Bookmark object
+    private Bookmark bookmark = new Bookmark();
+    // instantiate BookmarkPlayerData object
+    private BookmarkPlayerData playerData = new BookmarkPlayerData();
+    // instantiate BookmarkFilter object
+    private BookmarkFilter bookmarkFilter = new BookmarkFilter();
 
     @BeforeClass
     private void add_tests_before_class() {
+        // Get asset id from ingest
         assetId = mediaAsset.getId();
-
         type = AssetType.get("MEDIA");
         AssetReferenceType assetReferenceType = AssetReferenceType.get("MEDIA");
         Response<Asset> assetResponse = AssetServiceImpl.get(sharedMasterUserKs,String.valueOf(assetId),assetReferenceType);
         fileId = assetResponse.results.getMediaFiles().get(0).getId();
         actionType = BookmarkActionType.get("FIRST_PLAY");
-    }
 
-    @Description("bookmark/action/add - basic functionality")
-    @Test
-    private void add() {
-
-        Bookmark bookmark = new Bookmark();
+        // Initialize bookmark object parameters
         bookmark.setType(type);
         bookmark.setId(String.valueOf(assetId));
         bookmark.setPosition(position);
 
-        BookmarkPlayerData playerData = new BookmarkPlayerData();
+        // Initialize playerData object parameters
         playerData.setAction(actionType);
         playerData.setAverageBitrate(0);
         playerData.setTotalBitrate(0);
         playerData.setCurrentBitrate(0);
-
         playerData.setFileId((long) fileId);
-
         bookmark.setPlayerData(playerData);
 
+        // Initialize asset id
+        bookmarkFilter.setAssetIdIn(String.valueOf(assetId));
+        // Initialize orderBy
+        bookmarkFilter.setOrderBy("POSITION_ASC");
+        // Initialize asset type
+        bookmarkFilter.setAssetTypeEqual(type);
+    }
+
+    @Description("bookmark/action/add - first play")
+    @Test
+    private void firstPlayback() {
+
+        // Invoke bookmark/action/add request
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark);
+        // Verify response return true
         assertThat(booleanResponse.results.booleanValue()).isTrue();
+        // Verify no error returned
         assertThat(booleanResponse.error).isNull();
 
-        BookmarkFilter bookmarkFilter = new BookmarkFilter();
-        bookmarkFilter.setAssetIdIn(String.valueOf(assetId));
-        bookmarkFilter.setOrderBy("POSITION_ASC");
-        bookmarkFilter.setAssetTypeEqual(type);
 
+        // Invoke bookmark/action/list to verify insertion of bookmark position
         Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
         Bookmark bookmark1 = bookmarkListResponse.results.getObjects().get(0);
 
@@ -86,5 +97,59 @@ public class AddTests extends BaseTest {
 
         // Verify total count = 1
         assertThat(bookmarkListResponse.results.getTotalCount()).isEqualTo(1);
+
+    }
+
+    @Description("bookmark/action/add - stop")
+    @Test
+    private void stopPlayback() {
+        // Set action type to "STOP"
+        actionType = BookmarkActionType.get("STOP");
+        playerData.setAction(actionType);
+        position = 30;
+        bookmark.setPosition(position);
+
+        // Invoke bookmark/action/add request
+        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark);
+        // Verify response return true
+        assertThat(booleanResponse.results.booleanValue()).isTrue();
+        // Verify no error returned
+        assertThat(booleanResponse.error).isNull();
+
+        // Invoke bookmark/action/list to verify insertion of bookmark position
+        Response<ListResponse<Bookmark>> bookmarkListResponse2 = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        Bookmark bookmark2 = bookmarkListResponse2.results.getObjects().get(0);
+
+        // Match content of asset position
+        assertThat(bookmark2.getPosition()).isEqualTo(this.position);
+    }
+
+
+    @Description("bookmark/action/add - finish watching")
+    @Test
+    private void FinishWatching() {
+        // Set action type to "FINISH"
+        actionType = BookmarkActionType.get("FINISH");
+        playerData.setAction(actionType);
+        position = 60;
+        bookmark.setPosition(position);
+
+        // Invoke bookmark/action/add request
+        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark);
+        // Verify response return true
+        assertThat(booleanResponse.results.booleanValue()).isTrue();
+        // Verify no error returned
+        assertThat(booleanResponse.error).isNull();
+
+        // Invoke bookmark/action/list to verify insertion of bookmark position
+        Response<ListResponse<Bookmark>> bookmarkListResponse3 = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        Bookmark bookmark3 = bookmarkListResponse3.results.getObjects().get(0);
+
+        // Assertions
+        // ***********************************************
+
+        // Verify finishedWatching = true
+        assertThat(bookmark3.getFinishedWatching()).isTrue();
+
     }
 }
