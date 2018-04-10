@@ -11,6 +11,9 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -70,7 +73,12 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
 
                 String schema = s1 + s2 + s3;
                 Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(s2 + " schema");
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                Date date = new Date();
+                System.out.println("BEFORE VALIDATION: " + formatter.format(date));
                 assertThat(responseString, matchesJsonSchemaInClasspath(schema));
+                date = new Date();
+                System.out.println("AFTER VALIDATION: " + formatter.format(date));
             }
             return responseElement;
         }
