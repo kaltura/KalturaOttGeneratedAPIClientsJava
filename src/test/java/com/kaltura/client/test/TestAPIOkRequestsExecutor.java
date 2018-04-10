@@ -75,11 +75,16 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                     }
 
                     String s = listResponse.results.getObjects().get(0).getClass().getSimpleName();
-                    s2 = s2 + "_" + s;
+                    String parentClassName = listResponse.results.getObjects().get(0).getClass().getSuperclass().getSimpleName();
+                    if (!("ObjectBase".equals(parentClassName) || parentClassName == null)) {
+                        s2 = s2 + "_" + parentClassName;
+                    } else {
+                        s2 = s2 + "_" + s;
+                    }
                 }
 
                 String schema = s1 + s2 + s3;
-                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(schema);
+                Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(s2 + " schema");
                 assertThat(responseString, matchesJsonSchemaInClasspath(schema));
             }
             return responseElement;

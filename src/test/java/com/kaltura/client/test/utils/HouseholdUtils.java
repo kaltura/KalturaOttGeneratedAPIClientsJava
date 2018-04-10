@@ -15,12 +15,13 @@ import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.tests.BaseTest.administratorKs;
+import static com.kaltura.client.test.tests.BaseTest.client;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class HouseholdUtils extends BaseUtils {
 
     // create household
-    public static Household createHouseHold(int numberOfUsersInHoushold, int numberOfDevicesInHousehold) {
+    public static Household createHouseHold(int numberOfUsersInHoushold, int numberOfDevicesInHousehold, boolean isPreparePG) {
 
         // create and register
         Response<OTTUser> masterUserResponse = register(PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
@@ -58,6 +59,10 @@ public class HouseholdUtils extends BaseUtils {
             householdDevice.setBrandId(r.nextInt(30 - 1) + 1);
             householdDevice.setName(String.valueOf(uniqueString) + "device");
             HouseholdDeviceServiceImpl.add(masterUserKS, householdDevice);
+        }
+
+        if (isPreparePG) {
+            
         }
 
         return household;

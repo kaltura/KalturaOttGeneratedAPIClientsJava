@@ -8,7 +8,7 @@ import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.UserRole;
 import com.kaltura.client.types.UserRoleFilter;
 import com.kaltura.client.utils.response.base.Response;
-import com.sun.org.glassfish.gmbal.Description;
+import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

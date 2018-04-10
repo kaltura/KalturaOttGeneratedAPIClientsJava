@@ -64,6 +64,15 @@ public class Properties {
     // discount modules
     public static final String FIFTY_PERCENTS_ILS_DISCOUNT_NAME = "fifty_percents_ils_discount_name";
 
+    // PG adapter data
+    public static final String PG_DEFAULT_ADAPTER_URL = "http://172.31.6.89:90/PGAdapter/Service.svc";
+    public static final String PG_DEFAULT_RENEW_URL = PG_DEFAULT_ADAPTER_URL + "?StateCode=0";
+    public static final String PG_DEFAULT_SHARED_SECRET = "123456";
+    public static final int PG_DEFAULT_PENDING_INTERVAL = 0;
+    public static final int PG_DEFAULT_PENDING_RETRIES = 0;
+    public static final int PG_DEFAULT_RENEW_INTERVAL_MINUTES = 15;
+    public static final int PG_DEFAULT_RENEW_START_MINUTES =-5;
+    public static final String PG_DEFAULT_PG_SETTINGS = "{}";
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null)

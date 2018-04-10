@@ -4,7 +4,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
-import com.sun.org.glassfish.gmbal.Description;
+import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -28,7 +28,7 @@ public class ListTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_list_tests_setup() {
-        household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, 1);
+        household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, 1, false);
     }
 
     @Description("ottUser/action/list - list from master ks")

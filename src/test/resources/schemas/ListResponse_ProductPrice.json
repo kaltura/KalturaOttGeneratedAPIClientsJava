@@ -9,8 +9,8 @@
           "type": "array",
           "items": {
             "anyOf": [
-              { "$ref": "KalturaSubscriptionPrice_Schema.json#/definitions/KalturaSubscriptionPrice" },
-              { "$ref": "KalturaPpvPrice_Schema.json#/definitions/KalturaPpvPrice" }
+              { "$ref": "SubscriptionPrice.json#/definitions/KalturaSubscriptionPrice" },
+              { "$ref": "PpvPrice.json#/definitions/KalturaPpvPrice" }
             ]
           }},
         "totalCount": {
