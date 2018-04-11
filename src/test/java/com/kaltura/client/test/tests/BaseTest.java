@@ -101,9 +101,4 @@ public class BaseTest {
         client.setKs(ks);
         return client;
     }
-
-//    @AfterTest
-//    public void base_test_after_test() {
-//
-//    }
 }

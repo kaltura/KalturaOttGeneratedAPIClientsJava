@@ -49,7 +49,7 @@ public class ListTests extends BaseTest {
     public void list_without_required_fields() {
         ProductPriceFilter filter = new ProductPriceFilter();
         Response<ListResponse<ProductPrice>> productPriceResponse = list(client, filter);
-        // TODO: should we create enums for error codes and their messages? A: Yes if library doesn't contain them
+
         assertThat(productPriceResponse.results).isNull();
         assertThat(productPriceResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500056).getCode());
         assertThat(productPriceResponse.error.getMessage()).isEqualToIgnoringCase(
@@ -62,8 +62,8 @@ public class ListTests extends BaseTest {
         /*Ppv ppv = IngestPPVUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
                 Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(ONE_DAY_USAGE_MODULE), false, false,
                 getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
+
         client.setKs(sharedMasterUserKs);
-//        client.setCurrency("?");
 
         Response<ListResponse<Entitlement>> entitlementListBeforePurchase = EntitlementServiceImpl.list(client, entitlementPpvsFilter, null);
         assertThat(entitlementListBeforePurchase.results.getTotalCount()).isEqualTo(0);
