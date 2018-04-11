@@ -1,16 +1,16 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Issue;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import java.util.Optional;
 
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateTests extends BaseTest {
 
+    private Client client;
     private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
     private String originalUserEmail;
@@ -29,7 +30,8 @@ public class UpdateTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_update_tests_setup() {
-        ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+        client = getClient(null);
+        ottUserResponse = register(client, PARTNER_ID, generateOttUser(), password);
         user = ottUserResponse.results;
         originalUserEmail = user.getEmail();
     }
@@ -38,20 +40,20 @@ public class UpdateTests extends BaseTest {
     @Test
     private void update() {
         // get self ks
-        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password, null, null);
-        String ks = loginResponse.results.getLoginSession().getKs();
+        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(client, PARTNER_ID, user.getUsername(), password, null, null);
+        client.setKs(loginResponse.results.getLoginSession().getKs());
 
         // update
         String newUserInfo = "abc";
 
         user.setFirstName(newUserInfo);
         user.setLastName(newUserInfo);
-        ottUserResponse = OttUserServiceImpl.update(ks, user, null);
+        ottUserResponse = OttUserServiceImpl.update(client, user, null);
 
         assertThat(ottUserResponse.error).isNull();
 
         // get user after update
-        ottUserResponse = OttUserServiceImpl.get(ks, Optional.empty());
+        ottUserResponse = OttUserServiceImpl.get(client);
         user = ottUserResponse.results;
 
         // assert
@@ -62,7 +64,8 @@ public class UpdateTests extends BaseTest {
     }
 
     @Description("ottUser/action/update - update with administratorKs")
-    @Test(enabled = false) // TODO: 4/2/2018 bug BEO-4919 
+    @Issue("BEO-4919")
+    @Test(enabled = true)
     private void update_with_administratorKs() {
 
         // update
@@ -70,13 +73,16 @@ public class UpdateTests extends BaseTest {
 
         user.setFirstName(newUserInfo);
         user.setLastName(newUserInfo);
-//        user.setAffiliateCode(null); 
-        ottUserResponse = OttUserServiceImpl.update(administratorKs, user, user.getId());
+//        user.setAffiliateCode(null);
+
+        client.setKs(administratorKs);
+        ottUserResponse = OttUserServiceImpl.update(client, user, user.getId());
 
         assertThat(ottUserResponse.error).isNull();
 
         // get user after update
-        ottUserResponse = OttUserServiceImpl.get(administratorKs, Optional.of(Integer.valueOf(user.getId())));
+        client.setUserId(Integer.valueOf(user.getId()));
+        ottUserResponse = OttUserServiceImpl.get(client);
         user = ottUserResponse.results;
 
         // assert
@@ -88,6 +94,6 @@ public class UpdateTests extends BaseTest {
 
     @AfterClass
     private void ottUser_update_tests_tearDown() {
-        OttUserServiceImpl.delete(administratorKs, Optional.of(Integer.valueOf(user.getId())));
+        OttUserServiceImpl.delete(client);
     }
 }

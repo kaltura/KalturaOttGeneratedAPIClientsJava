@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.bookmarkTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AddTests extends BaseTest {
 
+    private Client client;
     private long assetId;
     private AssetType type;
     private int fileId;
@@ -26,11 +28,12 @@ public class AddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
+        client = getClient(sharedMasterUserKs);
         assetId = mediaAsset.getId();
 
         type = AssetType.get("MEDIA");
         AssetReferenceType assetReferenceType = AssetReferenceType.get("MEDIA");
-        Response<Asset> assetResponse = AssetServiceImpl.get(sharedMasterUserKs,String.valueOf(assetId),assetReferenceType);
+        Response<Asset> assetResponse = AssetServiceImpl.get(client,String.valueOf(assetId),assetReferenceType);
         fileId = assetResponse.results.getMediaFiles().get(0).getId();
         actionType = BookmarkActionType.get("FIRST_PLAY");
     }
@@ -54,7 +57,7 @@ public class AddTests extends BaseTest {
 
         bookmark.setPlayerData(playerData);
 
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark);
+        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
 
@@ -63,7 +66,7 @@ public class AddTests extends BaseTest {
         bookmarkFilter.setOrderBy("POSITION_ASC");
         bookmarkFilter.setAssetTypeEqual(type);
 
-        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client, bookmarkFilter);
         Bookmark bookmark1 = bookmarkListResponse.results.getObjects().get(0);
 
         // Assertions
