@@ -42,6 +42,23 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class CouponsGroupService {
 	
+	public static class AddCouponsGroupBuilder extends RequestBuilder<CouponsGroup, CouponsGroup.Tokenizer, AddCouponsGroupBuilder> {
+		
+		public AddCouponsGroupBuilder(CouponsGroup couponsGroup) {
+			super(CouponsGroup.class, "couponsgroup", "add");
+			params.add("couponsGroup", couponsGroup);
+		}
+	}
+
+	/**
+	 * Add coupons group
+	 * 
+	 * @param couponsGroup Coupons group
+	 */
+    public static AddCouponsGroupBuilder add(CouponsGroup couponsGroup)  {
+		return new AddCouponsGroupBuilder(couponsGroup);
+	}
+	
 	public static class DeleteCouponsGroupBuilder extends RequestBuilder<Boolean, String, DeleteCouponsGroupBuilder> {
 		
 		public DeleteCouponsGroupBuilder(long id) {
