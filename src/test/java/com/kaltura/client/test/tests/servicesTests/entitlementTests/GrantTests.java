@@ -7,6 +7,11 @@ public class GrantTests extends BaseTest {
 
     @Test(description = "entitlement/action/grant - grant")
     private void grant() {
-//        EntitlementServiceImpl.grant()
+
+        // new hh
+        // predefined subscription
+        // grant
+//        Client client = getClient(operatorKs);
+//        EntitlementServiceImpl.grant(client, )
     }
 }
