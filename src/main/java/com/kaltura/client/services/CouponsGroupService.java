@@ -102,7 +102,7 @@ public class CouponsGroupService {
 	
 	public static class UpdateCouponsGroupBuilder extends RequestBuilder<CouponsGroup, CouponsGroup.Tokenizer, UpdateCouponsGroupBuilder> {
 		
-		public UpdateCouponsGroupBuilder(int id, CouponsGroup couponsGroup) {
+		public UpdateCouponsGroupBuilder(long id, CouponsGroup couponsGroup) {
 			super(CouponsGroup.class, "couponsgroup", "update");
 			params.add("id", id);
 			params.add("couponsGroup", couponsGroup);
@@ -119,7 +119,7 @@ public class CouponsGroupService {
 	 * @param id Coupons group identifier
 	 * @param couponsGroup Coupons group
 	 */
-    public static UpdateCouponsGroupBuilder update(int id, CouponsGroup couponsGroup)  {
+    public static UpdateCouponsGroupBuilder update(long id, CouponsGroup couponsGroup)  {
 		return new UpdateCouponsGroupBuilder(id, couponsGroup);
 	}
 }
