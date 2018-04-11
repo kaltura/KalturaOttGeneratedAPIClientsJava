@@ -29,6 +29,9 @@
               },
               {
                 "$ref": "PpvPrice.json#/definitions/KalturaPpvPrice"
+              },
+              {
+                "$ref": "Bookmark.json#/definitions/Bookmark"
               }
             ]
           }
@@ -44,7 +47,8 @@
             "KalturaBillingTransactionListResponse",
             "KalturaHouseholdUserListResponse",
             "KalturaOTTUserListResponse",
-            "KalturaProductPriceListResponse"
+            "KalturaProductPriceListResponse",
+            "KalturaBookmarkListResponse"
           ]
         }
       },
