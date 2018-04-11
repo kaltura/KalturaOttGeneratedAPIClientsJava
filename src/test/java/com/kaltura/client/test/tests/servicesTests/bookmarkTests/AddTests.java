@@ -1,9 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.bookmarkTests;
 
-import com.kaltura.client.enums.AssetReferenceType;
-import com.kaltura.client.enums.AssetType;
-import com.kaltura.client.enums.BookmarkActionType;
-import com.kaltura.client.enums.PositionOwner;
+import com.kaltura.client.enums.*;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
 import com.kaltura.client.test.servicesImpl.BookmarkServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
@@ -32,13 +29,13 @@ public class AddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        // Get asset id from ingest
+        // Get VOD asset id from ingest
         assetId = mediaAsset.getId();
-        type = AssetType.get("MEDIA");
-        AssetReferenceType assetReferenceType = AssetReferenceType.get("MEDIA");
+        type = AssetType.get(AssetType.MEDIA.getValue());
+        AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
         Response<Asset> assetResponse = AssetServiceImpl.get(sharedMasterUserKs,String.valueOf(assetId),assetReferenceType);
         fileId = assetResponse.results.getMediaFiles().get(0).getId();
-        actionType = BookmarkActionType.get("FIRST_PLAY");
+        actionType = BookmarkActionType.get(BookmarkActionType.FIRST_PLAY.getValue());
 
         // Initialize bookmark object parameters
         bookmark.setType(type);
@@ -56,7 +53,7 @@ public class AddTests extends BaseTest {
         // Initialize asset id
         bookmarkFilter.setAssetIdIn(String.valueOf(assetId));
         // Initialize orderBy
-        bookmarkFilter.setOrderBy("POSITION_ASC");
+        bookmarkFilter.setOrderBy(BookmarkOrderBy.POSITION_DESC.getValue());
         // Initialize asset type
         bookmarkFilter.setAssetTypeEqual(type);
     }
@@ -104,7 +101,7 @@ public class AddTests extends BaseTest {
     @Test
     private void stopPlayback() {
         // Set action type to "STOP"
-        actionType = BookmarkActionType.get("STOP");
+        actionType = BookmarkActionType.get(BookmarkActionType.STOP.getValue());
         playerData.setAction(actionType);
         position = 30;
         bookmark.setPosition(position);
@@ -124,14 +121,10 @@ public class AddTests extends BaseTest {
         assertThat(bookmark2.getPosition()).isEqualTo(this.position);
     }
 
-
-    @Description("bookmark/action/add - finish watching")
+    @Description("bookmark/action/add - 95% watching == finish watching")
     @Test
-    private void FinishWatching() {
-        // Set action type to "FINISH"
-        actionType = BookmarkActionType.get("FINISH");
-        playerData.setAction(actionType);
-        position = 60;
+    private void watchingNinetyFive() {
+        position = 999;
         bookmark.setPosition(position);
 
         // Invoke bookmark/action/add request
@@ -152,4 +145,35 @@ public class AddTests extends BaseTest {
         assertThat(bookmark3.getFinishedWatching()).isTrue();
 
     }
+
+    @Description("bookmark/action/add - finish watching")
+    @Test
+    private void FinishWatching() {
+        // Set action type to "FINISH"
+        actionType = BookmarkActionType.get(BookmarkActionType.FINISH.getValue());
+        playerData.setAction(actionType);
+        position = 60;
+        bookmark.setPosition(position);
+
+        // Invoke bookmark/action/add request
+        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark);
+        // Verify response return true
+        assertThat(booleanResponse.results.booleanValue()).isTrue();
+        // Verify no error returned
+        assertThat(booleanResponse.error).isNull();
+
+        // Invoke bookmark/action/list to verify insertion of bookmark position
+        Response<ListResponse<Bookmark>> bookmarkListResponse4 = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        Bookmark bookmark4 = bookmarkListResponse4.results.getObjects().get(0);
+
+        // Assertions
+        // ***********************************************
+
+        // Verify finishedWatching = true
+        assertThat(bookmark4.getFinishedWatching()).isTrue();
+
+    }
+
+    // TODO - Add test for EPG bookmark
+    // TODO - add test for recording bookmark
 }
