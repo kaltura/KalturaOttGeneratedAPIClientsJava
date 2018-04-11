@@ -3,7 +3,6 @@ package com.kaltura.client.test;
 import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.ErrorElement;
 import com.kaltura.client.utils.request.ExecutedRequest;
 import com.kaltura.client.utils.request.RequestElement;
