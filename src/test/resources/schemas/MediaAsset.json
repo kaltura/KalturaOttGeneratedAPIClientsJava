@@ -1,5 +1,5 @@
 {
-  "$id": "KalturaMediaAsset",
+  "$id": "MediaAsset",
   "type": "object",
   "properties": {
     "result": {
@@ -38,7 +38,6 @@
         },
         "images": {
           "type": "array",
-          "additionalItems": false,
           "items": {
             "type": "object",
             "properties": {
@@ -78,7 +77,6 @@
         },
         "mediaFiles": {
           "type": "array",
-          "additionalItems": false,
           "items": {
             "type": "object",
             "properties": {
@@ -152,22 +150,22 @@
           "type": "object",
           "properties": {
             "Free": {
-              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/MultilingualStringValueArray"
             },
             "Genre": {
-              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/MultilingualStringValueArray"
             },
             "Parental Rating": {
-              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/MultilingualStringValueArray"
             },
             "Director": {
-              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/MultilingualStringValueArray"
             },
             "Country": {
-              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/MultilingualStringValueArray"
             },
             "Series name": {
-              "$ref": "MultilingualStringValueArray.json#/definitions/KalturaMultilingualStringValueArray"
+              "$ref": "MultilingualStringValueArray.json#/definitions/MultilingualStringValueArray"
             }
           }
         },

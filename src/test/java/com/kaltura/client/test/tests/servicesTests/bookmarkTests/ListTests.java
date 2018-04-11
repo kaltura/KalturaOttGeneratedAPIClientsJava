@@ -5,6 +5,7 @@ import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.BookmarkOrderBy;
 import com.kaltura.client.test.servicesImpl.BookmarkServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BookmarkUtils;
 import com.kaltura.client.types.Bookmark;
 import com.kaltura.client.types.BookmarkFilter;
@@ -21,18 +22,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListTests extends BaseTest {
 
-    private String assetId = "606283";
-    private int fileId = 935272;
+    private String assetId;
+    private int fileId;
 
-    private String assetId2 = "606282";
-    private int fileId2 = 935270;
+
+    private String assetId2;
+    private int fileId2;
 
     private List <String> assetList = new ArrayList<>();
 
     @BeforeClass
     private void list_tests_before_class() {
-
+        assetId = "606283";
+        List<Integer> assetFileIds = AssetUtils.getAssetFileIds(assetId);
+        fileId = assetFileIds.get(0);
         assetList.add(assetId);
+
+        assetId2 = "606282";
+        List<Integer> asset2FileIds = AssetUtils.getAssetFileIds(assetId2);
+        fileId2 = asset2FileIds.get(0);
         assetList.add(assetId2);
     }
 
@@ -77,10 +85,5 @@ public class ListTests extends BaseTest {
         // Verify that asset1 returned first (bookmark/action/list is response is ordered by POSITION DESC)
         assertThat( bookmarkObject.getId()).isEqualTo(String.valueOf(assetId));
         assertThat( bookmarkObject2.getId()).isEqualTo(String.valueOf(assetId2));
-
-        
-
-
-
     }
 }
