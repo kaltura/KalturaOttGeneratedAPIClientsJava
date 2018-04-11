@@ -1,5 +1,6 @@
 package com.kaltura.client.test.servicesImpl;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.services.TransactionService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
@@ -10,8 +11,6 @@ import com.kaltura.client.utils.response.base.Response;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.TransactionService.*;
-import static com.kaltura.client.services.TransactionService.PurchaseTransactionBuilder;
-import static com.kaltura.client.test.tests.BaseTest.client;
 import static org.awaitility.Awaitility.await;
 
 public class TransactionServiceImpl {
@@ -23,14 +22,12 @@ public class TransactionServiceImpl {
     private static Response<Boolean> booleanResponse;
 
     // purchase
-    public static Response<Transaction> purchase(String ks, Purchase purchase) {
+    public static Response<Transaction> purchase(Client client, Purchase purchase) {
         PurchaseTransactionBuilder purchaseBuilder = TransactionService.purchase(purchase)
                 .setCompletion((ApiCompletion<Transaction>) result -> {
                     transactionResponse = result;
                     done.set(true);
                 });
-
-        purchaseBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(purchaseBuilder.build(client));
         await().untilTrue(done);
@@ -40,15 +37,13 @@ public class TransactionServiceImpl {
     }
 
     // getPurchaseSessionId
-    public static Response<Long> getPurchaseSessionId(String ks, PurchaseSession purchaseSession) {
+    public static Response<Long> getPurchaseSessionId(Client client, PurchaseSession purchaseSession) {
         GetPurchaseSessionIdTransactionBuilder getPurchaseSessionIdTransactionBuilder =
                 TransactionService.getPurchaseSessionId(purchaseSession)
                 .setCompletion((ApiCompletion<Long>) result -> {
                     longResponse = result;
                     done.set(true);
                 });
-
-        getPurchaseSessionIdTransactionBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(getPurchaseSessionIdTransactionBuilder.build(client));
         await().untilTrue(done);
@@ -58,14 +53,12 @@ public class TransactionServiceImpl {
     }
 
     // setWaiver
-    public static Response<Boolean> setWaiver(String ks, int assetId, TransactionType transactionType) {
+    public static Response<Boolean> setWaiver(Client client, int assetId, TransactionType transactionType) {
         SetWaiverTransactionBuilder setWaiverTransactionBuilder = TransactionService.setWaiver(assetId, transactionType)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
                 });
-
-        setWaiverTransactionBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(setWaiverTransactionBuilder.build(client));
         await().untilTrue(done);
@@ -75,24 +68,22 @@ public class TransactionServiceImpl {
     }
 
     // updateStatus
-    // TODO: 4/10/2018 check why updateStatus returns Response<Void>
-    public static void updateStatus(String ks, String paymentGatewayId, String externalTransactionId, String signature, TransactionStatus transactionStatus) {
-        UpdateStatusTransactionBuilder updateStatusTransactionBuilder =
-                TransactionService.updateStatus(paymentGatewayId, externalTransactionId, signature, transactionStatus);
+    public static void updateStatus(Client client, String paymentGatewayId, String externalTransactionId, String signature, TransactionStatus transactionStatus) {
+        UpdateStatusTransactionBuilder updateStatusTransactionBuilder = TransactionService.updateStatus(paymentGatewayId, externalTransactionId, signature, transactionStatus);
+        updateStatusTransactionBuilder.setCompletion((ApiCompletion<Void>) result -> done.set(true));
 
-        updateStatusTransactionBuilder.setKs(ks);
         TestAPIOkRequestsExecutor.getExecutor().queue(updateStatusTransactionBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
     }
 
     // upgrade
-    public static Response<Transaction> upgrade(String ks, Purchase purchase) {
+    public static Response<Transaction> upgrade(Client client, Purchase purchase) {
         UpgradeTransactionBuilder upgradeTransactionBuilder = TransactionService.upgrade(purchase)
                 .setCompletion((ApiCompletion<Transaction>) result -> {
                     transactionResponse = result;
                     done.set(true);
                 });
-
-        upgradeTransactionBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(upgradeTransactionBuilder.build(client));
         await().untilTrue(done);
@@ -102,14 +93,12 @@ public class TransactionServiceImpl {
     }
 
     // validateReceipt
-    public static Response<Transaction> validateReceipt(String ks, ExternalReceipt externalReceipt) {
+    public static Response<Transaction> validateReceipt(Client client, ExternalReceipt externalReceipt) {
         ValidateReceiptTransactionBuilder validateReceiptTransactionBuilder = TransactionService.validateReceipt(externalReceipt)
                 .setCompletion((ApiCompletion<Transaction>) result -> {
                     transactionResponse = result;
                     done.set(true);
                 });
-
-        validateReceiptTransactionBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(validateReceiptTransactionBuilder.build(client));
         await().untilTrue(done);
@@ -119,7 +108,14 @@ public class TransactionServiceImpl {
     }
 
     // downgrade
-    // TODO: 4/10/2018 implement downgrade function and check why it returns Response<Void>
+    public static void downgrade(Client client, Purchase purchase) {
+        DowngradeTransactionBuilder downgradeTransactionBuilder = TransactionService.downgrade(purchase);
+        downgradeTransactionBuilder.setCompletion((ApiCompletion<Void>) result -> done.set(true));
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(downgradeTransactionBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+    }
 }
 
 

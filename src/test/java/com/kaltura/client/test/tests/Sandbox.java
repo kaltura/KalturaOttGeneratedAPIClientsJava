@@ -1,13 +1,9 @@
 package com.kaltura.client.test.tests;
 
-import com.kaltura.client.Client;
-import com.kaltura.client.Configuration;
 import io.restassured.RestAssured;
 import io.restassured.path.xml.XmlPath;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.client;
 import static io.restassured.RestAssured.given;
 
 public class Sandbox  {
@@ -29,27 +25,4 @@ public class Sandbox  {
         int assetId = new XmlPath(xml).getInt("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID");
         System.out.println("!!! " + assetId);
     }
-
-    @Test
-    private void test2() {
-        Configuration config = new Configuration();
-        config.setEndpoint(API_BASE_URL + "/" + API_URL_VERSION);
-        config.setAcceptGzipEncoding(false);
-
-        Client client = initClient(config);
-
-        client.setKs("123");
-        System.out.println(client.getKs());
-
-        client = initClient(config);
-        System.out.println(client.getKs());
-    }
-
-    private Client initClient(Configuration config) {
-        client = new Client(config);
-        client.setApiVersion(API_REQUEST_VERSION);
-        return client;
-    }
-
-
 }

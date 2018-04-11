@@ -22,7 +22,9 @@ import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
-    public static Client client;
+    private static Client client;
+    private static Configuration config;
+
     private Response<LoginResponse> loginResponse;
     private Response<LoginSession> loginSession;
 
@@ -37,30 +39,31 @@ public class BaseTest {
     public static MediaAsset mediaAsset;
 
     @BeforeSuite
-    public void setup() {
+    public void base_test_before_suite() {
         Logger.getLogger(BaseTest.class).debug("Start Setup!");
 
-        // Set client
-        Configuration config = new Configuration();
+        // set configuration
+        config = new Configuration();
         config.setEndpoint(API_BASE_URL + "/" + API_URL_VERSION);
         config.setAcceptGzipEncoding(false);
-        client = new Client(config);
-        client.setApiVersion(API_REQUEST_VERSION);
+
+        // set client
+        client = getClient(null);
 
         // Set default awaitility timeout
         setDefaultTimeout(20, TimeUnit.SECONDS);
 
         // Login with shared users
-        loginResponse = login(PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
+        loginResponse = login(client, PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
         administratorKs = loginResponse.results.getLoginSession().getKs();
 
-        loginResponse = login(PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
+        loginResponse = login(client, PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
         operatorKs = loginResponse.results.getLoginSession().getKs();
 
 //        loginResponse = login(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
 //        managerKs = loginResponse.results.getLoginSession().getKs();
 
-        loginSession = anonymousLogin(PARTNER_ID, null);
+        loginSession = anonymousLogin(client, PARTNER_ID, null);
         anonymousKs = loginSession.results.getKs();
 
         // Set project shared HH and users
@@ -85,10 +88,22 @@ public class BaseTest {
             }
         }
 
-        loginResponse = login(PARTNER_ID, getUserNameFromId(Integer.parseInt(sharedMasterUser.getUserId())), GLOBAL_USER_PASSWORD, null, null);
+        loginResponse = login(client, PARTNER_ID, getUserNameFromId(Integer.parseInt(sharedMasterUser.getUserId())), GLOBAL_USER_PASSWORD, null, null);
         sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
 
-        loginResponse = login(PARTNER_ID, getUserNameFromId(Integer.parseInt(sharedUser.getUserId())), GLOBAL_USER_PASSWORD, null, null);
+        loginResponse = login(client, PARTNER_ID, getUserNameFromId(Integer.parseInt(sharedUser.getUserId())), GLOBAL_USER_PASSWORD, null, null);
         sharedUserKs = loginResponse.results.getLoginSession().getKs();
     }
+
+    public static Client getClient(String ks) {
+        client = new Client(config);
+        client.setApiVersion(API_REQUEST_VERSION);
+        client.setKs(ks);
+        return client;
+    }
+
+//    @AfterTest
+//    public void base_test_after_test() {
+//
+//    }
 }

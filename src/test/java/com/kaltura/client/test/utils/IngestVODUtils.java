@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.anonymousKs;
+import static com.kaltura.client.test.tests.BaseTest.getClient;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.awaitility.Awaitility.await;
 
@@ -65,13 +66,13 @@ public class IngestVODUtils extends BaseUtils {
         //mediaAsset.setEndDate(endDate);
 
         await().pollInterval(3, TimeUnit.SECONDS).atMost(30, TimeUnit.SECONDS).until(isDataReturned(id));
-        Response<Asset> mediaAssetDetails = AssetServiceImpl.get(anonymousKs, id, AssetReferenceType.MEDIA);
+        Response<Asset> mediaAssetDetails = AssetServiceImpl.get(getClient(anonymousKs), id, AssetReferenceType.MEDIA);
         mediaAsset.setMediaFiles(mediaAssetDetails.results.getMediaFiles());
         return mediaAsset;
     }
 
     private static Callable<Boolean> isDataReturned(String mediaId) {
-        return () -> AssetServiceImpl.get(anonymousKs, mediaId, AssetReferenceType.MEDIA).error == null;
+        return () -> AssetServiceImpl.get(getClient(anonymousKs), mediaId, AssetReferenceType.MEDIA).error == null;
     }
 
     private static String buildIngestVodXml(String coguid, boolean isActive, String name, String thumbUrl,

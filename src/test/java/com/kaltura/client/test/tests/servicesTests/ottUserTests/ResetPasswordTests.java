@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResetPasswordTests extends BaseTest {
 
+    private Client client;
     private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
 
@@ -24,19 +26,22 @@ public class ResetPasswordTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_resetPassword_tests_setup() {
-        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+        client = getClient(null);
+        Response<OTTUser> ottUserResponse = register(client, PARTNER_ID, generateOttUser(), password);
         user = ottUserResponse.results;
     }
 
     @Description("ottUser/action/resetPassword - resetPassword")
     @Test(enabled = false)
     private void resetPassword() {
-        booleanResponse = OttUserServiceImpl.resetPassword(PARTNER_ID, administratorKs, user.getUsername());
+        client.setKs(administratorKs);
+        booleanResponse = OttUserServiceImpl.resetPassword(client, PARTNER_ID, user.getUsername());
 
         assertThat(booleanResponse.error).isNull();
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
-        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(PARTNER_ID, user.getUsername(), password, null, null);
+        client = getClient(null);
+        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(client, PARTNER_ID, user.getUsername(), password, null, null);
         // TODO: 4/1/2018 finsih the test after bug BEO-4884 will be fixed
     }
 }

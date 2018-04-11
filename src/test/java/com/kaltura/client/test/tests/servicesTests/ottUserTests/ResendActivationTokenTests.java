@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
@@ -16,20 +17,24 @@ import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResendActivationTokenTests extends BaseTest {
+
+    private Client client;
     private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
 
     @BeforeClass
     private void ottUser_resendActivationToken_tests_setup() {
+        client = getClient(null);
         user = generateOttUser();
-        register(PARTNER_ID, user, password);
-        login(PARTNER_ID, user.getUsername(), password, null, null);
+
+        register(client, PARTNER_ID, user, password);
+        login(client, PARTNER_ID, user.getUsername(), password, null, null);
     }
 
     @Description("ottUser/action/resendActivationToken - resendActivationToken")
     @Test(enabled = false)
     private void resendActivationToken() {
-        Response<Boolean> booleanResponse = OttUserServiceImpl.resendActivationToken(PARTNER_ID, user.getUsername());
+        Response<Boolean> booleanResponse = OttUserServiceImpl.resendActivationToken(client, PARTNER_ID, user.getUsername());
         assertThat(booleanResponse.error).isNull();
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
