@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.bookmarkTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.BookmarkOrderBy;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListTests extends BaseTest {
 
+    private Client client;
     private String assetId;
     private int fileId;
 
@@ -33,6 +35,8 @@ public class ListTests extends BaseTest {
 
     @BeforeClass
     private void list_tests_before_class() {
+        client = getClient(sharedMasterUserKs);
+
         assetId = "606283";
         List<Integer> assetFileIds = AssetUtils.getAssetFileIds(assetId);
         fileId = assetFileIds.get(0);
@@ -51,17 +55,17 @@ public class ListTests extends BaseTest {
 
         // Bookmark asset1
         Bookmark bookmark = BookmarkUtils.addBookmark(0, assetId, fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark);
+        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
         // Bookmark asset2
         Bookmark bookmark2 = BookmarkUtils.addBookmark(10, assetId2, fileId2, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        Response<Boolean> booleanResponse2 = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark2);
+        Response<Boolean> booleanResponse2 = BookmarkServiceImpl.add(client, bookmark2);
         assertThat(booleanResponse2.results.booleanValue()).isTrue();
 
 
         BookmarkFilter bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_DESC,AssetType.MEDIA, assetList);
-        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client,bookmarkFilter);
 
         Bookmark bookmarkObject = bookmarkListResponse.results.getObjects().get(0);
         Bookmark bookmarkObject2 = bookmarkListResponse.results.getObjects().get(1);
@@ -74,7 +78,7 @@ public class ListTests extends BaseTest {
         assertThat( bookmarkObject2.getId()).isEqualTo(String.valueOf(assetId));
 
         bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_ASC,AssetType.MEDIA, assetList);
-        bookmarkListResponse = BookmarkServiceImpl.list(sharedMasterUserKs,bookmarkFilter);
+        bookmarkListResponse = BookmarkServiceImpl.list(client,bookmarkFilter);
 
         bookmarkObject = bookmarkListResponse.results.getObjects().get(0);
         bookmarkObject2 = bookmarkListResponse.results.getObjects().get(1);
