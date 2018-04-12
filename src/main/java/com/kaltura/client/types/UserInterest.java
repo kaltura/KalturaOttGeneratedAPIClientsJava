@@ -101,7 +101,6 @@ public class UserInterest extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaUserInterest");
-		kparams.add("id", this.id);
 		kparams.add("topic", this.topic);
 		return kparams;
 	}
