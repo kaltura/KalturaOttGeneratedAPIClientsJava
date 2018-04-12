@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RegisterTests extends BaseTest {
 
+    private Client client;
     private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
 
@@ -22,6 +24,7 @@ public class RegisterTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_login_tests_setup() {
+        client = getClient(null);
         user = generateOttUser();
     }
 
@@ -29,7 +32,7 @@ public class RegisterTests extends BaseTest {
     @Description("ottUser/action/register - register")
     @Test
     private void register() {
-        ottUserResponse = OttUserServiceImpl.register(PARTNER_ID, user, password);
+        ottUserResponse = OttUserServiceImpl.register(client, PARTNER_ID, user, password);
 
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results.getUsername()).isEqualTo(user.getUsername());

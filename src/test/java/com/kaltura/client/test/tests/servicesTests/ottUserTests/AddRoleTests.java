@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.servicesImpl.UserRoleServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
@@ -13,7 +14,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
@@ -22,12 +22,14 @@ import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class AddRoleTests extends BaseTest {
 
+    private Client client;
     private OTTUser user;
 
     @BeforeClass
     private void ottUser_addRole_tests_setup() {
+        client = getClient(null);
         user = generateOttUser();
-        Response<OTTUser> ottUserResponse = register(PARTNER_ID, user, GLOBAL_USER_PASSWORD);
+        Response<OTTUser> ottUserResponse = register(client, PARTNER_ID, user, GLOBAL_USER_PASSWORD);
         user = ottUserResponse.results;
     }
 
@@ -35,12 +37,17 @@ public class AddRoleTests extends BaseTest {
     @Test(enabled = false)
     // TODO: 3/27/2018 finish and fix test 
     private void addRole() {
-        OttUserServiceImpl.addRole(administratorKs, Optional.of(Integer.valueOf(user.getId())), 3);
+        // set client
+        client.setKs(administratorKs);
+        client.setUserId(Integer.valueOf(user.getId()));
+
+        OttUserServiceImpl.addRole(client, 3);
 
         UserRoleFilter filter = new UserRoleFilter();
         filter.setIdIn(user.getId());
 
-        Response<ListResponse<UserRole>> userRoleListResponse = UserRoleServiceImpl.list(administratorKs, filter);
+        client.setUserId(null);
+        Response<ListResponse<UserRole>> userRoleListResponse = UserRoleServiceImpl.list(client, filter);
         List<UserRole> userRoles = userRoleListResponse.results.getObjects();
 
         for (UserRole userRole : userRoles) {

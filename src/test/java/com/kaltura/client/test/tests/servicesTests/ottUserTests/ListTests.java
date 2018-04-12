@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.types.*;
@@ -22,12 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListTests extends BaseTest {
 
+    private Client client;
     private Household household;
     private int numberOfUsersInHousehold = 4;
     private Response<ListResponse<OTTUser>> householdUserListResponse;
 
     @BeforeClass
     private void ottUser_list_tests_setup() {
+        client = getClient(null);
         household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, 1, false);
     }
 
@@ -36,11 +39,11 @@ public class ListTests extends BaseTest {
     private void list_from_master_ks() {
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
 
-        Response<LoginResponse> loginResponse = login(PARTNER_ID, getUserNameFromId(Integer.parseInt(masterUser.getUserId())),
+        Response<LoginResponse> loginResponse = login(client, PARTNER_ID, getUserNameFromId(Integer.parseInt(masterUser.getUserId())),
                 GLOBAL_USER_PASSWORD, null, null);
-        String masterUserKs = loginResponse.results.getLoginSession().getKs();
 
-        householdUserListResponse = list(masterUserKs, null);
+        client.setKs(loginResponse.results.getLoginSession().getKs());
+        householdUserListResponse = list(client, null);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
         assertThat(loginResponse.error).isNull();
@@ -56,7 +59,8 @@ public class ListTests extends BaseTest {
         String idIn = householdUsers.get(0).getUserId() + "," + householdUsers.get(1).getUserId();
         filter.setIdIn(idIn);
 
-        householdUserListResponse = list(administratorKs, filter);
+        client.setKs(administratorKs);
+        householdUserListResponse = list(client, filter);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
         assertThat(householdUserListResponse.error).isNull();
@@ -73,7 +77,8 @@ public class ListTests extends BaseTest {
 
         filter.setUsernameEqual(usernameEqual);
 
-        householdUserListResponse = list(administratorKs, filter);
+        client.setKs(administratorKs);
+        householdUserListResponse = list(client, filter);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
         assertThat(householdUserListResponse.error).isNull();
@@ -89,7 +94,8 @@ public class ListTests extends BaseTest {
         filter.setIdIn(householdUsers.get(0).getUserId());
         filter.setUsernameEqual(getUserNameFromId(Integer.valueOf(householdUsers.get(1).getUserId())));
 
-        householdUserListResponse = list(administratorKs, filter);
+        client.setKs(administratorKs);
+        householdUserListResponse = list(client, filter);
 
         assertThat(householdUserListResponse.results).isNull();
         assertThat(householdUserListResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500038).getCode());

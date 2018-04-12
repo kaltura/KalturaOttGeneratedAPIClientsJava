@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.servicesImpl.HouseholdServiceImpl;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
@@ -13,8 +14,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Optional;
-
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.get;
@@ -27,44 +26,51 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteTests extends BaseTest {
 
+    private Client client;
     private Household household;
     private Response<Boolean> booleanResponse;
 
     @BeforeClass
     private void ottUser_delete_tests_setup() {
+        client = getClient(administratorKs);
         household = HouseholdUtils.createHouseHold(2, 0, false);
     }
 
     @Description("ottUser/action/delete - delete")
     @Test
     private void delete() {
-        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
+        Response<OTTUser> ottUserResponse = register(client, PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
         OTTUser user = ottUserResponse.results;
 
-        Response<Boolean> booleanResponse = OttUserServiceImpl.delete(administratorKs, Optional.of(Integer.valueOf(user.getId())));
+        client.setUserId(Integer.valueOf(user.getId()));
+        Response<Boolean> booleanResponse = OttUserServiceImpl.delete(client);
         boolean result = booleanResponse.results;
         assertThat(result).isTrue();
 
-        ottUserResponse = get(administratorKs, Optional.of(Integer.valueOf(user.getId())));
+        ottUserResponse = get(client);
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500004).getCode());
         assertThat(ottUserResponse.results).isNull();
     }
 
-    @Description("ottUser/action/delete - delete master user")
+    @Description("ottUser/action/delete - delete master user: error 2031")
     @Test(enabled = true)
     private void delete_master_user() {
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
-        booleanResponse = OttUserServiceImpl.delete(administratorKs, Optional.of(Integer.valueOf(masterUser.getUserId())));
+
+        client.setUserId(Integer.valueOf(masterUser.getUserId()));
+        booleanResponse = OttUserServiceImpl.delete(client);
 
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2031).getCode());
     }
     
-    @Description("ottUser/action/delete - delete default user")
+    @Description("ottUser/action/delete - delete default user: error 2030")
     @Test(enabled = true)
     private void delete_default_user() {
         HouseholdUser defaultUser = getDefaultUserFromHousehold(household);
-        booleanResponse = OttUserServiceImpl.delete(administratorKs, Optional.of(Integer.valueOf(defaultUser.getUserId())));
+
+        client.setUserId(Integer.valueOf(defaultUser.getUserId()));
+        booleanResponse = OttUserServiceImpl.delete(client);
 
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2030).getCode());
@@ -72,7 +78,7 @@ public class DeleteTests extends BaseTest {
 
     @AfterClass
     private void ottUser_delete_tests_tearDown() {
-        HouseholdServiceImpl.delete(administratorKs, Math.toIntExact(household.getId()));
+        HouseholdServiceImpl.delete(client, Math.toIntExact(household.getId()));
     }
 
 }

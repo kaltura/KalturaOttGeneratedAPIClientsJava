@@ -1,5 +1,6 @@
 package com.kaltura.client.test.servicesImpl;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.services.HouseholdUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.HouseholdUser;
@@ -13,7 +14,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.HouseholdUserService.AddHouseholdUserBuilder;
 import static com.kaltura.client.services.HouseholdUserService.ListHouseholdUserBuilder;
-import static com.kaltura.client.test.tests.BaseTest.client;
 import static org.awaitility.Awaitility.await;
 
 public class HouseholdUserServiceImpl {
@@ -25,14 +25,13 @@ public class HouseholdUserServiceImpl {
 
 
     // add
-    public static Response<HouseholdUser> add(String ks, HouseholdUser householdUser) {
+    public static Response<HouseholdUser> add(Client client, HouseholdUser householdUser) {
         AddHouseholdUserBuilder addHouseholdUserBuilder = HouseholdUserService.add(householdUser)
                 .setCompletion((ApiCompletion<HouseholdUser>) result -> {
                     householdUserResponse = result;
                     done.set(true);
                 });
 
-        addHouseholdUserBuilder.setKs(ks);
         TestAPIOkRequestsExecutor.getExecutor().queue(addHouseholdUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -41,14 +40,13 @@ public class HouseholdUserServiceImpl {
     }
 
     // list
-    public static Response<ListResponse<HouseholdUser>> list(String ks, @Nullable HouseholdUserFilter householdUserFilter) {
+    public static Response<ListResponse<HouseholdUser>> list(Client client, @Nullable HouseholdUserFilter householdUserFilter) {
         ListHouseholdUserBuilder listHouseholdUserBuilder = HouseholdUserService.list(householdUserFilter)
                 .setCompletion((ApiCompletion<ListResponse<HouseholdUser>>) result -> {
                     householdUserListResponse = result;
                     done.set(true);
                 });
 
-        listHouseholdUserBuilder.setKs(ks);
         TestAPIOkRequestsExecutor.getExecutor().queue(listHouseholdUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
