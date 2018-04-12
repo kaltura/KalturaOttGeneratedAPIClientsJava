@@ -4,6 +4,7 @@ import com.kaltura.client.enums.*;
 import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
 import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.IngestEPGUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -27,6 +28,8 @@ public class ListTests extends BaseTest {
         entitlementPpvsFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         entitlementPpvsFilter.setIsExpiredEqual(false);
 
+        IngestEPGUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
+                Optional.of("minutes"), Optional.empty(), Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")
