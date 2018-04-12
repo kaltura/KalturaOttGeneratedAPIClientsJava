@@ -17,7 +17,7 @@ public class AppTokenServiceImpl {
     private static final AtomicBoolean done = new AtomicBoolean(false);
     private static Response<AppToken> appTokenResponse;
 
-    public static AddAppTokenBuilder add(Client client, AppToken appToken) {
+    public static Response<AppToken> add(Client client, AppToken appToken) {
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
                 .setCompletion((ApiCompletion<AppToken>) result -> {
                     appTokenResponse = result;
@@ -28,6 +28,6 @@ public class AppTokenServiceImpl {
         await().untilTrue(done);
         done.set(false);
 
-        return addAppTokenBuilder;
+        return appTokenResponse;
     }
 }
