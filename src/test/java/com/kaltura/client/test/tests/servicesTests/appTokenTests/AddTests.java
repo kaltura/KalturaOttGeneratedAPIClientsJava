@@ -17,6 +17,7 @@ public class AddTests extends BaseTest {
     private AppTokenHashType hashType;
     private String sessionUserId;
     private AppToken appToken = new AppToken();
+    public static Client client;
 
 
     @BeforeClass
