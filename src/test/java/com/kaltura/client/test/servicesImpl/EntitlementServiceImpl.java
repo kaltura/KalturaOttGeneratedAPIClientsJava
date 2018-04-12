@@ -116,7 +116,8 @@ public class EntitlementServiceImpl {
     }
 
     // grant
-    public static Response<Boolean> grant(Client client, int productId, TransactionType transactionType, boolean history, @Nullable int contentId) {
+    public static Response<Boolean> grant(Client client, int productId, TransactionType transactionType, boolean history, @Nullable Integer contentId) {
+        if (contentId == null) contentId = 0;
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(productId, transactionType, history, contentId)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
