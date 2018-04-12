@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -46,14 +47,10 @@ public class AddTests extends BaseTest {
 
         assetList.add(String.valueOf(assetId));
         // Initialize bookmark object parameters
-        bookmark = BookmarkUtils.addBookmark(0, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
+        bookmark = BookmarkUtils.addBookmark(0, assetList.get(0), fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
 
         // Initialize bookmarkFilter object parameters
         bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_ASC, AssetType.MEDIA, assetList);
-
-        // Initialize asset id
-        bookmarkFilter.setAssetIdIn(String.valueOf(assetId));
-
     }
 
     @Description("bookmark/action/add - first play")
@@ -190,6 +187,19 @@ public class AddTests extends BaseTest {
 
     }
 
+    // Error validations
+
+    @Description("bookmark/action/add - empty asset id")
+    @Test
+    private void emptyAssetId() {
+        bookmark = BookmarkUtils.addBookmark(0, null, fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
+        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(sharedMasterUserKs, bookmark);
+        assertThat(booleanResponse.results).isNull();
+        // Verify exception returned - code: 500003 ("Invalid Asset id")
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500003).getCode());
+    }
+
+
     // TODO - Add test for EPG bookmark
-    // TODO - add test for recording bookmark
+    // TODO - Add test for recording bookmark
 }
