@@ -17,6 +17,7 @@ public class AppTokenServiceImpl {
     private static final AtomicBoolean done = new AtomicBoolean(false);
     private static Response<AppToken> appTokenResponse;
 
+    // AppToken/action/add
     public static Response<AppToken> add(Client client, AppToken appToken) {
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
                 .setCompletion((ApiCompletion<AppToken>) result -> {
@@ -25,6 +26,21 @@ public class AppTokenServiceImpl {
                 });
 
         TestAPIOkRequestsExecutor.getExecutor().queue(addAppTokenBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return appTokenResponse;
+    }
+
+    //AppToken/acton/get
+    public static Response<AppToken> get(Client client, String id) {
+        GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(id)
+                .setCompletion((ApiCompletion<AppToken>) result -> {
+                    appTokenResponse = result;
+                    done.set(true);
+                });
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(getAppTokenBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
 

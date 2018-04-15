@@ -56,14 +56,23 @@
           "type": "string",
           "minLength": 0
         }
-      }
+      },
+      "required": [
+        "id",
+        "userId",
+        "position",
+        "positionOwner",
+        "finishedWatching",
+        "type"
+      ]
     }
   },
 
   "type": "object",
   "properties": {
     "result": {
-      "type": "boolean"
+      "type": "boolean",
+      "ref": "#/definitions/Bookmark"
     },
     "executionTime": {
       "type": "number",
