@@ -1,11 +1,9 @@
 package com.kaltura.client.test.utils;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.Logger;
-import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
-import com.kaltura.client.types.Asset;
-import com.kaltura.client.types.MediaAsset;
+import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
 import java.text.ParseException;
@@ -16,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.anonymousKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
-import static io.restassured.path.xml.XmlPath.from;
 import static org.awaitility.Awaitility.await;
 
 public class IngestEPGUtils extends BaseUtils {
@@ -40,8 +37,10 @@ public class IngestEPGUtils extends BaseUtils {
         durationPeriodNames.add(DURATION_PERIOD_SECONDS);
     }
 
+    private static String titleOfIngestedItem = "";
+
     // ingest new EPG (Programmes) // TODO: complete one-by-one needed fields to cover util ingest_epg from old project
-    public static MediaAsset ingestEPG(String epgChannelName, Optional<Integer> programCount, Optional<String> firstProgramStartDate,
+    public static Response<ListResponse<Asset>>  ingestEPG(String epgChannelName, Optional<Integer> programCount, Optional<String> firstProgramStartDate,
                                        Optional<Integer> programDuration, Optional<String> programDurationPeriodName,
                                        Optional<Boolean> isCridUnique4AllPrograms, Optional<Integer> seasonCount,
                                        Optional<String> coguid, Optional<String> crid, Optional<String> seriesId) {
@@ -123,21 +122,32 @@ public class IngestEPGUtils extends BaseUtils {
                 .headers(headermap)
                 .body(reqBody)
                 .post(url);
-        System.out.println("RESPONSE: " + resp.asString());
-        /*String id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.InternalAssetId").toString();
+        //System.out.println("RESPONSE: " + resp.asString());
+        int epgChannelId = DBUtils.getEpgChannelId(epgChannelName);
+        // TODO: create method getting epoch value from String and pattern
+        long epoch = 0L;
+        try {
+            Date firstProgramStartDateAsDate = dateFormat.parse(firstProgramStartDateValue);
+            epoch = firstProgramStartDateAsDate.getTime()/1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String firstProgramStartDateEpoch = String.valueOf(epoch);
 
-        MediaAsset mediaAsset = new MediaAsset();
-        //mediaAsset.setName(nameValue);
-        mediaAsset.setId(Long.valueOf(id));
-        mediaAsset.setDescription(descriptionValue);
-        //mediaAsset.setStartDate(startDate);
-        //mediaAsset.setEndDate(endDate);
+        SearchAssetFilter assetFilter = new SearchAssetFilter();
+        assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
+        assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch + "' Series_ID='" + seriesIdValue + "' end_date >= '" + firstProgramStartDateEpoch + "')");
+        await().pollInterval(3, TimeUnit.SECONDS).atMost(60, TimeUnit.SECONDS)
+                .until(isDataReturned(epgChannelId, assetFilter, programCountValue*seasonCountValue));
 
-        await().pollInterval(3, TimeUnit.SECONDS).atMost(30, TimeUnit.SECONDS).until(isDataReturned(id));
-        Response<Asset> mediaAssetDetails = AssetServiceImpl.get(anonymousKs, id, AssetReferenceType.MEDIA);
-        mediaAsset.setMediaFiles(mediaAssetDetails.results.getMediaFiles());
-        return mediaAsset;*/
-        return null;
+        Response<ListResponse<Asset>> ingestedProgrammes = AssetServiceImpl.list(getClient(anonymousKs), assetFilter, null);
+        // TODO: complete Asset.json at least for programs
+        return ingestedProgrammes;
+    }
+
+    private static Callable<Boolean> isDataReturned(int epgChannelId, SearchAssetFilter assetFilter, int totalCount) {
+        return () -> (AssetServiceImpl.list(getClient(anonymousKs), assetFilter, null).error == null &&
+                AssetServiceImpl.list(getClient(anonymousKs), assetFilter, null).results.getTotalCount() == totalCount);
     }
 
     private static String getChannelXML(int partnerId, String epgChannelName, String programsXml) {
@@ -156,6 +166,9 @@ public class IngestEPGUtils extends BaseUtils {
                                           String programNamePrefix, String currentDate, String seriesId, String seasonNumber,
                                           boolean isCridUnique4AllPrograms) {
         String name = programNamePrefix + "_" + startDate + "_ser" + seriesId + "_seas" + seasonNumber + "_e" + idx;
+        if ("".equals(titleOfIngestedItem)) {
+            titleOfIngestedItem = name;
+        }
         // TODO: complete to cover util from old project completely
         String CRID = "<crid>" + crid + "_" + idx + "</crid>";
         if (isCridUnique4AllPrograms) {

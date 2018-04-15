@@ -32,8 +32,9 @@ public class ListTests extends BaseTest {
         entitlementPpvsFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         entitlementPpvsFilter.setIsExpiredEqual(false);
 
-        IngestEPGUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
+        /*Response<ListResponse<Asset>> ingestedProgrammes = IngestEPGUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
                 Optional.of("minutes"), Optional.empty(), Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty());
+        System.out.println("ID:" + ingestedProgrammes.results.getObjects().get(0).getId());*/
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")

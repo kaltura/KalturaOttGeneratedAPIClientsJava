@@ -20,7 +20,7 @@ public class DBUtils extends BaseUtils {
 
     //selects
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
-
+    private static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = %d AND [NAME] = '%S'";
 
     public static String getActivationToken(String username) {
         openConnection();
@@ -43,6 +43,29 @@ public class DBUtils extends BaseUtils {
         }
         closeConnection();
         return activationToken;
+    }
+
+    public static int getEpgChannelId(String channelName) {
+        openConnection();
+        try {
+            rs = stam.executeQuery(String.format(EPG_CHANNEL_ID_SELECT, PARTNER_ID + 1, channelName));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int epgChannelId =-1;
+        try {
+            epgChannelId = rs.getInt("ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("epgChannelId can't be null");
+        }
+        closeConnection();
+        return epgChannelId;
     }
 
     private static void openConnection() {
