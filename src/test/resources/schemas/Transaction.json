@@ -1,5 +1,5 @@
 {
-  "$id": "KalturaTransaction",
+  "$id": "Transaction",
   "type": "object",
   "properties": {
     "result": {

@@ -3,18 +3,19 @@ package com.kaltura.client.test.tests;
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.anonymousLogin;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHouseHold;
-import static com.kaltura.client.test.utils.OttUserUtils.getUserNameFromId;
+import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
+import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -64,8 +65,8 @@ public class BaseTest {
         anonymousKs = loginSession.results.getKs();
 
         // Set project shared HH and users
-        initSharedHousehold();
-
+//        initSharedHousehold();
+//
 //        mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
 //                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 //        System.out.println("INGESTED VOD: " + mediaAsset.getId());
@@ -74,19 +75,21 @@ public class BaseTest {
     }
 
     private void initSharedHousehold() {
-        // create hh
         sharedHousehold = createHouseHold(2, 2, false);
+        List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
+        for (HouseholdUser user : sharedHouseholdUsers) {
+            if (user.getIsMaster() != null && user.getIsMaster()) {
+                sharedMasterUser = user;
+            }
+            if (user.getIsMaster() == null && user.getIsDefault() == null) {
+                sharedUser = user;
+            }
+        }
 
-        // init shared users
-        sharedMasterUser = HouseholdUtils.getMasterUserFromHousehold(sharedHousehold);
-        sharedUser = HouseholdUtils.getUsersListFromHouseHold(sharedHousehold).get(0);
-
-        // init shared master user ks
-        loginResponse = login(client, PARTNER_ID, getUserNameFromId(Integer.parseInt(sharedMasterUser.getUserId())), GLOBAL_USER_PASSWORD, null, null);
+        loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
         sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
 
-        // init shared user ks
-        loginResponse = login(client, PARTNER_ID, getUserNameFromId(Integer.parseInt(sharedUser.getUserId())), GLOBAL_USER_PASSWORD, null, null);
+        loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
         sharedUserKs = loginResponse.results.getLoginSession().getKs();
     }
 

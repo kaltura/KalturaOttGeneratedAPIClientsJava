@@ -8,6 +8,7 @@ import com.kaltura.client.test.servicesImpl.HouseholdUserServiceImpl;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -111,15 +112,17 @@ public class HouseholdUtils extends BaseUtils {
     // get regular users list from given household
     public static List<HouseholdUser> getRegularUsersListFromHouseHold(Household household) {
         List<HouseholdUser> users = getUsersListFromHouseHold(household);
+        List<HouseholdUser> usersToRemove = new ArrayList<>();
 
         for (HouseholdUser user : users) {
             if (user.getIsDefault() != null && user.getIsDefault()) {
-                users.remove(user);
+                usersToRemove.add(user);
             }
             if (user.getIsMaster() != null && user.getIsMaster()) {
-                users.remove(user);
+                usersToRemove.add(user);
             }
         }
+        users.removeAll(usersToRemove);
         return users;
     }
 }

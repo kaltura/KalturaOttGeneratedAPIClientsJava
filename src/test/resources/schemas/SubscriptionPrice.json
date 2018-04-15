@@ -1,11 +1,11 @@
 {
-  "$id": "KalturaSubscriptionPrice",
+  "$id": "SubscriptionPrice",
   "definitions": {
-    "KalturaSubscriptionPrice": {
+    "SubscriptionPrice": {
       "type": "object",
       "properties": {
         "price": {
-          "$ref": "Price.json#/definitions/KalturaPrice"
+          "$ref": "Price.json#/definitions/Price"
         },
         "purchaseStatus": {
           "type": "string",
@@ -38,5 +38,5 @@
       ]
     }
   },
-  "$ref": "#/definitions/KalturaSubscriptionPrice"
+  "$ref": "#/definitions/SubscriptionPrice"
 }

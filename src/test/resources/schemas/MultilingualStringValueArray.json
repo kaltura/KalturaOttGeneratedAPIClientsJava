@@ -1,12 +1,11 @@
 {
-  "$id": "KalturaMediaAsset",
+  "$id": "MultilingualStringValueArray",
   "definitions": {
     "MultilingualStringValueArray": {
       "type": "object",
       "properties": {
         "objects": {
           "type": "array",
-          "additionalItems": false,
           "items": {
             "type": "object",
             "properties": {

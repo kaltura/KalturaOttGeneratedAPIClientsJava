@@ -59,7 +59,6 @@
       }
     }
   },
-
   "type": "object",
   "properties": {
     "result": {
