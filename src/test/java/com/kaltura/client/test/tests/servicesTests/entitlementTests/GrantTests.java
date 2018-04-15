@@ -9,6 +9,7 @@ import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
 import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
 import com.kaltura.client.test.servicesImpl.TransactionHistoryServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.types.*;
@@ -22,7 +23,9 @@ public class GrantTests extends BaseTest {
     // TODO: 4/12/2018 remove hardcoded subscription Id
     private final int subscriptionId = 369426;
     private final int ppvId = 30297;
-    private final int contentId = 937202; //937190;
+    private final int assetId = 607368;
+
+    private int contentId;
 
     private Response<ListResponse<BillingTransaction>> billingTransactionListResponse;
 
@@ -85,7 +88,9 @@ public class GrantTests extends BaseTest {
 
 
         // force cancel subscription
-        foreCancelSubsription(Integer.parseInt(user.getUserId()));
+        client.setKs(administratorKs);
+        client.setUserId(Integer.valueOf(user.getUserId()));
+        EntitlementServiceImpl.forceCancel(client, subscriptionId, TransactionType.SUBSCRIPTION);
     }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = false")
@@ -124,12 +129,15 @@ public class GrantTests extends BaseTest {
 
 
         // force cancel subscription
-        foreCancelSubsription(Integer.parseInt(user.getUserId()));
+        client.setKs(administratorKs);
+        client.setUserId(Integer.valueOf(user.getUserId()));
+        EntitlementServiceImpl.forceCancel(client, subscriptionId, TransactionType.SUBSCRIPTION);
     }
 
     @Test(description = "entitlement/action/grant - grant ppv with history = true")
     private void grant_ppv_with_history() {
         Client client = getClient(administratorKs);
+        contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
 
         // set household
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
@@ -171,7 +179,7 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
         billingTransaction = billingTransactionListResponse.results.getObjects().get(0);
-        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(ppvId));
+        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(assetId));
 
 
         // check transaction return in transactionHistory by household
@@ -181,16 +189,19 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
         billingTransaction = billingTransactionListResponse.results.getObjects().get(0);
-        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(ppvId));
+        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(assetId));
 
 
         // force cancel subscription
-        foreCancelSubsription(Integer.parseInt(user.getUserId()));
+        client.setKs(administratorKs);
+        client.setUserId(Integer.valueOf(user.getUserId()));
+        EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
     }
 
     @Test(description = "entitlement/action/grant - grant ppv with history = false")
     private void grant_ppv_without_history() {
         Client client = getClient(administratorKs);
+        contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
 
         // set household
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
@@ -218,7 +229,7 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
         billingTransaction = billingTransactionListResponse.results.getObjects().get(0);
-        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(ppvId));
+        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(assetId));
 
 
         // check transaction return in transactionHistory by household
@@ -228,18 +239,18 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
         billingTransaction = billingTransactionListResponse.results.getObjects().get(0);
-        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(ppvId));
+        assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(assetId));
 
 
         // force cancel subscription
-        foreCancelSubsription(Integer.parseInt(user.getUserId()));
+        client.setKs(administratorKs);
+        client.setUserId(Integer.valueOf(user.getUserId()));
+        EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
     }
 
-    //ppvId, TransactionType.SUBSCRIPTION
+//    @Test(description = "entitlement/action/grant - ppv - error 6001")
+//    @Test(description = "entitlement/action/grant - ppv - error 3021")
+//    @Test(description = "entitlement/action/grant - subscription - error 3024")
+//    @Test(description = "entitlement/action/grant - subscription - error 3023")
 
-    private void foreCancelSubsription(int userId) {
-        Client client = getClient(administratorKs);
-        client.setUserId(userId);
-        EntitlementServiceImpl.forceCancel(client, subscriptionId, TransactionType.SUBSCRIPTION);
-    }
 }

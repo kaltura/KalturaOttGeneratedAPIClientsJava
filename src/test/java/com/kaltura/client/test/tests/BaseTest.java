@@ -65,7 +65,7 @@ public class BaseTest {
         anonymousKs = loginSession.results.getKs();
 
         // Set project shared HH and users
-//        initSharedHousehold();
+        initSharedHousehold();
 //
 //        mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
 //                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
