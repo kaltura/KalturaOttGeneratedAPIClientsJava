@@ -31,7 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.HouseholdRestriction;
 import com.kaltura.client.enums.HouseholdState;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -334,7 +333,6 @@ public class Household extends ObjectBase {
 		frequencyNextUserAction = GsonParser.parseLong(jsonObject.get("frequencyNextUserAction"));
 		restriction = HouseholdRestriction.get(GsonParser.parseString(jsonObject.get("restriction")));
 		roleId = GsonParser.parseInt(jsonObject.get("roleId"));
-
 	}
 
 	public Params toParams() {

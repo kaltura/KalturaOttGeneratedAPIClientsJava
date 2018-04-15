@@ -55,12 +55,21 @@ public class HouseholdServiceImpl {
     }
 
     // get
-    public static Response<Household> get(Client client, int id) {
-        GetHouseholdBuilder getHouseholdBuilder = HouseholdService.get(id)
-                .setCompletion((ApiCompletion<Household>) result -> {
-                    householdResponse = result;
-                    done.set(true);
-                });
+    public static Response<Household> get(Client client, @Nullable Integer id) {
+        GetHouseholdBuilder getHouseholdBuilder;
+        if (id == null) {
+            getHouseholdBuilder = HouseholdService.get()
+                    .setCompletion((ApiCompletion<Household>) result -> {
+                        householdResponse = result;
+                        done.set(true);
+                    });
+        } else {
+            getHouseholdBuilder = HouseholdService.get(id)
+                    .setCompletion((ApiCompletion<Household>) result -> {
+                        householdResponse = result;
+                        done.set(true);
+                    });
+        }
 
         TestAPIOkRequestsExecutor.getExecutor().queue(getHouseholdBuilder.build(client));
         await().untilTrue(done);

@@ -67,8 +67,8 @@ public class HouseholdUtils extends BaseUtils {
             
         }
 
-        HouseholdServiceImpl.
-        return household;
+        householdResponse = HouseholdServiceImpl.get(client, null);
+        return householdResponse.results;
     }
 
     // get users list from given household
@@ -106,5 +106,20 @@ public class HouseholdUtils extends BaseUtils {
 
         Logger.getLogger(BaseUtils.class).error("can't find default user in household");
         return null;
+    }
+
+    // get regular users list from given household
+    public static List<HouseholdUser> getRegularUsersListFromHouseHold(Household household) {
+        List<HouseholdUser> users = getUsersListFromHouseHold(household);
+
+        for (HouseholdUser user : users) {
+            if (user.getIsDefault() != null && user.getIsDefault()) {
+                users.remove(user);
+            }
+            if (user.getIsMaster() != null && user.getIsMaster()) {
+                users.remove(user);
+            }
+        }
+        return users;
     }
 }
