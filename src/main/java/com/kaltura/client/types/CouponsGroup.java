@@ -33,8 +33,6 @@ import com.kaltura.client.enums.CouponGroupType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -53,7 +51,6 @@ public class CouponsGroup extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
 		String startDate();
 		String endDate();
 		String maxUsesNumber();
@@ -70,11 +67,6 @@ public class CouponsGroup extends ObjectBase {
 	 * Coupon group name
 	 */
 	private String name;
-	/**
-	 * A list of the descriptions of the coupon group on different languages (language
-	  code and translation)
-	 */
-	private List<TranslationToken> descriptions;
 	/**
 	 * The first date the coupons in this coupons group are valid
 	 */
@@ -122,14 +114,6 @@ public class CouponsGroup extends ObjectBase {
 
 	public void name(String multirequestToken){
 		setToken("name", multirequestToken);
-	}
-
-	// descriptions:
-	public List<TranslationToken> getDescriptions(){
-		return this.descriptions;
-	}
-	public void setDescriptions(List<TranslationToken> descriptions){
-		this.descriptions = descriptions;
 	}
 
 	// startDate:
@@ -217,7 +201,6 @@ public class CouponsGroup extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseString(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 		maxUsesNumber = GsonParser.parseInt(jsonObject.get("maxUsesNumber"));
@@ -231,7 +214,6 @@ public class CouponsGroup extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCouponsGroup");
 		kparams.add("name", this.name);
-		kparams.add("descriptions", this.descriptions);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
 		kparams.add("maxUsesNumber", this.maxUsesNumber);
