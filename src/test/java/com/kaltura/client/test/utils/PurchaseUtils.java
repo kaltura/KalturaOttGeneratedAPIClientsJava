@@ -1,5 +1,6 @@
 package com.kaltura.client.test.utils;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.ProductPriceOrderBy;
 import com.kaltura.client.enums.TransactionType;
@@ -17,7 +18,7 @@ public class PurchaseUtils {
     public static Map<String, String> purchasePpvDetailsMap;
 
     // TODO: 14/MAR/2018 add return
-    public static void purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, Optional<String> inCurrency) {
+    public static void purchasePpv(Client client, Optional<Integer> mediaId, Optional<Integer> fileId) {
         purchasePpvDetailsMap = new HashMap<>();
         int paymentGatewayId = 0;
 
@@ -25,7 +26,7 @@ public class PurchaseUtils {
         if (fileId.isPresent()) {
             internalFileId = fileId.get();
         } else {
-            Response<Asset> mediaAsset = AssetServiceImpl.get(ks, String.valueOf(mediaId.get()), AssetReferenceType.MEDIA);
+            Response<Asset> mediaAsset = AssetServiceImpl.get(client, String.valueOf(mediaId.get()), AssetReferenceType.MEDIA);
             internalFileId = mediaAsset.results.getMediaFiles().get(0).getId();
         }
 
@@ -33,23 +34,26 @@ public class PurchaseUtils {
         filter.setOrderBy(ProductPriceOrderBy.PRODUCT_ID_ASC.getValue());
         filter.setFileIdIn(String.valueOf(internalFileId));
         filter.setIsLowest(false);
-        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(ks, filter, inCurrency);
-        String currency = inCurrency.isPresent() ? inCurrency.get() : productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getCurrency();
+        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(client, filter);
         double price = productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getAmount();
         String ppvModuleId = ((PpvPrice)productPriceListBeforePurchase.results.getObjects().get(0)).getPpvModuleId();
 
         Purchase purchase = new Purchase();
         purchase.setProductId(Integer.valueOf(ppvModuleId));
         purchase.setContentId(internalFileId);
+        String currency = client.getCurrency();
+        if (client.getCurrency() == null || client.getCurrency().isEmpty()) {
+            currency = productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getCurrency();
+        }
         purchase.setCurrency(currency);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.PPV).get());
         purchase.setPaymentGatewayId(Optional.of(paymentGatewayId).get());
-        TransactionServiceImpl.purchase(ks, purchase);
+        TransactionServiceImpl.purchase(client, purchase);
 
         // TODO: complete the purchase ppv test
         purchasePpvDetailsMap.put("price", String.valueOf(price));
-        purchasePpvDetailsMap.put("currency", currency);
+        purchasePpvDetailsMap.put("currency", client.getCurrency());
         purchasePpvDetailsMap.put("ppvModuleId", ppvModuleId);
         purchasePpvDetailsMap.put("fileId", String.valueOf(internalFileId));
     }

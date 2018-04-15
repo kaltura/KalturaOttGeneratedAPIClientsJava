@@ -1,10 +1,10 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.enums.UserState;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.DBUtils;
-import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -20,14 +20,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ActivateTests extends BaseTest {
 
+    private Client client;
     private OTTUser user;
     private String password = GLOBAL_USER_PASSWORD;
 
     @BeforeClass
     private void ottUser_activate_tests_setup() {
+        client = getClient(null);
         user = generateOttUser();
-        register(PARTNER_ID, user, password);
-        login(PARTNER_ID, user.getUsername(), password, null, null);
+
+        register(client, PARTNER_ID, user, password);
+        login(client, PARTNER_ID, user.getUsername(), password, null, null);
     }
 
     @Description("ottUser/action/activate - activate")
@@ -35,7 +38,7 @@ public class ActivateTests extends BaseTest {
     private void activate() {
         String activationToken = DBUtils.getActivationToken(user.getUsername());
 
-        Response<OTTUser> ottUserResponse = OttUserServiceImpl.activate(PARTNER_ID, user.getUsername(),activationToken);
+        Response<OTTUser> ottUserResponse = OttUserServiceImpl.activate(client, PARTNER_ID, user.getUsername(),activationToken);
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results.getUserState()).isEqualTo(UserState.OK);
     }

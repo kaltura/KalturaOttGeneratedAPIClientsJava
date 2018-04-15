@@ -1,5 +1,6 @@
 package com.kaltura.client.test.utils;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
@@ -14,6 +15,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.anonymousKs;
+import static com.kaltura.client.test.tests.BaseTest.getClient;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.awaitility.Awaitility.await;
 
@@ -105,16 +107,16 @@ public class IngestEPGUtils extends BaseUtils {
         headermap.put("Content-Type", "text/xml;charset=UTF-8");
         headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestKalturaEpg\"");
         String reqBody = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                "   <soapenv:Header/>\n" +
-                "   <soapenv:Body>\n" +
+                "   <s:Header/>\n" +
+                "   <s:Body>\n" +
                 "      <IngestKalturaEpg xmlns=\"http://tempuri.org/\">" +
                 "           <request xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">" +
-                "           <userName>" + getProperty(INGEST_USER_NAME) + "</userName><passWord>" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data xmlns=\"\">" +
+                "           <userName xmlns=\"\">" + getProperty(INGEST_USER_NAME) + "</userName><passWord xmlns=\"\">" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data xmlns=\"\">" +
                                 epgChannelIngestXml + "\n" +
                 "           </data>\n" +
                 "           </request>\n" +
                 "           </IngestKalturaEpg>\n" +
-                "   </soapenv:Body>\n" +
+                "   </s:Body>\n" +
                 "</s:Envelope>";
         io.restassured.response.Response resp = RestAssured.given()
                 .log().all()
@@ -249,9 +251,5 @@ public class IngestEPGUtils extends BaseUtils {
                 calendar.add(Calendar.SECOND, durationValue);
         }
         return calendar.getTime();
-    }
-
-    private static Callable<Boolean> isDataReturned(String mediaId) {
-        return () -> AssetServiceImpl.get(anonymousKs, mediaId, AssetReferenceType.MEDIA).error == null;
     }
 }

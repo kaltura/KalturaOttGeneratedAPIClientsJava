@@ -1,5 +1,6 @@
 package com.kaltura.client.test.servicesImpl;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.*;
@@ -8,11 +9,9 @@ import com.kaltura.client.utils.response.base.Response;
 
 import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.OttUserService.*;
-import static com.kaltura.client.test.tests.BaseTest.client;
 import static org.awaitility.Awaitility.await;
 
 public class OttUserServiceImpl {
@@ -29,7 +28,7 @@ public class OttUserServiceImpl {
 
 
     // activate
-    public static Response<OTTUser> activate(int partnerId, String username, String activationToken) {
+    public static Response<OTTUser> activate(Client client, int partnerId, String username, String activationToken) {
         ActivateOttUserBuilder activateOttUserBuilder = OttUserService.activate(partnerId, username, activationToken)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     ottUserResponse = result;
@@ -44,15 +43,12 @@ public class OttUserServiceImpl {
     }
 
     // addRole
-    public static Response<Boolean> addRole(String ks, Optional<Integer> userId, int roleId) {
+    public static Response<Boolean> addRole(Client client, int roleId) {
         AddRoleOttUserBuilder addRoleOttUserBuilder = OttUserService.addRole(roleId)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
                 });
-
-        addRoleOttUserBuilder.setKs(ks);
-        userId.ifPresent(addRoleOttUserBuilder::setUserId);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(addRoleOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -62,7 +58,7 @@ public class OttUserServiceImpl {
     }
 
     // anonymousLogin
-    public static Response<LoginSession> anonymousLogin(int partnerId, @Nullable String udid) {
+    public static Response<LoginSession> anonymousLogin(Client client, int partnerId, @Nullable String udid) {
         AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = OttUserService.anonymousLogin(partnerId, udid)
                 .setCompletion((ApiCompletion<LoginSession>) result -> {
                     loginSessionResponse = result;
@@ -77,15 +73,12 @@ public class OttUserServiceImpl {
     }
 
     // delete
-    public static Response<Boolean> delete(String ks, Optional<Integer> userId) {
+    public static Response<Boolean> delete(Client client) {
         DeleteOttUserBuilder deleteOttUserBuilder = OttUserService.delete()
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
                 });
-
-        deleteOttUserBuilder.setKs(ks);
-        userId.ifPresent(deleteOttUserBuilder::setUserId);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(deleteOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -95,15 +88,12 @@ public class OttUserServiceImpl {
     }
 
     // get
-    public static Response<OTTUser> get(String ks, Optional<Integer> userId) {
+    public static Response<OTTUser> get(Client client) {
         GetOttUserBuilder getOttUserBuilder = OttUserService.get()
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     ottUserResponse = result;
                     done.set(true);
                 });
-
-        getOttUserBuilder.setKs(ks);
-        userId.ifPresent(getOttUserBuilder::setUserId);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(getOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -113,15 +103,12 @@ public class OttUserServiceImpl {
     }
 
     // getEncryptedUserId
-    public static Response<StringValue> getEncryptedUserId(String ks, int userId) {
+    public static Response<StringValue> getEncryptedUserId(Client client) {
         GetEncryptedUserIdOttUserBuilder getEncryptedUserIdOttUserBuilder = OttUserService.getEncryptedUserId()
                 .setCompletion((ApiCompletion<StringValue>) result -> {
                     stringValueResponse = result;
                     done.set(true);
                 });
-
-        getEncryptedUserIdOttUserBuilder.setKs(ks);
-        getEncryptedUserIdOttUserBuilder.setUserId(userId);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(getEncryptedUserIdOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -131,14 +118,13 @@ public class OttUserServiceImpl {
     }
 
     // list
-    public static Response<ListResponse<OTTUser>> list(String ks, @Nullable OTTUserFilter ottUserFilter) {
+    public static Response<ListResponse<OTTUser>> list(Client client, @Nullable OTTUserFilter ottUserFilter) {
         ListOttUserBuilder listOttUserBuilder = OttUserService.list(ottUserFilter)
                 .setCompletion((ApiCompletion<ListResponse<OTTUser>>) result -> {
                     ottUserListResponse = result;
                     done.set(true);
                 });
 
-        listOttUserBuilder.setKs(ks);
         TestAPIOkRequestsExecutor.getExecutor().queue(listOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -147,7 +133,8 @@ public class OttUserServiceImpl {
     }
 
     // login
-    public static Response<LoginResponse> login(int partnerId, String username, String password, @Nullable Map<String, StringValue> extraParams, @Nullable String udid) {
+    public static Response<LoginResponse> login(Client client, int partnerId, @Nullable String username, @Nullable String password,
+                                                @Nullable Map<String, StringValue> extraParams, @Nullable String udid) {
         LoginOttUserBuilder loginOttUserBuilder = OttUserService.login(partnerId, username, password, extraParams, udid)
                 .setCompletion((ApiCompletion<LoginResponse>) result -> {
                     loginResponse = result;
@@ -162,7 +149,7 @@ public class OttUserServiceImpl {
     }
 
     // loginWithPin
-    public static Response<LoginResponse> loginWithPin(int partnerId, String pin, @Nullable String udid, String secret) {
+    public static Response<LoginResponse> loginWithPin(Client client, int partnerId, String pin, @Nullable String udid, String secret) {
 
         LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = OttUserService.loginWithPin(partnerId, pin, udid, secret)
                 .setCompletion((ApiCompletion<LoginResponse>) result -> {
@@ -178,15 +165,12 @@ public class OttUserServiceImpl {
     }
 
     // logout
-    public static Response<Boolean> logout(String ks, Optional<Integer> userId) {
+    public static Response<Boolean> logout(Client client) {
         LogoutOttUserBuilder logoutOttUserBuilder = OttUserService.logout()
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
                 });
-
-        logoutOttUserBuilder.setKs(ks);
-        userId.ifPresent(logoutOttUserBuilder::setUserId);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(logoutOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -196,7 +180,7 @@ public class OttUserServiceImpl {
     }
 
     // register
-    public static Response<OTTUser> register(int partnerId, OTTUser user, String password) {
+    public static Response<OTTUser> register(Client client, int partnerId, OTTUser user, String password) {
         RegisterOttUserBuilder registerOttUserBuilder = OttUserService.register(partnerId, user, password)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     ottUserResponse = result;
@@ -211,7 +195,7 @@ public class OttUserServiceImpl {
     }
 
     // resendActivationToken
-    public static Response<Boolean> resendActivationToken(int partnerId, String username) {
+    public static Response<Boolean> resendActivationToken(Client client, int partnerId, String username) {
         ResendActivationTokenOttUserBuilder resendActivationTokenOttUserBuilder = OttUserService.resendActivationToken(partnerId, username)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
@@ -226,14 +210,13 @@ public class OttUserServiceImpl {
     }
 
     // resetPassword
-    public static Response<Boolean> resetPassword(int partnerId, String ks, String username) {
+    public static Response<Boolean> resetPassword(Client client, int partnerId, String username) {
         ResetPasswordOttUserBuilder resetPasswordOttUserBuilder = OttUserService.resetPassword(partnerId, username)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
                 });
 
-        resetPasswordOttUserBuilder.setKs(ks);
         TestAPIOkRequestsExecutor.getExecutor().queue(resetPasswordOttUserBuilder.build(client));
         await().untilTrue(done);
         done.set(false);
@@ -242,7 +225,7 @@ public class OttUserServiceImpl {
     }
 
     // setInitialPassword
-    public static Response<OTTUser> setInitialPassword(int partnerId, String token, String password) {
+    public static Response<OTTUser> setInitialPassword(Client client, int partnerId, String token, String password) {
         SetInitialPasswordOttUserBuilder setInitialPasswordOttUserBuilder = OttUserService.setInitialPassword(partnerId, token, password)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     ottUserResponse = result;
@@ -257,14 +240,12 @@ public class OttUserServiceImpl {
     }
 
     // update
-    public static Response<OTTUser> update(String ks, OTTUser user, @Nullable String id) {
+    public static Response<OTTUser> update(Client client, OTTUser user, @Nullable String id) {
         UpdateOttUserBuilder updateOttUserBuilder = OttUserService.update(user, id)
                 .setCompletion((ApiCompletion<OTTUser>) result -> {
                     ottUserResponse = result;
                     done.set(true);
                 });
-
-        updateOttUserBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(updateOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -274,15 +255,12 @@ public class OttUserServiceImpl {
     }
 
     // updateDynamicData
-    public static Response<OTTUserDynamicData> updateDynamicData(String ks, Optional<Integer> userId, String key, StringValue value) {
+    public static Response<OTTUserDynamicData> updateDynamicData(Client client, String key, StringValue value) {
         UpdateDynamicDataOttUserBuilder updateDynamicDataOttUserBuilder = OttUserService.updateDynamicData(key, value)
                 .setCompletion((ApiCompletion<OTTUserDynamicData>) result -> {
                     ottUserDynamicDataResponse = result;
                     done.set(true);
                 });
-
-        updateDynamicDataOttUserBuilder.setKs(ks);
-        userId.ifPresent(updateDynamicDataOttUserBuilder::setUserId);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(updateDynamicDataOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -292,14 +270,12 @@ public class OttUserServiceImpl {
     }
 
     // updateLoginData
-    public static Response<Boolean> updateLoginData(String ks, String username, String oldPassword, String newPassword) {
+    public static Response<Boolean> updateLoginData(Client client, String username, String oldPassword, String newPassword) {
         UpdateLoginDataOttUserBuilder updateLoginDataOttUserBuilder = OttUserService.updateLoginData(username, oldPassword, newPassword)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
                 });
-
-        updateLoginDataOttUserBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(updateLoginDataOttUserBuilder.build(client));
         await().untilTrue(done);
@@ -309,14 +285,12 @@ public class OttUserServiceImpl {
     }
 
     // updatePassword
-    public static Response<Boolean> updatePassword(String ks, int partnerId, String username) {
+    public static Response<Boolean> updatePassword(Client client, int partnerId, String username) {
         ResetPasswordOttUserBuilder resetPasswordOttUserBuilder = OttUserService.resetPassword(partnerId, username)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
                     booleanResponse = result;
                     done.set(true);
                 });
-
-        resetPasswordOttUserBuilder.setKs(ks);
 
         TestAPIOkRequestsExecutor.getExecutor().queue(resetPasswordOttUserBuilder.build(client));
         await().untilTrue(done);

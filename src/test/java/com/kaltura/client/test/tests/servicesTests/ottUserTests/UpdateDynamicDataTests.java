@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.Client;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
@@ -10,8 +11,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Optional;
-
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
@@ -20,26 +19,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateDynamicDataTests extends BaseTest {
 
+    private Client client;
     private OTTUser user;
-    private String password = GLOBAL_USER_PASSWORD;
-
-    private Response<OTTUserDynamicData> ottUserDynamicDataResponse;
 
     @BeforeClass
     private void ottUser_updateDynamicData_tests_setup() {
-        Response<OTTUser> ottUserResponse = register(PARTNER_ID, generateOttUser(), password);
+        client = getClient(null);
+        Response<OTTUser> ottUserResponse = register(client, PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
         user = ottUserResponse.results;
     }
 
     @Description("ottUser/action/updateDynamicData - updateDynamicData")
     @Test
     private void updateDynamicData() {
-        StringValue value = new StringValue();
-        value.setValue("value1");
+        // set client
+        client.setKs(administratorKs);
+        client.setUserId(Integer.valueOf(user.getId()));
 
-        ottUserDynamicDataResponse = OttUserServiceImpl.updateDynamicData(administratorKs, Optional.of(Integer.valueOf(user.getId())), "key1", value);
+        String keyString = "key1";
+        String valueString = "value1";
+
+        StringValue value = new StringValue();
+        value.setValue(valueString);
+        Response<OTTUserDynamicData> ottUserDynamicDataResponse = OttUserServiceImpl.updateDynamicData(client, keyString, value);
+
         assertThat(ottUserDynamicDataResponse.error).isNull();
-        assertThat(ottUserDynamicDataResponse.results.getValue().getValue()).isEqualTo("value1");
-        assertThat(ottUserDynamicDataResponse.results.getKey()).isEqualTo("key1");
+        assertThat(ottUserDynamicDataResponse.results.getKey()).isEqualTo(keyString);
+        assertThat(ottUserDynamicDataResponse.results.getValue().getValue()).isEqualTo(valueString);
     }
 }

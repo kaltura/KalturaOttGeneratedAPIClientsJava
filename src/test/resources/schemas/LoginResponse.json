@@ -5,7 +5,7 @@
     "result": {
       "type": "object",
       "properties": {
-        "user": {"$ref": "OttUser.json#/definitions/OTTUser"},
+        "user": {"$ref": "OTTUser.json#/definitions/OTTUser"},
         "loginSession": {
           "$ref": "LoginSession.json#/definitions/LoginSession"
         },
