@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaPpvEntitlement",
+  "$id": "PpvEntitlement",
   "definitions": {
-    "KalturaPpvEntitlement": {
+    "PpvEntitlement": {
       "type": "object",
       "properties": {
         "mediaFileId": {
@@ -97,7 +97,7 @@
         "purchaseId",
         "paymentMethod",
         "deviceUdid",
-        "deviceName",
+        //"deviceName",
         "isCancelationWindowEnabled",
         "maxUses",
         "isRenewable",
@@ -106,5 +106,5 @@
       ]
     }
   },
-  "$ref": "#/definitions/KalturaPpvEntitlement"
+  "$ref": "#/definitions/PpvEntitlement"
 }

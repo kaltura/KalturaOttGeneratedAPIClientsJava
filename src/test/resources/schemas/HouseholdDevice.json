@@ -1,5 +1,5 @@
 {
-  "$id": "KalturaHouseholdDevice",
+  "$id": "HouseholdDevice",
   "type": "object",
   "properties": {
     "result": {

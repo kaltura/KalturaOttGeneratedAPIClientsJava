@@ -10,10 +10,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "PpvEntitlement.json#/definitions/KalturaPpvEntitlement"
+                "$ref": "PpvEntitlement.json#/definitions/PpvEntitlement"
               },
               {
-                "$ref": "SubscriptionEntitlement.json#/definitions/KalturaSubscriptionEntitlement"
+                "$ref": "SubscriptionEntitlement.json#/definitions/SubscriptionEntitlement"
               },
               {
                 "$ref": "BillingTransaction.json#/definitions/BillingTransaction"
@@ -25,13 +25,16 @@
                 "$ref": "OTTUser.json#/definitions/OTTUser"
               },
               {
-                "$ref": "SubscriptionPrice.json#/definitions/KalturaSubscriptionPrice"
+                "$ref": "SubscriptionPrice.json#/definitions/SubscriptionPrice"
               },
               {
-                "$ref": "PpvPrice.json#/definitions/KalturaPpvPrice"
+                "$ref": "PpvPrice.json#/definitions/PpvPrice"
               },
               {
                 "$ref": "Bookmark.json#/definitions/Bookmark"
+              },
+              {
+                "$ref": "Asset.json#/definitions/Asset"
               }
             ]
           }
@@ -43,6 +46,7 @@
         "objectType": {
           "type": "string",
           "enum": [
+            "KalturaAssetListResponse",
             "KalturaEntitlementListResponse",
             "KalturaBillingTransactionListResponse",
             "KalturaHouseholdUserListResponse",

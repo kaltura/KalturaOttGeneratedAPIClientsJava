@@ -21,9 +21,8 @@ import static org.awaitility.Awaitility.await;
 public class IngestVODUtils extends BaseUtils {
 
     // ingest new VOD (Media) // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
-    public static MediaAsset ingestVOD(Optional<String> coguid, boolean isActive, Optional<String> name,
-                                       Optional<String> thumbUrl, Optional<String> description, Optional<String> catalogStartDate,
-                                       Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate,
+    public static MediaAsset ingestVOD(Optional<String> coguid, boolean isActive, Optional<String> name, Optional<String> thumbUrl, Optional<String> description,
+                                       Optional<String> catalogStartDate, Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate,
                                        Optional<String> mediaType, Optional<String> ppvWebName, Optional<String> ppvMobileName) {
         String coguidValue = coguid.orElseGet(() -> getCurrentDataInFormat("yyMMddHHmmssSS"));
         String nameValue = name.orElseGet(() -> MOVIE_MEDIA_TYPE + "_" + coguidValue);
@@ -68,6 +67,8 @@ public class IngestVODUtils extends BaseUtils {
         await().pollInterval(3, TimeUnit.SECONDS).atMost(30, TimeUnit.SECONDS).until(isDataReturned(id));
         Response<Asset> mediaAssetDetails = AssetServiceImpl.get(getClient(anonymousKs), id, AssetReferenceType.MEDIA);
         mediaAsset.setMediaFiles(mediaAssetDetails.results.getMediaFiles());
+
+        // TODO: 4/15/2018 add log for ingest and index failures
         return mediaAsset;
     }
 

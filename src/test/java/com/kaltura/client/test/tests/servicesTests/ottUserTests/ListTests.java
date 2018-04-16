@@ -18,7 +18,7 @@ import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.HouseholdUtils.getMasterUserFromHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
-import static com.kaltura.client.test.utils.OttUserUtils.getUserNameFromId;
+import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListTests extends BaseTest {
@@ -39,7 +39,7 @@ public class ListTests extends BaseTest {
     private void list_from_master_ks() {
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
 
-        Response<LoginResponse> loginResponse = login(client, PARTNER_ID, getUserNameFromId(Integer.parseInt(masterUser.getUserId())),
+        Response<LoginResponse> loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(masterUser.getUserId())).getUsername(),
                 GLOBAL_USER_PASSWORD, null, null);
 
         client.setKs(loginResponse.results.getLoginSession().getKs());
@@ -73,7 +73,7 @@ public class ListTests extends BaseTest {
         List<HouseholdUser> householdUsers = getUsersListFromHouseHold(household);
 
         OTTUserFilter filter = new OTTUserFilter();
-        String usernameEqual = getUserNameFromId(Integer.valueOf(householdUsers.get(0).getUserId()));
+        String usernameEqual = getUserById(Integer.valueOf(householdUsers.get(0).getUserId())).getUsername();
 
         filter.setUsernameEqual(usernameEqual);
 
@@ -92,7 +92,7 @@ public class ListTests extends BaseTest {
 
         OTTUserFilter filter = new OTTUserFilter();
         filter.setIdIn(householdUsers.get(0).getUserId());
-        filter.setUsernameEqual(getUserNameFromId(Integer.valueOf(householdUsers.get(1).getUserId())));
+        filter.setUsernameEqual(getUserById(Integer.valueOf(householdUsers.get(1).getUserId())).getUsername());
 
         client.setKs(administratorKs);
         householdUserListResponse = list(client, filter);

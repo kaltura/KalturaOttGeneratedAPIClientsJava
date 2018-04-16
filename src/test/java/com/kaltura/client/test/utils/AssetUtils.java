@@ -21,7 +21,7 @@ public class AssetUtils extends BaseUtils {
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
         Response<Asset> assetResponse = AssetServiceImpl.get(client, assetId, assetReferenceType);
         List<MediaFile> mediafiles = assetResponse.results.getMediaFiles();
-        System.out.println(mediafiles.size());
+
         List<Integer> fileIdsList = new ArrayList<>();
         for (MediaFile mediaFile : mediafiles) {
             fileIdsList.add(mediaFile.getId());
@@ -30,3 +30,4 @@ public class AssetUtils extends BaseUtils {
         return fileIdsList;
     }
 }
+

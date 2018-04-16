@@ -12,6 +12,7 @@ import com.kaltura.client.utils.response.base.Response;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.kaltura.client.services.HouseholdUserService.*;
 import static com.kaltura.client.services.HouseholdUserService.AddHouseholdUserBuilder;
 import static com.kaltura.client.services.HouseholdUserService.ListHouseholdUserBuilder;
 import static org.awaitility.Awaitility.await;
@@ -22,6 +23,7 @@ public class HouseholdUserServiceImpl {
 
     private static Response<HouseholdUser> householdUserResponse;
     private static Response<ListResponse<HouseholdUser>> householdUserListResponse;
+    private static Response<Boolean> booleanResponse;
 
 
     // add
@@ -52,5 +54,20 @@ public class HouseholdUserServiceImpl {
         done.set(false);
 
         return householdUserListResponse;
+    }
+
+    // delete
+    public static Response<Boolean> delete(Client client, String id) {
+        DeleteHouseholdUserBuilder deleteHouseholdUserBuilder = HouseholdUserService.delete(id)
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    booleanResponse = result;
+                    done.set(true);
+                });
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(deleteHouseholdUserBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return booleanResponse;
     }
 }

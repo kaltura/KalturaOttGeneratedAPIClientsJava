@@ -67,7 +67,6 @@
       ]
     }
   },
-
   "type": "object",
   "properties": {
     "result": {
