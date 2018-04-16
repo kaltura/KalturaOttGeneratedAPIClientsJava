@@ -5,6 +5,7 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.test.servicesImpl.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
@@ -121,5 +122,22 @@ public class HouseholdUtils extends BaseUtils {
 
         Logger.getLogger(BaseUtils.class).error("can't find default user in household");
         return null;
+    }
+
+    // get regular users list from given household
+    public static List<HouseholdUser> getRegularUsersListFromHouseHold(Household household) {
+        List<HouseholdUser> users = getUsersListFromHouseHold(household);
+        List<HouseholdUser> usersToRemove = new ArrayList<>();
+
+        for (HouseholdUser user : users) {
+            if (user.getIsDefault() != null && user.getIsDefault()) {
+                usersToRemove.add(user);
+            }
+            if (user.getIsMaster() != null && user.getIsMaster()) {
+                usersToRemove.add(user);
+            }
+        }
+        users.removeAll(usersToRemove);
+        return users;
     }
 }

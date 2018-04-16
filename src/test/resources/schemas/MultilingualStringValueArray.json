@@ -1,5 +1,5 @@
 {
-  "$id": "KalturaMediaAsset",
+  "$id": "MultilingualStringValueArray",
   "definitions": {
     "MultilingualStringValueArray": {
       "type": "object",
