@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kaltura.client.test.Properties.API_URL_VERSION;
@@ -34,6 +31,29 @@ public class BaseUtils {
             cal.add(Calendar.DATE, offsetDay);
         }
         return dateFormat.format(cal.getTime());
+    }
+
+    // Get Date time according to off set parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
+    public static String getTimeInDate(int offSetInMinutes) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date dNow = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dNow);
+        calendar.add(Calendar.MINUTE, offSetInMinutes);
+        dNow = calendar.getTime();
+
+        return dateFormat.format(dNow);
+    }
+
+    // Get epoch time in seconds according to off set parameter provided (in minutes)
+    public static long getTimeInEpoch (int offSetInMinutes) {
+        //DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date dNow = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dNow);
+        calendar.add(Calendar.MINUTE, offSetInMinutes);
+
+        return calendar.getTimeInMillis()/1000;
     }
 
     // generate current data String in specified format
