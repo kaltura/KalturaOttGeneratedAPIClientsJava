@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaSubscriptionEntitlement",
+  "$id": "SubscriptionEntitlement",
   "definitions": {
-    "KalturaSubscriptionEntitlement": {
+    "SubscriptionEntitlement": {
       "type": "object",
       "properties": {
         "nextRenewalDate": {

@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaPpvPrice",
+  "$id": "PpvPrice",
   "definitions": {
-    "KalturaPpvPrice": {
+    "PpvPrice": {
       "type": "object",
       "properties": {
         "fileId": {
@@ -131,7 +131,7 @@
           "minLength": 1
         },
         "price": {
-          "$ref": "Price.json#/definitions/KalturaPrice"
+          "$ref": "Price.json#/definitions/Price"
         },
         "purchaseStatus": {
           "type": "string",
@@ -165,5 +165,5 @@
       ]
     }
   },
-  "$ref": "#/definitions/KalturaPpvPrice"
+  "$ref": "#/definitions/PpvPrice"
 }

@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaPrice",
+  "$id": "Price",
   "definitions": {
-    "KalturaPrice": {
+    "Price": {
       "type": "object",
       "properties": {
         "amount": {
@@ -31,5 +31,5 @@
       ]
     }
   },
-  "$ref": "#/definitions/KalturaPrice"
+  "$ref": "#/definitions/Price"
 }

@@ -1,7 +1,7 @@
 {
-  "$id": "KalturaPpvEntitlement",
+  "$id": "PpvEntitlement",
   "definitions": {
-    "KalturaPpvEntitlement": {
+    "PpvEntitlement": {
       "type": "object",
       "properties": {
         "mediaFileId": {
@@ -106,5 +106,5 @@
       ]
     }
   },
-  "$ref": "#/definitions/KalturaPpvEntitlement"
+  "$ref": "#/definitions/PpvEntitlement"
 }

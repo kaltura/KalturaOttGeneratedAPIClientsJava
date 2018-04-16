@@ -1,5 +1,5 @@
 {
-  "$id": "KalturaHousehold",
+  "$id": "Household",
   "type": "object",
   "properties": {
     "result": {
@@ -38,7 +38,6 @@
         },
         "users": {
           "type": "array",
-          "additionalItems": false,
           "items": {
             "type": "object",
             "properties": {
@@ -59,7 +58,6 @@
         },
         "masterUsers": {
           "type": "array",
-          "additionalItems": false,
           "items": {
             "type": "object",
             "properties": {
@@ -80,7 +78,6 @@
         },
         "defaultUsers": {
           "type": "array",
-          "additionalItems": false,
           "items": {
             "type": "object",
             "properties": {
@@ -100,8 +97,7 @@
           }
         },
         "pendingUsers": {
-          "type": "array",
-          "additionalItems": false
+          "type": "array"
         },
         "regionId": {
           "type": "integer",
@@ -126,13 +122,11 @@
         },
         "deviceFamilies": {
           "type": "array",
-          "additionalItems": false,
           "items": {
             "type": "object",
             "properties": {
               "devices": {
-                "type": "array",
-                "additionalItems": false
+                "type": "array"
               },
               "id": {
                 "type": "integer",

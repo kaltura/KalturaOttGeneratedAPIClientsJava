@@ -1,12 +1,13 @@
 package com.kaltura.client.test.tests;
 
+import com.kaltura.client.test.utils.HouseholdUtils;
 import io.restassured.RestAssured;
 import io.restassured.path.xml.XmlPath;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class Sandbox  {
+public class Sandbox extends BaseTest {
 
     @Test(enabled = false)
     private void test() {
@@ -24,5 +25,10 @@ public class Sandbox  {
 
         int assetId = new XmlPath(xml).getInt("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID");
         System.out.println("!!! " + assetId);
+    }
+
+    @Test(enabled = true)
+    private void test1() {
+        HouseholdUtils.createHouseHold(2, 1, false);
     }
 }
