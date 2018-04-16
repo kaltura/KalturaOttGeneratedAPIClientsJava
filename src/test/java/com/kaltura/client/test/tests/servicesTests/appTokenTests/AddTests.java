@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AddTests extends BaseTest {
 
     private AppTokenHashType hashType;
-    private String sessionUserId;
+    private String sessionUserId = "1577578";
     private AppToken appToken = new AppToken();
     public static Client client;
     private String sessionPrivileges;
@@ -27,7 +27,6 @@ public class AddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        sessionUserId = "1577578";
         client = getClient(operatorKs);
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, null, null);
@@ -92,5 +91,19 @@ public class AddTests extends BaseTest {
 
         Response<AppToken> getAppTokenResponse = AppTokenServiceImpl.get(client, addAppTokenResponse.results.getId());
         assertThat(getAppTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
+    }
+
+    @Description("appToken/action/add - with no specific user id")
+    @Test
+    private void addAppTokenWithoutSpecificUserId() {
+
+        appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, null);
+        Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
+        assertThat(addAppTokenResponse.error).isNull();
+        assertThat(addAppTokenResponse.results.getExpiry()).isNull();
+        assertThat(addAppTokenResponse.results.getId()).isNotEmpty();
+        assertThat(addAppTokenResponse.results.getToken()).isNotEmpty();
+        assertThat(addAppTokenResponse.results.getSessionUserId()).isNotEqualTo(sessionUserId);
+        assertThat(addAppTokenResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
     }
 }
