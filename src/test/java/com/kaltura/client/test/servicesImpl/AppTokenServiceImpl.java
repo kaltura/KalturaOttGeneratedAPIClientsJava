@@ -15,9 +15,11 @@ import static org.awaitility.Awaitility.await;
 public class AppTokenServiceImpl {
 
     private static final AtomicBoolean done = new AtomicBoolean(false);
-    private static Response<AppToken> appTokenResponse;
 
-    // AppToken/action/add
+    private static Response<AppToken> appTokenResponse;
+    private static Response<Boolean> booleanResponse;
+
+    // add
     public static Response<AppToken> add(Client client, AppToken appToken) {
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
                 .setCompletion((ApiCompletion<AppToken>) result -> {
@@ -32,7 +34,7 @@ public class AppTokenServiceImpl {
         return appTokenResponse;
     }
 
-    //AppToken/acton/get
+    // get
     public static Response<AppToken> get(Client client, String id) {
         GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(id)
                 .setCompletion((ApiCompletion<AppToken>) result -> {
@@ -46,4 +48,22 @@ public class AppTokenServiceImpl {
 
         return appTokenResponse;
     }
+
+    // delete
+    public static Response<Boolean> delete(Client client, String id) {
+        DeleteAppTokenBuilder deleteAppTokenBuilder = AppTokenService.delete(id)
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    booleanResponse = result;
+                    done.set(true);
+                });
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(deleteAppTokenBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return booleanResponse;
+    }
+
+    // startSession
+
 }
