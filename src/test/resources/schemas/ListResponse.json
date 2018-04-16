@@ -35,6 +35,9 @@
               },
               {
                 "$ref": "Asset.json#/definitions/Asset"
+              },
+              {
+                "$ref": "HouseholdDevice.json#/definitions/HouseholdDevice"
               }
             ]
           }
@@ -46,6 +49,7 @@
         "objectType": {
           "type": "string",
           "enum": [
+            "KalturaHouseholdDeviceListResponse",
             "KalturaAssetListResponse",
             "KalturaEntitlementListResponse",
             "KalturaBillingTransactionListResponse",
