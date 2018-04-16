@@ -248,6 +248,7 @@ public class GrantTests extends BaseTest {
         EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
     }
 
+    // TODO: 4/16/2018 finish negative scenarios 
 //    @Test(description = "entitlement/action/grant - ppv - error 6001")
 //    @Test(description = "entitlement/action/grant - ppv - error 3021")
 //    @Test(description = "entitlement/action/grant - subscription - error 3024")
