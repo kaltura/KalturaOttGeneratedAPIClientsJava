@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -123,4 +124,13 @@ public class BaseUtils {
         }
         return exceptions;
     }
+
+//    public static MediaAsset getSharedMediaAsset() {
+//        if (mediaAsset == null) {
+//            mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+//                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+//            System.out.println("INGESTED VOD: " + mediaAsset.getId());
+//        }
+//        return mediaAsset;
+//    }
 }
