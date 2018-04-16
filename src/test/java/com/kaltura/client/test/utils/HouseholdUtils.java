@@ -2,16 +2,11 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.servicesImpl.HouseholdDeviceServiceImpl;
-import com.kaltura.client.test.servicesImpl.HouseholdPaymentGatewayServiceImpl;
-import com.kaltura.client.test.servicesImpl.HouseholdServiceImpl;
-import com.kaltura.client.test.servicesImpl.HouseholdUserServiceImpl;
+import com.kaltura.client.test.servicesImpl.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
-
 import java.util.List;
 import java.util.Random;
-
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
@@ -65,6 +60,12 @@ public class HouseholdUtils extends BaseUtils {
             HouseholdDeviceServiceImpl.add(client, householdDevice);
         }
 
+        // login as Master with Udid
+        if (numberOfDevicesInHousehold > 0) {
+            List<HouseholdDevice> householdDevices = getDevicesListFromHouseHold(household);
+            OttUserServiceImpl.login(client, PARTNER_ID, masterUser.getUsername(), GLOBAL_USER_PASSWORD, null, householdDevices.get(0).getUdid());
+        }
+
         if (isPreparePG) {
             // TODO: there should be added logic with getting and using default PG currently it all hardcoded
             client = getClient(null);
@@ -74,6 +75,15 @@ public class HouseholdUtils extends BaseUtils {
         }
 
         return household;
+    }
+
+    // get users list from given household
+    public static List<HouseholdDevice> getDevicesListFromHouseHold(Household household) {
+        Client client = getClient(administratorKs);
+        HouseholdDeviceFilter filter = new HouseholdDeviceFilter();
+        filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
+        Response<ListResponse<HouseholdDevice>> devicesResponse = HouseholdDeviceServiceImpl.list(client, filter);
+        return devicesResponse.results.getObjects();
     }
 
     // get users list from given household

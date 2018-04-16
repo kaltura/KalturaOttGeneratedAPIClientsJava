@@ -5,7 +5,6 @@ import com.kaltura.client.enums.*;
 import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
 import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.IngestEPGUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -61,12 +60,13 @@ public class ListTests extends BaseTest {
     }
 
     @Description("productPrice/action/list - ppv test")
-    @Test(enabled = false) // as failed
+    @Test()
     public void ppvTest() {
         /*Ppv ppv = IngestPPVUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
                 Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(ONE_DAY_USAGE_MODULE), false, false,
                 getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
 
+        // TODO: after fix of BEO-4967 change HouseholdDevice.json to have only 1 enum value in objectType
         client.setKs(sharedMasterUserKs);
 
         Response<ListResponse<Entitlement>> entitlementListBeforePurchase = EntitlementServiceImpl.list(client, entitlementPpvsFilter, null);
