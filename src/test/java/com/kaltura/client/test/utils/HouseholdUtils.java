@@ -3,6 +3,7 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.Client;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.servicesImpl.HouseholdDeviceServiceImpl;
+import com.kaltura.client.test.servicesImpl.HouseholdPaymentGatewayServiceImpl;
 import com.kaltura.client.test.servicesImpl.HouseholdServiceImpl;
 import com.kaltura.client.test.servicesImpl.HouseholdUserServiceImpl;
 import com.kaltura.client.types.*;
@@ -18,6 +19,7 @@ import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.tests.BaseTest.administratorKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
+import static com.kaltura.client.test.tests.BaseTest.operatorKs;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class HouseholdUtils extends BaseUtils {
@@ -65,7 +67,11 @@ public class HouseholdUtils extends BaseUtils {
         }
 
         if (isPreparePG) {
-            
+            // TODO: there should be added logic with getting and using default PG currently it all hardcoded
+            client = getClient(null);
+            client.setKs(operatorKs);
+            client.setUserId(Integer.valueOf(masterUser.getId()));
+            HouseholdPaymentGatewayServiceImpl.setChargeId(client,"0110151474255957105", "1234");
         }
 
         householdResponse = HouseholdServiceImpl.get(client, null);

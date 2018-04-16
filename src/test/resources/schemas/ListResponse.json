@@ -32,6 +32,9 @@
               },
               {
                 "$ref": "Bookmark.json#/definitions/Bookmark"
+              },
+              {
+                "$ref": "Asset.json#/definitions/Asset"
               }
             ]
           }
@@ -43,6 +46,7 @@
         "objectType": {
           "type": "string",
           "enum": [
+            "KalturaAssetListResponse",
             "KalturaEntitlementListResponse",
             "KalturaBillingTransactionListResponse",
             "KalturaHouseholdUserListResponse",

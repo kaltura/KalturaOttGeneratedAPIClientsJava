@@ -35,14 +35,17 @@ public class PurchaseUtils {
         filter.setFileIdIn(String.valueOf(internalFileId));
         filter.setIsLowest(false);
         Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(client, filter);
-//        String currency = inCurrency.isPresent() ? inCurrency.get() : productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getCurrency();
         double price = productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getAmount();
         String ppvModuleId = ((PpvPrice)productPriceListBeforePurchase.results.getObjects().get(0)).getPpvModuleId();
 
         Purchase purchase = new Purchase();
         purchase.setProductId(Integer.valueOf(ppvModuleId));
         purchase.setContentId(internalFileId);
-        purchase.setCurrency(client.getCurrency());
+        String currency = client.getCurrency();
+        if (client.getCurrency() == null || client.getCurrency().isEmpty()) {
+            currency = productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getCurrency();
+        }
+        purchase.setCurrency(currency);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.PPV).get());
         purchase.setPaymentGatewayId(Optional.of(paymentGatewayId).get());

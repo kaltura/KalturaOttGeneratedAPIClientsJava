@@ -30,6 +30,7 @@
         },
         "objectType": {
           "type": "string",
+          "enum": ["AppToken"],
           "minLength": 0
         }
       },

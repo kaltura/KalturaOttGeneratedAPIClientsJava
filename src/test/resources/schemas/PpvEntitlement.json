@@ -97,7 +97,7 @@
         "purchaseId",
         "paymentMethod",
         "deviceUdid",
-        "deviceName",
+        //"deviceName",
         "isCancelationWindowEnabled",
         "maxUses",
         "isRenewable",
