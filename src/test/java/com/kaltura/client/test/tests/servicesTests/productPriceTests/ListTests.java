@@ -5,6 +5,7 @@ import com.kaltura.client.enums.*;
 import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
 import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.IngestEPGUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -31,6 +32,9 @@ public class ListTests extends BaseTest {
         entitlementPpvsFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         entitlementPpvsFilter.setIsExpiredEqual(false);
 
+        /*Response<ListResponse<Asset>> ingestedProgrammes = IngestEPGUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
+                Optional.of("minutes"), Optional.empty(), Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty());
+        System.out.println("ID:" + ingestedProgrammes.results.getObjects().get(0).getId());*/
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")
@@ -58,7 +62,7 @@ public class ListTests extends BaseTest {
 
     @Description("productPrice/action/list - ppv test")
     @Test(enabled = false) // as failed
-    public void ppv() {
+    public void ppvTest() {
         /*Ppv ppv = IngestPPVUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
                 Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(ONE_DAY_USAGE_MODULE), false, false,
                 getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
