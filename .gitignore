@@ -7,3 +7,4 @@ src/test/java/resources/test.properties
 allure-results/
 .allure/
 log4j.log
+src/test/resources/test.properties
