@@ -60,7 +60,6 @@ public class AddTests extends BaseTest {
     @Description("bookmark/action/add - first play")
     @Test
     private void firstPlayback() {
-
         // Invoke bookmark/action/add request
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
         // Verify response return true
@@ -196,8 +195,8 @@ public class AddTests extends BaseTest {
     @Description("bookmark/action/add - empty asset id")
     @Test
     private void emptyAssetId() {
-        bookmark = BookmarkUtils.addBookmark(0, null, fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
+        Bookmark bookmark1 = BookmarkUtils.addBookmark(0, null, fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
+        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark1);
         assertThat(booleanResponse.results).isNull();
         // Verify exception returned - code: 500003 ("Invalid Asset id")
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500003).getCode());

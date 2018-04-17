@@ -2,10 +2,12 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
+import com.kaltura.client.types.MediaAsset;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,6 +19,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kaltura.client.test.Properties.API_URL_VERSION;
+import static com.kaltura.client.test.tests.BaseTest.mediaAsset;
 
 public class BaseUtils {
 
@@ -123,4 +126,33 @@ public class BaseUtils {
         }
         return exceptions;
     }
+
+    // utils for baseTest
+    public static MediaAsset getSharedMediaAsset() {
+        if (mediaAsset == null) {
+            mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            System.out.println("INGESTED VOD: " + mediaAsset.getId());
+        }
+        return mediaAsset;
+    }
+
+//    private void getSharedHousehold() {
+//        sharedHousehold = createHouseHold(2, 2, true);
+//        List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
+//        for (HouseholdUser user : sharedHouseholdUsers) {
+//            if (user.getIsMaster() != null && user.getIsMaster()) {
+//                sharedMasterUser = user;
+//            }
+//            if (user.getIsMaster() == null && user.getIsDefault() == null) {
+//                sharedUser = user;
+//            }
+//        }
+//
+//        Response<LoginResponse> loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
+//        sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
+//
+//        loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
+//        sharedUserKs = loginResponse.results.getLoginSession().getKs();
+//    }
 }
