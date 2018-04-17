@@ -162,7 +162,14 @@ public class EntitlementServiceImpl {
     }
 
     // cancelRenewal
-    // TODO: 4/10/2018 implement cancelRenewal function and check why it returns Response<Void>
+    public static void cancelRenewal(Client client, String subscriptionId) {
+        CancelRenewalEntitlementBuilder cancelRenewalEntitlementBuilder = EntitlementService.cancelRenewal(subscriptionId);
+        cancelRenewalEntitlementBuilder.setCompletion((ApiCompletion<Void>) result -> done.set(true));
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(cancelRenewalEntitlementBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+    }
 }
 
 
