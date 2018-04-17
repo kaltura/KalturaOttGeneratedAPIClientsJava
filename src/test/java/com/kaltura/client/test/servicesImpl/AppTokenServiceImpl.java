@@ -4,6 +4,7 @@ import com.kaltura.client.Client;
 import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.AppToken;
+import com.kaltura.client.types.SessionInfo;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -15,11 +16,11 @@ import static org.awaitility.Awaitility.await;
 public class AppTokenServiceImpl {
 
     private static final AtomicBoolean done = new AtomicBoolean(false);
-
     private static Response<AppToken> appTokenResponse;
     private static Response<Boolean> booleanResponse;
+    private static Response<SessionInfo> sessionInfoResponse;
 
-    // add
+    // AppToken/action/add
     public static Response<AppToken> add(Client client, AppToken appToken) {
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
                 .setCompletion((ApiCompletion<AppToken>) result -> {
@@ -34,7 +35,7 @@ public class AppTokenServiceImpl {
         return appTokenResponse;
     }
 
-    // get
+    //AppToken/acton/get
     public static Response<AppToken> get(Client client, String id) {
         GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(id)
                 .setCompletion((ApiCompletion<AppToken>) result -> {
@@ -49,7 +50,7 @@ public class AppTokenServiceImpl {
         return appTokenResponse;
     }
 
-    // delete
+    // AppToken/action/delete
     public static Response<Boolean> delete(Client client, String id) {
         DeleteAppTokenBuilder deleteAppTokenBuilder = AppTokenService.delete(id)
                 .setCompletion((ApiCompletion<Boolean>) result -> {
@@ -64,6 +65,18 @@ public class AppTokenServiceImpl {
         return booleanResponse;
     }
 
-    // startSession
+    //AppToken/action/startSession
+    public static Response<SessionInfo> startSession(Client client, String id, String hashToken, String userId, int expiry, String udid) {
+        StartSessionAppTokenBuilder startSessionAppTokenBuilder = AppTokenService.startSession(id, hashToken, userId, expiry, udid)
+                .setCompletion((ApiCompletion<SessionInfo>) result -> {
+                    sessionInfoResponse = result;
+                    done.set(true);
+                });
 
+        TestAPIOkRequestsExecutor.getExecutor().queue(startSessionAppTokenBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return sessionInfoResponse;
+    }
 }

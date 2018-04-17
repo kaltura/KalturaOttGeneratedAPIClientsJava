@@ -1,8 +1,7 @@
 {
   "$id": "HouseholdDevice",
-  "type": "object",
-  "properties": {
-    "result": {
+  "definitions": {
+    "HouseholdDevice": {
       "type": "object",
       "properties": {
         "householdId": {
@@ -35,7 +34,7 @@
         },
         "objectType": {
           "type": "string",
-          "enum": ["KalturaHouseholdDevice"]
+          "enum": ["KalturaDevice", "KalturaHouseholdDevice"]
         }
       },
       "required": [
@@ -48,12 +47,19 @@
         "status",
         "objectType"
       ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/HouseholdDevice"
     },
     "executionTime": {
       "type": "number"
     }
   },
   "required": [
-    "result"
+    "result",
+    "executionTime"
   ]
 }

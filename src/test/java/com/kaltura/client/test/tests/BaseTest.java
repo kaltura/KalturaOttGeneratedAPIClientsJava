@@ -3,12 +3,17 @@ package com.kaltura.client.test.tests;
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
+import com.kaltura.client.test.utils.IngestVODUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
+<<<<<<< HEAD
 
+=======
+import java.util.List;
+import java.util.Optional;
+>>>>>>> master
 import java.util.concurrent.TimeUnit;
-
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.anonymousLogin;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
@@ -62,12 +67,8 @@ public class BaseTest {
         anonymousKs = loginSession.results.getKs();
 
         // Set project shared HH and users
-//        initSharedHousehold();
+//      initSharedHousehold();
         getSharedMediaAsset();
-
-//        mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-//                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-//        System.out.println("INGESTED VOD: " + mediaAsset.getId());
 
         Logger.getLogger(BaseTest.class).debug("Finish Setup!");
     }
