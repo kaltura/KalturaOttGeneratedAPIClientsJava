@@ -5,9 +5,11 @@ import com.kaltura.client.services.MetaService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Meta;
+import com.kaltura.client.types.MetaFilter;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.MetaService.*;
@@ -21,8 +23,8 @@ public class MetaServiceImpl {
     private static Response<Meta> metaResponse;
 
     // list
-    public static Response<ListResponse<Meta>> list(Client client) {
-        ListMetaBuilder listMetaBuilder = MetaService.list()
+    public static Response<ListResponse<Meta>> list(Client client, @Nullable MetaFilter metaFilter) {
+        ListMetaBuilder listMetaBuilder = MetaService.list(metaFilter)
                 .setCompletion((ApiCompletion<ListResponse<Meta>>) result -> {
                     metaListResponse = result;
                     done.set(true);
