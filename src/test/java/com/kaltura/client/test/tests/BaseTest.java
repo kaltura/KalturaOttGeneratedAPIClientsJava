@@ -18,6 +18,7 @@ public class BaseTest {
 
     private static Configuration config;
 
+    // shared ks's
     public static String administratorKs, operatorKs, managerKs, anonymousKs;
 
     // shared household
