@@ -20,8 +20,8 @@ public class NotificationServiceImpl {
 
     private static final AtomicBoolean done = new AtomicBoolean(false);
 
-    private static Response<Boolean> booleanResponse;
     private static Response<RegistryResponse> registryResponse;
+    private static Response<Boolean> booleanResponse;
 
     // register
     public static Response<RegistryResponse> register(Client client, String identifier, NotificationType notificationType) {
