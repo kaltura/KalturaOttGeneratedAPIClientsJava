@@ -12,6 +12,7 @@ public class BaseServiceImpl {
 
     protected static final AtomicBoolean done = new AtomicBoolean(false);
 
+    // TODO: 4/22/2018 use executeRequest() method in all services and check behavior in parallel execution
     static void executeRequest(Client client, RequestBuilder requestBuilder) {
         TestAPIOkRequestsExecutor.getExecutor().queue(requestBuilder.build(client));
         await().untilTrue(done);
