@@ -41,10 +41,11 @@ public class SessionServiceImpl {
 
     // revoke
     public static Response<Boolean> revoke(Client client) {
-        RevokeSessionBuilder revokeSessionBuilder = SessionService.revoke().setCompletion((ApiCompletion<Boolean>) result -> {
-            booleanResponse = result;
-            done.set(true);
-        });
+        RevokeSessionBuilder revokeSessionBuilder = SessionService.revoke()
+                .setCompletion((ApiCompletion<Boolean>) result -> {
+                    booleanResponse = result;
+                    done.set(true);
+                });
 
         TestAPIOkRequestsExecutor.getExecutor().queue(revokeSessionBuilder.build(client));
         await().untilTrue(done);
