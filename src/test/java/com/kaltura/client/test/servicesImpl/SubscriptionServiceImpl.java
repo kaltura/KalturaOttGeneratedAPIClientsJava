@@ -3,6 +3,7 @@ package com.kaltura.client.test.servicesImpl;
 import com.kaltura.client.Client;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
+import com.kaltura.client.types.Coupon;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
@@ -11,6 +12,7 @@ import com.kaltura.client.utils.response.base.Response;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.kaltura.client.services.SubscriptionService.*;
 import static com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
 import static org.awaitility.Awaitility.await;
 
@@ -19,6 +21,7 @@ public class SubscriptionServiceImpl {
     private static final AtomicBoolean done = new AtomicBoolean(false);
 
     private static Response<ListResponse<Subscription>> subscriptionListResponse;
+    private static Response<Coupon> couponResponse;
 
     // list
     public static Response<ListResponse<Subscription>> list(Client client, SubscriptionFilter subscriptionFilter) {
@@ -35,5 +38,18 @@ public class SubscriptionServiceImpl {
         return subscriptionListResponse;
     }
 
-// validateCoupon
+    // validateCoupon
+    public static Response<Coupon> validateCoupon(Client client, int id, String code) {
+        ValidateCouponSubscriptionBuilder validateCouponSubscriptionBuilder = SubscriptionService.validateCoupon(id, code)
+                .setCompletion((ApiCompletion<Coupon>) result -> {
+                    couponResponse = result;
+                    done.set(true);
+                });
+
+        TestAPIOkRequestsExecutor.getExecutor().queue(validateCouponSubscriptionBuilder.build(client));
+        await().untilTrue(done);
+        done.set(false);
+
+        return couponResponse;
+    }
 }

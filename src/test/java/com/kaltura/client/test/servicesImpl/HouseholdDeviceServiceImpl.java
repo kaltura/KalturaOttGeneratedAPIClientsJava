@@ -40,8 +40,8 @@ public class HouseholdDeviceServiceImpl {
     }
 
     // list
-    public static Response<ListResponse<HouseholdDevice>> list(Client client, HouseholdDeviceFilter filter) {
-        ListHouseholdDeviceBuilder listHouseholdDeviceBuilder = HouseholdDeviceService.list(filter)
+    public static Response<ListResponse<HouseholdDevice>> list(Client client, HouseholdDeviceFilter householdDeviceFilter) {
+        ListHouseholdDeviceBuilder listHouseholdDeviceBuilder = HouseholdDeviceService.list(householdDeviceFilter)
                 .setCompletion((ApiCompletion<ListResponse<HouseholdDevice>>) result -> {
                     householdDevicesListResponse = result;
                     done.set(true);
