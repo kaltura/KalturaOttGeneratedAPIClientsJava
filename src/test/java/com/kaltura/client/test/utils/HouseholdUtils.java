@@ -5,9 +5,12 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.test.servicesImpl.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
@@ -72,7 +75,7 @@ public class HouseholdUtils extends BaseUtils {
             client = getClient(null);
             client.setKs(operatorKs);
             client.setUserId(Integer.valueOf(masterUser.getId()));
-            HouseholdPaymentGatewayServiceImpl.setChargeId(client,"0110151474255957105", "1234");
+            HouseholdPaymentGatewayServiceImpl.setChargeId(client, "0110151474255957105", "1234");
         }
 
         return household;
@@ -139,5 +142,17 @@ public class HouseholdUtils extends BaseUtils {
         }
         users.removeAll(usersToRemove);
         return users;
+    }
+
+    // Get master KS by providing household object
+    public static String getHouseholdMasterUserKs(Household household, @Nullable String udid) {
+        HouseholdUser masterUser = getMasterUserFromHousehold(household);
+        return OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+    }
+
+    // Get regular user KS by providing household object
+    public static String getHouseholdUserKs(Household household, @Nullable String udid) {
+        HouseholdUser user = getRegularUsersListFromHouseHold(household).get(0);
+        return OttUserUtils.getKs(Integer.parseInt(user.getUserId()), udid);
     }
 }

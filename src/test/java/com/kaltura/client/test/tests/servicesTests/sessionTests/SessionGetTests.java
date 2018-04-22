@@ -1,4 +1,4 @@
-package com.kaltura.client.test.tests.sessionTests;
+package com.kaltura.client.test.tests.servicesTests.sessionTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.test.Properties;
@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetTests extends BaseTest {
+public class SessionGetTests extends BaseTest {
 
     private Client client;
 

@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DeleteTests extends BaseTest {
+public class AppTokenDeleteTests extends BaseTest {
 
     private AppTokenHashType hashType;
     private String sessionUserId;

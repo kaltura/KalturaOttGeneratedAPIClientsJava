@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StartSessionTests extends BaseTest {
+public class AppTokenStartSessionTests extends BaseTest {
 
     private AppTokenHashType hashType;
     private String sessionUserId = "1577578";

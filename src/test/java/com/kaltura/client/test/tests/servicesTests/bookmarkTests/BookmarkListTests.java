@@ -21,7 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ListTests extends BaseTest {
+public class BookmarkListTests extends BaseTest {
 
     private Client client;
     private String assetId;

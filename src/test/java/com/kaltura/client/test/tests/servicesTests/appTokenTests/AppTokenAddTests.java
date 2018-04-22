@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AddTests extends BaseTest {
+public class AppTokenAddTests extends BaseTest {
 
     private AppTokenHashType hashType;
     private String sessionUserId = "1577578";
