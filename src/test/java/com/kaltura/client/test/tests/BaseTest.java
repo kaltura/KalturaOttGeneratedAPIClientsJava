@@ -12,17 +12,13 @@ import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.anonymousLogin;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
-import static com.kaltura.client.test.utils.BaseUtils.getSharedMediaAsset;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
-    private static Client client;
     private static Configuration config;
 
-    private Response<LoginResponse> loginResponse;
-    private Response<LoginSession> loginSession;
-
+    // shared ks's
     public static String administratorKs, operatorKs, managerKs, anonymousKs;
 
     // shared household
@@ -42,36 +38,39 @@ public class BaseTest {
         config.setEndpoint(API_BASE_URL + "/" + API_URL_VERSION);
         config.setAcceptGzipEncoding(false);
 
-        // set client
-        client = getClient(null);
-
         // Set default awaitility timeout
         setDefaultTimeout(20, TimeUnit.SECONDS);
 
-        // Login with shared users
+        // TODO: 4/17/2018 move init functions to the relevant used places instead calling it in beforeSuite
+        initGlobalUsersKs();
+//        getSharedHousehold();
+//        getSharedMediaAsset();
+
+        Logger.getLogger(BaseTest.class).debug("Finish Setup!");
+    }
+
+    public static Client getClient(String ks) {
+        Client client = new Client(config);
+        client.setApiVersion(API_REQUEST_VERSION);
+        client.setKs(ks);
+        return client;
+    }
+
+    private void initGlobalUsersKs() {
+        Client client = getClient(null);
+        Response<LoginResponse> loginResponse;
+        Response<LoginSession> loginSession;
+
         loginResponse = login(client, PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
         administratorKs = loginResponse.results.getLoginSession().getKs();
 
         loginResponse = login(client, PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
         operatorKs = loginResponse.results.getLoginSession().getKs();
 
-//        loginResponse = login(PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
-//        managerKs = loginResponse.results.getLoginSession().getKs();
+        loginResponse = login(client, PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
+        managerKs = loginResponse.results.getLoginSession().getKs();
 
         loginSession = anonymousLogin(client, PARTNER_ID, null);
         anonymousKs = loginSession.results.getKs();
-
-        // Set project shared HH and users
-//      initSharedHousehold();
-        getSharedMediaAsset();
-
-        Logger.getLogger(BaseTest.class).debug("Finish Setup!");
-    }
-
-    public static Client getClient(String ks) {
-        client = new Client(config);
-        client.setApiVersion(API_REQUEST_VERSION);
-        client.setKs(ks);
-        return client;
     }
 }
