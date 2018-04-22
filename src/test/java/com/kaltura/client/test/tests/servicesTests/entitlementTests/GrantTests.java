@@ -62,7 +62,7 @@ public class GrantTests extends BaseTest {
 
 
         // check transaction return in transactionHistory by user
-        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
+        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()),null));
         client.setUserId(null);
 
         BillingTransaction billingTransaction;
@@ -110,7 +110,7 @@ public class GrantTests extends BaseTest {
 
 
         // check transaction not return in transactionHistory by user
-        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
+        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()),null));
         client.setUserId(null);
 
         TransactionHistoryFilter transactionHistoryfilter = new TransactionHistoryFilter();
@@ -167,7 +167,7 @@ public class GrantTests extends BaseTest {
 
 
         // check transaction return in transactionHistory by user
-        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
+        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()),null));
         client.setUserId(null);
 
         BillingTransaction billingTransaction;
@@ -217,7 +217,7 @@ public class GrantTests extends BaseTest {
 
 
         // check transaction return in transactionHistory by user
-        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
+        client.setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()),null));
         client.setUserId(null);
 
         BillingTransaction billingTransaction;
