@@ -22,10 +22,10 @@ public class GetTests extends BaseTest {
     private String sessionPrivileges = "key1:value1,key2:value2";
     private AppTokenHashType hashType;
     public static Client client;
-    Long expiryDate;
-    int offSetInMinutes = 1;
-    int sessionDuration = 86400;
-    AppToken appToken;
+    private Long expiryDate;
+    private int offSetInMinutes = 1;
+    private int sessionDuration = 86400;
+    private AppToken appToken;
 
     @BeforeClass
     private void get_tests_before_class() {

@@ -15,6 +15,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetTests extends BaseTest {
@@ -41,7 +42,7 @@ public class GetTests extends BaseTest {
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
         assertThat(getSessionResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
         assertThat(getSessionResponse.results.getUserId()).isEqualTo(user.getUserId());
-        assertThat(getSessionResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(System.currentTimeMillis()/ 1000));
+        assertThat(getSessionResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(System.currentTimeMillis() / 1000));
         assertThat(getSessionResponse.results.getUdid()).isEqualTo(udid);
         assertThat(getSessionResponse.results.getCreateDate()).isGreaterThan(1523954068);
     }
@@ -69,4 +70,15 @@ public class GetTests extends BaseTest {
         assertThat(getSessionResponse.results.getUserId()).isEqualTo(SessionUtils.getUserIdByKs(operatorKs));
         assertThat(getSessionResponse.results.getUdid()).isEqualTo("");
     }
+
+    @Description("session/action/get - invalid ks")
+    @Test
+    private void getSessionWithInvalidSessionKs() {
+        client = getClient(administratorKs);
+        String session = operatorKs + 1;
+        Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
+
+        assertThat(getSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500015).getCode());
+    }
 }
+

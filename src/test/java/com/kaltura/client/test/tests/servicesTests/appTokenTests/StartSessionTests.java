@@ -106,4 +106,22 @@ public class StartSessionTests extends BaseTest {
 
         // TODO - Add session/action/get request with ks received from startSession API
     }
+
+    @Description("appToken/action/startSession - token id with default expiry date (according to the value in group_203 CB document" +
+            "OPEN BEO-4980")
+    @Test
+    private void startSessionDefaultExpiryDate() {
+        int expiryDate = 0;
+        BaseUtils.getSharedHousehold();
+        client = getClient(sharedMasterUserKs);
+        hashType = AppTokenHashType.SHA1;
+        appToken = AppTokenUtils.addAppToken(null, hashType, null, expiryDate);
+        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
+        client = getClient(anonymousKs);
+        String tokenHash = AppTokenUtils.getTokenHash(hashType, anonymousKs, appTokenResponse.results.getToken());
+        Response<SessionInfo> sessionInfoResponse = AppTokenServiceImpl.startSession(client, appTokenResponse.results.getId()
+                , tokenHash, null, expiryDate, udid1);
+
+        assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
+    }
 }
