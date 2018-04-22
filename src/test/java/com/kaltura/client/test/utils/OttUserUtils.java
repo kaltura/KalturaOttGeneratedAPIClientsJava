@@ -6,6 +6,7 @@ import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
@@ -44,10 +45,10 @@ public class OttUserUtils extends BaseUtils {
         return userResponse.results;
     }
 
-    public static String getKs(int userId) {
+    public static String getKs(int userId, @Nullable String udid) {
         Client client = getClient(null);
         OTTUser ottUser = getUserById(userId);
-        Response<LoginResponse > loginResponse = OttUserServiceImpl.login(client, PARTNER_ID, ottUser.getUsername(), GLOBAL_USER_PASSWORD, null, null);
+        Response<LoginResponse > loginResponse = OttUserServiceImpl.login(client, PARTNER_ID, ottUser.getUsername(), GLOBAL_USER_PASSWORD, null, udid);
         return loginResponse.results.getLoginSession().getKs();
     }
 }
