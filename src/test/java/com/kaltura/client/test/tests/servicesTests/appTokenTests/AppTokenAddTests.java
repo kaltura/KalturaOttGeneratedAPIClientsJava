@@ -93,6 +93,18 @@ public class AddTests extends BaseTest {
         assertThat(getAppTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
     }
 
+    @Description("appToken/action/add - with no expiry date (return default expiry date -" +
+            "According to app_token_max_expiry_seconds key value in group_203 CB document")
+    @Test
+    private void addAppTokenWithNoExpiryDate() {
+        client = getClient(sharedMasterUserKs);
+        int expiryDate = 0;
+        int cbExpiryDateValue = 2592000;
+        appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, expiryDate);
+        Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
+        assertThat(addAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(cbExpiryDateValue));
+    }
+
     @Description("appToken/action/add - with no specific user id")
     @Test
     private void addAppTokenWithoutSpecificUserId() {
