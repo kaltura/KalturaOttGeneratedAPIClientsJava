@@ -19,7 +19,7 @@ import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class AddTests extends BaseTest {
+public class BookmarkAddTests extends BaseTest {
 
     private Client client;
     private long assetId;

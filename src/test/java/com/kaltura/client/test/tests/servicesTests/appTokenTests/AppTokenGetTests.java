@@ -16,16 +16,16 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GetTests extends BaseTest {
+public class AppTokenGetTests extends BaseTest {
 
     final private String sessionUserId = "1577578";
     private String sessionPrivileges = "key1:value1,key2:value2";
     private AppTokenHashType hashType;
     public static Client client;
-    Long expiryDate;
-    int offSetInMinutes = 1;
-    int sessionDuration = 86400;
-    AppToken appToken;
+    private Long expiryDate;
+    private int offSetInMinutes = 1;
+    private int sessionDuration = 86400;
+    private AppToken appToken;
 
     @BeforeClass
     private void get_tests_before_class() {
