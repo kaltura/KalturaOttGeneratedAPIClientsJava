@@ -70,4 +70,27 @@ public class RatioService {
     public static ListRatioBuilder list()  {
 		return new ListRatioBuilder();
 	}
+	
+	public static class UpdateRatioBuilder extends RequestBuilder<Ratio, Ratio.Tokenizer, UpdateRatioBuilder> {
+		
+		public UpdateRatioBuilder(long id, Ratio ratio) {
+			super(Ratio.class, "ratio", "update");
+			params.add("id", id);
+			params.add("ratio", ratio);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update group ratio&amp;#39;s PrecisionPrecentage
+	 * 
+	 * @param id The ratio ID
+	 * @param ratio Ratio to update for the partner
+	 */
+    public static UpdateRatioBuilder update(long id, Ratio ratio)  {
+		return new UpdateRatioBuilder(id, ratio);
+	}
 }
