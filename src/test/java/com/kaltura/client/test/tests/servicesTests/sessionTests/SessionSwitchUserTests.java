@@ -2,15 +2,11 @@ package com.kaltura.client.test.tests.servicesTests.sessionTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.UserState;
-import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
-import com.kaltura.client.test.servicesImpl.SessionServiceImpl;
+import com.kaltura.client.test.servicesImpl.*;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.DBUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
-import com.kaltura.client.types.Household;
-import com.kaltura.client.types.LoginSession;
-import com.kaltura.client.types.OTTUser;
-import com.kaltura.client.types.Session;
+import com.kaltura.client.test.utils.OttUserUtils;
+import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
@@ -21,11 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionSwitchUserTests extends BaseTest {
 
+    private String UserId = "1543798";
+    private String userKs;
     public static Client client;
 
     @BeforeClass
     private void switchUser_tests_before_class() {
-
+        userKs = OttUserUtils.getKs(Integer.valueOf(UserId), null);
     }
 
     @Description("/session/action/switchUser")
@@ -85,7 +83,33 @@ public class SessionSwitchUserTests extends BaseTest {
     @Description("/session/action/switchUser - switch to inactive user")
     @Test
     private void SwitchInactiveUser() {
-        
+
+        String inactiveUserId = "1543797";
+        String UserKs = OttUserUtils.getKs(Integer.valueOf(UserId), null);
+        client = getClient(UserKs);
+
+        Response<LoginSession> loginSessionResponse = SessionServiceImpl.switchUser(client, inactiveUserId);
+        assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2016).getCode());
     }
 
+    @Description("/session/action/switchUser - switch to user from another HH")
+    @Test
+    private void switchToUserFromAnotherHousehold() {
+        String userIdFromHousehold1 = "1543798";
+        String Use1rKs = OttUserUtils.getKs(Integer.valueOf(userIdFromHousehold1), null);
+        client = getClient(Use1rKs);
+        String userIdFromHousehold2 = "638731";
+
+        Response<LoginSession> loginSessionResponse = SessionServiceImpl.switchUser(client, userIdFromHousehold2);
+        assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
+    }
+
+
+    @Description("/session/action/switchUser - No user id to switch provided")
+    @Test
+    private void switchToUserWithoutUserId() {
+        client = getClient(userKs);
+        Response<LoginSession> loginSessionResponse = SessionServiceImpl.switchUser(client, null);
+        assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500053).getCode());
+    }
 }
