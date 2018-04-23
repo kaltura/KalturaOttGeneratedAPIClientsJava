@@ -23,7 +23,6 @@ public class SessionRevokeTests extends BaseTest {
 
     @BeforeClass
     private void revoke_tests_before_class() {
-        udid = "123456789";
     }
 
 
@@ -31,6 +30,7 @@ public class SessionRevokeTests extends BaseTest {
     @Test
     private void RevokeKs() {
         Household household = HouseholdUtils.createHouseHold(2, 2, false);
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
         String masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
         String masterUserKs2 = HouseholdUtils.getHouseholdMasterUserKs(household, udid);
         client = getClient(masterUserKs);
