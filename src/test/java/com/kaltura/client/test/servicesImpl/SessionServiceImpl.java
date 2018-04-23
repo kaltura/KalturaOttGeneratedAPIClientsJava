@@ -12,8 +12,6 @@ import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.services.SessionService.*;
-import static com.kaltura.client.services.SessionService.GetSessionBuilder;
-import static com.kaltura.client.services.SessionService.RevokeSessionBuilder;
 import static org.awaitility.Awaitility.await;
 
 public class SessionServiceImpl {
