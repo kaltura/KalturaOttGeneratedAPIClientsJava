@@ -25,7 +25,7 @@ public class IngestPPVUtils extends BaseUtils {
         String discountValue = discount.orElseGet(() -> getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME));
         double priceValue = price.orElseGet(() -> Double.valueOf(getProperty(AMOUNT_4_99_EUR)));
         String currencyValue = currency.orElseGet(() -> getProperty(CURRENCY_EUR));
-        String usageModuleValue = usageModule.orElseGet(() -> getProperty(ONE_DAY_USAGE_MODULE));
+        String usageModuleValue = usageModule.orElseGet(() -> getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV));
         boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;
         boolean isFirstDeviceLimitationValue = isFirstDeviceLimitation.isPresent() ? isFirstDeviceLimitation.get() : false;
         String productCodeValue = productCode.orElseGet(() -> getProperty(DEFAULT_PRODUCT_CODE));
@@ -52,7 +52,8 @@ public class IngestPPVUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_USER_NAME) + "</tem:username><tem:password>" + getProperty(INGEST_USER_PASSWORD) + "</tem:password><tem:xml>" +
+                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_NAME) + "</tem:username><tem:password>" +
+                        getProperty(INGEST_BUSINESS_MODULE_USER_PASSWORD) + "</tem:password><tem:xml>" +
                 "         <![CDATA[" + buildIngestPpvXML(action, ppvCode, isActive, description, discount, price, currency,
                                         usageModule, isSubscriptionOnly, isFirstDeviceLimitation, productCode, firstFileType, secondFileType) +
                 "                 ]]></tem:xml></tem:IngestBusinessModules>\n" +
