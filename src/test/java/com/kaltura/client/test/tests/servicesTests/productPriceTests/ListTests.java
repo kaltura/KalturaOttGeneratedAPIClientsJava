@@ -40,6 +40,11 @@ public class ListTests extends BaseTest {
                 Optional.of(true), Optional.empty(), Optional.of("Camilo 5 min renews 4.99"), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.of(""), Optional.empty());
         Logger.getLogger(ListTests.class).debug("ID: " + subscription.getId());*/
+
+       /* PricePlan pricePlan = IngestPPUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
+        Logger.getLogger(ListTests.class).debug("ID: " + pricePlan.getId());*/
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")
