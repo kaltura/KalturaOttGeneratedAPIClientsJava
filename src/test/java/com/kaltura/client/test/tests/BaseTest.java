@@ -79,7 +79,7 @@ public class BaseTest {
             loginResponse = login(client, PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
             managerKs = loginResponse.results.getLoginSession().getKs();
         }
-        return operatorKs;
+        return managerKs;
     }
 
     public static String getAnonymousKs() {
@@ -87,7 +87,7 @@ public class BaseTest {
             Response<LoginSession> loginSession = anonymousLogin(client, PARTNER_ID, null);
             anonymousKs = loginSession.results.getKs();
         }
-        return operatorKs;
+        return anonymousKs;
     }
 
     public static MediaAsset getSharedMediaAsset() {

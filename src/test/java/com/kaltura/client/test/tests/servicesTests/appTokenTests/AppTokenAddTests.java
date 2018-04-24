@@ -24,7 +24,6 @@ public class AppTokenAddTests extends BaseTest {
     public static Client client;
     private String sessionPrivileges;
 
-
     @BeforeClass
     private void add_tests_before_class() {
         hashType = AppTokenHashType.SHA1;
@@ -36,9 +35,6 @@ public class AppTokenAddTests extends BaseTest {
     private void addAppToken() {
         client = getClient(getOperatorKs());
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
-
-        // Assertions
-        // ****************************
 
         // Verify no error returned
         assertThat(appTokenResponse.error).isNull();
