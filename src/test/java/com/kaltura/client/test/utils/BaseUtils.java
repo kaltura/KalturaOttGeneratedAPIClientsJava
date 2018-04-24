@@ -1,9 +1,7 @@
 package com.kaltura.client.test.utils;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.Logger;
-import com.kaltura.client.types.*;
-import com.kaltura.client.utils.response.base.Response;
+import com.kaltura.client.types.APIException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -20,13 +18,6 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kaltura.client.test.Properties.API_URL_VERSION;
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
-import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
-import static com.kaltura.client.test.tests.BaseTest.*;
-import static com.kaltura.client.test.utils.HouseholdUtils.createHouseHold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
-import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
 
 public class BaseUtils {
 
@@ -132,40 +123,5 @@ public class BaseUtils {
             }
         }
         return exceptions;
-    }
-
-    // utils for baseTest
-    public static MediaAsset getSharedMediaAsset() {
-        if (mediaAsset == null) {
-            mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-            System.out.println("INGESTED VOD: " + mediaAsset.getId());
-        }
-        return mediaAsset;
-    }
-
-    public static Household getSharedHousehold() {
-        Client client = getClient(null);
-
-        if (sharedHousehold == null) {
-            sharedHousehold = createHouseHold(2, 2, true);
-            List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
-            for (HouseholdUser user : sharedHouseholdUsers) {
-                if (user.getIsMaster() != null && user.getIsMaster()) {
-                    sharedMasterUser = user;
-                }
-                if (user.getIsMaster() == null && user.getIsDefault() == null) {
-                    sharedUser = user;
-                }
-            }
-
-            Response<LoginResponse> loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
-            sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
-
-            loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
-            sharedUserKs = loginResponse.results.getLoginSession().getKs();
-        }
-
-        return sharedHousehold;
     }
 }

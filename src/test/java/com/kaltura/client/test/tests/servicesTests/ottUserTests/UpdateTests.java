@@ -75,7 +75,7 @@ public class UpdateTests extends BaseTest {
         user.setLastName(newUserInfo);
 //        user.setAffiliateCode(null);
 
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         ottUserResponse = OttUserServiceImpl.update(client, user, user.getId());
 
         assertThat(ottUserResponse.error).isNull();

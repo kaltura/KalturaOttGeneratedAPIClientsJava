@@ -34,7 +34,7 @@ public class GetEncryptedUserIdTests extends BaseTest {
     @Description("ottUser/action/getEncryptedUserId - getEncryptedUserId")
     @Test
     private void getEncryptedUserId() {
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         client.setUserId(Integer.parseInt(user.getId()));
         stringValueResponse = OttUserServiceImpl.getEncryptedUserId(client);
 

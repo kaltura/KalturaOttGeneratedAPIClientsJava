@@ -23,7 +23,7 @@ public class ListTests extends BaseTest {
 
     @BeforeClass
     public void beforeClass() {
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
 
         entitlementPpvsFilter = new EntitlementFilter();
         entitlementPpvsFilter.setOrderBy(EntitlementOrderBy.PURCHASE_DATE_ASC.getValue());
@@ -40,6 +40,11 @@ public class ListTests extends BaseTest {
                 Optional.of(true), Optional.empty(), Optional.of("Camilo 5 min renews 4.99"), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.of(""), Optional.empty());
         Logger.getLogger(ListTests.class).debug("ID: " + subscription.getId());*/
+
+       /* PricePlan pricePlan = IngestPPUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
+        Logger.getLogger(ListTests.class).debug("ID: " + pricePlan.getId());*/
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")
@@ -73,14 +78,14 @@ public class ListTests extends BaseTest {
                 getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
 
         // TODO: after fix of BEO-4967 change HouseholdDevice.json to have only 1 enum value in objectType
-        client.setKs(sharedMasterUserKs);
+        client.setKs(getsharedMasterUserKs());
 
         Response<ListResponse<Entitlement>> entitlementListBeforePurchase = EntitlementServiceImpl.list(client, entitlementPpvsFilter, null);
         assertThat(entitlementListBeforePurchase.results.getTotalCount()).isEqualTo(0);
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
-        int webMediaFileId = mediaAsset.getMediaFiles().get(0).getId();
-        int mobileMediaFileId = mediaAsset.getMediaFiles().get(1).getId();
+        int webMediaFileId = getSharedMediaAsset().getMediaFiles().get(0).getId();
+        int mobileMediaFileId = getSharedMediaAsset().getMediaFiles().get(1).getId();
         ppFilter.setFileIdIn(String.valueOf(webMediaFileId));
         ppFilter.setIsLowest(false);
         Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(client, ppFilter);
@@ -96,7 +101,7 @@ public class ListTests extends BaseTest {
         System.out.println(entitlementListAfterPurchase.results.getTotalCount());
         assertThat(entitlementListAfterPurchase.results.getTotalCount()).isEqualTo(1);
         assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaFileId()).isEqualTo(webMediaFileId);
-        assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaId()).isEqualTo(mediaAsset.getId().intValue());
+        assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaId()).isEqualTo(getSharedMediaAsset().getId().intValue());
         assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getEndDate())
                 .isGreaterThan(entitlementListAfterPurchase.results.getObjects().get(0).getCurrentDate());
 

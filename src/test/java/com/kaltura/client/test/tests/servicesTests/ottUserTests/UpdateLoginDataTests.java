@@ -55,7 +55,7 @@ public class UpdateLoginDataTests extends BaseTest {
     @Description("ottUser/action/updateLoginData - updateLoginData with administratorKs")
     @Test
     private void updateLoginData_with_administratorKs() {
-        client = getClient(administratorKs);
+        client = getClient(getAdministratorKs());
 
         ottUserResponse = register(client, PARTNER_ID, generateOttUser(), password);
         OTTUser user = ottUserResponse.results;

@@ -38,7 +38,7 @@ public class AddRoleTests extends BaseTest {
     // TODO: 3/27/2018 finish and fix test 
     private void addRole() {
         // set client
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         client.setUserId(Integer.valueOf(user.getId()));
 
         OttUserServiceImpl.addRole(client, 3);

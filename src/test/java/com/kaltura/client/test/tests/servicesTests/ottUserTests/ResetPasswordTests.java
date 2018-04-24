@@ -34,7 +34,7 @@ public class ResetPasswordTests extends BaseTest {
     @Description("ottUser/action/resetPassword - resetPassword")
     @Test(enabled = false)
     private void resetPassword() {
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         booleanResponse = OttUserServiceImpl.resetPassword(client, PARTNER_ID, user.getUsername());
 
         assertThat(booleanResponse.error).isNull();

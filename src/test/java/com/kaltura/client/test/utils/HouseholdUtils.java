@@ -15,9 +15,7 @@ import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
-import static com.kaltura.client.test.tests.BaseTest.administratorKs;
-import static com.kaltura.client.test.tests.BaseTest.getClient;
-import static com.kaltura.client.test.tests.BaseTest.operatorKs;
+import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class HouseholdUtils extends BaseUtils {
@@ -73,7 +71,7 @@ public class HouseholdUtils extends BaseUtils {
         if (isPreparePG) {
             // TODO: there should be added logic with getting and using default PG currently it all hardcoded
             client = getClient(null);
-            client.setKs(operatorKs);
+            client.setKs(getOperatorKs());
             client.setUserId(Integer.valueOf(masterUser.getId()));
             HouseholdPaymentGatewayServiceImpl.setChargeId(client, "0110151474255957105", "1234");
         }
@@ -83,7 +81,7 @@ public class HouseholdUtils extends BaseUtils {
 
     // get users list from given household
     public static List<HouseholdDevice> getDevicesListFromHouseHold(Household household) {
-        Client client = getClient(administratorKs);
+        Client client = getClient(getAdministratorKs());
         HouseholdDeviceFilter filter = new HouseholdDeviceFilter();
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
         Response<ListResponse<HouseholdDevice>> devicesResponse = HouseholdDeviceServiceImpl.list(client, filter);
@@ -92,7 +90,7 @@ public class HouseholdUtils extends BaseUtils {
 
     // get users list from given household
     public static List<HouseholdUser> getUsersListFromHouseHold(Household household) {
-        Client client = getClient(administratorKs);
+        Client client = getClient(getAdministratorKs());
         HouseholdUserFilter filter = new HouseholdUserFilter();
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
         Response<ListResponse<HouseholdUser>> usersResponse = HouseholdUserServiceImpl.list(client, filter);

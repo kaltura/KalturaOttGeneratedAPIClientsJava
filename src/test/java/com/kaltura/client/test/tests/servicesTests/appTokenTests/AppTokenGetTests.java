@@ -29,7 +29,7 @@ public class AppTokenGetTests extends BaseTest {
 
     @BeforeClass
     private void get_tests_before_class() {
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
         hashType = AppTokenHashType.SHA1;
 
         expiryDate = BaseUtils.getTimeInEpoch(offSetInMinutes);

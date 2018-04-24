@@ -34,7 +34,7 @@ public class AppTokenAddTests extends BaseTest {
     @Description("appToken/action/add")
     @Test
     private void addAppToken() {
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
 
         // Assertions
@@ -55,7 +55,7 @@ public class AppTokenAddTests extends BaseTest {
     @Description("appToken/action/add - without hash type")
     @Test
     private void addAppTokenWithDefaultHashType() {
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, null, null);
         // Invoke AppToken/action/add - with no hash type (will return the default hash type)
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
@@ -66,7 +66,7 @@ public class AppTokenAddTests extends BaseTest {
     @Description("appToken/action/add - with privileges")
     @Test
     private void addAppTokenWithPrivileges() {
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
         sessionPrivileges = "key1:value1,key2:value2";
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, null);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
@@ -75,9 +75,9 @@ public class AppTokenAddTests extends BaseTest {
     }
 
     @Description("appToken/action/add - with expiry date")
-    @Test
+    @Test(groups = "slow")
     private void addAppTokenWithExpiryDate() {
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
         Long expiryDate = BaseUtils.getTimeInEpoch(1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
         Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
@@ -101,8 +101,8 @@ public class AppTokenAddTests extends BaseTest {
     @Test
     //todo - Add specific mark indicating the version of the feature
     private void addAppTokenWithNoExpiryDate() {
-        BaseUtils.getSharedHousehold();
-        client = getClient(sharedMasterUserKs);
+        getSharedHousehold();
+        client = getClient(getsharedMasterUserKs());
         int expiryDate = 0;
         //int cbExpiryDateValue = 2592000;
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, expiryDate);
@@ -113,7 +113,7 @@ public class AppTokenAddTests extends BaseTest {
     @Description("appToken/action/add - with no specific user id")
     @Test
     private void addAppTokenWithoutSpecificUserId() {
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, null);
         Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
         assertThat(addAppTokenResponse.error).isNull();
