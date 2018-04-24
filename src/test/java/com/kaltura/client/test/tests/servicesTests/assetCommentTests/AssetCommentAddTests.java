@@ -36,7 +36,7 @@ public class AssetCommentAddTests extends BaseTest {
         client = getClient(sharedMasterUserKs);
     }
 
-    @Description ("AssetComment/action/add - vod asset")
+    @Description("AssetComment/action/add - vod asset")
     @Test
     private void addCommentForVod() {
 
@@ -48,7 +48,7 @@ public class AssetCommentAddTests extends BaseTest {
         // AssetComment/action/add
         Response<AssetComment> assetCommentResponse = AssetCommentServiceImpl.add(client, assetComment);
 
-        //Assertions
+        //Assertions for AssetComment/action/add
         assertThat(assetCommentResponse.results.getId()).isGreaterThan(0);
         assertThat(assetCommentResponse.results.getAssetId()).isEqualTo(Math.toIntExact(assetId));
         assertThat(assetCommentResponse.results.getAssetType()).isEqualTo(AssetType.MEDIA);
@@ -60,34 +60,55 @@ public class AssetCommentAddTests extends BaseTest {
 
 
         //Initialize assetCommentFilter object
-        AssetCommentFilter assetCommentFilter = AssetCommentUtils.assetCommentFilter(Math.toIntExact(assetId),AssetType.MEDIA,
+        AssetCommentFilter assetCommentFilter = AssetCommentUtils.assetCommentFilter(Math.toIntExact(assetId), AssetType.MEDIA,
                 AssetCommentOrderBy.CREATE_DATE_DESC);
 
         //AssetComment/action/list
-        Response<ListResponse<AssetComment>> assetCommentListResponse =  AssetCommentServiceImpl.list(client,assetCommentFilter,null);
+        Response<ListResponse<AssetComment>> assetCommentListResponse = AssetCommentServiceImpl.list(client, assetCommentFilter, null);
         AssetComment assetCommentObjectResponse = assetCommentListResponse.results.getObjects().get(0);
+
         assertThat(assetCommentObjectResponse.getId()).isEqualTo(assetCommentResponse.results.getId());
-        assertThat(assetCommentObjectResponse.getAssetId()).isEqualTo(assetCommentListResponse.results.getObjects().get(0).getAssetId());
-        assertThat(assetCommentObjectResponse.getAssetType()).isEqualTo(AssetType.MEDIA);
-        assertThat(assetCommentObjectResponse.getSubHeader()).isEqualTo(subHeader);
-        assertThat(assetCommentObjectResponse.getHeader()).isEqualTo(header);
-        assertThat(assetCommentObjectResponse.getText()).isNotEqualTo(text);
-        assertThat(assetCommentObjectResponse.getWriter()).isEqualTo(writer);
+        assertThat(assetCommentObjectResponse.getAssetId()).isEqualTo(assetCommentResponse.results.getAssetId());
+        assertThat(assetCommentObjectResponse.getAssetType()).isEqualTo(assetCommentResponse.results.getAssetType());
+        assertThat(assetCommentObjectResponse.getSubHeader()).isEqualTo(assetCommentResponse.results.getSubHeader());
+        assertThat(assetCommentObjectResponse.getHeader()).isEqualTo(assetCommentResponse.results.getHeader());
+        assertThat(assetCommentObjectResponse.getText()).isEqualTo(assetCommentResponse.results.getText());
+        assertThat(assetCommentObjectResponse.getWriter()).isEqualTo(assetCommentResponse.results.getWriter());
         assertThat(assetCommentObjectResponse.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getTimeInEpoch(0));
     }
 
     @Description("AssetComment/action/add - EPG program")
     @Test
     private void addCommentForEPGProgram() {
+
+        // Ingest EPG program
         Response<ListResponse<Asset>> epgProgram = IngestEPGUtils.ingestEPG("Shmulik_Series_1", Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         Long epgProgramId = epgProgram.results.getObjects().get(0).getId();
+
+        // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(epgProgramId), AssetType.EPG, writer, text, createDate, subHeader, header);
-         Response<AssetComment> assetCommentResponse = AssetCommentServiceImpl.add(client, assetComment);
+
+        // AssetComment/action/add
+        Response<AssetComment> assetCommentResponse = AssetCommentServiceImpl.add(client, assetComment);
+
+        //Assertions for AssetComment/action/add
         assertThat(assetCommentResponse.results.getId()).isGreaterThan(0);
         assertThat(assetCommentResponse.results.getAssetId()).isEqualTo(Math.toIntExact(epgProgramId));
         assertThat(assetCommentResponse.results.getAssetType()).isEqualTo(AssetType.EPG);
 
+        //Initialize assetCommentFilter object
+        AssetCommentFilter assetCommentFilter = AssetCommentUtils.assetCommentFilter(Math.toIntExact(epgProgramId), AssetType.EPG,
+                AssetCommentOrderBy.CREATE_DATE_DESC);
+
+        //AssetComment/action/list
+        Response<ListResponse<AssetComment>> assetCommentListResponse = AssetCommentServiceImpl.list(client, assetCommentFilter, null);
+        AssetComment assetCommentObjectResponse = assetCommentListResponse.results.getObjects().get(0);
+
+        //Assertions for AssetComment/action/list
+        assertThat(assetCommentObjectResponse.getId()).isEqualTo(assetCommentResponse.results.getId());
+        assertThat(assetCommentObjectResponse.getAssetId()).isEqualTo(assetCommentResponse.results.getAssetId());
+        assertThat(assetCommentObjectResponse.getAssetType()).isEqualTo(assetCommentResponse.results.getAssetType());
     }
 
 
