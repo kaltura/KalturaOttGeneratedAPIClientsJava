@@ -22,6 +22,7 @@ public class DBUtils extends BaseUtils {
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
     private static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = %d AND [NAME] = '%S'";
 
+    //TODO - change existing methods to work with the new convertToJSON method
 
     // Return json array from DB
     public static JSONArray convertToJSON(String query) throws Exception {
