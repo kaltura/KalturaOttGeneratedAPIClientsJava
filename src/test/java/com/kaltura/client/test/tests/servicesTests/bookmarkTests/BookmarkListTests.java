@@ -35,7 +35,7 @@ public class BookmarkListTests extends BaseTest {
 
     @BeforeClass
     private void list_tests_before_class() {
-        client = getClient(sharedMasterUserKs);
+        client = getClient(getsharedMasterUserKs());
 
         assetId = "606283";
         List<Integer> assetFileIds = AssetUtils.getAssetFileIds(assetId);

@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.kaltura.client.test.tests.BaseTest.getClient;
-import static com.kaltura.client.test.tests.BaseTest.sharedMasterUserKs;
+import static com.kaltura.client.test.tests.BaseTest.getsharedMasterUserKs;
 
 public class AssetUtils extends BaseUtils {
 
     public static List<Integer> getAssetFileIds(String assetId) {
-        Client client = getClient(sharedMasterUserKs);
+        Client client = getClient(getsharedMasterUserKs());
 
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
         Response<Asset> assetResponse = AssetServiceImpl.get(client, assetId, assetReferenceType);

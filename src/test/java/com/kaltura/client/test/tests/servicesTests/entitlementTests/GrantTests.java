@@ -32,7 +32,7 @@ public class GrantTests extends BaseTest {
 
     @Test(description = "entitlement/action/grant - grant subscription with history = true")
     private void grant_subscription_with_history() {
-        Client client = getClient(administratorKs);
+        Client client = getClient(getAdministratorKs());
 
         // set household
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
@@ -88,14 +88,14 @@ public class GrantTests extends BaseTest {
 
 
         // force cancel subscription
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         client.setUserId(Integer.valueOf(user.getUserId()));
         EntitlementServiceImpl.forceCancel(client, subscriptionId, TransactionType.SUBSCRIPTION);
     }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = false")
     private void grant_subscription_without_history() {
-        Client client = getClient(administratorKs);
+        Client client = getClient(getAdministratorKs());
 
         // set household
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
@@ -129,14 +129,14 @@ public class GrantTests extends BaseTest {
 
 
         // force cancel subscription
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         client.setUserId(Integer.valueOf(user.getUserId()));
         EntitlementServiceImpl.forceCancel(client, subscriptionId, TransactionType.SUBSCRIPTION);
     }
 
     @Test(description = "entitlement/action/grant - grant ppv with history = true")
     private void grant_ppv_with_history() {
-        Client client = getClient(administratorKs);
+        Client client = getClient(getAdministratorKs());
         contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
 
         // set household
@@ -193,14 +193,14 @@ public class GrantTests extends BaseTest {
 
 
         // force cancel subscription
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         client.setUserId(Integer.valueOf(user.getUserId()));
         EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
     }
 
     @Test(description = "entitlement/action/grant - grant ppv with history = false")
     private void grant_ppv_without_history() {
-        Client client = getClient(administratorKs);
+        Client client = getClient(getAdministratorKs());
         contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
 
         // set household
@@ -243,7 +243,7 @@ public class GrantTests extends BaseTest {
 
 
         // force cancel subscription
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         client.setUserId(Integer.valueOf(user.getUserId()));
         EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
     }

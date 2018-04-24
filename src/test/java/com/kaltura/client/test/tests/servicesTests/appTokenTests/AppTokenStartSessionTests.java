@@ -37,7 +37,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         // Invoke ottUser/action/anonymousLogin to receive LoginSession object (and anonymous KS)
         Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, Properties.PARTNER_ID, udid1);
         anonymousKs = loginSessionResponse.results.getKs();
-        client.setKs(operatorKs);
+        client.setKs(getOperatorKs());
         expiryDate = BaseUtils.getTimeInEpoch(1);
     }
 
@@ -112,8 +112,8 @@ public class AppTokenStartSessionTests extends BaseTest {
     @Test
     private void startSessionDefaultExpiryDate() {
         int expiryDate = 0;
-        BaseUtils.getSharedHousehold();
-        client = getClient(sharedMasterUserKs);
+        getSharedHousehold();
+        client = getClient(getsharedMasterUserKs());
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(null, hashType, null, expiryDate);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);

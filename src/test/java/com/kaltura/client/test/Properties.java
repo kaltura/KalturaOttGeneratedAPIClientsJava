@@ -10,7 +10,7 @@ public class Properties {
     public static final String API_BASE_URL = "http://api-preprod.ott.kaltura.com"; // "http://34.249.122.223:8080"
     public static final String SOAP_BASE_URL = "http://api-preprod.ott.kaltura.com:8030"; // "http://34.249.122.223:8030";
     public static final String INGEST_REPORT_URL = "http://api-preprod.ott.kaltura.com:5823"; // "http://34.249.122.223:5823";
-    public static final String API_URL_VERSION = "v4_8";
+    public static final String API_URL_VERSION = "v4_8_1";
 
     // DB properties
     // TODO: 3/19/2018 encrypt db username and password in test.properties file

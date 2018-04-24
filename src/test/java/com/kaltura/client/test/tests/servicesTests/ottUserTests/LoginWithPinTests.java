@@ -35,7 +35,7 @@ public class LoginWithPinTests extends BaseTest {
         Response<OTTUser> ottUserResponse = register(emptyClient, PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
         user = ottUserResponse.results;
 
-        adminClient = getClient(administratorKs);
+        adminClient = getClient(getAdministratorKs());
         adminClient.setUserId(Integer.parseInt(user.getId()));
     }
 
@@ -65,7 +65,7 @@ public class LoginWithPinTests extends BaseTest {
     }
 
     @Description("ottUser/action/loginWithPin - loginWithPin with expired pinCode - error 2004")
-    @Test(enabled = true)
+    @Test(groups = "slow")
     private void loginWithPin_with_expired_pinCode() {
         userLoginPinResponse = UserLoginPinServiceImpl.add(adminClient, SECRET);
 

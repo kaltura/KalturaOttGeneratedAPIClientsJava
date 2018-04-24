@@ -11,7 +11,7 @@ import java.util.Random;
 
 import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
 import static com.kaltura.client.test.Properties.PARTNER_ID;
-import static com.kaltura.client.test.tests.BaseTest.administratorKs;
+import static com.kaltura.client.test.tests.BaseTest.getAdministratorKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
 
 public class OttUserUtils extends BaseUtils {
@@ -38,7 +38,7 @@ public class OttUserUtils extends BaseUtils {
     }
 
     public static OTTUser getUserById(int userId) {
-        Client client = getClient(administratorKs);
+        Client client = getClient(getAdministratorKs());
         client.setUserId(userId);
         Response<OTTUser> userResponse = OttUserServiceImpl.get(client);
 

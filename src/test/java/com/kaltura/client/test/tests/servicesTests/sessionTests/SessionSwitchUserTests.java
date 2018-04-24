@@ -56,7 +56,7 @@ public class SessionSwitchUserTests extends BaseTest {
         assertThat(ottUserResponse2.results.getId()).isEqualTo(secondUserId);
         assertThat(ottUserResponse2.results.getUserState()).isEqualTo(UserState.OK);
 
-        client = getClient(administratorKs);
+        client = getClient(getAdministratorKs());
         // Invoke session/action/get
         Response<Session> getSessionResponse = SessionServiceImpl.get(client, secondUserKs);
         // Verify second user id returned in the response

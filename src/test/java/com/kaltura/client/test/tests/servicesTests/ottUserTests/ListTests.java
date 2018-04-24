@@ -59,7 +59,7 @@ public class ListTests extends BaseTest {
         String idIn = householdUsers.get(0).getUserId() + "," + householdUsers.get(1).getUserId();
         filter.setIdIn(idIn);
 
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         householdUserListResponse = list(client, filter);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
@@ -77,7 +77,7 @@ public class ListTests extends BaseTest {
 
         filter.setUsernameEqual(usernameEqual);
 
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         householdUserListResponse = list(client, filter);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
@@ -94,7 +94,7 @@ public class ListTests extends BaseTest {
         filter.setIdIn(householdUsers.get(0).getUserId());
         filter.setUsernameEqual(getUserById(Integer.valueOf(householdUsers.get(1).getUserId())).getUsername());
 
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         householdUserListResponse = list(client, filter);
 
         assertThat(householdUserListResponse.results).isNull();
