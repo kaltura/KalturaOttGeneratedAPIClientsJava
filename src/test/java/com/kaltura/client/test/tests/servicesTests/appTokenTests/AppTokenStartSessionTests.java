@@ -48,6 +48,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         // Build appToken object
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
         // Invoke AppToken/action/add
+        client.setKs(operatorKs);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
         client.setKs(anonymousKs);
 
@@ -82,6 +83,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         // Build appToken object
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
         // Invoke AppToken/action/add
+        client.setKs(operatorKs);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
         client.setKs(anonymousKs);
         // Generate new token hash
@@ -93,8 +95,8 @@ public class AppTokenStartSessionTests extends BaseTest {
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
         assertThat(sessionInfoResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
         assertThat(sessionInfoResponse.results.getUserId()).isEqualTo(sessionUserId);
-        assertThat(sessionInfoResponse.results.getExpiry()).isEqualTo(expiryDate);
-        assertThat(sessionInfoResponse.results.getPrivileges()).isEqualTo(sessionPrivileges);
+        assertThat(sessionInfoResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
+        assertThat(sessionInfoResponse.results.getPrivileges()).contains(sessionPrivileges);
         assertThat(sessionInfoResponse.results.getUdid()).isEqualTo(udid1);
         assertThat(sessionInfoResponse.results.getCreateDate()).isNotZero();
 
