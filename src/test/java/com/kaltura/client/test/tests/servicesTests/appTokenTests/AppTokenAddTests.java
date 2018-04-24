@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AddTests extends BaseTest {
+public class AppTokenAddTests extends BaseTest {
 
     private AppTokenHashType hashType;
     private String sessionUserId = "1577578";
@@ -27,7 +27,6 @@ public class AddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        client = getClient(operatorKs);
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, null, null);
     }
@@ -35,6 +34,7 @@ public class AddTests extends BaseTest {
     @Description("appToken/action/add")
     @Test
     private void addAppToken() {
+        client = getClient(operatorKs);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
 
         // Assertions
@@ -55,6 +55,7 @@ public class AddTests extends BaseTest {
     @Description("appToken/action/add - without hash type")
     @Test
     private void addAppTokenWithDefaultHashType() {
+        client = getClient(operatorKs);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, null, null);
         // Invoke AppToken/action/add - with no hash type (will return the default hash type)
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
@@ -65,6 +66,7 @@ public class AddTests extends BaseTest {
     @Description("appToken/action/add - with privileges")
     @Test
     private void addAppTokenWithPrivileges() {
+        client = getClient(operatorKs);
         sessionPrivileges = "key1:value1,key2:value2";
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, null);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
@@ -75,12 +77,13 @@ public class AddTests extends BaseTest {
     @Description("appToken/action/add - with expiry date")
     @Test
     private void addAppTokenWithExpiryDate() {
+        client = getClient(operatorKs);
         Long expiryDate = BaseUtils.getTimeInEpoch(1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
         Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
         assertThat(addAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
 
-         // Wait until token is expired (according to expiry date)
+        // Wait until token is expired (according to expiry date)
         System.out.println("Waiting 1 minute until token expiry date reached");
 
         try {
@@ -97,18 +100,20 @@ public class AddTests extends BaseTest {
             "According to app_token_max_expiry_seconds key value in group_203 CB document")
     @Test
     private void addAppTokenWithNoExpiryDate() {
+        BaseUtils.getSharedHousehold();
         client = getClient(sharedMasterUserKs);
         int expiryDate = 0;
         int cbExpiryDateValue = 2592000;
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, expiryDate);
         Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
         assertThat(addAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(cbExpiryDateValue));
+
     }
 
     @Description("appToken/action/add - with no specific user id")
     @Test
     private void addAppTokenWithoutSpecificUserId() {
-
+        client = getClient(operatorKs);
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, null);
         Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
         assertThat(addAppTokenResponse.error).isNull();

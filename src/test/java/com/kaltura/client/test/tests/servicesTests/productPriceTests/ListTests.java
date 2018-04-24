@@ -34,6 +34,17 @@ public class ListTests extends BaseTest {
         /*Response<ListResponse<Asset>> ingestedProgrammes = IngestEPGUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
                 Optional.of("minutes"), Optional.empty(), Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty());
         System.out.println("ID:" + ingestedProgrammes.results.getObjects().get(0).getId());*/
+
+        /*Subscription subscription = IngestMPPUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.of(true), Optional.empty(), Optional.of("Camilo 5 min renews 4.99"), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.of(""), Optional.empty());
+        Logger.getLogger(ListTests.class).debug("ID: " + subscription.getId());*/
+
+       /* PricePlan pricePlan = IngestPPUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
+        Logger.getLogger(ListTests.class).debug("ID: " + pricePlan.getId());*/
     }
 
     @Description("productPrice/action/list - subscription test by Operator without currency")
@@ -63,7 +74,7 @@ public class ListTests extends BaseTest {
     @Test()
     public void ppvTest() {
         /*Ppv ppv = IngestPPVUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
-                Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(ONE_DAY_USAGE_MODULE), false, false,
+                Double.valueOf(getProperty(AMOUNT_4_99_EUR)), CURRENCY_EUR, getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV), false, false,
                 getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
 
         // TODO: after fix of BEO-4967 change HouseholdDevice.json to have only 1 enum value in objectType

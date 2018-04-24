@@ -46,23 +46,30 @@ public class Properties {
     // ingest
     public static final String INGEST_USER_NAME = "ingest_user_username";
     public static final String INGEST_USER_PASSWORD = "ingest_user_password";
+    public static final String INGEST_BUSINESS_MODULE_USER_NAME = "ingest_business_module_user_username";
+    public static final String INGEST_BUSINESS_MODULE_USER_PASSWORD = "ingest_business_module_user_password";
 
     public static final String INGEST_ACTION_INSERT = "insert";
 
     public static final String INGEST_VOD_DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
+
+    // channels
+    public static final String DEFAULT_CHANNEL = "default_channel"; // automatic channel with "Cut Tags Type"="Or", Tags "Series name"="Shay_Series;" and "Free"="Shay_Series;"
 
     // price codes
     public static final String AMOUNT_4_99_EUR = "amount_4_99_eur"; // 4.99
     public static final String CURRENCY_EUR = "EUR";
 
     // usage modules
-    public static final String ONE_DAY_USAGE_MODULE = "one_day_usage_module"; // module has 1 Day life cycles, 0 maximum views and 5 minute waiver
+    public static final String DEFAULT_USAGE_MODULE_4_INGEST_PPV = "default_usage_module_4_ingest_ppv"; // module has 10 Minutes life cycles, 0 maximum views
+    public static final String DEFAULT_USAGE_MODULE_4_INGEST_MPP = "default_usage_module_4_ingest_mpp"; // module has 1 Day life cycles, 0 maximum views
 
     // product codes
     public static final String DEFAULT_PRODUCT_CODE = "default_product_code";
 
     // discount modules
     public static final String FIFTY_PERCENTS_ILS_DISCOUNT_NAME = "fifty_percents_ils_discount_name";
+    public static final String HUNDRED_PERCENTS_UKP_DISCOUNT_NAME = "hundred_percents_ukp_discount_name";
 
     // PG adapter data
     public static final String PG_DEFAULT_ADAPTER_URL = "http://172.31.6.89:90/PGAdapter/Service.svc";
