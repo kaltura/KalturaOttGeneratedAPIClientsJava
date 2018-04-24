@@ -79,7 +79,7 @@ public class BaseTest {
             loginResponse = login(client, PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
             managerKs = loginResponse.results.getLoginSession().getKs();
         }
-        return operatorKs;
+        return managerKs;
     }
 
     public static String getAnonymousKs() {
@@ -87,7 +87,7 @@ public class BaseTest {
             Response<LoginSession> loginSession = anonymousLogin(client, PARTNER_ID, null);
             anonymousKs = loginSession.results.getKs();
         }
-        return operatorKs;
+        return anonymousKs;
     }
 
     public static MediaAsset getSharedMediaAsset() {
@@ -131,5 +131,15 @@ public class BaseTest {
     public static String getsharedUserKs() {
         if (sharedHousehold == null) getSharedHousehold();
         return sharedUserKs;
+    }
+
+    public static HouseholdUser getsharedMasterUser() {
+        if (sharedHousehold == null) getSharedHousehold();
+        return sharedMasterUser;
+    }
+
+    public static HouseholdUser getsharedUser() {
+        if (sharedHousehold == null) getSharedHousehold();
+        return sharedUser;
     }
 }
