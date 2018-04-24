@@ -132,4 +132,14 @@ public class BaseTest {
         if (sharedHousehold == null) getSharedHousehold();
         return sharedUserKs;
     }
+
+    public static HouseholdUser getsharedMasterUser() {
+        if (sharedHousehold == null) getSharedHousehold();
+        return sharedMasterUser;
+    }
+
+    public static HouseholdUser getsharedUser() {
+        if (sharedHousehold == null) getSharedHousehold();
+        return sharedUser;
+    }
 }
