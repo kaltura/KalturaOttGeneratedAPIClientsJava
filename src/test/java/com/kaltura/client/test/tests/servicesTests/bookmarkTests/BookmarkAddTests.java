@@ -5,7 +5,6 @@ import com.kaltura.client.enums.*;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
 import com.kaltura.client.test.servicesImpl.BookmarkServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.BookmarkUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -35,8 +34,8 @@ public class BookmarkAddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        BaseUtils.getSharedHousehold();
-        client = getClient(sharedMasterUserKs);
+        BaseTest.getSharedHousehold();
+        client = getClient(getsharedMasterUserKs());
         assetId = 608775;
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
         Response<Asset> assetResponse = AssetServiceImpl.get(client, String.valueOf(assetId), assetReferenceType);

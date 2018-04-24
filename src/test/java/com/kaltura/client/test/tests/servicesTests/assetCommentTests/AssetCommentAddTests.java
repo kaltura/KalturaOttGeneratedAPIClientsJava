@@ -32,15 +32,15 @@ public class AssetCommentAddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        BaseUtils.getSharedHousehold();
-        client = getClient(sharedMasterUserKs);
+        BaseTest.getSharedHousehold();
+        client = getClient(getsharedUserKs());
     }
 
     @Description("AssetComment/action/add - vod asset")
     @Test
     private void addCommentForVod() {
 
-        Long assetId = BaseUtils.getSharedMediaAsset().getId();
+        Long assetId = BaseTest.getSharedMediaAsset().getId();
 
         // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);

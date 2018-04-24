@@ -48,7 +48,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         // Build appToken object
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
         // Invoke AppToken/action/add
-        client.setKs(operatorKs);
+        client.setKs(getOperatorKs());
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
         client.setKs(anonymousKs);
 
@@ -83,7 +83,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         // Build appToken object
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
         // Invoke AppToken/action/add
-        client.setKs(operatorKs);
+        client.setKs(getOperatorKs());
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
         client.setKs(anonymousKs);
         // Generate new token hash

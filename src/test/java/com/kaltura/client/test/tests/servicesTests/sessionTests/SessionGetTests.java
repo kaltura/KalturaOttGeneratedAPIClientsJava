@@ -22,8 +22,6 @@ public class SessionGetTests extends BaseTest {
 
     private Client client;
 
-    long timeStampSeconds;
-
     @BeforeClass
     private void get_tests_before_class() {
 
@@ -51,7 +49,7 @@ public class SessionGetTests extends BaseTest {
     @Test
     private void getAnonymousUserSession() {
         client = getClient(getAdministratorKs());
-        String session = getAnonymousKs();
+        String session = BaseTest.getAnonymousKs();
         Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
 
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
