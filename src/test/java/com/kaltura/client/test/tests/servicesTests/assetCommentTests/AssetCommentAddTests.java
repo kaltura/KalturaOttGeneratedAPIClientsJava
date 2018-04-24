@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.assetCommentTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetCommentOrderBy;
-import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.test.servicesImpl.AssetCommentServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
@@ -24,11 +23,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AssetCommentAddTests extends BaseTest {
     private Client client;
-    String writer = "Shmulik";
-    Long createDate = 0L;
-    String header = "header";
-    String subHeader = "subHeader";
-    String text = "A lot of text";
+    private String writer = "Shmulik";
+    private Long createDate = 0L;
+    private String header = "header";
+    private String subHeader = "subHeader";
+    private String text = "A lot of text";
 
     @BeforeClass
     private void add_tests_before_class() {
@@ -77,6 +76,7 @@ public class AssetCommentAddTests extends BaseTest {
         assertThat(assetCommentObjectResponse.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getTimeInEpoch(0));
     }
 
+
     @Description("AssetComment/action/add - EPG program")
     @Test
     private void addCommentForEPGProgram() {
@@ -111,5 +111,6 @@ public class AssetCommentAddTests extends BaseTest {
         assertThat(assetCommentObjectResponse.getAssetType()).isEqualTo(assetCommentResponse.results.getAssetType());
     }
 
-
+    // todo - Add error validations tests
+     
 }
