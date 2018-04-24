@@ -37,11 +37,11 @@ public class BookmarkAddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        client = getClient(sharedMasterUserKs);
+        client = getClient(getsharedMasterUserKs());
 
         // Get VOD asset id from ingest
 
-        assetId = mediaAsset.getId();
+        assetId = getSharedMediaAsset().getId();
 
         type = AssetType.get(AssetType.MEDIA.getValue());
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
@@ -187,10 +187,7 @@ public class BookmarkAddTests extends BaseTest {
 
         // Verify finishedWatching = true
         assertThat(bookmark5.getFinishedWatching()).isTrue();
-
     }
-
-    // Error validations
 
     @Description("bookmark/action/add - empty asset id")
     @Test

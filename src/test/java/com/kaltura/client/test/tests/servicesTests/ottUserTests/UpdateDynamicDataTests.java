@@ -33,7 +33,7 @@ public class UpdateDynamicDataTests extends BaseTest {
     @Test
     private void updateDynamicData() {
         // set client
-        client.setKs(administratorKs);
+        client.setKs(getAdministratorKs());
         client.setUserId(Integer.valueOf(user.getId()));
 
         String keyString = "key1";

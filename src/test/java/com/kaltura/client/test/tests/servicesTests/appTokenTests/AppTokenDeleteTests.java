@@ -24,7 +24,7 @@ public class AppTokenDeleteTests extends BaseTest {
     @BeforeClass
     private void add_tests_before_class() {
         sessionUserId = "1577578";
-        client = getClient(operatorKs);
+        client = getClient(getOperatorKs());
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, null, null);
     }

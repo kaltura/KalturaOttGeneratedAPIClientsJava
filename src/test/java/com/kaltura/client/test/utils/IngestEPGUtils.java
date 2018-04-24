@@ -3,16 +3,20 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
-import com.kaltura.client.types.*;
+import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.SearchAssetFilter;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.anonymousKs;
+import static com.kaltura.client.test.tests.BaseTest.getAnonymousKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
 import static org.awaitility.Awaitility.await;
 
@@ -140,14 +144,14 @@ public class IngestEPGUtils extends BaseUtils {
         await().pollInterval(3, TimeUnit.SECONDS).atMost(60, TimeUnit.SECONDS)
                 .until(isDataReturned(epgChannelId, assetFilter, programCountValue*seasonCountValue));
 
-        Response<ListResponse<Asset>> ingestedProgrammes = AssetServiceImpl.list(getClient(anonymousKs), assetFilter, null);
+        Response<ListResponse<Asset>> ingestedProgrammes = AssetServiceImpl.list(getClient(getAnonymousKs()), assetFilter, null);
         // TODO: complete Asset.json at least for programs
         return ingestedProgrammes;
     }
 
     private static Callable<Boolean> isDataReturned(int epgChannelId, SearchAssetFilter assetFilter, int totalCount) {
-        return () -> (AssetServiceImpl.list(getClient(anonymousKs), assetFilter, null).error == null &&
-                AssetServiceImpl.list(getClient(anonymousKs), assetFilter, null).results.getTotalCount() == totalCount);
+        return () -> (AssetServiceImpl.list(getClient(getAnonymousKs()), assetFilter, null).error == null &&
+                AssetServiceImpl.list(getClient(getAnonymousKs()), assetFilter, null).results.getTotalCount() == totalCount);
     }
 
     private static String getChannelXML(int partnerId, String epgChannelName, String programsXml) {

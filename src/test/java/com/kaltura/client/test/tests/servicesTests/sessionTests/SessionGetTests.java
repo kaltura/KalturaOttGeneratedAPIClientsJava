@@ -32,7 +32,7 @@ public class SessionGetTests extends BaseTest {
     @Description("session/action/get - master user")
     @Test
     private void getMasterUserSession() {
-        client = getClient(administratorKs);
+        client = getClient(getAdministratorKs());
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
         HouseholdUser user = HouseholdUtils.getMasterUserFromHousehold(household);
         String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
@@ -50,8 +50,8 @@ public class SessionGetTests extends BaseTest {
     @Description("session/action/get - Anonymous user")
     @Test
     private void getAnonymousUserSession() {
-        client = getClient(administratorKs);
-        String session = anonymousKs;
+        client = getClient(getAdministratorKs());
+        String session = getAnonymousKs();
         Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
 
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
@@ -62,20 +62,20 @@ public class SessionGetTests extends BaseTest {
     @Description("session/action/get - operator user")
     @Test
     private void getOperatorUserSession() {
-        client = getClient(administratorKs);
-        String session = operatorKs;
+        client = getClient(getAdministratorKs());
+        String session = getOperatorKs();
         Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
 
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
-        assertThat(getSessionResponse.results.getUserId()).isEqualTo(SessionUtils.getUserIdByKs(operatorKs));
+        assertThat(getSessionResponse.results.getUserId()).isEqualTo(SessionUtils.getUserIdByKs(getOperatorKs()));
         assertThat(getSessionResponse.results.getUdid()).isEqualTo("");
     }
 
     @Description("session/action/get - invalid ks")
     @Test
     private void getSessionWithInvalidSessionKs() {
-        client = getClient(administratorKs);
-        String session = operatorKs + 1;
+        client = getClient(getAdministratorKs());
+        String session = getOperatorKs() + 1;
         Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
 
         assertThat(getSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500015).getCode());
