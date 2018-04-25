@@ -24,11 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BookmarkListTests extends BaseTest {
 
     private Client client;
-    private String assetId;
+    private Long assetId;
     private int fileId;
 
 
-    private String assetId2;
+    private Long assetId2;
     private int fileId2;
 
     private List <String> assetList = new ArrayList<>();
@@ -37,15 +37,15 @@ public class BookmarkListTests extends BaseTest {
     private void list_tests_before_class() {
         client = getClient(getsharedMasterUserKs());
 
-        assetId = "606283";
-        List<Integer> assetFileIds = AssetUtils.getAssetFileIds(assetId);
+        assetId = BaseTest.getSharedMediaAsset().getId();
+        List<Integer> assetFileIds = AssetUtils.getAssetFileIds(String.valueOf(assetId));
         fileId = assetFileIds.get(0);
-        assetList.add(assetId);
+        assetList.add(String.valueOf(assetId));
 
-        assetId2 = "606282";
-        List<Integer> asset2FileIds = AssetUtils.getAssetFileIds(assetId2);
+        assetId2 = BaseTest.getSharedMediaAsset().getId();
+        List<Integer> asset2FileIds = AssetUtils.getAssetFileIds(String.valueOf(assetId2));
         fileId2 = asset2FileIds.get(0);
-        assetList.add(assetId2);
+        assetList.add(String.valueOf(assetId2));
     }
 
     @Description("bookmark/action/list - order by")
@@ -54,12 +54,12 @@ public class BookmarkListTests extends BaseTest {
     private void BookmarkOrderBy() {
 
         // Bookmark asset1
-        Bookmark bookmark = BookmarkUtils.addBookmark(0, assetId, fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
+        Bookmark bookmark = BookmarkUtils.addBookmark(0, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
         // Bookmark asset2
-        Bookmark bookmark2 = BookmarkUtils.addBookmark(10, assetId2, fileId2, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
+        Bookmark bookmark2 = BookmarkUtils.addBookmark(10, String.valueOf(assetId2), fileId2, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
         Response<Boolean> booleanResponse2 = BookmarkServiceImpl.add(client, bookmark2);
         assertThat(booleanResponse2.results.booleanValue()).isTrue();
 

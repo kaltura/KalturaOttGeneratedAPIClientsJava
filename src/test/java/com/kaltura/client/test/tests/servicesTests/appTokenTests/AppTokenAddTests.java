@@ -19,8 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTokenAddTests extends BaseTest {
 
     private AppTokenHashType hashType;
-    // todo - replace hardcoded value with method
-    private String sessionUserId = "1577578";
+    private String sessionUserId = BaseTest.getsharedUser().getUserId();
     private AppToken appToken = new AppToken();
     public static Client client;
     private String sessionPrivileges;
