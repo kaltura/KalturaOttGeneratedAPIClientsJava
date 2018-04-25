@@ -16,6 +16,7 @@ import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GrantTests extends BaseTest {
@@ -25,8 +26,8 @@ public class GrantTests extends BaseTest {
     private final int ppvId = 30297;
     private final int assetId = 607368;
 
-    private int contentId;
-
+    private int contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
+    
     private Response<ListResponse<BillingTransaction>> billingTransactionListResponse;
 
 
@@ -137,7 +138,6 @@ public class GrantTests extends BaseTest {
     @Test(description = "entitlement/action/grant - grant ppv with history = true")
     private void grant_ppv_with_history() {
         Client client = getClient(getAdministratorKs());
-        contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
 
         // set household
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
@@ -201,7 +201,6 @@ public class GrantTests extends BaseTest {
     @Test(description = "entitlement/action/grant - grant ppv with history = false")
     private void grant_ppv_without_history() {
         Client client = getClient(getAdministratorKs());
-        contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
 
         // set household
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
@@ -248,8 +247,23 @@ public class GrantTests extends BaseTest {
         EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
     }
 
-    // TODO: 4/16/2018 finish negative scenarios 
-//    @Test(description = "entitlement/action/grant - ppv - error 6001")
+        @Test(description = "entitlement/action/grant - wrong ppv id - error 6001")
+        private void grant_ppv_with_wrong_id() {
+            Client client = getClient(getAdministratorKs());
+
+            // set household
+            Household household = HouseholdUtils.createHouseHold(2, 1, false);
+            HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+
+            // grant subscription - history = true
+            client.setUserId(Integer.valueOf(user.getUserId()));
+            Response<Boolean> booleanResponse = EntitlementServiceImpl.grant(client, 1, TransactionType.PPV, true, contentId);
+
+            assertThat(booleanResponse.results.booleanValue()).isEqualTo(null);
+            assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(6001).getCode());
+        }
+
+    // TODO: 4/16/2018 finish negative scenarios
 //    @Test(description = "entitlement/action/grant - ppv - error 3021")
 //    @Test(description = "entitlement/action/grant - subscription - error 3024")
 //    @Test(description = "entitlement/action/grant - subscription - error 3023")

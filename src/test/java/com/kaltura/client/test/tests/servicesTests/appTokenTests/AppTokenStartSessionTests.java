@@ -116,7 +116,7 @@ public class AppTokenStartSessionTests extends BaseTest {
     private void startSessionDefaultExpiryDate() {
         int expiryDate = 0;
         getSharedHousehold();
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(null, hashType, null, expiryDate);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);

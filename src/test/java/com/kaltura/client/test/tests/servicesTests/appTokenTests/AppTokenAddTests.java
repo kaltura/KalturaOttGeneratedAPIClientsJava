@@ -99,7 +99,7 @@ public class AppTokenAddTests extends BaseTest {
     //todo - Add specific mark indicating the version of the feature
     private void addAppTokenWithNoExpiryDate() {
         getSharedHousehold();
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
         int expiryDate = 0;
         //int cbExpiryDateValue = 2592000;
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, expiryDate);

@@ -79,7 +79,7 @@ public class ListTests extends BaseTest {
                 getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
 
         // TODO: after fix of BEO-4967 change HouseholdDevice.json to have only 1 enum value in objectType
-        client.setKs(getsharedMasterUserKs());
+        client.setKs(getSharedMasterUserKs());
 
         Response<ListResponse<Entitlement>> entitlementListBeforePurchase = EntitlementServiceImpl.list(client, entitlementPpvsFilter, null);
         assertThat(entitlementListBeforePurchase.results.getTotalCount()).isEqualTo(0);

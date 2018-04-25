@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 import java.util.Optional;
 
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
-import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getsharedUserKs;
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUserKs;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AssetCommentAddTests extends BaseTest {
@@ -35,7 +35,7 @@ public class AssetCommentAddTests extends BaseTest {
     @BeforeClass
     private void add_tests_before_class() {
         getSharedHousehold();
-        client = getClient(getsharedUserKs());
+        client = getClient(getSharedUserKs());
     }
 
     @Description("AssetComment/action/add - vod asset")

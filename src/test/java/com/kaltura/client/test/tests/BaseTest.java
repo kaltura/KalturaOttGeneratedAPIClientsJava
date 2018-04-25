@@ -132,22 +132,22 @@ public class BaseTest {
             return sharedHousehold;
         }
 
-        public static String getsharedMasterUserKs() {
+        public static String getSharedMasterUserKs() {
             if (sharedHousehold == null) getSharedHousehold();
             return sharedMasterUserKs;
         }
 
-        public static String getsharedUserKs() {
+        public static String getSharedUserKs() {
             if (sharedHousehold == null) getSharedHousehold();
             return sharedUserKs;
         }
 
-        public static HouseholdUser getsharedMasterUser() {
+        public static HouseholdUser getSharedMasterUser() {
             if (sharedHousehold == null) getSharedHousehold();
             return sharedMasterUser;
         }
 
-        public static HouseholdUser getsharedUser() {
+        public static HouseholdUser getSharedUser() {
             if (sharedHousehold == null) getSharedHousehold();
             return sharedUser;
         }

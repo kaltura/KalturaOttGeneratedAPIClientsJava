@@ -36,7 +36,7 @@ public class BookmarkAddTests extends BaseTest {
     @BeforeClass
     private void add_tests_before_class() {
         getSharedHousehold();
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
         assetId = 608775;
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
         Response<Asset> assetResponse = AssetServiceImpl.get(client, String.valueOf(assetId), assetReferenceType);
