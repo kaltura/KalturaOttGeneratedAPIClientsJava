@@ -81,6 +81,9 @@ public class Properties {
     public static final int PG_DEFAULT_RENEW_START_MINUTES =-5;
     public static final String PG_DEFAULT_PG_SETTINGS = "{}";
 
+    // life cycles periods
+    public static final String FIVE_MINUTES_PERIOD = "5 Minutes";
+
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null)
             resourceBundle = ResourceBundle.getBundle("test");

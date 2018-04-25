@@ -51,9 +51,9 @@ public class ListTests extends BaseTest {
     @Test(enabled = false) // as used in feature tests
     public void list_subscription() {
         ProductPriceFilter filter = new ProductPriceFilter();
-        // TODO: fix! filter.setSubscriptionIdIn(five_min_renewable_subscription_id);
+        filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
         Response<ListResponse<ProductPrice>> productPriceList = list(client, filter);
-        // TODO: fix! assertThat(productPriceList.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(five_min_renewable_subscription_id);
+        assertThat(productPriceList.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
         assertThat(productPriceList.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceList.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
     }

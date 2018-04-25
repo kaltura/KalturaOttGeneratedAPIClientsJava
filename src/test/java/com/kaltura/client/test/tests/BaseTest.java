@@ -2,6 +2,8 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
+import com.kaltura.client.test.utils.IngestMPPUtils;
+import com.kaltura.client.test.utils.IngestPPUtils;
 import com.kaltura.client.test.utils.IngestVODUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -36,6 +38,8 @@ public class BaseTest {
     // shared VOD
     private static MediaAsset mediaAsset;
 
+    // shared MPP
+    private static Subscription fiveMinRenewableSubscription;
 
     @BeforeSuite
     public void base_test_before_suite() {
@@ -141,5 +145,19 @@ public class BaseTest {
     public static HouseholdUser getsharedUser() {
         if (sharedHousehold == null) getSharedHousehold();
         return sharedUser;
+    }
+
+    public static Subscription get5MinRenewableSubscription() {
+        if (fiveMinRenewableSubscription == null) {
+            PricePlan pricePlan = IngestPPUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
+                    Optional.of(getProperty(AMOUNT_4_99_EUR)), Optional.of(CURRENCY_EUR), Optional.of(""),
+                    Optional.of(true), Optional.of(3));
+            fiveMinRenewableSubscription = IngestMPPUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        }
+        return fiveMinRenewableSubscription;
     }
 }

@@ -82,6 +82,7 @@ public class IngestPPUtils extends BaseUtils {
         pricePlan.setMaxViewsNumber(maxViewsValue);
         pricePlan.setIsRenewable(isRenewableValue);
         pricePlan.setRenewalsNumber(recurringPeriodsValue);
+        pricePlan.setName(ppCodeValue);
         // TODO: complete COMMENTED IF NEEDED
         //pricePlan.setFullLifeCycle();
         //pricePlan.setViewLifeCycle();
