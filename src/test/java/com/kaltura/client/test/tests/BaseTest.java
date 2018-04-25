@@ -28,14 +28,15 @@ public class BaseTest {
     // shared ks's
     private static String administratorKs, operatorKs, managerKs, anonymousKs;
 
-    // shared household
-    private static Household sharedHousehold;
-    private static HouseholdUser sharedMasterUser, sharedUser;
-    private static String sharedMasterUserKs, sharedUserKs;
-
     // shared VOD
     private static MediaAsset mediaAsset;
 
+    /*
+    // shared household params
+    Household sharedHousehold;
+    HouseholdUser sharedMasterUser, sharedUser;
+    String sharedMasterUserKs, sharedUserKs;
+    */
 
     @BeforeSuite
     public void base_test_before_suite() {
@@ -99,47 +100,56 @@ public class BaseTest {
         return mediaAsset;
     }
 
-    public static Household getSharedHousehold() {
-        Client client = getClient(null);
+    // shared household
+    public static class SharedHousehold {
 
-        if (sharedHousehold == null) {
-            sharedHousehold = createHouseHold(2, 2, true);
-            List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
-            for (HouseholdUser user : sharedHouseholdUsers) {
-                if (user.getIsMaster() != null && user.getIsMaster()) {
-                    sharedMasterUser = user;
+        private static Household sharedHousehold;
+        private static HouseholdUser sharedMasterUser, sharedUser;
+        private static String sharedMasterUserKs, sharedUserKs;
+
+
+        public static Household getSharedHousehold() {
+            Client client = getClient(null);
+
+            if (sharedHousehold == null) {
+                sharedHousehold = createHouseHold(2, 2, true);
+                List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
+                for (HouseholdUser user : sharedHouseholdUsers) {
+                    if (user.getIsMaster() != null && user.getIsMaster()) {
+                        sharedMasterUser = user;
+                    }
+                    if (user.getIsMaster() == null && user.getIsDefault() == null) {
+                        sharedUser = user;
+                    }
                 }
-                if (user.getIsMaster() == null && user.getIsDefault() == null) {
-                    sharedUser = user;
-                }
+
+                loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
+                sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
+
+                loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
+                sharedUserKs = loginResponse.results.getLoginSession().getKs();
             }
-
-            loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
-            sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
-
-            loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
-            sharedUserKs = loginResponse.results.getLoginSession().getKs();
+            return sharedHousehold;
         }
-        return sharedHousehold;
-    }
 
-    public static String getsharedMasterUserKs() {
-        if (sharedHousehold == null) getSharedHousehold();
-        return sharedMasterUserKs;
-    }
+        public static String getsharedMasterUserKs() {
+            if (sharedHousehold == null) getSharedHousehold();
+            return sharedMasterUserKs;
+        }
 
-    public static String getsharedUserKs() {
-        if (sharedHousehold == null) getSharedHousehold();
-        return sharedUserKs;
-    }
+        public static String getsharedUserKs() {
+            if (sharedHousehold == null) getSharedHousehold();
+            return sharedUserKs;
+        }
 
-    public static HouseholdUser getsharedMasterUser() {
-        if (sharedHousehold == null) getSharedHousehold();
-        return sharedMasterUser;
-    }
+        public static HouseholdUser getsharedMasterUser() {
+            if (sharedHousehold == null) getSharedHousehold();
+            return sharedMasterUser;
+        }
 
-    public static HouseholdUser getsharedUser() {
-        if (sharedHousehold == null) getSharedHousehold();
-        return sharedUser;
+        public static HouseholdUser getsharedUser() {
+            if (sharedHousehold == null) getSharedHousehold();
+            return sharedUser;
+        }
     }
 }

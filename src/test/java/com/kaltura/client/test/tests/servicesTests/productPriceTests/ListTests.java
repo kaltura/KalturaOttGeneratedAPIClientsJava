@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.Optional;
 import static com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl.list;
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 

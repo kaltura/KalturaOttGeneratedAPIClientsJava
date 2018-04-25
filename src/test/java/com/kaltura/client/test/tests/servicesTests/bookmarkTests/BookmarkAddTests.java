@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class BookmarkAddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        BaseTest.getSharedHousehold();
+        getSharedHousehold();
         client = getClient(getsharedMasterUserKs());
         assetId = 608775;
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());

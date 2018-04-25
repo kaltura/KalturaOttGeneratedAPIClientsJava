@@ -10,8 +10,8 @@ import com.kaltura.client.utils.response.base.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getsharedMasterUserKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
-import static com.kaltura.client.test.tests.BaseTest.getsharedMasterUserKs;
 
 public class AssetUtils extends BaseUtils {
 

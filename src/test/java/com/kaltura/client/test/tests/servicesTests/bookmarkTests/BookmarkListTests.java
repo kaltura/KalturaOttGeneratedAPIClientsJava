@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookmarkListTests extends BaseTest {

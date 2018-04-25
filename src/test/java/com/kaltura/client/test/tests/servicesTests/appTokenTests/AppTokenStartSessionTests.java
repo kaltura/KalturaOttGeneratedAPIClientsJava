@@ -16,6 +16,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTokenStartSessionTests extends BaseTest {
