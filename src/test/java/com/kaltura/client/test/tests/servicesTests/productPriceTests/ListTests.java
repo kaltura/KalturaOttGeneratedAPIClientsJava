@@ -12,6 +12,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.Optional;
+import static com.kaltura.client.test.Properties.CURRENCY_EUR;
 import static com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl.list;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,6 +57,21 @@ public class ListTests extends BaseTest {
         assertThat(productPriceList.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
         assertThat(productPriceList.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceList.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
+    }
+
+    @Description("productPrice/action/list - subscription test with currency by Operator")
+    @Test()
+    public void listSubscriptionWithCurrencyTest() {
+        ProductPriceFilter filter = new ProductPriceFilter();
+        filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
+        client.setKs(getOperatorKs());
+        client.setCurrency(CURRENCY_EUR);
+        Response<ListResponse<ProductPrice>> productPriceList = list(client, filter);
+        // TODO: should we create ENUMs for currencies? A: Yes if library doesn't contain them
+        assertThat(productPriceList.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
+        assertThat(productPriceList.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceList.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
+        assertThat(productPriceList.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(CURRENCY_EUR);
     }
 
     @Description("productPrice/action/list - without required fields (subscriptionIdIn, collectionIdIn and fileIdIn are empty)")
