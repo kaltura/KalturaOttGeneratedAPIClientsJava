@@ -38,6 +38,10 @@ public class BaseTest {
     // shared VOD
     private static MediaAsset mediaAsset;
 
+    // shared files
+    private static MediaFile webMediaFile;
+    private static MediaFile mobileMediaFile;
+
     // shared MPP
     private static Subscription fiveMinRenewableSubscription;
 
@@ -98,9 +102,30 @@ public class BaseTest {
         if (mediaAsset == null) {
             mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-            System.out.println("INGESTED VOD: " + mediaAsset.getId());
         }
         return mediaAsset;
+    }
+
+    public static MediaFile getSharedWebMediaFile() {
+        if (webMediaFile == null) {
+            if (getProperty(WEB_FILE_TYPE).equals(getSharedMediaAsset().getMediaFiles().get(0).getType())) {
+                webMediaFile = mediaAsset.getMediaFiles().get(0);
+            }  else {
+                webMediaFile = mediaAsset.getMediaFiles().get(1);
+            }
+        }
+        return webMediaFile;
+    }
+
+    public static MediaFile getSharedMobileMediaFile() {
+        if (mobileMediaFile == null) {
+            if (getProperty(MOBILE_FILE_TYPE).equals(getSharedMediaAsset().getMediaFiles().get(0).getType())) {
+                mobileMediaFile = mediaAsset.getMediaFiles().get(0);
+            }  else {
+                mobileMediaFile = mediaAsset.getMediaFiles().get(1);
+            }
+        }
+        return mobileMediaFile;
     }
 
     public static Household getSharedHousehold() {

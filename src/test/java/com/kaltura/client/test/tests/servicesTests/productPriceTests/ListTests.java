@@ -5,6 +5,8 @@ import com.kaltura.client.enums.*;
 import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
 import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -64,7 +66,6 @@ public class ListTests extends BaseTest {
     public void listSubscriptionWithCurrencyTest() {
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
-        client.setKs(getOperatorKs());
         client.setCurrency(CURRENCY_EUR);
         Response<ListResponse<ProductPrice>> productPriceList = list(client, filter);
         // TODO: should we create ENUMs for currencies? A: Yes if library doesn't contain them
@@ -114,7 +115,6 @@ public class ListTests extends BaseTest {
         PurchaseUtils.purchasePpv(client, Optional.empty(), Optional.of(webMediaFileId));
 
         Response<ListResponse<Entitlement>> entitlementListAfterPurchase = EntitlementServiceImpl.list(client, entitlementPpvsFilter, null);
-        System.out.println(entitlementListAfterPurchase.results.getTotalCount());
         assertThat(entitlementListAfterPurchase.results.getTotalCount()).isEqualTo(1);
         assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaFileId()).isEqualTo(webMediaFileId);
         assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaId()).isEqualTo(getSharedMediaAsset().getId().intValue());
@@ -133,5 +133,26 @@ public class ListTests extends BaseTest {
         assertThat(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getTotalCount()).isEqualTo(1);
         assertThat(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
         assertThat(((PpvPrice) productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0)).getFileId()).isEqualTo(mobileMediaFileId);
+    }
+
+    @Description("productPrice/action/list - common test for PPV and subscription to check before purchase")
+    @Test()
+    public void productPriceSubscriptionAndPpvBeforePurchaseTest() {
+        Household household = HouseholdUtils.createHouseHold(1, 1, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        client.setKs(OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null));
+
+        ProductPriceFilter filter = new ProductPriceFilter();
+        filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
+        filter.setFileIdIn(String.valueOf(getSharedWebMediaFile().getId()));
+        filter.setIsLowest(false);
+        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = list(client, filter);
+        assertThat(productPriceListBeforePurchase.results.getTotalCount()).isEqualTo(2);
+        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
+        assertThat(productPriceListBeforePurchase.results.getObjects().get(1).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceListBeforePurchase.results.getObjects().get(1).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(((PpvPrice) productPriceListBeforePurchase.results.getObjects().get(1)).getFileId()).isEqualTo(getSharedWebMediaFile().getId());
     }
 }
