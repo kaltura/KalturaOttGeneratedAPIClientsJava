@@ -5,6 +5,7 @@ import com.kaltura.client.enums.*;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
 import com.kaltura.client.test.servicesImpl.BookmarkServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BookmarkUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -25,7 +26,7 @@ public class BookmarkAddTests extends BaseTest {
     private long assetId;
     private int fileId;
     private BookmarkActionType actionType;
-    private int position = 0;
+    private int position;
     private List<String> assetList = new ArrayList<>();
     // instantiate Bookmark object
     private Bookmark bookmark = new Bookmark();
@@ -37,13 +38,8 @@ public class BookmarkAddTests extends BaseTest {
         BaseTest.getSharedHousehold();
         client = getClient(getsharedMasterUserKs());
         assetId = BaseTest.getSharedMediaAsset().getId();
-        AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
-        Response<Asset> assetResponse = AssetServiceImpl.get(client, String.valueOf(assetId), assetReferenceType);
-        fileId = assetResponse.results.getMediaFiles().get(0).getId();
-        actionType = BookmarkActionType.get(BookmarkActionType.FIRST_PLAY.getValue());
-
+        fileId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
         assetList.add(String.valueOf(assetId));
-        // Initialize bookmark object parameters
 
         // Initialize bookmarkFilter object parameters
         bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_ASC, AssetType.MEDIA, assetList);
@@ -54,7 +50,7 @@ public class BookmarkAddTests extends BaseTest {
     private void firstPlayback() {
         actionType = BookmarkActionType.FIRST_PLAY;
         position = 0;
-        bookmark = BookmarkUtils.addBookmark(position,String.valueOf(assetId),fileId,AssetType.MEDIA, actionType);
+        bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
@@ -94,7 +90,7 @@ public class BookmarkAddTests extends BaseTest {
         // Set action type to "PAUSE"
         actionType = BookmarkActionType.PAUSE;
         position = 30;
-        bookmark = BookmarkUtils.addBookmark(position,String.valueOf(assetId),fileId,AssetType.MEDIA, actionType);
+        bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
@@ -116,7 +112,7 @@ public class BookmarkAddTests extends BaseTest {
     private void watchingNinetyFive() {
         actionType = BookmarkActionType.PLAY;
         position = 999;
-        bookmark = BookmarkUtils.addBookmark(position,String.valueOf(assetId),fileId,AssetType.MEDIA, actionType);
+        bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
@@ -139,7 +135,7 @@ public class BookmarkAddTests extends BaseTest {
     private void backToStart() {
         actionType = BookmarkActionType.STOP;
         position = 0;
-        bookmark = BookmarkUtils.addBookmark(position,String.valueOf(assetId),fileId,AssetType.MEDIA, actionType);
+        bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
@@ -155,7 +151,7 @@ public class BookmarkAddTests extends BaseTest {
         // Set action type to "FINISH"
         actionType = BookmarkActionType.FINISH;
         position = 60;
-        bookmark = BookmarkUtils.addBookmark(position,String.valueOf(assetId),fileId,AssetType.MEDIA, actionType);
+        bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);

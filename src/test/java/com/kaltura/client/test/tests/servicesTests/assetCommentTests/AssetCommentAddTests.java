@@ -66,6 +66,7 @@ public class AssetCommentAddTests extends BaseTest {
         Response<ListResponse<AssetComment>> assetCommentListResponse = AssetCommentServiceImpl.list(client, assetCommentFilter, null);
         AssetComment assetCommentObjectResponse = assetCommentListResponse.results.getObjects().get(0);
 
+        //Assertions for AssetComment/action/list
         assertThat(assetCommentObjectResponse.getId()).isEqualTo(assetCommentResponse.results.getId());
         assertThat(assetCommentObjectResponse.getAssetId()).isEqualTo(assetCommentResponse.results.getAssetId());
         assertThat(assetCommentObjectResponse.getAssetType()).isEqualTo(assetCommentResponse.results.getAssetType());
@@ -112,5 +113,5 @@ public class AssetCommentAddTests extends BaseTest {
     }
 
     // todo - Add error validations tests
-     
+    // todo - Add tests for recording
 }

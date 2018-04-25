@@ -19,11 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AssetCommentListTests extends BaseTest {
 
     private Client client;
-    private String writer = "Shmulik";
-    private Long createDate = 0L;
-    private String header = "header";
-    private String subHeader = "subHeader";
-    private String text = "A lot of text";
 
     @BeforeClass
     private void add_tests_before_class() {
@@ -35,6 +30,12 @@ public class AssetCommentListTests extends BaseTest {
     @Test
 
     private void checkCommentsOrder() {
+
+        String writer = "Shmulik";
+        Long createDate = 0L;
+        String header = "header";
+        String subHeader = "subHeader";
+        String text = "A lot of text";
 
         Long assetId = BaseTest.getSharedMediaAsset().getId();
 
