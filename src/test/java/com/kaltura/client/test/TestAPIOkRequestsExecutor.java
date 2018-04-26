@@ -60,7 +60,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
             ResponseElement responseElement = new ExecutedRequest().requestId(requestId).response(responseString).code(response.code()).success(responseString != null);
             com.kaltura.client.utils.response.base.Response response1 = action.parseResponse(responseElement);
 
-            if (response1.isSuccess()) {
+            if (response1.results != null && response1.isSuccess()) {
                 String s1 = "schemas/";
                 String s3 = ".json";
                 String s2 = response1.results.getClass().getSimpleName();

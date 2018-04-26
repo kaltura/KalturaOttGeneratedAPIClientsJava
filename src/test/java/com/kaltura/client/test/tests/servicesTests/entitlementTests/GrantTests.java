@@ -5,9 +5,7 @@ import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.enums.PurchaseStatus;
 import com.kaltura.client.enums.TransactionHistoryOrderBy;
 import com.kaltura.client.enums.TransactionType;
-import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
-import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
-import com.kaltura.client.test.servicesImpl.TransactionHistoryServiceImpl;
+import com.kaltura.client.test.servicesImpl.*;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
@@ -27,13 +25,18 @@ public class GrantTests extends BaseTest {
     private final int ppvId = 30297;
     private final int assetId = 607368;
 
+    private final int numberOfUsersInHousehold = 2;
+    private final int numberOfDevicesInHousehold = 1;
+
     private Response<ListResponse<BillingTransaction>> billingTransactionListResponse;
     private int contentId;
+    private Household testSharedHousehold;
 
 
     @BeforeClass
     private void grant_test_before_class() {
         contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
+        testSharedHousehold = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
     }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = true")
@@ -41,7 +44,7 @@ public class GrantTests extends BaseTest {
         Client client = getClient(getAdministratorKs());
 
         // set household
-        Household household = HouseholdUtils.createHouseHold(2, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
@@ -93,10 +96,8 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(subscriptionId));
 
 
-        // force cancel subscription
-        client.setKs(getAdministratorKs());
-        client.setUserId(Integer.valueOf(user.getUserId()));
-        EntitlementServiceImpl.forceCancel(client, subscriptionId, TransactionType.SUBSCRIPTION);
+        //delete household for cleanup
+        HouseholdServiceImpl.delete(getClient(getAdministratorKs()), Math.toIntExact(household.getId()));
     }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = false")
@@ -104,7 +105,7 @@ public class GrantTests extends BaseTest {
         Client client = getClient(getAdministratorKs());
 
         // set household
-        Household household = HouseholdUtils.createHouseHold(2, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
 
@@ -134,10 +135,8 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(0);
 
 
-        // force cancel subscription
-        client.setKs(getAdministratorKs());
-        client.setUserId(Integer.valueOf(user.getUserId()));
-        EntitlementServiceImpl.forceCancel(client, subscriptionId, TransactionType.SUBSCRIPTION);
+        //delete household for cleanup
+        HouseholdServiceImpl.delete(getClient(getAdministratorKs()), Math.toIntExact(household.getId()));
     }
 
     @Test(description = "entitlement/action/grant - grant ppv with history = true")
@@ -145,7 +144,7 @@ public class GrantTests extends BaseTest {
         Client client = getClient(getAdministratorKs());
 
         // set household
-        Household household = HouseholdUtils.createHouseHold(2, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
@@ -197,10 +196,8 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(assetId));
 
 
-        // force cancel subscription
-        client.setKs(getAdministratorKs());
-        client.setUserId(Integer.valueOf(user.getUserId()));
-        EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
+        //delete household for cleanup
+        HouseholdServiceImpl.delete(getClient(getAdministratorKs()), Math.toIntExact(household.getId()));
     }
 
     @Test(description = "entitlement/action/grant - grant ppv with history = false")
@@ -208,7 +205,7 @@ public class GrantTests extends BaseTest {
         Client client = getClient(getAdministratorKs());
 
         // set household
-        Household household = HouseholdUtils.createHouseHold(2, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
@@ -246,27 +243,37 @@ public class GrantTests extends BaseTest {
         assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(String.valueOf(assetId));
 
 
-        // force cancel subscription
-        client.setKs(getAdministratorKs());
-        client.setUserId(Integer.valueOf(user.getUserId()));
-        EntitlementServiceImpl.forceCancel(client, ppvId, TransactionType.PPV);
+        //delete household for cleanup
+        HouseholdServiceImpl.delete(getClient(getAdministratorKs()), Math.toIntExact(household.getId()));
     }
 
-        @Test(description = "entitlement/action/grant - wrong ppv id - error 6001")
+        @Test(description = "entitlement/action/grant - grant ppv with wrong id - error 6001")
         private void grant_ppv_with_wrong_id() {
+            int productId = 1;
+
+            // get user form test shared household
+            HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
+
+            // grant ppv with wrong id
             Client client = getClient(getAdministratorKs());
-
-            // set household
-            Household household = HouseholdUtils.createHouseHold(2, 1, false);
-            HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
-
-            // grant subscription - history = true
             client.setUserId(Integer.valueOf(user.getUserId()));
-            Response<Boolean> booleanResponse = EntitlementServiceImpl.grant(client, 1, TransactionType.PPV, true, contentId);
+            Response<Boolean> booleanResponse = EntitlementServiceImpl.grant(client, productId, TransactionType.PPV, true, contentId);
 
+            // assert error 6001 is return
             assertThat(booleanResponse.results).isEqualTo(null);
             assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(6001).getCode());
         }
+
+/*        @Test(description = "entitlement/action/grant - grant purchased ppv - error 3021")
+        private void grant_purchased_ppv() {
+            // get user form test shared household
+            HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
+
+            // purchase ppv
+            Client client = getClient(getAdministratorKs());
+            client.setUserId(Integer.valueOf(user.getUserId()));
+
+        }*/
 
     // TODO: 4/16/2018 finish negative scenarios
 //    @Test(description = "entitlement/action/grant - ppv - error 3021")
