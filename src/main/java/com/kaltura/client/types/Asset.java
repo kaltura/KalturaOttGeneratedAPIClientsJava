@@ -132,7 +132,7 @@ public abstract class Asset extends ObjectBase {
 	 */
 	private Long updateDate;
 	/**
-	 * External identifier for the media file
+	 * External identifier for the asset
 	 */
 	private String externalId;
 
