@@ -2,9 +2,7 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
-import com.kaltura.client.test.utils.IngestMPPUtils;
-import com.kaltura.client.test.utils.IngestPPUtils;
-import com.kaltura.client.test.utils.IngestVODUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
@@ -12,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.IngestProperties.*;
+import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.anonymousLogin;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHouseHold;
@@ -99,7 +97,7 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+            mediaAsset = IngestUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         }
         return mediaAsset;
@@ -173,11 +171,11 @@ public class BaseTest {
 
     public static Subscription get5MinRenewableSubscription() {
         if (fiveMinRenewableSubscription == null) {
-            PricePlan pricePlan = IngestPPUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
+            PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
                     Optional.of(getProperty(PRICE_CODE_AMOUNT_4_99)), Optional.of(CURRENCY_EUR), Optional.of(""),
                     Optional.of(true), Optional.of(3));
-            fiveMinRenewableSubscription = IngestMPPUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+            fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
