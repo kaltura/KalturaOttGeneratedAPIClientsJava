@@ -122,8 +122,8 @@ public class BookmarkAddTests extends BaseTest {
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        Response<ListResponse<Bookmark>> bookmarkListResponse3 = BookmarkServiceImpl.list(client, bookmarkFilter);
-        Bookmark bookmark3 = bookmarkListResponse3.results.getObjects().get(0);
+        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client, bookmarkFilter);
+        Bookmark bookmark3 = bookmarkListResponse.results.getObjects().get(0);
 
         // Verify finishedWatching = true
         assertThat(bookmark3.getFinishedWatching()).isTrue();
@@ -139,10 +139,10 @@ public class BookmarkAddTests extends BaseTest {
 
         Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
-        Response<ListResponse<Bookmark>> bookmarkListResponse4 = BookmarkServiceImpl.list(client, bookmarkFilter);
-        Bookmark bookmark4 = bookmarkListResponse4.results.getObjects().get(0);
+        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client, bookmarkFilter);
+        Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
         // Verify finishedWatching = false
-        assertThat(bookmark4.getFinishedWatching()).isFalse();
+        assertThat(bookmark.getFinishedWatching()).isFalse();
     }
 
     @Description("bookmark/action/add - finish watching")

@@ -70,9 +70,6 @@ public class BookmarkListTests extends BaseTest {
         Bookmark bookmarkObject = bookmarkListResponse.results.getObjects().get(0);
         Bookmark bookmarkObject2 = bookmarkListResponse.results.getObjects().get(1);
 
-        // Assertions
-        // *************************************
-
         // Verify that asset2 returned first (bookmark/action/list is response is ordered by POSITION DESC)
         assertThat( bookmarkObject.getId()).isEqualTo(String.valueOf(assetId2));
         assertThat( bookmarkObject2.getId()).isEqualTo(String.valueOf(assetId));
@@ -82,9 +79,6 @@ public class BookmarkListTests extends BaseTest {
 
         bookmarkObject = bookmarkListResponse.results.getObjects().get(0);
         bookmarkObject2 = bookmarkListResponse.results.getObjects().get(1);
-
-        // Assertions
-        // *************************************
 
         // Verify that asset1 returned first (bookmark/action/list is response is ordered by POSITION DESC)
         assertThat( bookmarkObject.getId()).isEqualTo(String.valueOf(assetId));

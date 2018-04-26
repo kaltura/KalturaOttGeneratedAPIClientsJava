@@ -40,8 +40,8 @@ public class Properties {
     public static final String LINEAR_MEDIA_TYPE = "Linear";
 
     // media types ids
-    public static final Long MOVIE_MEDIA_TYPE_ID = 425L;
-    public static final Long EPISODE_MEDIA_TYPE_ID = 426L;
+    public static final String MOVIE_MEDIA_TYPE_ID = "425";
+    public static final String EPISODE_MEDIA_TYPE_ID = "426";
 
 
 
