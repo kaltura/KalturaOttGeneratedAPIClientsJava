@@ -8,12 +8,11 @@ import com.kaltura.client.test.utils.IngestVODUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.IngestProperties.*;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.anonymousLogin;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHouseHold;
@@ -176,7 +175,7 @@ public class BaseTest {
         if (fiveMinRenewableSubscription == null) {
             PricePlan pricePlan = IngestPPUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
-                    Optional.of(getProperty(AMOUNT_4_99_EUR)), Optional.of(CURRENCY_EUR), Optional.of(""),
+                    Optional.of(getProperty(PRICE_CODE_AMOUNT_4_99)), Optional.of(CURRENCY_EUR), Optional.of(""),
                     Optional.of(true), Optional.of(3));
             fiveMinRenewableSubscription = IngestMPPUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),

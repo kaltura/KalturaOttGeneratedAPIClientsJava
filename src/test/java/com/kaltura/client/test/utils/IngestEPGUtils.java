@@ -8,14 +8,12 @@ import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.SearchAssetFilter;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-
-import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.IngestProperties.*;
 import static com.kaltura.client.test.tests.BaseTest.getAnonymousKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
 import static org.awaitility.Awaitility.await;
@@ -106,9 +104,9 @@ public class IngestEPGUtils extends BaseUtils {
         String epgChannelIngestXml = getChannelXML(PARTNER_ID, epgChannelName, output);
 
         String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
-        HashMap headermap = new HashMap<>();
-        headermap.put("Content-Type", "text/xml;charset=UTF-8");
-        headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestKalturaEpg\"");
+        HashMap headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
+        headerMap.put("SOAPAction", "\"http://tempuri.org/IService/IngestKalturaEpg\"");
         String reqBody = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                 "   <s:Header/>\n" +
                 "   <s:Body>\n" +
@@ -123,7 +121,7 @@ public class IngestEPGUtils extends BaseUtils {
                 "</s:Envelope>";
         io.restassured.response.Response resp = RestAssured.given()
                 .log().all()
-                .headers(headermap)
+                .headers(headerMap)
                 .body(reqBody)
                 .post(url);
         //System.out.println("RESPONSE: " + resp.asString());
@@ -132,7 +130,7 @@ public class IngestEPGUtils extends BaseUtils {
         long epoch = 0L;
         try {
             Date firstProgramStartDateAsDate = dateFormat.parse(firstProgramStartDateValue);
-            epoch = firstProgramStartDateAsDate.getTime()/1000;
+            epoch = firstProgramStartDateAsDate.getTime()/1000; // 1000 milliseconds in 1 second
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -141,15 +139,17 @@ public class IngestEPGUtils extends BaseUtils {
         SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
         assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch + "' Series_ID='" + seriesIdValue + "' end_date >= '" + firstProgramStartDateEpoch + "')");
-        await().pollInterval(3, TimeUnit.SECONDS).atMost(60, TimeUnit.SECONDS)
-                .until(isDataReturned(epgChannelId, assetFilter, programCountValue*seasonCountValue));
+        int delayBetweenRetriesInSeconds = 3;
+        int maxTimeExpectingValidResponseInSeconds = 60;
+        await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(isDataReturned(assetFilter, programCountValue*seasonCountValue));
 
         Response<ListResponse<Asset>> ingestedProgrammes = AssetServiceImpl.list(getClient(getAnonymousKs()), assetFilter, null);
         // TODO: complete Asset.json at least for programs
         return ingestedProgrammes;
     }
 
-    private static Callable<Boolean> isDataReturned(int epgChannelId, SearchAssetFilter assetFilter, int totalCount) {
+    private static Callable<Boolean> isDataReturned(SearchAssetFilter assetFilter, int totalCount) {
         return () -> (AssetServiceImpl.list(getClient(getAnonymousKs()), assetFilter, null).error == null &&
                 AssetServiceImpl.list(getClient(getAnonymousKs()), assetFilter, null).results.getTotalCount() == totalCount);
     }

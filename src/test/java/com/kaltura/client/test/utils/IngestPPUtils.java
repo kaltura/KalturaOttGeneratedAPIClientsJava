@@ -6,15 +6,12 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.Optional;
-import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.IngestProperties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestPPUtils extends BaseUtils {
 
-    private static String DEFAULT_ACTION_VALUE = "insert";
     private static boolean DEFAULT_IS_ACTIVE_VALUE = true;
-    private static String DEFAULT_FULL_LIFE_CYCLE_VALUE = "5 Minutes";
-    private static String DEFAULT_VIEW_LIFE_CYCLE_VALUE = "5 Minutes";
     private static int DEFAULT_MAX_VIEWS_VALUE = 0;
     private static boolean DEFAULT_IS_RENEWABLE_VALUE = false;
     private static int DEFAULT_RECURRING_PERIODS_VALUE = 1;
@@ -25,22 +22,22 @@ public class IngestPPUtils extends BaseUtils {
                                       Optional<String> price, Optional<String> currency,
                                       Optional<String> discount, Optional<Boolean> isRenewable,
                                       Optional<Integer> recurringPeriods) {
-        String ppCodeValue = ppCode.orElse(getRandomValue("AUTOPricePlan_", 9999999999L));
-        String actionValue = action.orElse(DEFAULT_ACTION_VALUE);
+        String ppCodeValue = ppCode.orElse(getRandomValue("AUTOPricePlan_", MAX_RANDOM_GENERATED_VALUE_4_INGEST));
+        String actionValue = action.orElse(INGEST_ACTION_INSERT);
         boolean isActiveValue = isActive.orElse(DEFAULT_IS_ACTIVE_VALUE);
-        String fullLifeCycleValue = fullLifeCycle.orElse(DEFAULT_FULL_LIFE_CYCLE_VALUE);
-        String viewLifeCycleValue = viewLifeCycle.orElse(DEFAULT_VIEW_LIFE_CYCLE_VALUE);
+        String fullLifeCycleValue = fullLifeCycle.orElse(FIVE_MINUTES_PERIOD);
+        String viewLifeCycleValue = viewLifeCycle.orElse(FIVE_MINUTES_PERIOD);
         int maxViewsValue = maxViews.orElse(DEFAULT_MAX_VIEWS_VALUE);
-        String priceValue = price.orElse(getProperty(AMOUNT_4_99_EUR));
+        String priceValue = price.orElse(getProperty(PRICE_CODE_AMOUNT_4_99));
         String currencyValue = currency.orElse(CURRENCY_EUR);
         String discountValue = discount.orElse(getProperty(HUNDRED_PERCENTS_UKP_DISCOUNT_NAME));
         boolean isRenewableValue = isRenewable.orElse(DEFAULT_IS_RENEWABLE_VALUE);
         int recurringPeriodsValue = recurringPeriods.orElse(DEFAULT_RECURRING_PERIODS_VALUE);
 
         String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
-        HashMap headermap = new HashMap<>();
-        headermap.put("Content-Type", "text/xml;charset=UTF-8");
-        headermap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
+        HashMap headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
+        headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
 
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
@@ -56,7 +53,7 @@ public class IngestPPUtils extends BaseUtils {
 
         Response resp = RestAssured.given()
                 .log().all()
-                .headers(headermap)
+                .headers(headerMap)
                 .body(reqBody)
                 .post(url);
 

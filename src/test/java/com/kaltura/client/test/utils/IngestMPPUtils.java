@@ -6,12 +6,11 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.Optional;
-import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.IngestProperties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestMPPUtils extends BaseUtils {
 
-    private static String DEFAULT_ACTION_VALUE = "insert";
     private static boolean DEFAULT_IS_ACTIVE_VALUE = true;
     private static String DEFAULT_TITLE_VALUE = "Ingest MPP title";
     private static String DEFAULT_DESCRIPTION_VALUE = "Ingest MPP description";
@@ -52,7 +51,7 @@ public class IngestMPPUtils extends BaseUtils {
                                          Optional<String> channel2, Optional<String> fileType1,
                                          Optional<String> fileType2, Optional<String> couponGroup, Optional<String> productCodes) {
         String mppCodeValue = mppCode.orElse(getRandomValue("MPP_", 9999999999L));
-        String actionValue = action.orElse(DEFAULT_ACTION_VALUE);
+        String actionValue = action.orElse(INGEST_ACTION_INSERT);
         boolean isActiveValue = isActive.orElse(DEFAULT_IS_ACTIVE_VALUE);
         String titleValue = title.orElse(DEFAULT_TITLE_VALUE);
         String descriptionValue = description.orElse(DEFAULT_DESCRIPTION_VALUE);
@@ -74,9 +73,9 @@ public class IngestMPPUtils extends BaseUtils {
 
 
         String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
-        HashMap headermap = new HashMap<>();
-        headermap.put("Content-Type", "text/xml;charset=UTF-8");
-        headermap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
+        HashMap headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
+        headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
 
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
@@ -93,7 +92,7 @@ public class IngestMPPUtils extends BaseUtils {
 
         Response resp = RestAssured.given()
                 .log().all()
-                .headers(headermap)
+                .headers(headerMap)
                 .body(reqBody)
                 .post(url);
 

@@ -6,13 +6,11 @@ import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
-
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-
-import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.IngestProperties.*;
 import static com.kaltura.client.test.tests.BaseTest.getAnonymousKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
 import static io.restassured.path.xml.XmlPath.from;
@@ -24,22 +22,28 @@ public class IngestVODUtils extends BaseUtils {
     public static MediaAsset ingestVOD(Optional<String> coguid, boolean isActive, Optional<String> name, Optional<String> thumbUrl, Optional<String> description,
                                        Optional<String> catalogStartDate, Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate,
                                        Optional<String> mediaType, Optional<String> ppvWebName, Optional<String> ppvMobileName) {
-        String coguidValue = coguid.orElseGet(() -> getCurrentDataInFormat("yyMMddHHmmssSS"));
+        String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
+        String coguidDatePattern = "yyMMddHHmmssSS";
+        String maxEndDateValue = "14/10/2099 17:00:00";
+        String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
+        int defaultDayOffset =-1;
+
+        String coguidValue = coguid.orElseGet(() -> getCurrentDataInFormat(coguidDatePattern));
         String nameValue = name.orElseGet(() -> MOVIE_MEDIA_TYPE + "_" + coguidValue);
         String thumbUrlValue = thumbUrl.orElse(INGEST_VOD_DEFAULT_THUMB);
         String descriptionValue = description.orElseGet(() -> "description of " + coguidValue);
-        String catalogStartDateValue = catalogStartDate.orElseGet(() -> getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss"));
-        String catalogEndDateValue = catalogEndDate.orElse("14/10/2099 17:00:00");
-        String startDateValue = startDate.orElseGet(() -> getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss"));
-        String endDateValue = endDate.orElse("14/10/2099 17:00:00");
+        String catalogStartDateValue = catalogStartDate.orElseGet(() -> getOffsetDateInFormat(defaultDayOffset, startEndDatePattern));
+        String catalogEndDateValue = catalogEndDate.orElse(maxEndDateValue);
+        String startDateValue = startDate.orElseGet(() -> getOffsetDateInFormat(defaultDayOffset, startEndDatePattern));
+        String endDateValue = endDate.orElse(maxEndDateValue);
         String mediaTypeValue = mediaType.orElse(MOVIE_MEDIA_TYPE);
-        String ppvWebNameValue = ppvWebName.orElse("Shai_Regression_PPV"); // TODO: update on any generated value
-        String ppvMobileNameValue = ppvMobileName.orElse("Shai_Regression_PPV"); // TODO: update on any generated value
+        String ppvWebNameValue = ppvWebName.orElse(ppvModuleName);
+        String ppvMobileNameValue = ppvMobileName.orElse(ppvModuleName);
         // TODO: check if ingest url is the same for all ingest actions
         String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
-        HashMap headermap = new HashMap<>();
-        headermap.put("Content-Type", "text/xml;charset=UTF-8");
-        headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestTvinciData\"");
+        HashMap headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
+        headerMap.put("SOAPAction", "\"http://tempuri.org/IService/IngestTvinciData\"");
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
@@ -51,7 +55,7 @@ public class IngestVODUtils extends BaseUtils {
                 "</soapenv:Envelope>";
         io.restassured.response.Response resp = RestAssured.given()
                 .log().all()
-                .headers(headermap)
+                .headers(headerMap)
                 .body(reqBody)
                 .post(url);
         //System.out.println("RESPONSE: " + resp.asString());
@@ -64,7 +68,9 @@ public class IngestVODUtils extends BaseUtils {
         //mediaAsset.setStartDate(startDate);
         //mediaAsset.setEndDate(endDate);
 
-        await().pollInterval(3, TimeUnit.SECONDS).atMost(45, TimeUnit.SECONDS).until(isDataReturned(id));
+        int delayBetweenRetriesInSeconds = 3;
+        int maxTimeExpectingValidResponseInSeconds = 45;
+        await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS).until(isDataReturned(id));
         Response<Asset> mediaAssetDetails = AssetServiceImpl.get(getClient(getAnonymousKs()), id, AssetReferenceType.MEDIA);
         mediaAsset.setMediaFiles(mediaAssetDetails.results.getMediaFiles());
 
