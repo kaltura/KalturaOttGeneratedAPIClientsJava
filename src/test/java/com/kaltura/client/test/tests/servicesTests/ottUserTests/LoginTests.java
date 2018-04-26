@@ -48,13 +48,13 @@ public class LoginTests extends BaseTest {
         assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1011).getCode());
     }
 
-    @Description("ottUser/action/login - login with wrong username - error 2000")
+    @Description("ottUser/action/login - login with wrong username - error 1011")
     @Test
     private void login_with_wrong_username() {
         loginResponse = OttUserServiceImpl.login(client, partnerId, user.getUsername() + "1", defaultUserPassword, null, null);
 
         assertThat(loginResponse.results).isNull();
-        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2000).getCode());
+        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1011).getCode());
     }
 
     @Description("ottUser/action/login - login with wrong partnerId - error 500006")

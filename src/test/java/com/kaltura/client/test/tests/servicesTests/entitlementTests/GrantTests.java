@@ -14,6 +14,7 @@ import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
@@ -26,10 +27,14 @@ public class GrantTests extends BaseTest {
     private final int ppvId = 30297;
     private final int assetId = 607368;
 
-    private int contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
-    
     private Response<ListResponse<BillingTransaction>> billingTransactionListResponse;
+    private int contentId;
 
+
+    @BeforeClass
+    private void grant_test_before_class() {
+        contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
+    }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = true")
     private void grant_subscription_with_history() {
@@ -259,7 +264,7 @@ public class GrantTests extends BaseTest {
             client.setUserId(Integer.valueOf(user.getUserId()));
             Response<Boolean> booleanResponse = EntitlementServiceImpl.grant(client, 1, TransactionType.PPV, true, contentId);
 
-            assertThat(booleanResponse.results.booleanValue()).isEqualTo(null);
+            assertThat(booleanResponse.results).isEqualTo(null);
             assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(6001).getCode());
         }
 
