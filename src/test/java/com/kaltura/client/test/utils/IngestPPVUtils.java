@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.Properties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
@@ -25,7 +26,7 @@ public class IngestPPVUtils extends BaseUtils {
         boolean isActiveValue = isActive.isPresent() ? isActive.get() : true;
         String descriptionValue = description.orElse("My ingest PPV");
         String discountValue = discount.orElseGet(() -> getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME));
-        double priceValue = price.orElseGet(() -> Double.valueOf(getProperty(AMOUNT_4_99_EUR)));
+        double priceValue = price.orElseGet(() -> Double.valueOf(getProperty(PRICE_CODE_AMOUNT)));
         String currencyValue = currency.orElseGet(() -> getProperty(CURRENCY_EUR));
         String usageModuleValue = usageModule.orElseGet(() -> getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV));
         boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;

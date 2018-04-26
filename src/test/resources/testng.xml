@@ -10,6 +10,7 @@
 
         <packages>
             <package name="com.kaltura.client.test.tests.servicesTests.*"/>
+            <package name="com.kaltura.client.test.tests.featuresTests.*"/>
         </packages>
 
         <!--<classes>-->

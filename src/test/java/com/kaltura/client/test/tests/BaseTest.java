@@ -2,7 +2,7 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
-import com.kaltura.client.test.utils.IngestVODUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.anonymousLogin;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHouseHold;
@@ -25,6 +26,31 @@ public class BaseTest {
     private static Response<LoginResponse> loginResponse;
     private static Configuration config;
 
+    /*================================================================================
+    testing shared params list - used as a helper common params across tests
+
+    int partnerId
+    String defaultUserPassword
+
+    String administratorKs
+    String operatorKs
+    String managerKs
+    String anonymousKs
+
+    MediaAsset mediaAsset
+
+    MediaFile webMediaFile
+    MediaFile mobileMediaFile
+
+    Subscription fiveMinRenewableSubscription
+
+    Household sharedHousehold
+    HouseholdUser sharedMasterUser
+    HouseholdUser sharedUser
+    String sharedMasterUserKs
+    String sharedUserKs
+    ================================================================================*/
+
     // shared common params
     public static int partnerId;
     public static String defaultUserPassword;
@@ -35,12 +61,13 @@ public class BaseTest {
     // shared VOD
     private static MediaAsset mediaAsset;
 
-    /*
-    // shared household params
-    Household sharedHousehold;
-    HouseholdUser sharedMasterUser, sharedUser;
-    String sharedMasterUserKs, sharedUserKs;
-    */
+    // shared files
+    private static MediaFile webMediaFile;
+    private static MediaFile mobileMediaFile;
+
+    // shared MPP
+    private static Subscription fiveMinRenewableSubscription;
+
 
     @BeforeSuite
     public void base_test_before_suite() {
@@ -99,11 +126,46 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+            mediaAsset = IngestUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-            System.out.println("INGESTED VOD: " + mediaAsset.getId());
         }
         return mediaAsset;
+    }
+
+    public static MediaFile getSharedWebMediaFile() {
+        if (webMediaFile == null) {
+            if (getProperty(WEB_FILE_TYPE).equals(getSharedMediaAsset().getMediaFiles().get(0).getType())) {
+                webMediaFile = mediaAsset.getMediaFiles().get(0);
+            } else {
+                webMediaFile = mediaAsset.getMediaFiles().get(1);
+            }
+        }
+        return webMediaFile;
+    }
+
+    public static MediaFile getSharedMobileMediaFile() {
+        if (mobileMediaFile == null) {
+            if (getProperty(MOBILE_FILE_TYPE).equals(getSharedMediaAsset().getMediaFiles().get(0).getType())) {
+                mobileMediaFile = mediaAsset.getMediaFiles().get(0);
+            } else {
+                mobileMediaFile = mediaAsset.getMediaFiles().get(1);
+            }
+        }
+        return mobileMediaFile;
+    }
+
+    public static Subscription get5MinRenewableSubscription() {
+        if (fiveMinRenewableSubscription == null) {
+            PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
+                    Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(CURRENCY_EUR), Optional.of(""),
+                    Optional.of(true), Optional.of(3));
+            fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        }
+        return fiveMinRenewableSubscription;
     }
 
     // shared household

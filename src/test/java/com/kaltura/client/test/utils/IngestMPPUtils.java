@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestMPPUtils extends BaseUtils {
@@ -106,7 +105,7 @@ public class IngestMPPUtils extends BaseUtils {
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //Logger.getLogger(IngestMPPUtils.class).debug("ReportId = " + reportId);
 
-        url = getProperty(INGEST_REPORT_URL) + "/" + partnerId + "/" + reportId;
+        url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
         resp = RestAssured.given()
                 .log().all()
                 .get(url);

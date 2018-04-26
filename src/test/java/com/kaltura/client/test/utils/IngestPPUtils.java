@@ -8,6 +8,7 @@ import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.Optional;
 
+import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.Properties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
@@ -33,7 +34,7 @@ public class IngestPPUtils extends BaseUtils {
         String fullLifeCycleValue = fullLifeCycle.orElse(DEFAULT_FULL_LIFE_CYCLE_VALUE);
         String viewLifeCycleValue = viewLifeCycle.orElse(DEFAULT_VIEW_LIFE_CYCLE_VALUE);
         int maxViewsValue = maxViews.orElse(DEFAULT_MAX_VIEWS_VALUE);
-        String priceValue = price.orElse(getProperty(AMOUNT_4_99_EUR));
+        String priceValue = price.orElse(getProperty(PRICE_CODE_AMOUNT));
         String currencyValue = currency.orElse(CURRENCY_EUR);
         String discountValue = discount.orElse(getProperty(HUNDRED_PERCENTS_UKP_DISCOUNT_NAME));
         boolean isRenewableValue = isRenewable.orElse(DEFAULT_IS_RENEWABLE_VALUE);

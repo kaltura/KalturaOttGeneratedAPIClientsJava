@@ -6,11 +6,11 @@ public class Properties {
 
     private static ResourceBundle resourceBundle;
 
-    // Url properties
+    // url properties
     public static final String API_BASE_URL = "api_base_url";
+    public static final String API_VERSION = "api_version";
     public static final String INGEST_BASE_URL = "ingest_base_url";
     public static final String INGEST_REPORT_URL = "ingest_report_url";
-    public static final String API_VERSION = "api_version";
 
     // DB properties
     public static final String DB_URL = "db_url";
@@ -20,7 +20,7 @@ public class Properties {
     // Request properties
     public static final String PARTNER_ID = "partner_id";
 
-    // Global users
+    // global users
     public static final String ADMINISTRATOR_USER_USERNAME = "administrator_user_username";
     public static final String ADMINISTRATOR_USER_PASSWORD = "administrator_user_password";
 
@@ -43,16 +43,11 @@ public class Properties {
     public static final String INGEST_BUSINESS_MODULE_USER_USERNAME = "ingest_business_module_user_username";
     public static final String INGEST_BUSINESS_MODULE_USER_PASSWORD = "ingest_business_module_user_password";
 
-    public static final String INGEST_ACTION_INSERT = "INGEST";
-
-    public static final String INGEST_VOD_DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
-
     // channels
     public static final String DEFAULT_CHANNEL = "default_channel"; // automatic channel with "Cut Tags Type"="Or", Tags "Series name"="Shay_Series;" and "Free"="Shay_Series;"
 
     // price codes
-    public static final String AMOUNT_4_99_EUR = "amount_4_99_eur"; // 4.99
-    public static final String CURRENCY_EUR = "EUR";
+    public static final String PRICE_CODE_AMOUNT = "price_code_amount"; // 4.99
 
     // usage modules
     public static final String DEFAULT_USAGE_MODULE_4_INGEST_PPV = "default_usage_module_4_ingest_ppv"; // module has 10 Minutes life cycles, 0 maximum views
@@ -64,22 +59,6 @@ public class Properties {
     // discount modules
     public static final String FIFTY_PERCENTS_ILS_DISCOUNT_NAME = "fifty_percents_ils_discount_name";
     public static final String HUNDRED_PERCENTS_UKP_DISCOUNT_NAME = "hundred_percents_ukp_discount_name";
-
-    // TODO: 4/25/2018 ask Max if needed to add to properties file
-    // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts
-    public static final String MOVIE_MEDIA_TYPE = "Movie";
-    public static final String EPISODE_MEDIA_TYPE = "Episode";
-    public static final String LINEAR_MEDIA_TYPE = "Linear";
-
-    // PG adapter data
-    public static final String PG_DEFAULT_ADAPTER_URL = "http://172.31.6.89:90/PGAdapter/Service.svc";
-    public static final String PG_DEFAULT_RENEW_URL = PG_DEFAULT_ADAPTER_URL + "?StateCode=0";
-    public static final String PG_DEFAULT_SHARED_SECRET = "123456";
-    public static final int PG_DEFAULT_PENDING_INTERVAL = 0;
-    public static final int PG_DEFAULT_PENDING_RETRIES = 0;
-    public static final int PG_DEFAULT_RENEW_INTERVAL_MINUTES = 15;
-    public static final int PG_DEFAULT_RENEW_START_MINUTES = -5;
-    public static final String PG_DEFAULT_PG_SETTINGS = "{}";
 
 
     public static String getProperty(String propertyKey) {
