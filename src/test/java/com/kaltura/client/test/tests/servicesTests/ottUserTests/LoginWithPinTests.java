@@ -12,8 +12,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
@@ -32,7 +30,7 @@ public class LoginWithPinTests extends BaseTest {
     @BeforeClass
     private void ottUser_login_tests_setup() {
         emptyClient = getClient(null);
-        Response<OTTUser> ottUserResponse = register(emptyClient, PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
+        Response<OTTUser> ottUserResponse = register(emptyClient, partnerId, generateOttUser(), defaultUserPassword);
         user = ottUserResponse.results;
 
         adminClient = getClient(getAdministratorKs());
@@ -45,7 +43,7 @@ public class LoginWithPinTests extends BaseTest {
         userLoginPinResponse = UserLoginPinServiceImpl.add(adminClient, SECRET);
 
         String pin = userLoginPinResponse.results.getPinCode();
-        loginResponse = OttUserServiceImpl.loginWithPin(emptyClient, PARTNER_ID, pin, null, SECRET);
+        loginResponse = OttUserServiceImpl.loginWithPin(emptyClient, partnerId, pin, null, SECRET);
 
         assertThat(loginResponse.error).isNull();
         assertThat(loginResponse.results.getLoginSession()).isNotNull();
@@ -58,7 +56,7 @@ public class LoginWithPinTests extends BaseTest {
         userLoginPinResponse = UserLoginPinServiceImpl.add(adminClient, SECRET);
 
         String pin = userLoginPinResponse.results.getPinCode();
-        loginResponse = OttUserServiceImpl.loginWithPin(emptyClient, PARTNER_ID, pin, null, SECRET + 1);
+        loginResponse = OttUserServiceImpl.loginWithPin(emptyClient, partnerId, pin, null, SECRET + 1);
 
         assertThat(loginResponse.results).isNull();
         assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2008).getCode());
@@ -72,7 +70,7 @@ public class LoginWithPinTests extends BaseTest {
         String pin = userLoginPinResponse.results.getPinCode();
         // sleep for 1.5 minutes
         try { Thread.sleep(120000); } catch (InterruptedException e) { e.printStackTrace(); }
-        loginResponse = OttUserServiceImpl.loginWithPin(emptyClient, PARTNER_ID, pin, null, SECRET);
+        loginResponse = OttUserServiceImpl.loginWithPin(emptyClient, partnerId, pin, null, SECRET);
 
         assertThat(loginResponse.results).isNull();
         assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2004).getCode());

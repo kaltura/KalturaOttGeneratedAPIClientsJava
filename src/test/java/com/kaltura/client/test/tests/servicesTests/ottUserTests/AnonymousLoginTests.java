@@ -9,7 +9,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +24,7 @@ public class AnonymousLoginTests extends BaseTest {
     @Description("ottUser/action/anonymousLogin - anonymousLogin")
     @Test()
     private void anonymousLogin() {
-        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, PARTNER_ID, null);
+        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, partnerId, null);
 
         assertThat(loginSessionResponse.error).isNull();
         assertThat(loginSessionResponse.results.getKs()).isNotNull();
@@ -34,7 +33,7 @@ public class AnonymousLoginTests extends BaseTest {
     @Description("ottUser/action/anonymousLogin - anonymousLogin with wrong partnerId - error 500006")
     @Test()
     private void anonymousLogin_with_wrong_partnerId() {
-        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, PARTNER_ID + 1, null);
+        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, partnerId + 1, null);
 
         assertThat(loginSessionResponse.results).isNull();
         assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500006).getCode());

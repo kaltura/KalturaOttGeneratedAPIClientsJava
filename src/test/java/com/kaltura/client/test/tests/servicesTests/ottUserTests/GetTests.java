@@ -10,8 +10,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
@@ -21,7 +19,6 @@ public class GetTests extends BaseTest {
 
     private Client client;
     private OTTUser user;
-    private String password = GLOBAL_USER_PASSWORD;
 
     private Response<LoginResponse> loginResponse;
     private Response<OTTUser> ottUserResponse;
@@ -29,10 +26,10 @@ public class GetTests extends BaseTest {
     @BeforeClass
     private void ottUser_login_tests_setup() {
         client = getClient(null);
-        ottUserResponse = register(client, PARTNER_ID, generateOttUser(), password);
+        ottUserResponse = register(client, partnerId, generateOttUser(), defaultUserPassword);
         user = ottUserResponse.results;
 
-        loginResponse = login(client, PARTNER_ID, user.getUsername(), password, null, null);
+        loginResponse = login(client, partnerId, user.getUsername(), defaultUserPassword, null, null);
         user = loginResponse.results.getUser();
         client.setKs(loginResponse.results.getLoginSession().getKs());
     }

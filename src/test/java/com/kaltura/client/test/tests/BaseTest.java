@@ -25,6 +25,10 @@ public class BaseTest {
     private static Response<LoginResponse> loginResponse;
     private static Configuration config;
 
+    // shared common params
+    public static int partnerId;
+    public static String defaultUserPassword;
+
     // shared ks's
     private static String administratorKs, operatorKs, managerKs, anonymousKs;
 
@@ -40,9 +44,12 @@ public class BaseTest {
 
     @BeforeSuite
     public void base_test_before_suite() {
+        partnerId = Integer.parseInt(getProperty(PARTNER_ID));
+        defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
+
         // set configuration
         config = new Configuration();
-        config.setEndpoint(API_BASE_URL + "/" + API_URL_VERSION);
+        config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
         config.setAcceptGzipEncoding(false);
         client = getClient(null);
 
@@ -53,7 +60,6 @@ public class BaseTest {
 
     public static Client getClient(String ks) {
         Client client = new Client(config);
-        client.setApiVersion(API_REQUEST_VERSION);
         client.setKs(ks);
         return client;
     }
@@ -61,7 +67,7 @@ public class BaseTest {
     // getters for shared params
     public static String getAdministratorKs() {
         if (administratorKs == null) {
-            loginResponse = login(client, PARTNER_ID, getProperty(ADMINISTRATOR_USERNAME), getProperty(ADMINISTRATOR_PASSWORD), null, null);
+            loginResponse = login(client, partnerId, getProperty(ADMINISTRATOR_USER_USERNAME), getProperty(ADMINISTRATOR_USER_PASSWORD), null, null);
             administratorKs = loginResponse.results.getLoginSession().getKs();
         }
         return administratorKs;
@@ -69,7 +75,7 @@ public class BaseTest {
 
     public static String getOperatorKs() {
         if (operatorKs == null) {
-            loginResponse = login(client, PARTNER_ID, getProperty(OPERATOR_USERNAME), getProperty(OPERATOR_PASSWORD), null, null);
+            loginResponse = login(client, partnerId, getProperty(OPERATOR_USER_USERNAME), getProperty(OPERATOR_USER_PASSWORD), null, null);
             operatorKs = loginResponse.results.getLoginSession().getKs();
         }
         return operatorKs;
@@ -77,7 +83,7 @@ public class BaseTest {
 
     public static String getManagerKs() {
         if (managerKs == null) {
-            loginResponse = login(client, PARTNER_ID, getProperty(MANAGER_USERNAME), getProperty(MANAGER_PASSWORD), null, null);
+            loginResponse = login(client, partnerId, getProperty(MANAGER_USER_USERNAME), getProperty(MANAGER_USER_PASSWORD), null, null);
             managerKs = loginResponse.results.getLoginSession().getKs();
         }
         return managerKs;
@@ -85,7 +91,7 @@ public class BaseTest {
 
     public static String getAnonymousKs() {
         if (anonymousKs == null) {
-            Response<LoginSession> loginSession = anonymousLogin(client, PARTNER_ID, null);
+            Response<LoginSession> loginSession = anonymousLogin(client, partnerId, null);
             anonymousKs = loginSession.results.getKs();
         }
         return anonymousKs;
@@ -110,9 +116,11 @@ public class BaseTest {
 
         public static Household getSharedHousehold() {
             Client client = getClient(null);
+            int numOfUsers = 2;
+            int numOfDevices = 2;
 
             if (sharedHousehold == null) {
-                sharedHousehold = createHouseHold(2, 2, true);
+                sharedHousehold = createHouseHold(numOfUsers, numOfDevices, true);
                 List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
                 for (HouseholdUser user : sharedHouseholdUsers) {
                     if (user.getIsMaster() != null && user.getIsMaster()) {
@@ -123,10 +131,10 @@ public class BaseTest {
                     }
                 }
 
-                loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
+                loginResponse = login(client, partnerId, getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername(), defaultUserPassword, null, null);
                 sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
 
-                loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername(), GLOBAL_USER_PASSWORD, null, null);
+                loginResponse = login(client, partnerId, getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername(), defaultUserPassword, null, null);
                 sharedUserKs = loginResponse.results.getLoginSession().getKs();
             }
             return sharedHousehold;

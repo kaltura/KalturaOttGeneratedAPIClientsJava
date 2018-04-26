@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.Properties;
 import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
@@ -45,7 +44,7 @@ public class AppTokenGetTests extends BaseTest {
 
         assertThat(getAppTokenResponse.results.getId()).isEqualTo(addAppTokenResponse.results.getId());
         assertThat(getAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
-        assertThat(getAppTokenResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
+        assertThat(getAppTokenResponse.results.getPartnerId()).isEqualTo(partnerId);
         assertThat(getAppTokenResponse.results.getSessionDuration()).isEqualTo(sessionDuration);
         assertThat(getAppTokenResponse.results.getHashType()).isEqualTo(hashType);
         assertThat(getAppTokenResponse.results.getSessionPrivileges()).isEqualTo(sessionPrivileges);

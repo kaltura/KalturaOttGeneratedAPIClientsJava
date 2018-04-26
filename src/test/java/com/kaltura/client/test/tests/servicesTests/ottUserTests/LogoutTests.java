@@ -11,8 +11,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
@@ -22,7 +20,6 @@ public class LogoutTests extends BaseTest {
 
     private Client client;
     private OTTUser user;
-    private String password = GLOBAL_USER_PASSWORD;
 
     private Response<LoginResponse> loginResponse;
     private Response<Boolean> booleanResponse;
@@ -32,14 +29,14 @@ public class LogoutTests extends BaseTest {
     private void ottUser_logout_tests_setup() {
         client = getClient(null);
 
-        Response<OTTUser> ottUserResponse = register(client, PARTNER_ID, generateOttUser(), password);
+        Response<OTTUser> ottUserResponse = register(client, partnerId, generateOttUser(), defaultUserPassword);
         user = ottUserResponse.results;
     }
 
     @Description("ottUser/action/logout - logout")
     @Test
     private void logout() {
-        loginResponse = login(client, PARTNER_ID, user.getUsername(), password, null, null);
+        loginResponse = login(client, partnerId, user.getUsername(), defaultUserPassword, null, null);
         client.setKs(loginResponse.results.getLoginSession().getKs());
 
         booleanResponse = OttUserServiceImpl.logout(client);

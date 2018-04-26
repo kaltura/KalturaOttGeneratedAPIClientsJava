@@ -9,8 +9,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +16,6 @@ public class RegisterTests extends BaseTest {
 
     private Client client;
     private OTTUser user;
-    private String password = GLOBAL_USER_PASSWORD;
 
     private Response<OTTUser> ottUserResponse;
 
@@ -32,7 +29,7 @@ public class RegisterTests extends BaseTest {
     @Description("ottUser/action/register - register")
     @Test
     private void register() {
-        ottUserResponse = OttUserServiceImpl.register(client, PARTNER_ID, user, password);
+        ottUserResponse = OttUserServiceImpl.register(client, partnerId, user, defaultUserPassword);
 
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results.getUsername()).isEqualTo(user.getUsername());

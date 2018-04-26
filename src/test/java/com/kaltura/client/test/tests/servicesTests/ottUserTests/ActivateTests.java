@@ -11,8 +11,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
@@ -22,15 +20,14 @@ public class ActivateTests extends BaseTest {
 
     private Client client;
     private OTTUser user;
-    private String password = GLOBAL_USER_PASSWORD;
 
     @BeforeClass
     private void ottUser_activate_tests_setup() {
         client = getClient(null);
         user = generateOttUser();
 
-        register(client, PARTNER_ID, user, password);
-        login(client, PARTNER_ID, user.getUsername(), password, null, null);
+        register(client, partnerId, user, defaultUserPassword);
+        login(client, partnerId, user.getUsername(), defaultUserPassword, null, null);
     }
 
     @Description("ottUser/action/activate - activate")
@@ -38,7 +35,7 @@ public class ActivateTests extends BaseTest {
     private void activate() {
         String activationToken = DBUtils.getActivationToken(user.getUsername());
 
-        Response<OTTUser> ottUserResponse = OttUserServiceImpl.activate(client, PARTNER_ID, user.getUsername(),activationToken);
+        Response<OTTUser> ottUserResponse = OttUserServiceImpl.activate(client, partnerId, user.getUsername(),activationToken);
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results.getUserState()).isEqualTo(UserState.OK);
     }

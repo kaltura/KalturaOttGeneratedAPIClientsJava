@@ -1,7 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.sessionTests;
 
 import com.kaltura.client.Client;
-import com.kaltura.client.test.Properties;
 import com.kaltura.client.test.servicesImpl.SessionServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
@@ -38,7 +37,7 @@ public class SessionGetTests extends BaseTest {
         Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
 
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
-        assertThat(getSessionResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
+        assertThat(getSessionResponse.results.getPartnerId()).isEqualTo(partnerId);
         assertThat(getSessionResponse.results.getUserId()).isEqualTo(user.getUserId());
         assertThat(getSessionResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(System.currentTimeMillis() / 1000));
         assertThat(getSessionResponse.results.getUdid()).isEqualTo(udid);

@@ -1,7 +1,7 @@
 package com.kaltura.client.test.utils;
 
-import com.google.gson.JsonArray;
 import com.kaltura.client.Logger;
+import com.kaltura.client.test.tests.BaseTest;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
@@ -108,7 +108,7 @@ public class DBUtils extends BaseUtils {
     public static int getEpgChannelId(String channelName) {
         openConnection();
         try {
-            rs = stam.executeQuery(String.format(EPG_CHANNEL_ID_SELECT, PARTNER_ID + 1, channelName));
+            rs = stam.executeQuery(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName));
         } catch (SQLException e) {
             e.printStackTrace();
         }

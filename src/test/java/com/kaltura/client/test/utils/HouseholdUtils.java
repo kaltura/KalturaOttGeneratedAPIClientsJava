@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -25,11 +23,11 @@ public class HouseholdUtils extends BaseUtils {
         Client client = getClient(null);
 
         // create and register
-        Response<OTTUser> masterUserResponse = register(client, PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
+        Response<OTTUser> masterUserResponse = register(client, partnerId, generateOttUser(), defaultUserPassword);
         OTTUser masterUser = masterUserResponse.results;
 
         // login master user
-        Response<LoginResponse> loginResponse = login(client, PARTNER_ID, masterUser.getUsername(), GLOBAL_USER_PASSWORD, null, null);
+        Response<LoginResponse> loginResponse = login(client, partnerId, masterUser.getUsername(), defaultUserPassword, null, null);
         masterUser = loginResponse.results.getUser();
         client.setKs(loginResponse.results.getLoginSession().getKs());
 
@@ -43,7 +41,7 @@ public class HouseholdUtils extends BaseUtils {
 
         // create, register and add non-master user to household
         for (int i = 0; i < numberOfUsersInHoushold - 1; i++) {
-            Response<OTTUser> additionalUserResponse = register(client, PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
+            Response<OTTUser> additionalUserResponse = register(client, partnerId, generateOttUser(), defaultUserPassword);
             OTTUser additionalUser = additionalUserResponse.results;
             HouseholdUser householdUser = new HouseholdUser();
             householdUser.setUserId(additionalUser.getId());
@@ -65,7 +63,7 @@ public class HouseholdUtils extends BaseUtils {
         // login as Master with Udid
         if (numberOfDevicesInHousehold > 0) {
             List<HouseholdDevice> householdDevices = getDevicesListFromHouseHold(household);
-            OttUserServiceImpl.login(client, PARTNER_ID, masterUser.getUsername(), GLOBAL_USER_PASSWORD, null, householdDevices.get(0).getUdid());
+            OttUserServiceImpl.login(client, partnerId, masterUser.getUsername(), defaultUserPassword, null, householdDevices.get(0).getUdid());
         }
 
         if (isPreparePG) {
