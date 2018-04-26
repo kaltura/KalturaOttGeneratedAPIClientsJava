@@ -104,7 +104,8 @@ public class IngestVODUtils extends BaseUtils {
                 "        <media_type>" + mediaType + "</media_type>\n" +
                 "        <rules>\n" +
                 //"          <geo_block_rule>${#TestCase#i_geo_block_rule}</geo_block_rule>\n" +
-                //"          <watch_per_rule>Parent Allowed</watch_per_rule>\n" +
+                // TODO: check where to put that value (is it env-dependent?)
+                "          <watch_per_rule>Parent Allowed</watch_per_rule>\n" +
                 //"          <device_rule>${#TestCase#i_device_block_rule}</device_rule>\n" +
                 "        </rules>\n" +
                 "      </basic>\n" +
