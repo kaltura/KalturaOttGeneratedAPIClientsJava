@@ -1,12 +1,10 @@
 package com.kaltura.client.test.tests.servicesTests.AssetHistoryTests;
 
 import com.kaltura.client.Client;
-import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.test.servicesImpl.AssetHistoryServiceImpl;
-import com.kaltura.client.test.servicesImpl.BookmarkServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.*;
 import com.kaltura.client.types.*;
@@ -15,14 +13,14 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Optional;
-
 import static com.kaltura.client.test.Properties.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryListTests extends BaseTest {
     private Client client;
     private AssetType assetType = AssetType.MEDIA;
+    private int position1 = 10;
+    private int position2 = 20;
 
     @BeforeClass
     private void add_tests_before_class() {
@@ -33,13 +31,10 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistory() {
 
-        int asset1Position = 10;
-        int asset2Position = 20;
-
         // Ingest and bookmark first asset
-        Long assetId1 = ingestAssetAndPerformBookmark(MOVIE_MEDIA_TYPE, asset1Position, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset
-        Long assetId2 = ingestAssetAndPerformBookmark(MOVIE_MEDIA_TYPE, asset2Position, BookmarkActionType.FIRST_PLAY);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position2, BookmarkActionType.FIRST_PLAY);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
         //assetHistory/action/list - both assets should returned
@@ -53,7 +48,7 @@ public class AssetHistoryListTests extends BaseTest {
         // Assertions for first object returned
         assertThat(assetHistoryObject1.getAssetId()).isEqualTo(assetId2);
         assertThat(assetHistoryObject1.getAssetType()).isEqualTo(assetType);
-        assertThat(assetHistoryObject1.getPosition()).isEqualTo(asset2Position);
+        assertThat(assetHistoryObject1.getPosition()).isEqualTo(position2);
         assertThat(assetHistoryObject1.getDuration()).isGreaterThan(0);
         // Verify that flag is set to false (user hasn't finish watching the asset)
         assertThat(assetHistoryObject1.getFinishedWatching()).isFalse();
@@ -62,7 +57,7 @@ public class AssetHistoryListTests extends BaseTest {
         // Assertions for second object returned
         assertThat(assetHistoryObject2.getAssetId()).isEqualTo(assetId1);
         assertThat(assetHistoryObject2.getAssetType()).isEqualTo(assetType);
-        assertThat(assetHistoryObject2.getPosition()).isEqualTo(asset1Position);
+        assertThat(assetHistoryObject2.getPosition()).isEqualTo(position1);
 
         // Assert total count = 2 (two bookmarks)
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(2);
@@ -73,10 +68,10 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistoryFilteredByAssetId() {
 
         // Ingest and bookmark first asset
-        Long assetId1 = ingestAssetAndPerformBookmark(MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset
-        Long assetId2 = ingestAssetAndPerformBookmark(MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
-        Long assetId3 = ingestAssetAndPerformBookmark(MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
+        Long assetId3 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(String.valueOf(assetId2), null, WatchStatus.ALL, null);
         //assetHistory/action/list - filter by asset 2 id
@@ -84,13 +79,13 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId2);
 
-        String concatenatedString = BaseUtils.getConcatenatedString(String.valueOf(assetId2),String.valueOf(assetId3));
+        String concatenatedString = BaseUtils.getConcatenatedString(String.valueOf(assetId2), String.valueOf(assetId3));
 
-    //assetHistory/action/list - filter by asset 2 and asset 3 ids
+        //assetHistory/action/list - filter by asset 2 and asset 3 ids
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(concatenatedString,
                 null, WatchStatus.ALL, null);
         assetHistoryListResponse = AssetHistoryServiceImpl.list(client, assetHistoryFilter, null);
-       assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId3);
+        assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId3);
         assertThat(assetHistoryListResponse.results.getObjects().get(1).getAssetId()).isEqualTo(assetId2);
     }
 
@@ -99,9 +94,9 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistoryFilteredByAssetType() {
 
         // Ingest and bookmark first asset (movie in first play)
-        Long assetId1 = ingestAssetAndPerformBookmark(MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset (movie in finish action)
-        Long assetId2 = ingestAssetAndPerformBookmark(EPISODE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, MOVIE_MEDIA_TYPE_ID);
         //assetHistory/action/list - filter by in progress assets only
@@ -115,9 +110,9 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistoryFilteredByAssetProgress() {
         // Ingest and bookmark first asset (movie in first play)
-        Long assetId1 = ingestAssetAndPerformBookmark(MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset (movie in finish action)
-        Long assetId2 = ingestAssetAndPerformBookmark(EPISODE_MEDIA_TYPE, 100, BookmarkActionType.FINISH);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, 100, BookmarkActionType.FINISH);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.PROGRESS, null);
 
@@ -133,20 +128,4 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId2);
     }
 
-
-    // Ingest asset, bookmark it and return the asset id
-    private Long ingestAssetAndPerformBookmark(String mediaType, int position, BookmarkActionType bookmarkActionType) {
-        // Ingest asset
-        MediaAsset mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(mediaType)), Optional.empty(), Optional.empty());
-        Long assetId = mediaAsset.getId();
-        int fileId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
-        // Movie asset bookmark
-        assetType = AssetType.MEDIA;
-        Bookmark bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, assetType, bookmarkActionType);
-        //bookmark/action/add - Movie asset
-        BookmarkServiceImpl.add(client, bookmark);
-
-        return assetId;
-    }
 }
