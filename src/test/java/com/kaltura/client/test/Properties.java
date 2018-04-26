@@ -34,10 +34,8 @@ public class Properties {
 
     public static final String GLOBAL_USER_PASSWORD = "password";
 
-    // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts
-    public static final String MOVIE_MEDIA_TYPE = "Movie";
-    public static final String EPISODE_MEDIA_TYPE = "Episode";
-    public static final String LINEAR_MEDIA_TYPE = "Linear";
+    // currencies
+    public static final String CURRENCY_EUR = "EUR";
 
     // file types
     public static final String WEB_FILE_TYPE = "web_file_type";
@@ -49,16 +47,11 @@ public class Properties {
     public static final String INGEST_BUSINESS_MODULE_USER_NAME = "ingest_business_module_user_username";
     public static final String INGEST_BUSINESS_MODULE_USER_PASSWORD = "ingest_business_module_user_password";
 
-    public static final String INGEST_ACTION_INSERT = "insert";
-
-    public static final String INGEST_VOD_DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
-
     // channels
     public static final String DEFAULT_CHANNEL = "default_channel"; // automatic channel with "Cut Tags Type"="Or", Tags "Series name"="Shay_Series;" and "Free"="Shay_Series;"
 
     // price codes
-    public static final String AMOUNT_4_99_EUR = "amount_4_99_eur"; // 4.99
-    public static final String CURRENCY_EUR = "EUR";
+    public static final String PRICE_CODE_AMOUNT_4_99 = "price_code_amount_4_99"; // 4.99
 
     // usage modules
     public static final String DEFAULT_USAGE_MODULE_4_INGEST_PPV = "default_usage_module_4_ingest_ppv"; // module has 10 Minutes life cycles, 0 maximum views
@@ -70,16 +63,6 @@ public class Properties {
     // discount modules
     public static final String FIFTY_PERCENTS_ILS_DISCOUNT_NAME = "fifty_percents_ils_discount_name";
     public static final String HUNDRED_PERCENTS_UKP_DISCOUNT_NAME = "hundred_percents_ukp_discount_name";
-
-    // PG adapter data
-    public static final String PG_DEFAULT_ADAPTER_URL = "http://172.31.6.89:90/PGAdapter/Service.svc";
-    public static final String PG_DEFAULT_RENEW_URL = PG_DEFAULT_ADAPTER_URL + "?StateCode=0";
-    public static final String PG_DEFAULT_SHARED_SECRET = "123456";
-    public static final int PG_DEFAULT_PENDING_INTERVAL = 0;
-    public static final int PG_DEFAULT_PENDING_RETRIES = 0;
-    public static final int PG_DEFAULT_RENEW_INTERVAL_MINUTES = 15;
-    public static final int PG_DEFAULT_RENEW_START_MINUTES =-5;
-    public static final String PG_DEFAULT_PG_SETTINGS = "{}";
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null)
