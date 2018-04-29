@@ -45,6 +45,7 @@ public class ChannelsFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String idEqual();
+		String mediaIdEqual();
 		String nameEqual();
 		String nameStartsWith();
 	}
@@ -54,11 +55,15 @@ public class ChannelsFilter extends Filter {
 	 */
 	private Integer idEqual;
 	/**
+	 * media identifier to filter by
+	 */
+	private Long mediaIdEqual;
+	/**
 	 * Exact channel name to filter by
 	 */
 	private String nameEqual;
 	/**
-	 * Channel name starts with (autocomplete)
+	 * Channel name starts with (auto-complete)
 	 */
 	private String nameStartsWith;
 
@@ -72,6 +77,18 @@ public class ChannelsFilter extends Filter {
 
 	public void idEqual(String multirequestToken){
 		setToken("idEqual", multirequestToken);
+	}
+
+	// mediaIdEqual:
+	public Long getMediaIdEqual(){
+		return this.mediaIdEqual;
+	}
+	public void setMediaIdEqual(Long mediaIdEqual){
+		this.mediaIdEqual = mediaIdEqual;
+	}
+
+	public void mediaIdEqual(String multirequestToken){
+		setToken("mediaIdEqual", multirequestToken);
 	}
 
 	// nameEqual:
@@ -110,6 +127,7 @@ public class ChannelsFilter extends Filter {
 
 		// set members values:
 		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+		mediaIdEqual = GsonParser.parseLong(jsonObject.get("mediaIdEqual"));
 		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
 		nameStartsWith = GsonParser.parseString(jsonObject.get("nameStartsWith"));
 
@@ -119,6 +137,7 @@ public class ChannelsFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaChannelsFilter");
 		kparams.add("idEqual", this.idEqual);
+		kparams.add("mediaIdEqual", this.mediaIdEqual);
 		kparams.add("nameEqual", this.nameEqual);
 		kparams.add("nameStartsWith", this.nameStartsWith);
 		return kparams;
