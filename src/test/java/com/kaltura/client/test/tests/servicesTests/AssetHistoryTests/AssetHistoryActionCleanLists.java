@@ -29,7 +29,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
     }
 
-    @Description("/assetHistory/action/clean - bo filtering")
+    @Description("/assetHistory/action/clean - no filtering")
     @Test
     private void cleanHistory() {
         // Ingest and bookmark first asset
@@ -95,4 +95,27 @@ public class AssetHistoryActionCleanLists extends BaseTest {
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId1);
     }
+
+    @Description("/assetHistory/action/clean - filtered by asset progress")
+    @Test
+    private void cleanAssetsAccordingToWatchStatus() {
+        // Ingest and bookmark first asset
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
+        // Ingest and bookmark second asset
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, position2, BookmarkActionType.FINISH);
+
+        AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.DONE, null);
+
+        //assetHistory/action/clean - only asset that were finished (asset 2)
+        AssetHistoryServiceImpl.clean(client, assetHistoryFilter);
+
+        assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
+
+        // assetHistory/action/list - after clean - only asset id 1 returned (was not cleaned)
+        Response<ListResponse<AssetHistory>> assetHistoryListResponse = AssetHistoryServiceImpl.list(client, assetHistoryFilter, null);
+        assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId1);
+    }
+
+
 }
