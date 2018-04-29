@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookmarkListTests extends BaseTest {
@@ -35,7 +36,7 @@ public class BookmarkListTests extends BaseTest {
 
     @BeforeClass
     private void list_tests_before_class() {
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
 
         assetId = BaseTest.getSharedMediaAsset().getId();
         List<Integer> assetFileIds = AssetUtils.getAssetFileIds(String.valueOf(assetId));

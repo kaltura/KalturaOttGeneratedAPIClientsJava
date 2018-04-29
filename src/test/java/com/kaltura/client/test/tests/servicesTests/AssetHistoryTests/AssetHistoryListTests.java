@@ -13,7 +13,10 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
+import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryListTests extends BaseTest {
@@ -24,7 +27,7 @@ public class AssetHistoryListTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
     }
 
     @Description("/AssetHistory/action/list - with no filter")
@@ -98,7 +101,7 @@ public class AssetHistoryListTests extends BaseTest {
         // Ingest and bookmark second asset (movie in finish action)
         Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
 
-        AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, MOVIE_MEDIA_TYPE_ID);
+        AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, getProperty(MOVIE_MEDIA_TYPE_ID));
         //assetHistory/action/list - filter by in progress assets only
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = AssetHistoryServiceImpl.list(client, assetHistoryFilter, null);
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);

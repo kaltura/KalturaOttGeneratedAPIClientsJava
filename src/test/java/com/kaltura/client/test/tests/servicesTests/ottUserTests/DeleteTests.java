@@ -14,8 +14,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.get;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
@@ -39,7 +37,7 @@ public class DeleteTests extends BaseTest {
     @Description("ottUser/action/delete - delete")
     @Test
     private void delete() {
-        Response<OTTUser> ottUserResponse = register(client, PARTNER_ID, generateOttUser(), GLOBAL_USER_PASSWORD);
+        Response<OTTUser> ottUserResponse = register(client, partnerId, generateOttUser(), defaultUserPassword);
         OTTUser user = ottUserResponse.results;
 
         client.setUserId(Integer.valueOf(user.getId()));

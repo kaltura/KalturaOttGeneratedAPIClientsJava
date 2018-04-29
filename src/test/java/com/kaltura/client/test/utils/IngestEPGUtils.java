@@ -16,8 +16,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.getAnonymousKs;
-import static com.kaltura.client.test.tests.BaseTest.getClient;
+import static com.kaltura.client.test.tests.BaseTest.*;
 import static org.awaitility.Awaitility.await;
 
 public class IngestEPGUtils extends BaseUtils {
@@ -34,6 +33,7 @@ public class IngestEPGUtils extends BaseUtils {
     public static final String DEFAULT_PROGRAM_DURATION_PERIOD_NAME = DURATION_PERIOD_MINUTES;
 
     private static List<String> durationPeriodNames = new ArrayList<>();
+
     static {
         durationPeriodNames.add(DURATION_PERIOD_DAYS);
         durationPeriodNames.add(DURATION_PERIOD_HOURS);
@@ -103,9 +103,9 @@ public class IngestEPGUtils extends BaseUtils {
             }
             seasonId = seasonId + 1;
         }
-        String epgChannelIngestXml = getChannelXML(PARTNER_ID, epgChannelName, output);
+        String epgChannelIngestXml = getChannelXML(partnerId, epgChannelName, output);
 
-        String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
+        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
         HashMap headermap = new HashMap<>();
         headermap.put("Content-Type", "text/xml;charset=UTF-8");
         headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestKalturaEpg\"");
@@ -114,7 +114,7 @@ public class IngestEPGUtils extends BaseUtils {
                 "   <s:Body>\n" +
                 "      <IngestKalturaEpg xmlns=\"http://tempuri.org/\">" +
                 "           <request xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">" +
-                "           <userName xmlns=\"\">" + getProperty(INGEST_USER_NAME) + "</userName><passWord xmlns=\"\">" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data xmlns=\"\">" +
+                "           <userName xmlns=\"\">" + getProperty(INGEST_USER_USERNAME) + "</userName><passWord xmlns=\"\">" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data xmlns=\"\">" +
                                 epgChannelIngestXml + "\n" +
                 "           </data>\n" +
                 "           </request>\n" +

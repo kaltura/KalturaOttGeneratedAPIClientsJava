@@ -11,8 +11,6 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.list;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.login;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
@@ -25,8 +23,8 @@ public class ListTests extends BaseTest {
 
     private Client client;
     private Household household;
-    private int numberOfUsersInHousehold = 4;
     private Response<ListResponse<OTTUser>> householdUserListResponse;
+    private int numberOfUsersInHousehold = 4;
 
     @BeforeClass
     private void ottUser_list_tests_setup() {
@@ -39,8 +37,8 @@ public class ListTests extends BaseTest {
     private void list_from_master_ks() {
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
 
-        Response<LoginResponse> loginResponse = login(client, PARTNER_ID, getUserById(Integer.parseInt(masterUser.getUserId())).getUsername(),
-                GLOBAL_USER_PASSWORD, null, null);
+        Response<LoginResponse> loginResponse = login(client, partnerId, getUserById(Integer.parseInt(masterUser.getUserId())).getUsername(),
+                defaultUserPassword, null, null);
 
         client.setKs(loginResponse.results.getLoginSession().getKs());
         householdUserListResponse = list(client, null);

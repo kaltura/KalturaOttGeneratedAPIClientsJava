@@ -14,6 +14,8 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedHousehold;
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUserKs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetCommentListTests extends BaseTest {
@@ -22,8 +24,8 @@ public class AssetCommentListTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        BaseTest.getSharedHousehold();
-        client = getClient(getsharedUserKs());
+        getSharedHousehold();
+        client = getClient(getSharedUserKs());
     }
 
     @Description("AssetComment/action/list - check order by functionality")

@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.Properties;
 import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
@@ -13,13 +12,14 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTokenAddTests extends BaseTest {
 
     private AppTokenHashType hashType;
-    private String sessionUserId = BaseTest.getsharedUser().getUserId();
+    private String sessionUserId = getSharedUser().getUserId();
     private AppToken appToken = new AppToken();
     public static Client client;
     private String sessionPrivileges;
@@ -44,7 +44,7 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(appTokenResponse.results.getHashType()).isEqualTo(this.hashType);
         assertThat(appTokenResponse.results.getToken()).isNotEmpty();
         assertThat(appTokenResponse.results.getSessionUserId()).isEqualTo(this.sessionUserId);
-        assertThat(appTokenResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
+        assertThat(appTokenResponse.results.getPartnerId()).isEqualTo(partnerId);
         assertThat(appTokenResponse.results.getSessionUserId()).isEqualTo(String.valueOf(this.sessionUserId));
     }
 
@@ -98,7 +98,7 @@ public class AppTokenAddTests extends BaseTest {
     //todo - Add specific mark indicating the version of the feature
     private void addAppTokenWithNoExpiryDate() {
         getSharedHousehold();
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
         int expiryDate = 0;
         //int cbExpiryDateValue = 2592000;
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, expiryDate);
@@ -117,6 +117,6 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(addAppTokenResponse.results.getId()).isNotEmpty();
         assertThat(addAppTokenResponse.results.getToken()).isNotEmpty();
         assertThat(addAppTokenResponse.results.getSessionUserId()).isNotEqualTo(sessionUserId);
-        assertThat(addAppTokenResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
+        assertThat(addAppTokenResponse.results.getPartnerId()).isEqualTo(partnerId);
     }
 }

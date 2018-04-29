@@ -14,7 +14,10 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
+import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryActionCleanLists extends BaseTest {
@@ -25,7 +28,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
 
     }
 
@@ -82,7 +85,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
         // Ingest and bookmark second asset
         Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, position2, BookmarkActionType.FIRST_PLAY);
 
-        AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, EPISODE_MEDIA_TYPE_ID);
+        AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, getProperty(EPISODE_MEDIA_TYPE_ID));
 
         //assetHistory/action/clean - only episode type (asset id 2)
         AssetHistoryServiceImpl.clean(client, assetHistoryFilter);

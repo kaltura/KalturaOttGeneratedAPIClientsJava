@@ -3,10 +3,13 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.types.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+
+import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.Properties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
@@ -23,7 +26,7 @@ public class IngestPPVUtils extends BaseUtils {
         boolean isActiveValue = isActive.isPresent() ? isActive.get() : true;
         String descriptionValue = description.orElse("My ingest PPV");
         String discountValue = discount.orElseGet(() -> getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME));
-        double priceValue = price.orElseGet(() -> Double.valueOf(getProperty(AMOUNT_4_99_EUR)));
+        double priceValue = price.orElseGet(() -> Double.valueOf(getProperty(PRICE_CODE_AMOUNT)));
         String currencyValue = currency.orElseGet(() -> getProperty(CURRENCY_EUR));
         String usageModuleValue = usageModule.orElseGet(() -> getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV));
         boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;
@@ -44,7 +47,7 @@ public class IngestPPVUtils extends BaseUtils {
                                 String secondFileType) {
         String ppvCode = getRandomValue("PPV_", 9999999999L);
 
-        String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
+        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
         HashMap headermap = new HashMap<>();
         headermap.put("Content-Type", "text/xml;charset=UTF-8");
         headermap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
@@ -52,7 +55,7 @@ public class IngestPPVUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_NAME) + "</tem:username><tem:password>" +
+                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_USERNAME) + "</tem:username><tem:password>" +
                         getProperty(INGEST_BUSINESS_MODULE_USER_PASSWORD) + "</tem:password><tem:xml>" +
                 "         <![CDATA[" + buildIngestPpvXML(action, ppvCode, isActive, description, discount, price, currency,
                                         usageModule, isSubscriptionOnly, isFirstDeviceLimitation, productCode, firstFileType, secondFileType) +
@@ -69,7 +72,7 @@ public class IngestPPVUtils extends BaseUtils {
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //System.out.println("ReportId = " + reportId);
 
-        url = INGEST_REPORT_URL + "/" + PARTNER_ID + "/" + reportId;
+        url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
         resp = RestAssured.given()
                 .log().all()
                 .get(url);

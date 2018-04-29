@@ -11,6 +11,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUser;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +24,7 @@ public class AppTokenDeleteTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        sessionUserId = BaseTest.getsharedUser().getUserId();
+        sessionUserId = getSharedUser().getUserId();
         client = getClient(getOperatorKs());
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, null, null);

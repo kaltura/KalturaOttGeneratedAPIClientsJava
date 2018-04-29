@@ -7,7 +7,7 @@ import com.kaltura.client.test.servicesImpl.AssetCommentServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
 import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.test.utils.IngestEPGUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetComment;
 import com.kaltura.client.types.AssetCommentFilter;
@@ -19,9 +19,12 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUserKs;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AssetCommentAddTests extends BaseTest {
+
     private Client client;
     private String writer = "Shmulik";
     private Long createDate = 0L;
@@ -31,8 +34,8 @@ public class AssetCommentAddTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        BaseTest.getSharedHousehold();
-        client = getClient(getsharedUserKs());
+        getSharedHousehold();
+        client = getClient(getSharedUserKs());
     }
 
     @Description("AssetComment/action/add - vod asset")
@@ -83,7 +86,7 @@ public class AssetCommentAddTests extends BaseTest {
     private void addCommentForEPGProgram() {
 
         // Ingest EPG program
-        Response<ListResponse<Asset>> epgProgram = IngestEPGUtils.ingestEPG("Shmulik_Series_1", Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+        Response<ListResponse<Asset>> epgProgram = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         Long epgProgramId = epgProgram.results.getObjects().get(0).getId();
 

@@ -4,8 +4,11 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.types.PricePlan;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+
 import java.util.HashMap;
 import java.util.Optional;
+
+import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.Properties.*;
 import static io.restassured.path.xml.XmlPath.from;
 
@@ -31,13 +34,13 @@ public class IngestPPUtils extends BaseUtils {
         String fullLifeCycleValue = fullLifeCycle.orElse(DEFAULT_FULL_LIFE_CYCLE_VALUE);
         String viewLifeCycleValue = viewLifeCycle.orElse(DEFAULT_VIEW_LIFE_CYCLE_VALUE);
         int maxViewsValue = maxViews.orElse(DEFAULT_MAX_VIEWS_VALUE);
-        String priceValue = price.orElse(getProperty(AMOUNT_4_99_EUR));
+        String priceValue = price.orElse(getProperty(PRICE_CODE_AMOUNT));
         String currencyValue = currency.orElse(CURRENCY_EUR);
         String discountValue = discount.orElse(getProperty(HUNDRED_PERCENTS_UKP_DISCOUNT_NAME));
         boolean isRenewableValue = isRenewable.orElse(DEFAULT_IS_RENEWABLE_VALUE);
         int recurringPeriodsValue = recurringPeriods.orElse(DEFAULT_RECURRING_PERIODS_VALUE);
 
-        String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
+        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
         HashMap headermap = new HashMap<>();
         headermap.put("Content-Type", "text/xml;charset=UTF-8");
         headermap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
@@ -45,7 +48,7 @@ public class IngestPPUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_NAME) + "</tem:username><tem:password>" +
+                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_USERNAME) + "</tem:username><tem:password>" +
                         getProperty(INGEST_BUSINESS_MODULE_USER_PASSWORD) + "</tem:password><tem:xml>" +
                 "         <![CDATA[" + buildIngestPpXML(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
                             viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue,
@@ -66,7 +69,7 @@ public class IngestPPUtils extends BaseUtils {
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //Logger.getLogger(IngestMPPUtils.class).debug("ReportId = " + reportId);
 
-        url = INGEST_REPORT_URL + "/" + PARTNER_ID + "/" + reportId;
+        url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
         resp = RestAssured.given()
                 .log().all()
                 .get(url);

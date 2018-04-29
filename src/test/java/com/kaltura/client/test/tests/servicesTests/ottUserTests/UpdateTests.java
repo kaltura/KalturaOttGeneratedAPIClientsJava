@@ -12,8 +12,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +21,6 @@ public class UpdateTests extends BaseTest {
 
     private Client client;
     private OTTUser user;
-    private String password = GLOBAL_USER_PASSWORD;
     private String originalUserEmail;
 
     private Response<OTTUser> ottUserResponse;
@@ -31,7 +28,7 @@ public class UpdateTests extends BaseTest {
     @BeforeClass
     private void ottUser_update_tests_setup() {
         client = getClient(null);
-        ottUserResponse = register(client, PARTNER_ID, generateOttUser(), password);
+        ottUserResponse = register(client, partnerId, generateOttUser(), defaultUserPassword);
         user = ottUserResponse.results;
         originalUserEmail = user.getEmail();
     }
@@ -40,7 +37,7 @@ public class UpdateTests extends BaseTest {
     @Test
     private void update() {
         // get self ks
-        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(client, PARTNER_ID, user.getUsername(), password, null, null);
+        Response<LoginResponse> loginResponse = OttUserServiceImpl.login(client, partnerId, user.getUsername(), defaultUserPassword, null, null);
         client.setKs(loginResponse.results.getLoginSession().getKs());
 
         // update

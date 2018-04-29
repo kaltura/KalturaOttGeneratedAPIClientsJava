@@ -15,8 +15,6 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static com.kaltura.client.test.Properties.GLOBAL_USER_PASSWORD;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
 import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
@@ -29,7 +27,7 @@ public class AddRoleTests extends BaseTest {
     private void ottUser_addRole_tests_setup() {
         client = getClient(null);
         user = generateOttUser();
-        Response<OTTUser> ottUserResponse = register(client, PARTNER_ID, user, GLOBAL_USER_PASSWORD);
+        Response<OTTUser> ottUserResponse = register(client, partnerId, user, defaultUserPassword);
         user = ottUserResponse.results;
     }
 

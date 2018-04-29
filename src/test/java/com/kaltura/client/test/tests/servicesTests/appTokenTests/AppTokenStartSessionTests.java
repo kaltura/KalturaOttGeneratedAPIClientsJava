@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.Properties;
 import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
@@ -16,6 +15,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTokenStartSessionTests extends BaseTest {
@@ -35,7 +35,7 @@ public class AppTokenStartSessionTests extends BaseTest {
     private void add_tests_before_class() {
         client = getClient(null);
         // Invoke ottUser/action/anonymousLogin to receive LoginSession object (and anonymous KS)
-        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, Properties.PARTNER_ID, udid1);
+        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, partnerId, udid1);
         anonymousKs = loginSessionResponse.results.getKs();
         client.setKs(getOperatorKs());
         expiryDate = BaseUtils.getTimeInEpoch(1);
@@ -59,7 +59,7 @@ public class AppTokenStartSessionTests extends BaseTest {
                 , tokenHash, null, Math.toIntExact(expiryDate), udid1);
 
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
-        assertThat(sessionInfoResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
+        assertThat(sessionInfoResponse.results.getPartnerId()).isEqualTo(partnerId);
         assertThat(sessionInfoResponse.results.getUserId()).isEqualTo(sessionUserId);
         assertThat(sessionInfoResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
         assertThat(sessionInfoResponse.results.getPrivileges()).contains(sessionPrivileges);
@@ -93,7 +93,7 @@ public class AppTokenStartSessionTests extends BaseTest {
                 , tokenHash, null, Math.toIntExact(expiryDate), udid1);
 
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
-        assertThat(sessionInfoResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
+        assertThat(sessionInfoResponse.results.getPartnerId()).isEqualTo(partnerId);
         assertThat(sessionInfoResponse.results.getUserId()).isEqualTo(sessionUserId);
         assertThat(sessionInfoResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
         assertThat(sessionInfoResponse.results.getPrivileges()).contains(sessionPrivileges);
@@ -115,7 +115,7 @@ public class AppTokenStartSessionTests extends BaseTest {
     private void startSessionDefaultExpiryDate() {
         int expiryDate = 0;
         getSharedHousehold();
-        client = getClient(getsharedMasterUserKs());
+        client = getClient(getSharedMasterUserKs());
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(null, hashType, null, expiryDate);
         Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);

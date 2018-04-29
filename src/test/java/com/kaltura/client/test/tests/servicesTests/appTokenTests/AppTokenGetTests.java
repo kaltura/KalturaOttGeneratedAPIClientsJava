@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.Properties;
 import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
@@ -13,6 +12,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUser;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +31,7 @@ public class AppTokenGetTests extends BaseTest {
     private void get_tests_before_class() {
         client = getClient(getOperatorKs());
         hashType = AppTokenHashType.SHA1;
-        sessionUserId =  BaseTest.getsharedUser().getUserId();
+        sessionUserId =  getSharedUser().getUserId();
 
         expiryDate = BaseUtils.getTimeInEpoch(offSetInMinutes);
     }
@@ -46,7 +46,7 @@ public class AppTokenGetTests extends BaseTest {
 
         assertThat(getAppTokenResponse.results.getId()).isEqualTo(addAppTokenResponse.results.getId());
         assertThat(getAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
-        assertThat(getAppTokenResponse.results.getPartnerId()).isEqualTo(Properties.PARTNER_ID);
+        assertThat(getAppTokenResponse.results.getPartnerId()).isEqualTo(partnerId);
         assertThat(getAppTokenResponse.results.getSessionDuration()).isEqualTo(sessionDuration);
         assertThat(getAppTokenResponse.results.getHashType()).isEqualTo(hashType);
         assertThat(getAppTokenResponse.results.getSessionPrivileges()).isEqualTo(sessionPrivileges);

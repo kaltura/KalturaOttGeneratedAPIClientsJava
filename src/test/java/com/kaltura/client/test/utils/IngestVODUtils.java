@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import static com.kaltura.client.test.IngestConstants.INGEST_VOD_DEFAULT_THUMB;
+import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.getAnonymousKs;
 import static com.kaltura.client.test.tests.BaseTest.getClient;
@@ -36,14 +38,14 @@ public class IngestVODUtils extends BaseUtils {
         String ppvWebNameValue = ppvWebName.orElse("Shai_Regression_PPV"); // TODO: update on any generated value
         String ppvMobileNameValue = ppvMobileName.orElse("Shai_Regression_PPV"); // TODO: update on any generated value
         // TODO: check if ingest url is the same for all ingest actions
-        String url = SOAP_BASE_URL + "/Ingest_" + API_URL_VERSION + "/Service.svc?wsdl";
+        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
         HashMap headermap = new HashMap<>();
         headermap.put("Content-Type", "text/xml;charset=UTF-8");
         headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestTvinciData\"");
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestTvinciData><tem:request><userName>" + getProperty(INGEST_USER_NAME) + "</userName><passWord>" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data>" +
+                "      <tem:IngestTvinciData><tem:request><userName>" + getProperty(INGEST_USER_USERNAME) + "</userName><passWord>" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data>" +
                 "         <![CDATA[" + buildIngestVodXml(coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
                                     catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue) +
                 "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
