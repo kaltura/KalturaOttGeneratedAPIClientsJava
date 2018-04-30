@@ -35,7 +35,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
     protected ResponseElement onGotResponse(Response response, RequestElement action) {
         ResponseElement responseElement = super.onGotResponse(response, action);
 //        logger.debug("response body:\n" + responseElement.getResponse()); // was found in base class
-        logger.debug("response headers:\n" + response.headers());
+//        logger.debug("response headers:\n" + response.headers());
 
         if (responseElement.isSuccess()) {
                 com.kaltura.client.utils.response.base.Response response1 = action.parseResponse(responseElement);

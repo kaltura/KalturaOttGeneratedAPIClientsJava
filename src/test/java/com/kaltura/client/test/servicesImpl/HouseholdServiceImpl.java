@@ -125,11 +125,20 @@ public class HouseholdServiceImpl {
 
     // suspend
     public static Response<Boolean> suspend(Client client, @Nullable Integer roleId) {
-        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(roleId)
-                .setCompletion((ApiCompletion<Boolean>) result -> {
-                    booleanResponse = result;
-                    done.set(true);
-                });
+        SuspendHouseholdBuilder suspendHouseholdBuilder;
+        if (roleId == null) {
+             suspendHouseholdBuilder = HouseholdService.suspend()
+                    .setCompletion((ApiCompletion<Boolean>) result -> {
+                        booleanResponse = result;
+                        done.set(true);
+                    });
+        } else {
+            suspendHouseholdBuilder = HouseholdService.suspend(roleId)
+                    .setCompletion((ApiCompletion<Boolean>) result -> {
+                        booleanResponse = result;
+                        done.set(true);
+                    });
+        }
 
         TestAPIOkRequestsExecutor.getExecutor().queue(suspendHouseholdBuilder.build(client));
         await().untilTrue(done);

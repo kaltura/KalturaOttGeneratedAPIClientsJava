@@ -15,7 +15,6 @@ import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestPPVUtils extends BaseUtils {
 
-
     // way to ingest PPV using predefined default values for any of input parameters
     public static Ppv ingestPPVWithDefaultValues(Optional<String> action, Optional<Boolean> isActive, Optional<String> description,
                                                  Optional<String> discount, Optional<Double> price, Optional<String> currency,
