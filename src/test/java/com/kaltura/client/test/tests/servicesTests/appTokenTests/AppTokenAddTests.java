@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTokenAddTests extends BaseTest {
 
     private AppTokenHashType hashType;
-    private String sessionUserId = "1577578";
+    private String sessionUserId;
     private AppToken appToken = new AppToken();
     public static Client client;
     private String sessionPrivileges;
@@ -27,7 +27,9 @@ public class AppTokenAddTests extends BaseTest {
     @BeforeClass
     private void add_tests_before_class() {
         hashType = AppTokenHashType.SHA1;
+        sessionUserId = getSharedUser().getUserId();
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, null, null);
+
     }
 
     @Description("appToken/action/add")

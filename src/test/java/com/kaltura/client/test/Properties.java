@@ -36,6 +36,10 @@ public class Properties {
     public static final String WEB_FILE_TYPE = "web_file_type";
     public static final String MOBILE_FILE_TYPE = "mobile_file_type";
 
+    // media types ids
+    public static final String MOVIE_MEDIA_TYPE_ID = "movie_media_type_id";
+    public static final String EPISODE_MEDIA_TYPE_ID = "episode_media_type_id";
+
     // ingest
     public static final String INGEST_USER_USERNAME = "ingest_user_username";
     public static final String INGEST_USER_PASSWORD = "ingest_user_password";
