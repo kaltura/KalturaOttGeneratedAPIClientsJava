@@ -6,8 +6,10 @@ import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.test.servicesImpl.AssetHistoryServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetHistoryUtils;
+import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
+import com.kaltura.client.types.Household;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -17,7 +19,6 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryActionCleanLists extends BaseTest {
@@ -28,13 +29,17 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        client = getClient(getSharedMasterUserKs());
+
 
     }
 
     @Description("/assetHistory/action/clean - no filtering")
     @Test
     private void cleanHistory() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+
         // Ingest and bookmark first asset
         AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset
@@ -58,6 +63,10 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     @Description("/assetHistory/action/clean - filtered by asset id")
     @Test
     private void cleanSpecifcAssetHistory() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+
         // Ingest and bookmark first asset
         Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset
@@ -80,6 +89,10 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     @Description("/assetHistory/action/clean - filtered by asset type")
     @Test
     private void cleanSpecifcAssetTypeHistory() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+
         // Ingest and bookmark first asset
         Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset
@@ -102,6 +115,10 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     @Description("/assetHistory/action/clean - filtered by asset progress")
     @Test
     private void cleanAssetsAccordingToWatchStatus() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+
         // Ingest and bookmark first asset
         Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset

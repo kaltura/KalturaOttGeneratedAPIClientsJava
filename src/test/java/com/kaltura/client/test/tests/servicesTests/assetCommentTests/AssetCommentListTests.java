@@ -6,16 +6,20 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.test.servicesImpl.AssetCommentServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
+import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.IngestVODUtils;
 import com.kaltura.client.types.AssetComment;
 import com.kaltura.client.types.AssetCommentFilter;
+import com.kaltura.client.types.Household;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedHousehold;
-import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUserKs;
+import java.util.Optional;
+
+import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetCommentListTests extends BaseTest {
@@ -24,8 +28,8 @@ public class AssetCommentListTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        getSharedHousehold();
-        client = getClient(getSharedUserKs());
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
     }
 
     @Description("AssetComment/action/list - check order by functionality")
@@ -39,7 +43,8 @@ public class AssetCommentListTests extends BaseTest {
         String subHeader = "subHeader";
         String text = "A lot of text";
 
-        Long assetId = BaseTest.getSharedMediaAsset().getId();
+        Long assetId = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(MOVIE_MEDIA_TYPE)), Optional.empty(), Optional.empty()).getId();
 
         // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);

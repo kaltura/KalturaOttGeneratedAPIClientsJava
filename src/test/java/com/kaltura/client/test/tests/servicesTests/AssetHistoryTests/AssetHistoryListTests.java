@@ -16,7 +16,6 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryListTests extends BaseTest {
@@ -27,12 +26,15 @@ public class AssetHistoryListTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        client = getClient(getSharedMasterUserKs());
+
     }
 
     @Description("/AssetHistory/action/list - with no filter")
     @Test
     private void vodAssetHistory() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
         Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
@@ -64,11 +66,16 @@ public class AssetHistoryListTests extends BaseTest {
 
         // Assert total count = 2 (two bookmarks)
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(2);
+
+        AssetHistoryServiceImpl.clean(client, assetHistoryFilter);
     }
 
     @Description("/AssetHistory/action/list -filtered by movie asset id")
     @Test
     private void vodAssetHistoryFilteredByAssetId() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
         Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
@@ -90,11 +97,16 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryListResponse = AssetHistoryServiceImpl.list(client, assetHistoryFilter, null);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId3);
         assertThat(assetHistoryListResponse.results.getObjects().get(1).getAssetId()).isEqualTo(assetId2);
+
+        AssetHistoryServiceImpl.clean(client, assetHistoryFilter);
     }
 
     @Description("/AssetHistory/action/list -filtered by movie type id")
     @Test
     private void vodAssetHistoryFilteredByAssetType() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset (movie in first play)
         Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
@@ -106,12 +118,18 @@ public class AssetHistoryListTests extends BaseTest {
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = AssetHistoryServiceImpl.list(client, assetHistoryFilter, null);
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId1);
+
+        AssetHistoryServiceImpl.clean(client, assetHistoryFilter);
     }
 
 
     @Description("/AssetHistory/action/list -filtered by assets progress")
     @Test
     private void vodAssetHistoryFilteredByAssetProgress() {
+
+        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+
         // Ingest and bookmark first asset (movie in first play)
         Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset (movie in finish action)
@@ -129,6 +147,8 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryListResponse = AssetHistoryServiceImpl.list(client, assetHistoryFilter, null);
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId2);
+
+        AssetHistoryServiceImpl.clean(client, assetHistoryFilter);
     }
 
 }
