@@ -26,6 +26,8 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     private Client client;
     private int position1 = 10;
     private int position2 = 20;
+    int numbOfDevices = 1;
+    int numOfUsers = 1;
 
     @BeforeClass
     private void add_tests_before_class() {
@@ -37,7 +39,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     @Test
     private void cleanHistory() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
@@ -64,7 +66,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     @Test
     private void cleanSpecifcAssetHistory() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
@@ -90,7 +92,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     @Test
     private void cleanSpecifcAssetTypeHistory() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
@@ -114,9 +116,9 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
     @Description("/assetHistory/action/clean - filtered by asset progress")
     @Test
-    private void cleanAssetsAccordingToWatchStatus() {
+    private void cleanAssetsAccordingToWatchStatusDone() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
@@ -137,5 +139,28 @@ public class AssetHistoryActionCleanLists extends BaseTest {
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId1);
     }
 
+    @Description("/assetHistory/action/clean - filtered by asset progress")
+    @Test
+    private void cleanAssetsAccordingToWatchStatusProgress() {
 
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+
+        // Ingest and bookmark first asset
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
+        // Ingest and bookmark second asset
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, position2, BookmarkActionType.FINISH);
+
+        AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.PROGRESS, null);
+
+        //assetHistory/action/clean - only asset that in progress (asset 1)
+        AssetHistoryServiceImpl.clean(client, assetHistoryFilter);
+
+        assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
+
+        // assetHistory/action/list - after clean - only asset id 2 returned (was not cleaned)
+        Response<ListResponse<AssetHistory>> assetHistoryListResponse = AssetHistoryServiceImpl.list(client, assetHistoryFilter, null);
+        assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId2);
+    }
 }

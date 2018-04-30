@@ -23,6 +23,8 @@ public class AssetHistoryListTests extends BaseTest {
     private AssetType assetType = AssetType.MEDIA;
     private int position1 = 10;
     private int position2 = 20;
+    int numbOfDevices = 1;
+    int numOfUsers = 1;
 
     @BeforeClass
     private void add_tests_before_class() {
@@ -33,7 +35,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistory() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
@@ -74,7 +76,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistoryFilteredByAssetId() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset
@@ -105,7 +107,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistoryFilteredByAssetType() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset (movie in first play)
@@ -127,7 +129,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistoryFilteredByAssetProgress() {
 
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
+        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
         client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
 
         // Ingest and bookmark first asset (movie in first play)
@@ -150,5 +152,7 @@ public class AssetHistoryListTests extends BaseTest {
 
         AssetHistoryServiceImpl.clean(client, assetHistoryFilter);
     }
+
+    //todo - Currently EPG program not returned in response (Ticket was opened to Omer - BEO-4594]
 
 }
