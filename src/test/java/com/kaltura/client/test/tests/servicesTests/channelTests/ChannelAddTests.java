@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.channelTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetOrderBy;
-import com.kaltura.client.test.servicesImpl.AssetHistoryServiceImpl;
 import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
 import com.kaltura.client.test.servicesImpl.ChannelServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
@@ -41,7 +40,6 @@ public class ChannelAddTests extends BaseTest {
         client = getClient(getManagerKs());
         channelName = "Channel_12345";
         Description = "description of channel";
-
     }
 
     @Description("channel/action/add - with all asset types")
@@ -70,18 +68,25 @@ public class ChannelAddTests extends BaseTest {
         MediaAsset episodeAsset = IngestVODUtils.ingestBasicVOD(Optional.of(asset2Name), MOVIE_MEDIA_TYPE);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
-        // "(or name = 'name' name= 'name2')"
         client = getClient(getManagerKs());
-        channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+        channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);
 
         //channel/action/add
         Response<Channel> channelResponse = ChannelServiceImpl.add(client, channel);
         assertThat(channelResponse.results.getName()).isEqualTo(channelName);
 
-        SearchAssetFilter searchAssetFilter = AssetUtils.getSearchAssetFilter()
+        int channelId = Math.toIntExact(channelResponse.results.getId());
+
+        ChannelFilter channelFilter = AssetUtils.getChannelFilter(channelId, null, null, null);
 
         //asset/action/list
-        AssetServiceImpl.list(client,searchAssetFilter,null);
+        Response<ListResponse<Asset>> listResponse = AssetServiceImpl.list(client, channelFilter, null);
+        assertThat(listResponse.results.getTotalCount()).isEqualTo(2);
+        // Verify movie asset id returned first (because order is by name_desc)
+        assertThat(listResponse.results.getObjects().get(0).getId()).isEqualTo(movieAsset.getId());
+
+        // Cleanup - channel/action/delete
+        ChannelServiceImpl.delete(client, channelId);
     }
 
 
@@ -119,6 +124,4 @@ public class ChannelAddTests extends BaseTest {
         // KalturaAPIException","code":"4004","message":"Invalid expression structure"
         assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4004).getCode());
     }
-
-
 }
