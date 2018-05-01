@@ -1,9 +1,7 @@
 package com.kaltura.client.test.tests.servicesTests.bookmarkTests;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.enums.*;
-import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
-import com.kaltura.client.test.servicesImpl.BookmarkServiceImpl;
+import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BookmarkUtils;
@@ -16,6 +14,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kaltura.client.services.BookmarkService.*;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookmarkAddTests extends BaseTest {
 
-    private Client client;
     private long assetId;
     private int fileId;
     private BookmarkActionType actionType;
@@ -38,7 +36,6 @@ public class BookmarkAddTests extends BaseTest {
     private void add_tests_before_class() {
 
         getSharedHousehold();
-        client = getClient(getSharedMasterUserKs());
         assetId = BaseTest.getSharedMediaAsset().getId();
         fileId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
 
@@ -56,7 +53,10 @@ public class BookmarkAddTests extends BaseTest {
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
+        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+        addBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
+
         // Verify response return true
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         // Verify no error returned
@@ -64,7 +64,10 @@ public class BookmarkAddTests extends BaseTest {
 
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client, bookmarkFilter);
+        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter);
+        listBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+
         Bookmark bookmark1 = bookmarkListResponse.results.getObjects().get(0);
 
         // Match content of asset id
@@ -96,18 +99,22 @@ public class BookmarkAddTests extends BaseTest {
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
+        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+        addBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
         // Verify response return true
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         // Verify no error returned
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        Response<ListResponse<Bookmark>> bookmarkListResponse2 = BookmarkServiceImpl.list(client, bookmarkFilter);
-        Bookmark bookmark2 = bookmarkListResponse2.results.getObjects().get(0);
+        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter);
+        listBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+        Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
         // Match content of asset position
-        assertThat(bookmark2.getPosition()).isEqualTo(this.position);
+        assertThat(bookmark.getPosition()).isEqualTo(this.position);
     }
 
     @Description("bookmark/action/add - 95% watching == finish watching")
@@ -118,14 +125,18 @@ public class BookmarkAddTests extends BaseTest {
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
+        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+        addBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
         // Verify response return true
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         // Verify no error returned
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client, bookmarkFilter);
+        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter);
+        listBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
         Bookmark bookmark3 = bookmarkListResponse.results.getObjects().get(0);
 
         // Verify finishedWatching = true
@@ -140,9 +151,13 @@ public class BookmarkAddTests extends BaseTest {
         position = 0;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
+        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+        addBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
-        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client, bookmarkFilter);
+        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter);
+        listBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
         // Verify finishedWatching = false
         assertThat(bookmark.getFinishedWatching()).isFalse();
@@ -157,14 +172,18 @@ public class BookmarkAddTests extends BaseTest {
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, actionType);
 
         // Invoke bookmark/action/add request
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
+        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+        addBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
         // Verify response return true
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         // Verify no error returned
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        Response<ListResponse<Bookmark>> bookmarkListResponse = BookmarkServiceImpl.list(client, bookmarkFilter);
+        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter);
+        listBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
         // Verify finishedWatching = true
@@ -178,7 +197,9 @@ public class BookmarkAddTests extends BaseTest {
     @Test
     private void emptyAssetId() {
         bookmark = BookmarkUtils.addBookmark(0, null, fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        Response<Boolean> booleanResponse = BookmarkServiceImpl.add(client, bookmark);
+        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+        addBookmarkBuilder.setKs(getSharedMasterUserKs());
+        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
         assertThat(booleanResponse.results).isNull();
         // Verify exception returned - code: 500003 ("Invalid Asset id")
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500003).getCode());
