@@ -16,6 +16,7 @@ import java.util.Optional;
 public class PurchaseUtils {
 
     public static Map<String, String> purchasePpvDetailsMap;
+    public static Map<String, String> purchaseSubscriptionDetailsMap;
 
     // TODO: 14/MAR/2018 add return
     public static void purchasePpv(Client client, Optional<Integer> mediaId, Optional<Integer> fileId) {
@@ -56,5 +57,32 @@ public class PurchaseUtils {
         purchasePpvDetailsMap.put("currency", client.getCurrency());
         purchasePpvDetailsMap.put("ppvModuleId", ppvModuleId);
         purchasePpvDetailsMap.put("fileId", String.valueOf(internalFileId));
+    }
+
+    // TODO: 3/7/2018 add return
+    // private as not completed
+    private static void purchaseSubscription(Client client, int subscriptionId) {
+        purchaseSubscriptionDetailsMap = new HashMap<>();
+        int paymentGatewayId = 0;
+
+        ProductPriceFilter filter = new ProductPriceFilter();
+        filter.setSubscriptionIdIn(String.valueOf(subscriptionId));
+        filter.setIsLowest(false);
+        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(client, filter);
+        String currency = productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getCurrency();
+        double price = productPriceListBeforePurchase.results.getObjects().get(0).getPrice().getAmount();
+
+        Purchase purchase = new Purchase();
+        purchase.setProductId(subscriptionId);
+        purchase.setContentId(0);
+        purchase.setCurrency(currency);
+        purchase.setPrice(price);
+        purchase.setProductType(Optional.of(TransactionType.SUBSCRIPTION).get());
+        purchase.setPaymentGatewayId(Optional.of(paymentGatewayId).get());
+        TransactionServiceImpl.purchase(client, purchase);
+
+        // TODO: complete the purchase subscription test
+        purchaseSubscriptionDetailsMap.put("price", String.valueOf(price));
+        purchaseSubscriptionDetailsMap.put("currency", currency);
     }
 }
