@@ -2,11 +2,15 @@ package com.kaltura.client.test.tests.servicesTests.channelTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetOrderBy;
+import com.kaltura.client.test.servicesImpl.AssetHistoryServiceImpl;
+import com.kaltura.client.test.servicesImpl.AssetServiceImpl;
 import com.kaltura.client.test.servicesImpl.ChannelServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.AssetUtils;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.ChannelUtils;
-import com.kaltura.client.types.Channel;
-import com.kaltura.client.types.IntegerValue;
+import com.kaltura.client.test.utils.IngestVODUtils;
+import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
@@ -14,7 +18,9 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,15 +55,33 @@ public class ChannelAddTests extends BaseTest {
         assertThat(channelResponse.results.getName()).isEqualTo(channelName);
     }
 
+    // TODO
     @Description("channel/action/add - order by NAME_DESC")
     @Test
     private void checkOrderOfAssetsInChannel() {
-        filterExpression = "name ~ 'movie'";
+
+        String asset1Name = "Movie_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
+        String asset2Name = "Episode_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
+
+        // Ingest first asset
+        MediaAsset movieAsset = IngestVODUtils.ingestBasicVOD(Optional.of(asset1Name), MOVIE_MEDIA_TYPE);
+
+        // Ingest second asset
+        MediaAsset episodeAsset = IngestVODUtils.ingestBasicVOD(Optional.of(asset2Name), MOVIE_MEDIA_TYPE);
+
+        filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
+        // "(or name = 'name' name= 'name2')"
         client = getClient(getManagerKs());
         channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+
         //channel/action/add
         Response<Channel> channelResponse = ChannelServiceImpl.add(client, channel);
         assertThat(channelResponse.results.getName()).isEqualTo(channelName);
+
+        SearchAssetFilter searchAssetFilter = AssetUtils.getSearchAssetFilter()
+
+        //asset/action/list
+        AssetServiceImpl.list(client,searchAssetFilter,null);
     }
 
 
@@ -95,7 +119,6 @@ public class ChannelAddTests extends BaseTest {
         // KalturaAPIException","code":"4004","message":"Invalid expression structure"
         assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4004).getCode());
     }
-
 
 
 }
