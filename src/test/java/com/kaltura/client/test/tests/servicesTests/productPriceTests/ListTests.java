@@ -11,6 +11,8 @@ import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeClass;
@@ -60,6 +62,7 @@ public class ListTests extends BaseTest {
         classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Description("productPrice/action/list - subscription test by Operator without currency")
     @Test(enabled = false) // as used in feature tests
     public void listSubscription() {
@@ -71,6 +74,7 @@ public class ListTests extends BaseTest {
         assertThat(productPriceList.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Description("productPrice/action/list - subscription test with currency by Operator")
     @Test()
     public void listSubscriptionWithCurrencyTest() {
@@ -85,6 +89,7 @@ public class ListTests extends BaseTest {
         assertThat(productPriceList.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(CURRENCY_EUR);
     }
 
+    @Severity(SeverityLevel.MINOR)
     @Description("productPrice/action/list - without required fields (subscriptionIdIn, collectionIdIn and fileIdIn are empty)")
     @Test()
     public void listWithoutRequiredFields() {
@@ -98,6 +103,7 @@ public class ListTests extends BaseTest {
                 "One of the arguments [KalturaProductPriceFilter.subscriptionIdIn, KalturaProductPriceFilter.fileIdIn, KalturaProductPriceFilter.collectionIdIn] must have a value");
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("productPrice/action/list - ppv test")
     @Test()
     public void ppvTest() {
@@ -143,6 +149,7 @@ public class ListTests extends BaseTest {
         assertThat(((PpvPrice) productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0)).getFileId()).isEqualTo(mobileMediaFileId);
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Description("productPrice/action/list - common test for PPV and subscription to check before purchase")
     @Test()
     public void productPriceSubscriptionAndPpvBeforePurchaseTest() {
@@ -167,6 +174,7 @@ public class ListTests extends BaseTest {
         assertThat(((PpvPrice) productPriceListBeforePurchase.results.getObjects().get(1)).getFileId()).isEqualTo(getSharedWebMediaFile().getId());
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("productPrice/action/list - subscription test")
     @Test(enabled = false) // as not completed
     public void subscriptionTest() {
