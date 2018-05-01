@@ -2,6 +2,7 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
+import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -24,8 +25,9 @@ import static org.awaitility.Awaitility.setDefaultTimeout;
 public class BaseTest {
 
     private static Client client;
-    private static Response<LoginResponse> loginResponse;
     private static Configuration config;
+    protected static TestAPIOkRequestsExecutor executor = TestAPIOkRequestsExecutor.getExecutor();
+    private static Response<LoginResponse> loginResponse;
 
     /*================================================================================
     testing shared params list - used as a helper common params across tests
