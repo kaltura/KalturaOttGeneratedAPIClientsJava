@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
+import com.kaltura.client.types.Collection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -124,5 +125,14 @@ public class BaseUtils {
             }
         }
         return exceptions;
+    }
+
+    // Get concatenated string
+    public static String getConcatenatedString(String... args) {
+        List<String> assetIds = new ArrayList<>();
+        for (String arg : args) {
+            assetIds.add(arg);
+        }
+        return String.join(",", assetIds);
     }
 }

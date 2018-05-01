@@ -12,12 +12,13 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUser;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTokenGetTests extends BaseTest {
 
-    final private String sessionUserId = "1577578";
+    private String sessionUserId;
     private String sessionPrivileges = "key1:value1,key2:value2";
     private AppTokenHashType hashType;
     public static Client client;
@@ -30,6 +31,7 @@ public class AppTokenGetTests extends BaseTest {
     private void get_tests_before_class() {
         client = getClient(getOperatorKs());
         hashType = AppTokenHashType.SHA1;
+        sessionUserId =  getSharedUser().getUserId();
 
         expiryDate = BaseUtils.getTimeInEpoch(offSetInMinutes);
     }

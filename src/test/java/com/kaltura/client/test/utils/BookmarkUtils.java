@@ -17,14 +17,12 @@ public class BookmarkUtils extends BaseUtils {
         Bookmark bookmark = new Bookmark();
         bookmark.setPosition(position);
         bookmark.setId(String.valueOf(assetId));
-        AssetType type = AssetType.get(assetType.getValue());
-        bookmark.setType(type);
+        bookmark.setType(assetType);
 
         // instantiate BookmarkPlayerData object
         BookmarkPlayerData playerData = new BookmarkPlayerData();
         BookmarkActionType bookmarkactionType = BookmarkActionType.get(actionType.getValue());
         playerData.setAction(bookmarkactionType);
-        playerData.setAction(actionType);
         playerData.setAverageBitrate(0);
         playerData.setTotalBitrate(0);
         playerData.setCurrentBitrate(0);
