@@ -3,6 +3,7 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.UserState;
 import com.kaltura.client.services.OttUserService;
+import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.DBUtils;
@@ -43,7 +44,11 @@ public class ActivateTests extends BaseTest {
         String activationToken = DBUtils.getActivationToken(user.getUsername());
 
         ActivateOttUserBuilder activateOttUserBuilder = OttUserService.activate(partnerId, user.getUsername(), activationToken);
-        ottUserResponse = executor.executeSync(client, OttUserService.activate(partnerId, user.getUsername(), activationToken));
+//        activateOttUserBuilder.setKs("");
+//        activateOttUserBuilder.setUserId(1);
+
+        ottUserResponse = executor.executeSync(activateOttUserBuilder);
+//        ottUserResponse = executor.executeSync(OttUserService.activate(partnerId, user.getUsername(), activationToken));
 
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results.getUserState()).isEqualTo(UserState.OK);

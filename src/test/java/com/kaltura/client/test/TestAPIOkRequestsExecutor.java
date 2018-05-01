@@ -1,7 +1,6 @@
 package com.kaltura.client.test;
 
 import com.kaltura.client.APIOkRequestsExecutor;
-import com.kaltura.client.Client;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -12,6 +11,7 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.kaltura.client.test.tests.BaseTest.client;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -65,16 +65,16 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
         return responseElement;
     }
 
-    public <T> Response<T> executeSync(Client client, RequestBuilder<T, ?, ?> requestBuilder) {
+    public <T> Response<T> executeSync(RequestBuilder<T, ?, ?> requestBuilder) {
         SyncExecutor<T> syncExecutor = new SyncExecutor<>();
-        return syncExecutor.exec(client, requestBuilder);
+        return syncExecutor.exec(requestBuilder);
     }
 
-    private class SyncExecutor<T> {
+    public class SyncExecutor<T> {
         private AtomicBoolean done = new AtomicBoolean(false);
         private Response<T> response;
 
-        public Response<T> exec(Client client, RequestBuilder<T, ?, ?> requestBuilder) {
+        public Response<T> exec(RequestBuilder<T, ?, ?> requestBuilder) {
             requestBuilder
                     .setCompletion((ApiCompletion<T>) result -> {
                         response = result;
