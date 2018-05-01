@@ -8,7 +8,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.ChannelUtils;
-import com.kaltura.client.test.utils.IngestVODUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -62,10 +62,10 @@ public class ChannelAddTests extends BaseTest {
         String asset2Name = "Episode_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
 
         // Ingest first asset
-        MediaAsset movieAsset = IngestVODUtils.ingestBasicVOD(Optional.of(asset1Name), MOVIE_MEDIA_TYPE);
+        MediaAsset movieAsset = IngestUtils.ingestBasicVOD(Optional.of(asset1Name), MOVIE_MEDIA_TYPE);
 
         // Ingest second asset
-        MediaAsset episodeAsset = IngestVODUtils.ingestBasicVOD(Optional.of(asset2Name), MOVIE_MEDIA_TYPE);
+        MediaAsset episodeAsset = IngestUtils.ingestBasicVOD(Optional.of(asset2Name), MOVIE_MEDIA_TYPE);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         client = getClient(getManagerKs());
