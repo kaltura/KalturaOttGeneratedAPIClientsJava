@@ -2,7 +2,6 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
-import com.kaltura.client.types.Collection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
