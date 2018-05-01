@@ -41,14 +41,6 @@ public class BookmarkAddTests extends BaseTest {
         client = getClient(getSharedMasterUserKs());
         assetId = BaseTest.getSharedMediaAsset().getId();
         fileId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
-//=======
-//        getSharedHousehold();
-//        client = getClient(getSharedMasterUserKs());
-//        assetId = 608775;
-//        AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
-//        Response<Asset> assetResponse = AssetServiceImpl.get(client, String.valueOf(assetId), assetReferenceType);
-//        fileId = assetResponse.results.getMediaFiles().get(0).getId();
-//        actionType = BookmarkActionType.get(BookmarkActionType.FIRST_PLAY.getValue());
 
         assetList.add(String.valueOf(assetId));
 
