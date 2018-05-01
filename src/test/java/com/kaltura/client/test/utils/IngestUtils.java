@@ -311,8 +311,7 @@ public class IngestUtils extends BaseUtils {
     }
 
     /**
-     * @param action - can be "insert", "update" and "delete"
-     *      * @param ppCode - should have value in case "action" one of {"update" and "delete"}
+     * IMPORTANT: please delete inserted by that method items
      *
      * @param action - can be "insert" or "delete" ("update" looks like broken)
      * @param mppCode - should have value in case "action" is "delete"
@@ -341,7 +340,7 @@ public class IngestUtils extends BaseUtils {
      *      (where mpp is a variable that contains mpp data).
      *
      *
-     *      don't forget after deletion of mpp delete also price plan using by deleted mpp (if it was created manually)
+     *      don't forget after deletion of mpp delete also price plan using by deleted mpp (if it was created by ingestPP method)
      */
     // ingest new MPP
     public static Subscription ingestMPP(Optional<String> action, Optional<String> mppCode, Optional<Boolean> isActive,
@@ -477,6 +476,7 @@ public class IngestUtils extends BaseUtils {
     // ingest new PP
 
     /**
+     * IMPORTANT: please delete inserted by that method items
      *
      * @param action - can be "insert", "update" and "delete"
      * @param ppCode - should have value in case "action" one of {"update" and "delete"}
@@ -590,6 +590,8 @@ public class IngestUtils extends BaseUtils {
     }
 
     /**
+     * IMPORTANT: please delete inserted by that method items
+     *
      * @param action - can be "insert", "update" and "delete"
      * @param ppvCode - should have value in case "action" one of {"update" and "delete"}
      * @param isActive
@@ -722,6 +724,29 @@ public class IngestUtils extends BaseUtils {
                 "</ingest>\n";
     }
 
+    /**
+     * IMPORTANT: please delete inserted by that method items
+     *
+     * @param action - can be "insert", "update" and "delete"
+     * @param coguid - should have value in case "action" one of {"update" and "delete"}
+     * @param isActive
+     * @param name
+     * @param thumbUrl
+     * @param description
+     * @param catalogStartDate
+     * @param catalogEndDate
+     * @param startDate
+     * @param endDate
+     * @param mediaType
+     * @param ppvWebName
+     * @param ppvMobileName
+     * @return
+     *
+     * to update or delete existed VOD use corresponded action and value vod.getName() as "coguid"
+     *      (where vod is a variable that contains VOD data)
+     *
+     *      !!!Only created by that method VOD can be deleted/update!!!
+     */
     // ingest new VOD (Media) // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
     public static MediaAsset ingestVOD(Optional<String> action, Optional<String> coguid, boolean isActive, Optional<String> name, Optional<String> thumbUrl, Optional<String> description,
                                        Optional<String> catalogStartDate, Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate,

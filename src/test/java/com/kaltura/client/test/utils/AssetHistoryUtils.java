@@ -30,7 +30,7 @@ public class AssetHistoryUtils extends BaseUtils {
     // Ingest asset, bookmark it and return the asset id
     public static Long ingestAssetAndPerformBookmark(Client client, String mediaType, int position, BookmarkActionType bookmarkActionType) {
         // Ingest asset
-        MediaAsset mediaAsset = IngestVODUtils.ingestVOD(Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+        MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(mediaType)), Optional.empty(), Optional.empty());
         Long assetId = mediaAsset.getId();
         int fileId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);

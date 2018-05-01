@@ -192,7 +192,7 @@ public class ListTests extends BaseTest {
         assertThat(productPriceListBeforePurchase4Anonymous.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceListBeforePurchase4Anonymous.results.getObjects().get(0).getProductId()).isEqualTo(get5MinRenewableSubscription().getId().trim());
 
-        PurchaseUtils.purchaseSubscription(client, Integer.valueOf(get5MinRenewableSubscription().getId().trim()));
+        //PurchaseUtils.purchaseSubscription(client, Integer.valueOf(get5MinRenewableSubscription().getId().trim()));
 
         Response<ListResponse<Entitlement>> entitlementListAfterPurchase = EntitlementServiceImpl.list(client, entitlementSubsFilter, null);
         assertThat(entitlementListAfterPurchase.results.getTotalCount()).isEqualTo(1);
