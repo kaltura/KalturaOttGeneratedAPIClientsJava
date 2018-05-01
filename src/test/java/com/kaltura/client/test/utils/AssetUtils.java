@@ -17,7 +17,7 @@ public class AssetUtils extends BaseUtils {
 
 
     public static SearchAssetFilter getSearchAssetFilter(@Nullable String ksql, @Nullable String idIn, @Nullable String typeIn,
-                                                      @Nullable DynamicOrderBy dynamicOrderBy, List<AssetGroupBy> groupBy, String name, String orderBy) {
+                                                         @Nullable DynamicOrderBy dynamicOrderBy, List<AssetGroupBy> groupBy, String name, String orderBy) {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         searchAssetFilter.setKSql(ksql);
         searchAssetFilter.setIdIn(idIn);
@@ -28,6 +28,16 @@ public class AssetUtils extends BaseUtils {
         searchAssetFilter.setOrderBy(orderBy);
 
         return searchAssetFilter;
+    }
+
+    public static ChannelFilter getChannelFilter(int idEqual, @Nullable String ksql, @Nullable DynamicOrderBy dynamicOrderBy, @Nullable String orderBy) {
+        ChannelFilter channelFilter = new ChannelFilter();
+        channelFilter.setIdEqual(idEqual);
+        channelFilter.setKSql(ksql);
+        channelFilter.setDynamicOrderBy(dynamicOrderBy);
+        channelFilter.setOrderBy(orderBy);
+
+        return channelFilter;
     }
 
     public static List<Integer> getAssetFileIds(String assetId) {
