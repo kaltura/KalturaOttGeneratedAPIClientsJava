@@ -21,6 +21,11 @@ public class DBUtils extends BaseUtils {
     //selects
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
     private static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = %d AND [NAME] = '%S'";
+    private static final String USER_BY_ROLE_SELECT = "select top(1) u.username, u.[password]\n" +
+                                                        "from [Users].[dbo].[users] u with(nolock)\n" +
+                                                        "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
+                                                        "join [TVinci].[dbo].[roles] r with(nolock) on (r.id=ur.role_id)\n" +
+                                                        "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
 
     //TODO - change existing methods to work with the new convertToJSON method
 
@@ -80,6 +85,30 @@ public class DBUtils extends BaseUtils {
             return null;
         }
 
+    }
+
+    public static String getUserDataByRole(String userRole) {
+        openConnection();
+        try {
+            rs = stam.executeQuery(String.format(USER_BY_ROLE_SELECT, userRole, BaseTest.partnerId));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("No data about user with role " + userRole + " in account " + BaseTest.partnerId);
+        }
+        String userdData = "";
+        try {
+            userdData = rs.getString("username") + ":" + rs.getString("password");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("username/password can't be null");
+        }
+        closeConnection();
+        return userdData;
     }
 
     public static String getActivationToken(String username) {
