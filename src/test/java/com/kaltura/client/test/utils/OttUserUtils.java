@@ -1,7 +1,6 @@
 package com.kaltura.client.test.utils;
 
-import com.kaltura.client.Client;
-import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
@@ -9,6 +8,7 @@ import com.kaltura.client.utils.response.base.Response;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 
 public class OttUserUtils extends BaseUtils {
@@ -35,17 +35,25 @@ public class OttUserUtils extends BaseUtils {
     }
 
     public static OTTUser getUserById(int userId) {
-        Client client = getClient(getAdministratorKs());
-        client.setUserId(userId);
-        Response<OTTUser> userResponse = OttUserServiceImpl.get(client);
+
+        // OttUser/action/get
+        GetOttUserBuilder getOttUserBuilder = OttUserService.get();
+        getOttUserBuilder.setKs(getAdministratorKs());
+        getOttUserBuilder.setUserId(userId);
+        Response<OTTUser> userResponse = executor.executeSync(getOttUserBuilder);
 
         return userResponse.results;
     }
 
     public static String getKs(int userId, @Nullable String udid) {
-        Client client = getClient(null);
         OTTUser ottUser = getUserById(userId);
-        Response<LoginResponse > loginResponse = OttUserServiceImpl.login(client, partnerId, ottUser.getUsername(), defaultUserPassword, null, udid);
+
+        //OttUser/action/login
+        LoginOttUserBuilder loginOttUserBuilder = OttUserService.login(partnerId, ottUser.getUsername(), defaultUserPassword, null, udid);
+        loginOttUserBuilder.setKs(null);
+        loginOttUserBuilder.setUserId(userId);
+        Response<LoginResponse> loginResponse = executor.executeSync(loginOttUserBuilder);
+
         return loginResponse.results.getLoginSession().getKs();
     }
 }

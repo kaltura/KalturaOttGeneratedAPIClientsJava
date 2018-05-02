@@ -1,8 +1,8 @@
 package com.kaltura.client.test.tests.servicesTests.sessionTests;
 
 import com.kaltura.client.Client;
-import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
-import com.kaltura.client.test.servicesImpl.SessionServiceImpl;
+import com.kaltura.client.services.OttUserService;
+import com.kaltura.client.services.SessionService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 
@@ -15,11 +15,12 @@ import org.testng.annotations.Test;
 
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.kaltura.client.services.SessionService.*;
+import static com.kaltura.client.services.OttUserService.*;
 
 public class SessionRevokeTests extends BaseTest {
 
     public static Client client;
-    private String udid;
 
     @BeforeClass
     private void revoke_tests_before_class() {
@@ -33,7 +34,6 @@ public class SessionRevokeTests extends BaseTest {
         String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
         String masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
         String masterUserKs2 = HouseholdUtils.getHouseholdMasterUserKs(household, udid);
-        client = getClient(masterUserKs);
 
         try {
             Thread.sleep(2000);
@@ -42,7 +42,11 @@ public class SessionRevokeTests extends BaseTest {
         }
 
         // Revoke all sessions for specific user
-        Response<Boolean> booleanResponse = SessionServiceImpl.revoke(client);
+
+        RevokeSessionBuilder revokeSessionBuilder = SessionService.revoke();
+        revokeSessionBuilder.setKs(masterUserKs);
+        Response<Boolean> booleanResponse = executor.executeSync(revokeSessionBuilder);
+
         assertThat(booleanResponse.results).isTrue();
 
         try {
@@ -52,14 +56,18 @@ public class SessionRevokeTests extends BaseTest {
         }
 
         // Verify ks is expired
-        Response<OTTUser> ottUserResponse2 = OttUserServiceImpl.get(client);
-        assertThat(ottUserResponse2.error.getCode()).isEqualTo(getAPIExceptionFromList(500016).getCode());
 
-        client = getClient(masterUserKs2);
+        GetOttUserBuilder getOttUserBuilder = OttUserService.get();
+        getOttUserBuilder.setKs(masterUserKs);
+        Response<OTTUser> ottUserResponse = executor.executeSync(getOttUserBuilder);
+        assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500016).getCode());
 
         // Verify ks2 is expired
-        Response<OTTUser> ottUserResponse3 = OttUserServiceImpl.get(client);
-        assertThat(ottUserResponse3.error.getCode()).isEqualTo(getAPIExceptionFromList(500016).getCode());
+
+        GetOttUserBuilder getOttUserBuilder2 = OttUserService.get();
+        getOttUserBuilder2.setKs(masterUserKs2);
+        Response<OTTUser> ottUserResponse2 = executor.executeSync(getOttUserBuilder);
+        assertThat(ottUserResponse2.error.getCode()).isEqualTo(getAPIExceptionFromList(500016).getCode());
     }
 
 }

@@ -1,8 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
-import com.kaltura.client.Client;
-import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
-import com.kaltura.client.test.servicesImpl.UserRoleServiceImpl;
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.OTTUser;
@@ -15,19 +13,19 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class AddRoleTests extends BaseTest {
-
-    private Client client;
     private OTTUser user;
 
     @BeforeClass
     private void ottUser_addRole_tests_setup() {
-        client = getClient(null);
         user = generateOttUser();
-        Response<OTTUser> ottUserResponse = register(client, partnerId, user, defaultUserPassword);
+
+        // OttUser/action/register
+        OttUserService.RegisterOttUserBuilder registerOttUserBuilder = OttUserService.register(partnerId, user, defaultUserPassword);
+        registerOttUserBuilder.setKs(null);
+        Response<OTTUser> ottUserResponse = executor.executeSync(registerOttUserBuilder);
         user = ottUserResponse.results;
     }
 

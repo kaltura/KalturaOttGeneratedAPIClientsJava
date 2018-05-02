@@ -1,7 +1,7 @@
 package com.kaltura.client.test.tests.servicesTests.sessionTests;
 
 import com.kaltura.client.Client;
-import com.kaltura.client.test.servicesImpl.SessionServiceImpl;
+import com.kaltura.client.services.SessionService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
@@ -14,6 +14,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.services.SessionService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,12 +30,14 @@ public class SessionGetTests extends BaseTest {
     @Description("session/action/get - master user")
     @Test
     private void getMasterUserSession() {
-        client = getClient(getAdministratorKs());
         Household household = HouseholdUtils.createHouseHold(2, 1, false);
         HouseholdUser user = HouseholdUtils.getMasterUserFromHousehold(household);
         String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
         String session = OttUserUtils.getKs(Integer.parseInt(user.getUserId()), udid);
-        Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
+
+        GetSessionBuilder getSessionBuilder = SessionService.get(session);
+        getSessionBuilder.setKs(getAdministratorKs());
+        Response<Session> getSessionResponse = executor.executeSync(getSessionBuilder);
 
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
         assertThat(getSessionResponse.results.getPartnerId()).isEqualTo(partnerId);
@@ -47,9 +50,11 @@ public class SessionGetTests extends BaseTest {
     @Description("session/action/get - Anonymous user")
     @Test
     private void getAnonymousUserSession() {
-        client = getClient(getAdministratorKs());
         String session = BaseTest.getAnonymousKs();
-        Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
+
+        GetSessionBuilder getSessionBuilder = SessionService.get(session);
+        getSessionBuilder.setKs(getAdministratorKs());
+        Response<Session> getSessionResponse = executor.executeSync(getSessionBuilder);
 
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
         assertThat(getSessionResponse.results.getUserId()).isEqualTo("0");
@@ -59,9 +64,11 @@ public class SessionGetTests extends BaseTest {
     @Description("session/action/get - operator user")
     @Test
     private void getOperatorUserSession() {
-        client = getClient(getAdministratorKs());
         String session = getOperatorKs();
-        Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
+
+        GetSessionBuilder getSessionBuilder = SessionService.get(session);
+        getSessionBuilder.setKs(getAdministratorKs());
+        Response<Session> getSessionResponse = executor.executeSync(getSessionBuilder);
 
         assertThat(getSessionResponse.results.getKs()).isEqualTo(session);
         assertThat(getSessionResponse.results.getUserId()).isEqualTo(SessionUtils.getUserIdByKs(getOperatorKs()));
@@ -71,9 +78,11 @@ public class SessionGetTests extends BaseTest {
     @Description("session/action/get - invalid ks")
     @Test
     private void getSessionWithInvalidSessionKs() {
-        client = getClient(getAdministratorKs());
         String session = getOperatorKs() + 1;
-        Response<Session> getSessionResponse = SessionServiceImpl.get(client, session);
+
+        GetSessionBuilder getSessionBuilder = SessionService.get(session);
+        getSessionBuilder.setKs(getAdministratorKs());
+        Response<Session> getSessionResponse = executor.executeSync(getSessionBuilder);
 
         assertThat(getSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500015).getCode());
     }

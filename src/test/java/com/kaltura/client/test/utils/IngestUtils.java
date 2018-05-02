@@ -922,4 +922,54 @@ public class IngestUtils extends BaseUtils {
                 "  </export>\n" +
                 "</feed>";
     }
+
+    // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
+    public static MediaAsset ingestBasicVOD(Optional<String> name, String mediaType) {
+        String coguidValue = getCurrentDataInFormat("yyMMddHHmmssSS");
+        String nameValue = name.orElseGet(() -> MOVIE_MEDIA_TYPE + "_" + coguidValue);
+        String thumbUrlValue = INGEST_VOD_DEFAULT_THUMB;
+        String descriptionValue = "description of " + coguidValue;
+        String catalogStartDateValue = getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss");
+        String catalogEndDateValue = "14/10/2099 17:00:00";
+        String startDateValue = getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss");
+        String endDateValue = "14/10/2099 17:00:00";
+        String mediaTypeValue = mediaType;
+        String ppvWebNameValue = "Shai_Regression_PPV";
+        String ppvMobileNameValue = "Shai_Regression_PPV"; // TODO: update on any generated value
+        // TODO: check if ingest url is the same for all ingest actions
+        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+        HashMap headermap = new HashMap<>();
+        headermap.put("Content-Type", "text/xml;charset=UTF-8");
+        headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestTvinciData\"");
+        String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
+                "   <soapenv:Header/>\n" +
+                "   <soapenv:Body>\n" +
+                "      <tem:IngestTvinciData><tem:request><userName>" + getProperty(INGEST_USER_USERNAME) + "</userName><passWord>" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data>" +
+                "         <![CDATA[" + buildIngestVodXml(INGEST_ACTION_INSERT, coguidValue, true, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
+                catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue) +
+                "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
+                "   </soapenv:Body>\n" +
+                "</soapenv:Envelope>";
+        io.restassured.response.Response resp = RestAssured.given()
+                .log().all()
+                .headers(headermap)
+                .body(reqBody)
+                .post(url);
+        //System.out.println("RESPONSE: " + resp.asString());
+        String id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.InternalAssetId").toString();
+
+        MediaAsset mediaAsset = new MediaAsset();
+        mediaAsset.setName(nameValue);
+        mediaAsset.setId(Long.valueOf(id));
+        mediaAsset.setDescription(descriptionValue);
+        //mediaAsset.setStartDate(startDate);
+        //mediaAsset.setEndDate(endDate);
+
+        await().pollInterval(3, TimeUnit.SECONDS).atMost(45, TimeUnit.SECONDS).until(isDataReturned(INGEST_ACTION_INSERT, id));
+        Response<Asset> mediaAssetDetails = AssetServiceImpl.get(getClient(getAnonymousKs()), id, AssetReferenceType.MEDIA);
+        mediaAsset.setMediaFiles(mediaAssetDetails.results.getMediaFiles());
+
+        // TODO: 4/15/2018 add log for ingest and index failures
+        return mediaAsset;
+    }
 }
