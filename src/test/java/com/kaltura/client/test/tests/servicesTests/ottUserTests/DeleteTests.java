@@ -26,7 +26,6 @@ public class DeleteTests extends BaseTest {
     private Household household;
 
     private Response<Boolean> booleanResponse;
-    private Response<OTTUser> ottUserResponse;
     private DeleteOttUserBuilder deleteOttUserBuilder;
 
     @BeforeClass
@@ -55,7 +54,7 @@ public class DeleteTests extends BaseTest {
         // try to get user and assert error
         GetOttUserBuilder getOttUserBuilder = OttUserService.get();
         getOttUserBuilder.setKs(getAdministratorKs());
-        ottUserResponse = executor.executeSync(getOttUserBuilder);
+        Response<OTTUser> ottUserResponse = executor.executeSync(getOttUserBuilder);
 
         assertThat(ottUserResponse.results).isNull();
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500004).getCode());
