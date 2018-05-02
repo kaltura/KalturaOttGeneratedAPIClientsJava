@@ -1,7 +1,6 @@
 package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Client;
-import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
