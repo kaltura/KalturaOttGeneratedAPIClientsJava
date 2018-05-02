@@ -1,9 +1,8 @@
 package com.kaltura.client.test.tests.servicesTests.assetCommentTests;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetCommentOrderBy;
 import com.kaltura.client.enums.AssetType;
-import com.kaltura.client.test.servicesImpl.AssetCommentServiceImpl;
+import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
 import com.kaltura.client.test.utils.BaseUtils;
@@ -17,21 +16,21 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
+import static com.kaltura.client.services.AssetCommentService.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AssetCommentAddTests extends BaseTest {
 
-    private Client client;
     private String writer = "Shmulik";
     private Long createDate = 0L;
     private String header = "header";
     private String subHeader = "subHeader";
     private String text = "A lot of text";
+    private Household household;
 
     @BeforeClass
     private void add_tests_before_class() {
-        Household household = HouseholdUtils.createHouseHold(1, 1, false);
-        client = getClient(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+        household = HouseholdUtils.createHouseHold(1, 1, false);
     }
 
     @Description("AssetComment/action/add - vod asset")
@@ -44,7 +43,9 @@ public class AssetCommentAddTests extends BaseTest {
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);
 
         // AssetComment/action/add
-        Response<AssetComment> assetCommentResponse = AssetCommentServiceImpl.add(client, assetComment);
+        AddAssetCommentBuilder addAssetCommentBuilder = AssetCommentService.add(assetComment);
+        addAssetCommentBuilder.setKs(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+        Response<AssetComment> assetCommentResponse = executor.executeSync(addAssetCommentBuilder);
 
         //Assertions for AssetComment/action/add
         assertThat(assetCommentResponse.results.getId()).isGreaterThan(0);
@@ -62,7 +63,9 @@ public class AssetCommentAddTests extends BaseTest {
                 AssetCommentOrderBy.CREATE_DATE_DESC);
 
         //AssetComment/action/list
-        Response<ListResponse<AssetComment>> assetCommentListResponse = AssetCommentServiceImpl.list(client, assetCommentFilter, null);
+        ListAssetCommentBuilder listAssetCommentBuilder = AssetCommentService.list(assetCommentFilter,null);
+        listAssetCommentBuilder.setKs(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+        Response<ListResponse<AssetComment>> assetCommentListResponse = executor.executeSync(listAssetCommentBuilder);
         AssetComment assetCommentObjectResponse = assetCommentListResponse.results.getObjects().get(0);
 
         //Assertions for AssetComment/action/list
@@ -90,7 +93,9 @@ public class AssetCommentAddTests extends BaseTest {
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(epgProgramId), AssetType.EPG, writer, text, createDate, subHeader, header);
 
         // AssetComment/action/add
-        Response<AssetComment> assetCommentResponse = AssetCommentServiceImpl.add(client, assetComment);
+        AddAssetCommentBuilder addAssetCommentBuilder = AssetCommentService.add(assetComment);
+        addAssetCommentBuilder.setKs(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+        Response<AssetComment> assetCommentResponse = executor.executeSync(addAssetCommentBuilder);
 
         //Assertions for AssetComment/action/add
         assertThat(assetCommentResponse.results.getId()).isGreaterThan(0);
@@ -102,7 +107,9 @@ public class AssetCommentAddTests extends BaseTest {
                 AssetCommentOrderBy.CREATE_DATE_DESC);
 
         //AssetComment/action/list
-        Response<ListResponse<AssetComment>> assetCommentListResponse = AssetCommentServiceImpl.list(client, assetCommentFilter, null);
+        ListAssetCommentBuilder listAssetCommentBuilder = AssetCommentService.list(assetCommentFilter,null);
+        listAssetCommentBuilder.setKs(HouseholdUtils.getHouseholdMasterUserKs(household,null));
+        Response<ListResponse<AssetComment>> assetCommentListResponse = executor.executeSync(listAssetCommentBuilder);
         AssetComment assetCommentObjectResponse = assetCommentListResponse.results.getObjects().get(0);
 
         //Assertions for AssetComment/action/list

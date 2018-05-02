@@ -2,7 +2,7 @@ package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
+import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
 import com.kaltura.client.test.utils.BaseUtils;
@@ -29,7 +29,6 @@ public class AppTokenGetTests extends BaseTest {
 
     @BeforeClass
     private void get_tests_before_class() {
-        client = getClient(getOperatorKs());
         hashType = AppTokenHashType.SHA1;
         sessionUserId =  getSharedUser().getUserId();
 
@@ -41,8 +40,14 @@ public class AppTokenGetTests extends BaseTest {
 
     private void getAppToken() {
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
-        Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
-        Response<AppToken> getAppTokenResponse = AppTokenServiceImpl.get(client, addAppTokenResponse.results.getId());
+
+        AppTokenService.AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> addAppTokenResponse = executor.executeSync(addAppTokenBuilder);
+
+        AppTokenService.GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponse.results.getId());
+        getAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> getAppTokenResponse = executor.executeSync(getAppTokenBuilder);
 
         assertThat(getAppTokenResponse.results.getId()).isEqualTo(addAppTokenResponse.results.getId());
         assertThat(getAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
@@ -57,7 +62,11 @@ public class AppTokenGetTests extends BaseTest {
     @Description("AppToken/action/get")
     @Test
     private void getAppTokenWithInvalidId() {
-        Response<AppToken> getAppTokenResponse = AppTokenServiceImpl.get(client, "1234");
+
+        AppTokenService.GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get("1234");
+        getAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> getAppTokenResponse = executor.executeSync(getAppTokenBuilder);
+
         assertThat(getAppTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
     }
 
