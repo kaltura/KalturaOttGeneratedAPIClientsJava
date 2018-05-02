@@ -1,9 +1,10 @@
 package com.kaltura.client.test.tests.servicesTests.productPriceTests;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.enums.*;
-import com.kaltura.client.test.servicesImpl.EntitlementServiceImpl;
-import com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl;
+import com.kaltura.client.services.EntitlementService;
+import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
+import com.kaltura.client.services.ProductPriceService;
+import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
@@ -19,22 +20,21 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.Optional;
 import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
-import static com.kaltura.client.test.servicesImpl.ProductPriceServiceImpl.list;
-import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListTests extends BaseTest {
 
-    private Client client;
     private EntitlementFilter entitlementPpvsFilter;
     private EntitlementFilter entitlementSubsFilter;
     private Household household;
     private String classMasterUserKs;
 
+    private Response<ListResponse<ProductPrice>> productPriceResponse;
+    private Response<ListResponse<Entitlement>> entitlementResponse;
+
     @BeforeClass
     public void beforeClass() {
-        client = getClient(getOperatorKs());
 
         entitlementPpvsFilter = new EntitlementFilter();
         entitlementPpvsFilter.setOrderBy(EntitlementOrderBy.PURCHASE_DATE_ASC.getValue());
@@ -68,10 +68,12 @@ public class ListTests extends BaseTest {
     public void listSubscription() {
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
-        Response<ListResponse<ProductPrice>> productPriceList = list(client, filter);
-        assertThat(productPriceList.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
-        assertThat(productPriceList.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPriceList.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
+
+        ListProductPriceBuilder productPriceList = ProductPriceService.list(filter);
+        productPriceResponse = executor.executeSync(productPriceList);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -80,13 +82,14 @@ public class ListTests extends BaseTest {
     public void listSubscriptionWithCurrencyTest() {
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
-        client.setCurrency(CURRENCY_EUR);
-        Response<ListResponse<ProductPrice>> productPriceList = list(client, filter);
+        ListProductPriceBuilder productPriceList = ProductPriceService.list(filter);
+        productPriceList.setCurrency(CURRENCY_EUR);
+        productPriceResponse = executor.executeSync(productPriceList);
         // TODO: should we create ENUMs for currencies? A: Yes if library doesn't contain them
-        assertThat(productPriceList.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
-        assertThat(productPriceList.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPriceList.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
-        assertThat(productPriceList.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(CURRENCY_EUR);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(CURRENCY_EUR);
     }
 
     @Severity(SeverityLevel.MINOR)
@@ -94,7 +97,8 @@ public class ListTests extends BaseTest {
     @Test()
     public void listWithoutRequiredFields() {
         ProductPriceFilter filter = new ProductPriceFilter();
-        Response<ListResponse<ProductPrice>> productPriceResponse = list(client, filter);
+        ListProductPriceBuilder productPriceList = ProductPriceService.list(filter);
+        productPriceResponse = executor.executeSync(productPriceList);
 
         int errorCode = 500056;
         assertThat(productPriceResponse.results).isNull();
@@ -108,45 +112,48 @@ public class ListTests extends BaseTest {
     @Test()
     public void ppvTest() {
         // TODO: after fix of BEO-4967 change HouseholdDevice.json to have only 1 enum value in objectType
-        client.setKs(getSharedMasterUserKs());
 
-        Response<ListResponse<Entitlement>> entitlementListBeforePurchase = EntitlementServiceImpl.list(client, entitlementPpvsFilter, null);
-        assertThat(entitlementListBeforePurchase.results.getTotalCount()).isEqualTo(0);
+        ListEntitlementBuilder entitlementListBeforePurchase = EntitlementService.list(entitlementPpvsFilter, null);
+        entitlementResponse = executor.executeSync(entitlementListBeforePurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(0);
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         int webMediaFileId = getSharedMediaAsset().getMediaFiles().get(0).getId();
         int mobileMediaFileId = getSharedMediaAsset().getMediaFiles().get(1).getId();
         ppFilter.setFileIdIn(String.valueOf(webMediaFileId));
         ppFilter.setIsLowest(false);
-        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(client, ppFilter);
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase);
         // TODO: 4/8/2018 talk with Max about the assertions (currently it not asserting nothing as only actual was implemented)
-        assertThat(productPriceListBeforePurchase.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
-        assertThat(((PpvPrice)productPriceListBeforePurchase.results.getObjects().get(0)).getFileId()).isEqualTo(webMediaFileId);
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(webMediaFileId);
 
-        PurchaseUtils.purchasePpv(client, Optional.empty(), Optional.of(webMediaFileId));
+        PurchaseUtils.purchasePpv(Optional.empty(), Optional.of(webMediaFileId), null);
 
-        Response<ListResponse<Entitlement>> entitlementListAfterPurchase = EntitlementServiceImpl.list(client, entitlementPpvsFilter, null);
-        assertThat(entitlementListAfterPurchase.results.getTotalCount()).isEqualTo(1);
-        assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaFileId()).isEqualTo(webMediaFileId);
-        assertThat(((PpvEntitlement) entitlementListAfterPurchase.results.getObjects().get(0)).getMediaId()).isEqualTo(getSharedMediaAsset().getId().intValue());
-        assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getEndDate())
-                .isGreaterThan(entitlementListAfterPurchase.results.getObjects().get(0).getCurrentDate());
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(webMediaFileId);
+        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaId()).isEqualTo(getSharedMediaAsset().getId().intValue());
+        assertThat(entitlementResponse.results.getObjects().get(0).getEndDate())
+                .isGreaterThan(entitlementResponse.results.getObjects().get(0).getCurrentDate());
+        assertThat(entitlementResponse.results.getObjects().get(0).getPaymentMethod()).isIn(PaymentMethodType.OFFLINE, PaymentMethodType.UNKNOWN);
 
-        assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getPaymentMethod()).isIn(PaymentMethodType.OFFLINE, PaymentMethodType.UNKNOWN);
-
-        Response<ListResponse<ProductPrice>> productPriceListAfterPurchase = ProductPriceServiceImpl.list(client, ppFilter);
+        ListProductPriceBuilder productPriceListAfterPurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListAfterPurchase);
         // only 1 item mention in filter
-        assertThat(productPriceListAfterPurchase.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
-        assertThat(((PpvPrice) productPriceListAfterPurchase.results.getObjects().get(0)).getFileId()).isEqualTo(webMediaFileId);
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(webMediaFileId);
 
         ppFilter.setFileIdIn(String.valueOf(mobileMediaFileId));
-        Response<ListResponse<ProductPrice>> productPriceListAfterPurchaseForAnotherFileFromTheSameMedia = ProductPriceServiceImpl.list(client, ppFilter);
-        assertThat(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
-        assertThat(((PpvPrice) productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.results.getObjects().get(0)).getFileId()).isEqualTo(mobileMediaFileId);
+        ListProductPriceBuilder productPriceListAfterPurchaseForAnotherFileFromTheSameMedia = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia);
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(mobileMediaFileId);
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -157,21 +164,22 @@ public class ListTests extends BaseTest {
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHouseHold(numberOfUsers, numberOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        client.setKs(OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null));
 
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
         filter.setFileIdIn(String.valueOf(getSharedWebMediaFile().getId()));
         filter.setIsLowest(false);
-        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = list(client, filter);
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(filter);
+        productPriceListBeforePurchase.setKs(OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null));
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase);
         // should be 2 ss one item is subscription an another is media file
-        assertThat(productPriceListBeforePurchase.results.getTotalCount()).isEqualTo(2);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(1).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(1).getProductType()).isEqualTo(TransactionType.PPV);
-        assertThat(((PpvPrice) productPriceListBeforePurchase.results.getObjects().get(1)).getFileId()).isEqualTo(getSharedWebMediaFile().getId());
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(2);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
+        assertThat(productPriceResponse.results.getObjects().get(1).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(1).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(1)).getFileId()).isEqualTo(getSharedWebMediaFile().getId());
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -181,47 +189,52 @@ public class ListTests extends BaseTest {
         String sharedWebMediaFileId = String.valueOf(getSharedWebMediaFile().getId());
 
         // TODO: 3/7/2018 add remarks when possible such as below - show to Shmulik / Michael and see if test is clear
-        client = getClient(classMasterUserKs);
-        Response<ListResponse<Entitlement>> entitlementListBeforePurchase = EntitlementServiceImpl.list(client, entitlementSubsFilter, null);
-        assertThat(entitlementListBeforePurchase.results.getTotalCount()).isEqualTo(0);
+        ListEntitlementBuilder entitlementListBeforePurchase = EntitlementService.list(entitlementSubsFilter, null);
+        entitlementResponse = executor.executeSync(entitlementListBeforePurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(0);
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(get5MinRenewableSubscription().getId().trim());
         ppFilter.setIsLowest(false);
-        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase = ProductPriceServiceImpl.list(client, ppFilter);
-        assertThat(productPriceListBeforePurchase.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
-        assertThat(productPriceListBeforePurchase.results.getObjects().get(0).getProductId()).isEqualTo(get5MinRenewableSubscription().getId().trim());
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase);
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(get5MinRenewableSubscription().getId().trim());
 
-        Response<ListResponse<ProductPrice>> productPriceListBeforePurchase4Anonymous = ProductPriceServiceImpl.list(client, ppFilter);
-        assertThat(productPriceListBeforePurchase4Anonymous.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListBeforePurchase4Anonymous.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPriceListBeforePurchase4Anonymous.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
-        assertThat(productPriceListBeforePurchase4Anonymous.results.getObjects().get(0).getProductId()).isEqualTo(get5MinRenewableSubscription().getId().trim());
+        ListProductPriceBuilder productPriceListBeforePurchase4Anonymous = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase4Anonymous);
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(get5MinRenewableSubscription().getId().trim());
 
         //PurchaseUtils.purchaseSubscription(client, Integer.valueOf(get5MinRenewableSubscription().getId().trim()));
 
-        Response<ListResponse<Entitlement>> entitlementListAfterPurchase = EntitlementServiceImpl.list(client, entitlementSubsFilter, null);
-        assertThat(entitlementListAfterPurchase.results.getTotalCount()).isEqualTo(1);
-        assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
-        assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getEndDate()).isGreaterThan(
-                entitlementListAfterPurchase.results.getObjects().get(0).getCurrentDate());
-        MatcherAssert.assertThat(entitlementListAfterPurchase.results.getObjects().get(0).getPaymentMethod(),
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementSubsFilter, null);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(entitlementResponse.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
+        assertThat(entitlementResponse.results.getObjects().get(0).getEndDate()).isGreaterThan(
+                entitlementResponse.results.getObjects().get(0).getCurrentDate());
+        MatcherAssert.assertThat(entitlementResponse.results.getObjects().get(0).getPaymentMethod(),
                 Matchers.anyOf(Matchers.is(PaymentMethodType.OFFLINE), Matchers.is(PaymentMethodType.UNKNOWN)));
 
         ppFilter.setFileIdIn(sharedWebMediaFileId);
-        Response<ListResponse<ProductPrice>> productPriceListAfterPurchase = ProductPriceServiceImpl.list(client, ppFilter);
-        assertThat(productPriceListAfterPurchase.results.getTotalCount()).isEqualTo(2);
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(1).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
+        ListProductPriceBuilder productPriceListAfterPurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListAfterPurchase);
+
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(2);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
+        assertThat(productPriceResponse.results.getObjects().get(1).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
         // TODO: should we use ENUM containing subs of KalturaProductPrice class such as: KalturaCollectionPrice, KalturaPpvPrice, KalturaSubscriptionPrice???
         // that logic can't be checked by schema as schema can't check that exactly 1st item is Subscription and 2nd one is PPV
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(0).getClass().getSimpleName()).isEqualToIgnoringCase("SubscriptionPrice");
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(1).getClass().getSimpleName()).isEqualToIgnoringCase("PpvPrice");
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(1).getProductType()).isEqualTo(TransactionType.PPV);
-        assertThat(productPriceListAfterPurchase.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
-        assertThat(((PpvPrice) productPriceListAfterPurchase.results.getObjects().get(1)).getFileId()).isEqualTo(sharedWebMediaFileId);
+        assertThat(productPriceResponse.results.getObjects().get(0).getClass().getSimpleName()).isEqualToIgnoringCase("SubscriptionPrice");
+        assertThat(productPriceResponse.results.getObjects().get(1).getClass().getSimpleName()).isEqualToIgnoringCase("PpvPrice");
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(1).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(1)).getFileId()).isEqualTo(sharedWebMediaFileId);
     }
 }
