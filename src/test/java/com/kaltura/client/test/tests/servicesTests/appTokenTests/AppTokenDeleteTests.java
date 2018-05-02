@@ -1,8 +1,7 @@
 package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
+import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
 import com.kaltura.client.types.AppToken;
@@ -11,6 +10,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.services.AppTokenService.*;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUser;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,12 +20,10 @@ public class AppTokenDeleteTests extends BaseTest {
     private AppTokenHashType hashType;
     private String sessionUserId;
     private AppToken appToken = new AppToken();
-    public static Client client;
 
     @BeforeClass
     private void add_tests_before_class() {
         sessionUserId = getSharedUser().getUserId();
-        client = getClient(getOperatorKs());
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, null, null);
     }
@@ -34,20 +32,34 @@ public class AppTokenDeleteTests extends BaseTest {
     @Test
     private void addAppToken() {
         // Add token
-        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         assertThat(appTokenResponse.error).isNull();
         assertThat(appTokenResponse.results.getExpiry()).isNull();
 
         // Delete token
-        Response<Boolean> deleteTokenResponse = AppTokenServiceImpl.delete(client, appTokenResponse.results.getId());
+
+        DeleteAppTokenBuilder deleteAppTokenBuilder = AppTokenService.delete(appTokenResponse.results.getId());
+        deleteAppTokenBuilder.setKs(getOperatorKs());
+        Response<Boolean> deleteTokenResponse = executor.executeSync(deleteAppTokenBuilder);
+
         assertThat(deleteTokenResponse.results).isTrue();
 
         // Try to delete token using invalid token id
-        deleteTokenResponse = AppTokenServiceImpl.delete(client, "1234");
+
+        deleteAppTokenBuilder = AppTokenService.delete("1234");
+        deleteTokenResponse = executor.executeSync(deleteAppTokenBuilder);
+
         assertThat(deleteTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
 
         // Try to delete token again - exception returned
-        deleteTokenResponse = AppTokenServiceImpl.delete(client, appTokenResponse.results.getId());
+
+        deleteAppTokenBuilder = AppTokenService.delete(appTokenResponse.results.getId());
+        deleteTokenResponse = executor.executeSync(deleteAppTokenBuilder);
+
         assertThat(deleteTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
     }
 

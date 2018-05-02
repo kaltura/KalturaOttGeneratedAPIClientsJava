@@ -2,7 +2,7 @@ package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
+import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
 import com.kaltura.client.test.utils.BaseUtils;
@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.kaltura.client.services.AppTokenService.*;
 
 public class AppTokenAddTests extends BaseTest {
 
@@ -29,14 +30,15 @@ public class AppTokenAddTests extends BaseTest {
         hashType = AppTokenHashType.SHA1;
         sessionUserId = getSharedUser().getUserId();
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, null, null);
-
     }
 
     @Description("appToken/action/add")
     @Test
     private void addAppToken() {
-        client = getClient(getOperatorKs());
-        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
 
         // Verify no error returned
         assertThat(appTokenResponse.error).isNull();
@@ -53,10 +55,13 @@ public class AppTokenAddTests extends BaseTest {
     @Description("appToken/action/add - without hash type")
     @Test
     private void addAppTokenWithDefaultHashType() {
-        client = getClient(getOperatorKs());
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, null, null);
         // Invoke AppToken/action/add - with no hash type (will return the default hash type)
-        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         // Verify that hashType = SHA256
         assertThat(appTokenResponse.results.getHashType()).isEqualTo(AppTokenHashType.SHA256);
     }
@@ -64,10 +69,12 @@ public class AppTokenAddTests extends BaseTest {
     @Description("appToken/action/add - with privileges")
     @Test
     private void addAppTokenWithPrivileges() {
-        client = getClient(getOperatorKs());
         sessionPrivileges = "key1:value1,key2:value2";
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, null);
-        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
 
         assertThat(appTokenResponse.results.getSessionPrivileges()).isEqualTo(sessionPrivileges);
     }
@@ -75,10 +82,13 @@ public class AppTokenAddTests extends BaseTest {
     @Description("appToken/action/add - with expiry date")
     @Test(groups = "slow")
     private void addAppTokenWithExpiryDate() {
-        client = getClient(getOperatorKs());
         Long expiryDate = BaseUtils.getTimeInEpoch(1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
-        Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> addAppTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         assertThat(addAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
 
         // Wait until token is expired (according to expiry date)
@@ -90,7 +100,11 @@ public class AppTokenAddTests extends BaseTest {
             e.printStackTrace();
         }
 
-        Response<AppToken> getAppTokenResponse = AppTokenServiceImpl.get(client, addAppTokenResponse.results.getId());
+
+        GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponse.results.getId());
+        getAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> getAppTokenResponse = executor.executeSync(getAppTokenBuilder);
+
         assertThat(getAppTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
     }
 
@@ -100,20 +114,26 @@ public class AppTokenAddTests extends BaseTest {
     //todo - Add specific mark indicating the version of the feature
     private void addAppTokenWithNoExpiryDate() {
         getSharedHousehold();
-        client = getClient(getSharedMasterUserKs());
         int expiryDate = 0;
         //int cbExpiryDateValue = 2592000;
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, expiryDate);
-        Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getSharedMasterUserKs());
+        Response<AppToken> addAppTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         assertThat(addAppTokenResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(BaseUtils.getTimeInEpoch(0)));
     }
 
     @Description("appToken/action/add - with no specific user id")
     @Test
     private void addAppTokenWithoutSpecificUserId() {
-        client = getClient(getOperatorKs());
         appToken = AppTokenUtils.addAppToken(null, null, sessionPrivileges, null);
-        Response<AppToken> addAppTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> addAppTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         assertThat(addAppTokenResponse.error).isNull();
         assertThat(addAppTokenResponse.results.getExpiry()).isNull();
         assertThat(addAppTokenResponse.results.getId()).isNotEmpty();

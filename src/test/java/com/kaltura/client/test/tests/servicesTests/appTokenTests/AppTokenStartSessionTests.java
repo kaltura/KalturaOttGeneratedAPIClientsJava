@@ -2,8 +2,8 @@ package com.kaltura.client.test.tests.servicesTests.appTokenTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.enums.AppTokenHashType;
-import com.kaltura.client.test.servicesImpl.AppTokenServiceImpl;
-import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
+import com.kaltura.client.services.AppTokenService;
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
 import com.kaltura.client.test.utils.BaseUtils;
@@ -17,10 +17,13 @@ import org.testng.annotations.Test;
 
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.kaltura.client.services.OttUserService.*;
+import static com.kaltura.client.services.AppTokenService.*;
 
 public class AppTokenStartSessionTests extends BaseTest {
 
     private AppTokenHashType hashType;
+    //TODO - remove hardcoded values
     private String sessionUserId = "1577578";
     private String udid1 = "1234567890";
     private String udid2 = "9876543210";
@@ -33,11 +36,15 @@ public class AppTokenStartSessionTests extends BaseTest {
 
     @BeforeClass
     private void add_tests_before_class() {
-        client = getClient(null);
+
         // Invoke ottUser/action/anonymousLogin to receive LoginSession object (and anonymous KS)
-        Response<LoginSession> loginSessionResponse = OttUserServiceImpl.anonymousLogin(client, partnerId, udid1);
+
+        AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = OttUserService.anonymousLogin(partnerId, udid1);
+        anonymousLoginOttUserBuilder.setKs(null);
+        Response<LoginSession> loginSessionResponse = executor.executeSync(anonymousLoginOttUserBuilder);
+
         anonymousKs = loginSessionResponse.results.getKs();
-        client.setKs(getOperatorKs());
+        client.setKs(null);
         expiryDate = BaseUtils.getTimeInEpoch(1);
     }
 
@@ -47,16 +54,24 @@ public class AppTokenStartSessionTests extends BaseTest {
         hashType = AppTokenHashType.SHA1;
         // Build appToken object
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
+
         // Invoke AppToken/action/add
-        client.setKs(getOperatorKs());
-        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AppTokenService.AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         client.setKs(anonymousKs);
 
         // Generate new token hash
         String tokenHash = AppTokenUtils.getTokenHash(hashType, anonymousKs, appTokenResponse.results.getToken());
+
         // Invoke AppToken/action/startSession - with udid1
-        Response<SessionInfo> sessionInfoResponse = AppTokenServiceImpl.startSession(client, appTokenResponse.results.getId()
-                , tokenHash, null, Math.toIntExact(expiryDate), udid1);
+
+        StartSessionAppTokenBuilder startSessionAppTokenBuilder = AppTokenService.startSession(appTokenResponse.results.getId(), tokenHash, null,
+                Math.toIntExact(expiryDate), udid1);
+        startSessionAppTokenBuilder.setKs(anonymousKs);
+        Response<SessionInfo> sessionInfoResponse = executor.executeSync(startSessionAppTokenBuilder);
 
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
         assertThat(sessionInfoResponse.results.getPartnerId()).isEqualTo(partnerId);
@@ -67,8 +82,11 @@ public class AppTokenStartSessionTests extends BaseTest {
         assertThat(sessionInfoResponse.results.getCreateDate()).isNotZero();
 
         // Invoke AppToken/action/startSession - with udid2
-        sessionInfoResponse = AppTokenServiceImpl.startSession(client, appTokenResponse.results.getId()
-                , tokenHash, null, Math.toIntExact(expiryDate), udid2);
+
+        startSessionAppTokenBuilder = AppTokenService.startSession(appTokenResponse.results.getId(), tokenHash, null,
+                Math.toIntExact(expiryDate), udid2);
+        startSessionAppTokenBuilder.setKs(anonymousKs);
+        sessionInfoResponse = executor.executeSync(startSessionAppTokenBuilder);
 
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
 
@@ -82,15 +100,25 @@ public class AppTokenStartSessionTests extends BaseTest {
         hashType = AppTokenHashType.SHA256;
         // Build appToken object
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
+
         // Invoke AppToken/action/add
         client.setKs(getOperatorKs());
-        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
+
+        AppTokenService.AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getOperatorKs());
+        Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         client.setKs(anonymousKs);
+
         // Generate new token hash
         String tokenHash = AppTokenUtils.getTokenHash(hashType, anonymousKs, appTokenResponse.results.getToken());
+
         // // Invoke AppToken/action/startSession - with udid1
-        Response<SessionInfo> sessionInfoResponse = AppTokenServiceImpl.startSession(client, appTokenResponse.results.getId()
-                , tokenHash, null, Math.toIntExact(expiryDate), udid1);
+
+        StartSessionAppTokenBuilder startSessionAppTokenBuilder = AppTokenService.startSession(appTokenResponse.results.getId(), tokenHash, null,
+                Math.toIntExact(expiryDate), udid1);
+        startSessionAppTokenBuilder.setKs(anonymousKs);
+        Response<SessionInfo> sessionInfoResponse = executor.executeSync(startSessionAppTokenBuilder);
 
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
         assertThat(sessionInfoResponse.results.getPartnerId()).isEqualTo(partnerId);
@@ -101,8 +129,11 @@ public class AppTokenStartSessionTests extends BaseTest {
         assertThat(sessionInfoResponse.results.getCreateDate()).isNotZero();
 
         // Invoke AppToken/action/startSession - with udid2
-        sessionInfoResponse = AppTokenServiceImpl.startSession(client, appTokenResponse.results.getId()
-                , tokenHash, null, Math.toIntExact(expiryDate), udid2);
+
+        startSessionAppTokenBuilder = AppTokenService.startSession(appTokenResponse.results.getId(), tokenHash, null,
+                Math.toIntExact(expiryDate), udid2);
+        startSessionAppTokenBuilder.setKs(anonymousKs);
+        sessionInfoResponse = executor.executeSync(startSessionAppTokenBuilder);
 
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
 
@@ -115,14 +146,19 @@ public class AppTokenStartSessionTests extends BaseTest {
     private void startSessionDefaultExpiryDate() {
         int expiryDate = 0;
         getSharedHousehold();
-        client = getClient(getSharedMasterUserKs());
         hashType = AppTokenHashType.SHA1;
         appToken = AppTokenUtils.addAppToken(null, hashType, null, expiryDate);
-        Response<AppToken> appTokenResponse = AppTokenServiceImpl.add(client, appToken);
-        client = getClient(anonymousKs);
+
+        AppTokenService.AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
+        addAppTokenBuilder.setKs(getSharedMasterUserKs());
+        Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
+
         String tokenHash = AppTokenUtils.getTokenHash(hashType, anonymousKs, appTokenResponse.results.getToken());
-        Response<SessionInfo> sessionInfoResponse = AppTokenServiceImpl.startSession(client, appTokenResponse.results.getId()
-                , tokenHash, null, expiryDate, udid1);
+
+        StartSessionAppTokenBuilder startSessionAppTokenBuilder = AppTokenService.startSession(appTokenResponse.results.getId(), tokenHash, null,
+                Math.toIntExact(expiryDate), udid1);
+        startSessionAppTokenBuilder.setKs(anonymousKs);
+        Response<SessionInfo> sessionInfoResponse = executor.executeSync(startSessionAppTokenBuilder);
 
         assertThat(sessionInfoResponse.results.getKs()).isNotEmpty();
     }
