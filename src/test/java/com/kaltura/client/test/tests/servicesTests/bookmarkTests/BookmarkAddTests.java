@@ -102,6 +102,7 @@ public class BookmarkAddTests extends BaseTest {
         AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
         addBookmarkBuilder.setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
+
         // Verify response return true
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         // Verify no error returned
