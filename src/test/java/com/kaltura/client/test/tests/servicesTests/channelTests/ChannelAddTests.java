@@ -1,6 +1,5 @@
 package com.kaltura.client.test.tests.servicesTests.channelTests;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.ChannelService;
