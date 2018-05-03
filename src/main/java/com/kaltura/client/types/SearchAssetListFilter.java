@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.UserInterestTopic;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,67 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * User Interest
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserInterest.Tokenizer.class)
-public class UserInterest extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SearchAssetListFilter.Tokenizer.class)
+public class SearchAssetListFilter extends SearchAssetFilter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		UserInterestTopic.Tokenizer topic();
+	public interface Tokenizer extends SearchAssetFilter.Tokenizer {
+		String excludeWatched();
 	}
 
 	/**
-	 * Identifier
+	 * Exclude watched asset.
 	 */
-	private String id;
-	/**
-	 * Topic
-	 */
-	private UserInterestTopic topic;
+	private Boolean excludeWatched;
 
-	// id:
-	public String getId(){
-		return this.id;
+	// excludeWatched:
+	public Boolean getExcludeWatched(){
+		return this.excludeWatched;
 	}
-	public void setId(String id){
-		this.id = id;
+	public void setExcludeWatched(Boolean excludeWatched){
+		this.excludeWatched = excludeWatched;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
-	// topic:
-	public UserInterestTopic getTopic(){
-		return this.topic;
-	}
-	public void setTopic(UserInterestTopic topic){
-		this.topic = topic;
+	public void excludeWatched(String multirequestToken){
+		setToken("excludeWatched", multirequestToken);
 	}
 
 
-	public UserInterest() {
+	public SearchAssetListFilter() {
 		super();
 	}
 
-	public UserInterest(JsonObject jsonObject) throws APIException {
+	public SearchAssetListFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		topic = GsonParser.parseObject(jsonObject.getAsJsonObject("topic"), UserInterestTopic.class);
+		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserInterest");
-		kparams.add("topic", this.topic);
+		kparams.add("objectType", "KalturaSearchAssetListFilter");
+		kparams.add("excludeWatched", this.excludeWatched);
 		return kparams;
 	}
 

@@ -30,8 +30,6 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.UserInterestTopic;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -42,66 +40,28 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * User Interest
+ * Coupon generation options
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserInterest.Tokenizer.class)
-public class UserInterest extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(CouponGenerationOptions.Tokenizer.class)
+public class CouponGenerationOptions extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		UserInterestTopic.Tokenizer topic();
-	}
-
-	/**
-	 * Identifier
-	 */
-	private String id;
-	/**
-	 * Topic
-	 */
-	private UserInterestTopic topic;
-
-	// id:
-	public String getId(){
-		return this.id;
-	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
-	// topic:
-	public UserInterestTopic getTopic(){
-		return this.topic;
-	}
-	public void setTopic(UserInterestTopic topic){
-		this.topic = topic;
 	}
 
 
-	public UserInterest() {
+
+	public CouponGenerationOptions() {
 		super();
 	}
 
-	public UserInterest(JsonObject jsonObject) throws APIException {
+	public CouponGenerationOptions(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		topic = GsonParser.parseObject(jsonObject.getAsJsonObject("topic"), UserInterestTopic.class);
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserInterest");
-		kparams.add("topic", this.topic);
+		kparams.add("objectType", "KalturaCouponGenerationOptions");
 		return kparams;
 	}
 

@@ -25,14 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.UserInterestTopic;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.CouponGenerationOptions;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,69 +37,28 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * User Interest
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserInterest.Tokenizer.class)
-public class UserInterest extends ObjectBase {
+public class CouponGroupService {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		UserInterestTopic.Tokenizer topic();
+	public static class GenerateCouponGroupBuilder extends RequestBuilder<String, String, GenerateCouponGroupBuilder> {
+		
+		public GenerateCouponGroupBuilder(long id, CouponGenerationOptions couponGenerationOptions) {
+			super(String.class, "coupongroup", "generate");
+			params.add("id", id);
+			params.add("couponGenerationOptions", couponGenerationOptions);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
 	}
 
 	/**
-	 * Identifier
+	 * Generate a coupon
+	 * 
+	 * @param id Coupon group identifier
+	 * @param couponGenerationOptions Coupon generation options
 	 */
-	private String id;
-	/**
-	 * Topic
-	 */
-	private UserInterestTopic topic;
-
-	// id:
-	public String getId(){
-		return this.id;
+    public static GenerateCouponGroupBuilder generate(long id, CouponGenerationOptions couponGenerationOptions)  {
+		return new GenerateCouponGroupBuilder(id, couponGenerationOptions);
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
-	// topic:
-	public UserInterestTopic getTopic(){
-		return this.topic;
-	}
-	public void setTopic(UserInterestTopic topic){
-		this.topic = topic;
-	}
-
-
-	public UserInterest() {
-		super();
-	}
-
-	public UserInterest(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		topic = GsonParser.parseObject(jsonObject.getAsJsonObject("topic"), UserInterestTopic.class);
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserInterest");
-		kparams.add("topic", this.topic);
-		return kparams;
-	}
-
 }
-
