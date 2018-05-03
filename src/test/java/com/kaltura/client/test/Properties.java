@@ -51,11 +51,6 @@ public class Properties {
     // product codes
     public static final String DEFAULT_PRODUCT_CODE = "default_product_code";
 
-    // discount modules
-    public static final String FIFTY_PERCENTS_ILS_DISCOUNT_NAME = "fifty_percents_ils_discount_name";
-    public static final String HUNDRED_PERCENTS_UKP_DISCOUNT_NAME = "hundred_percents_ukp_discount_name";
-
-
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {
             resourceBundle = ResourceBundle.getBundle("test");

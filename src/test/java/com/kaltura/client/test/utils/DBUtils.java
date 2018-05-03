@@ -26,6 +26,13 @@ public class DBUtils extends BaseUtils {
                                                         "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
                                                         "join [TVinci].[dbo].[roles] r with(nolock) on (r.id=ur.role_id)\n" +
                                                         "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
+    private static final String DISCOUNT_BY_PERCENT_AND_CURRENCY = "select TOP (1) *\n" +
+                                                        "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
+                                                        "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (dc.currency_cd=lc.id)\n" +
+                                                        "where lc.code3='%S'\n" + // CURRENCY
+                                                        "and dc.discount_percent=%d\n" + // percent amount
+                                                        "and dc.group_id=%d\n" + // group
+                                                        "and dc.[status]=1 and dc.is_active=1";
 
     //TODO - change existing methods to work with the new convertToJSON method
 
@@ -85,6 +92,33 @@ public class DBUtils extends BaseUtils {
             return null;
         }
 
+    }
+
+    public static String getDiscountByPercentAndCurrency(String currency, int percent) {
+        openConnection();
+        try {
+            rs = stam.executeQuery(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, BaseTest.partnerId));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("No data about discount with currency " + currency + "and percent " + percent + " in account " + BaseTest.partnerId);
+        }
+        String code = "";
+        try {
+            code = rs.getString("code");
+            if ("".equals(code)) {
+                throw new SQLException();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("code can't be null");
+        }
+        closeConnection();
+        return code;
     }
 
     public static String getUserDataByRole(String userRole) {
