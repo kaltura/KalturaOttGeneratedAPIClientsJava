@@ -9,6 +9,8 @@ import com.kaltura.client.types.HouseholdUser;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -35,6 +37,7 @@ public class DeleteTests extends BaseTest {
         household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/delete - delete")
     @Test
     private void delete() {
@@ -60,6 +63,7 @@ public class DeleteTests extends BaseTest {
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500004).getCode());
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Description("ottUser/action/delete - delete master user: error 2031")
     @Test(enabled = true)
     private void delete_master_user() {
@@ -78,6 +82,7 @@ public class DeleteTests extends BaseTest {
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2031).getCode());
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Description("ottUser/action/delete - delete default user: error 2030")
     @Test(enabled = true)
     private void delete_default_user() {

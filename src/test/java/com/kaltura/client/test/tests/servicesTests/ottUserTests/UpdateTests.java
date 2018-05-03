@@ -2,11 +2,14 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.types.Entitlement;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -32,6 +35,7 @@ public class UpdateTests extends BaseTest {
         originalUserEmail = user.getEmail();
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/update - update")
     @Test
     private void update() {
@@ -59,6 +63,7 @@ public class UpdateTests extends BaseTest {
         assertThat(user.getEmail()).isEqualTo(originalUserEmail);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/update - update with administratorKs")
     @Issue("BEO-4919")
     @Test(enabled = true)

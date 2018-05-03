@@ -4,6 +4,8 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
 import static com.kaltura.client.services.OttUserService.anonymousLogin;
@@ -15,6 +17,7 @@ public class AnonymousLoginTests extends BaseTest {
 
     private Response<LoginSession> loginSessionResponse;
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/anonymousLogin - anonymousLogin")
     @Test()
     private void anonymousLoginTest() {
@@ -24,6 +27,7 @@ public class AnonymousLoginTests extends BaseTest {
         assertThat(loginSessionResponse.results.getKs()).isNotNull();
     }
 
+    @Severity(SeverityLevel.MINOR)
     @Description("ottUser/action/anonymousLogin - anonymousLogin with wrong partnerId - error 500006")
     @Test()
     private void anonymousLogin_with_wrong_partnerId() {
