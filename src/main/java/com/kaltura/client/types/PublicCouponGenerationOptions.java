@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.UserInterestTopic;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,67 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * User Interest
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserInterest.Tokenizer.class)
-public class UserInterest extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(PublicCouponGenerationOptions.Tokenizer.class)
+public class PublicCouponGenerationOptions extends CouponGenerationOptions {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		UserInterestTopic.Tokenizer topic();
+	public interface Tokenizer extends CouponGenerationOptions.Tokenizer {
+		String code();
 	}
 
 	/**
-	 * Identifier
+	 * Coupon code (name)
 	 */
-	private String id;
-	/**
-	 * Topic
-	 */
-	private UserInterestTopic topic;
+	private String code;
 
-	// id:
-	public String getId(){
-		return this.id;
+	// code:
+	public String getCode(){
+		return this.code;
 	}
-	public void setId(String id){
-		this.id = id;
+	public void setCode(String code){
+		this.code = code;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
-	// topic:
-	public UserInterestTopic getTopic(){
-		return this.topic;
-	}
-	public void setTopic(UserInterestTopic topic){
-		this.topic = topic;
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
 	}
 
 
-	public UserInterest() {
+	public PublicCouponGenerationOptions() {
 		super();
 	}
 
-	public UserInterest(JsonObject jsonObject) throws APIException {
+	public PublicCouponGenerationOptions(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		topic = GsonParser.parseObject(jsonObject.getAsJsonObject("topic"), UserInterestTopic.class);
+		code = GsonParser.parseString(jsonObject.get("code"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserInterest");
-		kparams.add("topic", this.topic);
+		kparams.add("objectType", "KalturaPublicCouponGenerationOptions");
+		kparams.add("code", this.code);
 		return kparams;
 	}
 

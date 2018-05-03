@@ -52,6 +52,8 @@ public class Coupon extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		CouponsGroup.Tokenizer couponsGroup();
 		String status();
+		String totalUses();
+		String leftUses();
 	}
 
 	/**
@@ -62,6 +64,14 @@ public class Coupon extends ObjectBase {
 	 * Coupon status
 	 */
 	private CouponStatus status;
+	/**
+	 * Total available coupon uses
+	 */
+	private Integer totalUses;
+	/**
+	 * Left coupon uses
+	 */
+	private Integer leftUses;
 
 	// couponsGroup:
 	public CouponsGroup getCouponsGroup(){
@@ -83,6 +93,30 @@ public class Coupon extends ObjectBase {
 		setToken("status", multirequestToken);
 	}
 
+	// totalUses:
+	public Integer getTotalUses(){
+		return this.totalUses;
+	}
+	public void setTotalUses(Integer totalUses){
+		this.totalUses = totalUses;
+	}
+
+	public void totalUses(String multirequestToken){
+		setToken("totalUses", multirequestToken);
+	}
+
+	// leftUses:
+	public Integer getLeftUses(){
+		return this.leftUses;
+	}
+	public void setLeftUses(Integer leftUses){
+		this.leftUses = leftUses;
+	}
+
+	public void leftUses(String multirequestToken){
+		setToken("leftUses", multirequestToken);
+	}
+
 
 	public Coupon() {
 		super();
@@ -96,6 +130,8 @@ public class Coupon extends ObjectBase {
 		// set members values:
 		couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
 		status = CouponStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		totalUses = GsonParser.parseInt(jsonObject.get("totalUses"));
+		leftUses = GsonParser.parseInt(jsonObject.get("leftUses"));
 
 	}
 
