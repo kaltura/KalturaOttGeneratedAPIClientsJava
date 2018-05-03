@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LoginTests extends BaseTest {
 
     private OTTUser user;
-
     private Response<LoginResponse> loginResponse;
 
     @BeforeClass
