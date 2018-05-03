@@ -37,7 +37,7 @@ import com.kaltura.client.types.BaseResponseProfile;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public abstract class RequestBuilderData {
+public abstract class RequestBuilderData<SelfType> {
 	
 	protected Params params = new Params();
 	
@@ -47,64 +47,73 @@ public abstract class RequestBuilderData {
 	/**
 	 * @param clientTag Client tag
 	 */
-	public void setClientTag(String clientTag){
+	public SelfType setClientTag(String clientTag){
 		params.add("clientTag", clientTag);
+		return (SelfType) this;
 	}
 	
 	/**
 	 * @param apiVersion API Version
 	 */
-	public void setApiVersion(String apiVersion){
+	public SelfType setApiVersion(String apiVersion){
 		params.add("apiVersion", apiVersion);
+		return (SelfType) this;
 	}
 	
 	/**
 	 * @param partnerId Impersonated partner id
 	 */
-	public void setPartnerId(Integer partnerId){
+	public SelfType setPartnerId(Integer partnerId){
 		params.add("partnerId", partnerId);
+		return (SelfType) this;
 	}
 	
 	/**
 	 * @param userId Impersonated user id
 	 */
-	public void setUserId(Integer userId){
+	public SelfType setUserId(Integer userId){
 		params.add("userId", userId);
+		return (SelfType) this;
 	}
 	
 	/**
 	 * @param language Content language
 	 */
-	public void setLanguage(String language){
+	public SelfType setLanguage(String language){
 		params.add("language", language);
+		return (SelfType) this;
 	}
 	
 	/**
 	 * @param currency Content currency
 	 */
-	public void setCurrency(String currency){
+	public SelfType setCurrency(String currency){
 		params.add("currency", currency);
+		return (SelfType) this;
 	}
 	
 	/**
 	 * @param ks Kaltura API session
 	 */
-	public void setKs(String ks){
+	public SelfType setKs(String ks){
 		params.add("ks", ks);
-	}
+        return (SelfType) this;
+    }
 	
 	/**
 	 * @param sessionId Kaltura API session
 	 */
-	public void setSessionId(String sessionId){
+	public SelfType setSessionId(String sessionId){
 		params.add("ks", sessionId);
+		return (SelfType) this;
 	}
 	
 	/**
 	 * @param responseProfile Response profile - this attribute will be automatically unset after every API call
 	 */
-	public void setResponseProfile(BaseResponseProfile responseProfile){
+	public SelfType setResponseProfile(BaseResponseProfile responseProfile){
 		params.add("responseProfile", responseProfile);
+		return (SelfType) this;
 	}
 	
 }
