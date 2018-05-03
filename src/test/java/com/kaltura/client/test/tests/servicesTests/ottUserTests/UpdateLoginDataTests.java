@@ -1,7 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.Client;
-import com.kaltura.client.test.servicesImpl.OttUserServiceImpl;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
@@ -11,7 +10,6 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.servicesImpl.OttUserServiceImpl.register;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
