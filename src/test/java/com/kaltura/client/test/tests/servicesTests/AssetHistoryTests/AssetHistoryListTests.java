@@ -38,11 +38,12 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistory() {
 
         Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
 
         // Ingest and bookmark first asset
-        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset
-        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position2, BookmarkActionType.FIRST_PLAY);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, position2, BookmarkActionType.FIRST_PLAY);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
 
@@ -85,12 +86,13 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistoryFilteredByAssetId() {
 
         Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
 
         // Ingest and bookmark first asset
-        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset
-        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
-        Long assetId3 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
+        Long assetId3 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(String.valueOf(assetId2), null, WatchStatus.ALL, null);
 
@@ -124,11 +126,13 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistoryFilteredByAssetType() {
 
         Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
+
 
         // Ingest and bookmark first asset (movie in first play)
-        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset (movie in finish action)
-        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, EPISODE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL,
                 getProperty(MOVIE_MEDIA_TYPE_ID));
@@ -153,11 +157,13 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistoryFilteredByAssetProgress() {
 
         Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
+
 
         // Ingest and bookmark first asset (movie in first play)
-        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset (movie in finish action)
-        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(client, EPISODE_MEDIA_TYPE, 100, BookmarkActionType.FINISH);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, EPISODE_MEDIA_TYPE, 100, BookmarkActionType.FINISH);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.PROGRESS, null);
 
