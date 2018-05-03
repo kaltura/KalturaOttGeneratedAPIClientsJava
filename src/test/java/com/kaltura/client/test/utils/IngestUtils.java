@@ -186,17 +186,15 @@ public class IngestUtils extends BaseUtils {
         await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
                 .until(isDataReturned(getAnonymousKs(), assetFilter, programCountValue*seasonCountValue));
 
-        ListAssetBuilder list = AssetService.list(assetFilter, null);
-        list.setKs(getAnonymousKs());
-        Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(list);
+        Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(
+                AssetService.list(assetFilter, null).setKs(getAnonymousKs()));
         // TODO: complete Asset.json at least for programs
         return ingestedProgrammes;
     }
 
     private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {
         return () -> {
-            ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter, null);
-            listAssetBuilder.setKs(ks);
+            ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter, null).setKs(ks);
             return executor.executeSync(listAssetBuilder).error == null &&
                 executor.executeSync(listAssetBuilder).results.getTotalCount() == totalCount;
         };
@@ -823,10 +821,9 @@ public class IngestUtils extends BaseUtils {
         int delayBetweenRetriesInSeconds = 3;
         int maxTimeExpectingValidResponseInSeconds = 60;
         await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS).until(isDataReturned(getAnonymousKs(), id, actionValue));
-        GetAssetBuilder getAssetBuilder = AssetService.get(id, AssetReferenceType.MEDIA);
-        getAssetBuilder.setKs(getAnonymousKs());
         if (!INGEST_ACTION_DELETE.equals(actionValue)) {
-            mediaAsset.setMediaFiles(executor.executeSync(getAssetBuilder).results.getMediaFiles());
+            mediaAsset.setMediaFiles(executor.executeSync(
+                    AssetService.get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs())).results.getMediaFiles());
         }
 
         // TODO: 4/15/2018 add log for ingest and index failures
@@ -834,8 +831,7 @@ public class IngestUtils extends BaseUtils {
     }
 
     private static Callable<Boolean> isDataReturned(String ks, String mediaId, String action) {
-        GetAssetBuilder getAssetBuilder = AssetService.get(mediaId, AssetReferenceType.MEDIA);
-        getAssetBuilder.setKs(ks);
+        GetAssetBuilder getAssetBuilder = AssetService.get(mediaId, AssetReferenceType.MEDIA).setKs(ks);
         if (INGEST_ACTION_DELETE.equals(action)) {
             return () -> (executor.executeSync(getAssetBuilder).error != null);
         } else {
@@ -983,9 +979,8 @@ public class IngestUtils extends BaseUtils {
         //mediaAsset.setEndDate(endDate);
 
         await().pollInterval(3, TimeUnit.SECONDS).atMost(45, TimeUnit.SECONDS).until(isDataReturned(getAnonymousKs(), INGEST_ACTION_INSERT, id));
-        GetAssetBuilder getAssetBuilder = AssetService.get(id, AssetReferenceType.MEDIA);
-        getAssetBuilder.setKs(getAnonymousKs());
-        mediaAsset.setMediaFiles(executor.executeSync(getAssetBuilder).results.getMediaFiles());
+        mediaAsset.setMediaFiles(executor.executeSync(
+                AssetService.get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs())).results.getMediaFiles());
 
         // TODO: 4/15/2018 add log for ingest and index failures
         return mediaAsset;
