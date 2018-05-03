@@ -67,7 +67,9 @@ public class DeleteTests extends BaseTest {
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
 
         // try to delete master user and assert error
-        deleteOttUserBuilder = OttUserService.delete();
+        deleteOttUserBuilder = OttUserService.delete()
+            .setKs(getAdministratorKs())
+            .setUserId(Integer.valueOf(masterUser.getUserId()));
         deleteOttUserBuilder.setKs(getAdministratorKs());
         deleteOttUserBuilder.setUserId(Integer.valueOf(masterUser.getUserId()));
         booleanResponse = executor.executeSync(deleteOttUserBuilder);
