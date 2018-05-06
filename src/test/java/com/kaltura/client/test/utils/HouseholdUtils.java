@@ -1,16 +1,13 @@
 package com.kaltura.client.test.utils;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
-
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import static com.kaltura.client.services.HouseholdDeviceService.*;
 import static com.kaltura.client.services.HouseholdPaymentGatewayService.*;
 import static com.kaltura.client.services.HouseholdUserService.*;
@@ -99,8 +96,6 @@ public class HouseholdUtils extends BaseUtils {
 
         if (isPreparePG) {
             // TODO: there should be added logic with getting and using default PG currently it all hardcoded
-            client.setKs(getOperatorKs());
-            client.setUserId(Integer.valueOf(masterUser.getId()));
 
             //HouseholdPaymentGateway/action/setChargeId
             SetChargeIDHouseholdPaymentGatewayBuilder setChargeIDHouseholdPaymentGatewayBuilder = HouseholdPaymentGatewayService.setChargeID("0110151474255957105", "1234");
