@@ -28,7 +28,6 @@ public class AppTokenStartSessionTests extends BaseTest {
     private String udid1 = "1234567890";
     private String udid2 = "9876543210";
     private AppToken appToken = new AppToken();
-    public static Client client;
     private String sessionPrivileges = "key1:value1,key2:value2";
     private Long expiryDate;
     private String anonymousKs;
@@ -44,7 +43,6 @@ public class AppTokenStartSessionTests extends BaseTest {
         Response<LoginSession> loginSessionResponse = executor.executeSync(anonymousLoginOttUserBuilder);
 
         anonymousKs = loginSessionResponse.results.getKs();
-        client.setKs(null);
         expiryDate = BaseUtils.getTimeInEpoch(1);
     }
 
@@ -60,8 +58,6 @@ public class AppTokenStartSessionTests extends BaseTest {
         AppTokenService.AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
         addAppTokenBuilder.setKs(getOperatorKs());
         Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
-
-        client.setKs(anonymousKs);
 
         // Generate new token hash
         String tokenHash = AppTokenUtils.getTokenHash(hashType, anonymousKs, appTokenResponse.results.getToken());
@@ -102,13 +98,9 @@ public class AppTokenStartSessionTests extends BaseTest {
         appToken = AppTokenUtils.addAppToken(sessionUserId, hashType, sessionPrivileges, Math.toIntExact(expiryDate));
 
         // Invoke AppToken/action/add
-        client.setKs(getOperatorKs());
-
         AppTokenService.AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken);
         addAppTokenBuilder.setKs(getOperatorKs());
         Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
-
-        client.setKs(anonymousKs);
 
         // Generate new token hash
         String tokenHash = AppTokenUtils.getTokenHash(hashType, anonymousKs, appTokenResponse.results.getToken());
