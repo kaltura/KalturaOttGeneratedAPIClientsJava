@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -45,6 +48,8 @@ public class DynamicChannel extends Channel {
 	
 	public interface Tokenizer extends Channel.Tokenizer {
 		String kSql();
+		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> assetTypes();
+		AssetGroupBy.Tokenizer groupBy();
 	}
 
 	/**
@@ -71,6 +76,14 @@ public class DynamicChannel extends Channel {
 	  of entire filter is 2048 characters)
 	 */
 	private String kSql;
+	/**
+	 * Asset types in the channel.              -26 is EPG
+	 */
+	private List<IntegerValue> assetTypes;
+	/**
+	 * Channel group by
+	 */
+	private AssetGroupBy groupBy;
 
 	// kSql:
 	public String getKSql(){
@@ -82,6 +95,22 @@ public class DynamicChannel extends Channel {
 
 	public void kSql(String multirequestToken){
 		setToken("kSql", multirequestToken);
+	}
+
+	// assetTypes:
+	public List<IntegerValue> getAssetTypes(){
+		return this.assetTypes;
+	}
+	public void setAssetTypes(List<IntegerValue> assetTypes){
+		this.assetTypes = assetTypes;
+	}
+
+	// groupBy:
+	public AssetGroupBy getGroupBy(){
+		return this.groupBy;
+	}
+	public void setGroupBy(AssetGroupBy groupBy){
+		this.groupBy = groupBy;
 	}
 
 
@@ -96,6 +125,8 @@ public class DynamicChannel extends Channel {
 
 		// set members values:
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		assetTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("assetTypes"), IntegerValue.class);
+		groupBy = GsonParser.parseObject(jsonObject.getAsJsonObject("groupBy"), AssetGroupBy.class);
 
 	}
 
@@ -103,6 +134,8 @@ public class DynamicChannel extends Channel {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDynamicChannel");
 		kparams.add("kSql", this.kSql);
+		kparams.add("assetTypes", this.assetTypes);
+		kparams.add("groupBy", this.groupBy);
 		return kparams;
 	}
 
