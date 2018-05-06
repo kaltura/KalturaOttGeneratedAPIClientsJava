@@ -4,10 +4,12 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.services.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import static com.kaltura.client.services.HouseholdDeviceService.*;
 import static com.kaltura.client.services.HouseholdPaymentGatewayService.*;
 import static com.kaltura.client.services.HouseholdUserService.*;
@@ -22,54 +24,44 @@ public class HouseholdUtils extends BaseUtils {
     // create household
     public static Household createHousehold(int numberOfUsersInHoushold, int numberOfDevicesInHousehold, boolean isPreparePG) {
 
-        // create and register
-
-        RegisterOttUserBuilder registerOttUserBuilder = OttUserService.register(partnerId, generateOttUser(), defaultUserPassword);
-        registerOttUserBuilder.setKs(null);
-        Response<OTTUser> masterUserResponse = executor.executeSync(registerOttUserBuilder);
-
-        OTTUser masterUser = masterUserResponse.results;
+        // register master user
+        RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, generateOttUser(), defaultUserPassword);
+        OTTUser masterUser = executor.executeSync(registerOttUserBuilder).results;
 
         // login master user
-
-        LoginOttUserBuilder loginOttUserBuilder = OttUserService.login(partnerId, masterUser.getUsername(), defaultUserPassword, null, null);
-        loginOttUserBuilder.setKs(null);
+        LoginOttUserBuilder loginOttUserBuilder = login(partnerId, masterUser.getUsername(), defaultUserPassword, null, null);
         Response<LoginResponse> loginResponse = executor.executeSync(loginOttUserBuilder);
-
         masterUser = loginResponse.results.getUser();
+        String masterUserKs = loginResponse.results.getLoginSession().getKs();
 
-        // create and add household
+        // add household
         Household household = new Household();
         household.setName(masterUser.getFirstName() + "s Domain");
         household.setDescription(masterUser.getLastName() + " Description");
 
-        AddHouseholdBuilder addHouseholdBuilder = HouseholdService.add(household);
-        addHouseholdBuilder.setKs(loginResponse.results.getLoginSession().getKs());
-        Response<Household> householdResponse = executor.executeSync(addHouseholdBuilder);
+        AddHouseholdBuilder addHouseholdBuilder = HouseholdService.add(household)
+                .setKs(masterUserKs);
+        household = executor.executeSync(addHouseholdBuilder).results;
 
-        household = householdResponse.results;
-
-        // create, register and add non-master user to household
+        // add additional users to household
         for (int i = 0; i < numberOfUsersInHoushold - 1; i++) {
+            // register additional user
+            registerOttUserBuilder = register(partnerId, generateOttUser(), defaultUserPassword);
+            OTTUser additionalUser = executor.executeSync(registerOttUserBuilder).results;
 
-            registerOttUserBuilder = OttUserService.register(partnerId, generateOttUser(), defaultUserPassword);
-            registerOttUserBuilder.setKs(null);
-            Response<OTTUser> additionalUserResponse = executor.executeSync(registerOttUserBuilder);
-
-            OTTUser additionalUser = additionalUserResponse.results;
             HouseholdUser householdUser = new HouseholdUser();
             householdUser.setUserId(additionalUser.getId());
             householdUser.setIsMaster(false);
 
-            // HouseholdUser/action/add - add user to household
-
-            AddHouseholdUserBuilder addHouseholdUserBuilder = HouseholdUserService.add(householdUser);
-            addHouseholdBuilder.setKs(loginResponse.results.getLoginSession().getKs());
+            // add additional user to household
+            AddHouseholdUserBuilder addHouseholdUserBuilder = add(householdUser)
+                    .setKs(masterUserKs);
             executor.executeSync(addHouseholdUserBuilder);
         }
 
-        // create, add and save household device
+        // add household devices
         for (int i = 0; i < numberOfDevicesInHousehold; i++) {
+            // create household device
             long uniqueString = System.currentTimeMillis();
             HouseholdDevice householdDevice = new HouseholdDevice();
             householdDevice.setUdid(String.valueOf(uniqueString));
@@ -77,30 +69,26 @@ public class HouseholdUtils extends BaseUtils {
             householdDevice.setBrandId(r.nextInt(30 - 1) + 1);
             householdDevice.setName(String.valueOf(uniqueString) + "device");
 
-
-            AddHouseholdDeviceBuilder addHouseholdDeviceBuilder = HouseholdDeviceService.add(householdDevice);
-            addHouseholdDeviceBuilder.setKs(loginResponse.results.getLoginSession().getKs());
+            // add device to household
+            AddHouseholdDeviceBuilder addHouseholdDeviceBuilder = HouseholdDeviceService.add(householdDevice)
+                    .setKs(masterUserKs);
             executor.executeSync(addHouseholdDeviceBuilder);
-
         }
 
-        // login as Master with udid
-        if (numberOfDevicesInHousehold > 0) {
-            List<HouseholdDevice> householdDevices = getDevicesListFromHouseHold(household);
-
-            loginOttUserBuilder = OttUserService.login(partnerId, masterUser.getUsername(), defaultUserPassword, null, householdDevices.get(0).getUdid());
-            loginOttUserBuilder.setKs(null);
-            executor.executeSync(loginOttUserBuilder);
-
-        }
+//        // login as Master with udid
+//        if (numberOfDevicesInHousehold > 0) {
+//            List<HouseholdDevice> householdDevices = getDevicesListFromHouseHold(household);
+//
+//            loginOttUserBuilder = login(partnerId, masterUser.getUsername(), defaultUserPassword, null, householdDevices.get(0).getUdid());
+//            executor.executeSync(loginOttUserBuilder);
+//        }
 
         if (isPreparePG) {
             // TODO: there should be added logic with getting and using default PG currently it all hardcoded
-
             //HouseholdPaymentGateway/action/setChargeId
-            SetChargeIDHouseholdPaymentGatewayBuilder setChargeIDHouseholdPaymentGatewayBuilder = HouseholdPaymentGatewayService.setChargeID("0110151474255957105", "1234");
-            setChargeIDHouseholdPaymentGatewayBuilder.setKs(getOperatorKs());
-            setChargeIDHouseholdPaymentGatewayBuilder.setUserId(Integer.valueOf(masterUser.getId()));
+            SetChargeIDHouseholdPaymentGatewayBuilder setChargeIDHouseholdPaymentGatewayBuilder = HouseholdPaymentGatewayService.setChargeID("0110151474255957105", "1234")
+                    .setKs(getOperatorKs())
+                    .setUserId(Integer.valueOf(masterUser.getId()));
             executor.executeSync(setChargeIDHouseholdPaymentGatewayBuilder);
         }
 
@@ -114,8 +102,8 @@ public class HouseholdUtils extends BaseUtils {
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
 
         //HouseholdDevice/action/list
-        ListHouseholdDeviceBuilder listHouseholdDeviceBuilder = HouseholdDeviceService.list(filter);
-        listHouseholdDeviceBuilder.setKs(getAdministratorKs());
+        ListHouseholdDeviceBuilder listHouseholdDeviceBuilder = HouseholdDeviceService.list(filter)
+                .setKs(getAdministratorKs());
         Response<ListResponse<HouseholdDevice>> devicesResponse = executor.executeSync(listHouseholdDeviceBuilder);
 
         return devicesResponse.results.getObjects();
@@ -126,8 +114,8 @@ public class HouseholdUtils extends BaseUtils {
         HouseholdUserFilter filter = new HouseholdUserFilter();
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
 
-        ListHouseholdUserBuilder listHouseholdUserBuilder = HouseholdUserService.list(filter);
-        listHouseholdUserBuilder.setKs(getAdministratorKs());
+        ListHouseholdUserBuilder listHouseholdUserBuilder = list(filter)
+                .setKs(getAdministratorKs());
         Response<ListResponse<HouseholdUser>> usersResponse = executor.executeSync(listHouseholdUserBuilder);
 
         return usersResponse.results.getObjects();
