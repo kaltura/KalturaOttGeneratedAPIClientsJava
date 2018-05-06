@@ -20,7 +20,7 @@ import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 public class HouseholdUtils extends BaseUtils {
 
     // create household
-    public static Household createHouseHold(int numberOfUsersInHoushold, int numberOfDevicesInHousehold, boolean isPreparePG) {
+    public static Household createHousehold(int numberOfUsersInHoushold, int numberOfDevicesInHousehold, boolean isPreparePG) {
 
         // create and register
 

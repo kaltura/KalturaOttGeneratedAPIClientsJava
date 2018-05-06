@@ -18,7 +18,7 @@ import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.utils.HouseholdUtils.createHouseHold;
+import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
 import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
 import static org.awaitility.Awaitility.setDefaultTimeout;
@@ -196,7 +196,7 @@ public class BaseTest {
             int numOfDevices = 2;
 
             if (sharedHousehold == null) {
-                sharedHousehold = createHouseHold(numOfUsers, numOfDevices, true);
+                sharedHousehold = createHousehold(numOfUsers, numOfDevices, true);
                 List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
                 for (HouseholdUser user : sharedHouseholdUsers) {
                     if (user.getIsMaster() != null && user.getIsMaster()) {
