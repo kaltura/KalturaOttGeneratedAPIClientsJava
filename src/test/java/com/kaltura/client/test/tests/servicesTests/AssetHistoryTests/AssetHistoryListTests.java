@@ -1,28 +1,32 @@
 package com.kaltura.client.test.tests.servicesTests.AssetHistoryTests;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.services.AssetHistoryService;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.*;
-import com.kaltura.client.types.*;
+import com.kaltura.client.test.utils.AssetHistoryUtils;
+import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.types.AssetHistory;
+import com.kaltura.client.types.AssetHistoryFilter;
+import com.kaltura.client.types.Household;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.services.AssetHistoryService.CleanAssetHistoryBuilder;
+import static com.kaltura.client.services.AssetHistoryService.ListAssetHistoryBuilder;
 import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
-import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.Properties.MOVIE_MEDIA_TYPE_ID;
+import static com.kaltura.client.test.Properties.getProperty;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static com.kaltura.client.services.AssetHistoryService.*;
-
 public class AssetHistoryListTests extends BaseTest {
-    private Client client;
-    private AssetType assetType = AssetType.MEDIA;
+
     private int position1 = 10;
     private int position2 = 20;
     int numbOfDevices = 1;
@@ -37,7 +41,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistory() {
 
-        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numbOfDevices, false);
         String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
 
         // Ingest and bookmark first asset
@@ -60,7 +64,7 @@ public class AssetHistoryListTests extends BaseTest {
 
         // Assertions for first object returned
         assertThat(assetHistoryObject1.getAssetId()).isEqualTo(assetId2);
-        assertThat(assetHistoryObject1.getAssetType()).isEqualTo(assetType);
+        assertThat(assetHistoryObject1.getAssetType()).isEqualTo(AssetType.MEDIA);
         assertThat(assetHistoryObject1.getPosition()).isEqualTo(position2);
         assertThat(assetHistoryObject1.getDuration()).isGreaterThan(0);
 
@@ -70,7 +74,7 @@ public class AssetHistoryListTests extends BaseTest {
 
         // Assertions for second object returned
         assertThat(assetHistoryObject2.getAssetId()).isEqualTo(assetId1);
-        assertThat(assetHistoryObject2.getAssetType()).isEqualTo(assetType);
+        assertThat(assetHistoryObject2.getAssetType()).isEqualTo(AssetType.MEDIA);
         assertThat(assetHistoryObject2.getPosition()).isEqualTo(position1);
 
         // Assert total count = 2 (two bookmarks)
@@ -85,7 +89,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistoryFilteredByAssetId() {
 
-        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numbOfDevices, false);
         String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
 
         // Ingest and bookmark first asset
@@ -125,7 +129,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistoryFilteredByAssetType() {
 
-        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numbOfDevices, false);
         String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
 
 
@@ -156,7 +160,7 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistoryFilteredByAssetProgress() {
 
-        Household household = HouseholdUtils.createHouseHold(numOfUsers, numbOfDevices, false);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numbOfDevices, false);
         String userKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
 
 

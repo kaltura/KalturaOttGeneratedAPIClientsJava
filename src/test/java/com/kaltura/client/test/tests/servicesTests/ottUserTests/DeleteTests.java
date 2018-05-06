@@ -34,7 +34,7 @@ public class DeleteTests extends BaseTest {
     private void ottUser_delete_tests_setup() {
         int numberOfDevicesInHousehold = 0;
         int numberOfUsersInHousehold = 2;
-        household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
     }
 
     @Severity(SeverityLevel.CRITICAL)

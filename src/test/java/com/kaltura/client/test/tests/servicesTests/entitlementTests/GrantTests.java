@@ -39,13 +39,13 @@ public class GrantTests extends BaseTest {
     @BeforeClass
     private void grant_test_before_class() {
         contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
-        testSharedHousehold = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
     }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = true")
     private void grant_subscription_with_history() {
         // set household
-        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
@@ -112,7 +112,7 @@ public class GrantTests extends BaseTest {
     @Test(description = "entitlement/action/grant - grant subscription with history = false")
     private void grant_subscription_without_history() {
         // set household
-        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
 
@@ -154,7 +154,7 @@ public class GrantTests extends BaseTest {
     @Test(description = "entitlement/action/grant - grant ppv with history = true")
     private void grant_ppv_with_history() {
         // set household
-        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
@@ -221,7 +221,7 @@ public class GrantTests extends BaseTest {
     @Test(description = "entitlement/action/grant - grant ppv with history = false")
     private void grant_ppv_without_history() {
         // set household
-        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
@@ -368,7 +368,7 @@ public class GrantTests extends BaseTest {
     private void grant_ppv_user_suspend() {
 
         // set household
-        Household household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
 
         // suspend household

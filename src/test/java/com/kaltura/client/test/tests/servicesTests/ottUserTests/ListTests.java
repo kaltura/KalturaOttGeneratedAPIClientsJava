@@ -30,7 +30,7 @@ public class ListTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_list_tests_setup() {
-        household = HouseholdUtils.createHouseHold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
     }
 
     @Severity(SeverityLevel.CRITICAL)

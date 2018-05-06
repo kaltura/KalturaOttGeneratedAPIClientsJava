@@ -58,7 +58,7 @@ public class ListTests extends BaseTest {
 
         int numberOfUsers = 2;
         int numberOfDevices = 1;
-        household = HouseholdUtils.createHouseHold(numberOfUsers, numberOfDevices, true);
+        household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
         classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
     }
 
@@ -160,7 +160,7 @@ public class ListTests extends BaseTest {
     public void productPriceSubscriptionAndPpvBeforePurchaseTest() {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
-        Household household = HouseholdUtils.createHouseHold(numberOfUsers, numberOfDevices, true);
+        Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
 
         ProductPriceFilter filter = new ProductPriceFilter();
