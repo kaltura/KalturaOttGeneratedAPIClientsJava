@@ -202,7 +202,8 @@ public class BaseTest {
                     if (user.getIsMaster() != null && user.getIsMaster()) {
                         sharedMasterUser = user;
                     }
-                    if (user.getIsMaster() == null && user.getIsDefault() == null) {
+                    // TODO: ask Alon if we have cases when commented part should be there? What tests related to that logic?
+                    if (user.getIsMaster() == null/* && user.getIsDefault() == null*/) {
                         sharedUser = user;
                     }
                 }
