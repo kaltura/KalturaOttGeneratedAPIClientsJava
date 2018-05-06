@@ -93,13 +93,6 @@ public class BaseTest {
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
     }
 
-
-/*    public static Client getClient(String ks) {
-        Client client = new Client(config);
-        client.setKs(ks);
-        return client;
-    }*/
-
     // getters for shared params
     public static String getAdministratorKs() {
         if (administratorKs == null) {
