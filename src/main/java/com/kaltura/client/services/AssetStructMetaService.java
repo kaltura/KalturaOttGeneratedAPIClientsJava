@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.AssetStructMeta;
 import com.kaltura.client.types.AssetStructMetaFilter;
+import com.kaltura.client.types.T;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,10 +42,10 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class AssetStructMetaService {
 	
-	public static class ListAssetStructMetaBuilder extends ListResponseRequestBuilder<AssetStructMeta, AssetStructMeta.Tokenizer, ListAssetStructMetaBuilder> {
+	public static class ListAssetStructMetaBuilder extends ListResponseRequestBuilder<T, T.Tokenizer, ListAssetStructMetaBuilder> {
 		
 		public ListAssetStructMetaBuilder(AssetStructMetaFilter filter) {
-			super(AssetStructMeta.class, "assetstructmeta", "list");
+			super(T.class, "assetstructmeta", "list");
 			params.add("filter", filter);
 		}
 	}
