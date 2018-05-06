@@ -6,7 +6,6 @@ import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.services.AssetHistoryService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetHistoryUtils;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
@@ -23,6 +22,8 @@ import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.Properties.MOVIE_MEDIA_TYPE_ID;
 import static com.kaltura.client.test.Properties.getProperty;
+import static com.kaltura.client.test.utils.BaseUtils.getConcatenatedString;
+import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryListTests extends BaseTest {
@@ -70,7 +71,7 @@ public class AssetHistoryListTests extends BaseTest {
 
         // Verify that flag is set to false (user hasn't finish watching the asset)
         assertThat(assetHistoryObject1.getFinishedWatching()).isFalse();
-        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(BaseUtils.getTimeInEpoch(0));
+        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(getTimeInEpoch(0));
 
         // Assertions for second object returned
         assertThat(assetHistoryObject2.getAssetId()).isEqualTo(assetId1);
@@ -108,7 +109,7 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(assetId2);
 
-        String concatenatedString = BaseUtils.getConcatenatedString(String.valueOf(assetId2), String.valueOf(assetId3));
+        String concatenatedString = getConcatenatedString(String.valueOf(assetId2), String.valueOf(assetId3));
 
         //assetHistory/action/list - filter by asset 2 and asset 3 ids
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(concatenatedString,
