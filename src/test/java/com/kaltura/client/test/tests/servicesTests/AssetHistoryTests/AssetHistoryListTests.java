@@ -221,8 +221,7 @@ public class AssetHistoryListTests extends BaseTest {
 
         //assetHistory/action/list - filter by in progress assets only
 
-        ListAssetHistoryBuilder listAssetHistoryBuilder = list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(getHouseholdMasterUserKs(household, null));
+        ListAssetHistoryBuilder listAssetHistoryBuilder = list(assetHistoryFilter, null).setKs(userKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
@@ -232,20 +231,12 @@ public class AssetHistoryListTests extends BaseTest {
 
         //assetHistory/action/list - filter by finished assets only
 
-        listAssetHistoryBuilder = list(assetHistoryFilter, null);
+        listAssetHistoryBuilder = list(assetHistoryFilter, null).setKs(userKs);
         assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(episode.getId());
 
-        // clean
-        clean_asset_history(assetHistoryFilter, household);
-    }
-
-    private void clean_asset_history(AssetHistoryFilter assetHistoryFilter, Household household) {
-        CleanAssetHistoryBuilder cleanAssetHistoryBuilder = clean(assetHistoryFilter);
-        cleanAssetHistoryBuilder.setKs(getHouseholdMasterUserKs(household, null));
-        executor.executeSync(cleanAssetHistoryBuilder);
     }
 
     //todo - Currently EPG program not returned in response (Ticket was opened to Omer - BEO-4594]

@@ -152,7 +152,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, getProperty(EPISODE_MEDIA_TYPE_ID));
 
-        //assetHistory/action/clean - only episode type (asset id 2)
+        //assetHistory/action/clean - only episode type (episode)
 
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
         cleanAssetHistoryBuilder.setKs(masterUserKs);
@@ -161,7 +161,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
         // Update assetHistoryFilter object (assetIdIn = null)
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
 
-        // assetHistory/action/list - after clean - only asset id 1 returned (was not cleaned)
+        // assetHistory/action/list - after clean - only movie returned (was not cleaned)
 
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
         listAssetHistoryBuilder.setKs(masterUserKs);
@@ -190,7 +190,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.DONE, null);
 
-        //assetHistory/action/clean - only asset that were finished (asset 2)
+        //assetHistory/action/clean - only asset that were finished (episode)
 
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
         cleanAssetHistoryBuilder.setKs(masterUserKs);
@@ -198,7 +198,7 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
 
-        // assetHistory/action/list - after clean - only asset id 1 returned (was not cleaned)
+        // assetHistory/action/list - after clean - only movie returned (was not cleaned)
 
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
         listAssetHistoryBuilder.setKs(masterUserKs);
@@ -214,7 +214,6 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
         String masterUserKs = getHouseholdMasterUserKs(household, null);
-        String userKs = getHouseholdMasterUserKs(household, null);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
@@ -228,14 +227,14 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.PROGRESS, null);
 
-        //assetHistory/action/clean - only asset that in progress (asset 1)
+        //assetHistory/action/clean - only asset that in progress (movie)
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
         cleanAssetHistoryBuilder.setKs(masterUserKs);
         executor.executeSync(cleanAssetHistoryBuilder);
 
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
 
-        // assetHistory/action/list - after clean - only asset id 2 returned (was not cleaned)
+        // assetHistory/action/list - after clean - only episode returned (was not cleaned)
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
         listAssetHistoryBuilder.setKs(masterUserKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
