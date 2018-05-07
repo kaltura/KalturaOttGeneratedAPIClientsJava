@@ -29,8 +29,7 @@ public class AssetCommentListTests extends BaseTest {
     private String householdMasterUserKs;
 
     @BeforeClass
-    // TODO: 5/3/2018 edit before method name 
-    private void add_tests_before_class() {
+    private void asset_comment_listTests_before_class() {
         int numOfUsers = 1;
         int numOfDevices = 1;
         household = createHousehold(numOfUsers, numOfDevices, false);
@@ -40,7 +39,6 @@ public class AssetCommentListTests extends BaseTest {
     @Description("AssetComment/action/list - check order by functionality")
     @Test
     private void checkCommentsOrder() {
-
         String writer = "Shmulik";
         Long createDate = 0L;
         String header = "header";
@@ -54,7 +52,6 @@ public class AssetCommentListTests extends BaseTest {
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);
 
         // AssetComment/action/add - first comment
-
         AssetCommentService.AddAssetCommentBuilder addAssetCommentBuilder = AssetCommentService.add(assetComment)
                 .setKs(householdMasterUserKs);
         Response<AssetComment> assetComment1Response = executor.executeSync(addAssetCommentBuilder);
@@ -69,7 +66,6 @@ public class AssetCommentListTests extends BaseTest {
                 AssetCommentOrderBy.CREATE_DATE_DESC);
 
         //AssetComment/action/list - return both comments
-
         ListAssetCommentBuilder listAssetCommentBuilder = AssetCommentService.list(assetCommentFilter, null)
                 .setKs(householdMasterUserKs);
         Response<ListResponse<AssetComment>> assetCommentListResponse = executor.executeSync(listAssetCommentBuilder);

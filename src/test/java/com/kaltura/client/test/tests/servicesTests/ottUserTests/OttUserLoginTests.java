@@ -55,7 +55,7 @@ public class LoginTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Description("ottUser/action/login - login with wrong username - error 1011")
+    @Description("ottUser/action/login - login with wrong username - error 2000")
     @Test
     private void login_with_wrong_username() {
         String fakeUsername = user.getUsername() + "1";
@@ -65,7 +65,7 @@ public class LoginTests extends BaseTest {
 
         // assertions
         assertThat(loginResponse.results).isNull();
-        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1011).getCode());
+        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2000).getCode());
     }
 
     @Severity(SeverityLevel.NORMAL)

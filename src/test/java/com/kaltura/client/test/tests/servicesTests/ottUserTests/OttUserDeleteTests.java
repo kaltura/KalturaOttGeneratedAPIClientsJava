@@ -23,7 +23,7 @@ import static com.kaltura.client.test.utils.HouseholdUtils.getMasterUserFromHous
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DeleteTests extends BaseTest {
+public class OttUserDeleteTests extends BaseTest {
 
     private Household household;
 

@@ -11,7 +11,6 @@ import com.kaltura.client.types.Household;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.kaltura.client.services.AssetHistoryService.CleanAssetHistoryBuilder;
@@ -24,7 +23,7 @@ import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AssetHistoryActionCleanLists extends BaseTest {
+public class AssetHistoryCleanTests extends BaseTest {
 
     private final int position1 = 10;
     private final int position2 = 20;
@@ -32,16 +31,9 @@ public class AssetHistoryActionCleanLists extends BaseTest {
     private final int numOfUsers = 1;
 
 
-    @BeforeClass
-    // TODO: 5/3/2018 change before method name
-    private void add_tests_before_class() {
-
-    }
-
     @Description("/assetHistory/action/clean - no filtering")
     @Test
     private void cleanHistory() {
-
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
         String masterUserKs = getHouseholdMasterUserKs(household, null);
         String userKs = getHouseholdMasterUserKs(household, null);
@@ -164,8 +156,8 @@ public class AssetHistoryActionCleanLists extends BaseTest {
 
         // assetHistory/action/list - after clean - only asset id 1 returned (was not cleaned)
 
-        ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(masterUserKs);
+        ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null)
+                .setKs(masterUserKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
