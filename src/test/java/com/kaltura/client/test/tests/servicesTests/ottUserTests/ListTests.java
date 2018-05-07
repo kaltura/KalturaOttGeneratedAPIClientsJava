@@ -53,7 +53,7 @@ public class ListTests extends BaseTest {
 
         // assert users list size
         assertThat(householdUserListResponse.error).isNull();
-        assertThat(users.size()).isEqualTo(numberOfUsersInHousehold + 1);
+        assertThat(users.size()).isEqualTo(numberOfUsersInHousehold + 2);
     }
 
     @Severity(SeverityLevel.CRITICAL)

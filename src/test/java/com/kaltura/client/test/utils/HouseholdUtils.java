@@ -75,14 +75,6 @@ public class HouseholdUtils extends BaseUtils {
             executor.executeSync(addHouseholdDeviceBuilder);
         }
 
-//        // login as Master with udid
-//        if (numberOfDevicesInHousehold > 0) {
-//            List<HouseholdDevice> householdDevices = getDevicesListFromHouseHold(household);
-//
-//            loginOttUserBuilder = login(partnerId, masterUser.getUsername(), defaultUserPassword, null, householdDevices.get(0).getUdid());
-//            executor.executeSync(loginOttUserBuilder);
-//        }
-
         if (isPreparePG) {
             // TODO: there should be added logic with getting and using default PG currently it all hardcoded
             //HouseholdPaymentGateway/action/setChargeId

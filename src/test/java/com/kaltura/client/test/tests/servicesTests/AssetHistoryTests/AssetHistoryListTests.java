@@ -93,14 +93,8 @@ public class AssetHistoryListTests extends BaseTest {
             long assetId = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
             assetIds.add(assetId);
         }
-        // Ingest and bookmark first asset
-/*
-        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
-        // Ingest and bookmark second asset
-        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
-        Long assetId3 = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, MOVIE_MEDIA_TYPE, position1, BookmarkActionType.FIRST_PLAY);
-*/
 
+        // Ingest and bookmark first asset
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(String.valueOf(assetIds.get(1)), null, WatchStatus.ALL, null);
 
         //assetHistory/action/list - filter by asset 2 id
