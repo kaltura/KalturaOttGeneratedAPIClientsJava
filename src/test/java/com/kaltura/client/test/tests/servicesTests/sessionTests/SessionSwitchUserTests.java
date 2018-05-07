@@ -64,7 +64,7 @@ public class SessionSwitchUserTests extends BaseTest {
 
         GetOttUserBuilder getOttUserBuilder2 = OttUserService.get();
         getOttUserBuilder2.setKs(secondUserKs);
-        Response<OTTUser> ottUserResponse2 = executor.executeSync(getOttUserBuilder);
+        Response<OTTUser> ottUserResponse2 = executor.executeSync(getOttUserBuilder2);
 
         // Verify second user id return in the response
         assertThat(ottUserResponse2.results.getId()).isEqualTo(secondUserId);
