@@ -44,7 +44,7 @@ public class HouseholdUtils extends BaseUtils {
         household = executor.executeSync(addHouseholdBuilder).results;
 
         // add additional users to household
-        for (int i = 0; i < numberOfUsersInHoushold - 1; i++) {
+        for (int i = 0; i < numberOfUsersInHoushold; i++) {
             // register additional user
             registerOttUserBuilder = register(partnerId, generateOttUser(), defaultUserPassword);
             OTTUser additionalUser = executor.executeSync(registerOttUserBuilder).results;
