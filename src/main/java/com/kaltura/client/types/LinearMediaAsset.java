@@ -55,15 +55,15 @@ public class LinearMediaAsset extends MediaAsset {
 		String bufferTrickPlay();
 		String enableRecordingPlaybackNonEntitledChannelState();
 		String enableTrickPlayState();
-		String externalIngestId();
+		String externalEpgIngestId();
 		String externalCdvrId();
-		String enableCdvr();
-		String enableCatchUp();
-		String enableStartOver();
-		String catchUpBuffer();
-		String trickPlayBuffer();
-		String enableRecordingPlaybackNonEntitledChannel();
-		String enableTrickPlay();
+		String cdvrEnabled();
+		String catchUpEnabled();
+		String startOverEnabled();
+		String summedCatchUpBuffer();
+		String summedTrickPlayBuffer();
+		String recordingPlaybackNonEntitledChannelEnabled();
+		String trickPlayEnabled();
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class LinearMediaAsset extends MediaAsset {
 	/**
 	 * External identifier used when ingesting programs for this linear media asset
 	 */
-	private String externalIngestId;
+	private String externalEpgIngestId;
 	/**
 	 * External identifier for the CDVR
 	 */
@@ -105,31 +105,33 @@ public class LinearMediaAsset extends MediaAsset {
 	/**
 	 * Is CDVR enabled for this asset
 	 */
-	private Boolean enableCdvr;
+	private Boolean cdvrEnabled;
 	/**
 	 * Is catch-up enabled for this asset
 	 */
-	private Boolean enableCatchUp;
+	private Boolean catchUpEnabled;
 	/**
 	 * Is start over enabled for this asset
 	 */
-	private Boolean enableStartOver;
+	private Boolean startOverEnabled;
 	/**
-	 * Catch-up buffer
+	 * summed Catch-up buffer, the TimeShiftedTvPartnerSettings are also taken into
+	  consideration
 	 */
-	private Long catchUpBuffer;
+	private Long summedCatchUpBuffer;
 	/**
-	 * buffer Trick-play
+	 * summed Trick-play buffer, the TimeShiftedTvPartnerSettings are also taken into
+	  consideration
 	 */
-	private Long trickPlayBuffer;
+	private Long summedTrickPlayBuffer;
 	/**
 	 * Is recording playback for non entitled channel enabled for this asset
 	 */
-	private Boolean enableRecordingPlaybackNonEntitledChannel;
+	private Boolean recordingPlaybackNonEntitledChannelEnabled;
 	/**
 	 * Is trick-play enabled for this asset
 	 */
-	private Boolean enableTrickPlay;
+	private Boolean trickPlayEnabled;
 
 	// enableCdvrState:
 	public TimeShiftedTvState getEnableCdvrState(){
@@ -215,16 +217,16 @@ public class LinearMediaAsset extends MediaAsset {
 		setToken("enableTrickPlayState", multirequestToken);
 	}
 
-	// externalIngestId:
-	public String getExternalIngestId(){
-		return this.externalIngestId;
+	// externalEpgIngestId:
+	public String getExternalEpgIngestId(){
+		return this.externalEpgIngestId;
 	}
-	public void setExternalIngestId(String externalIngestId){
-		this.externalIngestId = externalIngestId;
+	public void setExternalEpgIngestId(String externalEpgIngestId){
+		this.externalEpgIngestId = externalEpgIngestId;
 	}
 
-	public void externalIngestId(String multirequestToken){
-		setToken("externalIngestId", multirequestToken);
+	public void externalEpgIngestId(String multirequestToken){
+		setToken("externalEpgIngestId", multirequestToken);
 	}
 
 	// externalCdvrId:
@@ -239,88 +241,88 @@ public class LinearMediaAsset extends MediaAsset {
 		setToken("externalCdvrId", multirequestToken);
 	}
 
-	// enableCdvr:
-	public Boolean getEnableCdvr(){
-		return this.enableCdvr;
+	// cdvrEnabled:
+	public Boolean getCdvrEnabled(){
+		return this.cdvrEnabled;
 	}
-	public void setEnableCdvr(Boolean enableCdvr){
-		this.enableCdvr = enableCdvr;
-	}
-
-	public void enableCdvr(String multirequestToken){
-		setToken("enableCdvr", multirequestToken);
+	public void setCdvrEnabled(Boolean cdvrEnabled){
+		this.cdvrEnabled = cdvrEnabled;
 	}
 
-	// enableCatchUp:
-	public Boolean getEnableCatchUp(){
-		return this.enableCatchUp;
-	}
-	public void setEnableCatchUp(Boolean enableCatchUp){
-		this.enableCatchUp = enableCatchUp;
+	public void cdvrEnabled(String multirequestToken){
+		setToken("cdvrEnabled", multirequestToken);
 	}
 
-	public void enableCatchUp(String multirequestToken){
-		setToken("enableCatchUp", multirequestToken);
+	// catchUpEnabled:
+	public Boolean getCatchUpEnabled(){
+		return this.catchUpEnabled;
+	}
+	public void setCatchUpEnabled(Boolean catchUpEnabled){
+		this.catchUpEnabled = catchUpEnabled;
 	}
 
-	// enableStartOver:
-	public Boolean getEnableStartOver(){
-		return this.enableStartOver;
-	}
-	public void setEnableStartOver(Boolean enableStartOver){
-		this.enableStartOver = enableStartOver;
+	public void catchUpEnabled(String multirequestToken){
+		setToken("catchUpEnabled", multirequestToken);
 	}
 
-	public void enableStartOver(String multirequestToken){
-		setToken("enableStartOver", multirequestToken);
+	// startOverEnabled:
+	public Boolean getStartOverEnabled(){
+		return this.startOverEnabled;
+	}
+	public void setStartOverEnabled(Boolean startOverEnabled){
+		this.startOverEnabled = startOverEnabled;
 	}
 
-	// catchUpBuffer:
-	public Long getCatchUpBuffer(){
-		return this.catchUpBuffer;
-	}
-	public void setCatchUpBuffer(Long catchUpBuffer){
-		this.catchUpBuffer = catchUpBuffer;
+	public void startOverEnabled(String multirequestToken){
+		setToken("startOverEnabled", multirequestToken);
 	}
 
-	public void catchUpBuffer(String multirequestToken){
-		setToken("catchUpBuffer", multirequestToken);
+	// summedCatchUpBuffer:
+	public Long getSummedCatchUpBuffer(){
+		return this.summedCatchUpBuffer;
+	}
+	public void setSummedCatchUpBuffer(Long summedCatchUpBuffer){
+		this.summedCatchUpBuffer = summedCatchUpBuffer;
 	}
 
-	// trickPlayBuffer:
-	public Long getTrickPlayBuffer(){
-		return this.trickPlayBuffer;
-	}
-	public void setTrickPlayBuffer(Long trickPlayBuffer){
-		this.trickPlayBuffer = trickPlayBuffer;
+	public void summedCatchUpBuffer(String multirequestToken){
+		setToken("summedCatchUpBuffer", multirequestToken);
 	}
 
-	public void trickPlayBuffer(String multirequestToken){
-		setToken("trickPlayBuffer", multirequestToken);
+	// summedTrickPlayBuffer:
+	public Long getSummedTrickPlayBuffer(){
+		return this.summedTrickPlayBuffer;
+	}
+	public void setSummedTrickPlayBuffer(Long summedTrickPlayBuffer){
+		this.summedTrickPlayBuffer = summedTrickPlayBuffer;
 	}
 
-	// enableRecordingPlaybackNonEntitledChannel:
-	public Boolean getEnableRecordingPlaybackNonEntitledChannel(){
-		return this.enableRecordingPlaybackNonEntitledChannel;
-	}
-	public void setEnableRecordingPlaybackNonEntitledChannel(Boolean enableRecordingPlaybackNonEntitledChannel){
-		this.enableRecordingPlaybackNonEntitledChannel = enableRecordingPlaybackNonEntitledChannel;
+	public void summedTrickPlayBuffer(String multirequestToken){
+		setToken("summedTrickPlayBuffer", multirequestToken);
 	}
 
-	public void enableRecordingPlaybackNonEntitledChannel(String multirequestToken){
-		setToken("enableRecordingPlaybackNonEntitledChannel", multirequestToken);
+	// recordingPlaybackNonEntitledChannelEnabled:
+	public Boolean getRecordingPlaybackNonEntitledChannelEnabled(){
+		return this.recordingPlaybackNonEntitledChannelEnabled;
+	}
+	public void setRecordingPlaybackNonEntitledChannelEnabled(Boolean recordingPlaybackNonEntitledChannelEnabled){
+		this.recordingPlaybackNonEntitledChannelEnabled = recordingPlaybackNonEntitledChannelEnabled;
 	}
 
-	// enableTrickPlay:
-	public Boolean getEnableTrickPlay(){
-		return this.enableTrickPlay;
-	}
-	public void setEnableTrickPlay(Boolean enableTrickPlay){
-		this.enableTrickPlay = enableTrickPlay;
+	public void recordingPlaybackNonEntitledChannelEnabled(String multirequestToken){
+		setToken("recordingPlaybackNonEntitledChannelEnabled", multirequestToken);
 	}
 
-	public void enableTrickPlay(String multirequestToken){
-		setToken("enableTrickPlay", multirequestToken);
+	// trickPlayEnabled:
+	public Boolean getTrickPlayEnabled(){
+		return this.trickPlayEnabled;
+	}
+	public void setTrickPlayEnabled(Boolean trickPlayEnabled){
+		this.trickPlayEnabled = trickPlayEnabled;
+	}
+
+	public void trickPlayEnabled(String multirequestToken){
+		setToken("trickPlayEnabled", multirequestToken);
 	}
 
 
@@ -341,15 +343,15 @@ public class LinearMediaAsset extends MediaAsset {
 		bufferTrickPlay = GsonParser.parseLong(jsonObject.get("bufferTrickPlay"));
 		enableRecordingPlaybackNonEntitledChannelState = TimeShiftedTvState.get(GsonParser.parseString(jsonObject.get("enableRecordingPlaybackNonEntitledChannelState")));
 		enableTrickPlayState = TimeShiftedTvState.get(GsonParser.parseString(jsonObject.get("enableTrickPlayState")));
-		externalIngestId = GsonParser.parseString(jsonObject.get("externalIngestId"));
+		externalEpgIngestId = GsonParser.parseString(jsonObject.get("externalEpgIngestId"));
 		externalCdvrId = GsonParser.parseString(jsonObject.get("externalCdvrId"));
-		enableCdvr = GsonParser.parseBoolean(jsonObject.get("enableCdvr"));
-		enableCatchUp = GsonParser.parseBoolean(jsonObject.get("enableCatchUp"));
-		enableStartOver = GsonParser.parseBoolean(jsonObject.get("enableStartOver"));
-		catchUpBuffer = GsonParser.parseLong(jsonObject.get("catchUpBuffer"));
-		trickPlayBuffer = GsonParser.parseLong(jsonObject.get("trickPlayBuffer"));
-		enableRecordingPlaybackNonEntitledChannel = GsonParser.parseBoolean(jsonObject.get("enableRecordingPlaybackNonEntitledChannel"));
-		enableTrickPlay = GsonParser.parseBoolean(jsonObject.get("enableTrickPlay"));
+		cdvrEnabled = GsonParser.parseBoolean(jsonObject.get("cdvrEnabled"));
+		catchUpEnabled = GsonParser.parseBoolean(jsonObject.get("catchUpEnabled"));
+		startOverEnabled = GsonParser.parseBoolean(jsonObject.get("startOverEnabled"));
+		summedCatchUpBuffer = GsonParser.parseLong(jsonObject.get("summedCatchUpBuffer"));
+		summedTrickPlayBuffer = GsonParser.parseLong(jsonObject.get("summedTrickPlayBuffer"));
+		recordingPlaybackNonEntitledChannelEnabled = GsonParser.parseBoolean(jsonObject.get("recordingPlaybackNonEntitledChannelEnabled"));
+		trickPlayEnabled = GsonParser.parseBoolean(jsonObject.get("trickPlayEnabled"));
 
 	}
 
@@ -363,7 +365,7 @@ public class LinearMediaAsset extends MediaAsset {
 		kparams.add("bufferTrickPlay", this.bufferTrickPlay);
 		kparams.add("enableRecordingPlaybackNonEntitledChannelState", this.enableRecordingPlaybackNonEntitledChannelState);
 		kparams.add("enableTrickPlayState", this.enableTrickPlayState);
-		kparams.add("externalIngestId", this.externalIngestId);
+		kparams.add("externalEpgIngestId", this.externalEpgIngestId);
 		kparams.add("externalCdvrId", this.externalCdvrId);
 		return kparams;
 	}
