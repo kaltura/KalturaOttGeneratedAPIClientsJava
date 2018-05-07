@@ -23,7 +23,7 @@ import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ListTests extends BaseTest {
+public class ProductPriceListTests extends BaseTest {
 
     private EntitlementFilter entitlementPpvsFilter;
     private EntitlementFilter entitlementSubsFilter;

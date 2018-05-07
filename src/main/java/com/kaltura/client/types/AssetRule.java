@@ -29,10 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -41,34 +42,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Asset rule
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RuleAction.Tokenizer.class)
-public class RuleAction extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AssetRule.Tokenizer.class)
+public class AssetRule extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String type();
+		String id();
+		String name();
 		String description();
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
+		RequestBuilder.ListTokenizer<RuleAction.Tokenizer> actions();
 	}
 
 	/**
-	 * The type of the action
+	 * ID
 	 */
-	private RuleActionType type;
+	private Long id;
+	/**
+	 * Name
+	 */
+	private String name;
 	/**
 	 * Description
 	 */
 	private String description;
+	/**
+	 * List of conditions for the rule
+	 */
+	private List<Condition> conditions;
+	/**
+	 * List of actions for the rule
+	 */
+	private List<RuleAction> actions;
 
-	// type:
-	public RuleActionType getType(){
-		return this.type;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setType(RuleActionType type){
-		this.type = type;
+	public void setId(Long id){
+		this.id = id;
 	}
 
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
 	// description:
@@ -83,27 +114,48 @@ public class RuleAction extends ObjectBase {
 		setToken("description", multirequestToken);
 	}
 
+	// conditions:
+	public List<Condition> getConditions(){
+		return this.conditions;
+	}
+	public void setConditions(List<Condition> conditions){
+		this.conditions = conditions;
+	}
 
-	public RuleAction() {
+	// actions:
+	public List<RuleAction> getActions(){
+		return this.actions;
+	}
+	public void setActions(List<RuleAction> actions){
+		this.actions = actions;
+	}
+
+
+	public AssetRule() {
 		super();
 	}
 
-	public RuleAction(JsonObject jsonObject) throws APIException {
+	public AssetRule(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		type = RuleActionType.get(GsonParser.parseString(jsonObject.get("type")));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
 		description = GsonParser.parseString(jsonObject.get("description"));
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
+		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), RuleAction.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRuleAction");
-		kparams.add("type", this.type);
+		kparams.add("objectType", "KalturaAssetRule");
+		kparams.add("name", this.name);
 		kparams.add("description", this.description);
+		kparams.add("conditions", this.conditions);
+		kparams.add("actions", this.actions);
 		return kparams;
 	}
 
