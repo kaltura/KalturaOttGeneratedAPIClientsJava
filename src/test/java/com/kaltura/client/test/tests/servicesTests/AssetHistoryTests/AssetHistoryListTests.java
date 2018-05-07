@@ -132,21 +132,20 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistoryFilteredByAssetType() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String userKs = getHouseholdMasterUserKs(household, null);
+        String masterUserKs = getHouseholdMasterUserKs(household, null);
 
 
         // Ingest and bookmark first asset (movie in first play)
-        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset (movie in finish action)
-        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, EPISODE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, EPISODE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL,
                 getProperty(MOVIE_MEDIA_TYPE_ID));
 
         //assetHistory/action/list - filter by in progress assets only
-
-        ListAssetHistoryBuilder listAssetHistoryBuilder = list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(getHouseholdMasterUserKs(household, null));
+        ListAssetHistoryBuilder listAssetHistoryBuilder = list(assetHistoryFilter, null)
+                .setKs(masterUserKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
@@ -162,20 +161,18 @@ public class AssetHistoryListTests extends BaseTest {
     private void vodAssetHistoryFilteredByAssetProgress() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String userKs = getHouseholdMasterUserKs(household, null);
-
+        String masterUserKs = getHouseholdMasterUserKs(household, null);
 
         // Ingest and bookmark first asset (movie in first play)
-        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
+        Long assetId1 = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, MOVIE_MEDIA_TYPE, 10, BookmarkActionType.FIRST_PLAY);
         // Ingest and bookmark second asset (movie in finish action)
-        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(userKs, EPISODE_MEDIA_TYPE, 100, BookmarkActionType.FINISH);
+        Long assetId2 = AssetHistoryUtils.ingestAssetAndPerformBookmark(masterUserKs, EPISODE_MEDIA_TYPE, 100, BookmarkActionType.FINISH);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.PROGRESS, null);
 
         //assetHistory/action/list - filter by in progress assets only
-
-        ListAssetHistoryBuilder listAssetHistoryBuilder = list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(getHouseholdMasterUserKs(household, null));
+        ListAssetHistoryBuilder listAssetHistoryBuilder = list(assetHistoryFilter, null)
+                .setKs(masterUserKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
@@ -184,8 +181,8 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.DONE, null);
 
         //assetHistory/action/list - filter by finished assets only
-
-        listAssetHistoryBuilder = list(assetHistoryFilter, null);
+        listAssetHistoryBuilder = list(assetHistoryFilter, null)
+                .setKs(masterUserKs);
         assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
