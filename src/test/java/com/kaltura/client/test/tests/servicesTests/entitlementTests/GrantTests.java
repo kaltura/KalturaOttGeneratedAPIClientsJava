@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GrantTests extends BaseTest {
 
     // TODO: 4/12/2018 remove hardcoded subscription Id
-    private final int subscriptionId = 369426;
+    private final int subscriptionId = 327699;
     private final int ppvId = 30297;
     private final int assetId = 607368;
 
