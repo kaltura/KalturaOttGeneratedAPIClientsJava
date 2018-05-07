@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GrantTests extends BaseTest {
+public class EntitlementGrantTests extends BaseTest {
 
     // TODO: 4/12/2018 remove hardcoded subscription Id
     private final int subscriptionId = 327699;

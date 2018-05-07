@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,69 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Asset Condition
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RuleAction.Tokenizer.class)
-public class RuleAction extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AssetCondition.Tokenizer.class)
+public class AssetCondition extends Condition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String type();
-		String description();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String ksql();
 	}
 
 	/**
-	 * The type of the action
+	 * KSQL
 	 */
-	private RuleActionType type;
-	/**
-	 * Description
-	 */
-	private String description;
+	private String ksql;
 
-	// type:
-	public RuleActionType getType(){
-		return this.type;
+	// ksql:
+	public String getKsql(){
+		return this.ksql;
 	}
-	public void setType(RuleActionType type){
-		this.type = type;
+	public void setKsql(String ksql){
+		this.ksql = ksql;
 	}
 
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
+	public void ksql(String multirequestToken){
+		setToken("ksql", multirequestToken);
 	}
 
 
-	public RuleAction() {
+	public AssetCondition() {
 		super();
 	}
 
-	public RuleAction(JsonObject jsonObject) throws APIException {
+	public AssetCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		type = RuleActionType.get(GsonParser.parseString(jsonObject.get("type")));
-		description = GsonParser.parseString(jsonObject.get("description"));
+		ksql = GsonParser.parseString(jsonObject.get("ksql"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRuleAction");
-		kparams.add("type", this.type);
-		kparams.add("description", this.description);
+		kparams.add("objectType", "KalturaAssetCondition");
+		kparams.add("ksql", this.ksql);
 		return kparams;
 	}
 

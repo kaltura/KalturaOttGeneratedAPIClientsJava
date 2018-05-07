@@ -20,7 +20,7 @@ import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouse
 import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ListTests extends BaseTest {
+public class OttUserListTests extends BaseTest {
 
     private Household household;
     private Response<ListResponse<OTTUser>> householdUserListResponse;

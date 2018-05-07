@@ -17,7 +17,7 @@ import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class UpdateTests extends BaseTest {
+public class OttUserUpdateTests extends BaseTest {
 
     private OTTUser user;
     private String originalUserEmail;

@@ -13,7 +13,7 @@ import static com.kaltura.client.services.OttUserService.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RegisterTests extends BaseTest {
+public class OttUserRegisterTests extends BaseTest {
 
     private OTTUser user;
     private Response<OTTUser> ottUserResponse;

@@ -1,29 +1,31 @@
 package com.kaltura.client.test.tests.servicesTests.sessionTests;
 
-import com.kaltura.client.Client;
 import com.kaltura.client.enums.UserState;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.services.SessionService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
-import com.kaltura.client.types.*;
+import com.kaltura.client.types.Household;
+import com.kaltura.client.types.LoginSession;
+import com.kaltura.client.types.OTTUser;
+import com.kaltura.client.types.Session;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.services.OttUserService.GetOttUserBuilder;
+import static com.kaltura.client.services.SessionService.GetSessionBuilder;
+import static com.kaltura.client.services.SessionService.SwitchUserSessionBuilder;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static com.kaltura.client.services.SessionService.*;
-import static com.kaltura.client.services.OttUserService.*;
 
 public class SessionSwitchUserTests extends BaseTest {
 
     //TODO - replace hardcoded user id
     private String UserId = "1543798";
     private String userKs;
-    public static Client client;
 
     @BeforeClass
     private void switchUser_tests_before_class() {
@@ -40,9 +42,7 @@ public class SessionSwitchUserTests extends BaseTest {
         String secondUserId = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0).getUserId();
 
         // Invoke session/action/switchUser - second user replace master user in the session
-
-        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(secondUserId);
-        switchUserSessionBuilder.setKs(masterUserKs);
+        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(secondUserId).setKs(masterUserKs);
         Response<LoginSession> loginSessionResponse = executor.executeSync(switchUserSessionBuilder);
 
         // Verify new session ks returned
@@ -52,18 +52,14 @@ public class SessionSwitchUserTests extends BaseTest {
         ///----- After User was switched ------
 
         // Invoke OttUser/action/get - with master user (expired) ks
-
-        OttUserService.GetOttUserBuilder getOttUserBuilder = OttUserService.get();
-        getOttUserBuilder.setKs(masterUserKs);
+        OttUserService.GetOttUserBuilder getOttUserBuilder = OttUserService.get().setKs(masterUserKs);
         Response<OTTUser> ottUserResponse = executor.executeSync(getOttUserBuilder);
 
         // Verify master user ks is now expired (after the switch)
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500016).getCode());
 
         // Invoke OttUser/action/get with second user new ks
-
-        GetOttUserBuilder getOttUserBuilder2 = OttUserService.get();
-        getOttUserBuilder2.setKs(secondUserKs);
+        GetOttUserBuilder getOttUserBuilder2 = OttUserService.get().setKs(secondUserKs);
         Response<OTTUser> ottUserResponse2 = executor.executeSync(getOttUserBuilder2);
 
         // Verify second user id return in the response
@@ -72,9 +68,7 @@ public class SessionSwitchUserTests extends BaseTest {
 
 
         // Invoke session/action/get
-
-        GetSessionBuilder getSessionBuilder = SessionService.get(secondUserKs);
-        getSessionBuilder.setKs(getAdministratorKs());
+        GetSessionBuilder getSessionBuilder = SessionService.get(secondUserKs).setKs(getAdministratorKs());
         Response<Session> getSessionResponse = executor.executeSync(getSessionBuilder);
 
         // Verify second user id returned in the response
@@ -91,9 +85,7 @@ public class SessionSwitchUserTests extends BaseTest {
         String masterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
 
         // Invoke session/action/switchUser - Should return an error (user can't switched to himself
-
-        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(masterUserId);
-        switchUserSessionBuilder.setKs(masterUserKs);
+        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(masterUserId).setKs(masterUserKs);
         Response<LoginSession> loginSessionResponse = executor.executeSync(switchUserSessionBuilder);
 
         // Verify exception returned
@@ -108,8 +100,7 @@ public class SessionSwitchUserTests extends BaseTest {
         String inactiveUserId = "1543797";
         String UserKs = OttUserUtils.getKs(Integer.valueOf(UserId), null);
 
-        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(inactiveUserId);
-        switchUserSessionBuilder.setKs(UserKs);
+        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(inactiveUserId).setKs(UserKs);
         Response<LoginSession> loginSessionResponse = executor.executeSync(switchUserSessionBuilder);
 
         assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2016).getCode());
@@ -126,8 +117,7 @@ public class SessionSwitchUserTests extends BaseTest {
         //TODO - replace hardcoded user id
         String userIdFromHousehold2 = "638731";
 
-        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(userIdFromHousehold2);
-        switchUserSessionBuilder.setKs(Use1rKs);
+        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(userIdFromHousehold2).setKs(Use1rKs);
         Response<LoginSession> loginSessionResponse = executor.executeSync(switchUserSessionBuilder);
 
         assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
@@ -137,9 +127,7 @@ public class SessionSwitchUserTests extends BaseTest {
     @Description("/session/action/switchUser - No user id to switch provided")
     @Test
     private void switchToUserWithoutUserId() {
-
-        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(null);
-        switchUserSessionBuilder.setKs(userKs);
+        SwitchUserSessionBuilder switchUserSessionBuilder = SessionService.switchUser(null).setKs(userKs);
         Response<LoginSession> loginSessionResponse = executor.executeSync(switchUserSessionBuilder);
 
         assertThat(loginSessionResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500053).getCode());

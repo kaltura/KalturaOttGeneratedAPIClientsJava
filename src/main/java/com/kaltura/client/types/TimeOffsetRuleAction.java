@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,69 +39,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Time offset action
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RuleAction.Tokenizer.class)
-public class RuleAction extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TimeOffsetRuleAction.Tokenizer.class)
+public abstract class TimeOffsetRuleAction extends RuleAction {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String type();
-		String description();
+	public interface Tokenizer extends RuleAction.Tokenizer {
+		String offset();
+		String timeZone();
 	}
 
 	/**
-	 * The type of the action
+	 * Offset in seconds
 	 */
-	private RuleActionType type;
+	private Integer offset;
 	/**
-	 * Description
+	 * Indicates whether to add time zone offset to the time
 	 */
-	private String description;
+	private Boolean timeZone;
 
-	// type:
-	public RuleActionType getType(){
-		return this.type;
+	// offset:
+	public Integer getOffset(){
+		return this.offset;
 	}
-	public void setType(RuleActionType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
+	public void setOffset(Integer offset){
+		this.offset = offset;
 	}
 
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
+	public void offset(String multirequestToken){
+		setToken("offset", multirequestToken);
 	}
 
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
+	// timeZone:
+	public Boolean getTimeZone(){
+		return this.timeZone;
+	}
+	public void setTimeZone(Boolean timeZone){
+		this.timeZone = timeZone;
+	}
+
+	public void timeZone(String multirequestToken){
+		setToken("timeZone", multirequestToken);
 	}
 
 
-	public RuleAction() {
+	public TimeOffsetRuleAction() {
 		super();
 	}
 
-	public RuleAction(JsonObject jsonObject) throws APIException {
+	public TimeOffsetRuleAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		type = RuleActionType.get(GsonParser.parseString(jsonObject.get("type")));
-		description = GsonParser.parseString(jsonObject.get("description"));
+		offset = GsonParser.parseInt(jsonObject.get("offset"));
+		timeZone = GsonParser.parseBoolean(jsonObject.get("timeZone"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRuleAction");
-		kparams.add("type", this.type);
-		kparams.add("description", this.description);
+		kparams.add("objectType", "KalturaTimeOffsetRuleAction");
+		kparams.add("offset", this.offset);
+		kparams.add("timeZone", this.timeZone);
 		return kparams;
 	}
 
