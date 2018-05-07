@@ -14,7 +14,7 @@
         </packages>
 
         <!--<classes>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.LoginTests" >-->
+            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserLoginTestsinTests" >-->
                 <!--<methods>-->
                     <!--<include name="login" />-->
                 <!--</methods>-->
