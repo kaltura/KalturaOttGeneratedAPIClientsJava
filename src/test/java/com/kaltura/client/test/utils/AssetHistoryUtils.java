@@ -27,21 +27,19 @@ public class AssetHistoryUtils extends BaseUtils {
     }
 
     // Ingest asset, bookmark it and return the asset id
-    public static Long ingestAssetAndPerformBookmark(String ks, String mediaType, int position, BookmarkActionType bookmarkActionType) {
-        // Ingest asset
-        MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(mediaType)), Optional.empty(), Optional.empty());
-        Long assetId = mediaAsset.getId();
-        int fileId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
-
-        // Movie asset bookmark
-        AssetType assetType = AssetType.MEDIA;
-        Bookmark bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, assetType, bookmarkActionType);
-
-        BookmarkService.AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
-        addBookmarkBuilder.setKs(ks);
-        executor.executeSync(addBookmarkBuilder);
-
-        return assetId;
-    }
+//    public static Long ingestAssetAndPerformBookmark(String ks, String mediaType, int position, BookmarkActionType bookmarkActionType) {
+//        // Ingest asset
+//        MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+//                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(mediaType)), Optional.empty(), Optional.empty());
+//        Long assetId = mediaAsset.getId();
+//        int fileId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
+//
+//        // Movie asset bookmark
+//        Bookmark bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, bookmarkActionType);
+//        BookmarkService.AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+//        addBookmarkBuilder.setKs(ks);
+//        executor.executeSync(addBookmarkBuilder);
+//
+//        return assetId;
+//    }
 }
