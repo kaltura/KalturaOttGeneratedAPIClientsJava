@@ -13,6 +13,7 @@ import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+
 public class OttUserAnonymousLoginTests extends BaseTest {
 
     private Response<LoginSession> loginSessionResponse;
