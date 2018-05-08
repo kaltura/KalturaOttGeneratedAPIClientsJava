@@ -62,7 +62,7 @@ public class OttUserUpdateTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/update - update with administratorKs")
     @Issue("BEO-4919")
-    @Test(enabled = true)
+    @Test(enabled = false)
     private void update_with_administratorKs() {
 
         // update user info

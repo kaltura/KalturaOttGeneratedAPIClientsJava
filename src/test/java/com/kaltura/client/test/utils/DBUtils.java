@@ -38,9 +38,8 @@ public class DBUtils extends BaseUtils {
                                                         "and dc.[status]=1 and dc.is_active=1";
 
     //TODO - change existing methods to work with the new convertToJSON method
-
     // Return json array from DB
-    public static JSONArray convertToJSON(String query) throws Exception {
+    private static JSONArray getJsonArrayFromQueryResult(String query) throws Exception {
         openConnection();
         JSONArray jsonArray = new JSONArray();
         rs = stam.executeQuery(query);
@@ -177,7 +176,7 @@ public class DBUtils extends BaseUtils {
     }
 
     public static String getActivationToken(String username) {
-        openConnection();
+        /*openConnection();
         try {
             rs = stam.executeQuery(String.format(ACTIVATION_TOKEN_SELECT, username));
         } catch (SQLException e) {
@@ -195,7 +194,18 @@ public class DBUtils extends BaseUtils {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("activationToken can't be null");
         }
-        closeConnection();
+        closeConnection();*/
+
+        String activationToken = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ACTIVATION_TOKEN_SELECT, username));
+            activationToken = jsonArray.getJSONObject(0).getString("activation_token");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("activation_token can't be null");
+        }
+
         return activationToken;
     }
 
