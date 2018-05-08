@@ -334,13 +334,13 @@ public class EntitlementGrantTests extends BaseTest {
     }
 
     @Issue("BEO-5022")
-    @Test(description = "entitlement/action/grant - error 3023")
+    @Test(description = "entitlement/action/grant - error 3023", enabled = false)
     private void grant_3023() {
         // TODO: 4/30/2018 implement test
     }
 
     @Issue("BEO-5022")
-    @Test(description = "entitlement/action/grant - grant ppv with missing content id - error 3018")
+    @Test(description = "entitlement/action/grant - grant ppv with missing content id - error 3018", enabled = false)
     private void grant_ppv_with_missing_contentId() {
         // TODO: 4/30/2018 implement test
     }
