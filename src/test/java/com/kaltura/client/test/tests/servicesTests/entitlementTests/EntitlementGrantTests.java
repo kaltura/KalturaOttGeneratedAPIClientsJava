@@ -4,10 +4,10 @@ import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.enums.PurchaseStatus;
 import com.kaltura.client.enums.TransactionHistoryOrderBy;
 import com.kaltura.client.enums.TransactionType;
-import com.kaltura.client.services.*;
-import com.kaltura.client.services.EntitlementService.*;
-import com.kaltura.client.services.HouseholdService.DeleteHouseholdBuilder;
-import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
+import com.kaltura.client.services.EntitlementService;
+import com.kaltura.client.services.EntitlementService.GrantEntitlementBuilder;
+import com.kaltura.client.services.HouseholdService.*;
+import com.kaltura.client.services.TransactionHistoryService;
 import com.kaltura.client.services.TransactionHistoryService.ListTransactionHistoryBuilder;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
@@ -18,6 +18,12 @@ import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Issue;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import static com.kaltura.client.services.HouseholdService.*;
+import static com.kaltura.client.services.OttUserService.RegisterOttUserBuilder;
+import static com.kaltura.client.services.OttUserService.register;
+import static com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
+import static com.kaltura.client.services.ProductPriceService.list;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,13 +33,13 @@ public class EntitlementGrantTests extends BaseTest {
     private final int subscriptionId = 327699;
     private final int ppvId = 30297;
     private final int assetId = 607368;
+    private int contentId;
 
     private final int numberOfUsersInHousehold = 2;
     private final int numberOfDevicesInHousehold = 1;
 
-    private Response<ListResponse<BillingTransaction>> billingTransactionListResponse;
-    private int contentId;
     private Household testSharedHousehold;
+    private Response<ListResponse<BillingTransaction>> billingTransactionListResponse;
 
 
     @BeforeClass
@@ -62,7 +68,7 @@ public class EntitlementGrantTests extends BaseTest {
         ProductPriceFilter productPriceFilter = new ProductPriceFilter();
         productPriceFilter.subscriptionIdIn(String.valueOf(subscriptionId));
 
-        ProductPriceService.ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(productPriceFilter)
+        ListProductPriceBuilder listProductPriceBuilder = list(productPriceFilter)
                 .setUserId(Integer.valueOf(masterUser.getUserId()))
                 .setKs(getAdministratorKs());
         Response<ListResponse<ProductPrice>> productPriceListResponse = executor.executeSync(listProductPriceBuilder);
@@ -104,7 +110,7 @@ public class EntitlementGrantTests extends BaseTest {
 
         //delete household for cleanup
         //HouseholdService.delete(getClient(getAdministratorKs()), Math.toIntExact(household.getId()));
-        DeleteHouseholdBuilder deleteHouseholdBuilder = HouseholdService.delete(Math.toIntExact(household.getId()))
+        DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
                 .setKs(getAdministratorKs());
         executor.executeSync(deleteHouseholdBuilder);
     }
@@ -146,7 +152,7 @@ public class EntitlementGrantTests extends BaseTest {
 
 
         //delete household for cleanup
-        DeleteHouseholdBuilder deleteHouseholdBuilder = HouseholdService.delete(Math.toIntExact(household.getId()))
+        DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
                 .setKs(getAdministratorKs());
         executor.executeSync(deleteHouseholdBuilder);
     }
@@ -158,13 +164,11 @@ public class EntitlementGrantTests extends BaseTest {
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
-
         // grant subscription - history = true
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, contentId)
                 .setUserId(Integer.valueOf(user.getUserId()))
                 .setKs(getAdministratorKs());
         Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
-
         assertThat(booleanResponse.results.booleanValue()).isEqualTo(true);
 
 
@@ -172,7 +176,7 @@ public class EntitlementGrantTests extends BaseTest {
         ProductPriceFilter productPriceFilter = new ProductPriceFilter();
         productPriceFilter.fileIdIn(String.valueOf(contentId));
 
-        ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(productPriceFilter)
+        ListProductPriceBuilder listProductPriceBuilder = list(productPriceFilter)
                 .setUserId(Integer.valueOf(masterUser.getUserId()))
                 .setKs(getAdministratorKs());
         Response<ListResponse<ProductPrice>> productPriceListResponse = executor.executeSync(listProductPriceBuilder);
@@ -213,7 +217,7 @@ public class EntitlementGrantTests extends BaseTest {
 
 
         //delete household for cleanup
-        DeleteHouseholdBuilder deleteHouseholdBuilder = HouseholdService.delete(Math.toIntExact(household.getId()))
+        DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
                 .setKs(getAdministratorKs());
         executor.executeSync(deleteHouseholdBuilder);
     }
@@ -265,7 +269,7 @@ public class EntitlementGrantTests extends BaseTest {
 
 
         //delete household for cleanup
-        DeleteHouseholdBuilder deleteHouseholdBuilder = HouseholdService.delete(Math.toIntExact(household.getId()))
+        DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
                 .setKs(getAdministratorKs());
         executor.executeSync(deleteHouseholdBuilder);
     }
@@ -348,7 +352,7 @@ public class EntitlementGrantTests extends BaseTest {
     @Test(description = "entitlement/action/grant - user not in domain - error 1005")
     private void grant_ppv_user_not_in_domain() {
         // get user form test shared household
-        OttUserService.RegisterOttUserBuilder registerOttUserBuilder = OttUserService.register(partnerId, OttUserUtils.generateOttUser(), defaultUserPassword);
+        RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, OttUserUtils.generateOttUser(), defaultUserPassword);
         Response<OTTUser> ottUserResponse = executor.executeSync(registerOttUserBuilder);
         OTTUser user = ottUserResponse.results;
 
@@ -372,15 +376,17 @@ public class EntitlementGrantTests extends BaseTest {
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
 
         // suspend household
-        HouseholdService.suspend(0)
+        SuspendHouseholdBuilder suspendHouseholdBuilder = suspend(0)
                 .setKs(getAdministratorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId()));
+        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
+        assertThat(booleanResponse.results.booleanValue()).isTrue();
 
         // grant subscription to suspend user
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(subscriptionId, TransactionType.SUBSCRIPTION, false, 0)
                 .setKs(getAdministratorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId()));
-        Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
+        booleanResponse = executor.executeSync(grantEntitlementBuilder);
 
         // assert error 2001 is return
         assertThat(booleanResponse.results).isEqualTo(null);
