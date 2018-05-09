@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
-public class AddRoleTests extends BaseTest {
+public class OttUserAddRoleTests extends BaseTest {
 
     private OTTUser user;
 

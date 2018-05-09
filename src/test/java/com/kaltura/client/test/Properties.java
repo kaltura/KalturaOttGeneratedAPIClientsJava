@@ -31,13 +31,6 @@ public class Properties {
     public static final String MOVIE_MEDIA_TYPE_ID = "movie_media_type_id";
     public static final String EPISODE_MEDIA_TYPE_ID = "episode_media_type_id";
 
-    // ingest
-    public static final String INGEST_USER_USERNAME = "ingest_user_username";
-    public static final String INGEST_USER_PASSWORD = "ingest_user_password";
-
-    public static final String INGEST_BUSINESS_MODULE_USER_USERNAME = "ingest_business_module_user_username";
-    public static final String INGEST_BUSINESS_MODULE_USER_PASSWORD = "ingest_business_module_user_password";
-
     // channels
     public static final String DEFAULT_CHANNEL = "default_channel"; // automatic channel with "Cut Tags Type"="Or", Tags "Series name"="Shay_Series;" and "Free"="Shay_Series;"
 

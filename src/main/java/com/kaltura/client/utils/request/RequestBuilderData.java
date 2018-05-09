@@ -97,8 +97,8 @@ public abstract class RequestBuilderData<SelfType> {
 	 */
 	public SelfType setKs(String ks){
 		params.add("ks", ks);
-        return (SelfType) this;
-    }
+		return (SelfType) this;
+	}
 	
 	/**
 	 * @param sessionId Kaltura API session

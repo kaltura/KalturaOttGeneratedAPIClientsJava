@@ -89,7 +89,6 @@ public class AssetCommentAddTests extends BaseTest {
     @Description("AssetComment/action/add - EPG program")
     @Test
     private void addCommentForEPGProgram() {
-
         // Ingest EPG program
         Response<ListResponse<Asset>> epgProgram = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());

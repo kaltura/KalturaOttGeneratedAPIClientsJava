@@ -36,11 +36,13 @@ public class DBUtils extends BaseUtils {
                                                         "and dc.discount_percent=%d\n" + // percent amount
                                                         "and dc.group_id=%d\n" + // group
                                                         "and dc.[status]=1 and dc.is_active=1";
+    private static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
+            "from [Tvinci].[dbo].[groups_passwords]\n" +
+            "where [group_id]=%d order by UPDATE_DATE DESC";
 
     //TODO - change existing methods to work with the new convertToJSON method
-
     // Return json array from DB
-    public static JSONArray convertToJSON(String query) throws Exception {
+    private static JSONArray getJsonArrayFromQueryResult(String query) throws Exception {
         openConnection();
         JSONArray jsonArray = new JSONArray();
         rs = stam.executeQuery(query);
@@ -97,54 +99,46 @@ public class DBUtils extends BaseUtils {
 
     }
 
+    public static String getIngestItemUserData(int accountId) {
+        String result = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_ITEMS_DATA_SELECT, accountId));
+            result = jsonArray.getJSONObject(0).getString("username") + ":" +
+                    jsonArray.getJSONObject(0).getString("password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("data about ingest business module user can't be null");
+        }
+
+        return result;
+    }
+
     public static String getDiscountByPercentAndCurrency(String currency, int percent) {
-        openConnection();
-        try {
-            rs = stam.executeQuery(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, BaseTest.partnerId));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("No data about discount with currency " + currency + "and percent " + percent + " in account " + BaseTest.partnerId);
-        }
         String code = "";
         try {
-            code = rs.getString("code");
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, BaseTest.partnerId));
+            code = jsonArray.getJSONObject(0).getString("code");
             if ("".equals(code)) {
                 throw new SQLException();
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("code can't be null");
         }
-        closeConnection();
+
         return code;
     }
 
     public static boolean isActivationOfUsersNeeded() {
-        openConnection();
-        try {
-            rs = stam.executeQuery(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("No data about activation users in account " + BaseTest.partnerId);
-        }
         int result =-1;
         try {
-            result = rs.getInt("IS_ACTIVATION_NEEDED");
-        } catch (SQLException e) {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId));
+            result = jsonArray.getJSONObject(0).getInt("is_activation_needed");
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("IS_ACTIVATION_NEEDED can't be null");
         }
-        closeConnection();
+
         return result == 1;
     }
 
@@ -153,49 +147,29 @@ public class DBUtils extends BaseUtils {
         if (isActivationOfUsersNeeded()) {
             sqlQuery += " and u.activate_status=1";
         }
-        openConnection();
-        try {
-            rs = stam.executeQuery(String.format(sqlQuery, userRole, BaseTest.partnerId));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("No data about user with role " + userRole + " in account " + BaseTest.partnerId);
-        }
         String userdData = "";
         try {
-            userdData = rs.getString("username") + ":" + rs.getString("password");
-        } catch (SQLException e) {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, BaseTest.partnerId));
+            userdData = jsonArray.getJSONObject(0).getString("username") + ":" +
+                    jsonArray.getJSONObject(0).getString("password");
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("username/password can't be null");
         }
-        closeConnection();
         return userdData;
     }
 
     public static String getActivationToken(String username) {
-        openConnection();
-        try {
-            rs = stam.executeQuery(String.format(ACTIVATION_TOKEN_SELECT, username));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         String activationToken = null;
+
         try {
-            activationToken = rs.getString("ACTIVATION_TOKEN");
-        } catch (SQLException e) {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ACTIVATION_TOKEN_SELECT, username));
+            activationToken = jsonArray.getJSONObject(0).getString("activation_token");
+        } catch (Exception e) {
             e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("activationToken can't be null");
+            Logger.getLogger(DBUtils.class).error("activation_token can't be null");
         }
-        closeConnection();
+
         return activationToken;
     }
 

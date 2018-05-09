@@ -9,11 +9,9 @@ import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
@@ -38,6 +36,10 @@ public class BaseTest {
 
     // shared ks's
     private static String administratorKs, operatorKs, managerKs, anonymousKs;
+
+    // shared ingest users data
+    private static String ingestAssetUserUsername, ingestAssetUserPassword, ingestBusinessModuleUserUsername,
+            ingestBusinessModuleUserPassword;
 
     // shared VOD
     private static MediaAsset mediaAsset;
@@ -91,6 +93,42 @@ public class BaseTest {
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
+    }
+
+    public static String getIngestBusinessModuleUserName() {
+        if (ingestBusinessModuleUserUsername == null) {
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId);
+            ingestBusinessModuleUserUsername = userInfo.split(":")[0];
+            ingestBusinessModuleUserPassword = userInfo.split(":")[1];
+        }
+        return ingestBusinessModuleUserUsername;
+    }
+
+    public static String getIngestBusinessModuleUserPassword() {
+        if (ingestBusinessModuleUserPassword == null) {
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId);
+            ingestBusinessModuleUserUsername = userInfo.split(":")[0];
+            ingestBusinessModuleUserPassword = userInfo.split(":")[1];
+        }
+        return ingestBusinessModuleUserPassword;
+    }
+
+    public static String getIngestAssetUserName() {
+        if (ingestAssetUserUsername == null) {
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId + 1);
+            ingestAssetUserUsername = userInfo.split(":")[0];
+            ingestAssetUserPassword = userInfo.split(":")[1];
+        }
+        return ingestAssetUserUsername;
+    }
+
+    public static String getIngestAssetUserPassword() {
+        if (ingestAssetUserPassword == null) {
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId + 1);
+            ingestAssetUserUsername = userInfo.split(":")[0];
+            ingestAssetUserPassword = userInfo.split(":")[1];
+        }
+        return ingestAssetUserPassword;
     }
 
     // getters for shared params

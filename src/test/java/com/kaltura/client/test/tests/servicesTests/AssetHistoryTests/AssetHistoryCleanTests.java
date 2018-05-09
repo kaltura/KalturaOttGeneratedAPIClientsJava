@@ -29,7 +29,7 @@ import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AssetHistoryActionCleanLists extends BaseTest {
+public class AssetHistoryCleanTests extends BaseTest {
 
     private final int position1 = 10;
     private final int position2 = 20;
