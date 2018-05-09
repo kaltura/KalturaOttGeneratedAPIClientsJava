@@ -99,7 +99,7 @@ public class BaseTest {
 
     public static String getIngestBusinessModuleUserName() {
         if (ingestBusinessModuleUserUsername == null) {
-            String userInfo = DBUtils.getIngestBusinessModuleUserData(BaseTest.partnerId);
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -108,7 +108,7 @@ public class BaseTest {
 
     public static String getIngestBusinessModuleUserPassword() {
         if (ingestBusinessModuleUserPassword == null) {
-            String userInfo = DBUtils.getIngestBusinessModuleUserData(BaseTest.partnerId);
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -117,7 +117,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserName() {
         if (ingestAssetUserUsername == null) {
-            String userInfo = DBUtils.getIngestBusinessModuleUserData(BaseTest.partnerId + 1);
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -126,7 +126,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserPassword() {
         if (ingestAssetUserPassword == null) {
-            String userInfo = DBUtils.getIngestBusinessModuleUserData(BaseTest.partnerId + 1);
+            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }

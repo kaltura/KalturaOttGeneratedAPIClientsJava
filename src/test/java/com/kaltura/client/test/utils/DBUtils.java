@@ -39,16 +39,16 @@ public class DBUtils extends BaseUtils {
                                                         "and dc.discount_percent=%d\n" + // percent amount
                                                         "and dc.group_id=%d\n" + // group
                                                         "and dc.[status]=1 and dc.is_active=1";
-    private static final String INGEST_BUSINESS_MODULE_DATA_SELECT = "select TOP (1) *\n" +
+    private static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
 
 
 
-    public static String getIngestBusinessModuleUserData(int accountId) {
+    public static String getIngestItemUserData(int accountId) {
         String result = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_BUSINESS_MODULE_DATA_SELECT, accountId));
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_ITEMS_DATA_SELECT, accountId));
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
