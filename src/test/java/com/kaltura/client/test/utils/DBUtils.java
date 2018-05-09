@@ -36,6 +36,9 @@ public class DBUtils extends BaseUtils {
                                                         "and dc.discount_percent=%d\n" + // percent amount
                                                         "and dc.group_id=%d\n" + // group
                                                         "and dc.[status]=1 and dc.is_active=1";
+    private static final String INGEST_BUSINESS_MODULE_DATA_SELECT = "select TOP (1) *\n" +
+            "from [Tvinci].[dbo].[groups_passwords]\n" +
+            "where [group_id]=%d order by UPDATE_DATE DESC";
 
     //TODO - change existing methods to work with the new convertToJSON method
     // Return json array from DB
@@ -94,6 +97,20 @@ public class DBUtils extends BaseUtils {
             return null;
         }
 
+    }
+
+    public static String getIngestBusinessModuleUserData(int accountId) {
+        String result = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_BUSINESS_MODULE_DATA_SELECT, accountId));
+            result = jsonArray.getJSONObject(0).getString("username") + ":" +
+                    jsonArray.getJSONObject(0).getString("password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("data about ingest business module user can't be null");
+        }
+
+        return result;
     }
 
     public static String getDiscountByPercentAndCurrency(String currency, int percent) {

@@ -152,7 +152,7 @@ public class IngestUtils extends BaseUtils {
                 "   <s:Body>\n" +
                 "      <IngestKalturaEpg xmlns=\"http://tempuri.org/\">" +
                 "           <request xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">" +
-                "           <userName xmlns=\"\">" + getProperty(INGEST_USER_USERNAME) + "</userName><passWord xmlns=\"\">" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data xmlns=\"\">" +
+                "           <userName xmlns=\"\">" + getIngestAssetUserName() + "</userName><passWord xmlns=\"\">" + getIngestAssetUserPassword() + "</passWord><data xmlns=\"\">" +
                 epgChannelIngestXml + "\n" +
                 "           </data>\n" +
                 "           </request>\n" +
@@ -389,8 +389,8 @@ public class IngestUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_USERNAME) + "</tem:username><tem:password>" +
-                getProperty(INGEST_BUSINESS_MODULE_USER_PASSWORD) + "</tem:password><tem:xml>" +
+                "      <tem:IngestBusinessModules><tem:username>" + getIngestBusinessModuleUserName() + "</tem:username><tem:password>" +
+                getIngestBusinessModuleUserPassword() + "</tem:password><tem:xml>" +
                 "         <![CDATA[" + buildIngestMppXML(actionValue, mppCodeValue, isActiveValue, titleValue,
                 descriptionValue, startDateValue, endDateValue, internalDiscountValue, productCodeValue,
                 isRenewableValue, gracePeriodMinuteValue, pricePlanCode1Value, pricePlanCode2Value,
@@ -531,8 +531,8 @@ public class IngestUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_USERNAME) + "</tem:username><tem:password>" +
-                getProperty(INGEST_BUSINESS_MODULE_USER_PASSWORD) + "</tem:password><tem:xml>" +
+                "      <tem:IngestBusinessModules><tem:username>" + getIngestBusinessModuleUserName() + "</tem:username><tem:password>" +
+                getIngestBusinessModuleUserPassword() + "</tem:password><tem:xml>" +
                 "         <![CDATA[" + buildIngestPpXML(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
                 viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue,
                 isRenewableValue, recurringPeriodsValue) +
@@ -652,8 +652,8 @@ public class IngestUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getProperty(INGEST_BUSINESS_MODULE_USER_USERNAME) + "</tem:username><tem:password>" +
-                getProperty(INGEST_BUSINESS_MODULE_USER_PASSWORD) + "</tem:password><tem:xml>" +
+                "      <tem:IngestBusinessModules><tem:username>" + getIngestBusinessModuleUserName() + "</tem:username><tem:password>" +
+                getIngestBusinessModuleUserPassword() + "</tem:password><tem:xml>" +
                 "         <![CDATA[" + buildIngestPpvXML(actionValue, ppvCodeValue, isActiveValue, descriptionValue,
                 discountValue, priceValue, currencyValue, usageModuleValue, isSubscriptionOnlyValue,
                 isFirstDeviceLimitationValue, productCodeValue, firstFileTypeValue, secondFileTypeValue) +
@@ -789,7 +789,7 @@ public class IngestUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestTvinciData><tem:request><userName>" + getProperty(INGEST_USER_USERNAME) + "</userName><passWord>" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data>" +
+                "      <tem:IngestTvinciData><tem:request><userName>" + getIngestAssetUserName() + "</userName><passWord>" + getIngestAssetUserPassword() + "</passWord><data>" +
                 "         <![CDATA[" + buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
                 catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue) +
                 "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
@@ -957,7 +957,7 @@ public class IngestUtils extends BaseUtils {
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
-                "      <tem:IngestTvinciData><tem:request><userName>" + getProperty(INGEST_USER_USERNAME) + "</userName><passWord>" + getProperty(INGEST_USER_PASSWORD) + "</passWord><data>" +
+                "      <tem:IngestTvinciData><tem:request><userName>" + getIngestAssetUserName() + "</userName><passWord>" + getIngestAssetUserPassword() + "</passWord><data>" +
                 "         <![CDATA[" + buildIngestVodXml(INGEST_ACTION_INSERT, coguidValue, true, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
                 catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue) +
                 "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
