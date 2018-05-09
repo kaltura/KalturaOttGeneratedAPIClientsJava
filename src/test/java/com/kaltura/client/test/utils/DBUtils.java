@@ -52,12 +52,10 @@ public class DBUtils extends BaseUtils {
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
-
             result = jsonArray.getJSONObject(0).getString("username") + ":" +
                     jsonArray.getJSONObject(0).getString("password");
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("data about ingest business module user can't be null");
         }
 
         return result;
@@ -70,14 +68,12 @@ public class DBUtils extends BaseUtils {
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
-
             code = jsonArray.getJSONObject(0).getString("code");
             if ("".equals(code)) {
                 throw new SQLException();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("code can't be null");
         }
 
         return code;
@@ -90,11 +86,9 @@ public class DBUtils extends BaseUtils {
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
-
             result = jsonArray.getJSONObject(0).getInt("is_activation_needed");
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("IS_ACTIVATION_NEEDED can't be null");
         }
 
         return result == 1;
@@ -111,12 +105,10 @@ public class DBUtils extends BaseUtils {
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
-
             userdData = jsonArray.getJSONObject(0).getString("username") + ":" +
                     jsonArray.getJSONObject(0).getString("password");
         } catch (Exception e) {
             e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("username/password can't be null");
         }
 
         return userdData;
@@ -130,7 +122,6 @@ public class DBUtils extends BaseUtils {
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
-
             activationToken = jsonArray.getJSONObject(0).getString("activation_token");
         } catch (Exception e) {
             e.printStackTrace();
