@@ -85,8 +85,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         TransactionHistoryService.ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -98,8 +97,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -135,8 +133,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         TransactionHistoryService.ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(0);
 
@@ -144,8 +141,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(0);
 
@@ -193,8 +189,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -206,8 +201,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -228,13 +222,11 @@ public class EntitlementGrantTests extends BaseTest {
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 
-
         // grant subscription - history = true
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, contentId)
                 .setUserId(Integer.valueOf(user.getUserId()))
                 .setKs(getAdministratorKs());
         Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
-
         assertThat(booleanResponse.results.booleanValue()).isEqualTo(true);
 
 
@@ -245,8 +237,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -258,8 +249,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null))
-                .setUserId(null);
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -288,7 +278,7 @@ public class EntitlementGrantTests extends BaseTest {
 
 
         // assert error 6001 is return
-        assertThat(booleanResponse.results).isEqualTo(null);
+        assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(6001).getCode());
     }
 
@@ -301,16 +291,17 @@ public class EntitlementGrantTests extends BaseTest {
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, contentId)
                 .setUserId(Integer.valueOf(user.getUserId()))
                 .setKs(getAdministratorKs());
-        executor.executeSync(grantEntitlementBuilder);
+        Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
+        assertThat(booleanResponse.error).isNull();
 
         // grant ppv - second time
         grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, contentId)
                 .setUserId(Integer.valueOf(user.getUserId()))
                 .setKs(getAdministratorKs());
-        Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
+        booleanResponse = executor.executeSync(grantEntitlementBuilder);
 
         // assert error 3021 is return
-        assertThat(booleanResponse.results).isEqualTo(null);
+        assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3021).getCode());
     }
 
@@ -332,7 +323,7 @@ public class EntitlementGrantTests extends BaseTest {
         Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
 
         // assert error 3024 is return
-        assertThat(booleanResponse.results).isEqualTo(null);
+        assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3024).getCode());
     }
 
@@ -363,7 +354,7 @@ public class EntitlementGrantTests extends BaseTest {
         Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
 
         // assert error 1005 is return
-        assertThat(booleanResponse.results).isEqualTo(null);
+        assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1005).getCode());
     }
 
@@ -388,7 +379,7 @@ public class EntitlementGrantTests extends BaseTest {
         booleanResponse = executor.executeSync(grantEntitlementBuilder);
 
         // assert error 2001 is return
-        assertThat(booleanResponse.results).isEqualTo(null);
+        assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2001).getCode());
     }
 
