@@ -97,53 +97,31 @@ public class DBUtils extends BaseUtils {
     }
 
     public static String getDiscountByPercentAndCurrency(String currency, int percent) {
-        openConnection();
-        try {
-            rs = stam.executeQuery(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, BaseTest.partnerId));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("No data about discount with currency " + currency + "and percent " + percent + " in account " + BaseTest.partnerId);
-        }
         String code = "";
         try {
-            code = rs.getString("code");
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, BaseTest.partnerId));
+            code = jsonArray.getJSONObject(0).getString("code");
             if ("".equals(code)) {
                 throw new SQLException();
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("code can't be null");
         }
-        closeConnection();
+
         return code;
     }
 
     public static boolean isActivationOfUsersNeeded() {
-        openConnection();
-        try {
-            rs = stam.executeQuery(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("No data about activation users in account " + BaseTest.partnerId);
-        }
         int result =-1;
         try {
-            result = rs.getInt("IS_ACTIVATION_NEEDED");
-        } catch (SQLException e) {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId));
+            result = jsonArray.getJSONObject(0).getInt("is_activation_needed");
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("IS_ACTIVATION_NEEDED can't be null");
         }
-        closeConnection();
+
         return result == 1;
     }
 
@@ -152,50 +130,19 @@ public class DBUtils extends BaseUtils {
         if (isActivationOfUsersNeeded()) {
             sqlQuery += " and u.activate_status=1";
         }
-        openConnection();
-        try {
-            rs = stam.executeQuery(String.format(sqlQuery, userRole, BaseTest.partnerId));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("No data about user with role " + userRole + " in account " + BaseTest.partnerId);
-        }
         String userdData = "";
         try {
-            userdData = rs.getString("username") + ":" + rs.getString("password");
-        } catch (SQLException e) {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, BaseTest.partnerId));
+            userdData = jsonArray.getJSONObject(0).getString("username") + ":" +
+                    jsonArray.getJSONObject(0).getString("password");
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("username/password can't be null");
         }
-        closeConnection();
         return userdData;
     }
 
     public static String getActivationToken(String username) {
-        /*openConnection();
-        try {
-            rs = stam.executeQuery(String.format(ACTIVATION_TOKEN_SELECT, username));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        String activationToken = null;
-        try {
-            activationToken = rs.getString("ACTIVATION_TOKEN");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("activationToken can't be null");
-        }
-        closeConnection();*/
-
         String activationToken = null;
 
         try {
