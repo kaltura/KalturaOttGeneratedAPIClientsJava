@@ -39,25 +39,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AccessControlBlockAction.Tokenizer.class)
-public class AccessControlBlockAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(AssetUserBlockRuleAction.Tokenizer.class)
+public class AssetUserBlockRuleAction extends AssetUserRuleAction {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
+	public interface Tokenizer extends AssetUserRuleAction.Tokenizer {
 	}
 
 
 
-	public AccessControlBlockAction() {
+	public AssetUserBlockRuleAction() {
 		super();
 	}
 
-	public AccessControlBlockAction(JsonObject jsonObject) throws APIException {
+	public AssetUserBlockRuleAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAccessControlBlockAction");
+		kparams.add("objectType", "KalturaAssetUserBlockRuleAction");
 		return kparams;
 	}
 

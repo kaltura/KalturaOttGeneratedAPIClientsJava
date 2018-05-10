@@ -43,7 +43,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RuleAction.Tokenizer.class)
-public class RuleAction extends ObjectBase {
+public abstract class RuleAction extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String type();

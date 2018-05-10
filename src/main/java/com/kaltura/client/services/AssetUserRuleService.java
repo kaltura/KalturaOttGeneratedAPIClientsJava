@@ -25,11 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.AssetUserRule;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,28 +37,22 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AccessControlBlockAction.Tokenizer.class)
-public class AccessControlBlockAction extends AssetRuleAction {
+public class AssetUserRuleService {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
+	public static class AddAssetUserRuleBuilder extends RequestBuilder<AssetUserRule, AssetUserRule.Tokenizer, AddAssetUserRuleBuilder> {
+		
+		public AddAssetUserRuleBuilder(AssetUserRule assetUserRule) {
+			super(AssetUserRule.class, "assetuserrule", "add");
+			params.add("assetUserRule", assetUserRule);
+		}
 	}
 
-
-
-	public AccessControlBlockAction() {
-		super();
+	/**
+	 * Add asset user rule
+	 * 
+	 * @param assetUserRule Asset user rule
+	 */
+    public static AddAssetUserRuleBuilder add(AssetUserRule assetUserRule)  {
+		return new AddAssetUserRuleBuilder(assetUserRule);
 	}
-
-	public AccessControlBlockAction(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAccessControlBlockAction");
-		return kparams;
-	}
-
 }
-
