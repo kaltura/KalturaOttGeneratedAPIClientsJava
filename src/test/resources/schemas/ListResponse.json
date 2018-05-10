@@ -58,7 +58,8 @@
             "KalturaProductPriceListResponse",
             "KalturaBookmarkListResponse",
             "KalturaAssetCommentListResponse",
-            "KalturaAssetHistoryListResponse"
+            "KalturaAssetHistoryListResponse",
+            "KalturaAssetRuleListResponse"
           ]
         }
       },
