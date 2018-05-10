@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 public class AssetRuleDeleteTests extends BaseTest {
 
 
-    @Description("/assetrule/action/delete")
+    @Description("/assetrule/action/delete - currently used to run util only")
     @Test
     private void deleteAllGeoAssetRules() {
         AssetRuleUtils.deleteAllGeoAssetRules();
