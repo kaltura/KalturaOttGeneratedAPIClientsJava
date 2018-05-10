@@ -1,8 +1,10 @@
 package com.kaltura.client.test;
 
+import com.google.common.primitives.Ints;
 import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
+import com.kaltura.client.types.APIException;
 import com.kaltura.client.utils.request.RequestBuilder;
 import com.kaltura.client.utils.request.RequestElement;
 import com.kaltura.client.utils.response.base.ApiCompletion;
@@ -12,6 +14,7 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.test.tests.BaseTest.client;
+import static com.kaltura.client.utils.ErrorElement.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -84,6 +87,24 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
             queue(requestBuilder.build(client));
             await().untilTrue(done);
             done.set(false);
+
+            APIException error = response.error;
+            if (error != null) {
+                int[] genericErrors = {
+                        ConnectionError.getCode(),
+                        BadRequestError.getCode(),
+                        GeneralError.getCode(),
+                        NotFound.getCode(),
+                        LoadError.getCode(),
+                        ServiceUnavailableError.getCode(),
+                        SessionError.getCode()
+                };
+
+                int errorCode = Integer.parseInt(error.getCode());
+                if (Ints.asList(genericErrors).contains(errorCode)) {
+                    logger.error(error.getMessage() + " : " + error.getCode());
+                }
+            }
 
             return response;
         }

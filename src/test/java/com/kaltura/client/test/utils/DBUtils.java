@@ -1,5 +1,6 @@
 package com.kaltura.client.test.utils;
 
+import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.PricePlan;
@@ -18,6 +19,8 @@ public class DBUtils extends BaseUtils {
     private static Connection conn;
     private static Statement stam;
     private static ResultSet rs;
+
+    private static final String ERROR_MESSAGE = "No results found";
 
     //selects
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
@@ -44,7 +47,132 @@ public class DBUtils extends BaseUtils {
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and internal_discount_id=%d and pricing_id=%d";
 
-    //TODO - change existing methods to work with the new convertToJSON method
+
+
+    //"and group_id=%d and internal_discount_id=%d and pricing_id=%d";
+    /*public static PricePlan loadSharedPP(String priceAmount, String currency) {
+        Logger.getLogger(DBUtils.class).debug("loadSharedPP(): priceAmount = " + priceAmount + " currency = " + currency);
+        PricePlan pricePlan = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_SELECT, BaseTest.partnerId, priceAmount, currency));
+            result = jsonArray.getJSONObject(0).getString("code");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("discount code can't be null");
+        }
+
+
+        return pricePlan;
+    }*/
+
+    public static String getIngestItemUserData(int accountId) {
+        String result = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_ITEMS_DATA_SELECT, accountId));
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+            }
+
+            result = jsonArray.getJSONObject(0).getString("username") + ":" +
+                    jsonArray.getJSONObject(0).getString("password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("data about ingest business module user can't be null");
+        }
+
+        return result;
+    }
+
+    public static String getDiscountByPercentAndCurrency(String currency, int percent) {
+        String code = "";
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, BaseTest.partnerId));
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+            }
+
+            code = jsonArray.getJSONObject(0).getString("code");
+            if ("".equals(code)) {
+                throw new SQLException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("code can't be null");
+        }
+
+        return code;
+    }
+
+    public static boolean isActivationOfUsersNeeded() {
+        int result = -1;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId));
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+            }
+
+            result = jsonArray.getJSONObject(0).getInt("is_activation_needed");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("IS_ACTIVATION_NEEDED can't be null");
+        }
+
+        return result == 1;
+    }
+
+    public static String getUserDataByRole(String userRole) {
+        String sqlQuery = USER_BY_ROLE_SELECT;
+        if (isActivationOfUsersNeeded()) {
+            sqlQuery += " and u.activate_status=1";
+        }
+        String userdData = "";
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, BaseTest.partnerId));
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+            }
+
+            userdData = jsonArray.getJSONObject(0).getString("username") + ":" +
+                    jsonArray.getJSONObject(0).getString("password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("username/password can't be null");
+        }
+
+        return userdData;
+    }
+
+    public static String getActivationToken(String username) {
+        String activationToken = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ACTIVATION_TOKEN_SELECT, username));
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+            }
+
+            activationToken = jsonArray.getJSONObject(0).getString("activation_token");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return activationToken;
+    }
+
+    public static int getEpgChannelId(String channelName) {
+        int epgChannelId =-1;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName));
+            epgChannelId = jsonArray.getJSONObject(0).getInt("id");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("epgChannelId can't be null");
+        }
+
+        return epgChannelId;
+    }
+
+    //TODO - change existing methods to work with the new getJsonArrayFromQueryResult method
     // Return json array from DB
     private static JSONArray getJsonArrayFromQueryResult(String query) throws Exception {
         openConnection();
@@ -96,114 +224,11 @@ public class DBUtils extends BaseUtils {
             return jsonArray;
 
         } else {
-            Logger.getLogger(DBUtils.class).error("No result found");
+            Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             closeConnection();
             return null;
         }
 
-    }
-
-    //"and group_id=%d and internal_discount_id=%d and pricing_id=%d";
-    /*public static PricePlan loadSharedPP(String priceAmount, String currency) {
-        Logger.getLogger(DBUtils.class).debug("loadSharedPP(): priceAmount = " + priceAmount + " currency = " + currency);
-        PricePlan pricePlan = null;
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_SELECT, BaseTest.partnerId, priceAmount, currency));
-            result = jsonArray.getJSONObject(0).getString("code");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("discount code can't be null");
-        }
-
-
-        return pricePlan;
-    }*/
-
-    public static String getIngestItemUserData(int accountId) {
-        String result = null;
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_ITEMS_DATA_SELECT, accountId));
-            result = jsonArray.getJSONObject(0).getString("username") + ":" +
-                    jsonArray.getJSONObject(0).getString("password");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("data about ingest business module user can't be null");
-        }
-
-        return result;
-    }
-
-    public static String getDiscountByPercentAndCurrency(String currency, int percent) {
-        String code = "";
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, BaseTest.partnerId));
-            code = jsonArray.getJSONObject(0).getString("code");
-            if ("".equals(code)) {
-                throw new SQLException();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("code can't be null");
-        }
-
-        return code;
-    }
-
-    public static boolean isActivationOfUsersNeeded() {
-        int result =-1;
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId));
-            result = jsonArray.getJSONObject(0).getInt("is_activation_needed");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("IS_ACTIVATION_NEEDED can't be null");
-        }
-
-        return result == 1;
-    }
-
-    public static String getUserDataByRole(String userRole) {
-        String sqlQuery = USER_BY_ROLE_SELECT;
-        if (isActivationOfUsersNeeded()) {
-            sqlQuery += " and u.activate_status=1";
-        }
-        String userdData = "";
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, BaseTest.partnerId));
-            userdData = jsonArray.getJSONObject(0).getString("username") + ":" +
-                    jsonArray.getJSONObject(0).getString("password");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("username/password can't be null");
-        }
-        return userdData;
-    }
-
-    public static String getActivationToken(String username) {
-        String activationToken = null;
-
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ACTIVATION_TOKEN_SELECT, username));
-            activationToken = jsonArray.getJSONObject(0).getString("activation_token");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("activation_token can't be null");
-        }
-
-        return activationToken;
-    }
-
-    public static int getEpgChannelId(String channelName) {
-        int epgChannelId =-1;
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName));
-            epgChannelId = jsonArray.getJSONObject(0).getInt("id");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("epgChannelId can't be null");
-        }
-
-        return epgChannelId;
     }
 
     private static void openConnection() {
