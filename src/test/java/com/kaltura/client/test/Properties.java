@@ -36,6 +36,11 @@ public class Properties {
 
     // price codes
     public static final String PRICE_CODE_AMOUNT = "price_code_amount"; // 4.99
+    //public static final String COMMON_PRICE_CODE_AMOUNT = "5"; // TODO: should we document it as requirement?
+
+    //cycles
+    //public static final String CYCLE_1_DAY = "1440"; // in minutes
+
 
     // usage modules
     public static final String DEFAULT_USAGE_MODULE_4_INGEST_PPV = "default_usage_module_4_ingest_ppv"; // module has 10 Minutes life cycles, 0 maximum views

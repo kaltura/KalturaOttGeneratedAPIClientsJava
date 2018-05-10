@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.types.PricePlan;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
@@ -39,6 +40,9 @@ public class DBUtils extends BaseUtils {
     private static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
+    private static final String PRICE_PLAN_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
+            "where [status]=1 and is_active=1\n" +
+            "and group_id=%d and internal_discount_id=%d and pricing_id=%d";
 
     //TODO - change existing methods to work with the new convertToJSON method
     // Return json array from DB
@@ -98,6 +102,22 @@ public class DBUtils extends BaseUtils {
         }
 
     }
+
+    //"and group_id=%d and internal_discount_id=%d and pricing_id=%d";
+    /*public static PricePlan loadSharedPP(String priceAmount, String currency) {
+        Logger.getLogger(DBUtils.class).debug("loadSharedPP(): priceAmount = " + priceAmount + " currency = " + currency);
+        PricePlan pricePlan = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_SELECT, BaseTest.partnerId, priceAmount, currency));
+            result = jsonArray.getJSONObject(0).getString("code");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("discount code can't be null");
+        }
+
+
+        return pricePlan;
+    }*/
 
     public static String getIngestItemUserData(int accountId) {
         String result = null;
@@ -174,25 +194,15 @@ public class DBUtils extends BaseUtils {
     }
 
     public static int getEpgChannelId(String channelName) {
-        openConnection();
+        int epgChannelId =-1;
         try {
-            rs = stam.executeQuery(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        int epgChannelId = -1;
-        try {
-            epgChannelId = rs.getInt("ID");
-        } catch (SQLException e) {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName));
+            epgChannelId = jsonArray.getJSONObject(0).getInt("id");
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("epgChannelId can't be null");
         }
-        closeConnection();
+
         return epgChannelId;
     }
 
