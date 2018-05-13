@@ -38,6 +38,15 @@ public class OttUserActivateTests extends BaseTest {
     @Description("ottUser/action/activate - activate")
     @Test
     private void activate() {
+        // register user
+        user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
+
+        // login user
+        user = executor.executeSync(login(partnerId, user.getUsername(), defaultUserPassword)).results.getUser();
+
+        // assert user is not activated
+        assertThat(user.getUserState()).isEqualTo(UserState.USER_NOT_ACTIVATED);
+        
         // get activation token
         String activationToken = DBUtils.getActivationToken(user.getUsername());
 
@@ -52,7 +61,8 @@ public class OttUserActivateTests extends BaseTest {
     @Severity(SeverityLevel.MINOR)
     @Description("ottUser/action/activate - activate twice with the same token")
     @Test
-    private void activate_with_sa() {
+    private void activate_with_same_token() {
+
         // TODO: 5/2/2018 implement test
     }
 }
