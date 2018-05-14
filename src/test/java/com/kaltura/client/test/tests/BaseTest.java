@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
-//import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
@@ -55,7 +54,7 @@ public class BaseTest {
     private static Subscription fiveMinRenewableSubscription;
 
     // shared ingested PP
-    //private static PricePlan sharedCommonPricePlan;
+    private static PricePlan sharedCommonPricePlan;
 
     /*================================================================================
     testing shared params list - used as a helper common params across tests
@@ -101,18 +100,18 @@ public class BaseTest {
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
     }
 
-    /*public static PricePlan getSharedCommonPricePlan(){
+    public static PricePlan getSharedCommonPricePlan(){
         if (sharedCommonPricePlan == null) {
-            sharedCommonPricePlan = DBUtils.loadSharedPP(COMMON_PRICE_CODE_AMOUNT, "EUR");
-            if (sharedCommonPricePlan == null) {
+            sharedCommonPricePlan = DBUtils.loadPricePlan(COMMON_PRICE_CODE_AMOUNT, "EUR", 0.0, 100.0);
+            /*if (sharedCommonPricePlan == null) {
                 int fullDiscountPercent = 100;
                 sharedCommonPricePlan = IngestUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.of(CYCLE_1_DAY), Optional.of(CYCLE_1_DAY), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
                         Optional.of("EUR"), Optional.of(DBUtils.getDiscount(0, fullDiscountPercent)), Optional.of(true), Optional.of(0));
-            }
+            }*/
         }
         return sharedCommonPricePlan;
-    }*/
+    }
 
     public static String getIngestBusinessModuleUserName() {
         if (ingestBusinessModuleUserUsername == null) {
@@ -153,7 +152,7 @@ public class BaseTest {
     // getters for shared params
     public static String getAdministratorKs() {
         if (administratorKs == null) {
-            String[] userInfo = DBUtils.getUserDataByRole("Administrator").split(":");
+            String[] userInfo = DBUtils.getUserData("Administrator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
                     null,null));
             administratorKs = loginResponse.results.getLoginSession().getKs();
@@ -163,7 +162,7 @@ public class BaseTest {
 
     public static String getOperatorKs() {
         if (operatorKs == null) {
-            String[] userInfo = DBUtils.getUserDataByRole("Operator").split(":");
+            String[] userInfo = DBUtils.getUserData("Operator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
                     null,null));
             operatorKs = loginResponse.results.getLoginSession().getKs();
@@ -173,7 +172,7 @@ public class BaseTest {
 
     public static String getManagerKs() {
         if (managerKs == null) {
-            String[] userInfo = DBUtils.getUserDataByRole("Manager").split(":");
+            String[] userInfo = DBUtils.getUserData("Manager").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
                     null,null));
             managerKs = loginResponse.results.getLoginSession().getKs();
