@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
@@ -9,7 +10,6 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.services.OttUserService.register;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,8 +26,8 @@ public class OttUserRegisterTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/register - register")
     @Test
-    private void registerTest() {
-        ottUserResponse = executor.executeSync(register(partnerId, user, defaultUserPassword));
+    private void register() {
+        ottUserResponse = executor.executeSync(OttUserService.register(partnerId, user, defaultUserPassword));
 
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results.getUsername()).isEqualTo(user.getUsername());

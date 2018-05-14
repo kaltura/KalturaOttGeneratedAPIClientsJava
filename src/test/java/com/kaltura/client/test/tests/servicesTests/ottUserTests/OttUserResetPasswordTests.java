@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
@@ -27,9 +28,9 @@ public class OttUserResetPasswordTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/resetPassword - resetPassword")
     @Test(enabled = false)
-    private void resetPasswordTest() {
+    private void resetPassword() {
         // reset user password
-        ResetPasswordOttUserBuilder resetPasswordOttUserBuilder = resetPassword(partnerId, user.getUsername())
+        ResetPasswordOttUserBuilder resetPasswordOttUserBuilder = OttUserService.resetPassword(partnerId, user.getUsername())
                 .setKs(getAdministratorKs());
         Response<Boolean> booleanResponse = executor.executeSync(resetPasswordOttUserBuilder);
 

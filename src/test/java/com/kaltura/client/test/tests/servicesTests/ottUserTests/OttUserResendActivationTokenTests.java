@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
@@ -29,8 +30,8 @@ public class OttUserResendActivationTokenTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/resendActivationToken - resendActivationToken")
     @Test(enabled = false)
-    private void resendActivationTokenTest() {
-        Response<Boolean> booleanResponse = executor.executeSync(resendActivationToken(partnerId, user.getUsername()));
+    private void resendActivationToken() {
+        Response<Boolean> booleanResponse = executor.executeSync(OttUserService.resendActivationToken(partnerId, user.getUsername()));
 
         assertThat(booleanResponse.error).isNull();
         assertThat(booleanResponse.results.booleanValue()).isTrue();

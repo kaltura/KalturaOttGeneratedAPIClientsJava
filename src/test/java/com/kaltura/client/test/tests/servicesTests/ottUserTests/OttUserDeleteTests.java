@@ -15,6 +15,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.services.HouseholdService.*;
 import static com.kaltura.client.services.HouseholdService.DeleteHouseholdBuilder;
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
@@ -26,14 +27,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OttUserDeleteTests extends BaseTest {
 
     private Household household;
-
     private Response<Boolean> booleanResponse;
     private DeleteOttUserBuilder deleteOttUserBuilder;
 
+    private final int numberOfDevicesInHousehold = 0;
+    private final int numberOfUsersInHousehold = 2;
+
     @BeforeClass
     private void ottUser_delete_tests_setup() {
-        int numberOfDevicesInHousehold = 0;
-        int numberOfUsersInHousehold = 2;
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
     }
 
@@ -66,7 +67,7 @@ public class OttUserDeleteTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("ottUser/action/delete - delete master user: error 2031")
-    @Test(enabled = true)
+    @Test()
     private void delete_master_user() {
         // get household master user
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
@@ -83,7 +84,7 @@ public class OttUserDeleteTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("ottUser/action/delete - delete default user: error 2030")
-    @Test(enabled = true)
+    @Test()
     private void delete_default_user() {
         // get household default user
         HouseholdUser defaultUser = getDefaultUserFromHousehold(household);
@@ -96,6 +97,48 @@ public class OttUserDeleteTests extends BaseTest {
 
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2030).getCode());
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Description("ottUser/action/delete - delete not exist user: error 500004")
+    @Test()
+    private void delete_not_exist_user() {
+        // delete not exist user and assert error
+        int invalidUserId = 1;
+        deleteOttUserBuilder = OttUserService.delete()
+                .setKs(getAdministratorKs())
+                .setUserId(invalidUserId);
+        booleanResponse = executor.executeSync(deleteOttUserBuilder);
+
+        assertThat(booleanResponse.results).isNull();
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500004).getCode());
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Description("ottUser/action/delete - delete user with suspended household: error 1009")
+    @Test()
+    private void delete_user_with_suspended_household() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+
+        // get regular user
+        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+
+        // suspend household
+        SuspendHouseholdBuilder suspendHouseholdBuilder = suspend()
+                .setKs(getAdministratorKs())
+                .setUserId(Integer.valueOf(user.getUserId()));
+        booleanResponse = executor.executeSync(suspendHouseholdBuilder);
+
+        // delete suspended user
+        deleteOttUserBuilder = OttUserService.delete()
+                .setKs(getAdministratorKs())
+                .setUserId(Integer.valueOf(user.getUserId()));
+        booleanResponse = executor.executeSync(deleteOttUserBuilder);
+
+        // assert error
+        assertThat(booleanResponse.results).isNull();
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1009).getCode());
     }
 
     @AfterClass

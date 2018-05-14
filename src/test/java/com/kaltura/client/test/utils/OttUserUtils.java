@@ -28,6 +28,7 @@ public class OttUserUtils extends BaseUtils {
         user.setEmail(emailPrefix + stamp + emailDomain);
         user.setAddress(randomString + " fake address");
         user.setCity(randomString + " fake city");
+        user.setExternalId(stamp);
         Random r = new Random();
         user.setCountryId(r.nextInt(30 - 1) + 1);
 

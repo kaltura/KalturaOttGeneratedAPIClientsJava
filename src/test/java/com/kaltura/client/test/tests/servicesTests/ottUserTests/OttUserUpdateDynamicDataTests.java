@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.OTTUserDynamicData;
@@ -29,7 +30,7 @@ public class OttUserUpdateDynamicDataTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/updateDynamicData - updateDynamicData")
     @Test
-    private void updateDynamicDataTest() {
+    private void updateDynamicData() {
         // set dynamic data
         String keyString = "key1";
         String valueString = "value1";
@@ -38,7 +39,7 @@ public class OttUserUpdateDynamicDataTests extends BaseTest {
         value.setValue(valueString);
 
         // update user dynamic data
-        UpdateDynamicDataOttUserBuilder updateDynamicDataOttUserBuilder = updateDynamicData(keyString, value)
+        UpdateDynamicDataOttUserBuilder updateDynamicDataOttUserBuilder = OttUserService.updateDynamicData(keyString, value)
                 .setKs(getAdministratorKs())
                 .setUserId(Integer.valueOf(user.getId()));
         Response<OTTUserDynamicData> ottUserDynamicDataResponse = executor.executeSync(updateDynamicDataOttUserBuilder);

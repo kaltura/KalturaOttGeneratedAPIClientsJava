@@ -24,7 +24,7 @@ import static org.awaitility.Awaitility.setDefaultTimeout;
 public class BaseTest {
 
     private final int DEFAULT_TIMEOUT_IN_SEC = 60;
-    public static final boolean LOG_HEADERS = true;
+    public static final boolean LOG_HEADERS = false;
 
     public static Client client;
     public static Configuration config;

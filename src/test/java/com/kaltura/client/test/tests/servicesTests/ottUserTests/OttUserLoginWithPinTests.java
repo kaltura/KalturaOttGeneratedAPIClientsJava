@@ -30,14 +30,13 @@ public class OttUserLoginWithPinTests extends BaseTest {
     @BeforeClass
     private void ottUser_login_tests_setup() {
         // register user
-        Response<OTTUser> ottUserResponse = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword));
-        user = ottUserResponse.results;
+        user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/loginWithPin - loginWithPin with secret")
     @Test
-    private void loginWithPin_with_secret() throws InterruptedException {
+    private void loginWithPin_with_secret() {
         // add pin
         AddUserLoginPinBuilder addUserLoginPinBuilder = add(SECRET)
                 .setKs(getAdministratorKs())
@@ -88,12 +87,47 @@ public class OttUserLoginWithPinTests extends BaseTest {
 
         // login with expired pin
         String pin = userLoginPinResponse.results.getPinCode();
+
         // sleep for 1.5 minutes
-        try { Thread.sleep(120000); } catch (InterruptedException e) { e.printStackTrace(); }
+        try {
+            Thread.sleep(120000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, pin, null, SECRET);
         loginResponse = executor.executeSync(loginWithPinOttUserBuilder);
 
         assertThat(loginResponse.results).isNull();
         assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2004).getCode());
     }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("ottUser/action/loginWithPin - loginWithPin with invalid pin")
+    @Test()
+    private void loginWithPin_with_invalid_pin() {
+        // login with invalid pin
+        String invalidPin = "invalidPin";
+        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, invalidPin, null, SECRET);
+        loginResponse = executor.executeSync(loginWithPinOttUserBuilder);
+
+        assertThat(loginResponse.results).isNull();
+        assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2003).getCode());
+    }
+
+//<throws name="LoginViaPinNotAllowed"/>
+
+//<throws name="UserNotInDomain"/>
+//<throws name="WrongPasswordOrUserName"/>
+//<throws name="PinNotExists"/>
+//<throws name="NoValidPin"/>
+//<throws name="SecretIsWrong"/>
+//<throws name="UserSuspended"/>
+//<throws name="InsideLockTime"/>
+//<throws name="UserNotActivated"/>
+//<throws name="UserAllreadyLoggedIn"/>
+//<throws name="UserDoubleLogIn"/>
+//<throws name="DeviceNotRegistered"/>
+
+//<throws name="UserNotMasterApproved"/>
+
 }

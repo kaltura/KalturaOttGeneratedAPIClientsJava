@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
@@ -21,7 +22,7 @@ public class OttUserUpdateLoginDataTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/updateLoginData - updateLoginData")
     @Test
-    private void updateLoginDataTest() {
+    private void updateLoginData() {
         // register user
         OTTUser user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
 
@@ -31,7 +32,7 @@ public class OttUserUpdateLoginDataTests extends BaseTest {
 
         // update user login data
         String userNewPassword = defaultUserPassword + 1;
-        UpdateLoginDataOttUserBuilder updateLoginDataOttUserBuilder = updateLoginData(user.getUsername(), defaultUserPassword, userNewPassword)
+        UpdateLoginDataOttUserBuilder updateLoginDataOttUserBuilder = OttUserService.updateLoginData(user.getUsername(), defaultUserPassword, userNewPassword)
             .setKs(userKs);
         Response<Boolean> booleanResponse = executor.executeSync(updateLoginDataOttUserBuilder);
 
@@ -63,7 +64,7 @@ public class OttUserUpdateLoginDataTests extends BaseTest {
 
         // update usser login data
         String userNewPassword = defaultUserPassword + 2;
-        UpdateLoginDataOttUserBuilder updateLoginDataOttUserBuilder = updateLoginData(user.getUsername(), defaultUserPassword, userNewPassword)
+        UpdateLoginDataOttUserBuilder updateLoginDataOttUserBuilder = OttUserService.updateLoginData(user.getUsername(), defaultUserPassword, userNewPassword)
                 .setKs(getAdministratorKs());
         Response<Boolean> booleanResponse = executor.executeSync(updateLoginDataOttUserBuilder);
 

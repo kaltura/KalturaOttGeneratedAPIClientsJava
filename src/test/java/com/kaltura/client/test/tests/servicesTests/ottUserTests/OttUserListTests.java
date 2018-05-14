@@ -15,8 +15,8 @@ import java.util.List;
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.BaseUtils.getConcatenatedString;
-import static com.kaltura.client.test.utils.HouseholdUtils.getMasterUserFromHousehold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
+import static com.kaltura.client.test.utils.HouseholdUtils.*;
+import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,9 +34,9 @@ public class OttUserListTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("ottUser/action/list - list from master ks")
+    @Description("ottUser/action/list - list with master user ks")
     @Test
-    private void list_from_master_ks() {
+    private void list_with_masterUserKs() {
         // get master user from household
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
 
@@ -57,9 +57,32 @@ public class OttUserListTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
+    @Description("ottUser/action/list - list with regular user ks")
+    @Test
+    private void list_with_regularUserKs() {
+        // get master user from household
+        HouseholdUser user = getRegularUsersListFromHouseHold(household).get(0);
+
+        // login regular user
+        String username = getUserById(Integer.parseInt(user.getUserId())).getUsername();
+        LoginOttUserBuilder loginOttUserBuilder = login(partnerId, username, defaultUserPassword);
+        Response<LoginResponse> loginResponse = executor.executeSync(loginOttUserBuilder);
+
+        // list household users
+        ListOttUserBuilder listOttUserBuilder = list()
+                .setKs(loginResponse.results.getLoginSession().getKs());
+        householdUserListResponse = executor.executeSync(listOttUserBuilder);
+        List<OTTUser> users = householdUserListResponse.results.getObjects();
+
+        // assert users list size
+        assertThat(householdUserListResponse.error).isNull();
+        assertThat(users.size()).isEqualTo(numberOfUsersInHousehold + 2);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/list - get list with filter using idIn")
     @Test
-    private void list_with_filter_idIn() {
+    private void list_with_id_filter() {
         // get users from household
         List<HouseholdUser> householdUsers = getUsersListFromHouseHold(household);
 
@@ -82,7 +105,7 @@ public class OttUserListTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/list - get list with filter using usernameEqual")
     @Test
-    private void list_withd_filter_usernameEqual() {
+    private void list_with_username_filter() {
         // get users from household
         List<HouseholdUser> householdUsers = getUsersListFromHouseHold(household);
 
@@ -103,13 +126,13 @@ public class OttUserListTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Description("ottUser/action/list - get list with not valid filter")
+    @Description("ottUser/action/list - get list with invalid filter")
     @Test
-    private void list_with_not_valid_filter() {
+    private void list_with_invalid_filter() {
         // get users from household
         List<HouseholdUser> householdUsers = getUsersListFromHouseHold(household);
 
-        // set user filter
+        // set invalid user filter
         OTTUserFilter ottUserFilter = new OTTUserFilter();
         ottUserFilter.setIdIn(householdUsers.get(0).getUserId());
         ottUserFilter.setUsernameEqual(getUserById(Integer.valueOf(householdUsers.get(1).getUserId())).getUsername());
@@ -122,5 +145,27 @@ public class OttUserListTests extends BaseTest {
         // assert error 500038 is return
         assertThat(householdUserListResponse.results).isNull();
         assertThat(householdUserListResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500038).getCode());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("ottUser/action/list - get list with filter using usernameEqual")
+    @Test
+    private void list_with_externalId_filter() {
+        // register user
+        OTTUser user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
+
+        // set user filter
+        OTTUserFilter ottUserFilter = new OTTUserFilter();
+        ottUserFilter.setExternalIdEqual(user.getExternalId());
+
+        // list household users
+        ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)
+                .setKs(getAdministratorKs());
+        householdUserListResponse = executor.executeSync(listOttUserBuilder);
+        List<OTTUser> users = householdUserListResponse.results.getObjects();
+
+        // assert users list size
+        assertThat(householdUserListResponse.error).isNull();
+        assertThat(users.size()).isEqualTo(1);
     }
 }

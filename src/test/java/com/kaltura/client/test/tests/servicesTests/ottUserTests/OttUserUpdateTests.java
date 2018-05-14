@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
@@ -35,7 +36,7 @@ public class OttUserUpdateTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/update - update")
     @Test
-    private void updateTest() {
+    private void update() {
         // login user
         Response<LoginResponse> loginResponse = executor.executeSync(login(partnerId, user.getUsername(), defaultUserPassword));
         String userKs = loginResponse.results.getLoginSession().getKs();
@@ -45,7 +46,7 @@ public class OttUserUpdateTests extends BaseTest {
         user.setFirstName(newUserInfo);
         user.setLastName(newUserInfo);
 
-        ottUserResponse = executor.executeSync(update(user).setKs(userKs));
+        ottUserResponse = executor.executeSync(OttUserService.update(user).setKs(userKs));
         assertThat(ottUserResponse.error).isNull();
 
         // get user after update
@@ -71,7 +72,7 @@ public class OttUserUpdateTests extends BaseTest {
         user.setLastName(newUserInfo);
 //        user.setAffiliateCode(null);
 
-        ottUserResponse = executor.executeSync(update(user).setKs(getAdministratorKs()));
+        ottUserResponse = executor.executeSync(OttUserService.update(user).setKs(getAdministratorKs()));
         assertThat(ottUserResponse.error).isNull();
 
         // get user after update
