@@ -28,7 +28,7 @@ public class DBUtils extends BaseUtils {
             "from [Users].[dbo].[groups_parameters]\n" +
             "where group_id=%d";
 
-    private static final String DISCOUNT_BY_CURENCY_AND_PERCENT_SELECT = "select TOP (1) *\n" +
+    private static final String DISCOUNT_BY_PERCENT_AND_CURRENCY = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (dc.currency_cd=lc.id)\n" +
             "where lc.code3='%S'\n" + // CURRENCY
@@ -68,6 +68,8 @@ public class DBUtils extends BaseUtils {
             "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
             "join [TVinci].[dbo].[roles] r with(nolock) on (r.id=ur.role_id)\n" +
             "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
+
+    private static final String USER_ROLES_SELECT = "SELECT [ROLE_ID] FROM [Users].[dbo].[users_roles] WHERE [USER_ID] = '%S'";
 
     public static PriceDetails loadPriceCode(Double priceAmount, String currency) {
         Logger.getLogger(DBUtils.class).debug("loadPriceCode(): priceAmount = " + priceAmount + " currency = " + currency);
@@ -200,7 +202,8 @@ public class DBUtils extends BaseUtils {
         Logger.getLogger(DBUtils.class).debug("getDiscount(): currency = " + currency + " percent = " + percent);
         String code = "";
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_CURENCY_AND_PERCENT_SELECT, currency, percent, BaseTest.partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency,
+                    percent, BaseTest.partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
@@ -275,6 +278,27 @@ public class DBUtils extends BaseUtils {
 
         return activationToken;
     }
+
+//    public static List<Integer> getUserRoles(String userId) {
+//        List<Integer> userRoles = new ArrayList<>();
+//
+//        try {
+//            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(USER_ROLES_SELECT, userId));
+//
+//            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+//                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+//            }
+//
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                userRoles.add(jsonArray.getInt(i));
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return userRoles;
+//    }
 
     public static int getEpgChannelId(String channelName) {
         Logger.getLogger(DBUtils.class).debug("getEpgChannelId(): channelName = " + channelName);

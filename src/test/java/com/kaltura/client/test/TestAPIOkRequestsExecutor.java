@@ -13,6 +13,7 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.kaltura.client.test.tests.BaseTest.LOG_HEADERS;
 import static com.kaltura.client.test.tests.BaseTest.client;
 import static com.kaltura.client.utils.ErrorElement.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -45,7 +46,10 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
     protected ResponseElement onGotResponse(okhttp3.Response okhttpResponse, RequestElement action) {
         ResponseElement responseElement = super.onGotResponse(okhttpResponse, action);
 //        logger.debug("response body:\n" + responseElement.getResponse()); // was found in base class
-//        logger.debug("response headers:\n" + okhttpResponse.headers());
+
+        if (LOG_HEADERS) {
+            logger.debug("response headers:\n" + okhttpResponse.headers());
+        }
 
         if (responseElement.isSuccess()) {
             Response response = action.parseResponse(responseElement);

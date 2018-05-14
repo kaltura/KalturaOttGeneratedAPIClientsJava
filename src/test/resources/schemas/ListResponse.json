@@ -38,6 +38,9 @@
               },
               {
                 "$ref": "HouseholdDevice.json#/definitions/HouseholdDevice"
+              },
+              {
+                "$ref": "UserRole.json#/definitions/UserRole"
               }
             ]
           }
@@ -58,7 +61,8 @@
             "KalturaProductPriceListResponse",
             "KalturaBookmarkListResponse",
             "KalturaAssetCommentListResponse",
-            "KalturaAssetHistoryListResponse"
+            "KalturaAssetHistoryListResponse",
+            "KalturaUserRoleListResponse"
           ]
         }
       },
