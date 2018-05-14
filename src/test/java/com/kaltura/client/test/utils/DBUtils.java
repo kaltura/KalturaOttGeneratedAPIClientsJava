@@ -2,8 +2,6 @@ package com.kaltura.client.test.utils;
 
 import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
-import com.kaltura.client.enums.BillingAction;
-import com.kaltura.client.enums.BillingPriceType;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.Price;
@@ -13,9 +11,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.sql.*;
-
 import static com.kaltura.client.test.Properties.*;
 
 public class DBUtils extends BaseUtils {
@@ -29,9 +25,11 @@ public class DBUtils extends BaseUtils {
 
     //selects
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
+
     private static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
             "from [Users].[dbo].[groups_parameters]\n" +
             "where group_id=%d";
+
     private static final String DISCOUNT_BY_CURENCY_AND_PERCENT_SELECT = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (dc.currency_cd=lc.id)\n" +
@@ -39,23 +37,29 @@ public class DBUtils extends BaseUtils {
             "and dc.discount_percent=%d\n" + // percent amount
             "and dc.group_id=%d\n" + // group
             "and dc.[status]=1 and dc.is_active=1";
+
     private static final String DISCOUNT_BY_PRICE_AND_PERCENT_SELECT = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d\n" + // group
             "and price=%d\n" + // price amount
             "and discount_percent=%d";  // percent amount
+
     private static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = %d AND [NAME] = '%S'";
+
     private static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
+
     private static final String PRICE_CODE_SELECT = "select top 1 * from [Pricing].[dbo].[price_codes] pc\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (pc.currency_cd=lc.id)\n" +
             "where pc.[status]=1 and pc.is_active=1\n" +
             "and pc.group_id=%d and pc.price=%d and lc.CODE3='%S'";
+
     private static final String PRICE_PLAN_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and internal_discount_id=%d and pricing_id=%d";
+
     private static final String USER_BY_ROLE_SELECT = "select top(1) u.username, u.[password]\n" +
             "from [Users].[dbo].[users] u with(nolock)\n" +
             "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
@@ -107,35 +111,40 @@ public class DBUtils extends BaseUtils {
     public static PricePlan loadPricePlan(Double priceAmount, String currency, Double discountPrice, Double discountPercent) {
         Logger.getLogger(DBUtils.class).debug("loadPricePlan(): priceAmount = " + priceAmount + " currency = " + currency +
                 " discountPrice = " + discountPrice + " discountPercent = " + discountPercent);
+
         PricePlan pricePlan = null;
+
         try {
             PriceDetails priceCode = loadPriceCode(priceAmount, currency);
             if (priceCode == null) {
                 return pricePlan;
             }
+
             DiscountModule discountModule = loadDiscount(discountPrice, discountPercent);
             if (discountModule == null) {
                 return pricePlan;
             }
+
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_SELECT, BaseTest.partnerId,
                     Integer.valueOf(discountModule.toParams().get("id").toString()), priceCode.getId()), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return pricePlan;
             }
-            //TODO: result = jsonArray.getJSONObject(0).getString("code");
+
             pricePlan = new PricePlan();
             pricePlan.setId(jsonArray.getJSONObject(0).getLong("id"));
             pricePlan.setName(jsonArray.getJSONObject(0).getString("name"));
             pricePlan.setViewLifeCycle(jsonArray.getJSONObject(0).getInt("view_life_cycle_min"));
+            pricePlan.setFullLifeCycle(jsonArray.getJSONObject(0).getInt("full_life_cycle_min"));
+            pricePlan.setMaxViewsNumber(jsonArray.getJSONObject(0).getInt("max_views_number"));
+            pricePlan.setDiscountId(Long.valueOf(discountModule.toParams().get("id").toString()));
+            pricePlan.setPriceDetailsId(priceCode.getId().longValue());
             pricePlan.setIsRenewable("0".equals(jsonArray.getJSONObject(0).getString("is_renew")));
-
-            pricePlan.דקא
+            pricePlan.setRenewalsNumber(jsonArray.getJSONObject(0).getInt("num_of_rec_period"));
         } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("price plan data can't be null");
         }
-
-
         return pricePlan;
     }
 
@@ -252,7 +261,6 @@ public class DBUtils extends BaseUtils {
         return epgChannelId;
     }
 
-    //TODO - change existing methods to work with the new getJsonArrayFromQueryResult method
     // Return json array from DB
     private static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed) throws Exception {
         openConnection();

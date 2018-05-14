@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
+import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
@@ -101,14 +102,17 @@ public class BaseTest {
     }
 
     public static PricePlan getSharedCommonPricePlan(){
+        String defaultCurrency = "EUR";
+        double defaultDiscountPrice = 0.0;
+        double defaultDiscountPercentValue = 100.0;
         if (sharedCommonPricePlan == null) {
-            sharedCommonPricePlan = DBUtils.loadPricePlan(COMMON_PRICE_CODE_AMOUNT, "EUR", 0.0, 100.0);
-            /*if (sharedCommonPricePlan == null) {
-                int fullDiscountPercent = 100;
+            sharedCommonPricePlan = DBUtils.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), defaultCurrency, defaultDiscountPrice, defaultDiscountPercentValue);
+            if (sharedCommonPricePlan == null) {
                 sharedCommonPricePlan = IngestUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.of(CYCLE_1_DAY), Optional.of(CYCLE_1_DAY), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
-                        Optional.of("EUR"), Optional.of(DBUtils.getDiscount(0, fullDiscountPercent)), Optional.of(true), Optional.of(0));
-            }*/
+                        Optional.of(defaultCurrency), Optional.of(DBUtils.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)),
+                        Optional.of(true), Optional.of(0));
+            }
         }
         return sharedCommonPricePlan;
     }
