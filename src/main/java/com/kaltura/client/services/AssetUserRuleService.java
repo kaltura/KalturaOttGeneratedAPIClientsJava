@@ -28,6 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.AssetUserRule;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -54,5 +55,63 @@ public class AssetUserRuleService {
 	 */
     public static AddAssetUserRuleBuilder add(AssetUserRule assetUserRule)  {
 		return new AddAssetUserRuleBuilder(assetUserRule);
+	}
+	
+	public static class DeleteAssetUserRuleBuilder extends RequestBuilder<Boolean, String, DeleteAssetUserRuleBuilder> {
+		
+		public DeleteAssetUserRuleBuilder(long id) {
+			super(Boolean.class, "assetuserrule", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete asset user rule
+	 * 
+	 * @param id Asset user rule ID
+	 */
+    public static DeleteAssetUserRuleBuilder delete(long id)  {
+		return new DeleteAssetUserRuleBuilder(id);
+	}
+	
+	public static class ListAssetUserRuleBuilder extends ListResponseRequestBuilder<AssetUserRule, AssetUserRule.Tokenizer, ListAssetUserRuleBuilder> {
+		
+		public ListAssetUserRuleBuilder() {
+			super(AssetUserRule.class, "assetuserrule", "list");
+		}
+	}
+
+	/**
+	 * Get the list of asset user rules for the partner
+	 */
+    public static ListAssetUserRuleBuilder list()  {
+		return new ListAssetUserRuleBuilder();
+	}
+	
+	public static class UpdateAssetUserRuleBuilder extends RequestBuilder<AssetUserRule, AssetUserRule.Tokenizer, UpdateAssetUserRuleBuilder> {
+		
+		public UpdateAssetUserRuleBuilder(long id, AssetUserRule assetUserRule) {
+			super(AssetUserRule.class, "assetuserrule", "update");
+			params.add("id", id);
+			params.add("assetUserRule", assetUserRule);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update asset user rule
+	 * 
+	 * @param id Asset user rule ID to update
+	 * @param assetUserRule Asset user rule
+	 */
+    public static UpdateAssetUserRuleBuilder update(long id, AssetUserRule assetUserRule)  {
+		return new UpdateAssetUserRuleBuilder(id, assetUserRule);
 	}
 }
