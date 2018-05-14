@@ -39,7 +39,7 @@ public class Properties {
     public static final String COMMON_PRICE_CODE_AMOUNT = "5"; // TODO: should we document it as requirement?
 
     //cycles
-    public static final String CYCLE_1_DAY = "1440"; // in minutes
+    public static final int CYCLE_1_DAY = 1440; // in minutes
 
 
     // usage modules

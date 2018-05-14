@@ -2,11 +2,9 @@ package com.kaltura.client.test.utils;
 
 import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
+import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.types.DiscountModule;
-import com.kaltura.client.types.Price;
-import com.kaltura.client.types.PriceDetails;
-import com.kaltura.client.types.PricePlan;
+import com.kaltura.client.types.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
@@ -42,8 +40,8 @@ public class DBUtils extends BaseUtils {
             "from [Pricing].[dbo].[discount_codes]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d\n" + // group
-            "and price=%d\n" + // price amount
-            "and discount_percent=%d";  // percent amount
+            "and price=%f\n" + // price amount
+            "and discount_percent=%f";  // percent amount
 
     private static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = %d AND [NAME] = '%S'";
 
@@ -54,11 +52,16 @@ public class DBUtils extends BaseUtils {
     private static final String PRICE_CODE_SELECT = "select top 1 * from [Pricing].[dbo].[price_codes] pc\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (pc.currency_cd=lc.id)\n" +
             "where pc.[status]=1 and pc.is_active=1\n" +
-            "and pc.group_id=%d and pc.price=%d and lc.CODE3='%S'";
+            "and pc.group_id=%d and pc.price=%f and lc.CODE3='%S'";
 
     private static final String PRICE_PLAN_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and internal_discount_id=%d and pricing_id=%d";
+
+    private static final String SUBSCRIPTION_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
+            "where [status]=1 and is_active=1\n" +
+            "and group_id=%d and usage_module_code=%d\n" +
+            "order by create_date";
 
     private static final String USER_BY_ROLE_SELECT = "select top(1) u.username, u.[password]\n" +
             "from [Users].[dbo].[users] u with(nolock)\n" +
@@ -67,13 +70,14 @@ public class DBUtils extends BaseUtils {
             "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
 
     public static PriceDetails loadPriceCode(Double priceAmount, String currency) {
-        Logger.getLogger(DBUtils.class).debug("loadPricePlan(): priceAmount = " + priceAmount + " currency = " + currency);
+        Logger.getLogger(DBUtils.class).debug("loadPriceCode(): priceAmount = " + priceAmount + " currency = " + currency);
         PriceDetails result = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_CODE_SELECT, BaseTest.partnerId, priceAmount, currency), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
+
             result = new PriceDetails();
             result.setName(jsonArray.getJSONObject(0).getString("code"));
             result.setId(jsonArray.getJSONObject(0).getInt("id"));
@@ -93,12 +97,12 @@ public class DBUtils extends BaseUtils {
         DiscountModule result = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PRICE_AND_PERCENT_SELECT,
-                    BaseTest.partnerId, discountPrice, discountPrice), true);
+                    BaseTest.partnerId, discountPrice, discountPercent), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
             result = new DiscountModule();
-            result.setToken("id", jsonArray.getJSONObject(0).getString("id"));
+            result.setToken("id", String.valueOf(jsonArray.getJSONObject(0).getInt("id")));
             result.setToken("name", jsonArray.getJSONObject(0).getString("code"));
             result.setPercent(discountPercent);
         } catch (Exception e) {
@@ -139,13 +143,38 @@ public class DBUtils extends BaseUtils {
             pricePlan.setMaxViewsNumber(jsonArray.getJSONObject(0).getInt("max_views_number"));
             pricePlan.setDiscountId(Long.valueOf(discountModule.toParams().get("id").toString()));
             pricePlan.setPriceDetailsId(priceCode.getId().longValue());
-            pricePlan.setIsRenewable("0".equals(jsonArray.getJSONObject(0).getString("is_renew")));
-            pricePlan.setRenewalsNumber(jsonArray.getJSONObject(0).getInt("num_of_rec_period"));
+            pricePlan.setIsRenewable(0 == jsonArray.getJSONObject(0).getInt("is_renew"));
+            pricePlan.setRenewalsNumber(jsonArray.getJSONObject(0).getInt("num_of_rec_periods"));
         } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("price plan data can't be null");
         }
         return pricePlan;
+    }
+
+    public static Subscription loadSharedCommonSubscription(PricePlan pricePlan) {
+        Logger.getLogger(DBUtils.class).debug("loadSharedCommonSubscription(): pricePlan id = " + pricePlan.getId());
+
+        Subscription subscription = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_SELECT, BaseTest.partnerId,
+                    pricePlan.getId()), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return subscription;
+            }
+
+            subscription = new Subscription();
+            subscription.setId(String.valueOf(jsonArray.getJSONObject(0).getInt("id")));
+            subscription.setName(jsonArray.getJSONObject(0).getString("name"));
+            subscription.setPricePlanIds(String.valueOf(pricePlan.getId()));
+            subscription.setIsRenewable(false);
+            subscription.setDependencyType(SubscriptionDependencyType.BASE);
+            // TODO: add more data in case it needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("subscription data can't be null");
+        }
+        return subscription;
     }
 
     public static String getIngestItemUserData(int accountId) {
@@ -309,6 +338,7 @@ public class DBUtils extends BaseUtils {
                 jsonArray.put(obj);
             }
             closeConnection();
+            Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
             return jsonArray;
 
         } else {
