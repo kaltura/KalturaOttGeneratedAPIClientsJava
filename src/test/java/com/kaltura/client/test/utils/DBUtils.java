@@ -25,24 +25,24 @@ public class DBUtils extends BaseUtils {
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
     private static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = %d AND [NAME] = '%S'";
     private static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
-                                                        "from [Users].[dbo].[groups_parameters]\n" +
-                                                        "where group_id=%d";
+            "from [Users].[dbo].[groups_parameters]\n" +
+            "where group_id=%d";
     private static final String USER_BY_ROLE_SELECT = "select top(1) u.username, u.[password]\n" +
-                                                        "from [Users].[dbo].[users] u with(nolock)\n" +
-                                                        "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
-                                                        "join [TVinci].[dbo].[roles] r with(nolock) on (r.id=ur.role_id)\n" +
-                                                        "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
+            "from [Users].[dbo].[users] u with(nolock)\n" +
+            "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
+            "join [TVinci].[dbo].[roles] r with(nolock) on (r.id=ur.role_id)\n" +
+            "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
     private static final String DISCOUNT_BY_PERCENT_AND_CURRENCY = "select TOP (1) *\n" +
-                                                        "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
-                                                        "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (dc.currency_cd=lc.id)\n" +
-                                                        "where lc.code3='%S'\n" + // CURRENCY
-                                                        "and dc.discount_percent=%d\n" + // percent amount
-                                                        "and dc.group_id=%d\n" + // group
-                                                        "and dc.[status]=1 and dc.is_active=1";
+            "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
+            "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (dc.currency_cd=lc.id)\n" +
+            "where lc.code3='%S'\n" + // CURRENCY
+            "and dc.discount_percent=%d\n" + // percent amount
+            "and dc.group_id=%d\n" + // group
+            "and dc.[status]=1 and dc.is_active=1";
     private static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
-
+    private static final String USER_ROLES_SELECT = "SELECT [ROLE_ID] FROM [Users].[dbo].[users_roles] WHERE [USER_ID] = '%S'";
 
 
     public static String getIngestItemUserData(int accountId) {
@@ -129,6 +129,27 @@ public class DBUtils extends BaseUtils {
 
         return activationToken;
     }
+
+//    public static List<Integer> getUserRoles(String userId) {
+//        List<Integer> userRoles = new ArrayList<>();
+//
+//        try {
+//            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(USER_ROLES_SELECT, userId));
+//
+//            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+//                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+//            }
+//
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                userRoles.add(jsonArray.getInt(i));
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return userRoles;
+//    }
 
     public static int getEpgChannelId(String channelName) {
         openConnection();
