@@ -30,9 +30,11 @@ public class OttUserRegisterTests extends BaseTest {
         ottUserResponse = executor.executeSync(OttUserService.register(partnerId, user, defaultUserPassword));
 
         assertThat(ottUserResponse.error).isNull();
-        assertThat(ottUserResponse.results.getUsername()).isEqualTo(user.getUsername());
-        // TODO: 3/28/2018 add relevant assertions
+        assertThat(ottUserResponse.results).isEqualToIgnoringGivenFields(user, "userState", "userType",
+                "householdId", "dynamicData", "isHouseholdMaster", "suspensionState", "id", "params");
     }
 
-    // TODO: 3/29/2018 add relevant scenarios
+
+//<throws name="UserExists"/>
+//<throws name="ExternalIdAlreadyExists"/>
 }
