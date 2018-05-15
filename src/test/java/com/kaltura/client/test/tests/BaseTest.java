@@ -9,12 +9,16 @@ import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
+import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
@@ -52,6 +56,20 @@ public class BaseTest {
 
     // shared MPP
     private static Subscription fiveMinRenewableSubscription;
+
+    // shared ingested PP
+    private static PricePlan sharedCommonPricePlan;
+
+    // shared ingested subscription
+    private static Subscription sharedCommonSubscription;
+
+    // cycles map with values related view/full life cycles of price plans
+    private static Map<Integer, String> cycles = new HashMap<>();
+    {
+        // TODO: complete other values
+        cycles.put(1440, "1 Day");
+    }
+
 
     /*================================================================================
     testing shared params list - used as a helper common params across tests
@@ -97,6 +115,57 @@ public class BaseTest {
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
     }
 
+    /**
+     * Regression requires existing of Price Plan with specific parameters.
+     * Price should be 5 Euros
+     * Discount percent should be equal 100%
+     *
+     * In case item is not found in DB it will be ingested.
+     * Can't work in case proper Discount and PriceCode aren't found in DB
+     *
+     * @return common shared Price Plan with mentioned parameters
+     */
+    public static PricePlan getSharedCommonPricePlan(){
+        String defaultCurrency = "EUR";
+        double defaultDiscountPrice = 0.0;
+        double defaultDiscountPercentValue = 100.0;
+        if (sharedCommonPricePlan == null) {
+            sharedCommonPricePlan = DBUtils.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), defaultCurrency, defaultDiscountPrice, defaultDiscountPercentValue);
+            if (sharedCommonPricePlan == null) {
+                sharedCommonPricePlan = IngestUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
+                        Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
+                        Optional.of(defaultCurrency), Optional.of(DBUtils.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)),
+                        Optional.of(true), Optional.of(0));
+            }
+        }
+        return sharedCommonPricePlan;
+    }
+
+    /**
+     * Regression requires existing of MPP with specific parameters.
+     * Price Plan should be as for method public static PricePlan getSharedCommonPricePlan()
+     *
+     * MPP shouldn't be renewed and with discount (internal items) 100%
+     *
+     *
+     * @return MPP with mentioned parameters
+     */
+    public static Subscription getSharedCommonSubscription(){
+        double defaultDiscountPercentValue = 100.0;
+        String defaultCurrency = "EUR";
+        if (sharedCommonSubscription == null) {
+            sharedCommonSubscription = DBUtils.loadSharedCommonSubscription(getSharedCommonPricePlan());
+            if (sharedCommonSubscription == null) {
+                sharedCommonSubscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
+                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.of(DBUtils.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)), Optional.empty(),
+                        Optional.of(false), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()), Optional.empty(),
+                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            }
+        }
+        return sharedCommonSubscription;
+    }
+
     public static String getIngestBusinessModuleUserName() {
         if (ingestBusinessModuleUserUsername == null) {
             String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId);
@@ -136,7 +205,7 @@ public class BaseTest {
     // getters for shared params
     public static String getAdministratorKs() {
         if (administratorKs == null) {
-            String[] userInfo = DBUtils.getUserDataByRole("Administrator").split(":");
+            String[] userInfo = DBUtils.getUserData("Administrator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
                     null,null));
             administratorKs = loginResponse.results.getLoginSession().getKs();
@@ -146,7 +215,7 @@ public class BaseTest {
 
     public static String getOperatorKs() {
         if (operatorKs == null) {
-            String[] userInfo = DBUtils.getUserDataByRole("Operator").split(":");
+            String[] userInfo = DBUtils.getUserData("Operator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
                     null,null));
             operatorKs = loginResponse.results.getLoginSession().getKs();
@@ -156,7 +225,7 @@ public class BaseTest {
 
     public static String getManagerKs() {
         if (managerKs == null) {
-            String[] userInfo = DBUtils.getUserDataByRole("Manager").split(":");
+            String[] userInfo = DBUtils.getUserData("Manager").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
                     null,null));
             managerKs = loginResponse.results.getLoginSession().getKs();
