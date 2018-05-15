@@ -1,0 +1,24 @@
+{
+  "$id": "UserRole",
+  "definitions": {
+    "UserRole": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "integer", "minimum": 0},
+        "name": {"type": "string"},
+        "permissionNames": {"type": "string"},
+        "excludedPermissionNames": {"type": "string"},
+        "objectType": {"type": "string", "minLength": 0}
+      },
+      "required": ["id", "objectType"]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/UserRole"
+    },
+    "executionTime": {"type": "number"}
+  },
+  "required": ["result", "executionTime"]
+}

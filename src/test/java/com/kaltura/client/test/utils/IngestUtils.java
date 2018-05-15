@@ -366,7 +366,7 @@ public class IngestUtils extends BaseUtils {
         String endDateValue = endDate.orElse(MPP_DEFAULT_END_DATE_VALUE);
         String defaultCurrencyOfDiscount4IngestMpp = "GBP";
         int defaultPercentageOfDiscount4IngestMpp = 100;
-        String internalDiscountValue = internalDiscount.orElse(DBUtils.getDiscountByPercentAndCurrency(defaultCurrencyOfDiscount4IngestMpp, defaultPercentageOfDiscount4IngestMpp));
+        String internalDiscountValue = internalDiscount.orElse(DBUtils.getDiscount(defaultCurrencyOfDiscount4IngestMpp, defaultPercentageOfDiscount4IngestMpp));
         String productCodeValue = productCode.orElse("");
         boolean isRenewableValue = isRenewable.orElse(MPP_DEFAULT_IS_RENEWABLE_VALUE);
         int gracePeriodMinuteValue = gracePeriodMinute.orElse(MPP_DEFAULT_GRACE_PERIOD_VALUE);
@@ -519,7 +519,7 @@ public class IngestUtils extends BaseUtils {
         String currencyValue = currency.orElse(CURRENCY_EUR);
         String defaultCurrencyOfDiscount4IngestMpp = "GBP";
         int defaultPercentageOfDiscount4IngestMpp = 100;
-        String discountValue = discount.orElse(DBUtils.getDiscountByPercentAndCurrency(defaultCurrencyOfDiscount4IngestMpp, defaultPercentageOfDiscount4IngestMpp));
+        String discountValue = discount.orElse(DBUtils.getDiscount(defaultCurrencyOfDiscount4IngestMpp, defaultPercentageOfDiscount4IngestMpp));
         boolean isRenewableValue = isRenewable.orElse(PP_DEFAULT_IS_RENEWABLE_VALUE);
         int recurringPeriodsValue = recurringPeriods.orElse(PP_DEFAULT_RECURRING_PERIODS_VALUE);
 
@@ -634,7 +634,7 @@ public class IngestUtils extends BaseUtils {
         String descriptionValue = description.orElse("My ingest PPV");
         String defaultCurrencyOfDiscount4IngestPpv = "ILS";
         int defaultPercentageOfDiscount4IngestPpv = 50;
-        String discountValue = discount.orElse(DBUtils.getDiscountByPercentAndCurrency(defaultCurrencyOfDiscount4IngestPpv, defaultPercentageOfDiscount4IngestPpv));
+        String discountValue = discount.orElse(DBUtils.getDiscount(defaultCurrencyOfDiscount4IngestPpv, defaultPercentageOfDiscount4IngestPpv));
         double priceValue = price.orElse(Double.valueOf(getProperty(PRICE_CODE_AMOUNT)));
         String currencyValue = currency.orElse(CURRENCY_EUR);
         String usageModuleValue = usageModule.orElse(getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV));
