@@ -55,9 +55,9 @@ public class OttUserLoginWithPinTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Description("ottUser/action/loginWithPin - loginWithPin with wrong secret - error 2008")
+    @Description("ottUser/action/loginWithPin - loginWithPin with invalid secret - error 2008")
     @Test
-    private void loginWithPin_with_wrong_secret() {
+    private void loginWithPin_with_invalid_secret() {
         // add pin
         AddUserLoginPinBuilder addUserLoginPinBuilder = add(SECRET)
                 .setKs(getAdministratorKs())
@@ -65,9 +65,9 @@ public class OttUserLoginWithPinTests extends BaseTest {
         userLoginPinResponse = executor.executeSync(addUserLoginPinBuilder);
 
         // login with pin and wrong secret
-        String wrongSecret = SECRET + 1;
+        String invalidSecret = SECRET + 1;
         String pin = userLoginPinResponse.results.getPinCode();
-        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, pin, null, wrongSecret);
+        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, pin, null, invalidSecret);
         loginResponse = executor.executeSync(loginWithPinOttUserBuilder);
 
         // assert error 2008 is return
@@ -115,7 +115,6 @@ public class OttUserLoginWithPinTests extends BaseTest {
     }
 
 //<throws name="LoginViaPinNotAllowed"/>
-
 //<throws name="UserNotInDomain"/>
 //<throws name="WrongPasswordOrUserName"/>
 //<throws name="PinNotExists"/>
@@ -127,7 +126,5 @@ public class OttUserLoginWithPinTests extends BaseTest {
 //<throws name="UserAllreadyLoggedIn"/>
 //<throws name="UserDoubleLogIn"/>
 //<throws name="DeviceNotRegistered"/>
-
 //<throws name="UserNotMasterApproved"/>
-
 }

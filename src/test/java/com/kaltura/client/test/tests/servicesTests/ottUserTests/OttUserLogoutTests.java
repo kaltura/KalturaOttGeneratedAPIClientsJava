@@ -27,8 +27,7 @@ public class OttUserLogoutTests extends BaseTest {
     @BeforeClass
     private void ottUser_logout_tests_setup() {
         // register user
-        Response<OTTUser> ottUserResponse = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword));
-        user = ottUserResponse.results;
+        user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
     }
 
     @Severity(SeverityLevel.CRITICAL)
