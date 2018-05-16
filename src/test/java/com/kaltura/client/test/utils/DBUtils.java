@@ -18,6 +18,7 @@ public class DBUtils extends BaseUtils {
     private static Connection conn;
     private static Statement stam;
     private static ResultSet rs;
+    private static CallableStatement cStmt;
 
     private static final String ERROR_MESSAGE = "No results found";
 
@@ -185,7 +186,7 @@ public class DBUtils extends BaseUtils {
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_ITEMS_DATA_SELECT, accountId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+                return result;
             }
 
             result = jsonArray.getJSONObject(0).getString("username") + ":" +
@@ -205,7 +206,7 @@ public class DBUtils extends BaseUtils {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency,
                     percent, BaseTest.partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+                return null;
             }
 
             code = jsonArray.getJSONObject(0).getString("code");
@@ -227,6 +228,7 @@ public class DBUtils extends BaseUtils {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+                return false;
             }
 
             result = jsonArray.getJSONObject(0).getInt("is_activation_needed");
@@ -249,6 +251,7 @@ public class DBUtils extends BaseUtils {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, BaseTest.partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+                return null;
             }
 
             userdData = jsonArray.getJSONObject(0).getString("username") + ":" +
@@ -269,6 +272,7 @@ public class DBUtils extends BaseUtils {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ACTIVATION_TOKEN_SELECT, username), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+                return null;
             }
 
             activationToken = jsonArray.getJSONObject(0).getString("activation_token");
@@ -287,6 +291,7 @@ public class DBUtils extends BaseUtils {
 //
 //            if (Strings.isNullOrEmpty(jsonArray.toString())) {
 //                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+//                return userRoles;
 //            }
 //
 //            for (int i = 0; i < jsonArray.length(); i++) {
@@ -305,6 +310,10 @@ public class DBUtils extends BaseUtils {
         int epgChannelId =-1;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName), false);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+                return epgChannelId;
+            }
             epgChannelId = jsonArray.getJSONObject(0).getInt("id");
         } catch (Exception e) {
             e.printStackTrace();
@@ -395,7 +404,9 @@ public class DBUtils extends BaseUtils {
 
     private static void closeConnection() {
         try {
-            rs.close();
+            if (rs != null) {
+                rs.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -408,6 +419,153 @@ public class DBUtils extends BaseUtils {
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void prepareCall(String sql) throws SQLException {
+        openConnection();
+        cStmt = conn.prepareCall(sql);
+    }
+
+    /**
+     * Call Stored Procedure to create role
+     */
+    public static int insertRole(String role) {
+        int result =-1;
+        try {
+            prepareCall("{call TVinci.dbo.__482V0__Insert_Role(?, ?)}");
+            cStmt.setInt(1, 0); // group_id == 0
+            cStmt.setString(2, role);
+
+            rs = cStmt.executeQuery();
+            String columnName = rs.getMetaData().getColumnName(1);
+            while (rs.next()) {
+                result = rs.getInt(columnName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+            return result;
+        }
+    }
+
+    /**
+     * Call Stored Procedure to delete role and its permissions
+     */
+    public static void deleteRoleAndItsPermissions(int roleId) {
+        try {
+            prepareCall("{call TVinci.dbo.__482V0__Delete_RolePermission(?, ?)}");
+            cStmt.setInt(1, 0); // group_id == 0
+            cStmt.setInt(2, roleId);
+
+            cStmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+    }
+
+    /**
+     * Call Stored Procedure to insert permissions
+     */
+    public static int insertPermission(String name, int type, String usersGroup) {
+        int result =-1;
+        try {
+            prepareCall("{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}");
+            cStmt.setInt(1, 0); // group_id == 0
+            cStmt.setString(2, name);
+            cStmt.setInt(3, type);
+            cStmt.setString(4, usersGroup);
+
+            rs = cStmt.executeQuery();
+            String columnName = rs.getMetaData().getColumnName(1);
+            while (rs.next()) {
+                result = rs.getInt(columnName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+            return result;
+        }
+    }
+
+    /**
+     * Call Stored Procedure to insert permission role
+     */
+    public static int insertPermissionRole(long roleId, long permissionId, int isExcluded) {
+        int result =-1;
+        try {
+            prepareCall("{call TVinci.dbo.__482V0__Insert_PermissionRole(?, ?, ?, ?)}");
+            cStmt.setInt(1, 0); // group_id == 0
+            cStmt.setLong(2, roleId);
+            cStmt.setLong(3, permissionId);
+            cStmt.setInt(4, isExcluded);
+
+            rs = cStmt.executeQuery();
+            String columnName = rs.getMetaData().getColumnName(1);
+            while (rs.next()) {
+                result = rs.getInt(columnName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+            return result;
+        }
+    }
+
+    /**
+     * Call Stored Procedure to insert permission item
+     */
+    public static int insertPermissionItem(String name, int type, String service, String action, String permissionItemObject, String parameter) {
+        int result =-1;
+        try {
+            prepareCall("{call TVinci.dbo.__482V0__Insert_PermissionItem(?, ?, ?, ?, ?, ?)}");
+            cStmt.setString(1, name);
+            cStmt.setInt(2, type);
+            cStmt.setString(3, service);
+            cStmt.setString(4, action);
+            cStmt.setString(5, permissionItemObject);
+            cStmt.setString(6, parameter);
+            rs = cStmt.executeQuery();
+
+            String columnName = rs.getMetaData().getColumnName(1);
+            while (rs.next()) {
+                result = rs.getInt(columnName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+            return result;
+        }
+    }
+
+    /**
+     * Call Stored Procedure to insert permission permission item
+     */
+    public static int insertPermissionPermissionItem(long permissionId, long permissionItemId, int isExcluded) {
+        int result =-1;
+        try {
+            prepareCall("{call TVinci.dbo.__482V0__Insert_PermissionPermissionItem(?, ?, ?, ?)}");
+            cStmt.setInt(1, 0);; // group_id == 0
+            cStmt.setLong(2, permissionId);
+            cStmt.setLong(3, permissionItemId);
+            cStmt.setInt(4, isExcluded);
+            rs = cStmt.executeQuery();
+
+            String columnName = rs.getMetaData().getColumnName(1);
+            while (rs.next()) {
+                result = rs.getInt(columnName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+            return result;
         }
     }
 }
