@@ -28,7 +28,9 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.AssetUserRule;
+import com.kaltura.client.types.AssetUserRuleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -57,10 +59,31 @@ public class AssetUserRuleService {
 		return new AddAssetUserRuleBuilder(assetUserRule);
 	}
 	
-	public static class DeleteAssetUserRuleBuilder extends RequestBuilder<Boolean, String, DeleteAssetUserRuleBuilder> {
+	public static class AddRuleToUserAssetUserRuleBuilder extends NullRequestBuilder {
+		
+		public AddRuleToUserAssetUserRuleBuilder(long ruleId) {
+			super("assetuserrule", "addRuleToUser");
+			params.add("ruleId", ruleId);
+		}
+		
+		public void ruleId(String multirequestToken) {
+			params.add("ruleId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Add Asset User Rule To User
+	 * 
+	 * @param ruleId Asset user rule id to add
+	 */
+    public static AddRuleToUserAssetUserRuleBuilder addRuleToUser(long ruleId)  {
+		return new AddRuleToUserAssetUserRuleBuilder(ruleId);
+	}
+	
+	public static class DeleteAssetUserRuleBuilder extends NullRequestBuilder {
 		
 		public DeleteAssetUserRuleBuilder(long id) {
-			super(Boolean.class, "assetuserrule", "delete");
+			super("assetuserrule", "delete");
 			params.add("id", id);
 		}
 		
@@ -80,16 +103,44 @@ public class AssetUserRuleService {
 	
 	public static class ListAssetUserRuleBuilder extends ListResponseRequestBuilder<AssetUserRule, AssetUserRule.Tokenizer, ListAssetUserRuleBuilder> {
 		
-		public ListAssetUserRuleBuilder() {
+		public ListAssetUserRuleBuilder(AssetUserRuleFilter filter) {
 			super(AssetUserRule.class, "assetuserrule", "list");
+			params.add("filter", filter);
 		}
+	}
+
+	public static ListAssetUserRuleBuilder list()  {
+		return list(null);
 	}
 
 	/**
 	 * Get the list of asset user rules for the partner
+	 * 
+	 * @param filter AssetUserRule Filter
 	 */
-    public static ListAssetUserRuleBuilder list()  {
-		return new ListAssetUserRuleBuilder();
+    public static ListAssetUserRuleBuilder list(AssetUserRuleFilter filter)  {
+		return new ListAssetUserRuleBuilder(filter);
+	}
+	
+	public static class RemoveRuleToUserAssetUserRuleBuilder extends NullRequestBuilder {
+		
+		public RemoveRuleToUserAssetUserRuleBuilder(long ruleId) {
+			super("assetuserrule", "removeRuleToUser");
+			params.add("ruleId", ruleId);
+		}
+		
+		public void ruleId(String multirequestToken) {
+			params.add("ruleId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Remove asset user rule from user
+	 * 
+	 * @param ruleId Asset user rule id to remove
+	 */
+    public static RemoveRuleToUserAssetUserRuleBuilder removeRuleToUser(long ruleId)  {
+		return new RemoveRuleToUserAssetUserRuleBuilder(ruleId);
 	}
 	
 	public static class UpdateAssetUserRuleBuilder extends RequestBuilder<AssetUserRule, AssetUserRule.Tokenizer, UpdateAssetUserRuleBuilder> {
