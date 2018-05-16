@@ -63,7 +63,7 @@ public class OttUserUpdateTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/update - update with administratorKs")
     @Issue("BEO-4919")
-    @Test(enabled = false) // TODO: find if it possible to exclude ftom build results failed tests having @Issue annotation
+    @Test(enabled = false)
     private void update_with_administratorKs() {
 
         // update user info
@@ -88,6 +88,7 @@ public class OttUserUpdateTests extends BaseTest {
 
     @AfterClass
     private void ottUser_update_tests_tearDown() {
+        // cleanup
         executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 }

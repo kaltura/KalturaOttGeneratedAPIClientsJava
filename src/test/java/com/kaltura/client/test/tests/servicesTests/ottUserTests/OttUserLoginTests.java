@@ -13,11 +13,13 @@ import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.kaltura.client.services.HouseholdService.SuspendHouseholdBuilder;
 import static com.kaltura.client.services.HouseholdService.suspend;
+import static com.kaltura.client.services.OttUserService.delete;
 import static com.kaltura.client.services.OttUserService.register;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
@@ -161,4 +163,10 @@ public class OttUserLoginTests extends BaseTest {
     // InsideLockTime
     // DeviceNotRegistered - login with invalid registered
     // UserNotMasterApproved - user in pending status
+
+    @AfterClass
+    private void login_afterClass() {
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
+    }
 }

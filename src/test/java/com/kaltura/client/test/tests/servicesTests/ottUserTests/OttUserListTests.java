@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.types.*;
@@ -7,6 +8,7 @@ import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -24,8 +26,9 @@ public class OttUserListTests extends BaseTest {
 
     private Household household;
     private Response<ListResponse<OTTUser>> householdUserListResponse;
-    private int numberOfUsersInHousehold = 4;
-    private int numberOfDevicesInHousehold = 1;
+
+    private final int numberOfUsersInHousehold = 4;
+    private final int numberOfDevicesInHousehold = 1;
 
 
     @BeforeClass
@@ -167,5 +170,12 @@ public class OttUserListTests extends BaseTest {
         // assert users list size
         assertThat(householdUserListResponse.error).isNull();
         assertThat(users.size()).isEqualTo(1);
+    }
+
+    @AfterClass
+    private void list_AfterClass() {
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = HouseholdService.delete(Math.toIntExact(household.getId()))
+                .setKs(getAdministratorKs());
+        executor.executeSync(deleteHouseholdBuilder);
     }
 }

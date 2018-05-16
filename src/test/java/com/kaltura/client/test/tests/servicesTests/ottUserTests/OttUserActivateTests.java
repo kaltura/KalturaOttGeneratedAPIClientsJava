@@ -3,15 +3,17 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 import com.kaltura.client.enums.UserState;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.DBUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.services.OttUserService.delete;
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.services.OttUserService.register;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
@@ -137,5 +139,11 @@ public class OttUserActivateTests extends BaseTest {
         // assert error return
         assertThat(ottUserResponse.results).isNull();
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2000).getCode());
+    }
+
+    @AfterClass
+    private void activate_afterClass() {
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 }

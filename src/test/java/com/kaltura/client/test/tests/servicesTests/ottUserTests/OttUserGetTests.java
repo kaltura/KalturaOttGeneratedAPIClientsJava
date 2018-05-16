@@ -8,6 +8,7 @@ import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -72,4 +73,11 @@ public class OttUserGetTests extends BaseTest {
         assertThat(ottUserResponse.results).isNull();
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500004).getCode());
     }
+
+    @AfterClass
+    private void get_afterClass() {
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
+    }
+
 }

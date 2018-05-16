@@ -43,9 +43,7 @@ public class OttUserDeleteTests extends BaseTest {
     @Test
     private void delete() {
         // register user
-        RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, generateOttUser(), defaultUserPassword)
-                .setKs(getAdministratorKs());
-        OTTUser user = executor.executeSync(registerOttUserBuilder).results;
+        OTTUser user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
 
         // delete user and assert success
         deleteOttUserBuilder = OttUserService.delete()

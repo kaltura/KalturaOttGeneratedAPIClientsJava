@@ -68,6 +68,9 @@ public class OttUserAddRoleTests extends BaseTest {
 
         // cleanup - delete role
         // TODO: 5/14/2018 finish test after when reletead bug will be fixed
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -89,6 +92,9 @@ public class OttUserAddRoleTests extends BaseTest {
         
         // cleanup - delete role
         // TODO: 5/14/2018 finish test after when reletead bug will be fixed
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
     private UserRole generateUserRole() {

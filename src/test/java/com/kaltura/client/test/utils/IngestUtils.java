@@ -5,6 +5,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.AssetService.*;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;

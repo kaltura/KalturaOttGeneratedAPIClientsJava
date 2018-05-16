@@ -50,6 +50,9 @@ public class OttUserUpdateLoginDataTests extends BaseTest {
 
         assertThat(loginResponse.error).isNull();
         assertThat(loginResponse.results.getLoginSession().getKs()).isNotNull();
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -82,5 +85,8 @@ public class OttUserUpdateLoginDataTests extends BaseTest {
 
         assertThat(loginResponse.error).isNull();
         assertThat(loginResponse.results.getLoginSession().getKs()).isNotNull();
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 }
