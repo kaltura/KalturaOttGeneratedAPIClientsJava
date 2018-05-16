@@ -4,7 +4,7 @@ import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.DBUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;

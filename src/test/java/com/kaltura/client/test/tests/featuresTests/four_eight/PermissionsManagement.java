@@ -1,6 +1,6 @@
 package com.kaltura.client.test.tests.featuresTests.four_eight;
 
-import com.kaltura.client.test.utils.DBUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import org.testng.annotations.Test;
 import java.io.BufferedReader;
 import java.io.IOException;

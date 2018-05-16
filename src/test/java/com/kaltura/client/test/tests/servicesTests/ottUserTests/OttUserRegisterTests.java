@@ -10,6 +10,7 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import static com.kaltura.client.services.OttUserService.delete;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,9 +33,11 @@ public class OttUserRegisterTests extends BaseTest {
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results).isEqualToIgnoringGivenFields(user, "userState", "userType",
                 "householdId", "dynamicData", "isHouseholdMaster", "suspensionState", "id", "params");
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
-
-//<throws name="UserExists"/>
-//<throws name="ExternalIdAlreadyExists"/>
+    //<throws name="UserExists"/>
+    //<throws name="ExternalIdAlreadyExists"/>
 }

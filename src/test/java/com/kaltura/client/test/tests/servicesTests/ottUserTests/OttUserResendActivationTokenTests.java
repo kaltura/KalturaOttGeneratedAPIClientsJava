@@ -20,21 +20,27 @@ public class OttUserResendActivationTokenTests extends BaseTest {
 
     @BeforeClass
     private void ottUser_resendActivationToken_tests_setup() {
-        // register user
-        user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
 
-        // login user
-        user = executor.executeSync(login(partnerId, user.getUsername(), defaultUserPassword)).results.getUser();
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/resendActivationToken - resendActivationToken")
     @Test(enabled = false)
     private void resendActivationToken() {
+        // register user
+        OTTUser user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
+
+        // login user
+        user = executor.executeSync(login(partnerId, user.getUsername(), defaultUserPassword)).results.getUser();
+
+        // resendActivationToken
         Response<Boolean> booleanResponse = executor.executeSync(OttUserService.resendActivationToken(partnerId, user.getUsername()));
 
         assertThat(booleanResponse.error).isNull();
         assertThat(booleanResponse.results.booleanValue()).isTrue();
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
 
         // TODO: 4/1/2018 can't be completely tested until we verify emails
     }

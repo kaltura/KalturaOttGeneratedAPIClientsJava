@@ -45,6 +45,9 @@ public class OttUserLogoutTests extends BaseTest {
         ottUserResponse = executor.executeSync(getOttUserBuilder);
         assertThat(ottUserResponse.results).isNull();
         assertThat(ottUserResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(500016).getCode());
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -85,6 +88,9 @@ public class OttUserLogoutTests extends BaseTest {
 
         assertThat(ottUserResponse.error).isNull();
         assertThat(ottUserResponse.results).isEqualToIgnoringGivenFields(user, "userState", "userType");
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
 

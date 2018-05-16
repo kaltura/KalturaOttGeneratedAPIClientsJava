@@ -1,15 +1,18 @@
-package com.kaltura.client.test.utils;
+package com.kaltura.client.test.utils.dbUtils;
 
 import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.sql.*;
+
 import static com.kaltura.client.test.Properties.*;
 
 public class DBUtils extends BaseUtils {
@@ -24,6 +27,8 @@ public class DBUtils extends BaseUtils {
 
     //selects
     private static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
+
+    private static final String RESET_PASSWORD_TOKEN_SELECT = "SELECT [CP_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
 
     private static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
             "from [Users].[dbo].[groups_parameters]\n" +
@@ -283,6 +288,20 @@ public class DBUtils extends BaseUtils {
         return activationToken;
     }
 
+    public static String getResetPasswordToken(String username) {
+        String resetPasswordToken = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(RESET_PASSWORD_TOKEN_SELECT, username), false);
+            resetPasswordToken = jsonArray.getJSONObject(0).getString("cp_token");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resetPasswordToken;
+    }
+
+
 //    public static List<Integer> getUserRoles(String userId) {
 //        List<Integer> userRoles = new ArrayList<>();
 //
@@ -307,7 +326,7 @@ public class DBUtils extends BaseUtils {
 
     public static int getEpgChannelId(String channelName) {
         Logger.getLogger(DBUtils.class).debug("getEpgChannelId(): channelName = " + channelName);
-        int epgChannelId =-1;
+        int epgChannelId = -1;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {

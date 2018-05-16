@@ -8,6 +8,7 @@ import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -50,5 +51,11 @@ public class OttUserGetEncryptedUserIdTests extends BaseTest {
 
         assertThat(stringValueResponse.error).isNull();
         assertThat(stringValueResponse.results.getValue()).isNotNull();
+    }
+
+    @AfterClass
+    private void getEncryptedUserId_afterClass() {
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 }
