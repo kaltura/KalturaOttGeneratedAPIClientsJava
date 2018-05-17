@@ -59,10 +59,10 @@ public class AssetUserRuleService {
 		return new AddAssetUserRuleBuilder(assetUserRule);
 	}
 	
-	public static class AddRuleToUserAssetUserRuleBuilder extends NullRequestBuilder {
+	public static class AttachUser AssetUserRuleBuilder extends NullRequestBuilder {
 		
-		public AddRuleToUserAssetUserRuleBuilder(long ruleId) {
-			super("assetuserrule", "addRuleToUser");
+		public AttachUser AssetUserRuleBuilder(long ruleId) {
+			super("assetuserrule", "attachUser ");
 			params.add("ruleId", ruleId);
 		}
 		
@@ -72,12 +72,12 @@ public class AssetUserRuleService {
 	}
 
 	/**
-	 * Add Asset User Rule To User
+	 * Attach AssetUserRule To User
 	 * 
-	 * @param ruleId Asset user rule id to add
+	 * @param ruleId AssetUserRule id to add
 	 */
-    public static AddRuleToUserAssetUserRuleBuilder addRuleToUser(long ruleId)  {
-		return new AddRuleToUserAssetUserRuleBuilder(ruleId);
+    public static AttachUser AssetUserRuleBuilder attachUser (long ruleId)  {
+		return new AttachUser AssetUserRuleBuilder(ruleId);
 	}
 	
 	public static class DeleteAssetUserRuleBuilder extends NullRequestBuilder {
@@ -101,6 +101,27 @@ public class AssetUserRuleService {
 		return new DeleteAssetUserRuleBuilder(id);
 	}
 	
+	public static class DetachUserAssetUserRuleBuilder extends NullRequestBuilder {
+		
+		public DetachUserAssetUserRuleBuilder(long ruleId) {
+			super("assetuserrule", "detachUser");
+			params.add("ruleId", ruleId);
+		}
+		
+		public void ruleId(String multirequestToken) {
+			params.add("ruleId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Detach AssetUserRule from user
+	 * 
+	 * @param ruleId AssetUserRule id to remove
+	 */
+    public static DetachUserAssetUserRuleBuilder detachUser(long ruleId)  {
+		return new DetachUserAssetUserRuleBuilder(ruleId);
+	}
+	
 	public static class ListAssetUserRuleBuilder extends ListResponseRequestBuilder<AssetUserRule, AssetUserRule.Tokenizer, ListAssetUserRuleBuilder> {
 		
 		public ListAssetUserRuleBuilder(AssetUserRuleFilter filter) {
@@ -120,27 +141,6 @@ public class AssetUserRuleService {
 	 */
     public static ListAssetUserRuleBuilder list(AssetUserRuleFilter filter)  {
 		return new ListAssetUserRuleBuilder(filter);
-	}
-	
-	public static class RemoveRuleToUserAssetUserRuleBuilder extends NullRequestBuilder {
-		
-		public RemoveRuleToUserAssetUserRuleBuilder(long ruleId) {
-			super("assetuserrule", "removeRuleToUser");
-			params.add("ruleId", ruleId);
-		}
-		
-		public void ruleId(String multirequestToken) {
-			params.add("ruleId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Remove asset user rule from user
-	 * 
-	 * @param ruleId Asset user rule id to remove
-	 */
-    public static RemoveRuleToUserAssetUserRuleBuilder removeRuleToUser(long ruleId)  {
-		return new RemoveRuleToUserAssetUserRuleBuilder(ruleId);
 	}
 	
 	public static class UpdateAssetUserRuleBuilder extends RequestBuilder<AssetUserRule, AssetUserRule.Tokenizer, UpdateAssetUserRuleBuilder> {

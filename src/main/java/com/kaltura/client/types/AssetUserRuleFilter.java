@@ -47,25 +47,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class AssetUserRuleFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String associatedUserIdEqualCurrent();
+		String attachedUserIdEqualCurrent();
 	}
 
 	/**
-	 * Indicates if to get the asset user rule list for the associated user or for the
+	 * Indicates if to get the asset user rule list for the attached user or for the
 	  entire group
 	 */
-	private Boolean associatedUserIdEqualCurrent;
+	private Boolean attachedUserIdEqualCurrent;
 
-	// associatedUserIdEqualCurrent:
-	public Boolean getAssociatedUserIdEqualCurrent(){
-		return this.associatedUserIdEqualCurrent;
+	// attachedUserIdEqualCurrent:
+	public Boolean getAttachedUserIdEqualCurrent(){
+		return this.attachedUserIdEqualCurrent;
 	}
-	public void setAssociatedUserIdEqualCurrent(Boolean associatedUserIdEqualCurrent){
-		this.associatedUserIdEqualCurrent = associatedUserIdEqualCurrent;
+	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
+		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
 	}
 
-	public void associatedUserIdEqualCurrent(String multirequestToken){
-		setToken("associatedUserIdEqualCurrent", multirequestToken);
+	public void attachedUserIdEqualCurrent(String multirequestToken){
+		setToken("attachedUserIdEqualCurrent", multirequestToken);
 	}
 
 
@@ -79,14 +79,14 @@ public class AssetUserRuleFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		associatedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("associatedUserIdEqualCurrent"));
+		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetUserRuleFilter");
-		kparams.add("associatedUserIdEqualCurrent", this.associatedUserIdEqualCurrent);
+		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
 		return kparams;
 	}
 
