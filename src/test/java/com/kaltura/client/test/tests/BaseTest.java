@@ -6,6 +6,7 @@ import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
@@ -130,11 +131,11 @@ public class BaseTest {
         double defaultDiscountPrice = 0.0;
         double defaultDiscountPercentValue = 100.0;
         if (sharedCommonPricePlan == null) {
-            sharedCommonPricePlan = DBUtils.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), defaultCurrency, defaultDiscountPrice, defaultDiscountPercentValue);
+            sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), defaultCurrency, defaultDiscountPrice, defaultDiscountPercentValue);
             if (sharedCommonPricePlan == null) {
                 sharedCommonPricePlan = IngestUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
-                        Optional.of(defaultCurrency), Optional.of(DBUtils.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)),
+                        Optional.of(defaultCurrency), Optional.of(IngestFixtureData.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)),
                         Optional.of(true), Optional.of(0));
             }
         }
@@ -154,11 +155,11 @@ public class BaseTest {
         double defaultDiscountPercentValue = 100.0;
         String defaultCurrency = "EUR";
         if (sharedCommonSubscription == null) {
-            sharedCommonSubscription = DBUtils.loadSharedCommonSubscription(getSharedCommonPricePlan());
+            sharedCommonSubscription = IngestFixtureData.loadSharedCommonSubscription(getSharedCommonPricePlan());
             if (sharedCommonSubscription == null) {
                 sharedCommonSubscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(DBUtils.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)), Optional.empty(),
+                        Optional.of(IngestFixtureData.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)), Optional.empty(),
                         Optional.of(false), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()), Optional.empty(),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
             }
@@ -168,7 +169,7 @@ public class BaseTest {
 
     public static String getIngestBusinessModuleUserName() {
         if (ingestBusinessModuleUserUsername == null) {
-            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId);
+            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -177,7 +178,7 @@ public class BaseTest {
 
     public static String getIngestBusinessModuleUserPassword() {
         if (ingestBusinessModuleUserPassword == null) {
-            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId);
+            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -186,7 +187,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserName() {
         if (ingestAssetUserUsername == null) {
-            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId + 1);
+            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -195,7 +196,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserPassword() {
         if (ingestAssetUserPassword == null) {
-            String userInfo = DBUtils.getIngestItemUserData(BaseTest.partnerId + 1);
+            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
