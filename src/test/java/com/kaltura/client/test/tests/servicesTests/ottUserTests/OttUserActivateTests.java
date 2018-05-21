@@ -133,7 +133,7 @@ public class OttUserActivateTests extends BaseTest {
         // get activation token
         String invalidActivationToken = "1";
 
-        // activate user - with invalid user name
+        // activate user - with invalid activationToken
         ottUserResponse = executor.executeSync(OttUserService.activate(partnerId, user.getUsername(), invalidActivationToken));
 
         // assert error return
