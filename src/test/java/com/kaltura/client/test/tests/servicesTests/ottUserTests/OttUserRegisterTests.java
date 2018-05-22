@@ -3,18 +3,15 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
-import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.kaltura.client.services.OttUserService.delete;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.OttUserUtils.dynamicDataMapBuilder;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,13 +28,7 @@ public class OttUserRegisterTests extends BaseTest {
         OTTUser user = generateOttUser();
 
         // set dynamic date
-        Map<String, StringValue> dynamicData = new HashMap<>();
-        String dynamicDataKey = "key";
-        StringValue dynamicDataValue = new StringValue();
-        dynamicDataValue.setValue("value");
-
-        dynamicData.put(dynamicDataKey, dynamicDataValue);
-        user.setDynamicData(dynamicData);
+        user.setDynamicData(dynamicDataMapBuilder("key", "value"));
 
         // register
         ottUserResponse = executor.executeSync(OttUserService.register(partnerId, user, defaultUserPassword));
