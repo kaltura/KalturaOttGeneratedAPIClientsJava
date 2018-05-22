@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.featuresTests.four_eight;
 
+import com.kaltura.client.test.utils.PermissionManagementUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -8,6 +9,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.kaltura.client.test.utils.PermissionManagementUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,11 +21,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PermissionsManagement {
     // TODO: discuss where to save these values
+    String path2Log = "C:\\log\\permissions\\permissions.log";
     String path2Util = "C:\\123\\222\\";
+    String path2EmptyFile = path2Util + "333\\" + "empty_file.txt";
     String mainFile = "PermissionsDeployment.exe";
     String dataFilePath = path2Util + "333\\" + "exp1.txt";
+    String importOnly4TablesFilePath = path2Util + "333\\" + "importOnly4Tables.txt";
 
-    @Test(description = "just for deletion")
+    public static final String EXPORT_KEY = "e=";
+    public static final String IMPORT_KEY = "i=";
+    public static final String DELETE_KEY = "d=";
+
+    @Test(enabled = false, description = "just for deletion")
     public void deleteData() {
         //long roleId = 477L;
         long permissionId = 32L;
@@ -34,72 +45,115 @@ public class PermissionsManagement {
         DBUtils.deletePermissionPermissionItem((int)permissionPermissionItemId);*/
     }
 
-    // TODO: change descriptions later
-    @Test(enabled = false, description = "execute stored procedures related insert data into permission management related tables")
-    public void insertDataIntoTables() {
-        String suffix = "00002";
-        String role = "MaxTest" + suffix;
-        long roleId = DBUtils.insertRole(role);
-        System.out.println("Role: " + roleId); // 468
-        //DBUtils.deleteRoleAndItsPermissions((int)roleId);
-        long permissionId = DBUtils.insertPermission(role, 2, "partner*");
-        System.out.println("Permission: " + permissionId); // 26
-        long permissionRoleId = DBUtils.insertPermissionRole(roleId, permissionId, 0);
-        System.out.println("PermissionRole: " + permissionRoleId); // 622
-        String name = "Asset_List_Max" + suffix;
-        String service = "asset";
-        String action = "list";
-        String permissionItemObject = "permissionItemObject";
-        String parameter = "parameter";
-        long permissionItemId = DBUtils.insertPermissionItem(name, 1, service, action, permissionItemObject, parameter);
-        System.out.println("PermissionItem: " + permissionItemId); // 539
-        long permissionPermissionItemId = DBUtils.insertPermissionPermissionItem(permissionId, permissionItemId, 0);
-        System.out.println("PermissionPermissionItem: " + permissionPermissionItemId);//1063
-
-        // generation of XML file with insertedData
-        try {
-            File file = new File(path2Util + "333\\" + "import_data.txt");
-            PrintWriter writer = new PrintWriter(file);
-            writer.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
-            writer.println("<permissions_dataset>");
-            printRole(writer, roleId, role);
-            printRolePermission(writer, permissionRoleId, roleId, permissionId, 0, role, role);
-            printPermission(writer, permissionId, role, 2, "partner*");
-            printPermissionItem(writer, permissionItemId, name, 1, service, action, permissionItemObject, parameter);
-            printPermissionPermissionItem(writer, permissionPermissionItemId, permissionId, permissionItemId, 0, name, role);
-            writer.println("</permissions_dataset>");
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Test(enabled = false, description = "execute console util without parameters")
     private void checkRunningWithoutParameters() {
-        StringBuilder output = new StringBuilder();
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        String consoleOutput = executeCommandsInColsole(commands);
 
-        ProcessBuilder pb = new ProcessBuilder(path2Util + mainFile);
-        pb.redirectErrorStream(true);
-        BufferedReader inStreamReader;
-        try {
-            Process process = pb.start();
-            inStreamReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while((line = inStreamReader.readLine()) != null){
-                output.append(line);
-            }
-
-            assertThat(output.toString()).contains("Permissions deployment tool");
-            assertThat(output.toString()).contains("Shortcut: e");
-            assertThat(output.toString()).contains("Shortcut: i");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            // return input stream back
-            inStreamReader = new BufferedReader(new InputStreamReader(System.in));
-        }
+        assertThat(consoleOutput).contains("Permissions deployment tool");
+        assertThat(consoleOutput).contains("Shortcut: e");
+        assertThat(consoleOutput).contains("Shortcut: i");
     }
 
+    @Test(enabled = false, description = "execute console util to export without mentioned file")
+    private void checkRunningExportWithoutFile() {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(EXPORT_KEY);
+        String consoleOutput = executeCommandsInColsole(commands);
+
+        assertThat(consoleOutput).contains("The system cannot find the file specified");
+    }
+
+    @Test(enabled = false, description = "execute console util to import without mentioned file")
+    private void checkRunningImportWithoutFile() {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(IMPORT_KEY);
+        String consoleOutput = executeCommandsInColsole(commands);
+
+        assertThat(consoleOutput).contains("The system cannot find the file specified");
+    }
+
+    @Test(enabled = false, description = "execute console util to delete without mentioned file")
+    private void checkRunningDeleteWithoutFile() {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(DELETE_KEY);
+        String consoleOutput = executeCommandsInColsole(commands);
+
+        assertThat(consoleOutput).contains("The system cannot find the file specified");
+    }
+
+    @Test(enabled = false, description = "execute console util to export data from DB into file")
+    private void checkRunningExport() {
+        // prepare data inserting them in DB using stored procedures
+        String suffix = String.valueOf(getTimeInEpoch(0));
+        PermissionManagementUtils.insertDataInAllTables(path2Util, "MaxTest" + suffix, "partner*",
+                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+                "parameter" + suffix);
+
+        // export from DB
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(EXPORT_KEY + dataFilePath);
+        executeCommandsInColsole(commands);
+
+        // checks that created file contains inserted data
+        String fileContent = getFileContent(dataFilePath);
+        assertThat(fileContent).contains("MaxTest" + suffix);
+        assertThat(fileContent).contains("Asset_List_Max" + suffix);
+        assertThat(fileContent).contains("permissionItemObject" + suffix);
+        assertThat(fileContent).contains("parameter" + suffix);
+    }
+
+    @Test(enabled = false, description = "execute console util to import data into DB from file having only 4 tables instead of 5")
+    private void checkRunningImportFromFileNotHavingAllTables() {
+        // remove log file
+        deleteFile(path2Log);
+
+        // try to import into DB
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(IMPORT_KEY + importOnly4TablesFilePath);
+        executeCommandsInColsole(commands);
+
+        String fileContent = getFileContent(path2Log);
+        assertThat(fileContent).contains("Import failed: reading from XML resulted in empty data set or data set with less than 5 tables");
+    }
+
+    @Test(enabled = false, description = "execute console util to try import data into DB from empty file")
+    private void checkRunningImportFromEmptyFile() {
+        // remove log file
+        deleteFile(path2Log);
+
+        // try to import into DB
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(IMPORT_KEY + path2EmptyFile);
+        executeCommandsInColsole(commands);
+
+        String fileContent = getFileContent(path2Log);
+        assertThat(fileContent).contains("Failed importing permissions, ex = System.Xml.XmlException: Root element is missing");
+    }
+
+    @Test(/*enabled = false,*/ description = "execute console util to try delete data from DB using empty file")
+    private void checkRunningDeleteUsingEmptyFile() {
+        // remove log file
+        deleteFile(path2Log);
+
+        // try to import into DB
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(DELETE_KEY + path2EmptyFile);
+        executeCommandsInColsole(commands);
+
+        String fileContent = getFileContent(path2Log);
+        assertThat(fileContent).contains("Failed deleting permissions, ex = System.Xml.XmlException: Root element is missing");
+    }
+
+    // TODO: check how to use it
     @Test(enabled = false)
     public void readXMLFile() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(dataFilePath);
