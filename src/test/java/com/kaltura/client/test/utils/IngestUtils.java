@@ -8,11 +8,15 @@ import com.kaltura.client.services.AssetService.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
+
+import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -35,6 +39,7 @@ public class IngestUtils extends BaseUtils {
     public static final String EPG_DEFAULT_PROGRAM_DURATION_PERIOD_NAME = DURATION_PERIOD_MINUTES;
 
     private static List<String> durationPeriodNames = new ArrayList<>();
+
     static {
         durationPeriodNames.add(DURATION_PERIOD_DAYS);
         durationPeriodNames.add(DURATION_PERIOD_HOURS);
@@ -130,7 +135,7 @@ public class IngestUtils extends BaseUtils {
         Date now = Calendar.getInstance().getTime();
         while (seasonId <= seasonCountValue) {
             int idx = 1;
-            while(idx <= programCountValue) {
+            while (idx <= programCountValue) {
                 endDate = loadEndDate(startDate.getTime(), programDurationValue, programDurationPeriodNameValue);
                 oneProgrammOutput = getProgrammeXML(idx, df2.format(startDate.getTime()), df2.format(endDate),
                         epgChannelName, coguidValue, cridValue, "Program", df2.format(now),
@@ -172,7 +177,7 @@ public class IngestUtils extends BaseUtils {
         long epoch = 0L;
         try {
             Date firstProgramStartDateAsDate = dateFormat.parse(firstProgramStartDateValue);
-            epoch = firstProgramStartDateAsDate.getTime()/1000; // 1000 milliseconds in 1 second
+            epoch = firstProgramStartDateAsDate.getTime() / 1000; // 1000 milliseconds in 1 second
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -184,7 +189,7 @@ public class IngestUtils extends BaseUtils {
         int delayBetweenRetriesInSeconds = 3;
         int maxTimeExpectingValidResponseInSeconds = 60;
         await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
-                .until(isDataReturned(getAnonymousKs(), assetFilter, programCountValue*seasonCountValue));
+                .until(isDataReturned(getAnonymousKs(), assetFilter, programCountValue * seasonCountValue));
 
         Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(
                 AssetService.list(assetFilter, null).setKs(getAnonymousKs()));
@@ -196,7 +201,7 @@ public class IngestUtils extends BaseUtils {
         return () -> {
             ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter, null).setKs(ks);
             return executor.executeSync(listAssetBuilder).error == null &&
-                executor.executeSync(listAssetBuilder).results.getTotalCount() == totalCount;
+                    executor.executeSync(listAssetBuilder).results.getTotalCount() == totalCount;
         };
     }
 
@@ -319,8 +324,8 @@ public class IngestUtils extends BaseUtils {
     /**
      * IMPORTANT: please delete inserted by that method items
      *
-     * @param action - can be "insert" or "delete" ("update" looks like broken)
-     * @param mppCode - should have value in case "action" is "delete"
+     * @param action            - can be "insert" or "delete" ("update" looks like broken)
+     * @param mppCode           - should have value in case "action" is "delete"
      * @param isActive
      * @param title
      * @param description
@@ -339,14 +344,14 @@ public class IngestUtils extends BaseUtils {
      * @param couponGroup
      * @param productCodes
      * @return MPP data
-     *
-     *      !!!Only created by that method MPP can be deleted!!!
-     *
-     *      to delete existed MPP use corresponded action and value mpp.getName() as "mppCode"
-     *      (where mpp is a variable that contains mpp data).
-     *
-     *
-     *      don't forget after deletion of mpp delete also price plan using by deleted mpp (if it was created by ingestPP method)
+     * <p>
+     * !!!Only created by that method MPP can be deleted!!!
+     * <p>
+     * to delete existed MPP use corresponded action and value mpp.getName() as "mppCode"
+     * (where mpp is a variable that contains mpp data).
+     * <p>
+     * <p>
+     * don't forget after deletion of mpp delete also price plan using by deleted mpp (if it was created by ingestPP method)
      */
     // ingest new MPP
     public static Subscription ingestMPP(Optional<String> action, Optional<String> mppCode, Optional<Boolean> isActive,
@@ -445,39 +450,39 @@ public class IngestUtils extends BaseUtils {
                                             String pricePlanCode2, String channel1, String channel2, String fileType1,
                                             String fileType2, String couponGroup, String productCodes) {
         return "<ingest id=\"" + mppCode + "\">\n" +
-                    "<multi_price_plans>\n" +
-                        "<multi_price_plan code=\"" + mppCode + "\" action=\"" + action + "\" is_active=\"" + isActive + "\">\n" +
-                            "<titles>\n" +
-                                "<title lang=\"eng\">" + title + "</title>\n" +
-                            "</titles>\n" +
-                            "<descriptions>\n" +
-                                "<description lang=\"eng\">" + description + "</description>" +
-                            "</descriptions>\n" +
-                            "<start_date>" + startDate + "</start_date>\n" +
-                            "<end_date>" + endDate + "</end_date>\n" +
-                            "<internal_discount>" + internalDiscount + "</internal_discount>\n" +
-                            "<coupon_group/>\n" +
-                            "<product_code>" + productCode  + "</product_code>\n" +
-                            "<is_renewable>" + isRenewable + "</is_renewable>\n" +
-                            "<priview_module/>\n" +
-                            "<grace_period_minutes>" + gracePeriodMinute + "</grace_period_minutes>\n" +
-                            "<price_plan_codes>\n" +
-                                "<price_plan_code>" + pricePlanCode1 + "</price_plan_code>\n" +
-                                "<price_plan_code>" + pricePlanCode2 + "</price_plan_code>\n" +
-                            "</price_plan_codes>\n" +
-                            "<channels>\n" +
-                                "<channel>" + channel1 + "</channel>\n" +
-                                "<channel>" + channel2 + "</channel>\n" +
-                            "</channels>\n" +
-                            "<file_types>\n" +
-                                "<file_type>" + fileType1 + "</file_type>\n" +
-                                "<file_type>" + fileType2 + "</file_type>\n" +
-                            "</file_types>\n" +
-                            "<order_number/>\n" +
-                            "<subscription_coupon_group>" + couponGroup + "</subscription_coupon_group>\n" +
-                            "<product_codes>" + productCodes + "</product_codes>\n" +
-                        "</multi_price_plan>\n" +
-                    "</multi_price_plans>\n" +
+                "<multi_price_plans>\n" +
+                "<multi_price_plan code=\"" + mppCode + "\" action=\"" + action + "\" is_active=\"" + isActive + "\">\n" +
+                "<titles>\n" +
+                "<title lang=\"eng\">" + title + "</title>\n" +
+                "</titles>\n" +
+                "<descriptions>\n" +
+                "<description lang=\"eng\">" + description + "</description>" +
+                "</descriptions>\n" +
+                "<start_date>" + startDate + "</start_date>\n" +
+                "<end_date>" + endDate + "</end_date>\n" +
+                "<internal_discount>" + internalDiscount + "</internal_discount>\n" +
+                "<coupon_group/>\n" +
+                "<product_code>" + productCode + "</product_code>\n" +
+                "<is_renewable>" + isRenewable + "</is_renewable>\n" +
+                "<priview_module/>\n" +
+                "<grace_period_minutes>" + gracePeriodMinute + "</grace_period_minutes>\n" +
+                "<price_plan_codes>\n" +
+                "<price_plan_code>" + pricePlanCode1 + "</price_plan_code>\n" +
+                "<price_plan_code>" + pricePlanCode2 + "</price_plan_code>\n" +
+                "</price_plan_codes>\n" +
+                "<channels>\n" +
+                "<channel>" + channel1 + "</channel>\n" +
+                "<channel>" + channel2 + "</channel>\n" +
+                "</channels>\n" +
+                "<file_types>\n" +
+                "<file_type>" + fileType1 + "</file_type>\n" +
+                "<file_type>" + fileType2 + "</file_type>\n" +
+                "</file_types>\n" +
+                "<order_number/>\n" +
+                "<subscription_coupon_group>" + couponGroup + "</subscription_coupon_group>\n" +
+                "<product_codes>" + productCodes + "</product_codes>\n" +
+                "</multi_price_plan>\n" +
+                "</multi_price_plans>\n" +
                 "</ingest>\n";
     }
 
@@ -486,8 +491,8 @@ public class IngestUtils extends BaseUtils {
     /**
      * IMPORTANT: please delete inserted by that method items
      *
-     * @param action - can be "insert", "update" and "delete"
-     * @param ppCode - should have value in case "action" one of {"update" and "delete"}
+     * @param action           - can be "insert", "update" and "delete"
+     * @param ppCode           - should have value in case "action" one of {"update" and "delete"}
      * @param isActive
      * @param fullLifeCycle
      * @param viewLifeCycle
@@ -498,10 +503,10 @@ public class IngestUtils extends BaseUtils {
      * @param isRenewable
      * @param recurringPeriods
      * @return PricePlan data
-     *
+     * <p>
      * to update or delete existed price plan use corresponded action and value pricePlan.getName() as "ppCode"
      * (where pricePlan is a variable that contains price plan data)
-     *
+     * <p>
      * !!!Only created by that method PP can be deleted/updated!!!
      */
     public static PricePlan ingestPP(Optional<String> action, Optional<String> ppCode, Optional<Boolean> isActive,
@@ -582,28 +587,28 @@ public class IngestUtils extends BaseUtils {
                                            String discount, boolean isRenewable, int recurringPeriods) {
         String id = "reportIngestPricePlan" + action.substring(0, 1).toUpperCase() + action.substring(1);
         return "<ingest id=\"" + id + "\">\n" +
-                    "<price_plans>\n" +
-                        "<price_plan code=\"" + ppCode + "\"  action=\"" + action + "\" is_active=\"" + isActive + "\">\n" +
-                            "<full_life_cycle>" + fullLifeCycle + "</full_life_cycle>\n" +
-                            "<view_life_cycle>" + viewLifeCycle + "</view_life_cycle>\n" +
-                            "<max_views>" + maxViews + "</max_views>\n" +
-                            "<price_code>\n" +
-                                "<price>" + price + "</price>\n" +
-                                "<currency>" + currency + "</currency>\n" +
-                            "</price_code>\n" +
-                            "<discount>" + discount + "</discount>\n" +
-                            "<is_renewable>" + isRenewable + "</is_renewable>\n" +
-                            "<recurring_periods>" + recurringPeriods + "</recurring_periods>\n" +
-                        "</price_plan>\n" +
-                    "</price_plans>\n" +
+                "<price_plans>\n" +
+                "<price_plan code=\"" + ppCode + "\"  action=\"" + action + "\" is_active=\"" + isActive + "\">\n" +
+                "<full_life_cycle>" + fullLifeCycle + "</full_life_cycle>\n" +
+                "<view_life_cycle>" + viewLifeCycle + "</view_life_cycle>\n" +
+                "<max_views>" + maxViews + "</max_views>\n" +
+                "<price_code>\n" +
+                "<price>" + price + "</price>\n" +
+                "<currency>" + currency + "</currency>\n" +
+                "</price_code>\n" +
+                "<discount>" + discount + "</discount>\n" +
+                "<is_renewable>" + isRenewable + "</is_renewable>\n" +
+                "<recurring_periods>" + recurringPeriods + "</recurring_periods>\n" +
+                "</price_plan>\n" +
+                "</price_plans>\n" +
                 "</ingest>\n";
     }
 
     /**
      * IMPORTANT: please delete inserted by that method items
      *
-     * @param action - can be "insert", "update" and "delete"
-     * @param ppvCode - should have value in case "action" one of {"update" and "delete"}
+     * @param action                  - can be "insert", "update" and "delete"
+     * @param ppvCode                 - should have value in case "action" one of {"update" and "delete"}
      * @param isActive
      * @param description
      * @param discount
@@ -616,11 +621,11 @@ public class IngestUtils extends BaseUtils {
      * @param firstFileType
      * @param secondFileType
      * @return PPV data
-     *
-     *  to update or delete existed ppv use corresponded action and value ppv.getName() as "ppvCode"
-     *  (where ppv is a variable that contains ppv data)
-     *
-     *  !!!Only created by that method PPV can be deleted/update!!!
+     * <p>
+     * to update or delete existed ppv use corresponded action and value ppv.getName() as "ppvCode"
+     * (where ppv is a variable that contains ppv data)
+     * <p>
+     * !!!Only created by that method PPV can be deleted/update!!!
      */
     // ingest new PPV
     public static Ppv ingestPPV(Optional<String> action, Optional<String> ppvCode, Optional<Boolean> isActive, Optional<String> description,
@@ -739,8 +744,8 @@ public class IngestUtils extends BaseUtils {
     /**
      * IMPORTANT: please delete inserted by that method items
      *
-     * @param action - can be "insert", "update" and "delete"
-     * @param coguid - should have value in case "action" one of {"update" and "delete"}
+     * @param action           - can be "insert", "update" and "delete"
+     * @param coguid           - should have value in case "action" one of {"update" and "delete"}
      * @param isActive
      * @param name
      * @param thumbUrl
@@ -752,12 +757,10 @@ public class IngestUtils extends BaseUtils {
      * @param mediaType
      * @param ppvWebName
      * @param ppvMobileName
-     * @return
-     *
-     * to update or delete existed VOD use corresponded action and value vod.getName() as "coguid"
-     *      (where vod is a variable that contains VOD data)
-     *
-     *      !!!Only created by that method VOD can be deleted/update!!!
+     * @return to update or delete existed VOD use corresponded action and value vod.getName() as "coguid"
+     * (where vod is a variable that contains VOD data)
+     * <p>
+     * !!!Only created by that method VOD can be deleted/update!!!
      */
     // ingest new VOD (Media) // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
     public static MediaAsset ingestVOD(Optional<String> action, Optional<String> coguid, boolean isActive, Optional<String> name, Optional<String> thumbUrl, Optional<String> description,
@@ -767,7 +770,7 @@ public class IngestUtils extends BaseUtils {
         String coguidDatePattern = "yyMMddHHmmssSS";
         String maxEndDateValue = "14/10/2099 17:00:00";
         String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
-        int defaultDayOffset =-1;
+        int defaultDayOffset = -1;
 
         String actionValue = action.orElse(INGEST_ACTION_INSERT);
         String coguidValue = coguid.orElse(getCurrentDataInFormat(coguidDatePattern));
@@ -937,52 +940,29 @@ public class IngestUtils extends BaseUtils {
     }
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
-    public static MediaAsset ingestBasicVOD(Optional<String> name, String mediaType) {
-        String coguidValue = getCurrentDataInFormat("yyMMddHHmmssSS");
-        String nameValue = name.orElseGet(() -> MOVIE_MEDIA_TYPE + "_" + coguidValue);
-        String thumbUrlValue = INGEST_VOD_DEFAULT_THUMB;
-        String descriptionValue = "description of " + coguidValue;
-        String catalogStartDateValue = getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss");
-        String catalogEndDateValue = "14/10/2099 17:00:00";
-        String startDateValue = getOffsetDateInFormat(-1, "dd/MM/yyyy hh:mm:ss");
-        String endDateValue = "14/10/2099 17:00:00";
-        String mediaTypeValue = mediaType;
-        String ppvWebNameValue = "Shai_Regression_PPV";
-        String ppvMobileNameValue = "Shai_Regression_PPV"; // TODO: update on any generated value
-        // TODO: check if ingest url is the same for all ingest actions
-        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-        HashMap headermap = new HashMap<>();
-        headermap.put("Content-Type", "text/xml;charset=UTF-8");
-        headermap.put("SOAPAction", "\"http://tempuri.org/IService/IngestTvinciData\"");
-        String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
-                "   <soapenv:Header/>\n" +
-                "   <soapenv:Body>\n" +
-                "      <tem:IngestTvinciData><tem:request><userName>" + getIngestAssetUserName() + "</userName><passWord>" + getIngestAssetUserPassword() + "</passWord><data>" +
-                "         <![CDATA[" + buildIngestVodXml(INGEST_ACTION_INSERT, coguidValue, true, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
-                catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue) +
-                "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
-                "   </soapenv:Body>\n" +
-                "</soapenv:Envelope>";
-        io.restassured.response.Response resp = RestAssured.given()
-                .log().all()
-                .headers(headermap)
-                .body(reqBody)
-                .post(url);
-        //System.out.println("RESPONSE: " + resp.asString());
-        String id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.InternalAssetId").toString();
-
-        MediaAsset mediaAsset = new MediaAsset();
-        mediaAsset.setName(nameValue);
-        mediaAsset.setId(Long.valueOf(id));
-        mediaAsset.setDescription(descriptionValue);
-        //mediaAsset.setStartDate(startDate);
-        //mediaAsset.setEndDate(endDate);
-
-        await().pollInterval(3, TimeUnit.SECONDS).atMost(45, TimeUnit.SECONDS).until(isDataReturned(getAnonymousKs(), id, INGEST_ACTION_INSERT));
-        mediaAsset.setMediaFiles(executor.executeSync(
-                AssetService.get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs())).results.getMediaFiles());
-
-        // TODO: 4/15/2018 add log for ingest and index failures
+    public static MediaAsset ingestBasicVOD(String name, String mediaType) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of(name), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty());
         return mediaAsset;
     }
-}
+};
+
+
+//    public static ArrayList ingestBasicVODNew(int numOfAssets, String mediaType) {
+//        MediaAsset mediaAsset;
+//        ArrayList<MediaAsset> assetList = new ArrayList<>();
+//        String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
+//        int defaultDayOffset;
+//        String catalogStartDateValue;
+//        for (int i = 0; i < numOfAssets; i++) {
+//            defaultDayOffset = (-1 + - i) ;
+//            catalogStartDateValue = getOffsetDateInFormat(defaultDayOffset, startEndDatePattern);
+//            mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of("Shmulik"), Optional.empty(), Optional.empty(),
+//                    Optional.of(catalogStartDateValue), Optional.empty(),
+//                    Optional.of(catalogStartDateValue), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty());
+//            assetList.add(mediaAsset);
+//        }
+//
+//        return assetList;
+//    }
+//}
