@@ -29,7 +29,7 @@ public class BookmarkListTests extends BaseTest {
     private List<String> assetList;
 
     @BeforeClass
-    private void bookmark_listTtests_before_class() {
+    private void bookmark_listTests_before_class() {
         assetList = new ArrayList<>();
 
         assetId = BaseTest.getSharedMediaAsset().getId();
