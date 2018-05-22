@@ -1,5 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
+import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.services.UserRoleService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.OTTUser;
@@ -29,7 +30,7 @@ public class OttUserAddRoleTests extends BaseTest {
     @Description("ottUser/action/addRole - addRole")
     @Issue("BEO-5081")
     @Test(enabled = false)
-    private void addRoleTest() {
+    private void addRole() {
         // register user
         OTTUser user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
 
@@ -42,7 +43,7 @@ public class OttUserAddRoleTests extends BaseTest {
         executor.executeSync(addUserRoleBuilder);
 
         // add role to user
-        AddRoleOttUserBuilder addRoleOttUserBuilder = addRole(userRole.getId())
+        AddRoleOttUserBuilder addRoleOttUserBuilder = OttUserService.addRole(userRole.getId())
                 .setKs(getAdministratorKs())
                 .setUserId(Integer.valueOf(user.getId()));
         Response<Boolean> booleanResponse = executor.executeSync(addRoleOttUserBuilder);
@@ -67,6 +68,9 @@ public class OttUserAddRoleTests extends BaseTest {
 
         // cleanup - delete role
         // TODO: 5/14/2018 finish test after when reletead bug will be fixed
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -77,12 +81,9 @@ public class OttUserAddRoleTests extends BaseTest {
         // register user
         OTTUser user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
 
-        // generate new role
-//        UserRole userRole = generateUserRole();
-
         // add not existing role to user
         int invalidRoleId = -2;
-        AddRoleOttUserBuilder addRoleOttUserBuilder = addRole(invalidRoleId)
+        AddRoleOttUserBuilder addRoleOttUserBuilder = OttUserService.addRole(invalidRoleId)
                 .setKs(getAdministratorKs())
                 .setUserId(Integer.valueOf(user.getId()));
         Response<Boolean> booleanResponse = executor.executeSync(addRoleOttUserBuilder);
@@ -91,6 +92,9 @@ public class OttUserAddRoleTests extends BaseTest {
         
         // cleanup - delete role
         // TODO: 5/14/2018 finish test after when reletead bug will be fixed
+
+        // cleanup
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
     }
 
     private UserRole generateUserRole() {
