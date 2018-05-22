@@ -65,7 +65,6 @@ public class OttUserUpdateTests extends BaseTest {
     @Issue("BEO-4919")
     @Test(enabled = false)
     private void update_with_administratorKs() {
-
         // update user info
         String newUserInfo = "def";
         user.setFirstName(newUserInfo);

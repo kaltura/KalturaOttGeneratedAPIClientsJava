@@ -96,7 +96,7 @@ public class OttUserListTests extends BaseTest {
 
         // list household users
         ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)
-                .setKs(getAdministratorKs());
+                .setKs(getOperatorKs());
         householdUserListResponse = executor.executeSync(listOttUserBuilder);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
@@ -119,7 +119,7 @@ public class OttUserListTests extends BaseTest {
 
         // list household users
         ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)
-                .setKs(getAdministratorKs());
+                .setKs(getOperatorKs());
         householdUserListResponse = executor.executeSync(listOttUserBuilder);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
@@ -142,7 +142,7 @@ public class OttUserListTests extends BaseTest {
 
         // list household users
         ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)
-                .setKs(getAdministratorKs());
+                .setKs(getOperatorKs());
         householdUserListResponse = executor.executeSync(listOttUserBuilder);
 
         // assert error 500038 is return
@@ -163,7 +163,7 @@ public class OttUserListTests extends BaseTest {
 
         // list household users
         ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)
-                .setKs(getAdministratorKs());
+                .setKs(getOperatorKs());
         householdUserListResponse = executor.executeSync(listOttUserBuilder);
         List<OTTUser> users = householdUserListResponse.results.getObjects();
 
