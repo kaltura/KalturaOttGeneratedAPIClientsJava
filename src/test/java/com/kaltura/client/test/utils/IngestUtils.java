@@ -941,29 +941,20 @@ public class IngestUtils extends BaseUtils {
     }
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
-    public static MediaAsset ingestBasicVOD(String name, String mediaType) {
-        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of(name), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+    public static MediaAsset ingestBasicVOD(String mediaType) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty());
         return mediaAsset;
     }
-};
 
 
-//    public static ArrayList ingestBasicVODNew(int numOfAssets, String mediaType) {
-//        MediaAsset mediaAsset;
-//        ArrayList<MediaAsset> assetList = new ArrayList<>();
-//        String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
-//        int defaultDayOffset;
-//        String catalogStartDateValue;
-//        for (int i = 0; i < numOfAssets; i++) {
-//            defaultDayOffset = (-1 + - i) ;
-//            catalogStartDateValue = getOffsetDateInFormat(defaultDayOffset, startEndDatePattern);
-//            mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of("Shmulik"), Optional.empty(), Optional.empty(),
-//                    Optional.of(catalogStartDateValue), Optional.empty(),
-//                    Optional.of(catalogStartDateValue), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty());
-//            assetList.add(mediaAsset);
-//        }
-//
-//        return assetList;
-//    }
-//}
+    public static ArrayList ingestBasicVODNumOfTimes(int numOfAssets, String mediaType) {
+        MediaAsset mediaAsset;
+        ArrayList<MediaAsset> assetList = new ArrayList<>();
+        for (int i = 0; i < numOfAssets; i++) {
+            mediaAsset = ingestBasicVOD(mediaType);
+            assetList.add(mediaAsset);
+        }
+        return assetList;
+    }
+}

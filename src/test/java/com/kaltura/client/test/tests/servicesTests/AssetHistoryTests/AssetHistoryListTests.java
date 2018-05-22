@@ -47,13 +47,13 @@ public class AssetHistoryListTests extends BaseTest {
     @BeforeClass
     private void list_tests_before_class() {
         // Ingest first movie asset
-        movie = IngestUtils.ingestBasicVOD("movieForBookmark", MOVIE_MEDIA_TYPE);
+        movie = IngestUtils.ingestBasicVOD( MOVIE_MEDIA_TYPE);
         movieFileId = AssetUtils.getAssetFileIds(String.valueOf(movie.getId())).get(0);
         // Ingest second movie asset
-        movie2 = IngestUtils.ingestBasicVOD("movie2ForBookmark", MOVIE_MEDIA_TYPE);
+        movie2 = IngestUtils.ingestBasicVOD(MOVIE_MEDIA_TYPE);
         movie2FileId = AssetUtils.getAssetFileIds(String.valueOf(movie2.getId())).get(0);
         // Ingest episode asset
-        episode = IngestUtils.ingestBasicVOD("EpisodeForBookmark", EPISODE_MEDIA_TYPE);
+        episode = IngestUtils.ingestBasicVOD(EPISODE_MEDIA_TYPE);
         episodeFileId = AssetUtils.getAssetFileIds(String.valueOf(episode.getId())).get(0);
     }
 
