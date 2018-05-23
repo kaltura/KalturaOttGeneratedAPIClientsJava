@@ -11,9 +11,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.services.OttUserService.UpdateDynamicDataOttUserBuilder;
-import static com.kaltura.client.services.OttUserService.delete;
-import static com.kaltura.client.services.OttUserService.register;
+import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +34,7 @@ public class OttUserUpdateDynamicDataTests extends BaseTest {
 
         // update user dynamic data
         UpdateDynamicDataOttUserBuilder updateDynamicDataOttUserBuilder = OttUserService.updateDynamicData(keyString, value)
-                .setKs(getAdministratorKs())
+                .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(user.getId()));
         Response<OTTUserDynamicData> ottUserDynamicDataResponse = executor.executeSync(updateDynamicDataOttUserBuilder);
 

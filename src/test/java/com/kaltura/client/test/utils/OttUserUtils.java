@@ -3,9 +3,12 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
+import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.response.base.Response;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static com.kaltura.client.services.OttUserService.*;
@@ -57,4 +60,18 @@ public class OttUserUtils extends BaseUtils {
 
         return loginResponse.results.getLoginSession().getKs();
     }
+
+    public static Map<String, StringValue> dynamicDataMapBuilder(String key, String value) {
+        Map<String, StringValue> dynamicData = new HashMap<>();
+
+        String sk = key;
+        StringValue sv = new StringValue();
+        sv.setValue(value);
+        dynamicData.put(sk, sv);
+
+        return dynamicData;
+    }
+
+
+
 }
