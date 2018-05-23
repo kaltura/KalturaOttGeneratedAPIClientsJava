@@ -8,6 +8,7 @@ import com.kaltura.client.utils.response.base.Response;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.kaltura.client.services.AssetService.*;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
@@ -30,12 +31,13 @@ public class AssetUtils extends BaseUtils {
         return searchAssetFilter;
     }
 
-    public static ChannelFilter getChannelFilter(int idEqual, @Nullable String ksql, @Nullable DynamicOrderBy dynamicOrderBy, @Nullable String orderBy) {
+    public static ChannelFilter getChannelFilter(int idEqual, Optional<String> ksql, Optional<DynamicOrderBy> dynamicOrderBy, Optional<String> orderBy) {
         ChannelFilter channelFilter = new ChannelFilter();
         channelFilter.setIdEqual(idEqual);
-        channelFilter.setKSql(ksql);
-        channelFilter.setDynamicOrderBy(dynamicOrderBy);
-        channelFilter.setOrderBy(orderBy);
+
+        ksql.ifPresent(channelFilter::setKSql);
+        dynamicOrderBy.ifPresent(channelFilter::setDynamicOrderBy);
+        orderBy.ifPresent(channelFilter::setOrderBy);
 
         return channelFilter;
     }

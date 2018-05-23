@@ -2,14 +2,16 @@ package com.kaltura.client.test.utils.dbUtils;
 
 import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.sql.*;
+
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 
 public class DBUtils extends BaseUtils {
@@ -26,7 +28,7 @@ public class DBUtils extends BaseUtils {
         Logger.getLogger(DBUtils.class).debug("isActivationOfUsersNeeded()");
         int result = -1;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, BaseTest.partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
                 return false;
@@ -49,7 +51,7 @@ public class DBUtils extends BaseUtils {
         }
         String userdData = "";
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, BaseTest.partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
                 return null;
