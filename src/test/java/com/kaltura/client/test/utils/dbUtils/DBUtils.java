@@ -17,8 +17,8 @@ public class DBUtils extends BaseUtils {
     private static SQLServerDataSource dataSource;
     private static Connection conn;
     private static Statement stam;
-    private static ResultSet rs;
-    private static CallableStatement cStmt;
+    static ResultSet rs;
+    static CallableStatement cStmt;
 
     static final String ERROR_MESSAGE = "No results found";
 
@@ -199,7 +199,7 @@ public class DBUtils extends BaseUtils {
         }
     }
 
-    private static void closeConnection() {
+    static void closeConnection() {
         try {
             if (rs != null) {
                 rs.close();
@@ -219,198 +219,8 @@ public class DBUtils extends BaseUtils {
         }
     }
 
-    private static void prepareCall(String sql) throws SQLException {
+    static void prepareCall(String sql) throws SQLException {
         openConnection();
         cStmt = conn.prepareCall(sql);
-    }
-
-    /**
-     * Call Stored Procedure to create role
-     */
-    public static int insertRole(String role) {
-        int result =-1;
-        try {
-            prepareCall(SP_INSERT_ROLE);
-            cStmt.setInt(1, 0); // group_id == 0
-            cStmt.setString(2, role);
-
-            rs = cStmt.executeQuery();
-            String columnName = rs.getMetaData().getColumnName(1);
-            while (rs.next()) {
-                result = rs.getInt(columnName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-            return result;
-        }
-    }
-
-    /**
-     * Call Stored Procedure to delete role and its permissions
-     */
-    public static void deleteRoleAndItsPermissions(int roleId) {
-        try {
-            prepareCall(SP_DELETE_ROLE_AND_ITS_PERMISSIONS);
-            cStmt.setInt(1, 0); // group_id == 0
-            cStmt.setInt(2, roleId);
-
-            cStmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
-    }
-
-    /**
-     * Call Stored Procedure to insert permissions
-     */
-    public static int insertPermission(String name, int type, String usersGroup) {
-        int result =-1;
-        try {
-            prepareCall(SP_INSERT_PERMISSION);
-            cStmt.setInt(1, 0); // group_id == 0
-            cStmt.setString(2, name);
-            cStmt.setInt(3, type);
-            cStmt.setString(4, usersGroup);
-
-            rs = cStmt.executeQuery();
-            String columnName = rs.getMetaData().getColumnName(1);
-            while (rs.next()) {
-                result = rs.getInt(columnName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-            return result;
-        }
-    }
-
-    /**
-     * Call Stored Procedure to delete permission
-     */
-    public static void deletePermission(int id) {
-        try {
-            prepareCall(SP_DELETE_PERMISSION);
-            cStmt.setInt(1, id);
-
-            cStmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
-    }
-
-    /**
-     * Call Stored Procedure to insert permission role
-     */
-    public static int insertPermissionRole(long roleId, long permissionId, int isExcluded) {
-        int result =-1;
-        try {
-            prepareCall(SP_INSERT_PERMISSION_ROLE);
-            cStmt.setInt(1, 0); // group_id == 0
-            cStmt.setLong(2, roleId);
-            cStmt.setLong(3, permissionId);
-            cStmt.setInt(4, isExcluded);
-
-            rs = cStmt.executeQuery();
-            String columnName = rs.getMetaData().getColumnName(1);
-            while (rs.next()) {
-                result = rs.getInt(columnName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-            return result;
-        }
-    }
-
-    /**
-     * Call Stored Procedure to insert permission item
-     */
-    public static int insertPermissionItem(String name, int type, String service, String action, String permissionItemObject, String parameter) {
-        int result =-1;
-        try {
-            prepareCall(SP_INSERT_PERMISSION_ITEM);
-            cStmt.setString(1, name);
-            cStmt.setInt(2, type);
-            cStmt.setString(3, service);
-            cStmt.setString(4, action);
-            cStmt.setString(5, permissionItemObject);
-            cStmt.setString(6, parameter);
-            rs = cStmt.executeQuery();
-
-            String columnName = rs.getMetaData().getColumnName(1);
-            while (rs.next()) {
-                result = rs.getInt(columnName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-            return result;
-        }
-    }
-
-    /**
-     * Call Stored Procedure to delete permission item
-     */
-    public static void deletePermissionItem(int id) {
-        try {
-            prepareCall(SP_DELETE_PERMISSION_ITEM);
-            cStmt.setInt(1, id);
-
-            cStmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
-    }
-
-    /**
-     * Call Stored Procedure to insert permission permission item
-     */
-    public static int insertPermissionPermissionItem(long permissionId, long permissionItemId, int isExcluded) {
-        int result =-1;
-        try {
-            prepareCall(SP_INSERT_PERMISSION_PERMISSION_ITEM);
-            cStmt.setInt(1, 0);; // group_id == 0
-            cStmt.setLong(2, permissionId);
-            cStmt.setLong(3, permissionItemId);
-            cStmt.setInt(4, isExcluded);
-            rs = cStmt.executeQuery();
-
-            String columnName = rs.getMetaData().getColumnName(1);
-            while (rs.next()) {
-                result = rs.getInt(columnName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-            return result;
-        }
-    }
-
-    /**
-     * Call Stored Procedure to delete permission permission item
-     */
-    public static void deletePermissionPermissionItem(int id) {
-        try {
-            prepareCall(SP_DELETE_PERMISSION_PERMISSION_ITEM);
-            cStmt.setInt(1, id);
-
-            cStmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
     }
 }

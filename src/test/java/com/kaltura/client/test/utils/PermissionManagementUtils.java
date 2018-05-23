@@ -1,6 +1,6 @@
 package com.kaltura.client.test.utils;
 
-import com.kaltura.client.test.utils.dbUtils.DBUtils;
+import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
 import java.io.*;
 import java.util.List;
 
@@ -81,25 +81,24 @@ public class PermissionManagementUtils extends BaseUtils {
         return output.toString();
     }
 
-    public static void insertDataInAllTables(String path2Util, String role, String usersGroup, String permissionItemName,
+    public static void insertDataInAllTables(String path2ResultFile, String role, String usersGroup, String permissionItemName,
                                     String service, String action, String permissionItemObject, String parameter) {
-        long roleId = DBUtils.insertRole(role);
-        long permissionId = DBUtils.insertPermission(role, 2, usersGroup);
-        long permissionRoleId = DBUtils.insertPermissionRole(roleId, permissionId, 0);
+        long roleId = PermissionsManagementDBUtils.insertRole(role);
+        long permissionId = PermissionsManagementDBUtils.insertPermission(role, 2, usersGroup);
+        long permissionRoleId = PermissionsManagementDBUtils.insertPermissionRole(roleId, permissionId, 0);
 
-        long permissionItemId = DBUtils.insertPermissionItem(permissionItemName, 1, service, action, permissionItemObject, parameter);
-        long permissionPermissionItemId = DBUtils.insertPermissionPermissionItem(permissionId, permissionItemId, 0);
+        long permissionItemId = PermissionsManagementDBUtils.insertPermissionItem(permissionItemName, 1, service, action, permissionItemObject, parameter);
+        long permissionPermissionItemId = PermissionsManagementDBUtils.insertPermissionPermissionItem(permissionId, permissionItemId, 0);
 
-        generateFileWithInsertedIntoDBData(path2Util, role, usersGroup, permissionItemName, service, action,
+        generateFileWithInsertedIntoDBData(path2ResultFile, role, usersGroup, permissionItemName, service, action,
                 permissionItemObject, parameter, roleId, permissionId, permissionRoleId, permissionItemId, permissionPermissionItemId);
     }
 
-    private static void generateFileWithInsertedIntoDBData(String path2Util, String role, String usersGroup, String permissionItemName,
+    public static void generateFileWithInsertedIntoDBData(String path2ResultFile, String role, String usersGroup, String permissionItemName,
         String service, String action, String permissionItemObject, String parameter, long roleId, long permissionId,
         long permissionRoleId, long permissionItemId, long permissionPermissionItemId) {
         try {
-            // TODO: update file name as parameter
-            File file = new File(path2Util + "333\\" + "import_data.txt");
+            File file = new File(path2ResultFile);
             PrintWriter writer = new PrintWriter(file);
             writer.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
             writer.println("<permissions_dataset>");
