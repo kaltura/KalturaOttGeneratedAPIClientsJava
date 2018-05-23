@@ -16,6 +16,8 @@ public class DBConstants {
     static final String PASSWORD = "password";
     static final String USERNAME = "username";
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
+    static final String MEDIA_ID = "media_id";
+    static final String EPG_CHANNEL_NAME = "name";
 
     //queries
     static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
@@ -70,6 +72,8 @@ public class DBConstants {
             "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
 
     static final String USER_ROLES_SELECT = "SELECT [ROLE_ID] FROM [Users].[dbo].[users_roles] WHERE [USER_ID] = '%S'";
+
+    static final String ASSET_ID_SELECT = "SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=%d and status=1 and DATALENGTH(media_id) > 0";
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";
