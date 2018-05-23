@@ -233,7 +233,61 @@ public class PermissionsManagementTests {
         assertThat(fileContent).contains("permissionItemObject" + suffix);
         assertThat(fileContent).contains("parameter" + suffix);
     }
-    
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"Permission management"}, description = "execute console util to delete data from DB")
+    public void deleteFromDB() {
+        String suffix = String.valueOf(getTimeInEpoch(0));
+        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
+                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+                "parameter" + suffix, 1, 2, 3, 4, 5);
+
+        // import into DB
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(IMPORT_KEY + generatedDataFilePath);
+        executeCommandsInColsole(commands);
+
+        // check data in DB
+        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        assertThat(rowsInRolesHavingName).isEqualTo(1);
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
+
+        int rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        assertThat(rowsInPermissionsHavingName).isEqualTo(1);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+
+        int idRolePermission = getCountSpecificRowsFromRolesPermissions(idRoleHavingName, idPermissionHavingName, 0);
+        assertThat(idRolePermission).isEqualTo(1);
+
+        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        assertThat(rowsInPermissionItemsHavingName).isEqualTo(1);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+
+        int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
+                idPermissionItemHavingName, 0);
+        assertThat(rowsInPermissionsPermissions).isEqualTo(1);
+
+        // remove log file
+        deleteFile(path2Log);
+
+        // delete from DB
+        commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(DELETE_KEY + generatedDataFilePath);
+        executeCommandsInColsole(commands);
+
+        // DB should be empty
+        rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        assertThat(rowsInRolesHavingName).isEqualTo(0);
+
+        rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        assertThat(rowsInPermissionsHavingName).isEqualTo(0);
+
+        rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        assertThat(rowsInPermissionItemsHavingName).isEqualTo(0);
+    }
+
     // TODO: check how to use it
     @Test(enabled = false, groups = {"Permission management"})
     public void readXMLFile() throws ParserConfigurationException, IOException, SAXException {
