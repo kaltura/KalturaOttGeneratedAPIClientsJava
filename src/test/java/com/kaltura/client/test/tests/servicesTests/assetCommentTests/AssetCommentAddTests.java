@@ -13,6 +13,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.kaltura.client.services.AssetCommentService.AddAssetCommentBuilder;
@@ -90,9 +91,9 @@ public class AssetCommentAddTests extends BaseTest {
     @Test
     private void addCommentForEPGProgram() {
         // Ingest EPG program
-        Response<ListResponse<Asset>> epgProgram = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+        List<ProgramAsset> epgPrograms = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-        Long epgProgramId = epgProgram.results.getObjects().get(0).getId();
+        Long epgProgramId = epgPrograms.get(0).getId();
 
         // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(epgProgramId), AssetType.EPG, writer, text, createDate, subHeader, header);

@@ -39,7 +39,7 @@ Migrate services tests from ReadyAPI
 | favorite                     |        |
 | followTvSeries               |        |
 | homeNetwork                  |        |
-| household                    |        |
+| household                    | Alon - in progress |
 | householdDevice              |        |
 | householdLimitations         |        |
 | householdPaymentGateway      |        |
@@ -88,7 +88,7 @@ Migrate services tests from ReadyAPI
 | timeShiftedTvPartnerSettings |        |
 | topic                        |        |
 | transaction                  |        |
-| transactionHistory           |        |
+| transactionHistory           | Michael - in progress |
 | unifiedPayment               |        |
 | userAssetRule                |        |
 | userAssetsListItem           |        |
