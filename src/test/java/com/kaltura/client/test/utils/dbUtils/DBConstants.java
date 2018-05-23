@@ -14,6 +14,7 @@ public class DBConstants {
     static final String NAME = "name";
     static final String NUMBER_OF_REC_PERIODS = "num_of_rec_periods";
     static final String PASSWORD = "password";
+    static final String ROW_COUNT = "row_count";
     static final String USERNAME = "username";
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
 
@@ -70,6 +71,38 @@ public class DBConstants {
             "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
 
     static final String USER_ROLES_SELECT = "SELECT [ROLE_ID] FROM [Users].[dbo].[users_roles] WHERE [USER_ID] = '%S'";
+
+    static final String COUNT_RECORDS_BY_ROLE_NAME_IN_ROLES_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
+            "from [TVinci].[dbo].[roles]\n" +
+            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+
+    static final String ID_BY_ROLE_NAME_IN_ROLES_SELECT = "select " + ID + "\n" +
+            "from [TVinci].[dbo].[roles]\n" +
+            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+
+    static final String COUNT_RECORDS_BY_ROLE_NAME_IN_PERMISSIONS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
+            "from [TVinci].[dbo].[permissions]\n" +
+            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+
+    static final String ID_BY_ROLE_NAME_IN_PERMISSIONS_SELECT = "select " + ID + "\n" +
+            "from [TVinci].[dbo].[permissions]\n" +
+            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+
+    static final String COUNT_RECORDS_IN_ROLES_PERMISSIONS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
+            "from [TVinci].[dbo].[roles_permissions]\n" +
+            "where role_id=%d and permission_id=%d and is_active=1 and [status]=1 and group_id=%d";
+
+    static final String COUNT_RECORDS_BY_NAME_IN_PERMISSION_ITEMS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
+            "from [TVinci].[dbo].[permission_items]\n" +
+            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+
+    static final String ID_BY_NAME_IN_PERMISSION_ITEMS_SELECT = "select " + ID + "\n" +
+            "from [TVinci].[dbo].[permission_items]\n" +
+            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+
+    static final String COUNT_RECORDS_IN_PERMISSIONS_PERMISSIONS_ITEMS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
+            "from [TVinci].[dbo].[permissions_permission_items]\n" +
+            "where permission_id=%d and permission_item_id=%d and is_active=1 and [status]=1 and group_id=%d";
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";
