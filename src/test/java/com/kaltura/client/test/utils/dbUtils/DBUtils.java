@@ -8,7 +8,9 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.sql.*;
+
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 
@@ -95,6 +97,20 @@ public class DBUtils extends BaseUtils {
         }
 
         return resetPasswordToken;
+    }
+
+    // Get epg channel name and linear asset id json array
+    public static JSONArray getLinearAssetIdAndEpgChannelNameJsonArray() {
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = getJsonArrayFromQueryResult(String.format(ASSET_ID_SELECT, Integer.valueOf(getProperty(PARTNER_ID)) + 1), false);
+            if (jsonArray == null || jsonArray.length() <= 0) {
+                Logger.getLogger("Response is empty");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
     }
 
 
@@ -228,7 +244,7 @@ public class DBUtils extends BaseUtils {
      * Call Stored Procedure to create role
      */
     public static int insertRole(String role) {
-        int result =-1;
+        int result = -1;
         try {
             prepareCall(SP_INSERT_ROLE);
             cStmt.setInt(1, 0); // group_id == 0
@@ -268,7 +284,7 @@ public class DBUtils extends BaseUtils {
      * Call Stored Procedure to insert permissions
      */
     public static int insertPermission(String name, int type, String usersGroup) {
-        int result =-1;
+        int result = -1;
         try {
             prepareCall(SP_INSERT_PERMISSION);
             cStmt.setInt(1, 0); // group_id == 0
@@ -309,7 +325,7 @@ public class DBUtils extends BaseUtils {
      * Call Stored Procedure to insert permission role
      */
     public static int insertPermissionRole(long roleId, long permissionId, int isExcluded) {
-        int result =-1;
+        int result = -1;
         try {
             prepareCall(SP_INSERT_PERMISSION_ROLE);
             cStmt.setInt(1, 0); // group_id == 0
@@ -334,7 +350,7 @@ public class DBUtils extends BaseUtils {
      * Call Stored Procedure to insert permission item
      */
     public static int insertPermissionItem(String name, int type, String service, String action, String permissionItemObject, String parameter) {
-        int result =-1;
+        int result = -1;
         try {
             prepareCall(SP_INSERT_PERMISSION_ITEM);
             cStmt.setString(1, name);
@@ -377,10 +393,11 @@ public class DBUtils extends BaseUtils {
      * Call Stored Procedure to insert permission permission item
      */
     public static int insertPermissionPermissionItem(long permissionId, long permissionItemId, int isExcluded) {
-        int result =-1;
+        int result = -1;
         try {
             prepareCall(SP_INSERT_PERMISSION_PERMISSION_ITEM);
-            cStmt.setInt(1, 0);; // group_id == 0
+            cStmt.setInt(1, 0);
+            ; // group_id == 0
             cStmt.setLong(2, permissionId);
             cStmt.setLong(3, permissionItemId);
             cStmt.setInt(4, isExcluded);
