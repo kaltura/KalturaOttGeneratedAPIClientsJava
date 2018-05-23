@@ -6,6 +6,7 @@ import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 
 import com.kaltura.client.test.utils.AssetUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -15,7 +16,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
-import static com.kaltura.client.enums.AssetReferenceType.EPG_INTERNAL;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.kaltura.client.services.AssetService.*;
@@ -25,7 +25,7 @@ public class AssetGetTests extends BaseTest {
     private Long assetId;
     private int fileId1;
     private int fileId2;
-    Long epgProgram;
+    private Long epgProgram;
 
 
     @BeforeClass
@@ -50,6 +50,7 @@ public class AssetGetTests extends BaseTest {
         assertThat(assetGetResponse.results.getMediaFiles().get(1).getId()).isEqualTo(fileId2);
     }
 
+
     @Severity(SeverityLevel.CRITICAL)
     @Description("Asset/action/get - EPG")
     @Test
@@ -58,9 +59,22 @@ public class AssetGetTests extends BaseTest {
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
         Response<Asset> assetGetResponse = executor.executeSync(getAssetBuilder);
 
-        assertThat(assetGetResponse.results.getId()).isEqualTo(assetId);
-        assertThat(assetGetResponse.results.getMediaFiles().get(0).getId()).isEqualTo(fileId1);
-        assertThat(assetGetResponse.results.getMediaFiles().get(1).getId()).isEqualTo(fileId2);
+        assertThat(assetGetResponse.results.getId()).isEqualTo(epgProgram);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/get - unactive vod")
+    @Test
+    private void getUnactiveVodAsset() {
+
+        int unactiveAssetId = DBUtils.getUnActiveAsset();
+
+        GetAssetBuilder getAssetBuilder = AssetService.get(String.valueOf(unactiveAssetId), AssetReferenceType.MEDIA)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+        Response<Asset> assetGetResponse = executor.executeSync(getAssetBuilder);
+
+        // KalturaAPIException - code: 500007, message: "Asset not found"
+        assertThat(assetGetResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500007).getCode());
     }
 
     @Severity(SeverityLevel.MINOR)
