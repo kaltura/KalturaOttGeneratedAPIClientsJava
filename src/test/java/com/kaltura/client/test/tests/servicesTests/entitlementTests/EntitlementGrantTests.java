@@ -30,9 +30,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntitlementGrantTests extends BaseTest {
 
     // TODO: 4/12/2018 remove hardcoded ppv Id
-    private static int subscriptionId;
     private final int ppvId = 30297;
     private final int assetId = 607368;
+    private int subscriptionId;
     private int contentId;
 
     private final int numberOfUsersInHousehold = 2;

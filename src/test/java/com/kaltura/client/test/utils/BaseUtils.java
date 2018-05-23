@@ -10,7 +10,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -133,5 +133,36 @@ public class BaseUtils {
             assetIds.add(arg);
         }
         return String.join(",", assetIds);
+    }
+
+    public static String getFileContent(String filePath) {
+        String result = "";
+        try {
+            StringBuilder sb = new StringBuilder();
+            InputStream is = new FileInputStream(filePath);
+            BufferedReader buf = new BufferedReader(new InputStreamReader(is));
+
+            String line = buf.readLine();
+            while(line != null){
+                sb.append(line).append("\n");
+                line = buf.readLine();
+            }
+
+            result = sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
+    public static void deleteFile(String filePath) {
+        File file = new File(filePath);
+
+        if (file.delete()) {
+            Logger.getLogger(BaseUtils.class).debug("File deleted successfully: " + filePath);
+        } else {
+            Logger.getLogger(BaseUtils.class).error("Failed to delete the file: " + filePath);
+        }
     }
 }

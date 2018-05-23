@@ -260,7 +260,7 @@ public class BaseTest {
     public static ProgramAsset getSharedEpgProgram() {
         if (epgProgram == null) {
             epgProgram = IngestUtils.ingestEPG(epgChannelName, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty()).results.getObjects().get(0);
+                    Optional.empty(), Optional.empty(), Optional.empty()).get(0);
         }
         return (ProgramAsset) epgProgram;
     }

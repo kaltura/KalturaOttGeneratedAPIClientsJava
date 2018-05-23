@@ -9,15 +9,12 @@ import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
-
-import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-
 import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -88,10 +85,10 @@ public class IngestUtils extends BaseUtils {
 
 
     // ingest new EPG (Programmes) // TODO: complete one-by-one needed fields to cover util ingest_epg from old project
-    public static Response<ListResponse<Asset>> ingestEPG(String epgChannelName, Optional<Integer> programCount, Optional<String> firstProgramStartDate,
-                                                          Optional<Integer> programDuration, Optional<String> programDurationPeriodName,
-                                                          Optional<Boolean> isCridUnique4AllPrograms, Optional<Integer> seasonCount,
-                                                          Optional<String> coguid, Optional<String> crid, Optional<String> seriesId) {
+    public static List<ProgramAsset> ingestEPG(String epgChannelName, Optional<Integer> programCount, Optional<String> firstProgramStartDate,
+                                               Optional<Integer> programDuration, Optional<String> programDurationPeriodName,
+                                               Optional<Boolean> isCridUnique4AllPrograms, Optional<Integer> seasonCount,
+                                               Optional<String> coguid, Optional<String> crid, Optional<String> seriesId) {
 
         int programCountValue = programCount.orElse(EPG_DEFAULT_COUNT_OF_PROGRAMMES);
         if (programCountValue <= 0) {
@@ -194,8 +191,14 @@ public class IngestUtils extends BaseUtils {
 
         Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(
                 AssetService.list(assetFilter, null).setKs(getAnonymousKs()));
-        // TODO: complete Asset.json at least for programs+
-        return ingestedProgrammes;
+
+        // TODO: complete Asset.json at least for programs
+        List<Asset> assets = ingestedProgrammes.results.getObjects();
+        List<ProgramAsset> programAssets = new ArrayList<>();
+        for (Asset asset: assets) {
+            programAssets.add((ProgramAsset) asset);
+        }
+        return programAssets;
     }
 
     private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {

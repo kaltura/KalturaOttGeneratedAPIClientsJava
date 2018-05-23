@@ -22,7 +22,8 @@ public class OttUserAnonymousLoginTests extends BaseTest {
     @Description("ottUser/action/anonymousLogin - anonymousLogin")
     @Test()
     private void anonymousLogin() {
-        loginSessionResponse = executor.executeSync(OttUserService.anonymousLogin(partnerId));
+        String udid = "1234";
+        loginSessionResponse = executor.executeSync(OttUserService.anonymousLogin(partnerId, udid));
 
         assertThat(loginSessionResponse.error).isNull();
         assertThat(loginSessionResponse.results.getKs()).isNotNull();

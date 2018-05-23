@@ -33,7 +33,7 @@ public class OttUserUpdateLoginDataTests extends BaseTest {
         // update user login data
         String userNewPassword = defaultUserPassword + 1;
         UpdateLoginDataOttUserBuilder updateLoginDataOttUserBuilder = OttUserService.updateLoginData(user.getUsername(), defaultUserPassword, userNewPassword)
-            .setKs(userKs);
+                .setKs(userKs);
         Response<Boolean> booleanResponse = executor.executeSync(updateLoginDataOttUserBuilder);
 
         assertThat(booleanResponse.error).isNull();

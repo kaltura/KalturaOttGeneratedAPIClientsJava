@@ -3,12 +3,15 @@ package com.kaltura.client.test.utils.dbUtils;
 import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
-import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.*;
 import org.json.JSONArray;
+
 import java.sql.SQLException;
+
+import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
-import static com.kaltura.client.test.utils.dbUtils.DBUtils.*;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.ERROR_MESSAGE;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getJsonArrayFromQueryResult;
 
 public class IngestFixtureData {
 
@@ -16,7 +19,7 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("loadPriceCode(): priceAmount = " + priceAmount + " currency = " + currency);
         PriceDetails result = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_CODE_SELECT, BaseTest.partnerId, priceAmount, currency), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_CODE_SELECT, partnerId, priceAmount, currency), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
@@ -41,7 +44,7 @@ public class IngestFixtureData {
         DiscountModule result = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PRICE_AND_PERCENT_SELECT,
-                    BaseTest.partnerId, discountPrice, discountPercent), true);
+                    partnerId, discountPrice, discountPercent), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
@@ -73,7 +76,7 @@ public class IngestFixtureData {
                 return pricePlan;
             }
 
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_SELECT, BaseTest.partnerId,
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_SELECT, partnerId,
                     Integer.valueOf(discountModule.toParams().get("id").toString()), priceCode.getId()), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return pricePlan;
@@ -101,7 +104,7 @@ public class IngestFixtureData {
 
         Subscription subscription = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_SELECT, BaseTest.partnerId,
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_SELECT, partnerId,
                     pricePlan.getId()), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscription;
@@ -126,7 +129,7 @@ public class IngestFixtureData {
         String code = "";
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency,
-                    percent, BaseTest.partnerId), false);
+                    percent, partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return null;
             }
@@ -147,7 +150,7 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("getEpgChannelId(): channelName = " + channelName);
         int epgChannelId = -1;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, BaseTest.partnerId + 1, channelName), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, partnerId + 1, channelName), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(IngestFixtureData.class).error(ERROR_MESSAGE);
                 return epgChannelId;

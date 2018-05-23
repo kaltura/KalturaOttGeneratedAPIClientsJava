@@ -1,4 +1,4 @@
-package com.kaltura.client.test.tests.servicesTests.AssetHistoryTests;
+package com.kaltura.client.test.tests.servicesTests.assetHistoryTests;
 
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
@@ -14,8 +14,6 @@ import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import java.util.Optional;
 
 import static com.kaltura.client.services.BookmarkService.*;
 import static com.kaltura.client.services.AssetHistoryService.CleanAssetHistoryBuilder;

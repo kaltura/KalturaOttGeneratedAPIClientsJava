@@ -1,9 +1,8 @@
-package com.kaltura.client.test.tests.servicesTests.AssetHistoryTests;
+package com.kaltura.client.test.tests.servicesTests.assetHistoryTests;
 
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.WatchStatus;
-import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetHistoryUtils;
 import com.kaltura.client.test.utils.AssetUtils;
@@ -17,7 +16,6 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.kaltura.client.services.AssetHistoryService.*;
 import static com.kaltura.client.services.BookmarkService.*;
