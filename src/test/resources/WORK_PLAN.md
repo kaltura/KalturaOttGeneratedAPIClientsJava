@@ -67,7 +67,7 @@ Migrate services tests from ReadyAPI
 | ppv                          |        |
 | priceDetails                 |        |
 | pricePlan                    |        |
-| productPrice                 |        |
+| productPrice                 |  Max - in progress      |
 | purchaseSettings             |        |
 | recommendationProfile        |        |
 | recording                    |        |
