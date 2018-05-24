@@ -8,6 +8,8 @@ import com.kaltura.client.types.Household;
 import com.kaltura.client.types.HouseholdUser;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -27,6 +29,7 @@ public class householdGetTests extends BaseTest {
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("household/action/get - with master user ks")
     @Test
     private void get_with_masterUser_ks() {
@@ -43,6 +46,7 @@ public class householdGetTests extends BaseTest {
         assertThat(householdResponse.results.getId()).isEqualTo(household.getId());
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("household/action/get - with regular user ks")
     @Test
     private void get_with_regularUser_ks() {
@@ -59,6 +63,7 @@ public class householdGetTests extends BaseTest {
         assertThat(householdResponse.results.getId()).isEqualTo(household.getId());
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("household/action/get - with operator user ks")
     @Test
     private void get_with_operatorUser_ks() {
@@ -71,6 +76,7 @@ public class householdGetTests extends BaseTest {
         assertThat(householdResponse.results.getId()).isEqualTo(household.getId());
     }
 
+    @Severity(SeverityLevel.MINOR)
     @Description("household/action/get - with invalid household id - error 1006")
     @Test
     private void get_with_invalid_householdId() {
