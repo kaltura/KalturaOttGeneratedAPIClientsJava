@@ -1,6 +1,5 @@
 package com.kaltura.client.test.tests.servicesTests.AssetTests;
 
-
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
@@ -63,7 +62,7 @@ public class AssetGetTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Asset/action/get - unactive vod")
+    @Description("Asset/action/get - un active vod")
     @Test
     private void getUnactiveVodAsset() {
 
