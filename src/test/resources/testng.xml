@@ -5,6 +5,7 @@
         <groups>
             <run>
                 <exclude name="slow" />
+                <exclude name="Permission management"/>
             </run>
         </groups>
 
