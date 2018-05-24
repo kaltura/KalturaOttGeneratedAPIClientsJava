@@ -1,7 +1,9 @@
-package com.kaltura.client.test.tests.featuresTests.four_eight;
+package com.kaltura.client.test.tests.featuresTests.versions.four_eight;
 
 import com.kaltura.client.test.utils.PermissionManagementUtils;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -23,11 +25,11 @@ import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
  * Class to test functionality described in https://kaltura.atlassian.net/browse/BEO-4885
  */
 public class PermissionsManagementTests {
-    // TODO: discuss where to save these values
+
+    String mainFile = "PermissionsDeployment.exe";
     String path2Log = "C:\\log\\permissions\\permissions.log";
     String path2Util = "C:\\123\\222\\";
     String path2EmptyFile = path2Util + "333\\" + "empty_file.txt";
-    String mainFile = "PermissionsDeployment.exe";
     String dataFilePath = path2Util + "333\\" + "exp1.txt";
     String generatedDataFilePath = path2Util + "333\\" + "import.txt";
     String importOnly4TablesFilePath = path2Util + "333\\" + "importOnly4Tables.txt";
@@ -36,7 +38,7 @@ public class PermissionsManagementTests {
     public static final String IMPORT_KEY = "i=";
     public static final String DELETE_KEY = "d=";
 
-    @Test(enabled = false, description = "just for deletion")
+    @Test(groups = {"Permission management"}, description = "just for deletion")
     public void deleteData() {
         //long roleId = 477L;
         long permissionId = 32L;
@@ -49,7 +51,8 @@ public class PermissionsManagementTests {
         PermissionsManagementDBUtils.deletePermissionPermissionItem((int)permissionPermissionItemId);*/
     }
 
-    @Test(enabled = false, description = "execute console util without parameters")
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util without parameters")
     public void runningWithoutParameters() {
         List<String> commands = new ArrayList<>();
         commands.add(path2Util + mainFile);
@@ -60,7 +63,8 @@ public class PermissionsManagementTests {
         assertThat(consoleOutput).contains("Shortcut: i");
     }
 
-    @Test(enabled = false, description = "execute console util to export without mentioned file")
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to export without mentioned file")
     public void runningExportWithoutFile() {
         List<String> commands = new ArrayList<>();
         commands.add(path2Util + mainFile);
@@ -70,7 +74,8 @@ public class PermissionsManagementTests {
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
 
-    @Test(enabled = false, description = "execute console util to import without mentioned file")
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to import without mentioned file")
     public void runningImportWithoutFile() {
         List<String> commands = new ArrayList<>();
         commands.add(path2Util + mainFile);
@@ -80,7 +85,8 @@ public class PermissionsManagementTests {
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
 
-    @Test(enabled = false, description = "execute console util to delete without mentioned file")
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to delete without mentioned file")
     public void runningDeleteWithoutFile() {
         List<String> commands = new ArrayList<>();
         commands.add(path2Util + mainFile);
@@ -90,7 +96,8 @@ public class PermissionsManagementTests {
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
 
-    @Test(enabled = false, description = "execute console util to export data from DB into file")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"Permission management"}, description = "execute console util to export data from DB into file")
     public void export() {
         // prepare data inserting them in DB using stored procedures
         String suffix = String.valueOf(getTimeInEpoch(0));
@@ -112,7 +119,8 @@ public class PermissionsManagementTests {
         assertThat(fileContent).contains("parameter" + suffix);
     }
 
-    @Test(enabled = false, description = "execute console util to import data into DB from file having only 4 tables instead of 5")
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to import data into DB from file having only 4 tables instead of 5")
     public void runningImportFromFileNotHavingAllTables() {
         // remove log file
         deleteFile(path2Log);
@@ -127,7 +135,8 @@ public class PermissionsManagementTests {
         assertThat(fileContent).contains("Import failed: reading from XML resulted in empty data set or data set with less than 5 tables");
     }
 
-    @Test(enabled = false, description = "execute console util to try import data into DB from empty file")
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to try import data into DB from empty file")
     public void runningImportFromEmptyFile() {
         // remove log file
         deleteFile(path2Log);
@@ -142,7 +151,8 @@ public class PermissionsManagementTests {
         assertThat(fileContent).contains("Failed importing permissions, ex = System.Xml.XmlException: Root element is missing");
     }
 
-    @Test(enabled = false, description = "execute console util to try delete data from DB using empty file")
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to try delete data from DB using empty file")
     public void runningDeleteUsingEmptyFile() {
         // remove log file
         deleteFile(path2Log);
@@ -157,7 +167,8 @@ public class PermissionsManagementTests {
         assertThat(fileContent).contains("Failed deleting permissions, ex = System.Xml.XmlException: Root element is missing");
     }
 
-    @Test(enabled = false, description = "execute console util to import data into DB from valid file")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"Permission management"}, description = "execute console util to import data into DB from valid file")
     public void importFromFile() {
         String suffix = String.valueOf(getTimeInEpoch(0));
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
@@ -191,7 +202,8 @@ public class PermissionsManagementTests {
         assertThat(rowsInPermissionsPermissions).isEqualTo(1);
     }
 
-    @Test(enabled = false, description = "execute console util to check items from DB not mentioned in import file should be mentioned in log")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = {"Permission management"}, description = "execute console util to check items from DB not mentioned in import file should be mentioned in log")
     public void runningImportToCheckLogHasItemsFromDBNotMentionedInFile() {
         // remove log file
         deleteFile(path2Log);
@@ -223,7 +235,7 @@ public class PermissionsManagementTests {
     }
     
     // TODO: check how to use it
-    @Test(enabled = false)
+    @Test(enabled = false, groups = {"Permission management"})
     public void readXMLFile() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(dataFilePath);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
