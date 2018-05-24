@@ -5,7 +5,6 @@ import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.ChannelUtils;
 import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
@@ -78,10 +77,11 @@ public class ChannelAddTests extends BaseTest {
 
         int channelId = Math.toIntExact(channelResponse.results.getId());
 
-        ChannelFilter channelFilter = AssetUtils.getChannelFilter(channelId, null, null, null);
+        ChannelFilter channelFilter = AssetUtils.getChannelFilter(channelId, Optional.empty(), Optional.empty(), Optional.empty());
 
         //asset/action/list
-        ListAssetBuilder listAssetBuilder = AssetService.list(channelFilter).setKs(getManagerKs());
+        ListAssetBuilder listAssetBuilder = AssetService.list(channelFilter)
+                .setKs(getManagerKs());
         Response<ListResponse<Asset>> listResponse = executor.executeSync(listAssetBuilder);
 
         assertThat(listResponse.results.getTotalCount()).isEqualTo(2);
@@ -101,7 +101,8 @@ public class ChannelAddTests extends BaseTest {
         channel = ChannelUtils.addChannel(channelName, Description, isActive, null, AssetOrderBy.LIKES_DESC, assetTypes, null);
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
+        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
+                .setKs(getManagerKs());
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
 
         // KalturaAPIException","code":"4020","message":"KSQL Channel media type 666 does not belong to group"
@@ -114,7 +115,8 @@ public class ChannelAddTests extends BaseTest {
         channel = ChannelUtils.addChannel(null, Description, isActive, null, AssetOrderBy.LIKES_DESC, null, null);
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
+        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
+                .setKs(getManagerKs());
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
 
         // KalturaAPIException","code":"5005","message":"KSQL Channel must have a name"
