@@ -1,6 +1,5 @@
 package com.kaltura.client.test.tests.servicesTests.AssetTests;
 
-import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
@@ -17,43 +16,78 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
-import java.util.Optional;
-
-import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.kaltura.client.services.AssetService.*;
 
 public class AssetListTests extends BaseTest {
 
-    MediaAsset assetId;
-    String ksqlQuery;
+    private MediaAsset asset;
+    private MediaAsset asset2;
+    private String ksqlQuery;
+    private AssetFilter assetFilter = null;
+    private ListAssetBuilder listAssetBuilder = null;
 
     @BeforeClass
     private void Asset_list_before_class() {
-        assetId = BaseTest.getSharedMediaAsset();
-        ksqlQuery = "name = '" + assetId.getName() + "'";
+        // Get asset from shared asset method
+        asset = BaseTest.getSharedMediaAsset();
+        // Ingest asset2
+        asset2 = IngestUtils.ingestBasicVOD(MOVIE_MEDIA_TYPE);
+
+        ksqlQuery = "name = '" + asset.getName() + "'";
+
     }
 
     // KalturaSearchAssetFilter
     // ******************************************
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Asset/action/list - VOD - equal query")
+    @Description("Asset/action/list - VOD - name equal query")
     @Test
     private void listVodAssetsWithExactKsqlQuery() {
-        AssetFilter assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
                 null,null);
-        ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter,null)
+        listAssetBuilder = AssetService.list(assetFilter,null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD - id equal query")
+    @Test
+    private void listVodAssetsWithExactKsqlQuery2() {
+        ksqlQuery = "media_id = '" + asset.getId() + "'";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
+                null,null);
+        listAssetBuilder = AssetService.list(assetFilter,null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD - or query")
+    @Test
+    private void listVodAssetsWithOrQuery() {
+        ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
+                null,null);
+        listAssetBuilder = AssetService.list(assetFilter,null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
     }
 
+
     // TODO - complete test after ingest util was updated
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Asset/action/list - VOD - not like query")
+    @Description("Asset/action/list - VOD - not query")
     @Test
-    private void listVodAssetsWithNotLikeKsqlQuery() {
+    private void listVodAssetsWithNotKsqlQuery() {
 
     }
 
@@ -62,7 +96,13 @@ public class AssetListTests extends BaseTest {
     @Description("Asset/action/list - VOD - like query")
     @Test
     private void listVodAssetsWithLikeKsqlQuery() {
-
+        ksqlQuery = "name ~ '" + asset.getName() + "'";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
+                null,null);
+        listAssetBuilder = AssetService.list(assetFilter,null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
     }
 
     // TODO - complete test after ingest util was updated
