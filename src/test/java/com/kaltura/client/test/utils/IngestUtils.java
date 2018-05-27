@@ -756,6 +756,10 @@ public class IngestUtils extends BaseUtils {
      * @param mediaType
      * @param ppvWebName
      * @param ppvMobileName
+     * @param tags
+     * @param strings
+     * @param numbers
+     * @param dates
      * @return to update or delete existed VOD use corresponded action and value vod.getName() as "coguid"
      * (where vod is a variable that contains VOD data)
      * <p>
@@ -764,7 +768,9 @@ public class IngestUtils extends BaseUtils {
     // ingest new VOD (Media) // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
     public static MediaAsset ingestVOD(Optional<String> action, Optional<String> coguid, boolean isActive, Optional<String> name, Optional<String> thumbUrl, Optional<String> description,
                                        Optional<String> catalogStartDate, Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate,
-                                       Optional<String> mediaType, Optional<String> ppvWebName, Optional<String> ppvMobileName) {
+                                       Optional<String> mediaType, Optional<String> ppvWebName, Optional<String> ppvMobileName,
+                                       Optional<Map<String, List<String>>> tags, Optional<Map<String, String>> strings,
+                                       Optional<Map<String, Integer>> numbers, Optional<Map<String, String>> dates) {
         String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
         String coguidDatePattern = "yyMMddHHmmssSS";
         String maxEndDateValue = "14/10/2099 17:00:00";
@@ -783,6 +789,10 @@ public class IngestUtils extends BaseUtils {
         String mediaTypeValue = mediaType.orElse(MOVIE_MEDIA_TYPE);
         String ppvWebNameValue = ppvWebName.orElse(ppvModuleName);
         String ppvMobileNameValue = ppvMobileName.orElse(ppvModuleName);
+        Map<String, List<String>> tagsValue = tags.orElse(getDefaultTags());
+        Map<String, String> stringsValue = strings.orElse(getDefaultStrings());
+        Map<String, Integer> numbersValue = numbers.orElse(getDefaultNumbers());
+        Map<String, String> datesValue = dates.orElse(getDefaultDates());
         // TODO: check if ingest url is the same for all ingest actions
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
         HashMap headerMap = new HashMap<>();
@@ -793,7 +803,7 @@ public class IngestUtils extends BaseUtils {
                 "   <soapenv:Body>\n" +
                 "      <tem:IngestTvinciData><tem:request><userName>" + getIngestAssetUserName() + "</userName><passWord>" + getIngestAssetUserPassword() + "</passWord><data>" +
                 "         <![CDATA[" + buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
-                catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue) +
+                catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue) +
                 "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
                 "   </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
@@ -832,6 +842,56 @@ public class IngestUtils extends BaseUtils {
         return mediaAsset;
     }
 
+    // TODO: these values should be get in another way than now
+    private static Map<String, List<String>> getDefaultTags() {
+        Map<String, List<String>> tags = new HashMap<>();
+        List<String> tagValues = new ArrayList<>();
+        tagValues.add("Costa Rica;Israel");
+        tags.put("Country", tagValues);
+        tagValues = new ArrayList<>();
+        tagValues.add("GIH");
+        tagValues.add("ABC");
+        tagValues.add("DEF");
+        tags.put("Genre", tagValues);
+        tagValues = new ArrayList<>();
+        tagValues.add("Shay_Series");
+        tags.put("Series name", tagValues);
+        tagValues = new ArrayList<>();
+        tagValues.add("KSQL channel_573349");
+        tags.put("Free", tagValues);
+        tagValues = new ArrayList<>();
+        tags.put("Parental Rating", tagValues);
+        /*tagValues = new ArrayList<>();
+        tags.put("", tagValues);*/
+
+        return tags;
+    }
+
+    // TODO: these values should be get in another way than now
+    private static Map<String, String> getDefaultStrings() {
+        Map<String, String> strings = new HashMap<>();
+        strings.put("Synopsis", "syno pino sister");
+        strings.put("meta_name", "meta_value");
+
+        return strings;
+    }
+
+    // TODO: these values should be get in another way than now
+    private static Map<String, Integer> getDefaultNumbers() {
+        Map<String, Integer> doubles = new HashMap<>();
+        doubles.put("Release year", 1900);
+
+        return doubles;
+    }
+
+    // TODO: these values should be get in another way than now
+    private static Map<String, String> getDefaultDates() {
+        Map<String, String> dates = new HashMap<>();
+        dates.put("Life cycle start date", "23/03/2017 12:34:56");
+
+        return dates;
+    }
+
     private static Callable<Boolean> isDataReturned(String ks, String mediaId, String action) {
         GetAssetBuilder getAssetBuilder = AssetService.get(mediaId, AssetReferenceType.MEDIA).setKs(ks);
         if (INGEST_ACTION_DELETE.equals(action)) {
@@ -844,7 +904,8 @@ public class IngestUtils extends BaseUtils {
     private static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl,
                                             String description, String catalogStartDate, String catalogEndDate,
                                             String startDate, String endDate, String mediaType, String ppvWebName,
-                                            String ppvMobileName) {
+                                            String ppvMobileName, Map<String, List<String>> tags,
+                                            Map<String, String> strings, Map<String, Integer> numbers, Map<String, String> dates) {
         return "<feed>\n" +
                 "  <export>\n" +
                 "    <media co_guid=\"" + coguid + "\" entry_id=\"entry_" + coguid + "\" action=\"" + action + "\" is_active=\"" + isActive + "\" erase=\"false\">\n" +
@@ -875,59 +936,11 @@ public class IngestUtils extends BaseUtils {
                 "        </rules>\n" +
                 "      </basic>\n" +
                 "      <structure>\n" +
-                //"        <strings>\n" +
-                //"          <meta name=\"Synopsis\" ml_handling=\"unique\">\n" +
-                //"            <value lang=\"eng\">syno pino sister</value>\n" +
-                //"          </meta>\n" +
-                //"          <meta name=\"${#TestCase#i_meta_name}\" ml_handling=\"unique\">\n" +
-                //"            <value lang=\"eng\">${#TestCase#i_meta_value}</value>\n" +
-                //"          </meta>\n" +
-                //"        </strings>\n" +
-                //"        <booleans/>\n" +
-                //"        <doubles>\n" +
-                //"          <meta name=\"${#TestCase#i_double_meta_name}\" ml_handling=\"unique\">${#TestCase#i_double_meta_value}</meta>\n" +
-                //"        </doubles>\n" +
-                //"        <dates>\n" +
-                //"          <meta name=\"${#TestCase#i_date_meta_name}\" ml_handling=\"unique\">${#TestCase#i_date_meta_value}</meta>\n" +
-                //"        </dates>\n" +
-                //"        <metas>\n" +
-                //"          <meta name=\"Country\" ml_handling=\"unique\">\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">Costa Rica;Israel</value>\n" +
-                //"            </container>\n" +
-                //"          </meta>\n" +
-                //"          <meta name=\"Genre\" ml_handling=\"unique\">\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">GIH</value>\n" +
-                //"            </container>\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">ABC</value>\n" +
-                //"            </container>\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">DEF</value>\n" +
-                //"            </container>\n" +
-                //"          </meta>\n" +
-                //"          <meta name=\"Series name\" ml_handling=\"unique\">\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">Shay_Series</value>\n" +
-                //"            </container>\n" +
-                //"          </meta>\n" +
-                //"          <meta name=\"Free\" ml_handling=\"unique\">\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">${#TestCase#i_tag_free_value}</value>\n" +
-                //"            </container>\n" +
-                //"          </meta>\n" +
-                //"          <meta name=\"${#TestCase#i_parental_field_name}\" ml_handling=\"unique\">\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">${#TestCase#i_parental_value}</value>\n" +
-                //"            </container>\n" +
-                //"          </meta>\n" +
-                //"          <meta name=\"${#TestCase#i_tag_name}\" ml_handling=\"unique\">\n" +
-                //"            <container>\n" +
-                //"              <value lang=\"eng\">${#TestCase#i_tag_value}</value>\n" +
-                //"            </container>\n" +
-                //"          </meta>\n" +
-                //"        </metas>\n" +
+                generateStringsXml(strings) +
+                "        <booleans/>\n" +
+                generateNumbersXml(numbers) +
+                generateDatesXml(dates) +
+                generateTagsXml(tags) + "\n" +
                 "      </structure>\n" +
                 "      <files>\n" +
                 "        <file type=\"" + getProperty(WEB_FILE_TYPE) + "\" assetDuration=\"1000\" quality=\"HIGH\" handling_type=\"CLIP\" cdn_name=\"Default CDN\" cdn_code=\"http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" alt_cdn_code=\"http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" co_guid=\"web_" + coguid + "\" billing_type=\"Tvinci\" PPV_MODULE=\"" + ppvWebName + "\" product_code=\"productExampleCode\"/>\n" +
@@ -938,10 +951,98 @@ public class IngestUtils extends BaseUtils {
                 "</feed>";
     }
 
+    private static String generateNumbersXml(Map<String, Integer> numbers) {
+        if (numbers.isEmpty()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        String key;
+        int value;
+        result.append("        <doubles>\n");
+        for(Map.Entry<String, Integer> entry : numbers.entrySet()) {
+            key = entry.getKey();
+            value = entry.getValue();
+            result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
+        }
+        result.append("        </doubles>\n");
+
+        return result.toString();
+    }
+
+    private static String getMetaXml(String key, String value) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
+        sb.append("              <value lang=\"eng\">" + value + "</value>\n");
+        sb.append("          </meta>\n");
+
+        return sb.toString();
+    }
+
+    private static String generateStringsXml(Map<String, String> strings) {
+        if (strings.isEmpty()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        String key, value;
+        result.append("        <strings>\n");
+        for(Map.Entry<String, String> entry : strings.entrySet()) {
+            key = entry.getKey();
+            value = entry.getValue();
+            result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
+            result.append("              <value lang=\"eng\">" + value + "</value>\n");
+            result.append("          </meta>\n");
+            //result.append(getMetaXml(key, value));
+        }
+        result.append("        </strings>\n");
+
+        return result.toString();
+    }
+
+    private static String generateDatesXml(Map<String, String> dates) {
+        if (dates.isEmpty()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        String key, value;
+        result.append("        <dates>\n");
+        for(Map.Entry<String, String> entry : dates.entrySet()) {
+            key = entry.getKey();
+            value = entry.getValue();
+            result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
+        }
+        result.append("        </dates>\n");
+
+        return result.toString();
+    }
+
+    private static String generateTagsXml(Map<String, List<String>> metas) {
+        if (metas.isEmpty()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        String key;
+        List<String> values;
+        result.append("        <metas>\n");
+        for(Map.Entry<String, List<String>> entry : metas.entrySet()) {
+            key = entry.getKey();
+            values = entry.getValue();
+            result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
+            for (String value: values) {
+                result.append("            <container>\n");
+                result.append("              <value lang=\"eng\">" + value + "</value>\n");
+                result.append("            </container>\n");
+            }
+            result.append("          </meta>\n");
+        }
+        result.append("        </metas>\n");
+
+        return result.toString();
+    }
+
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
     public static MediaAsset ingestBasicVOD(String name, String mediaType) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of(name), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         return mediaAsset;
     }
 };

@@ -59,7 +59,6 @@ public class PermissionManagementUtils extends BaseUtils {
         writer.println("</role>");
     }
 
-
     public static String executeCommandsInColsole(List<String> commands) {
         StringBuilder output = new StringBuilder();
 
@@ -100,14 +99,51 @@ public class PermissionManagementUtils extends BaseUtils {
         try {
             File file = new File(path2ResultFile);
             PrintWriter writer = new PrintWriter(file);
-            writer.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
-            writer.println("<permissions_dataset>");
+            printOpenTag(writer);
             printRole(writer, roleId, role);
             printRolePermission(writer, permissionRoleId, roleId, permissionId, 0, role, role);
             printPermission(writer, permissionId, role, 2, usersGroup);
             printPermissionItem(writer, permissionItemId, permissionItemName, 1, service, action, permissionItemObject, parameter);
             printPermissionPermissionItem(writer, permissionPermissionItemId, permissionId, permissionItemId, 0, permissionItemName, role);
-            writer.println("</permissions_dataset>");
+            printCloseTag(writer);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void generateFileWithInvalidTagForRole(String path2ResultFile, String roleName, int roleId) {
+        try {
+            File file = new File(path2ResultFile);
+            PrintWriter writer = new PrintWriter(file);
+            printOpenTag(writer);
+            writer.println("<role1>"); // this 1 here to make tag invalid
+            writer.println("<id>" + roleId + "</id>");
+            writer.println("<name>" + roleName + "</name>");
+            writer.println("</role1>"); // this 1 here to make tag invalid
+            printCloseTag(writer);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void printOpenTag(PrintWriter writer) {
+        writer.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
+        writer.println("<permissions_dataset>");
+    }
+
+    private static void printCloseTag(PrintWriter writer) {
+        writer.println("</permissions_dataset>");
+    }
+
+    public static void generateFileForRole(String path2ResultFile, String roleName, long roleId) {
+        try {
+            File file = new File(path2ResultFile);
+            PrintWriter writer = new PrintWriter(file);
+            printOpenTag(writer);
+            printRole(writer, roleId, roleName);
+            printCloseTag(writer);
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

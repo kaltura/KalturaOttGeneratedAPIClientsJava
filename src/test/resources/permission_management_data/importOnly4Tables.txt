@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+<permissions_dataset>
+	<role>
+		<id>485</id>
+		<name>MaxTest1526998432</name>
+	</role>
+	<role_permission>
+		<id>637</id>
+		<role_id>485</role_id>
+		<permission_id>33</permission_id>
+		<is_excluded>0</is_excluded>
+		<role_name>MaxTest1526998432</role_name>
+		<permission_name>MaxTest1526998432</permission_name>
+	</role_permission>
+	<permission>
+		<id>33</id>
+		<name>MaxTest1526998432</name>
+		<type>2</type>
+		<users_group>partner*</users_group>
+	</permission>
+	<permission_item>
+		<id>548</id>
+		<name>Asset_List_Max1526998432</name>
+		<type>1</type>
+		<service>asset</service>
+		<action>list</action>
+		<object>permissionItemObject1526998432</object>
+		<parameter>parameter1526998432</parameter>
+	</permission_item>
+</permissions_dataset>

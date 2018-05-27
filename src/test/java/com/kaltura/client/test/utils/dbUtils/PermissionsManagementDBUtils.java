@@ -199,8 +199,6 @@ public class PermissionsManagementDBUtils extends DBUtils {
     public static int getCountRowsHavingRoleNameInRoles(String name, int groupId) {
         int count = 0;
         try {
-            System.out.println(String.format(COUNT_RECORDS_BY_ROLE_NAME_IN_ROLES_SELECT,
-                    name, groupId));
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(COUNT_RECORDS_BY_ROLE_NAME_IN_ROLES_SELECT,
                     name, groupId), true);
             if (!jsonArray.isNull(0)) {
@@ -214,18 +212,18 @@ public class PermissionsManagementDBUtils extends DBUtils {
     }
 
     public static int getIdRecordHavingRoleNameInRoles(String name, int groupId) {
-        int count =-1;
+        int id =-1;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ID_BY_ROLE_NAME_IN_ROLES_SELECT,
                     name, groupId), true);
             if (!jsonArray.isNull(0)) {
-                count = jsonArray.getJSONObject(0).getInt(ROW_COUNT);
+                id = jsonArray.getJSONObject(0).getInt(ID);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return count;
+        return id;
     }
 
     public static int getCountRowsHavingRoleNameInPermissions(String name, int groupId) {

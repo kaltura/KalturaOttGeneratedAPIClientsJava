@@ -46,7 +46,8 @@ public class AssetCommentListTests extends BaseTest {
         String text = "A lot of text";
 
         Long assetId = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(MOVIE_MEDIA_TYPE)), Optional.empty(), Optional.empty()).getId();
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(MOVIE_MEDIA_TYPE)), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty()).getId();
 
         // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);
