@@ -36,7 +36,8 @@ package com.kaltura.client.enums;
 public enum RuleActionType implements EnumAsString {
 	BLOCK("BLOCK"),
 	START_DATE_OFFSET("START_DATE_OFFSET"),
-	END_DATE_OFFSET("END_DATE_OFFSET");
+	END_DATE_OFFSET("END_DATE_OFFSET"),
+	USER_BLOCK("USER_BLOCK");
 
 	private String value;
 

@@ -43,7 +43,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RuleAction.Tokenizer.class)
-public class RuleAction extends ObjectBase {
+public abstract class RuleAction extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String type();
@@ -102,7 +102,6 @@ public class RuleAction extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRuleAction");
-		kparams.add("type", this.type);
 		kparams.add("description", this.description);
 		return kparams;
 	}
