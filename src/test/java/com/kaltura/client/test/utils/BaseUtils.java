@@ -92,6 +92,7 @@ public class BaseUtils {
         }
 
         Logger.getLogger(BaseUtils.class).error("No such error code in the API schema");
+
         return null;
     }
 

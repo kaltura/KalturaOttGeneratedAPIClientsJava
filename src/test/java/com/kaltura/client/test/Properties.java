@@ -19,6 +19,7 @@ public class Properties {
 
     // Request properties
     public static final String PARTNER_ID = "partner_id";
+    public static final String DEFAULT_TIMEOUT_IN_SEC = "default_timeout_in_sec";
 
     // global users
     public static final String DEFAULT_USER_PASSWORD = "default_user_password";
@@ -40,7 +41,6 @@ public class Properties {
 
     //cycles
     public static final int CYCLE_1_DAY = 1440; // in minutes
-
 
     // usage modules
     public static final String DEFAULT_USAGE_MODULE_4_INGEST_PPV = "default_usage_module_4_ingest_ppv"; // module has 10 Minutes life cycles, 0 maximum views

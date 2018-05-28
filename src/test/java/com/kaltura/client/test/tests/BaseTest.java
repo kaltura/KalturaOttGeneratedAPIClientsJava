@@ -28,7 +28,6 @@ import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
-    private final int DEFAULT_TIMEOUT_IN_SEC = 60;
     public static final boolean LOG_HEADERS = false;
 
     public static Client client;
@@ -109,7 +108,7 @@ public class BaseTest {
         client = new Client(config);
 
         // set default awaitility timeout
-        setDefaultTimeout(DEFAULT_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
+        setDefaultTimeout(Long.parseLong(getProperty(DEFAULT_TIMEOUT_IN_SEC)), TimeUnit.SECONDS);
 
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));

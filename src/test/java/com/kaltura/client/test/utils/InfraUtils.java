@@ -2,7 +2,6 @@ package com.kaltura.client.test.utils;
 
 import com.google.common.reflect.ClassPath;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,24 +16,19 @@ public class InfraUtils {
         String packageName = "com.kaltura.client.test.utils";
 
         File file = new File("src/test/resources/utils_list.txt");
-        FileUtils.writeStringToFile(file, "package - " + packageName, Charset.defaultCharset());
-        FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
-        FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
+        FileUtils.writeStringToFile(file, "package - " + packageName + "\n", Charset.defaultCharset());
 
         Set<ClassPath.ClassInfo> allClasses = ClassPath.from(ClassLoader.getSystemClassLoader()).getTopLevelClasses(packageName);
         for (ClassPath.ClassInfo classInfo: allClasses) {
-            FileUtils.writeStringToFile(file, "class - " + classInfo.getSimpleName() + ":", Charset.defaultCharset(), true);
-            FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
+            FileUtils.writeStringToFile(file, "\n" + "class - " + classInfo.getSimpleName() + ":" + "\n", Charset.defaultCharset(), true);
 
             Class clazz = classInfo.load();
             Method[] methods = clazz.getDeclaredMethods();
             for (int i = 0; i < methods.length; i++) {
                 if (Modifier.isStatic(methods[i].getModifiers())) {
-                    FileUtils.writeStringToFile(file, methods[i].getName(), Charset.defaultCharset(), true);
-                    FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
+                    FileUtils.writeStringToFile(file, methods[i].getName() + "\n", Charset.defaultCharset(), true);
                 }
             }
-            FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
         }
     }
 
@@ -42,24 +36,20 @@ public class InfraUtils {
         String packageName = "com.kaltura.client.test.utils.dbUtils";
 
         File file = new File("src/test/resources/db_utils_list.txt");
-        FileUtils.writeStringToFile(file, "package - " + packageName, Charset.defaultCharset());
-        FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
-        FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
+        FileUtils.writeStringToFile(file, "package - " + packageName + "\n", Charset.defaultCharset());
 
         Set<ClassPath.ClassInfo> allClasses = ClassPath.from(ClassLoader.getSystemClassLoader()).getTopLevelClasses(packageName);
         for (ClassPath.ClassInfo classInfo: allClasses) {
-            FileUtils.writeStringToFile(file, "class - " + classInfo.getSimpleName() + ":", Charset.defaultCharset(), true);
-            FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
+            FileUtils.writeStringToFile(file, "\n" + "class - " + classInfo.getSimpleName() + ":" + "\n", Charset.defaultCharset(), true);
 
             Class clazz = classInfo.load();
             Method[] methods = clazz.getDeclaredMethods();
             for (int i = 0; i < methods.length; i++) {
                 if (Modifier.isStatic(methods[i].getModifiers())) {
-                    FileUtils.writeStringToFile(file, methods[i].getName(), Charset.defaultCharset(), true);
-                    FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
+                    FileUtils.writeStringToFile(file, methods[i].getName() + "\n", Charset.defaultCharset(), true);
                 }
             }
-            FileUtils.writeStringToFile(file, IOUtils.LINE_SEPARATOR, Charset.defaultCharset(), true);
         }
+
     }
 }

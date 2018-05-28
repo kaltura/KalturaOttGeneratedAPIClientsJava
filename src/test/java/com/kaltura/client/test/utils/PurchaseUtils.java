@@ -28,9 +28,8 @@ public class PurchaseUtils {
     // TODO: 14/MAR/2018 add return
     public static Response<Transaction> purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, @Nullable String purchaseCurrency) {
         purchasePpvDetailsMap = new HashMap<>();
-        int paymentGatewayId = 0;
 
-        int internalFileId = -1;
+        int internalFileId;
         if (fileId.isPresent()) {
             internalFileId = fileId.get();
         } else {
@@ -60,7 +59,6 @@ public class PurchaseUtils {
         purchase.setCurrency(currency);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.PPV).get());
-        purchase.setPaymentGatewayId(Optional.of(paymentGatewayId).get());
 
         PurchaseTransactionBuilder transactionBuilder = TransactionService.purchase(purchase).setKs(ks);
         Response<Transaction> transactionResponse = executor.executeSync(transactionBuilder);
@@ -76,7 +74,6 @@ public class PurchaseUtils {
 
     public static Response<Transaction> purchaseSubscription(String ks, int subscriptionId) {
         purchaseSubscriptionDetailsMap = new HashMap<>();
-        int paymentGatewayId = 0;
 
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(String.valueOf(subscriptionId));
@@ -94,7 +91,6 @@ public class PurchaseUtils {
         purchase.setCurrency(currency);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.SUBSCRIPTION).get());
-        purchase.setPaymentGatewayId(Optional.of(paymentGatewayId).get());
 
         PurchaseTransactionBuilder purchaseTransactionBuilder = TransactionService.purchase(purchase).setKs(ks);
         Response<Transaction> transactionResponse = executor.executeSync(purchaseTransactionBuilder);
