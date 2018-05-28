@@ -59,10 +59,10 @@ public class AssetUserRuleService {
 		return new AddAssetUserRuleBuilder(assetUserRule);
 	}
 	
-	public static class AttachUser AssetUserRuleBuilder extends NullRequestBuilder {
+	public static class AttachUserAssetUserRuleBuilder extends NullRequestBuilder {
 		
-		public AttachUser AssetUserRuleBuilder(long ruleId) {
-			super("assetuserrule", "attachUser ");
+		public AttachUserAssetUserRuleBuilder(long ruleId) {
+			super("assetuserrule", "attachUser");
 			params.add("ruleId", ruleId);
 		}
 		
@@ -76,8 +76,8 @@ public class AssetUserRuleService {
 	 * 
 	 * @param ruleId AssetUserRule id to add
 	 */
-    public static AttachUser AssetUserRuleBuilder attachUser (long ruleId)  {
-		return new AttachUser AssetUserRuleBuilder(ruleId);
+    public static AttachUserAssetUserRuleBuilder attachUser(long ruleId)  {
+		return new AttachUserAssetUserRuleBuilder(ruleId);
 	}
 	
 	public static class DeleteAssetUserRuleBuilder extends NullRequestBuilder {
