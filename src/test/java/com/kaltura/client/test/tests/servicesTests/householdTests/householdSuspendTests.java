@@ -7,10 +7,8 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
-import com.kaltura.client.types.Household;
-import com.kaltura.client.types.HouseholdUser;
-import com.kaltura.client.types.LoginResponse;
-import com.kaltura.client.types.UserRole;
+import com.kaltura.client.test.utils.PurchaseUtils;
+import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
@@ -106,6 +104,37 @@ public class householdSuspendTests extends BaseTest {
 
         assertThat(loginResponse.results).isNull();
         assertThat(loginResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
+
+        // cleanup - delete role
+        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("household/action/suspend - purchase_subscription role - error 7013")
+    @Test
+    private void suspend_with_purchase_subscription_role() {
+        // create role
+        UserRole role = new UserRole();
+        role.setExcludedPermissionNames(Permissions.PURCHASE_SUBSCRIPTION.name());
+        role.setName(Permissions.PURCHASE_SUBSCRIPTION.name());
+
+        // add role
+        Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
+        role = userRoleResponse.results;
+
+        // suspend purchase_subscription
+        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
+                .setKs(getOperatorKs())
+                .setUserId(Integer.valueOf(masterUser.getUserId()));
+        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
+        assertThat(booleanResponse.results).isTrue();
+
+        // purchase_subscription
+        String userKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(userKs, Integer.parseInt(BaseTest.getSharedCommonSubscription().getId()));
+
+        assertThat(transactionResponse.results).isNull();
+        assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
 
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
