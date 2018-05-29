@@ -382,19 +382,4 @@ public class PermissionsManagementTests {
         int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(0);
     }
-
-    // TODO: check how to use it
-    @Test(enabled = false, groups = {"Permission management"})
-    public void readXMLFile() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(dataFilePath);
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-        assertThat(document).isNotNull();
-        String id = document.getElementsByTagName("role").item(1).getChildNodes().item(1).getTextContent();
-        String name = document.getElementsByTagName("role").item(1).getChildNodes().item(3).getTextContent();
-        System.out.println("role id = " + id);
-        System.out.println("role name = " + name);
-        System.out.println("# of roles: " + document.getElementsByTagName("role").getLength());
-    }
 }
