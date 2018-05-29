@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +39,54 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Asset user rule filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AccessControlBlockAction.Tokenizer.class)
-public class AccessControlBlockAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(AssetUserRuleFilter.Tokenizer.class)
+public class AssetUserRuleFilter extends Filter {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
+		String attachedUserIdEqualCurrent();
+	}
+
+	/**
+	 * Indicates if to get the asset user rule list for the attached user or for the
+	  entire group
+	 */
+	private Boolean attachedUserIdEqualCurrent;
+
+	// attachedUserIdEqualCurrent:
+	public Boolean getAttachedUserIdEqualCurrent(){
+		return this.attachedUserIdEqualCurrent;
+	}
+	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
+		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
+	}
+
+	public void attachedUserIdEqualCurrent(String multirequestToken){
+		setToken("attachedUserIdEqualCurrent", multirequestToken);
 	}
 
 
-
-	public AccessControlBlockAction() {
+	public AssetUserRuleFilter() {
 		super();
 	}
 
-	public AccessControlBlockAction(JsonObject jsonObject) throws APIException {
+	public AssetUserRuleFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAccessControlBlockAction");
+		kparams.add("objectType", "KalturaAssetUserRuleFilter");
+		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
 		return kparams;
 	}
 

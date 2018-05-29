@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(TimeOffsetRuleAction.Tokenizer.class)
-public abstract class TimeOffsetRuleAction extends RuleAction {
+public abstract class TimeOffsetRuleAction extends AssetRuleAction {
 	
-	public interface Tokenizer extends RuleAction.Tokenizer {
+	public interface Tokenizer extends AssetRuleAction.Tokenizer {
 		String offset();
 		String timeZone();
 	}

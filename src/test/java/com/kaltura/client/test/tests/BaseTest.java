@@ -23,12 +23,11 @@ import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
-import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
+import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
-    private final int DEFAULT_TIMEOUT_IN_SEC = 60;
     public static final boolean LOG_HEADERS = false;
 
     public static Client client;
@@ -109,7 +108,7 @@ public class BaseTest {
         client = new Client(config);
 
         // set default awaitility timeout
-        setDefaultTimeout(DEFAULT_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
+        setDefaultTimeout(Long.parseLong(getProperty(DEFAULT_TIMEOUT_IN_SEC)), TimeUnit.SECONDS);
 
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
@@ -312,11 +311,11 @@ public class BaseTest {
                     }
                 }
 
-                String sharedMasterUserName = getUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername();
+                String sharedMasterUserName = getOttUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedMasterUserName, defaultUserPassword,null,null));
                 sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
 
-                String sharedUserName = getUserById(Integer.parseInt(sharedUser.getUserId())).getUsername();
+                String sharedUserName = getOttUserById(Integer.parseInt(sharedUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedUserName, defaultUserPassword,null,null));
                 sharedUserKs = loginResponse.results.getLoginSession().getKs();
             }

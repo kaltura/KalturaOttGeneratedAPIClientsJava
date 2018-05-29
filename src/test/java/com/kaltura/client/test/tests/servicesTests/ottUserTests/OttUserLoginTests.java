@@ -23,7 +23,7 @@ import static com.kaltura.client.services.OttUserService.delete;
 import static com.kaltura.client.services.OttUserService.register;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
-import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
+import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OttUserLoginTests extends BaseTest {
@@ -110,7 +110,7 @@ public class OttUserLoginTests extends BaseTest {
         executor.executeSync(suspendHouseholdBuilder);
 
         // login user
-        String username = getUserById(Integer.parseInt(user.getUserId())).getUsername();
+        String username = getOttUserById(Integer.parseInt(user.getUserId())).getUsername();
         loginResponse = executor.executeSync(OttUserService.login(partnerId, username, defaultUserPassword));
 
         // assertions
@@ -150,7 +150,7 @@ public class OttUserLoginTests extends BaseTest {
 //        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
 //
 //        // login user with invalid udid
-//        String username = getUserById(Integer.parseInt(user.getUserId())).getUsername();
+//        String username = getOttUserById(Integer.parseInt(user.getUserId())).getUsername();
 //        String invalidDeviceId = "invalid_device_id";
 //        loginResponse = executor.executeSync(OttUserService.login(partnerId, username, defaultUserPassword, null, invalidDeviceId));
 //
