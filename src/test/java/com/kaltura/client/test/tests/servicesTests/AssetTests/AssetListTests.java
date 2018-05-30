@@ -120,7 +120,7 @@ public class AssetListTests extends BaseTest {
     @Description("Asset/action/list - VOD - not query")
     @Test
     private void listVodAssetsWithNotKsqlQuery() {
-        
+
 
     }
 
