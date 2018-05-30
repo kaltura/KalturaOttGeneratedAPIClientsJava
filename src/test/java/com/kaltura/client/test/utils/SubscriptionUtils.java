@@ -9,6 +9,7 @@ import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,19 @@ public class SubscriptionUtils extends BaseUtils {
         } else {
             assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter).setKs(getOperatorKs()));
         }
-        return assetListResponse.results.getObjects();
+
+        // remove assets without media files from list
+        List<Asset> assets = assetListResponse.results.getObjects();
+        List<Asset> assetsToRemove = new ArrayList<>();
+
+        for (Asset asset : assets) {
+            if (asset.getMediaFiles().size() < 1) {
+                assetsToRemove.add(asset);
+            }
+        }
+
+        assets.removeAll(assetsToRemove);
+
+        return assets;
     }
 }
