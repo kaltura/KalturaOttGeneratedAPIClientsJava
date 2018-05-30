@@ -5,7 +5,7 @@
       "type": "object",
       "properties": {
         "householdId": {"type": "integer", "minimum": 0},
-        "email": {"type": "string", "minLength": 5},
+        "email": {"type": "string"},
         "country": {
           "type": "object",
           "properties": {
@@ -32,8 +32,8 @@
         "userState": {"type": "string", "minLength": 1},
         "id": {"type": "string", "minLength": 1},
         "username": {"type": "string", "minLength": 1},
-        "firstName": {"type": "string", "minLength": 1},
-        "lastName": {"type": "string", "minLength": 1},
+        "firstName": {"type": "string"},
+        "lastName": {"type": "string"},
         "objectType": {"type": "string", "enum": ["KalturaOTTUser"]}
       },
       "required": ["householdId", "email", "countryId", "dynamicData", "isHouseholdMaster", "suspentionState",

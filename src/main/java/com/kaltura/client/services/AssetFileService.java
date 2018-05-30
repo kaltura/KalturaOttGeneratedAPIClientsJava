@@ -30,8 +30,8 @@ package com.kaltura.client.services;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.ContextType;
 import com.kaltura.client.enums.PlaybackContextType;
+import com.kaltura.client.types.AssetFile;
 import com.kaltura.client.types.AssetFileContext;
-import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -70,10 +70,10 @@ public class AssetFileService {
 		return new GetContextAssetFileBuilder(id, contextType);
 	}
 	
-	public static class PlayManifestAssetFileBuilder extends NullRequestBuilder {
+	public static class PlayManifestAssetFileBuilder extends RequestBuilder<AssetFile, AssetFile.Tokenizer, PlayManifestAssetFileBuilder> {
 		
 		public PlayManifestAssetFileBuilder(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks) {
-			super("assetfile", "playManifest");
+			super(AssetFile.class, "assetfile", "playManifest");
 			params.add("partnerId", partnerId);
 			params.add("assetId", assetId);
 			params.add("assetType", assetType);

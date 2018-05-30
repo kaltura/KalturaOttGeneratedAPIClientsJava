@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -47,28 +46,13 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetRule.Tokenizer.class)
-public class AssetRule extends ObjectBase {
+public class AssetRule extends AssetRuleBase {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String description();
+	public interface Tokenizer extends AssetRuleBase.Tokenizer {
 		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
-		RequestBuilder.ListTokenizer<RuleAction.Tokenizer> actions();
+		RequestBuilder.ListTokenizer<AssetRuleAction.Tokenizer> actions();
 	}
 
-	/**
-	 * ID
-	 */
-	private Long id;
-	/**
-	 * Name
-	 */
-	private String name;
-	/**
-	 * Description
-	 */
-	private String description;
 	/**
 	 * List of conditions for the rule
 	 */
@@ -76,43 +60,7 @@ public class AssetRule extends ObjectBase {
 	/**
 	 * List of actions for the rule
 	 */
-	private List<RuleAction> actions;
-
-	// id:
-	public Long getId(){
-		return this.id;
-	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
+	private List<AssetRuleAction> actions;
 
 	// conditions:
 	public List<Condition> getConditions(){
@@ -123,10 +71,10 @@ public class AssetRule extends ObjectBase {
 	}
 
 	// actions:
-	public List<RuleAction> getActions(){
+	public List<AssetRuleAction> getActions(){
 		return this.actions;
 	}
-	public void setActions(List<RuleAction> actions){
+	public void setActions(List<AssetRuleAction> actions){
 		this.actions = actions;
 	}
 
@@ -141,19 +89,14 @@ public class AssetRule extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		description = GsonParser.parseString(jsonObject.get("description"));
 		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
-		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), RuleAction.class);
+		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), AssetRuleAction.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetRule");
-		kparams.add("name", this.name);
-		kparams.add("description", this.description);
 		kparams.add("conditions", this.conditions);
 		kparams.add("actions", this.actions);
 		return kparams;

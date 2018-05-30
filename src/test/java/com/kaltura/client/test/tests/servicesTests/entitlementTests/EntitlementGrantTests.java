@@ -29,8 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementGrantTests extends BaseTest {
 
-    // TODO: 4/12/2018 remove hardcoded ppv Id
-    private final int ppvId = 30297;
+    // TODO: 4/12/2018 remove hardcoded assetId
+    private int ppvId;
     private final int assetId = 607368;
     private int subscriptionId;
     private int contentId;
@@ -47,6 +47,7 @@ public class EntitlementGrantTests extends BaseTest {
         contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
         testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         subscriptionId = Integer.valueOf(getSharedCommonSubscription().getId());
+        ppvId = Integer.valueOf(getSharedCommonPpv().getId());
     }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = true")
@@ -335,9 +336,22 @@ public class EntitlementGrantTests extends BaseTest {
     }
 
     @Issue("BEO-5022")
-    @Test(description = "entitlement/action/grant - grant ppv with missing content id - error 3018", enabled = false)
-    private void grant_ppv_with_missing_contentId() {
-        // TODO: 4/30/2018 implement test
+    @Test(enabled = false, description = "entitlement/action/grant - grant ppv with invalid content id - error 3018")
+    private void grant_ppv_with_invalid_contentId() {
+        // get user form test shared household
+        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
+
+        // grant ppv with invalid content id
+        int invalidContentId = 1;
+        GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, invalidContentId)
+                .setKs(getAdministratorKs())
+                .setUserId(Integer.valueOf(user.getUserId()));
+        Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
+        assertThat(booleanResponse.error).isNull();
+
+        // assert error 3018 is return
+        assertThat(booleanResponse.results).isNull();
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3018).getCode());
     }
 
     @Test(description = "entitlement/action/grant - user not in domain - error 1005")

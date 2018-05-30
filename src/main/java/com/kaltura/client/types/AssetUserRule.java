@@ -29,7 +29,10 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,26 +41,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Asset user rule
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AccessControlBlockAction.Tokenizer.class)
-public class AccessControlBlockAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(AssetUserRule.Tokenizer.class)
+public class AssetUserRule extends AssetRuleBase {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
+	public interface Tokenizer extends AssetRuleBase.Tokenizer {
+		RequestBuilder.ListTokenizer<AssetCondition.Tokenizer> conditions();
+		RequestBuilder.ListTokenizer<AssetUserRuleAction.Tokenizer> actions();
+	}
+
+	/**
+	 * List of Ksql conditions for the user rule
+	 */
+	private List<AssetCondition> conditions;
+	/**
+	 * List of actions for the user rule
+	 */
+	private List<AssetUserRuleAction> actions;
+
+	// conditions:
+	public List<AssetCondition> getConditions(){
+		return this.conditions;
+	}
+	public void setConditions(List<AssetCondition> conditions){
+		this.conditions = conditions;
+	}
+
+	// actions:
+	public List<AssetUserRuleAction> getActions(){
+		return this.actions;
+	}
+	public void setActions(List<AssetUserRuleAction> actions){
+		this.actions = actions;
 	}
 
 
-
-	public AccessControlBlockAction() {
+	public AssetUserRule() {
 		super();
 	}
 
-	public AccessControlBlockAction(JsonObject jsonObject) throws APIException {
+	public AssetUserRule(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), AssetCondition.class);
+		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), AssetUserRuleAction.class);
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAccessControlBlockAction");
+		kparams.add("objectType", "KalturaAssetUserRule");
+		kparams.add("conditions", this.conditions);
+		kparams.add("actions", this.actions);
 		return kparams;
 	}
 

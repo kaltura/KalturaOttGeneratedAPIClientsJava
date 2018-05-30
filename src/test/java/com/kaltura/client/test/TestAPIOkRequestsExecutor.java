@@ -5,6 +5,7 @@ import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.request.RequestBuilder;
 import com.kaltura.client.utils.request.RequestElement;
 import com.kaltura.client.utils.response.base.ApiCompletion;
@@ -58,6 +59,14 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 String s1 = "schemas/";
                 String s2 = response.results.getClass().getSimpleName();
                 String s3 = ".json";
+
+                // if returned list without objects scheme should not be checked
+                if (s2.equals("ListResponse")) {
+                    com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response;
+                    if (listResponse.results.getTotalCount() == 0) {
+                        return responseElement;
+                    }
+                }
 
                 String schema = s1 + s2 + s3;
                 Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(s2 + " schema");

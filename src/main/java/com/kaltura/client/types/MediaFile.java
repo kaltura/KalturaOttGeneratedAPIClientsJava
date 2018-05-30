@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.StringValueArray;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -46,13 +45,12 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MediaFile.Tokenizer.class)
-public class MediaFile extends ObjectBase {
+public class MediaFile extends AssetFile {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends AssetFile.Tokenizer {
 		String assetId();
 		String id();
 		String type();
-		String url();
 		String duration();
 		String externalId();
 		String billingType();
@@ -78,10 +76,6 @@ public class MediaFile extends ObjectBase {
 	 * Device types as defined in the system
 	 */
 	private String type;
-	/**
-	 * URL of the media file to be played
-	 */
-	private String url;
 	/**
 	 * Duration of the media file
 	 */
@@ -161,18 +155,6 @@ public class MediaFile extends ObjectBase {
 
 	public void type(String multirequestToken){
 		setToken("type", multirequestToken);
-	}
-
-	// url:
-	public String getUrl(){
-		return this.url;
-	}
-	public void setUrl(String url){
-		this.url = url;
-	}
-
-	public void url(String multirequestToken){
-		setToken("url", multirequestToken);
 	}
 
 	// duration:
@@ -317,7 +299,6 @@ public class MediaFile extends ObjectBase {
 		assetId = GsonParser.parseInt(jsonObject.get("assetId"));
 		id = GsonParser.parseInt(jsonObject.get("id"));
 		type = GsonParser.parseString(jsonObject.get("type"));
-		url = GsonParser.parseString(jsonObject.get("url"));
 		duration = GsonParser.parseLong(jsonObject.get("duration"));
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		billingType = GsonParser.parseString(jsonObject.get("billingType"));
@@ -337,7 +318,6 @@ public class MediaFile extends ObjectBase {
 		kparams.add("objectType", "KalturaMediaFile");
 		kparams.add("assetId", this.assetId);
 		kparams.add("type", this.type);
-		kparams.add("url", this.url);
 		kparams.add("duration", this.duration);
 		kparams.add("externalId", this.externalId);
 		kparams.add("billingType", this.billingType);

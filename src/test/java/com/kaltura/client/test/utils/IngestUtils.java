@@ -195,12 +195,9 @@ public class IngestUtils extends BaseUtils {
                 AssetService.list(assetFilter, null).setKs(getAnonymousKs()));
 
         // TODO: complete Asset.json at least for programs
-        List<Asset> assets = ingestedProgrammes.results.getObjects();
-        List<ProgramAsset> programAssets = new ArrayList<>();
-        for (Asset asset : assets) {
-            programAssets.add((ProgramAsset) asset);
-        }
-        return programAssets;
+
+        return (List<ProgramAsset>) (Object) ingestedProgrammes.results.getObjects();
+
     }
 
     private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {

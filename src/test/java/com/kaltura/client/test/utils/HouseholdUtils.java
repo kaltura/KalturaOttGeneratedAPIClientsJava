@@ -66,7 +66,7 @@ public class HouseholdUtils extends BaseUtils {
             HouseholdDevice householdDevice = new HouseholdDevice();
             householdDevice.setUdid(String.valueOf(uniqueString));
             Random r = new Random();
-            householdDevice.setBrandId(r.nextInt(30 - 1) + 1);
+            householdDevice.setBrandId(r.nextInt(28 - 1) + 1);
             householdDevice.setName(String.valueOf(uniqueString) + "device");
 
             // add device to household

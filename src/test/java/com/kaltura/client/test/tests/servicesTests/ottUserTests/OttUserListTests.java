@@ -19,7 +19,7 @@ import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.BaseUtils.getConcatenatedString;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
-import static com.kaltura.client.test.utils.OttUserUtils.getUserById;
+import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OttUserListTests extends BaseTest {
@@ -44,7 +44,7 @@ public class OttUserListTests extends BaseTest {
         HouseholdUser masterUser = getMasterUserFromHousehold(household);
 
         // login master user
-        String username = getUserById(Integer.parseInt(masterUser.getUserId())).getUsername();
+        String username = getOttUserById(Integer.parseInt(masterUser.getUserId())).getUsername();
         LoginOttUserBuilder loginOttUserBuilder = login(partnerId, username, defaultUserPassword);
         Response<LoginResponse> loginResponse = executor.executeSync(loginOttUserBuilder);
 
@@ -67,7 +67,7 @@ public class OttUserListTests extends BaseTest {
         HouseholdUser user = getRegularUsersListFromHouseHold(household).get(0);
 
         // login regular user
-        String username = getUserById(Integer.parseInt(user.getUserId())).getUsername();
+        String username = getOttUserById(Integer.parseInt(user.getUserId())).getUsername();
         LoginOttUserBuilder loginOttUserBuilder = login(partnerId, username, defaultUserPassword);
         Response<LoginResponse> loginResponse = executor.executeSync(loginOttUserBuilder);
 
@@ -114,7 +114,7 @@ public class OttUserListTests extends BaseTest {
 
         // set user filter
         OTTUserFilter ottUserFilter = new OTTUserFilter();
-        String usernameEqual = getUserById(Integer.valueOf(householdUsers.get(0).getUserId())).getUsername();
+        String usernameEqual = getOttUserById(Integer.valueOf(householdUsers.get(0).getUserId())).getUsername();
         ottUserFilter.setUsernameEqual(usernameEqual);
 
         // list household users
@@ -138,7 +138,7 @@ public class OttUserListTests extends BaseTest {
         // set invalid user filter
         OTTUserFilter ottUserFilter = new OTTUserFilter();
         ottUserFilter.setIdIn(householdUsers.get(0).getUserId());
-        ottUserFilter.setUsernameEqual(getUserById(Integer.valueOf(householdUsers.get(1).getUserId())).getUsername());
+        ottUserFilter.setUsernameEqual(getOttUserById(Integer.valueOf(householdUsers.get(1).getUserId())).getUsername());
 
         // list household users
         ListOttUserBuilder listOttUserBuilder = list(ottUserFilter)

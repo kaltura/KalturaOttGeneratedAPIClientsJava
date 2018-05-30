@@ -38,7 +38,7 @@ public class OttUserUtils extends BaseUtils {
         return user;
     }
 
-    public static OTTUser getUserById(int userId) {
+    public static OTTUser getOttUserById(int userId) {
 
         // OttUser/action/get
         GetOttUserBuilder getOttUserBuilder = OttUserService.get();
@@ -50,7 +50,7 @@ public class OttUserUtils extends BaseUtils {
     }
 
     public static String getKs(int userId, @Nullable String udid) {
-        OTTUser ottUser = getUserById(userId);
+        OTTUser ottUser = getOttUserById(userId);
 
         //OttUser/action/login
         LoginOttUserBuilder loginOttUserBuilder = OttUserService.login(partnerId, ottUser.getUsername(), defaultUserPassword, null, udid);

@@ -33,16 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleType implements EnumAsString {
-	PARENTAL("parental"),
-	GEO("geo"),
-	USER_TYPE("user_type"),
-	DEVICE("device"),
-	ASSETUSER("assetUser");
+public enum AssetUserRuleOrderBy implements EnumAsString {
+	NONE("NONE");
 
 	private String value;
 
-	RuleType(String value) {
+	AssetUserRuleOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -55,19 +51,19 @@ public enum RuleType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static RuleType get(String value) {
+	public static AssetUserRuleOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over RuleType defined values and compare the inner value with the given one:
-		for(RuleType item: values()) {
+		// goes over AssetUserRuleOrderBy defined values and compare the inner value with the given one:
+		for(AssetUserRuleOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleType.values().length > 0 ? RuleType.values()[0]: null;
+		return AssetUserRuleOrderBy.values().length > 0 ? AssetUserRuleOrderBy.values()[0]: null;
    }
 }

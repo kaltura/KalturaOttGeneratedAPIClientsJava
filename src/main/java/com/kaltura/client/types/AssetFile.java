@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,41 +39,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleType implements EnumAsString {
-	PARENTAL("parental"),
-	GEO("geo"),
-	USER_TYPE("user_type"),
-	DEVICE("device"),
-	ASSETUSER("assetUser");
 
-	private String value;
-
-	RuleType(String value) {
-		this.value = value;
+/**
+ * Asset file details
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(AssetFile.Tokenizer.class)
+public class AssetFile extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String url();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * URL of the media file to be played
+	 */
+	private String url;
+
+	// url:
+	public String getUrl(){
+		return this.url;
+	}
+	public void setUrl(String url){
+		this.url = url;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void url(String multirequestToken){
+		setToken("url", multirequestToken);
 	}
 
-	public static RuleType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleType defined values and compare the inner value with the given one:
-		for(RuleType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleType.values().length > 0 ? RuleType.values()[0]: null;
-   }
+
+	public AssetFile() {
+		super();
+	}
+
+	public AssetFile(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		url = GsonParser.parseString(jsonObject.get("url"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaAssetFile");
+		kparams.add("url", this.url);
+		return kparams;
+	}
+
 }
+

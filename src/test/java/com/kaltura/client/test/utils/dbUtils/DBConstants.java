@@ -15,6 +15,7 @@ public class DBConstants {
     static final String NUMBER_OF_REC_PERIODS = "num_of_rec_periods";
     static final String PASSWORD = "password";
     static final String ROW_COUNT = "row_count";
+    static final String SUBSCRIPTION_ONLY = "subscription_only";
     static final String USERNAME = "username";
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
 
@@ -49,6 +50,11 @@ public class DBConstants {
     static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
+
+    static final String PPV_SELECT = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
+            "where [status]=1 and is_active=1\n" +
+            "and group_id=%d and usage_module_code=%d\n" +
+            "order by create_date";
 
     static final String PRICE_CODE_SELECT = "select top 1 * from [Pricing].[dbo].[price_codes] pc\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (pc.currency_cd=lc.id)\n" +
