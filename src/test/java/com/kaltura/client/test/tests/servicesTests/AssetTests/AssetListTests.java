@@ -16,6 +16,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.kaltura.client.services.AssetService.*;
@@ -24,18 +29,24 @@ public class AssetListTests extends BaseTest {
 
     private MediaAsset asset;
     private MediaAsset asset2;
+    private MediaAsset asset3;
     private String ksqlQuery;
     private AssetFilter assetFilter = null;
     private ListAssetBuilder listAssetBuilder = null;
+    private Map map = new HashMap();
+    private ArrayList<String> list = new ArrayList<>();
+    private String tagName = "Genre";
+    private String tagValue = "shmulik_1233";
 
     @BeforeClass
     private void Asset_list_before_class() {
         // Get asset from shared asset method
         asset = BaseTest.getSharedMediaAsset();
         // Ingest asset2
-        asset2 = IngestUtils.ingestBasicVOD(MOVIE_MEDIA_TYPE);
-
-        ksqlQuery = "name = '" + asset.getName() + "'";
+        list.add(tagValue);
+        map.put(tagName, list);
+        asset2 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE, map);
+        asset3 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE, map);
 
     }
 
@@ -46,12 +57,14 @@ public class AssetListTests extends BaseTest {
     @Description("Asset/action/list - VOD - name equal query")
     @Test
     private void listVodAssetsWithExactKsqlQuery() {
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
-                null,null);
-        listAssetBuilder = AssetService.list(assetFilter,null)
+        ksqlQuery = "name = '" + asset.getName() + "'";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null,
+                null, null);
+        listAssetBuilder = AssetService.list(assetFilter, null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
     }
 
@@ -60,12 +73,13 @@ public class AssetListTests extends BaseTest {
     @Test
     private void listVodAssetsWithExactKsqlQuery2() {
         ksqlQuery = "media_id = '" + asset.getId() + "'";
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
-                null,null);
-        listAssetBuilder = AssetService.list(assetFilter,null)
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null,
+                null, null);
+        listAssetBuilder = AssetService.list(assetFilter, null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
     }
 
@@ -74,12 +88,30 @@ public class AssetListTests extends BaseTest {
     @Test
     private void listVodAssetsWithOrQuery() {
         ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "')";
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
-                null,null);
-        listAssetBuilder = AssetService.list(assetFilter,null)
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null,
+                null, null);
+        listAssetBuilder = AssetService.list(assetFilter, null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(2);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD - AND query")
+    @Test
+    private void listVodAssetsWithAndQuery() {
+        ksqlQuery = "(and media_id = '" + asset3.getId() + "' " + tagName + " = '" + tagValue + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null,
+                null, null);
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
     }
 
 
@@ -88,6 +120,7 @@ public class AssetListTests extends BaseTest {
     @Description("Asset/action/list - VOD - not query")
     @Test
     private void listVodAssetsWithNotKsqlQuery() {
+        
 
     }
 
@@ -97,11 +130,12 @@ public class AssetListTests extends BaseTest {
     @Test
     private void listVodAssetsWithLikeKsqlQuery() {
         ksqlQuery = "name ~ '" + asset.getName() + "'";
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null,null,null,null,
-                null,null);
-        listAssetBuilder = AssetService.list(assetFilter,null)
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null,
+                null, null);
+        listAssetBuilder = AssetService.list(assetFilter, null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
     }
 
@@ -112,8 +146,6 @@ public class AssetListTests extends BaseTest {
     private void listVodAssetsWithStartWithKsqlQuery() {
 
     }
-
-
 
 
 }

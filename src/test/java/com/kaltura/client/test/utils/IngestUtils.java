@@ -1048,10 +1048,19 @@ public class IngestUtils extends BaseUtils {
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
 
-    public static MediaAsset ingestBasicVOD(String mediaType) {
+    public static MediaAsset ingestVOD(String mediaType) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
+
+    //
+    public static MediaAsset ingestVOD(String mediaType,Map<String, List<String>> tags) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
 
         return mediaAsset;
     }
@@ -1061,7 +1070,7 @@ public class IngestUtils extends BaseUtils {
         MediaAsset mediaAsset;
         ArrayList<MediaAsset> assetList = new ArrayList<>();
         for (int i = 0; i < numOfAssets; i++) {
-            mediaAsset = ingestBasicVOD(mediaType);
+            mediaAsset = ingestVOD(mediaType);
             assetList.add(mediaAsset);
         }
         return assetList;

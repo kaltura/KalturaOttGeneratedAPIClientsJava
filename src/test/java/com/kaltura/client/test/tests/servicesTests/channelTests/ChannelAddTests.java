@@ -61,10 +61,10 @@ public class ChannelAddTests extends BaseTest {
         //String asset2Name = "Episode_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
 
         // Ingest first asset
-        MediaAsset movieAsset = IngestUtils.ingestBasicVOD(MOVIE_MEDIA_TYPE);
+        MediaAsset movieAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
 
         // Ingest second asset
-        MediaAsset episodeAsset = IngestUtils.ingestBasicVOD(MOVIE_MEDIA_TYPE);
+        MediaAsset episodeAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);
