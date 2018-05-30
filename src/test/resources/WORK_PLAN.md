@@ -72,7 +72,7 @@ Migrate features tests from ReadyAPI
 | ppv                          |        |
 | priceDetails                 |        |
 | pricePlan                    |        |
-| productPrice                 |  Max - in progress      |
+| productPrice                 | Max - in progress |
 | purchaseSettings             |        |
 | recommendationProfile        |        |
 | recording                    |        |

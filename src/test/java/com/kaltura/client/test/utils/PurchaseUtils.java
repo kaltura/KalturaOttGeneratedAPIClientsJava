@@ -25,7 +25,6 @@ public class PurchaseUtils {
     private static Response<ListResponse<ProductPrice>> productPriceResponse;
     private static Response<Asset> assetResponse;
 
-    // TODO: 14/MAR/2018 add return
     public static Response<Transaction> purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, @Nullable String purchaseCurrency) {
         purchasePpvDetailsMap = new HashMap<>();
 
