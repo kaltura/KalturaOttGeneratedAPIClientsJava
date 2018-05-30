@@ -29,8 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementGrantTests extends BaseTest {
 
-    // TODO: 4/12/2018 remove hardcoded ppv Id
-    private final int ppvId = 30297;
+    // TODO: 4/12/2018 remove hardcoded assetId
+    private int ppvId;
     private final int assetId = 607368;
     private int subscriptionId;
     private int contentId;
@@ -47,6 +47,7 @@ public class EntitlementGrantTests extends BaseTest {
         contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
         testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         subscriptionId = Integer.valueOf(getSharedCommonSubscription().getId());
+        ppvId = Integer.valueOf(getSharedCommonPpv().getId());
     }
 
     @Test(description = "entitlement/action/grant - grant subscription with history = true")

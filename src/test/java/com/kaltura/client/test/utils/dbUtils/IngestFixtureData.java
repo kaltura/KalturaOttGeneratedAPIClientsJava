@@ -182,4 +182,27 @@ public class IngestFixtureData {
 
         return result;
     }
+
+    public static Ppv loadSharedCommonPpv(PricePlan pricePlan) {
+        Logger.getLogger(IngestFixtureData.class).debug("loadSharedCommonPpv(): pricePlan id = " + pricePlan.getId());
+
+        Ppv ppv = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PPV_SELECT, partnerId,
+                    pricePlan.getId()), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return ppv;
+            }
+
+            ppv = new Ppv();
+            ppv.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+            ppv.setName(jsonArray.getJSONObject(0).getString(NAME));
+            ppv.setIsSubscriptionOnly(jsonArray.getJSONObject(0).getInt(SUBSCRIPTION_ONLY) == 0);
+            // TODO: add more data in case it needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("Ppv data can't be null");
+        }
+        return ppv;
+    }
 }

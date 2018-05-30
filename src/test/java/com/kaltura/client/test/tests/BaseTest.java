@@ -63,6 +63,9 @@ public class BaseTest {
     // shared ingested subscription
     private static Subscription sharedCommonSubscription;
 
+    // shared ingested PPV
+    private static Ppv sharedCommonPpv;
+
     // cycles map with values related view/full life cycles of price plans
     private static Map<Integer, String> cycles = new HashMap<>();
     {
@@ -164,6 +167,29 @@ public class BaseTest {
             }
         }
         return sharedCommonSubscription;
+    }
+
+    /**
+     * Regression requires existing of PPV with specific parameters.
+     * Price Plan should be as for method public static PricePlan getSharedCommonPricePlan()
+     *
+     * PPV should be with discount (internal items) 50%
+     *
+     * @return PPV with mentioned parameters
+     */
+    public static Ppv getSharedCommonPpv(){
+        double discountPercentValue = 50.0;
+        String defaultCurrency = "EUR";
+        if (sharedCommonPpv == null) {
+            sharedCommonPpv = IngestFixtureData.loadSharedCommonPpv(getSharedCommonPricePlan());
+            if (sharedCommonPpv == null) {
+                sharedCommonPpv = IngestUtils.ingestPPV(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
+                        Optional.empty(), Optional.of(IngestFixtureData.getDiscount(defaultCurrency, (int) discountPercentValue)),
+                        Optional.empty(), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()),
+                        Optional.of(false), Optional.of(false), Optional.empty(), Optional.empty(), Optional.empty());
+            }
+        }
+        return sharedCommonPpv;
     }
 
     public static String getIngestBusinessModuleUserName() {
