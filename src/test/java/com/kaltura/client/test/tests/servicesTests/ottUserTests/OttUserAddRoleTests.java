@@ -3,6 +3,7 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.services.UserRoleService;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.UserRoleUtils;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.UserRole;
 import com.kaltura.client.types.UserRoleFilter;
@@ -15,7 +16,6 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.services.UserRoleService.*;
@@ -35,7 +35,7 @@ public class OttUserAddRoleTests extends BaseTest {
         OTTUser user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
 
         // generate new role
-        UserRole userRole = generateUserRole();
+        UserRole userRole = UserRoleUtils.generateUserRole();
 
         // add role
         AddUserRoleBuilder addUserRoleBuilder = add(userRole)
@@ -95,18 +95,5 @@ public class OttUserAddRoleTests extends BaseTest {
 
         // cleanup
         executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
-    }
-
-    private UserRole generateUserRole() {
-        Random r = new Random();
-        int low = 9000;
-        int max = 10000;
-        long roleId = r.nextInt(max - low) + low;
-
-        UserRole userRole = new UserRole();
-        userRole.setId(roleId);
-        userRole.setName(String.valueOf(roleId));
-
-        return userRole;
     }
 }
