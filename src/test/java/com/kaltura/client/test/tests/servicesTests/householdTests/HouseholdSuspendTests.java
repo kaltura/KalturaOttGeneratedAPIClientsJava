@@ -8,6 +8,7 @@ import com.kaltura.client.test.utils.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
@@ -38,10 +39,10 @@ public class HouseholdSuspendTests extends BaseTest {
         PURCHASE_SUBSCRIPTION,
         PURCHASE_PPV,
         RENEW_SUBSCRIPTION,
-        PURCHASE_SERVICE, // purchase preminum serivces
+        PURCHASE_SERVICE, // purchase premium services
         LOGIN,
         CANCEL_SUBSCRIPTION,
-        DELETE_ALL_APP_TOKENS // not for checking
+        DELETE_ALL_APP_TOKENS
     }
 
     @BeforeClass
@@ -295,8 +296,9 @@ public class HouseholdSuspendTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
+    @Issue("BEO-5166")
     @Description("household/action/suspend - with _playback_ppv role")
-    @Test(enabled = false)
+    @Test(enabled = true)
     private void suspend_with_playback_ppv_role() {
         // create role
         UserRole role = new UserRole();
@@ -307,16 +309,16 @@ public class HouseholdSuspendTests extends BaseTest {
         Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
         role = userRoleResponse.results;
 
-        // suspend with purchase_ppv role
+        // purchase ppv
+        Integer mediaFileId = asset.getMediaFiles().get(0).getId();
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), null);
+
+        // suspend with playback_ppv role
         SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
                 .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId()));
         Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
         assertThat(booleanResponse.results).isTrue();
-
-        // purchase ppv
-        Integer mediaFileId = asset.getMediaFiles().get(0).getId();
-        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), null);
 
         // get platbackContext
         PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
@@ -328,16 +330,17 @@ public class HouseholdSuspendTests extends BaseTest {
                 .setKs(masterUserKs);
         Response<PlaybackContext> playbackContextResponse = executor.executeSync(getPlaybackContextAssetBuilder);
 
-        // TODO: 5/30/2018 finish test
-        
-//        assertThat(transactionResponse.results).isNull();
-//        assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
-//
-//        // purchase subscription in order to verify suspend is specific to role
-//        transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
-//
-//        assertThat(transactionResponse.error).isNull();
-//        assertThat(transactionResponse.results.getState()).isEqualTo("OK");
+        assertThat(playbackContextResponse.results.getActions().get(0).getType()).isEqualTo(RuleActionType.BLOCK);
+        assertThat(playbackContextResponse.results.getMessages().get(0).getMessage()).isEqualTo("Not entitled");
+        assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
+
+        // purchase subscription in order to verify suspend is specific to role
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        assertThat(transactionResponse.error).isNull();
+        assertThat(transactionResponse.results.getState()).isEqualTo("OK");
+
+        // cleanup - cancel subscription
+        cancelSubscription();
 
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));

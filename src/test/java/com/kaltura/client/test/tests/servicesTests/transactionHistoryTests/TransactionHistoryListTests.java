@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ListTests extends BaseTest{
+public class TransactionHistoryListTests extends BaseTest{
 
     private EntitlementFilter entitlementPpvFilter;
     private TransactionHistoryFilter transactionHistoryFilter;
