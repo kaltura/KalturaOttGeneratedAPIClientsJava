@@ -110,6 +110,10 @@ public class DBConstants {
             "from [TVinci].[dbo].[permissions_permission_items]\n" +
             "where permission_id=%d and permission_item_id=%d and is_active=1 and [status]=1 and group_id=%d";
 
+    static final String ASSET_ID_SELECT = "SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=%d and status=1 and DATALENGTH(media_id) > 0";
+
+    static final String UNACTIVE_ASSET_ID_SELECT = "SELECT top 1 [id] FROM [TVinci].[dbo].[media] where group_id = %d and status = 2";
+
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";
     static final String SP_INSERT_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Insert_PermissionItem(?, ?, ?, ?, ?, ?)}";

@@ -10,19 +10,19 @@ Migrate features tests from ReadyAPI
 | Service                      | Status |
 |------------------------------|--------|
 | announcement                 |        |
-| appToken                     |        |
-| asset                        |        |
-| assetComment                 |        |
+| appToken                     |  Done  |
+| asset                        |  Shmulik - in progress  |
+| assetComment                 |  Done  |
 | assetFile                    |        |
-| assetHistory                 |        |
+| assetHistory                 |  Done  |
 | assetRule                    |        |
 | assetStatistics              |        |
 | assetUserRule                |        |
-| bookmark                     |        |
+| bookmark                     |  Done  |
 | cDVRAdapterProfile           |        |
 | cdnAdapterProfile            |        |
 | cdnPartnerSettings           |        |
-| channel                      |        |
+| channel                      | Shmulik - in progress    |
 | collection                   |        |
 | compensation                 |        |
 | configurationGroup           |        |
@@ -82,7 +82,7 @@ Migrate features tests from ReadyAPI
 | report                       |        |
 | searchHistory                |        |
 | seriesRecording              |        |
-| session                      |        |
+| session                      |  Done  |
 | social                       |        |
 | socialAction                 |        |
 | socialComment                |        |
