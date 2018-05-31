@@ -86,6 +86,11 @@ public class IngestUtils extends BaseUtils {
     private static int PP_DEFAULT_RECURRING_PERIODS_VALUE = 1;
 
 
+    public static List<ProgramAsset> ingestEPG(String epgChannelName, Integer programCount) {
+        return ingestEPG(epgChannelName, Optional.of(programCount), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
     // ingest new EPG (Programmes) // TODO: complete one-by-one needed fields to cover util ingest_epg from old project
     public static List<ProgramAsset> ingestEPG(String epgChannelName, Optional<Integer> programCount, Optional<String> firstProgramStartDate,
                                                Optional<Integer> programDuration, Optional<String> programDurationPeriodName,
@@ -1054,7 +1059,7 @@ public class IngestUtils extends BaseUtils {
     }
 
     //
-    public static MediaAsset ingestVOD(String mediaType,Map<String, List<String>> tags) {
+    public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
                 Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
