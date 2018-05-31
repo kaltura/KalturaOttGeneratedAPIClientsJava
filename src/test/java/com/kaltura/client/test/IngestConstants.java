@@ -3,6 +3,7 @@ package com.kaltura.client.test;
 public class IngestConstants {
 
     public static final String INGEST_ACTION_INSERT = "insert";
+    public static final String INGEST_ACTION_UPDATE = "update";
     public static final String INGEST_ACTION_DELETE = "delete";
 
     public static final Long MAX_RANDOM_GENERATED_VALUE_4_INGEST = 9999999999L;

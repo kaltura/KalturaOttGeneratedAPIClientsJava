@@ -135,7 +135,7 @@ public class ProductPriceListTests extends BaseTest {
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(classMasterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(webMediaFileId);
-        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaId()).isEqualTo(getSharedMediaAsset().getId().intValue());
+        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaId()).isEqualTo(Math.toIntExact(getSharedMediaAsset().getId()));
         assertThat(entitlementResponse.results.getObjects().get(0).getEndDate())
                 .isGreaterThan(entitlementResponse.results.getObjects().get(0).getCurrentDate());
         assertThat(entitlementResponse.results.getObjects().get(0).getPaymentMethod()).isIn(PaymentMethodType.OFFLINE, PaymentMethodType.UNKNOWN);

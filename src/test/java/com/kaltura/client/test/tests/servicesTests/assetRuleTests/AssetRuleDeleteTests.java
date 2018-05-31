@@ -9,7 +9,7 @@ public class AssetRuleDeleteTests extends BaseTest {
 
 
     @Description("/assetrule/action/delete - currently used to run util only")
-    @Test
+    @Test(enabled = false) // as test is not implemented yet
     private void deleteAllGeoAssetRules() {
         AssetRuleUtils.deleteAllGeoAssetRules();
     }

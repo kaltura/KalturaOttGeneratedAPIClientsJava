@@ -46,18 +46,31 @@ public class AssetUtils extends BaseUtils {
 
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
 
-        GetAssetBuilder getAssetBuilder = AssetService.get(assetId,assetReferenceType);
+        GetAssetBuilder getAssetBuilder = AssetService.get(assetId, assetReferenceType);
         getAssetBuilder.setKs(getSharedMasterUserKs());
         Response<Asset> assetResponse = executor.executeSync(getAssetBuilder);
 
-        List<MediaFile> mediafiles = assetResponse.results.getMediaFiles();
+        List<MediaFile> mediaFiles = assetResponse.results.getMediaFiles();
 
         List<Integer> fileIdsList = new ArrayList<>();
-        for (MediaFile mediaFile : mediafiles) {
+        for (MediaFile mediaFile : mediaFiles) {
             fileIdsList.add(mediaFile.getId());
         }
 
         return fileIdsList;
     }
+
+    public static List<Asset> getAssetsByType(String typeIn) {
+        AssetFilter assetFilter = getSearchAssetFilter(null, null, typeIn, null, null, null,null);
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageSize(20);
+        filterPager.setPageIndex(1);
+        ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter,filterPager)
+                .setKs(getSharedMasterUserKs());
+        Response<ListResponse<Asset>> assetResponse = executor.executeSync(listAssetBuilder);
+
+        return assetResponse.results.getObjects();
+    }
+
 }
 

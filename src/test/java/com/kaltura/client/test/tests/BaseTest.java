@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
@@ -50,6 +51,12 @@ public class BaseTest {
     // shared VOD
     private static MediaAsset mediaAsset;
 
+    // TODO - dynamic
+    private static String epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
+
+    //Shared EPG program
+    private static Asset epgProgram;
+
     // shared files
     private static MediaFile webMediaFile;
     private static MediaFile mobileMediaFile;
@@ -68,6 +75,7 @@ public class BaseTest {
 
     // cycles map with values related view/full life cycles of price plans
     private static Map<Integer, String> cycles = new HashMap<>();
+
     {
         // TODO: complete other values
         cycles.put(1440, "1 Day");
@@ -122,13 +130,13 @@ public class BaseTest {
      * Regression requires existing of Price Plan with specific parameters.
      * Price should be 5 Euros
      * Discount percent should be equal 100%
-     *
+     * <p>
      * In case item is not found in DB it will be ingested.
      * Can't work in case proper Discount and PriceCode aren't found in DB
      *
      * @return common shared Price Plan with mentioned parameters
      */
-    public static PricePlan getSharedCommonPricePlan(){
+    public static PricePlan getSharedCommonPricePlan() {
         String defaultCurrency = "EUR";
         double defaultDiscountPrice = 0.0;
         double defaultDiscountPercentValue = 100.0;
@@ -147,13 +155,12 @@ public class BaseTest {
     /**
      * Regression requires existing of MPP with specific parameters.
      * Price Plan should be as for method public static PricePlan getSharedCommonPricePlan()
-     *
+     * <p>
      * MPP shouldn't be renewed and with discount (internal items) 100%
-     *
      *
      * @return MPP with mentioned parameters
      */
-    public static Subscription getSharedCommonSubscription(){
+    public static Subscription getSharedCommonSubscription() {
         double defaultDiscountPercentValue = 100.0;
         String defaultCurrency = "EUR";
         if (sharedCommonSubscription == null) {
@@ -233,7 +240,7 @@ public class BaseTest {
         if (administratorKs == null) {
             String[] userInfo = DBUtils.getUserData("Administrator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null,null));
+                    null, null));
             administratorKs = loginResponse.results.getLoginSession().getKs();
         }
         return administratorKs;
@@ -243,7 +250,7 @@ public class BaseTest {
         if (operatorKs == null) {
             String[] userInfo = DBUtils.getUserData("Operator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null,null));
+                    null, null));
             operatorKs = loginResponse.results.getLoginSession().getKs();
         }
         return operatorKs;
@@ -253,7 +260,7 @@ public class BaseTest {
         if (managerKs == null) {
             String[] userInfo = DBUtils.getUserData("Manager").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null,null));
+                    null, null));
             managerKs = loginResponse.results.getLoginSession().getKs();
         }
         return managerKs;
@@ -275,6 +282,15 @@ public class BaseTest {
         }
         return mediaAsset;
     }
+
+    public static ProgramAsset getSharedEpgProgram() {
+        if (epgProgram == null) {
+            epgProgram = IngestUtils.ingestEPG(epgChannelName, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty()).get(0);
+        }
+        return (ProgramAsset) epgProgram;
+    }
+
 
     public static MediaFile getSharedWebMediaFile() {
         if (webMediaFile == null) {
@@ -336,12 +352,14 @@ public class BaseTest {
                     }
                 }
 
+
                 String sharedMasterUserName = getOttUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedMasterUserName, defaultUserPassword,null,null));
                 sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
 
                 String sharedUserName = getOttUserById(Integer.parseInt(sharedUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedUserName, defaultUserPassword,null,null));
+
                 sharedUserKs = loginResponse.results.getLoginSession().getKs();
             }
             return sharedHousehold;

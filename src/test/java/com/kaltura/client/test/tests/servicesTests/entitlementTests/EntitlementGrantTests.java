@@ -10,7 +10,6 @@ import com.kaltura.client.services.HouseholdService.*;
 import com.kaltura.client.services.TransactionHistoryService;
 import com.kaltura.client.services.TransactionHistoryService.ListTransactionHistoryBuilder;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.types.*;
@@ -18,7 +17,6 @@ import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Issue;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import static com.kaltura.client.services.HouseholdService.*;
 import static com.kaltura.client.services.OttUserService.RegisterOttUserBuilder;
 import static com.kaltura.client.services.OttUserService.register;
@@ -29,9 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementGrantTests extends BaseTest {
 
-    // TODO: 4/12/2018 remove hardcoded assetId
     private int ppvId;
-    private final int assetId = 607368;
+    private int assetId;
     private int subscriptionId;
     private int contentId;
 
@@ -44,7 +41,8 @@ public class EntitlementGrantTests extends BaseTest {
 
     @BeforeClass
     private void grant_test_before_class() {
-        contentId = AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0);
+        assetId = Math.toIntExact(getSharedMediaAsset().getId());
+        contentId = getSharedWebMediaFile().getId();
         testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         subscriptionId = Integer.valueOf(getSharedCommonSubscription().getId());
         ppvId = Integer.valueOf(getSharedCommonPpv().getId());

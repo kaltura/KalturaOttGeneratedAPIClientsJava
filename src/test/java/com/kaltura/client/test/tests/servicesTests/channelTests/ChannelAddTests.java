@@ -62,10 +62,12 @@ public class ChannelAddTests extends BaseTest {
         String asset2Name = "Episode_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
 
         // Ingest first asset
-        MediaAsset movieAsset = IngestUtils.ingestBasicVOD(asset1Name, MOVIE_MEDIA_TYPE);
+        MediaAsset movieAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        movieAsset = IngestUtils.updateVODName(movieAsset, asset1Name);
 
         // Ingest second asset
-        MediaAsset episodeAsset = IngestUtils.ingestBasicVOD(asset2Name, MOVIE_MEDIA_TYPE);
+        MediaAsset episodeAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        episodeAsset = IngestUtils.updateVODName(episodeAsset, asset2Name);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);
@@ -78,10 +80,11 @@ public class ChannelAddTests extends BaseTest {
 
         int channelId = Math.toIntExact(channelResponse.results.getId());
 
-        ChannelFilter channelFilter = AssetUtils.getChannelFilter(channelId, null, null, null);
+        ChannelFilter channelFilter = AssetUtils.getChannelFilter(channelId, Optional.empty(), Optional.empty(), Optional.empty());
 
         //asset/action/list
-        ListAssetBuilder listAssetBuilder = AssetService.list(channelFilter).setKs(getManagerKs());
+        ListAssetBuilder listAssetBuilder = AssetService.list(channelFilter)
+                .setKs(getManagerKs());
         Response<ListResponse<Asset>> listResponse = executor.executeSync(listAssetBuilder);
 
         assertThat(listResponse.results.getTotalCount()).isEqualTo(2);
@@ -101,7 +104,8 @@ public class ChannelAddTests extends BaseTest {
         channel = ChannelUtils.addChannel(channelName, Description, isActive, null, AssetOrderBy.LIKES_DESC, assetTypes, null);
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
+        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
+                .setKs(getManagerKs());
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
 
         // KalturaAPIException","code":"4020","message":"KSQL Channel media type 666 does not belong to group"
@@ -114,7 +118,8 @@ public class ChannelAddTests extends BaseTest {
         channel = ChannelUtils.addChannel(null, Description, isActive, null, AssetOrderBy.LIKES_DESC, null, null);
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
+        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
+                .setKs(getManagerKs());
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
 
         // KalturaAPIException","code":"5005","message":"KSQL Channel must have a name"
