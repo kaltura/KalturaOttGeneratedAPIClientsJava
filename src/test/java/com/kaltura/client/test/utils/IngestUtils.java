@@ -9,12 +9,14 @@ import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -191,9 +193,11 @@ public class IngestUtils extends BaseUtils {
 
         Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(
                 AssetService.list(assetFilter, null).setKs(getAnonymousKs()));
+
         // TODO: complete Asset.json at least for programs
 
         return (List<ProgramAsset>) (Object) ingestedProgrammes.results.getObjects();
+
     }
 
     private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {
@@ -959,7 +963,7 @@ public class IngestUtils extends BaseUtils {
         String key;
         int value;
         result.append("        <doubles>\n");
-        for(Map.Entry<String, Integer> entry : numbers.entrySet()) {
+        for (Map.Entry<String, Integer> entry : numbers.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
             result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
@@ -985,7 +989,7 @@ public class IngestUtils extends BaseUtils {
         StringBuilder result = new StringBuilder();
         String key, value;
         result.append("        <strings>\n");
-        for(Map.Entry<String, String> entry : strings.entrySet()) {
+        for (Map.Entry<String, String> entry : strings.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
             result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
@@ -1005,7 +1009,7 @@ public class IngestUtils extends BaseUtils {
         StringBuilder result = new StringBuilder();
         String key, value;
         result.append("        <dates>\n");
-        for(Map.Entry<String, String> entry : dates.entrySet()) {
+        for (Map.Entry<String, String> entry : dates.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
             result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
@@ -1023,11 +1027,11 @@ public class IngestUtils extends BaseUtils {
         String key;
         List<String> values;
         result.append("        <metas>\n");
-        for(Map.Entry<String, List<String>> entry : metas.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : metas.entrySet()) {
             key = entry.getKey();
             values = entry.getValue();
             result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
-            for (String value: values) {
+            for (String value : values) {
                 result.append("            <container>\n");
                 result.append("              <value lang=\"eng\">" + value + "</value>\n");
                 result.append("            </container>\n");
@@ -1040,29 +1044,32 @@ public class IngestUtils extends BaseUtils {
     }
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
-    public static MediaAsset ingestBasicVOD(String name, String mediaType) {
-        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of(name), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+    public static MediaAsset ingestVOD(String mediaType) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
         return mediaAsset;
     }
-};
+
+    //
+    public static MediaAsset ingestVOD(String mediaType,Map<String, List<String>> tags) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
 
 
-//    public static ArrayList ingestBasicVODNew(int numOfAssets, String mediaType) {
-//        MediaAsset mediaAsset;
-//        ArrayList<MediaAsset> assetList = new ArrayList<>();
-//        String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
-//        int defaultDayOffset;
-//        String catalogStartDateValue;
-//        for (int i = 0; i < numOfAssets; i++) {
-//            defaultDayOffset = (-1 + - i) ;
-//            catalogStartDateValue = getOffsetDateInFormat(defaultDayOffset, startEndDatePattern);
-//            mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of("Shmulik"), Optional.empty(), Optional.empty(),
-//                    Optional.of(catalogStartDateValue), Optional.empty(),
-//                    Optional.of(catalogStartDateValue), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty());
-//            assetList.add(mediaAsset);
-//        }
-//
-//        return assetList;
-//    }
-//}
+    public static ArrayList ingestBasicVODNumOfTimes(int numOfAssets, String mediaType) {
+        MediaAsset mediaAsset;
+        ArrayList<MediaAsset> assetList = new ArrayList<>();
+        for (int i = 0; i < numOfAssets; i++) {
+            mediaAsset = ingestVOD(mediaType);
+            assetList.add(mediaAsset);
+        }
+        return assetList;
+    }
+}
