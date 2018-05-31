@@ -11,7 +11,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -27,9 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HouseholdSuspendTests extends BaseTest {
 
-    private Household household;
-    private HouseholdUser masterUser;
-    private String masterUserKs;
+    private final int numberOfUsersInHousehold = 2;
+    private final int numberOfDevicesInHousehold = 1;
+
     private Subscription subscription;
     private Asset asset;
 
@@ -47,16 +46,6 @@ public class HouseholdSuspendTests extends BaseTest {
 
     @BeforeClass
     private void household_suspendTests_beforeClass() {
-        // set household
-        int numberOfUsersInHousehold = 2;
-        int numberOfDevicesInHousehold = 1;
-        household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-
-        // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
-        masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
-
         // set subscription
         subscription = BaseTest.getSharedCommonSubscription();
 
@@ -68,6 +57,10 @@ public class HouseholdSuspendTests extends BaseTest {
     @Description("household/action/suspend")
     @Test
     private void suspend() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
         // suspend household
         SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend()
                 .setKs(getOperatorKs())
@@ -81,25 +74,40 @@ public class HouseholdSuspendTests extends BaseTest {
         Response<Household> householdResponse = executor.executeSync(get(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
         assertThat(householdResponse.results.getState().getValue()).isEqualTo(HouseholdState.SUSPENDED.getValue());
 
-        // cleanup - resume household
-        executor.executeSync(HouseholdService.resume().setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUser.getUserId())));
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 
     @Severity(SeverityLevel.MINOR)
     @Description("household/action/suspend - with master user ks - error 500004")
     @Test
     private void suspend_with_masterUser_ks() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
+        // set masterUserKs
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+
         // suspend household
         Response<Boolean> booleanResponse = executor.executeSync(HouseholdService.suspend().setKs(masterUserKs));
 
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(500004).getCode());
+
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("household/action/suspend - with login role - error 7013")
     @Test
     private void suspend_with_login_role() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
         // create role
         UserRole role = new UserRole();
         role.setExcludedPermissionNames(Permissions.LOGIN.name());
@@ -125,12 +133,23 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("household/action/suspend - with purchase_subscription role - error 7013")
     @Test
     private void suspend_with_purchase_subscription_role() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
+        // set masterUserKs
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+
         // create role
         UserRole role = new UserRole();
         role.setExcludedPermissionNames(Permissions.PURCHASE_SUBSCRIPTION.name());
@@ -161,20 +180,25 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
 
-        // cleanup - cancel ppv
-        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Math.toIntExact(asset.getId()), TransactionType.PPV)
-                .setKs(getOperatorKs())
-                .setUserId(Integer.valueOf(masterUser.getUserId()));
-        executor.executeSync(cancelEntitlementBuilder);
-
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("household/action/suspend - with cancel_subscription role - error 1009")
     @Test
     private void suspend_with_cancel_subscription_role() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
+        // set masterUserKs
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+
         // create role
         UserRole role = new UserRole();
         role.setExcludedPermissionNames(Permissions.CANCEL_SUBSCRIPTION.name());
@@ -203,17 +227,25 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(1009).getCode());
 
-        // cleanup - cancel subscription
-        cancelSubscription();
-
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("household/action/suspend - with playback_subscription role")
     @Test
     private void suspend_with_playback_subscription_role() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
+        // set masterUserKs
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+
         // create role
         UserRole role = new UserRole();
         role.setExcludedPermissionNames(Permissions.PLAYBACK_SUBSCRIPTION.name());
@@ -247,17 +279,25 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(playbackContextResponse.results.getMessages().get(0).getMessage()).isEqualTo("Not entitled");
         assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
 
-        // cleanup - cancel subscription
-        cancelSubscription();
-
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("household/action/suspend - with purchase_ppv role")
     @Test
     private void suspend_with_purchase_ppv_role() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
+        // set masterUserKs
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+
         // create role
         UserRole role = new UserRole();
         role.setExcludedPermissionNames(Permissions.PURCHASE_PPV.name());
@@ -288,11 +328,11 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
 
-        // cleanup - cancel subscription
-        cancelSubscription();
-
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -300,6 +340,14 @@ public class HouseholdSuspendTests extends BaseTest {
     @Description("household/action/suspend - with _playback_ppv role")
     @Test(enabled = true)
     private void suspend_with_playback_ppv_role() {
+        // set household
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+
+        // set masterUserKs
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+
         // create role
         UserRole role = new UserRole();
         role.setExcludedPermissionNames(Permissions.PLAYBACK_PPV.name());
@@ -339,23 +387,10 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
 
-        // cleanup - cancel subscription
-        cancelSubscription();
-
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
-    }
 
-    @AfterClass
-    private void household_suspendTests_afterClass() {
         // cleanup - delete household
         executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
-    }
-
-    private void cancelSubscription() {
-        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Integer.parseInt(subscription.getId()), TransactionType.SUBSCRIPTION)
-                .setKs(getOperatorKs())
-                .setUserId(Integer.valueOf(masterUser.getUserId()));
-        executor.executeSync(cancelEntitlementBuilder);
     }
 }
