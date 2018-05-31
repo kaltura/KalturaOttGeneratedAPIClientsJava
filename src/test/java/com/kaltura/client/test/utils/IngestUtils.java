@@ -1053,6 +1053,14 @@ public class IngestUtils extends BaseUtils {
         return mediaAsset;
     }
 
+    public static MediaAsset updateVODName(MediaAsset asset, String name) {
+        MediaAsset mediaAsset = ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
+
     //
     public static MediaAsset ingestVOD(String mediaType,Map<String, List<String>> tags) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
