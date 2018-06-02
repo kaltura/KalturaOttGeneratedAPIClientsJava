@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.services.HouseholdService.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class householdGetTests extends BaseTest {
+public class HouseholdGetTests extends BaseTest {
 
     private Household household;
 

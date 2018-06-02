@@ -18,7 +18,7 @@ import static com.kaltura.client.services.HouseholdService.add;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class householdAddTests extends BaseTest {
+public class HouseholdAddTests extends BaseTest {
 
     private Household household;
     private HouseholdUser masterUser;

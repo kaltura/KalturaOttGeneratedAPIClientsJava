@@ -201,7 +201,7 @@ public class BaseTest {
 
     public static String getIngestBusinessModuleUserName() {
         if (ingestBusinessModuleUserUsername == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -210,7 +210,7 @@ public class BaseTest {
 
     public static String getIngestBusinessModuleUserPassword() {
         if (ingestBusinessModuleUserPassword == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -219,7 +219,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserName() {
         if (ingestAssetUserUsername == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId + 1);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -228,7 +228,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserPassword() {
         if (ingestAssetUserPassword == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId + 1);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -347,8 +347,7 @@ public class BaseTest {
                     if (user.getIsMaster() != null && user.getIsMaster()) {
                         sharedMasterUser = user;
                     }
-                    // TODO: ask Alon if we have cases when commented part should be there? What tests related to that logic?
-                    if (user.getIsMaster() == null/* && user.getIsDefault() == null*/) {
+                    if (user.getIsMaster() == null && user.getIsDefault() == null) {
                         sharedUser = user;
                     }
                 }

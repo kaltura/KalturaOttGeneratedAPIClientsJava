@@ -5,6 +5,7 @@ import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.ChannelUtils;
 import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.types.*;
@@ -57,14 +58,16 @@ public class ChannelAddTests extends BaseTest {
     @Test
     private void checkOrderOfAssetsInChannel() {
 
-        //String asset1Name = "Movie_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
-        //String asset2Name = "Episode_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
+        String asset1Name = "Movie_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
+        String asset2Name = "Episode_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
 
         // Ingest first asset
         MediaAsset movieAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        movieAsset = IngestUtils.updateVODName(movieAsset, asset1Name);
 
         // Ingest second asset
         MediaAsset episodeAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        episodeAsset = IngestUtils.updateVODName(episodeAsset, asset2Name);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);

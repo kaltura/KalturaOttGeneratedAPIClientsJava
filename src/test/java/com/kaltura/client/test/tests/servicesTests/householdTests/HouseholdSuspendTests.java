@@ -8,6 +8,7 @@ import com.kaltura.client.test.utils.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
@@ -29,6 +30,8 @@ public class HouseholdSuspendTests extends BaseTest {
     private Household household;
     private HouseholdUser masterUser;
     private String masterUserKs;
+    private Subscription subscription;
+    private Asset asset;
 
     private enum Permissions {
         PLAYBACK_SUBSCRIPTION,
@@ -36,7 +39,7 @@ public class HouseholdSuspendTests extends BaseTest {
         PURCHASE_SUBSCRIPTION,
         PURCHASE_PPV,
         RENEW_SUBSCRIPTION,
-        PURCHASE_SERVICE,
+        PURCHASE_SERVICE, // purchase premium services
         LOGIN,
         CANCEL_SUBSCRIPTION,
         DELETE_ALL_APP_TOKENS
@@ -53,6 +56,12 @@ public class HouseholdSuspendTests extends BaseTest {
         // set masterUserKs
         String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
         masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+
+        // set subscription
+        subscription = BaseTest.getSharedCommonSubscription();
+
+        // set asset
+        asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -139,10 +148,24 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isTrue();
 
         // purchase subscription
-        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(BaseTest.getSharedCommonSubscription().getId()));
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
 
         assertThat(transactionResponse.results).isNull();
         assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
+
+        // purchase ppv in order to verify suspend is specific to role
+        Integer mediaFileId = asset.getMediaFiles().get(0).getId();
+        transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
+                Optional.of(mediaFileId), null);
+
+        assertThat(transactionResponse.error).isNull();
+        assertThat(transactionResponse.results.getState()).isEqualTo("OK");
+
+        // cleanup - cancel ppv
+        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Math.toIntExact(asset.getId()), TransactionType.PPV)
+                .setKs(getOperatorKs())
+                .setUserId(Integer.valueOf(masterUser.getUserId()));
+        executor.executeSync(cancelEntitlementBuilder);
 
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
@@ -161,10 +184,6 @@ public class HouseholdSuspendTests extends BaseTest {
         Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
         role = userRoleResponse.results;
 
-        // purchase subscription
-        Subscription subscription = BaseTest.getSharedCommonSubscription();
-        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
-
         // suspend with cancel_subscription role
         SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
                 .setKs(getOperatorKs())
@@ -172,12 +191,20 @@ public class HouseholdSuspendTests extends BaseTest {
         Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
         assertThat(booleanResponse.results).isTrue();
 
+        // purchase subscription
+        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+
         // cancel subscription
-        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Integer.parseInt(subscription.getId()), TransactionType.SUBSCRIPTION);
-        booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUser.getUserId())));
+        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Integer.parseInt(subscription.getId()), TransactionType.SUBSCRIPTION)
+                .setKs(getOperatorKs())
+                .setUserId(Integer.valueOf(masterUser.getUserId()));
+        booleanResponse = executor.executeSync(cancelEntitlementBuilder);
 
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(1009).getCode());
+
+        // cleanup - cancel subscription
+        cancelSubscription();
 
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
@@ -204,11 +231,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isTrue();
 
         // purchase subscription
-        Subscription subscription = BaseTest.getSharedCommonSubscription();
         PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
-
-        // get asset from subscription
-        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
 
         // get platbackContext
         PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
@@ -224,94 +247,115 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(playbackContextResponse.results.getMessages().get(0).getMessage()).isEqualTo("Not entitled");
         assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
 
+        // cleanup - cancel subscription
+        cancelSubscription();
+
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
     }
 
-//    @Severity(SeverityLevel.NORMAL)
-//    @Description("household/action/suspend - with purchase_ppv role")
-//    @Test
-//    private void suspend_with_purchase_ppv_role() {
-//        // create role
-//        UserRole role = new UserRole();
-//        role.setExcludedPermissionNames(Permissions.PURCHASE_PPV.name());
-//        role.setName(Permissions.PURCHASE_PPV.name());
-//
-//        // add role
-//        Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
-//        role = userRoleResponse.results;
-//
-//        // suspend with purchase_ppv role
-//        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
-//                .setKs(getOperatorKs())
-//                .setUserId(Integer.valueOf(masterUser.getUserId()));
-//        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
-//        assertThat(booleanResponse.results).isTrue();
-//
-//        // get asset from subscription
-//        Subscription subscription = BaseTest.getSharedCommonSubscription();
-//        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
-//
-//        // get ppv
-//        ProductPriceFilter filter = new ProductPriceFilter();
-//        filter.setFileIdIn(String.valueOf(asset.getMediaFiles().get(0).getId()));
-//
-//        ProductPrice productPrice = executor.executeSync(ProductPriceService.list(filter)
-//                .setKs(getOperatorKs())).results.getObjects().get(0);
-//
-//        PurchaseUtils.purchasePpv(masterUserKs, )
-//
-//        assertThat(transactionResponse.results).isNull();
-//        assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
-//
-//        // cleanup - delete role
-//        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
-//    }
+    @Severity(SeverityLevel.NORMAL)
+    @Description("household/action/suspend - with purchase_ppv role")
+    @Test
+    private void suspend_with_purchase_ppv_role() {
+        // create role
+        UserRole role = new UserRole();
+        role.setExcludedPermissionNames(Permissions.PURCHASE_PPV.name());
+        role.setName(Permissions.PURCHASE_PPV.name());
 
-//    @Severity(SeverityLevel.NORMAL)
-//    @Description("household/action/suspend - with purchase_ppv role after purchase the subscription")
-//    @Test
-//    private void suspend_with_purchase_ppv_role() {
-//        // create role
-//        UserRole role = new UserRole();
-//        role.setExcludedPermissionNames(Permissions.PURCHASE_PPV.name());
-//        role.setName(Permissions.PURCHASE_PPV.name());
-//
-//        // add role
-//        Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
-//        role = userRoleResponse.results;
-//
-//        // suspend with purchase_ppv role
-//        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
-//                .setKs(getOperatorKs())
-//                .setUserId(Integer.valueOf(masterUser.getUserId()));
-//        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
-//        assertThat(booleanResponse.results).isTrue();
-//
-//        // purchase subscription
-//        Subscription subscription = BaseTest.getSharedCommonSubscription();
-//        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
-//
-//        // get asset from subscription
-//        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
-//
-//        // get ppv
-//        ProductPriceFilter filter = new ProductPriceFilter();
-//        filter.setFileIdIn(String.valueOf(asset.getMediaFiles().get(0).getId()));
-//
-//        List<ProductPrice> productPrices = executor.executeSync(ProductPriceService.list(filter)
-//                .setKs(getOperatorKs())).results.getObjects();
-//
-//        assertThat(transactionResponse.results).isNull();
-//        assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
-//
-//        // cleanup - delete role
-//        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
-//    }
+        // add role
+        Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
+        role = userRoleResponse.results;
+
+        // suspend with purchase_ppv role
+        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
+                .setKs(getOperatorKs())
+                .setUserId(Integer.valueOf(masterUser.getUserId()));
+        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
+        assertThat(booleanResponse.results).isTrue();
+
+        // purchase ppv
+        Integer mediaFileId = asset.getMediaFiles().get(0).getId();
+        Response<Transaction> transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
+                Optional.of(mediaFileId), null);
+
+        assertThat(transactionResponse.results).isNull();
+        assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
+
+        // purchase subscription in order to verify suspend is specific to role
+        transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+
+        assertThat(transactionResponse.error).isNull();
+        assertThat(transactionResponse.results.getState()).isEqualTo("OK");
+
+        // cleanup - cancel subscription
+        cancelSubscription();
+
+        // cleanup - delete role
+        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Issue("BEO-5166")
+    @Description("household/action/suspend - with _playback_ppv role")
+    @Test(enabled = true)
+    private void suspend_with_playback_ppv_role() {
+        // create role
+        UserRole role = new UserRole();
+        role.setExcludedPermissionNames(Permissions.PLAYBACK_PPV.name());
+        role.setName(Permissions.PLAYBACK_PPV.name());
+
+        // add role
+        Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
+        role = userRoleResponse.results;
+
+        // purchase ppv
+        Integer mediaFileId = asset.getMediaFiles().get(0).getId();
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), null);
+
+        // suspend with playback_ppv role
+        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
+                .setKs(getOperatorKs())
+                .setUserId(Integer.valueOf(masterUser.getUserId()));
+        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
+        assertThat(booleanResponse.results).isTrue();
+
+        // get platbackContext
+        PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
+        playbackContextOptions.setContext(PlaybackContextType.PLAYBACK);
+        playbackContextOptions.setStreamerType("applehttp");
+        playbackContextOptions.setMediaProtocol("http");
+
+        GetPlaybackContextAssetBuilder getPlaybackContextAssetBuilder = getPlaybackContext(String.valueOf(asset.getId()), AssetType.MEDIA, playbackContextOptions)
+                .setKs(masterUserKs);
+        Response<PlaybackContext> playbackContextResponse = executor.executeSync(getPlaybackContextAssetBuilder);
+
+        assertThat(playbackContextResponse.results.getActions().get(0).getType()).isEqualTo(RuleActionType.BLOCK);
+        assertThat(playbackContextResponse.results.getMessages().get(0).getMessage()).isEqualTo("Not entitled");
+        assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
+
+        // purchase subscription in order to verify suspend is specific to role
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        assertThat(transactionResponse.error).isNull();
+        assertThat(transactionResponse.results.getState()).isEqualTo("OK");
+
+        // cleanup - cancel subscription
+        cancelSubscription();
+
+        // cleanup - delete role
+        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+    }
 
     @AfterClass
     private void household_suspendTests_afterClass() {
         // cleanup - delete household
         executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
+    }
+
+    private void cancelSubscription() {
+        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Integer.parseInt(subscription.getId()), TransactionType.SUBSCRIPTION)
+                .setKs(getOperatorKs())
+                .setUserId(Integer.valueOf(masterUser.getUserId()));
+        executor.executeSync(cancelEntitlementBuilder);
     }
 }

@@ -69,6 +69,7 @@ public class IngestUtils extends BaseUtils {
                     "<end_date>31/05/2017 23:59:59</end_date>\n" +
                     "<code>Expired coupon group 1</code>\n" +
                     "</coupon_group_id>";
+
     private static String MPP_DEFAULT_PRODUCT_CODES_VALUE =
             "<product_code>\n" +
                     "<code>ProductCode1</code>\n" +
@@ -1053,6 +1054,14 @@ public class IngestUtils extends BaseUtils {
     public static MediaAsset ingestVOD(String mediaType) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
+
+    public static MediaAsset updateVODName(MediaAsset asset, String name) {
+        MediaAsset mediaAsset = ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
         return mediaAsset;
