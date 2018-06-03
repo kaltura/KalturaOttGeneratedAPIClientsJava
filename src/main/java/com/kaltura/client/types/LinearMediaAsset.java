@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.LinearChannelType;
 import com.kaltura.client.enums.TimeShiftedTvState;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -64,6 +65,7 @@ public class LinearMediaAsset extends MediaAsset {
 		String summedTrickPlayBuffer();
 		String recordingPlaybackNonEntitledChannelEnabled();
 		String trickPlayEnabled();
+		String channelType();
 	}
 
 	/**
@@ -132,6 +134,10 @@ public class LinearMediaAsset extends MediaAsset {
 	 * Is trick-play enabled for this asset
 	 */
 	private Boolean trickPlayEnabled;
+	/**
+	 * channel type, possible values: UNKNOWN, DTT, OTT, DTT_AND_OTT
+	 */
+	private LinearChannelType channelType;
 
 	// enableCdvrState:
 	public TimeShiftedTvState getEnableCdvrState(){
@@ -325,6 +331,18 @@ public class LinearMediaAsset extends MediaAsset {
 		setToken("trickPlayEnabled", multirequestToken);
 	}
 
+	// channelType:
+	public LinearChannelType getChannelType(){
+		return this.channelType;
+	}
+	public void setChannelType(LinearChannelType channelType){
+		this.channelType = channelType;
+	}
+
+	public void channelType(String multirequestToken){
+		setToken("channelType", multirequestToken);
+	}
+
 
 	public LinearMediaAsset() {
 		super();
@@ -352,6 +370,7 @@ public class LinearMediaAsset extends MediaAsset {
 		summedTrickPlayBuffer = GsonParser.parseLong(jsonObject.get("summedTrickPlayBuffer"));
 		recordingPlaybackNonEntitledChannelEnabled = GsonParser.parseBoolean(jsonObject.get("recordingPlaybackNonEntitledChannelEnabled"));
 		trickPlayEnabled = GsonParser.parseBoolean(jsonObject.get("trickPlayEnabled"));
+		channelType = LinearChannelType.get(GsonParser.parseString(jsonObject.get("channelType")));
 
 	}
 
@@ -367,6 +386,7 @@ public class LinearMediaAsset extends MediaAsset {
 		kparams.add("enableTrickPlayState", this.enableTrickPlayState);
 		kparams.add("externalEpgIngestId", this.externalEpgIngestId);
 		kparams.add("externalCdvrId", this.externalCdvrId);
+		kparams.add("channelType", this.channelType);
 		return kparams;
 	}
 
