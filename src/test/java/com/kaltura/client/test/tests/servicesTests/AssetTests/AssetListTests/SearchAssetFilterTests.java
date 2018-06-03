@@ -1,10 +1,10 @@
-package com.kaltura.client.test.tests.servicesTests.AssetTests;
+package com.kaltura.client.test.tests.servicesTests.AssetTests.AssetListTests;
 
+import com.kaltura.client.enums.AssetOrderBy;
+import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.AssetUtils;
-import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.*;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -27,11 +27,12 @@ import static com.kaltura.client.test.Properties.getProperty;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.kaltura.client.services.AssetService.*;
 
-public class AssetListTests extends BaseTest {
+public class SearchAssetFilterTests extends BaseTest {
 
     private MediaAsset asset;
     private MediaAsset asset2;
     private MediaAsset asset3;
+
     private ProgramAsset program;
     private ProgramAsset program2;
 
@@ -42,9 +43,9 @@ public class AssetListTests extends BaseTest {
     private ArrayList<Long> assetList = new ArrayList<>();
     private ArrayList<String> list = new ArrayList<>();
     private String tagName = "Genre";
-    private String tagValue = BaseUtils.getRandomValue(tagName +"_",999999);
-    private  String epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
-    private  String epgChannelName2 = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(1).getString("name");
+    private String tagValue = BaseUtils.getRandomValue(tagName + "_", 999999);
+    private String epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
+    private String epgChannelName2 = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(1).getString("name");
 
     @BeforeClass
     private void Asset_list_before_class() {
@@ -58,13 +59,11 @@ public class AssetListTests extends BaseTest {
         assetList.add(asset2.getId());
         assetList.add(asset3.getId());
 
-        program = IngestUtils.ingestEPG(epgChannelName,1).get(0);
-        program2 = IngestUtils.ingestEPG(epgChannelName2,1).get(0);
+        program = IngestUtils.ingestEPG(epgChannelName, 1).get(0);
+        program2 = IngestUtils.ingestEPG(epgChannelName2, 1).get(0);
 
     }
 
-    // KalturaSearchAssetFilter
-    // ******************************************
 
     // VOD
     // ******************************************
@@ -159,7 +158,7 @@ public class AssetListTests extends BaseTest {
         List<Asset> assets = executor.executeSync(listAssetBuilder).results.getObjects();
         assertThat(assets.size()).isEqualTo(2);
 
-        assertThat(assets).extracting("id").contains(asset3.getId(),asset2.getId()).doesNotContain(asset.getId());
+        assertThat(assets).extracting("id").contains(asset3.getId(), asset2.getId()).doesNotContain(asset.getId());
     }
 
 
@@ -177,7 +176,7 @@ public class AssetListTests extends BaseTest {
         List<Asset> assets = executor.executeSync(listAssetBuilder).results.getObjects();
         assertThat(assets.size()).isEqualTo(2);
 
-        assertThat(assets).extracting("id").contains(asset3.getId(),asset2.getId()).doesNotContain(asset.getId());
+        assertThat(assets).extracting("id").contains(asset3.getId(), asset2.getId()).doesNotContain(asset.getId());
     }
 
 
@@ -187,7 +186,7 @@ public class AssetListTests extends BaseTest {
     private void listVodAssetsFilteredByType() {
 
         ksqlQuery = "" + tagName + " = '" + tagValue + "'";
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery,null , getProperty(MOVIE_MEDIA_TYPE_ID),  null, null,
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, getProperty(MOVIE_MEDIA_TYPE_ID), null, null,
                 null, null);
         listAssetBuilder = AssetService.list(assetFilter, null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
@@ -245,5 +244,57 @@ public class AssetListTests extends BaseTest {
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
         assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(program2.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - order by VIEWS")
+    @Test
+    private void listVodAssetsByViews() {
+        MediaAsset assetWithTheMostViews = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        MediaAsset assetWithTheSecondMostViews = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+
+        AssetUtils.addViewsToAsset(assetWithTheMostViews.getId(), 10, AssetType.MEDIA);
+        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + assetWithTheMostViews.getName() + "'name = '" + assetWithTheSecondMostViews.getName() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.VIEWS_DESC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(assetWithTheMostViews.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(assetWithTheSecondMostViews.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - order by NAME (DESC/ASC")
+    @Test
+    private void listVodAssetsByNameAsc() {
+
+        IngestUtils.updateVODName(asset, "AAA");
+        IngestUtils.updateVODName(asset2, "BBB");
+        IngestUtils.updateVODName(asset3, "CCC");
+
+        ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
+
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_DESC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
     }
 }
