@@ -99,6 +99,34 @@ public class DBUtils extends BaseUtils {
         return resetPasswordToken;
     }
 
+    // Get epg channel name and linear asset id json array
+    public static JSONArray getLinearAssetIdAndEpgChannelNameJsonArray() {
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = getJsonArrayFromQueryResult(String.format(ASSET_ID_SELECT, Integer.valueOf(getProperty(PARTNER_ID)) + 1), false);
+            if (jsonArray == null || jsonArray.length() <= 0) {
+                Logger.getLogger("Response is empty");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
+
+    // Get un active asset from DB (status = 2)
+    public static int getUnActiveAsset() {
+        int assetId = 0;
+
+        try {
+            assetId = getJsonArrayFromQueryResult(String.format(UNACTIVE_ASSET_ID_SELECT,
+                    Integer.valueOf(getProperty(PARTNER_ID)) + 1), false).getJSONObject(0).getInt("id");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return assetId;
+    }
+
 
 //    public static List<Integer> getUserRoles(String userId) {
 //        List<Integer> userRoles = new ArrayList<>();

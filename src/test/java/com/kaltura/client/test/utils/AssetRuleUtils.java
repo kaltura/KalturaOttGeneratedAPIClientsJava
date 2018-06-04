@@ -16,9 +16,12 @@ public class AssetRuleUtils extends BaseUtils {
     public static void deleteAllGeoAssetRules() {
         ListAssetRuleBuilder listAssetRuleBuilder = AssetRuleService.list().setKs(BaseTest.getOperatorKs());
         Response<ListResponse<AssetRule>> listAssetRule = executor.executeSync(listAssetRuleBuilder);
-        for (AssetRule rule : listAssetRule.results.getObjects()) {
-            DeleteAssetRuleBuilder deleteAssetRuleBuilder = AssetRuleService.delete(rule.getId()).setKs(BaseTest.getOperatorKs());
-            executor.executeSync(deleteAssetRuleBuilder);
+        if (listAssetRule.results.getTotalCount() > 0) {
+            for (AssetRule rule : listAssetRule.results.getObjects()) {
+                DeleteAssetRuleBuilder deleteAssetRuleBuilder = AssetRuleService.delete(rule.getId()).setKs(BaseTest.getOperatorKs());
+                executor.executeSync(deleteAssetRuleBuilder);
+            }
         }
+
     }
 }

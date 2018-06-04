@@ -1,6 +1,5 @@
 package com.kaltura.client.test.tests.servicesTests.transactionHistoryTests;
 
-import com.kaltura.client.Logger;
 import com.kaltura.client.enums.*;
 import com.kaltura.client.services.EntitlementService;
 import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
@@ -24,50 +23,47 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TransactionHistoryListTests extends BaseTest{
 
-    private ListTransactionHistoryBuilder listTransactionHistoryBuilder;
-    private EntitlementFilter entitlementFilter;
+    private EntitlementFilter entitlementPpvFilter;
     private TransactionHistoryFilter transactionHistoryFilter;
-    private Response<ListResponse<Entitlement>> listEntitlementServiceResponsePpv;
-    private Response<ListResponse<Entitlement>> listEntitlementServiceResponseSubscription;
+    private Response<ListResponse<Entitlement>> listEntitlementServiceResponse;
     private Response<ListResponse<BillingTransaction>> listBillingTransactionResponse;
-    private Response<Transaction> transactionResponseSubscription;
-    private Response<Transaction> transactionResponseCollection;
-    private Response<Transaction> transactionResponsePpv;
     private int numberOfDevicesInHousehold = 2;
     private int numberOfUsersInHousehold = 2;
-    private String masterUserKs;
-    private String userKs;
-    private String methodName;
     public static final String PPV_MODULE_ID_KEY = "ppvModuleId";
-    public static final String PRICE_AMOUNT = "price";
-    public static final String PRICE_CURRENCY = "currency";
+    public static final String PPV_PRICE_AMOUNT = "price";
+    public static final String PPV_PRICE_CURRENCY = "currency";
     //Epoch for transactionHistory filter (86400 sec = 24 hours)
     public static final int yesterdayInEpoch =  (int)((System.currentTimeMillis()/1000)-86400);
     public static final int tomorrowInEpoch =  (int)((System.currentTimeMillis()/1000)+86400);
 
 
     @BeforeClass
-    public void transactionHistortTestSetup(){
-        entitlementFilter = new EntitlementFilter();
+    public void beforeClass(){
+        entitlementPpvFilter = new EntitlementFilter();
         //Show entitlements per household
-        entitlementFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
+        entitlementPpvFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         //Don't show expired assets
-        entitlementFilter.setIsExpiredEqual(false);
+        entitlementPpvFilter.setIsExpiredEqual(false);
         transactionHistoryFilter = new TransactionHistoryFilter();
         //Start date from yesterday
         transactionHistoryFilter.setStartDateGreaterThanOrEqual(yesterdayInEpoch);
         //End date before tomorrow
         transactionHistoryFilter.setEndDateLessThanOrEqual(tomorrowInEpoch);
+    }
+
+    @Severity(SeverityLevel.BLOCKER)
+    @Test(description = "/transactionhistory/action/list - test ppv purchases is written correctly at transactionHistory")
+    public void purchase_ppv(){
 
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold,true);
         //Login with master to first device
-        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        String masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
         //Login with user to second device
-        userKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(1).getUdid());
+        String userKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(1).getUdid());
 
-        //All transactions per household - empty
+        //All transactions per household
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
-        listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
+        ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
         //transactionHistory/action/list for household with master user ks
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
         //No errors appeared at response
@@ -75,106 +71,82 @@ public class TransactionHistoryListTests extends BaseTest{
         //No purchases were performed
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(0);
 
-        //Purchase asset with non-master user
-        transactionResponsePpv = PurchaseUtils.purchasePpv(userKs, Optional.of(getSharedMediaAsset().getId().intValue()), Optional.of(getSharedWebMediaFile().getId()), null);
-        //Purchase subscription with non-master user
-        transactionResponseSubscription = PurchaseUtils.purchaseSubscription(userKs, Integer.parseInt(getSharedCommonSubscription().getId()));
-        //Purchase collection with master user
-        transactionResponseCollection = PurchaseUtils.purchaseCollection(masterUserKs, Integer.parseInt(getSharedCommonCollection().getId()));
+        int assetFileId = getSharedWebMediaFile().getId();
+        //Purchase asset
+        PurchaseUtils.purchasePpv(userKs, Optional.of(getSharedMediaAsset().getId().intValue()), Optional.of(assetFileId), null);
+        //Get PPV details (ID, Price, Currency)
+        String ppvModuleId = PurchaseUtils.purchasePpvDetailsMap.get(PPV_MODULE_ID_KEY);
+        String pricePpv = PurchaseUtils.purchasePpvDetailsMap.get(PPV_PRICE_AMOUNT);
+        String currencyPpv = PurchaseUtils.purchasePpvDetailsMap.get(PPV_PRICE_CURRENCY);
 
-        //Show PPV entitlements
-        entitlementFilter.setProductTypeEqual(TransactionType.PPV);
-        ListEntitlementBuilder listEntitlementBuilder = EntitlementService.list(entitlementFilter).setKs(userKs);
+        //Show only PPV purchases
+        entitlementPpvFilter.setProductTypeEqual(TransactionType.PPV);
+        ListEntitlementBuilder listEntitlementBuilder = EntitlementService.list(entitlementPpvFilter).setKs(userKs);
         //entitlement/action/list
-        listEntitlementServiceResponsePpv = executor.executeSync(listEntitlementBuilder);
-        //Verify response is correct
-        assertThat(listEntitlementServiceResponsePpv.error).isNull();
-        assertThat(listEntitlementServiceResponsePpv.results.getObjects().get(0).getClass()).isEqualTo(PpvEntitlement.class);
-        assertThat(listEntitlementServiceResponsePpv.results.getTotalCount()).isEqualTo(1);
+        listEntitlementServiceResponse = executor.executeSync(listEntitlementBuilder);
         //Conversion from Entitlement to PpvEntitlement object
         List<PpvEntitlement> ppvEntitlementList = new ArrayList<>();
-        for(Entitlement entitlement:listEntitlementServiceResponsePpv.results.getObjects()){
+        for(Entitlement entitlement:listEntitlementServiceResponse.results.getObjects()){
             if(entitlement.getClass() == PpvEntitlement.class) {
                 ppvEntitlementList.add((PpvEntitlement) entitlement);
             }
         }
-        //TODO: change ppvModuleId to getSharedWebMediaFile().getPpvModules().getObjects().get(0).getValue() - right now it is null
-        String ppvModuleId = PurchaseUtils.purchasePpvDetailsMap.get(PPV_MODULE_ID_KEY);
+        //Verify that count of entitlements is 1
+        assertThat(listEntitlementServiceResponse.results.getTotalCount()).isEqualTo(1);
         //Verify that PPV is correct
         assertThat(ppvEntitlementList.get(0).getProductId()).isEqualTo(ppvModuleId);
         //Verify that asset file is correct
-        assertThat(ppvEntitlementList.get(0).getMediaFileId()).isEqualTo(getSharedWebMediaFile().getId());
+        assertThat(ppvEntitlementList.get(0).getMediaFileId()).isEqualTo(assetFileId);
 
-        //Show subscription entitlements
-        entitlementFilter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
-        listEntitlementBuilder = EntitlementService.list(entitlementFilter).setKs(userKs);
-        //entitlement/action/list
-        listEntitlementServiceResponseSubscription = executor.executeSync(listEntitlementBuilder);
-        //Verify that subscription is correct
-        assertThat(listEntitlementServiceResponseSubscription.results.getTotalCount()).isEqualTo(1);
-        assertThat(listEntitlementServiceResponseSubscription.results.getObjects().get(0).getProductId()).isEqualTo(getSharedCommonSubscription().getId());
-        assertThat(listEntitlementServiceResponseSubscription.results.getObjects().get(0).getClass()).isEqualTo(SubscriptionEntitlement.class);
-    }
-
-    @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for non-master user")
-    public void testTransactionHistoryPerHouseholdWithUserKs() {
-        //All transactions per non-master user
-        transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
+        //All transactions per user
+        transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
+        //Use non-master user ks
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(userKs);
         //transactionHistory/action/list for non-master user
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
         //No errors appeared at response
         assertThat(listBillingTransactionResponse.error).isNull();
-        //Verify that two transactions were performed
-        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(3);
-        assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(3);
-        List<BillingTransaction> billingTransactionList = listBillingTransactionResponse.results.getObjects();
-        methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        assertMethod(methodName, billingTransactionList);
-    }
+        //Verify that one transaction was performed
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        //Verify asset id is correct
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
+        //Verify transaction is for PPV
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getItemType()).isEqualTo(BillingItemsType.PPV);
+        //Verify price amount
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount().toString()).isEqualTo(pricePpv);
+        //Verify price currency
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getCurrency().toString()).isEqualTo(currencyPpv);
+        //Verify entitlement period
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+        //Verify that asset was purchased
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getBillingAction()).isEqualTo(BillingAction.PURCHASE);
 
-    @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per user are written correctly at transactionHistory for non-master user")
-    public void testTransactionHistoryPerUserWithUserKs() {
-        //All transactions per non-master user
-        transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
+        //All transactions per household
+        transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
+        //Use non-master user ks
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(userKs);
         //transactionHistory/action/list for non-master user
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
         //No errors appeared at response
         assertThat(listBillingTransactionResponse.error).isNull();
-        //Verify that two transactions were performed
-        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(2);
-        assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(2);
-        List<BillingTransaction> billingTransactionList = listBillingTransactionResponse.results.getObjects();
-        methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        assertMethod(methodName, billingTransactionList);
-    }
+        //Verify that one transaction was performed
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        //Verify asset id is correct
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
+        //Verify transaction is for PPV
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getItemType()).isEqualTo(BillingItemsType.PPV);
+        //Verify price amount
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount().toString()).isEqualTo(pricePpv);
+        //Verify price currency
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getCurrency().toString()).isEqualTo(currencyPpv);
+        //Verify entitlement period
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+        //Verify that asset was purchased
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getBillingAction()).isEqualTo(BillingAction.PURCHASE);
 
-    @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for master user")
-    public void testTransactionHistoryPerHouseholdWithMasterKs() {
-        //All transactions per master user
+        //All transactions per household
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
-        listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
-        //transactionHistory/action/list for master user
-        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
-        //No errors appeared at response
-        assertThat(listBillingTransactionResponse.error).isNull();
-        //Verify that two transactions were performed
-        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(3);
-        assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(3);
-        List<BillingTransaction> billingTransactionList = listBillingTransactionResponse.results.getObjects();
-        methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        assertMethod(methodName, billingTransactionList);
-    }
-
-    @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test no purchases per user were written at transactionHistory for master user")
-    public void testTransactionHistoryPerUserWithMasterKs() {
-        //All transactions per master user
-        transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
+        //Use master user ks
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
         //transactionHistory/action/list for master user
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
@@ -182,81 +154,28 @@ public class TransactionHistoryListTests extends BaseTest{
         assertThat(listBillingTransactionResponse.error).isNull();
         //Verify that one transaction was performed
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
-        assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(1);
-        List<BillingTransaction> billingTransactionList = listBillingTransactionResponse.results.getObjects();
-        methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        assertMethod(methodName, billingTransactionList);
-    }
+        //Verify asset id is correct
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
+        //Verify transaction is for PPV
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getItemType()).isEqualTo(BillingItemsType.PPV);
+        //Verify price amount
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount().toString()).isEqualTo(pricePpv);
+        //Verify price currency
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getCurrency().toString()).isEqualTo(currencyPpv);
+        //Verify entitlement period
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+        //Verify that asset was purchased
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getBillingAction()).isEqualTo(BillingAction.PURCHASE);
 
-    private void assertMethod(String methodName, List<BillingTransaction> billingTransactionList) {
-        Logger.getLogger(TransactionHistoryListTests.class).debug(methodName);
-        String price, currency;
-        for(int i = 0; i < billingTransactionList.size(); i++) {
-            assertThat(listBillingTransactionResponse.results.getObjects().get(i).getClass()).isEqualTo(BillingTransaction.class);
-            switch (billingTransactionList.get(i).getItemType()){
-                case SUBSCRIPTION:
-                    BillingTransaction billingTransactionSubscription = billingTransactionList.get(i);
-                    //Get subscription details (Price, Currency)
-                    price = PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_CURRENCY);
-                    assertThat(billingTransactionSubscription.getRecieptCode()).isEqualTo(transactionResponseSubscription.results.getId());
-                    assertThat(billingTransactionSubscription.getPurchasedItemName().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getPurchasedItemCode()).isEqualTo(getSharedCommonSubscription().getId().toString());
-                    assertThat(billingTransactionSubscription.getItemType()).isEqualTo(BillingItemsType.SUBSCRIPTION);
-                    assertThat(billingTransactionSubscription.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionSubscription.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionSubscription.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionSubscription.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionSubscription.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
-                    assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(billingTransactionSubscription.getActionDate());
-                    assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(transactionResponseSubscription.results.getCreatedAt().longValue());
-                    break;
-
-                case PPV:
-                    BillingTransaction billingTransactionPpv = billingTransactionList.get(i);
-                    //Get PPV details (Price, Currency)
-                    price = PurchaseUtils.purchasePpvDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchasePpvDetailsMap.get(PRICE_CURRENCY);
-                    assertThat(billingTransactionPpv.getRecieptCode()).isEqualTo(transactionResponsePpv.results.getId());
-                    assertThat(billingTransactionPpv.getPurchasedItemName().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
-                    assertThat(billingTransactionPpv.getItemType()).isEqualTo(BillingItemsType.PPV);
-                    assertThat(billingTransactionPpv.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionPpv.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionPpv.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionPpv.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionPpv.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
-                    assertThat(billingTransactionPpv.getStartDate()).isEqualTo(billingTransactionPpv.getActionDate());
-                    assertThat(billingTransactionPpv.getStartDate()).isEqualTo(transactionResponsePpv.results.getCreatedAt().longValue());
-                    break;
-
-                case COLLECTION:
-                    BillingTransaction billingTransactionCollection = billingTransactionList.get(i);
-                    //Get collection details (Price, Currency)
-                    price = PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_CURRENCY);
-                    assertThat(billingTransactionCollection.getRecieptCode()).isEqualTo(transactionResponseCollection.results.getId());
-                    assertThat(billingTransactionCollection.getPurchasedItemName().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getPurchasedItemCode()).isEqualTo(getSharedCommonCollection().getId().toString());
-                    assertThat(billingTransactionCollection.getItemType()).isEqualTo(BillingItemsType.COLLECTION);
-                    assertThat(billingTransactionCollection.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionCollection.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionCollection.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionCollection.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionCollection.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
-                    assertThat(billingTransactionCollection.getActionDate()).isEqualTo(transactionResponseCollection.results.getCreatedAt().longValue());
-                    break;
-
-                default:
-                    Logger.getLogger(TransactionHistoryListTests.class).error("No valid item type found!");
-                    break;
-            }
-        }
+        //All transactions per user
+        transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
+        //Use master user ks
+        listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
+        //transactionHistory/action/list for master user
+        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
+        //No errors appeared at response
+        assertThat(listBillingTransactionResponse.error).isNull();
+        //No transactions were performed with master user
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(0);
     }
 }

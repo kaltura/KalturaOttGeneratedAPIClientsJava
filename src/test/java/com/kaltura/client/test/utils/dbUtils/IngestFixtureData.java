@@ -105,7 +105,7 @@ public class IngestFixtureData {
         Subscription subscription = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_SELECT, partnerId,
-                    pricePlan.getId()), true);
+                    pricePlan.getId(), pricePlan.getDiscountId()), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscription;
             }
@@ -169,6 +169,30 @@ public class IngestFixtureData {
         return code;
     }
 
+    public static DiscountModule getDiscount(int percent) {
+        Logger.getLogger(IngestFixtureData.class).debug("getDiscount(): percent = " + percent);
+        DiscountModule result = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT,
+                    percent, partnerId), false);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return null;
+            }
+
+            result = new DiscountModule();
+            result.setPercent((double) percent);
+            if ("".equals(result.toParams().get(CODE))) {
+                throw new SQLException();
+            }
+            result.setToken(CODE, jsonArray.getJSONObject(0).getString(CODE));
+            result.setToken(ID, String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error(CODE + " can't be null");
+        }
+        return result;
+    }
+
     public static int getEpgChannelId(String channelName) {
         Logger.getLogger(IngestFixtureData.class).debug("getEpgChannelId(): channelName = " + channelName);
         int epgChannelId = -1;
@@ -204,5 +228,28 @@ public class IngestFixtureData {
         }
 
         return result;
+    }
+
+    public static Ppv loadSharedCommonPpv(PricePlan pricePlan) {
+        Logger.getLogger(IngestFixtureData.class).debug("loadSharedCommonPpv(): pricePlan id = " + pricePlan.getId());
+
+        Ppv ppv = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PPV_SELECT, partnerId,
+                    pricePlan.getId()), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return ppv;
+            }
+
+            ppv = new Ppv();
+            ppv.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+            ppv.setName(jsonArray.getJSONObject(0).getString(NAME));
+            ppv.setIsSubscriptionOnly(jsonArray.getJSONObject(0).getInt(SUBSCRIPTION_ONLY) == 0);
+            // TODO: add more data in case it needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("Ppv data can't be null");
+        }
+        return ppv;
     }
 }

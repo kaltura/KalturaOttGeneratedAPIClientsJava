@@ -2,8 +2,8 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
-import com.kaltura.client.Logger;
 import com.kaltura.client.services.OttUserService;
+import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.IngestUtils;
@@ -11,14 +11,12 @@ import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeSuite;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.services.OttUserService.login;
-import static com.kaltura.client.test.IngestConstants.CURRENCY_EUR;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
@@ -51,6 +49,12 @@ public class BaseTest {
     // shared VOD
     private static MediaAsset mediaAsset;
 
+    // TODO - dynamic
+    private static String epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
+
+    //Shared EPG program
+    private static Asset epgProgram;
+
     // shared files
     private static MediaFile webMediaFile;
     private static MediaFile mobileMediaFile;
@@ -64,11 +68,12 @@ public class BaseTest {
     // shared ingested subscription
     private static Subscription sharedCommonSubscription;
 
-    // shared collection
-    private static Collection sharedCommonCollection;
+    // shared ingested PPV
+    private static Ppv sharedCommonPpv;
 
     // cycles map with values related view/full life cycles of price plans
     private static Map<Integer, String> cycles = new HashMap<>();
+
     {
         // TODO: complete other values
         cycles.put(1440, "1 Day");
@@ -123,22 +128,21 @@ public class BaseTest {
      * Regression requires existing of Price Plan with specific parameters.
      * Price should be 5 Euros
      * Discount percent should be equal 100%
-     *
+     * <p>
      * In case item is not found in DB it will be ingested.
      * Can't work in case proper Discount and PriceCode aren't found in DB
      *
      * @return common shared Price Plan with mentioned parameters
      */
-    public static PricePlan getSharedCommonPricePlan(){
-        String defaultCurrency = "EUR";
+    public static PricePlan getSharedCommonPricePlan() {
         double defaultDiscountPrice = 0.0;
         double defaultDiscountPercentValue = 100.0;
         if (sharedCommonPricePlan == null) {
-            sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), defaultCurrency, defaultDiscountPrice, defaultDiscountPercentValue);
+            sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), IngestConstants.CURRENCY_EUR, defaultDiscountPrice, defaultDiscountPercentValue);
             if (sharedCommonPricePlan == null) {
                 sharedCommonPricePlan = IngestUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
-                        Optional.of(defaultCurrency), Optional.of(IngestFixtureData.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)),
+                        Optional.of(IngestConstants.CURRENCY_EUR), Optional.of(IngestFixtureData.getDiscount(IngestConstants.CURRENCY_EUR, (int) defaultDiscountPercentValue)),
                         Optional.of(true), Optional.of(0));
             }
         }
@@ -148,21 +152,19 @@ public class BaseTest {
     /**
      * Regression requires existing of MPP with specific parameters.
      * Price Plan should be as for method public static PricePlan getSharedCommonPricePlan()
-     *
+     * <p>
      * MPP shouldn't be renewed and with discount (internal items) 100%
-     *
      *
      * @return MPP with mentioned parameters
      */
-    public static Subscription getSharedCommonSubscription(){
+    public static Subscription getSharedCommonSubscription() {
         double defaultDiscountPercentValue = 100.0;
-        String defaultCurrency = "EUR";
         if (sharedCommonSubscription == null) {
             sharedCommonSubscription = IngestFixtureData.loadSharedCommonSubscription(getSharedCommonPricePlan());
             if (sharedCommonSubscription == null) {
                 sharedCommonSubscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(IngestFixtureData.getDiscount(defaultCurrency, (int) defaultDiscountPercentValue)), Optional.empty(),
+                        Optional.of(IngestFixtureData.getDiscount(IngestConstants.CURRENCY_EUR, (int) defaultDiscountPercentValue)), Optional.empty(),
                         Optional.of(false), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()), Optional.empty(),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
             }
@@ -171,29 +173,30 @@ public class BaseTest {
     }
 
     /**
-     * Regression requires existence of Collection with specific parameters.
-     * Price should be as for method public static PricePlan getSharedCommonPricePlan()
-     * Usage Module should be as for method public static PricePlan getSharedCommonPricePlan()
+     * Regression requires existing of PPV with specific parameters.
+     * Price Plan should be as for method public static PricePlan getSharedCommonPricePlan()
      *
-     * Collection should be with discount (internal items) 100%
+     * PPV should be with discount (internal items) 50%
      *
-     * @return Collection with mentioned parameters
+     * @return PPV with mentioned parameters
      */
-    public static Collection getSharedCommonCollection(){
-        double defaultDiscountPercentValue = 100.0;
-        String defaultCurrency = "EUR";
-        if (sharedCommonCollection == null) {
-            sharedCommonCollection = IngestFixtureData.loadSharedCommonCollection(getSharedCommonPricePlan());
-            if (sharedCommonCollection == null) {
-                Logger.getLogger(BaseTest.class).error("Collection with defined parameters should exist in DB!");
+    public static Ppv getSharedCommonPpv(){
+        double discountPercentValue = 50.0;
+        if (sharedCommonPpv == null) {
+            sharedCommonPpv = IngestFixtureData.loadSharedCommonPpv(getSharedCommonPricePlan());
+            if (sharedCommonPpv == null) {
+                sharedCommonPpv = IngestUtils.ingestPPV(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
+                        Optional.empty(), Optional.of(IngestFixtureData.getDiscount(IngestConstants.CURRENCY_EUR, (int) discountPercentValue)),
+                        Optional.empty(), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()),
+                        Optional.of(false), Optional.of(false), Optional.empty(), Optional.empty(), Optional.empty());
             }
         }
-        return sharedCommonCollection;
+        return sharedCommonPpv;
     }
 
     public static String getIngestBusinessModuleUserName() {
         if (ingestBusinessModuleUserUsername == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -202,7 +205,7 @@ public class BaseTest {
 
     public static String getIngestBusinessModuleUserPassword() {
         if (ingestBusinessModuleUserPassword == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId);
             ingestBusinessModuleUserUsername = userInfo.split(":")[0];
             ingestBusinessModuleUserPassword = userInfo.split(":")[1];
         }
@@ -211,7 +214,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserName() {
         if (ingestAssetUserUsername == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId + 1);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -220,7 +223,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserPassword() {
         if (ingestAssetUserPassword == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(BaseTest.partnerId + 1);
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -232,7 +235,7 @@ public class BaseTest {
         if (administratorKs == null) {
             String[] userInfo = DBUtils.getUserData("Administrator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null,null));
+                    null, null));
             administratorKs = loginResponse.results.getLoginSession().getKs();
         }
         return administratorKs;
@@ -242,7 +245,7 @@ public class BaseTest {
         if (operatorKs == null) {
             String[] userInfo = DBUtils.getUserData("Operator").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null,null));
+                    null, null));
             operatorKs = loginResponse.results.getLoginSession().getKs();
         }
         return operatorKs;
@@ -252,7 +255,7 @@ public class BaseTest {
         if (managerKs == null) {
             String[] userInfo = DBUtils.getUserData("Manager").split(":");
             loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null,null));
+                    null, null));
             managerKs = loginResponse.results.getLoginSession().getKs();
         }
         return managerKs;
@@ -274,6 +277,15 @@ public class BaseTest {
         }
         return mediaAsset;
     }
+
+    public static ProgramAsset getSharedEpgProgram() {
+        if (epgProgram == null) {
+            epgProgram = IngestUtils.ingestEPG(epgChannelName, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty()).get(0);
+        }
+        return (ProgramAsset) epgProgram;
+    }
+
 
     public static MediaFile getSharedWebMediaFile() {
         if (webMediaFile == null) {
@@ -298,10 +310,11 @@ public class BaseTest {
     }
 
     public static Subscription get5MinRenewableSubscription() {
+        // TODO: add logic checking data from DB
         if (fiveMinRenewableSubscription == null) {
             PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
-                    Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(CURRENCY_EUR), Optional.of(""),
+                    Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(IngestConstants.CURRENCY_EUR), Optional.of(""),
                     Optional.of(true), Optional.of(3));
             fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
@@ -330,11 +343,11 @@ public class BaseTest {
                     if (user.getIsMaster() != null && user.getIsMaster()) {
                         sharedMasterUser = user;
                     }
-                    // TODO: ask Alon if we have cases when commented part should be there? What tests related to that logic?
-                    if (user.getIsMaster() == null/* && user.getIsDefault() == null*/) {
+                    if (user.getIsMaster() == null && user.getIsDefault() == null) {
                         sharedUser = user;
                     }
                 }
+
 
                 String sharedMasterUserName = getOttUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedMasterUserName, defaultUserPassword,null,null));
@@ -342,6 +355,7 @@ public class BaseTest {
 
                 String sharedUserName = getOttUserById(Integer.parseInt(sharedUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedUserName, defaultUserPassword,null,null));
+
                 sharedUserKs = loginResponse.results.getLoginSession().getKs();
             }
             return sharedHousehold;

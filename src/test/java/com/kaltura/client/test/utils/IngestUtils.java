@@ -5,6 +5,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.AssetService.*;
+import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -67,6 +68,7 @@ public class IngestUtils extends BaseUtils {
                     "<end_date>31/05/2017 23:59:59</end_date>\n" +
                     "<code>Expired coupon group 1</code>\n" +
                     "</coupon_group_id>";
+
     private static String MPP_DEFAULT_PRODUCT_CODES_VALUE =
             "<product_code>\n" +
                     "<code>ProductCode1</code>\n" +
@@ -191,9 +193,11 @@ public class IngestUtils extends BaseUtils {
 
         Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(
                 AssetService.list(assetFilter, null).setKs(getAnonymousKs()));
+
         // TODO: complete Asset.json at least for programs
 
         return (List<ProgramAsset>) (Object) ingestedProgrammes.results.getObjects();
+
     }
 
     private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {
@@ -520,10 +524,10 @@ public class IngestUtils extends BaseUtils {
         String viewLifeCycleValue = viewLifeCycle.orElse(FIVE_MINUTES_PERIOD);
         int maxViewsValue = maxViews.orElse(PP_DEFAULT_MAX_VIEWS_VALUE);
         String priceValue = price.orElse(getProperty(PRICE_CODE_AMOUNT));
-        String currencyValue = currency.orElse(CURRENCY_EUR);
-        String defaultCurrencyOfDiscount4IngestMpp = "GBP";
+        String currencyValue = currency.orElse(IngestConstants.CURRENCY_EUR);
         int defaultPercentageOfDiscount4IngestMpp = 100;
-        String discountValue = discount.orElse(IngestFixtureData.getDiscount(defaultCurrencyOfDiscount4IngestMpp, defaultPercentageOfDiscount4IngestMpp));
+        DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount4IngestMpp);
+        String discountValue = discount.orElse(discountModule.toParams().get("code").toString());
         boolean isRenewableValue = isRenewable.orElse(PP_DEFAULT_IS_RENEWABLE_VALUE);
         int recurringPeriodsValue = recurringPeriods.orElse(PP_DEFAULT_RECURRING_PERIODS_VALUE);
 
@@ -573,11 +577,11 @@ public class IngestUtils extends BaseUtils {
         pricePlan.setIsRenewable(isRenewableValue);
         pricePlan.setRenewalsNumber(recurringPeriodsValue);
         pricePlan.setName(ppCodeValue);
+        pricePlan.setDiscountId(Long.valueOf(discountModule.toParams().get("id").toString()));
         // TODO: complete COMMENTED IF NEEDED
         //pricePlan.setFullLifeCycle();
         //pricePlan.setViewLifeCycle();
         //pricePlan.setPriceDetailsId();
-        //pricePlan.setDiscountId();
         return pricePlan;
     }
 
@@ -640,7 +644,7 @@ public class IngestUtils extends BaseUtils {
         int defaultPercentageOfDiscount4IngestPpv = 50;
         String discountValue = discount.orElse(IngestFixtureData.getDiscount(defaultCurrencyOfDiscount4IngestPpv, defaultPercentageOfDiscount4IngestPpv));
         double priceValue = price.orElse(Double.valueOf(getProperty(PRICE_CODE_AMOUNT)));
-        String currencyValue = currency.orElse(CURRENCY_EUR);
+        String currencyValue = currency.orElse(IngestConstants.CURRENCY_EUR);
         String usageModuleValue = usageModule.orElse(getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV));
         boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;
         boolean isFirstDeviceLimitationValue = isFirstDeviceLimitation.isPresent() ? isFirstDeviceLimitation.get() : false;
@@ -959,7 +963,7 @@ public class IngestUtils extends BaseUtils {
         String key;
         int value;
         result.append("        <doubles>\n");
-        for(Map.Entry<String, Integer> entry : numbers.entrySet()) {
+        for (Map.Entry<String, Integer> entry : numbers.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
             result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
@@ -985,7 +989,7 @@ public class IngestUtils extends BaseUtils {
         StringBuilder result = new StringBuilder();
         String key, value;
         result.append("        <strings>\n");
-        for(Map.Entry<String, String> entry : strings.entrySet()) {
+        for (Map.Entry<String, String> entry : strings.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
             result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
@@ -1005,7 +1009,7 @@ public class IngestUtils extends BaseUtils {
         StringBuilder result = new StringBuilder();
         String key, value;
         result.append("        <dates>\n");
-        for(Map.Entry<String, String> entry : dates.entrySet()) {
+        for (Map.Entry<String, String> entry : dates.entrySet()) {
             key = entry.getKey();
             value = entry.getValue();
             result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
@@ -1023,11 +1027,11 @@ public class IngestUtils extends BaseUtils {
         String key;
         List<String> values;
         result.append("        <metas>\n");
-        for(Map.Entry<String, List<String>> entry : metas.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : metas.entrySet()) {
             key = entry.getKey();
             values = entry.getValue();
             result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
-            for (String value: values) {
+            for (String value : values) {
                 result.append("            <container>\n");
                 result.append("              <value lang=\"eng\">" + value + "</value>\n");
                 result.append("            </container>\n");
@@ -1040,29 +1044,40 @@ public class IngestUtils extends BaseUtils {
     }
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
-    public static MediaAsset ingestBasicVOD(String name, String mediaType) {
-        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of(name), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+    public static MediaAsset ingestVOD(String mediaType) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
         return mediaAsset;
     }
-};
+
+    public static MediaAsset updateVODName(MediaAsset asset, String name) {
+        MediaAsset mediaAsset = ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
+
+    //
+    public static MediaAsset ingestVOD(String mediaType,Map<String, List<String>> tags) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
 
 
-//    public static ArrayList ingestBasicVODNew(int numOfAssets, String mediaType) {
-//        MediaAsset mediaAsset;
-//        ArrayList<MediaAsset> assetList = new ArrayList<>();
-//        String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
-//        int defaultDayOffset;
-//        String catalogStartDateValue;
-//        for (int i = 0; i < numOfAssets; i++) {
-//            defaultDayOffset = (-1 + - i) ;
-//            catalogStartDateValue = getOffsetDateInFormat(defaultDayOffset, startEndDatePattern);
-//            mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.of("Shmulik"), Optional.empty(), Optional.empty(),
-//                    Optional.of(catalogStartDateValue), Optional.empty(),
-//                    Optional.of(catalogStartDateValue), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty());
-//            assetList.add(mediaAsset);
-//        }
-//
-//        return assetList;
-//    }
-//}
+    public static ArrayList ingestBasicVODNumOfTimes(int numOfAssets, String mediaType) {
+        MediaAsset mediaAsset;
+        ArrayList<MediaAsset> assetList = new ArrayList<>();
+        for (int i = 0; i < numOfAssets; i++) {
+            mediaAsset = ingestVOD(mediaType);
+            assetList.add(mediaAsset);
+        }
+        return assetList;
+    }
+}

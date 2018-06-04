@@ -26,7 +26,6 @@ public class PurchaseUtils {
     private static Response<ListResponse<ProductPrice>> productPriceResponse;
     private static Response<Asset> assetResponse;
 
-    // TODO: 14/MAR/2018 add return
     public static Response<Transaction> purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, @Nullable String purchaseCurrency) {
         purchasePpvDetailsMap = new HashMap<>();
 
@@ -73,23 +72,25 @@ public class PurchaseUtils {
         return transactionResponse;
     }
 
-    public static Response<Transaction> purchaseSubscription(String ks, int subscriptionId) {
+    public static Response<Transaction> purchaseSubscription(String ks, int subscriptionId, Optional<String> currency) {
         purchaseSubscriptionDetailsMap = new HashMap<>();
 
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(String.valueOf(subscriptionId));
         filter.setIsLowest(false);
 
-        ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(filter).setKs(ks);
+        ListProductPriceBuilder listProductPriceBuilder = currency.isPresent()
+                ? ProductPriceService.list(filter).setKs(ks).setCurrency(currency.get())
+                : ProductPriceService.list(filter).setKs(ks);
         productPriceResponse = executor.executeSync(listProductPriceBuilder);
 
-        String currency = productPriceResponse.results.getObjects().get(0).getPrice().getCurrency();
+        String currencyValue = currency.orElse(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency());
         double price = productPriceResponse.results.getObjects().get(0).getPrice().getAmount();
 
         Purchase purchase = new Purchase();
         purchase.setProductId(subscriptionId);
         purchase.setContentId(0);
-        purchase.setCurrency(currency);
+        purchase.setCurrency(currencyValue);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.SUBSCRIPTION).get());
 
@@ -98,7 +99,7 @@ public class PurchaseUtils {
 
         // TODO: complete the purchase subscription test
         purchaseSubscriptionDetailsMap.put("price", String.valueOf(price));
-        purchaseSubscriptionDetailsMap.put("currency", currency);
+        purchaseSubscriptionDetailsMap.put("currency", currencyValue);
 
         return transactionResponse;
     }

@@ -15,6 +15,7 @@ public class DBConstants {
     static final String NUMBER_OF_REC_PERIODS = "num_of_rec_periods";
     static final String PASSWORD = "password";
     static final String ROW_COUNT = "row_count";
+    static final String SUBSCRIPTION_ONLY = "subscription_only";
     static final String USERNAME = "username";
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
 
@@ -28,6 +29,12 @@ public class DBConstants {
     static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
             "from [Users].[dbo].[groups_parameters]\n" +
             "where group_id=%d";
+
+    static final String DISCOUNT_BY_PERCENT = "select TOP (1) *\n" +
+            "from [Pricing].[dbo].[discount_codes] dc \n" +
+            "where dc.discount_percent=%d\n" + // percent amount
+            "and dc.group_id=%d\n" + // group
+            "and dc.[status]=1 and dc.is_active=1";
 
     static final String DISCOUNT_BY_PERCENT_AND_CURRENCY = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
@@ -50,6 +57,11 @@ public class DBConstants {
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
 
+    static final String PPV_SELECT = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
+            "where [status]=1 and is_active=1\n" +
+            "and group_id=%d and usage_module_code=%d\n" +
+            "order by create_date";
+
     static final String PRICE_CODE_SELECT = "select top 1 * from [Pricing].[dbo].[price_codes] pc\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (pc.currency_cd=lc.id)\n" +
             "where pc.[status]=1 and pc.is_active=1\n" +
@@ -61,7 +73,7 @@ public class DBConstants {
 
     static final String SUBSCRIPTION_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
             "where [status]=1 and is_active=1\n" +
-            "and group_id=%d and usage_module_code=%d\n" +
+            "and group_id=%d and usage_module_code=%d and discount_module_code=%d\n" +
             "order by create_date";
 
     static final String COLLECTION_SELECT = "select top 1 * from [Pricing].[dbo].[collections]\n" +
@@ -109,6 +121,10 @@ public class DBConstants {
             "from [TVinci].[dbo].[permissions_permission_items]\n" +
             "where permission_id=%d and permission_item_id=%d and is_active=1 and [status]=1 and group_id=%d";
 
+    static final String ASSET_ID_SELECT = "SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=%d and status=1 and DATALENGTH(media_id) > 0";
+
+    static final String UNACTIVE_ASSET_ID_SELECT = "SELECT top 1 [id] FROM [TVinci].[dbo].[media] where group_id = %d and status = 2";
+
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";
     static final String SP_INSERT_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Insert_PermissionItem(?, ?, ?, ?, ?, ?)}";
@@ -119,4 +135,6 @@ public class DBConstants {
     static final String SP_DELETE_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionItem(?)}";
     static final String SP_DELETE_PERMISSION_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionPermissionItem(?)}";
     static final String SP_DELETE_ROLE_AND_ITS_PERMISSIONS = "{call TVinci.dbo.__482V0__Delete_RolePermission(?, ?)}";
+
+
 }

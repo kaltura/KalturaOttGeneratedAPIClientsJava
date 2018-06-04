@@ -16,7 +16,7 @@ import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.HouseholdService.get;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class householdDeleteTests extends BaseTest {
+public class HouseholdDeleteTests extends BaseTest {
 
     private final int numberOfUsersInHousehold = 1;
     private final int numberOfDevicesInHousehold = 1;
