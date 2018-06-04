@@ -2,6 +2,7 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
+import com.kaltura.client.Logger;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
@@ -67,6 +68,9 @@ public class BaseTest {
 
     // shared ingested subscription
     private static Subscription sharedCommonSubscription;
+
+    // shared collection
+    private static Collection sharedCommonCollection;
 
     // shared ingested PPV
     private static Ppv sharedCommonPpv;
@@ -170,6 +174,26 @@ public class BaseTest {
             }
         }
         return sharedCommonSubscription;
+    }
+
+    /**
+     * Regression requires existence of Collection with specific parameters.
+     * Price should be as for method public static PricePlan getSharedCommonPricePlan()
+     * Usage Module should be as for method public static PricePlan getSharedCommonPricePlan()
+     * <p>
+     * Collection should be with discount (internal items) 100%
+     *
+     * @return Collection with mentioned parameters
+     */
+    public static Collection getSharedCommonCollection() {
+        double defaultDiscountPercentValue = 100.0;
+        if (sharedCommonCollection == null) {
+            sharedCommonCollection = IngestFixtureData.loadSharedCommonCollection(getSharedCommonPricePlan());
+            if (sharedCommonCollection == null) {
+                Logger.getLogger(BaseTest.class).error("Collection with defined parameters should exist in DB!");
+            }
+        }
+        return sharedCommonCollection;
     }
 
     /**
