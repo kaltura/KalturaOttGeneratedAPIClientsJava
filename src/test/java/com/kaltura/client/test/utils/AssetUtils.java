@@ -4,10 +4,12 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
+import com.kaltura.client.enums.SocialActionType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.services.SocialActionService;
+import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -104,14 +106,20 @@ public class AssetUtils extends BaseUtils {
         }
     }
 
-    public static void addLikesToAsset (Long assetId, int numOfActions, AssetType assetType) {
+    public static void addLikesToAsset(Long assetId, int numOfActions, AssetType assetType) {
         if (numOfActions <= 0) {
             Logger.getLogger("Value must be equal or greater than 0");
         } else {
             for (int i = 0; i < numOfActions; i++) {
                 Household household = HouseholdUtils.createHousehold(1, 1, false);
                 HouseholdUser householdUser = HouseholdUtils.getMasterUserFromHousehold(household);
-                AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add()
+                SocialAction socialAction = SocialUtils.getSocialAction(SocialActionType.LIKE, null, assetId, assetType, null);
+                AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add(socialAction)
+                        .setKs(BaseTest.getOperatorKs())
+                        .setUserId(Integer.valueOf(householdUser.getUserId()));
+                executor.executeSync(addSocialActionBuilder);
+
+                HouseholdService.delete(Math.toIntExact(household.getId()));
             }
         }
     }
