@@ -105,7 +105,7 @@ public class IngestFixtureData {
         Subscription subscription = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_SELECT, partnerId,
-                    pricePlan.getId()), true);
+                    pricePlan.getId(), pricePlan.getDiscountId()), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscription;
             }
@@ -144,6 +144,30 @@ public class IngestFixtureData {
         }
 
         return code;
+    }
+
+    public static DiscountModule getDiscount(int percent) {
+        Logger.getLogger(IngestFixtureData.class).debug("getDiscount(): percent = " + percent);
+        DiscountModule result = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT,
+                    percent, partnerId), false);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return null;
+            }
+
+            result = new DiscountModule();
+            result.setPercent((double) percent);
+            if ("".equals(result.toParams().get(CODE))) {
+                throw new SQLException();
+            }
+            result.setToken(CODE, jsonArray.getJSONObject(0).getString(CODE));
+            result.setToken(ID, String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error(CODE + " can't be null");
+        }
+        return result;
     }
 
     public static int getEpgChannelId(String channelName) {
