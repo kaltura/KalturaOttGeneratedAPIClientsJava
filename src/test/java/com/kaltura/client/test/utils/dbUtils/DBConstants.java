@@ -15,7 +15,9 @@ public class DBConstants {
     static final String NUMBER_OF_REC_PERIODS = "num_of_rec_periods";
     static final String PASSWORD = "password";
     static final String ROW_COUNT = "row_count";
+    static final String SERV_ID = "serv_id";
     static final String SUBSCRIPTION_ONLY = "subscription_only";
+    static final String SUB_ID = "sub_id";
     static final String USERNAME = "username";
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
 
@@ -76,6 +78,13 @@ public class DBConstants {
             "and group_id=%d and usage_module_code=%d and discount_module_code=%d\n" +
             "order by create_date";
 
+    static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) SUBSCRIPTION_ID as " + SUB_ID +
+            ", SERVICE_ID as " + SERV_ID + "\n" +
+            "FROM [Pricing].[dbo].[subscriptions] s\n" +
+            "INNER JOIN [Pricing].[dbo].[subscriptions_services] ss\n" +
+            "ON s.ID = SS.SUBSCRIPTION_ID\n" +
+            "where s.group_id=%d";
+
     static final String COLLECTION_SELECT = "select top 1 * from [Pricing].[dbo].[collections]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and discount_id=%d and price_id=%d and usage_module_id=%d\n" +
@@ -85,7 +94,8 @@ public class DBConstants {
             "from [Users].[dbo].[users] u with(nolock)\n" +
             "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
             "join [TVinci].[dbo].[roles] r with(nolock) on (r.id=ur.role_id)\n" +
-            "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d";
+            // TODO: find instead of and u.username <> 'lfaingold' how to exclude suspended users
+            "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d and u.username <> 'lfaingold'";
 
     static final String USER_ROLES_SELECT = "SELECT [ROLE_ID] FROM [Users].[dbo].[users_roles] WHERE [USER_ID] = '%S'";
 
