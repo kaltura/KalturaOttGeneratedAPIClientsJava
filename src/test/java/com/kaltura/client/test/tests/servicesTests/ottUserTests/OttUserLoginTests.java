@@ -38,7 +38,8 @@ public class OttUserLoginTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "ottUser/action/login - login")
+    @Description("ottUser/action/login - login")
+    @Test
     private void login() {
         // login user
         loginResponse = executor.executeSync(OttUserService.login(partnerId, user.getUsername(), defaultUserPassword));

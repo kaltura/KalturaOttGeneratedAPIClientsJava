@@ -21,6 +21,7 @@ public class PurchaseUtils {
 
     public static Map<String, String> purchasePpvDetailsMap;
     public static Map<String, String> purchaseSubscriptionDetailsMap;
+    public static Map<String, String> purchaseCollectionDetailsMap;
 
     private static Response<ListResponse<ProductPrice>> productPriceResponse;
     private static Response<Asset> assetResponse;
@@ -101,6 +102,34 @@ public class PurchaseUtils {
         // TODO: complete the purchase subscription test
         purchaseSubscriptionDetailsMap.put("price", String.valueOf(price));
         purchaseSubscriptionDetailsMap.put("currency", currencyValue);
+
+        return transactionResponse;
+    }
+
+    public static Response<Transaction> purchaseCollection (String ks, int collectionId){
+        purchaseCollectionDetailsMap = new HashMap<>();
+
+        ProductPriceFilter productPriceFilter = new ProductPriceFilter();
+        productPriceFilter.setCollectionIdIn(String.valueOf(collectionId));
+
+        ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(productPriceFilter).setKs(ks);
+        productPriceResponse = executor.executeSync(listProductPriceBuilder);
+
+        String collectionPriceCurrency = productPriceResponse.results.getObjects().get(0).getPrice().getCurrency();
+        double collectionPriceAmount = productPriceResponse.results.getObjects().get(0).getPrice().getAmount();
+
+        Purchase purchaseRequest = new Purchase();
+        purchaseRequest.setCurrency(collectionPriceCurrency);
+        purchaseRequest.setPrice(collectionPriceAmount);
+        purchaseRequest.setContentId(0);
+        purchaseRequest.setProductId(collectionId);
+        purchaseRequest.setProductType(TransactionType.COLLECTION);
+
+        PurchaseTransactionBuilder purchaseTransactionBuilder = TransactionService.purchase(purchaseRequest).setKs(ks);
+        Response<Transaction> transactionResponse = executor.executeSync(purchaseTransactionBuilder);
+
+        purchaseCollectionDetailsMap.put("price", String.valueOf(collectionPriceAmount));
+        purchaseCollectionDetailsMap.put("currency", collectionPriceCurrency);
 
         return transactionResponse;
     }

@@ -124,6 +124,29 @@ public class IngestFixtureData {
         return subscription;
     }
 
+    public static Collection loadSharedCommonCollection(PricePlan pricePlan) {
+        Logger.getLogger(IngestFixtureData.class).debug("loadSharedCommonCollection(): price_id = " + pricePlan.getPriceDetailsId() +
+                "discount_id = " + pricePlan.getDiscountId() + "usage_module_id = " + pricePlan.getId());
+
+        Collection collection = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(COLLECTION_SELECT, partnerId,
+                    pricePlan.getDiscountId(), pricePlan.getPriceDetailsId(), pricePlan.getId()), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return collection;
+            }
+
+            collection = new Collection();
+            collection.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+            collection.setName(jsonArray.getJSONObject(0).getString(NAME));
+            // TODO: add more data in case it needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("collection data can't be null");
+        }
+        return collection;
+    }
+
     public static String getDiscount(String currency, int percent) {
         Logger.getLogger(IngestFixtureData.class).debug("getDiscount(): currency = " + currency + " percent = " + percent);
         String code = "";
