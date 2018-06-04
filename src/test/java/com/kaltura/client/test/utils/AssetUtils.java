@@ -7,6 +7,7 @@ import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.HouseholdService;
+import com.kaltura.client.services.SocialActionService;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kaltura.client.services.SocialActionService.*;
 import static com.kaltura.client.services.BookmarkService.*;
 import static com.kaltura.client.services.AssetService.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -98,6 +100,18 @@ public class AssetUtils extends BaseUtils {
                 executor.executeSync(bookmarkBuilder);
 
                 HouseholdService.delete(Math.toIntExact(household.getId()));
+            }
+        }
+    }
+
+    public static void addLikesToAsset (Long assetId, int numOfActions, AssetType assetType) {
+        if (numOfActions <= 0) {
+            Logger.getLogger("Value must be equal or greater than 0");
+        } else {
+            for (int i = 0; i < numOfActions; i++) {
+                Household household = HouseholdUtils.createHousehold(1, 1, false);
+                HouseholdUser householdUser = HouseholdUtils.getMasterUserFromHousehold(household);
+                AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add()
             }
         }
     }
