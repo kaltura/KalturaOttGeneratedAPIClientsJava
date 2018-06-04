@@ -7,6 +7,8 @@ import com.kaltura.client.test.utils.ChannelUtils;
 import com.kaltura.client.types.Channel;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
 import static com.kaltura.client.services.ChannelService.GetChannelBuilder;
@@ -19,13 +21,14 @@ public class ChannelDeleteTests extends BaseTest {
     private int channelId;
 
     private final String channelName = "Channel_12345";
-    private final String Description = "description of channel";
+    private final String description = "description of channel";
     private final String filterExpression = "name ~ 'movie'";
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("channel/action/delete")
     @Test
     private void DeleteChannel() {
-        channel = ChannelUtils.addChannel(channelName, Description, true, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+        channel = ChannelUtils.addChannel(channelName, description, true, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
 
         // channel/action/add
         ChannelService.AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());

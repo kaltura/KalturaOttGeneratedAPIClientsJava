@@ -14,7 +14,10 @@ import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import static com.kaltura.client.services.HouseholdService.*;
@@ -48,7 +51,9 @@ public class EntitlementGrantTests extends BaseTest {
         ppvId = Integer.valueOf(getSharedCommonPpv().getId());
     }
 
-    @Test(description = "entitlement/action/grant - grant subscription with history = true")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("entitlement/action/grant - grant subscription with history = true")
+    @Test
     private void grant_subscription_with_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
@@ -112,7 +117,9 @@ public class EntitlementGrantTests extends BaseTest {
         executor.executeSync(deleteHouseholdBuilder);
     }
 
-    @Test(description = "entitlement/action/grant - grant subscription with history = false")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("entitlement/action/grant - grant subscription with history = false")
+    @Test
     private void grant_subscription_without_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
@@ -152,7 +159,9 @@ public class EntitlementGrantTests extends BaseTest {
         executor.executeSync(deleteHouseholdBuilder);
     }
 
-    @Test(description = "entitlement/action/grant - grant ppv with history = true")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("entitlement/action/grant - grant ppv with history = true")
+    @Test
     private void grant_ppv_with_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
@@ -215,7 +224,9 @@ public class EntitlementGrantTests extends BaseTest {
         executor.executeSync(deleteHouseholdBuilder);
     }
 
-    @Test(description = "entitlement/action/grant - grant ppv with history = false")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("entitlement/action/grant - grant ppv with history = false")
+    @Test
     private void grant_ppv_without_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
@@ -263,7 +274,8 @@ public class EntitlementGrantTests extends BaseTest {
         executor.executeSync(deleteHouseholdBuilder);
     }
 
-    @Test(description = "entitlement/action/grant - grant ppv with wrong id - error 6001")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/grant - grant ppv with wrong id - error 6001")
     private void grant_ppv_with_wrong_id() {
         int productId = 1;
 
@@ -282,7 +294,9 @@ public class EntitlementGrantTests extends BaseTest {
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(6001).getCode());
     }
 
-    @Test(description = "entitlement/action/grant - grant purchased ppv - error 3021")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/grant - grant purchased ppv - error 3021")
+    @Test
     private void grant_purchased_ppv() {
         // get user form test shared household
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
@@ -305,7 +319,9 @@ public class EntitlementGrantTests extends BaseTest {
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3021).getCode());
     }
 
-    @Test(description = "entitlement/action/grant - grant purchased subscription - error 3024")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/grant - grant purchased subscription - error 3024")
+    @Test
     private void grant_purchased_subscription() {
         // get user form test shared household
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
@@ -327,14 +343,18 @@ public class EntitlementGrantTests extends BaseTest {
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3024).getCode());
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Issue("BEO-5022")
-    @Test(description = "entitlement/action/grant - error 3023", enabled = false)
+    @Description("entitlement/action/grant - error 3023")
+    @Test(enabled = false)
     private void grant_3023() {
         // TODO: 4/30/2018 implement test
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Issue("BEO-5022")
-    @Test(enabled = false, description = "entitlement/action/grant - grant ppv with invalid content id - error 3018")
+    @Description("entitlement/action/grant - grant ppv with invalid content id - error 3018")
+    @Test(enabled = false)
     private void grant_ppv_with_invalid_contentId() {
         // get user form test shared household
         HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
@@ -352,7 +372,9 @@ public class EntitlementGrantTests extends BaseTest {
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3018).getCode());
     }
 
-    @Test(description = "entitlement/action/grant - user not in domain - error 1005")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/grant - user not in domain - error 1005")
+    @Test
     private void grant_ppv_user_not_in_domain() {
         // get user form test shared household
         RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, OttUserUtils.generateOttUser(), defaultUserPassword);
@@ -371,9 +393,10 @@ public class EntitlementGrantTests extends BaseTest {
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(1005).getCode());
     }
 
-    @Test(description = "entitlement/action/grant - user suspend - error 2001")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/grant - user suspend - error 2001")
+    @Test
     private void grant_ppv_user_suspend() {
-
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
         HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);

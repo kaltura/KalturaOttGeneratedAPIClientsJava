@@ -2,24 +2,22 @@ package com.kaltura.client.test.tests.featuresTests.versions.four_eight;
 
 import com.kaltura.client.test.utils.PermissionManagementUtils;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
+import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import static com.kaltura.client.test.utils.PermissionManagementUtils.*;
+
+import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
+import static com.kaltura.client.test.utils.BaseUtils.getFileContent;
+import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
+import static com.kaltura.client.test.utils.PermissionManagementUtils.executeCommandsInColsole;
 import static com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
-import static com.kaltura.client.test.utils.BaseUtils.getFileContent;
-import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
 
 /**
  *
@@ -53,6 +51,7 @@ public class PermissionsManagementTests {
     public static final String IMPORT_KEY = "i=";
     public static final String DELETE_KEY = "d=";
 
+    @Description()
     @Test(groups = {"Permission management"}, description = "just for deletion")
     public void deleteData() {
         //long roleId = 477L;

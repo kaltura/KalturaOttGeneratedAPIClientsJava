@@ -5,18 +5,17 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.AssetService.*;
+import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-
 import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -530,10 +529,10 @@ public class IngestUtils extends BaseUtils {
         String viewLifeCycleValue = viewLifeCycle.orElse(FIVE_MINUTES_PERIOD);
         int maxViewsValue = maxViews.orElse(PP_DEFAULT_MAX_VIEWS_VALUE);
         String priceValue = price.orElse(getProperty(PRICE_CODE_AMOUNT));
-        String currencyValue = currency.orElse(CURRENCY_EUR);
-        String defaultCurrencyOfDiscount4IngestMpp = "GBP";
+        String currencyValue = currency.orElse(IngestConstants.CURRENCY_EUR);
         int defaultPercentageOfDiscount4IngestMpp = 100;
-        String discountValue = discount.orElse(IngestFixtureData.getDiscount(defaultCurrencyOfDiscount4IngestMpp, defaultPercentageOfDiscount4IngestMpp));
+        DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount4IngestMpp);
+        String discountValue = discount.orElse(discountModule.toParams().get("code").toString());
         boolean isRenewableValue = isRenewable.orElse(PP_DEFAULT_IS_RENEWABLE_VALUE);
         int recurringPeriodsValue = recurringPeriods.orElse(PP_DEFAULT_RECURRING_PERIODS_VALUE);
 
@@ -583,11 +582,11 @@ public class IngestUtils extends BaseUtils {
         pricePlan.setIsRenewable(isRenewableValue);
         pricePlan.setRenewalsNumber(recurringPeriodsValue);
         pricePlan.setName(ppCodeValue);
+        pricePlan.setDiscountId(Long.valueOf(discountModule.toParams().get("id").toString()));
         // TODO: complete COMMENTED IF NEEDED
         //pricePlan.setFullLifeCycle();
         //pricePlan.setViewLifeCycle();
         //pricePlan.setPriceDetailsId();
-        //pricePlan.setDiscountId();
         return pricePlan;
     }
 
@@ -650,7 +649,7 @@ public class IngestUtils extends BaseUtils {
         int defaultPercentageOfDiscount4IngestPpv = 50;
         String discountValue = discount.orElse(IngestFixtureData.getDiscount(defaultCurrencyOfDiscount4IngestPpv, defaultPercentageOfDiscount4IngestPpv));
         double priceValue = price.orElse(Double.valueOf(getProperty(PRICE_CODE_AMOUNT)));
-        String currencyValue = currency.orElse(CURRENCY_EUR);
+        String currencyValue = currency.orElse(IngestConstants.CURRENCY_EUR);
         String usageModuleValue = usageModule.orElse(getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV));
         boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;
         boolean isFirstDeviceLimitationValue = isFirstDeviceLimitation.isPresent() ? isFirstDeviceLimitation.get() : false;

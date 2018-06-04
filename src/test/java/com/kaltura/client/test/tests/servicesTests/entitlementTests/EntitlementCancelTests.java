@@ -11,6 +11,9 @@ import com.kaltura.client.types.EntitlementFilter;
 import com.kaltura.client.types.Household;
 import com.kaltura.client.types.HouseholdUser;
 import com.kaltura.client.utils.response.base.Response;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -40,7 +43,9 @@ public class EntitlementCancelTests extends BaseTest {
         testSharedMasterUser = HouseholdUtils.getMasterUserFromHousehold(testSharedHousehold);
     }
 
-    @Test(description = "entitlement/action/cancel - cancel subscription")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("entitlement/action/cancel - cancel subscription")
+    @Test
     private void cancel_subscription() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
@@ -79,7 +84,9 @@ public class EntitlementCancelTests extends BaseTest {
         executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
     }
 
-    @Test(description = "entitlement/action/cancel - cancel invalid subscription - error 3000")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/cancel - cancel invalid subscription - error 3000")
+    @Test
     private void cancel_with_invalid_subscription() {
         // cancel subscription
         int invalidSubscriptionId = 1;
@@ -92,7 +99,9 @@ public class EntitlementCancelTests extends BaseTest {
         assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(3000).getCode());
     }
 
-    @Test(description = "entitlement/action/cancel - cancel played subscription - error 3005")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/cancel - cancel played subscription - error 3005")
+    @Test
     private void cancel_played_subscription() {
 //        // set household
 //        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
@@ -103,7 +112,6 @@ public class EntitlementCancelTests extends BaseTest {
 
     @AfterClass
     private void cancel_test_after_class() {
-
         // delete shared household for cleanup
         executor.executeSync(delete(Math.toIntExact(testSharedHousehold.getId())).setKs(getAdministratorKs()));
     }

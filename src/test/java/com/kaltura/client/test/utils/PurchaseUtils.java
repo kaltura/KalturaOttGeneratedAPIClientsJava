@@ -21,6 +21,7 @@ public class PurchaseUtils {
 
     public static Map<String, String> purchasePpvDetailsMap;
     public static Map<String, String> purchaseSubscriptionDetailsMap;
+    public static Map<String, String> purchaseCollectionDetailsMap;
 
     private static Response<ListResponse<ProductPrice>> productPriceResponse;
     private static Response<Asset> assetResponse;
@@ -71,23 +72,25 @@ public class PurchaseUtils {
         return transactionResponse;
     }
 
-    public static Response<Transaction> purchaseSubscription(String ks, int subscriptionId) {
+    public static Response<Transaction> purchaseSubscription(String ks, int subscriptionId, Optional<String> currency) {
         purchaseSubscriptionDetailsMap = new HashMap<>();
 
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(String.valueOf(subscriptionId));
         filter.setIsLowest(false);
 
-        ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(filter).setKs(ks);
+        ListProductPriceBuilder listProductPriceBuilder = currency.isPresent()
+                ? ProductPriceService.list(filter).setKs(ks).setCurrency(currency.get())
+                : ProductPriceService.list(filter).setKs(ks);
         productPriceResponse = executor.executeSync(listProductPriceBuilder);
 
-        String currency = productPriceResponse.results.getObjects().get(0).getPrice().getCurrency();
+        String currencyValue = currency.orElse(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency());
         double price = productPriceResponse.results.getObjects().get(0).getPrice().getAmount();
 
         Purchase purchase = new Purchase();
         purchase.setProductId(subscriptionId);
         purchase.setContentId(0);
-        purchase.setCurrency(currency);
+        purchase.setCurrency(currencyValue);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.SUBSCRIPTION).get());
 
@@ -96,7 +99,35 @@ public class PurchaseUtils {
 
         // TODO: complete the purchase subscription test
         purchaseSubscriptionDetailsMap.put("price", String.valueOf(price));
-        purchaseSubscriptionDetailsMap.put("currency", currency);
+        purchaseSubscriptionDetailsMap.put("currency", currencyValue);
+
+        return transactionResponse;
+    }
+
+    public static Response<Transaction> purchaseCollection (String ks, int collectionId){
+        purchaseCollectionDetailsMap = new HashMap<>();
+
+        ProductPriceFilter productPriceFilter = new ProductPriceFilter();
+        productPriceFilter.setCollectionIdIn(String.valueOf(collectionId));
+
+        ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(productPriceFilter).setKs(ks);
+        productPriceResponse = executor.executeSync(listProductPriceBuilder);
+
+        String collectionPriceCurrency = productPriceResponse.results.getObjects().get(0).getPrice().getCurrency();
+        double collectionPriceAmount = productPriceResponse.results.getObjects().get(0).getPrice().getAmount();
+
+        Purchase purchaseRequest = new Purchase();
+        purchaseRequest.setCurrency(collectionPriceCurrency);
+        purchaseRequest.setPrice(collectionPriceAmount);
+        purchaseRequest.setContentId(0);
+        purchaseRequest.setProductId(collectionId);
+        purchaseRequest.setProductType(TransactionType.COLLECTION);
+
+        PurchaseTransactionBuilder purchaseTransactionBuilder = TransactionService.purchase(purchaseRequest).setKs(ks);
+        Response<Transaction> transactionResponse = executor.executeSync(purchaseTransactionBuilder);
+
+        purchaseCollectionDetailsMap.put("price", String.valueOf(collectionPriceAmount));
+        purchaseCollectionDetailsMap.put("currency", collectionPriceCurrency);
 
         return transactionResponse;
     }

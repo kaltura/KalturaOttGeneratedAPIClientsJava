@@ -30,6 +30,12 @@ public class DBConstants {
             "from [Users].[dbo].[groups_parameters]\n" +
             "where group_id=%d";
 
+    static final String DISCOUNT_BY_PERCENT = "select TOP (1) *\n" +
+            "from [Pricing].[dbo].[discount_codes] dc \n" +
+            "where dc.discount_percent=%d\n" + // percent amount
+            "and dc.group_id=%d\n" + // group
+            "and dc.[status]=1 and dc.is_active=1";
+
     static final String DISCOUNT_BY_PERCENT_AND_CURRENCY = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (dc.currency_cd=lc.id)\n" +
@@ -67,7 +73,12 @@ public class DBConstants {
 
     static final String SUBSCRIPTION_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
             "where [status]=1 and is_active=1\n" +
-            "and group_id=%d and usage_module_code=%d\n" +
+            "and group_id=%d and usage_module_code=%d and discount_module_code=%d\n" +
+            "order by create_date";
+
+    static final String COLLECTION_SELECT = "select top 1 * from [Pricing].[dbo].[collections]\n" +
+            "where [status]=1 and is_active=1\n" +
+            "and group_id=%d and discount_id=%d and price_id=%d and usage_module_id=%d\n" +
             "order by create_date";
 
     static final String USER_BY_ROLE_SELECT = "select top(1) u.username, u.[password]\n" +
@@ -124,4 +135,6 @@ public class DBConstants {
     static final String SP_DELETE_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionItem(?)}";
     static final String SP_DELETE_PERMISSION_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionPermissionItem(?)}";
     static final String SP_DELETE_ROLE_AND_ITS_PERMISSIONS = "{call TVinci.dbo.__482V0__Delete_RolePermission(?, ?)}";
+
+
 }

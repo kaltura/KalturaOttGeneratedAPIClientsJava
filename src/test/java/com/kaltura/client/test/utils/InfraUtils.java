@@ -1,6 +1,7 @@
 package com.kaltura.client.test.utils;
 
 import com.google.common.reflect.ClassPath;
+import io.qameta.allure.Description;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -50,6 +51,24 @@ public class InfraUtils {
                 }
             }
         }
+    }
 
+    public static void printTestsNameAndDescription() throws IOException {
+        String packageName = "com.kaltura.client.test.tests.servicesTests";
+
+        Set<ClassPath.ClassInfo> allClasses = ClassPath.from(ClassLoader.getSystemClassLoader()).getTopLevelClassesRecursive(packageName);
+        for (ClassPath.ClassInfo classInfo: allClasses) {
+            System.out.println("\n\n" + classInfo.getSimpleName());
+
+            Class clazz = classInfo.load();
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                Description description = method.getAnnotation(Description.class);
+                if (description != null) {
+                    System.out.println("Method: " + method.getName());
+                    System.out.println("Description: " + description.value() + "\n");
+                }
+            }
+        }
     }
 }
