@@ -64,6 +64,11 @@ public class DBConstants {
             "and group_id=%d and usage_module_code=%d\n" +
             "order by create_date";
 
+    static final String COLLECTION_SELECT = "select top 1 * from [Pricing].[dbo].[collections]\n" +
+            "where [status]=1 and is_active=1\n" +
+            "and group_id=%d and discount_id=%d and price_id=%d and usage_module_id=%d\n" +
+            "order by create_date";
+
     static final String USER_BY_ROLE_SELECT = "select top(1) u.username, u.[password]\n" +
             "from [Users].[dbo].[users] u with(nolock)\n" +
             "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +

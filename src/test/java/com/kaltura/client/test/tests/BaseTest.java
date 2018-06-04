@@ -2,6 +2,7 @@ package com.kaltura.client.test.tests;
 
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
+import com.kaltura.client.Logger;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
@@ -62,6 +63,9 @@ public class BaseTest {
 
     // shared ingested subscription
     private static Subscription sharedCommonSubscription;
+
+    // shared collection
+    private static Collection sharedCommonCollection;
 
     // cycles map with values related view/full life cycles of price plans
     private static Map<Integer, String> cycles = new HashMap<>();
@@ -164,6 +168,27 @@ public class BaseTest {
             }
         }
         return sharedCommonSubscription;
+    }
+
+    /**
+     * Regression requires existence of Collection with specific parameters.
+     * Price should be as for method public static PricePlan getSharedCommonPricePlan()
+     * Usage Module should be as for method public static PricePlan getSharedCommonPricePlan()
+     *
+     * Collection should be with discount (internal items) 100%
+     *
+     * @return Collection with mentioned parameters
+     */
+    public static Collection getSharedCommonCollection(){
+        double defaultDiscountPercentValue = 100.0;
+        String defaultCurrency = "EUR";
+        if (sharedCommonCollection == null) {
+            sharedCommonCollection = IngestFixtureData.loadSharedCommonCollection(getSharedCommonPricePlan());
+            if (sharedCommonCollection == null) {
+                Logger.getLogger(BaseTest.class).error("Collection with defined parameters should exist in DB!");
+            }
+        }
+        return sharedCommonCollection;
     }
 
     public static String getIngestBusinessModuleUserName() {
