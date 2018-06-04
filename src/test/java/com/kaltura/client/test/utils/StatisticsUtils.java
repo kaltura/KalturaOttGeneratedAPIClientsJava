@@ -10,6 +10,12 @@ import java.util.Set;
 
 public class StatisticsUtils extends BaseUtils {
 
+    /**
+     * method allows to get statistic about total count of tests in specified @param packageName and compare
+     * that value with count of failed and count of Critical tests from
+     *
+     * @param packageName
+     */
     public static void displayStatisticsDisabledAndCriticalTests(String packageName) {
         Logger.getLogger(StatisticsUtils.class).debug("Package: [" + packageName + "]");
         Set<ClassPath.ClassInfo> allClasses = null;

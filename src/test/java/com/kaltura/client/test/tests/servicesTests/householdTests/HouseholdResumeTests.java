@@ -16,6 +16,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Optional;
+
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.HouseholdService.get;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,7 +104,7 @@ public class HouseholdResumeTests extends BaseTest {
         assertThat(householdResponse.results.getState()).isEqualTo(HouseholdState.OK);
 
         // purchase subscription
-        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
 
