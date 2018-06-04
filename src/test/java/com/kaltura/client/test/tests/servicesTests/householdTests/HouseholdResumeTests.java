@@ -69,7 +69,7 @@ public class HouseholdResumeTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("household/action/resume - suspended household")
+    @Description("household/action/resume - suspended with purchase_subscription role household")
     @Test
     private void resume_suspended_with_purchase_subscription_role_household() {
         // create role

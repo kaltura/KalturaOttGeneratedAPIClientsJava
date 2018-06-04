@@ -10,6 +10,7 @@ import com.kaltura.client.types.HouseholdUser;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
@@ -41,7 +42,9 @@ public class OttUserUpdateTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/update - update")
-    @Test(enabled = true)
+    @Issue("BEO-5168")
+    @Issue("BEO-5169")
+    @Test(enabled = false)
     private void update() {
         // update user info
         String newUserInfo = "newUserInfo";
@@ -49,9 +52,10 @@ public class OttUserUpdateTests extends BaseTest {
         updatedUser.setFirstName(newUserInfo);
         updatedUser.setLastName(newUserInfo);
         updatedUser.setAddress(newUserInfo);
-//        updatedUser.setDynamicData(dynamicDataMapBuilder("key", "value"));
 
-        updatedUser = executor.executeSync(OttUserService.update(updatedUser).setKs(userKs)).results;
+        updatedUser = executor.executeSync(OttUserService.update(updatedUser)
+                .setKs(userKs))
+                .results;
 
         // assert user new info
         assertThat(updatedUser.getFirstName()).isEqualTo(newUserInfo);
@@ -62,7 +66,9 @@ public class OttUserUpdateTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/update - with administratorKs")
-    @Test(enabled = true)
+    @Issue("BEO-5168")
+    @Issue("BEO-5169")
+    @Test(enabled = false)
     private void update_with_administratorKs() {
         // update user info
         String newUserInfo = "newUserInfo";
@@ -70,7 +76,6 @@ public class OttUserUpdateTests extends BaseTest {
         updatedUser.setFirstName(newUserInfo);
         updatedUser.setLastName(newUserInfo);
         updatedUser.setAddress(newUserInfo);
-//        updatedUser.setDynamicData(dynamicDataMapBuilder("key", "value"));
 
         updatedUser = executor.executeSync(OttUserService.update(updatedUser)
                 .setKs(getAdministratorKs())

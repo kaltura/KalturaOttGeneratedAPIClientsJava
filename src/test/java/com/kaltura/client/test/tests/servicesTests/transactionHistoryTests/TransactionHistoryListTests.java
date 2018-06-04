@@ -10,6 +10,7 @@ import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
@@ -52,7 +53,8 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionhistory/action/list - test ppv purchases is written correctly at transactionHistory")
+    @Description("/transactionhistory/action/list - test ppv purchases is written correctly at transactionHistory")
+    @Test
     public void purchase_ppv(){
 
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold,true);

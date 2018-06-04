@@ -28,7 +28,7 @@ public class ChannelAddTests extends BaseTest {
 
     private Channel channel;
     private String channelName;
-    private String Description;
+    private String description;
     private Boolean isActive = true;
     private String filterExpression;
     private IntegerValue integerValue = new IntegerValue();
@@ -38,14 +38,14 @@ public class ChannelAddTests extends BaseTest {
     @BeforeClass
     private void channel_addTests_before_class() {
         channelName = "Channel_12345";
-        Description = "description of channel";
+        description = "description of channel";
     }
 
     @Description("channel/action/add - with all asset types")
     @Test
     private void addChannel() {
         filterExpression = "name ~ 'movie'";
-        channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+        channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
@@ -70,7 +70,7 @@ public class ChannelAddTests extends BaseTest {
         episodeAsset = IngestUtils.updateVODName(episodeAsset, asset2Name);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
-        channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);
+        channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
@@ -101,7 +101,7 @@ public class ChannelAddTests extends BaseTest {
     private void addChannelWithInvalidAssetType() {
         integerValue.setValue(666);
         assetTypes.add(integerValue);
-        channel = ChannelUtils.addChannel(channelName, Description, isActive, null, AssetOrderBy.LIKES_DESC, assetTypes, null);
+        channel = ChannelUtils.addChannel(channelName, description, isActive, null, AssetOrderBy.LIKES_DESC, assetTypes, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
@@ -115,7 +115,7 @@ public class ChannelAddTests extends BaseTest {
     @Description("channel/action/add - mandatory channel name not provided")
     @Test
     private void addChannelWithNoName() {
-        channel = ChannelUtils.addChannel(null, Description, isActive, null, AssetOrderBy.LIKES_DESC, null, null);
+        channel = ChannelUtils.addChannel(null, description, isActive, null, AssetOrderBy.LIKES_DESC, null, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
@@ -130,7 +130,7 @@ public class ChannelAddTests extends BaseTest {
     @Test
     private void addChannelWithSyntaxErrorInFilterExpression() {
         filterExpression = "name = 'syntax error";
-        channel = ChannelUtils.addChannel(channelName, Description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+        channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());

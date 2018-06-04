@@ -36,7 +36,6 @@ public class BaseTest {
     public static TestAPIOkRequestsExecutor executor = TestAPIOkRequestsExecutor.getExecutor();
     private static Response<LoginResponse> loginResponse;
 
-
     // shared common params
     public static int partnerId;
     public static String defaultUserPassword;
@@ -80,7 +79,6 @@ public class BaseTest {
         // TODO: complete other values
         cycles.put(1440, "1 Day");
     }
-
 
     /*================================================================================
     testing shared params list - used as a helper common params across tests
