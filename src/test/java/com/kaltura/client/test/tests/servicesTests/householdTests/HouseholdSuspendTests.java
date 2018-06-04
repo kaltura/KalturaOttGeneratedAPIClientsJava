@@ -148,7 +148,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isTrue();
 
         // purchase subscription
-        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
 
         assertThat(transactionResponse.results).isNull();
         assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
@@ -192,7 +192,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isTrue();
 
         // purchase subscription
-        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
 
         // cancel subscription
         CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Integer.parseInt(subscription.getId()), TransactionType.SUBSCRIPTION)
@@ -231,7 +231,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isTrue();
 
         // purchase subscription
-        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
 
         // get platbackContext
         PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
@@ -283,7 +283,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
 
         // purchase subscription in order to verify suspend is specific to role
-        transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
 
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
@@ -335,7 +335,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
 
         // purchase subscription in order to verify suspend is specific to role
-        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
 
