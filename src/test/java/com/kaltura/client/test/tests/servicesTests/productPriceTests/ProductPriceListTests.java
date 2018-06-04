@@ -1,11 +1,11 @@
 package com.kaltura.client.test.tests.servicesTests.productPriceTests;
 
 import com.kaltura.client.enums.*;
-import com.kaltura.client.services.EntitlementService;
+import com.kaltura.client.services.*;
+import com.kaltura.client.services.AssetService.GetAssetBuilder;
 import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
-import com.kaltura.client.services.HouseholdService;
-import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
+import com.kaltura.client.services.TransactionHistoryService.ListTransactionHistoryBuilder;
 import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
@@ -30,11 +30,14 @@ public class ProductPriceListTests extends BaseTest {
 
     private EntitlementFilter entitlementPpvsFilter;
     private EntitlementFilter entitlementSubsFilter;
+    private TransactionHistoryFilter transactionHistoryFilter;
     private Household household;
     private String classMasterUserKs;
 
     private Response<ListResponse<ProductPrice>> productPriceResponse;
     private Response<ListResponse<Entitlement>> entitlementResponse;
+    private Response<ListResponse<BillingTransaction>> listBillingTransactionResponse;
+    private Response<Asset> assetGetResponse;
 
     @BeforeClass
     public void beforeClass() {
@@ -50,6 +53,10 @@ public class ProductPriceListTests extends BaseTest {
         entitlementSubsFilter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
         entitlementSubsFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         entitlementSubsFilter.setIsExpiredEqual(false);
+
+        transactionHistoryFilter = new TransactionHistoryFilter();
+        transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
+        transactionHistoryFilter.setStartDateGreaterThanOrEqual(0);
 
         /*Ppv ppv = IngestUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
                 Double.valueOf(getProperty(PRICE_CODE_AMOUNT_4_99)), CURRENCY_EUR, getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV), false, false,
@@ -320,6 +327,16 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
 
         PurchaseUtils.purchaseSubscription(masterKs, subWithMultiCurrencyId, Optional.empty());
+        // to check purchase
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementSubsFilter, null).setKs(masterKs);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(entitlementResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithMultiCurrencyId));
+        // to check purchase
+        ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterKs);
+        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(String.valueOf(subWithMultiCurrencyId));
 
         productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
         // should be 1 subscription
@@ -343,8 +360,7 @@ public class ProductPriceListTests extends BaseTest {
     public void productPriceSubscriptionWithPercentageDiscountAndSpecifiedCurrencyTest() {
         // TODO: add logic of using dynamic data
         int subWithDiscountAndCurrencyId = 116952;
-        double subPrice = 15.;
-        double subPriceAfterDiscount = 7.5;
+        double subPriceAfterDiscount = 7.5; // as price 15 and discount is 50%
 
         int numberOfUsers = 1;
         int numberOfDevices = 1;
@@ -365,6 +381,17 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_USD);
 
         PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.of(IngestConstants.CURRENCY_USD));
+        // to check purchase
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementSubsFilter, null).setKs(masterKs);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(entitlementResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        // to check purchase
+        ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterKs);
+        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
 
         productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
         // should be 1 subscription
@@ -374,6 +401,230 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_USD);
+
+        //delete household for cleanup
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
+                .setKs(getAdministratorKs());
+        executor.executeSync(deleteHouseholdBuilder);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("productPrice/action/list - subscription with discount (fixed amount) - specified currency - not in locale")
+    @Test()
+    public void productPriceSubscriptionWithFixedDiscountAndSpecifiedCurrencyNotInLocaleTest() {
+        // TODO: add logic of using dynamic data
+        int subWithDiscountAndCurrencyId = 119303;
+        double subPriceAfterDiscount = 4; // as price 5 and discount is 1
+
+        int numberOfUsers = 1;
+        int numberOfDevices = 1;
+        Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+
+        ProductPriceFilter ppFilter = new ProductPriceFilter();
+        ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter).setCurrency(IngestConstants.CURRENCY_CLP);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
+        // should be 1 subscription
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_CLP);
+
+        PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.of(IngestConstants.CURRENCY_CLP));
+        // to check purchase
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementSubsFilter, null).setKs(masterKs);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(entitlementResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        // to check purchase
+        ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterKs);
+        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
+
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
+        // should be 1 subscription
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_CLP);
+
+        //delete household for cleanup
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
+                .setKs(getAdministratorKs());
+        executor.executeSync(deleteHouseholdBuilder);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("productPrice/action/list - subscription with discount (percentage) - no specified currency")
+    @Test()
+    public void productPriceSubscriptionWithPercentageDiscountAndNoSpecifiedCurrencyTest() {
+        // TODO: add logic of using dynamic data
+        int subWithDiscountAndCurrencyId = 116952;
+        double subPriceAfterDiscount = 9.6; // as price 12 in default locale and discount is 20% in default locale
+
+        int numberOfUsers = 1;
+        int numberOfDevices = 1;
+        Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+
+        ProductPriceFilter ppFilter = new ProductPriceFilter();
+        ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
+        // should be 1 subscription
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
+
+        PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.empty());
+        // to check purchase
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementSubsFilter, null).setKs(masterKs);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(entitlementResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        // to check purchase
+        ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterKs);
+        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
+
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
+        // should be 1 subscription
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
+
+        //delete household for cleanup
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
+                .setKs(getAdministratorKs());
+        executor.executeSync(deleteHouseholdBuilder);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("productPrice/action/list - PPV - with discount (percentage) - specified currency")
+    @Test()
+    public void productPricePpvWithPercentageDiscountAndSpecifiedCurrencyTest() {
+        int numberOfUsers = 1;
+        int numberOfDevices = 1;
+        Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+
+        // TODO: add logic of using dynamic data
+        int assetWithMultiCurrencyId = 485467;
+        GetAssetBuilder getAssetBuilder = AssetService.get(String.valueOf(assetWithMultiCurrencyId),
+                AssetReferenceType.MEDIA).setKs(masterKs);
+        assetGetResponse = executor.executeSync(getAssetBuilder);
+        int mediaFileId = assetGetResponse.results.getMediaFiles().get(1).getId();
+        double ppvPriceAfterDiscount = 33.3; // as price 37 ILS and discount is 10%
+
+        ProductPriceFilter ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaFileId));
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs).setCurrency(IngestConstants.CURRENCY_ILS));
+        // should be 1 file
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
+
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        // to check purchase
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaId()).isEqualTo(assetWithMultiCurrencyId);
+        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(mediaFileId);
+        // to check purchase
+        ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterKs);
+        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(String.valueOf(assetWithMultiCurrencyId));
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
+
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
+        // should be 1 ppv
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
+        assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(mediaFileId);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
+
+        //delete household for cleanup
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
+                .setKs(getAdministratorKs());
+        executor.executeSync(deleteHouseholdBuilder);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("productPrice/action/list - PPV - with discount (fixed amount) - specified currency")
+    @Test()
+    public void productPricePpvWithFixedDiscountAndSpecifiedCurrencyTest() {
+        int numberOfUsers = 1;
+        int numberOfDevices = 1;
+        Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+
+        // TODO: add logic of using dynamic data
+        int assetWithMultiCurrencyId = 485618;
+        GetAssetBuilder getAssetBuilder = AssetService.get(String.valueOf(assetWithMultiCurrencyId),
+                AssetReferenceType.MEDIA).setKs(masterKs);
+        assetGetResponse = executor.executeSync(getAssetBuilder);
+        int mediaFileId = assetGetResponse.results.getMediaFiles().get(1).getId();
+        double ppvPriceAfterDiscount = 2; // as price 5 ILS and discount is 3
+
+        ProductPriceFilter ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaFileId));
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs).setCurrency(IngestConstants.CURRENCY_ILS));
+        // should be 1 file
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
+
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        // to check purchase
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaId()).isEqualTo(assetWithMultiCurrencyId);
+        assertThat(((PpvEntitlement) entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(mediaFileId);
+        // to check purchase
+        ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterKs);
+        listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
+        assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(String.valueOf(assetWithMultiCurrencyId));
+        assertThat(listBillingTransactionResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
+
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
+        // should be 1 ppv
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
+        assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(mediaFileId);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
 
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
