@@ -41,120 +41,123 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FollowDataBase.Tokenizer.class)
-public abstract class FollowDataBase extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(PersonalList.Tokenizer.class)
+public class PersonalList extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String announcementId();
-		String status();
-		String title();
-		String timestamp();
-		String followPhrase();
+		String id();
+		String name();
+		String createDate();
+		String ksql();
+		String partnerListType();
 	}
 
 	/**
-	 * Announcement Id
+	 * Id
 	 */
-	private Long announcementId;
+	private Long id;
 	/**
-	 * Status
+	 * Name
 	 */
-	private Integer status;
+	private String name;
 	/**
-	 * Title
+	 * Create Date
 	 */
-	private String title;
+	private Long createDate;
 	/**
-	 * Timestamp
+	 * Ksql
 	 */
-	private Long timestamp;
+	private String ksql;
 	/**
-	 * Follow Phrase
+	 * Partner List Type (optional)
 	 */
-	private String followPhrase;
+	private Integer partnerListType;
 
-	// announcementId:
-	public Long getAnnouncementId(){
-		return this.announcementId;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setAnnouncementId(Long announcementId){
-		this.announcementId = announcementId;
-	}
-
-	public void announcementId(String multirequestToken){
-		setToken("announcementId", multirequestToken);
+	public void setId(Long id){
+		this.id = id;
 	}
 
-	// status:
-	public Integer getStatus(){
-		return this.status;
-	}
-	public void setStatus(Integer status){
-		this.status = status;
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
 	}
 
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
 	}
 
-	// title:
-	public String getTitle(){
-		return this.title;
-	}
-	public void setTitle(String title){
-		this.title = title;
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
-	public void title(String multirequestToken){
-		setToken("title", multirequestToken);
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	public void setCreateDate(Long createDate){
+		this.createDate = createDate;
 	}
 
-	// timestamp:
-	public Long getTimestamp(){
-		return this.timestamp;
-	}
-	public void setTimestamp(Long timestamp){
-		this.timestamp = timestamp;
+	public void createDate(String multirequestToken){
+		setToken("createDate", multirequestToken);
 	}
 
-	public void timestamp(String multirequestToken){
-		setToken("timestamp", multirequestToken);
+	// ksql:
+	public String getKsql(){
+		return this.ksql;
+	}
+	public void setKsql(String ksql){
+		this.ksql = ksql;
 	}
 
-	// followPhrase:
-	public String getFollowPhrase(){
-		return this.followPhrase;
-	}
-	public void setFollowPhrase(String followPhrase){
-		this.followPhrase = followPhrase;
+	public void ksql(String multirequestToken){
+		setToken("ksql", multirequestToken);
 	}
 
-	public void followPhrase(String multirequestToken){
-		setToken("followPhrase", multirequestToken);
+	// partnerListType:
+	public Integer getPartnerListType(){
+		return this.partnerListType;
+	}
+	public void setPartnerListType(Integer partnerListType){
+		this.partnerListType = partnerListType;
+	}
+
+	public void partnerListType(String multirequestToken){
+		setToken("partnerListType", multirequestToken);
 	}
 
 
-	public FollowDataBase() {
+	public PersonalList() {
 		super();
 	}
 
-	public FollowDataBase(JsonObject jsonObject) throws APIException {
+	public PersonalList(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		announcementId = GsonParser.parseLong(jsonObject.get("announcementId"));
-		status = GsonParser.parseInt(jsonObject.get("status"));
-		title = GsonParser.parseString(jsonObject.get("title"));
-		timestamp = GsonParser.parseLong(jsonObject.get("timestamp"));
-		followPhrase = GsonParser.parseString(jsonObject.get("followPhrase"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		ksql = GsonParser.parseString(jsonObject.get("ksql"));
+		partnerListType = GsonParser.parseInt(jsonObject.get("partnerListType"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFollowDataBase");
+		kparams.add("objectType", "KalturaPersonalList");
+		kparams.add("name", this.name);
+		kparams.add("ksql", this.ksql);
+		kparams.add("partnerListType", this.partnerListType);
 		return kparams;
 	}
 

@@ -40,28 +40,31 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ChannelFilter.Tokenizer.class)
-public class ChannelFilter extends AssetFilter {
+@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
+public class PersonalListSearchFilter extends BaseSearchAssetFilter {
 	
-	public interface Tokenizer extends AssetFilter.Tokenizer {
-		String idEqual();
+	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
+		String typeIn();
 		String kSql();
-		String excludeWatched();
+		String partnerListTypeEqual();
 	}
 
 	/**
-	 * Channel Id
+	 * Comma separated list of asset types to search within.               Possible
+	  values: 0 – EPG linear programs entries, any media type ID (according to media
+	  type IDs defined dynamically in the system).              If omitted – all
+	  types should be included.
 	 */
-	private Integer idEqual;
+	private String typeIn;
 	/**
-	 * ///               Search assets using dynamic criteria. Provided collection of
-	  nested expressions with key, comparison operators, value, and logical
-	  conjunction.              Possible keys: any Tag or Meta defined in the system
-	  and the following reserved keys: start_date, end_date.               epg_id,
-	  media_id - for specific asset IDs.              geo_block - only valid value is
-	  &amp;quot;true&amp;quot;: When enabled, only assets that are not restricted to
-	  the user by geo-block rules will return.              parental_rules - only
-	  valid value is &amp;quot;true&amp;quot;: When enabled, only assets that the user
+	 * Search assets using dynamic criteria. Provided collection of nested expressions
+	  with key, comparison operators, value, and logical conjunction.             
+	  Possible keys: any Tag or Meta defined in the system and the following reserved
+	  keys: start_date, end_date.               epg_id, media_id - for specific asset
+	  IDs.              geo_block - only valid value is &amp;quot;true&amp;quot;: When
+	  enabled, only assets that are not restricted to the user by geo-block rules will
+	  return.              parental_rules - only valid value is
+	  &amp;quot;true&amp;quot;: When enabled, only assets that the user
 	  doesn&amp;#39;t need to provide PIN code will return.             
 	  user_interests - only valid value is &amp;quot;true&amp;quot;. When enabled,
 	  only assets that the user defined as his interests (by tags and metas) will
@@ -79,20 +82,20 @@ public class ChannelFilter extends AssetFilter {
 	 */
 	private String kSql;
 	/**
-	 * Exclude watched asset.
+	 * partnerListType
 	 */
-	private Boolean excludeWatched;
+	private Integer partnerListTypeEqual;
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// typeIn:
+	public String getTypeIn(){
+		return this.typeIn;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
+	public void setTypeIn(String typeIn){
+		this.typeIn = typeIn;
 	}
 
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
+	public void typeIn(String multirequestToken){
+		setToken("typeIn", multirequestToken);
 	}
 
 	// kSql:
@@ -107,41 +110,41 @@ public class ChannelFilter extends AssetFilter {
 		setToken("kSql", multirequestToken);
 	}
 
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
+	// partnerListTypeEqual:
+	public Integer getPartnerListTypeEqual(){
+		return this.partnerListTypeEqual;
 	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
-	}
-
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
+	public void setPartnerListTypeEqual(Integer partnerListTypeEqual){
+		this.partnerListTypeEqual = partnerListTypeEqual;
 	}
 
+	public void partnerListTypeEqual(String multirequestToken){
+		setToken("partnerListTypeEqual", multirequestToken);
+	}
 
-	public ChannelFilter() {
+
+	public PersonalListSearchFilter() {
 		super();
 	}
 
-	public ChannelFilter(JsonObject jsonObject) throws APIException {
+	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
+		partnerListTypeEqual = GsonParser.parseInt(jsonObject.get("partnerListTypeEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaChannelFilter");
-		kparams.add("idEqual", this.idEqual);
+		kparams.add("objectType", "KalturaPersonalListSearchFilter");
+		kparams.add("typeIn", this.typeIn);
 		kparams.add("kSql", this.kSql);
-		kparams.add("excludeWatched", this.excludeWatched);
+		kparams.add("partnerListTypeEqual", this.partnerListTypeEqual);
 		return kparams;
 	}
 

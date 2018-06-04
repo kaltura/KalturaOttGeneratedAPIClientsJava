@@ -56,7 +56,7 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 	  Possible keys: any Tag or Meta defined in the system and the following reserved
 	  keys: start_date, end_date.               epg_id, media_id - for specific asset
 	  IDs.              geo_block - only valid value is &amp;quot;true&amp;quot;: When
-	  enabled, only assets that are not restriced to the user by geo-block rules will
+	  enabled, only assets that are not restricted to the user by geo-block rules will
 	  return.              parental_rules - only valid value is
 	  &amp;quot;true&amp;quot;: When enabled, only assets that the user
 	  doesn&amp;#39;t need to provide PIN code will return.             
@@ -71,8 +71,8 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 	  (in).               For alpha-numerical fields =, != (not), ~ (like), !~, ^ (any
 	  word starts with), ^= (phrase starts with), + (exists), !+ (not exists).        
 	       Logical conjunction: and, or.               Search values are limited to 20
-	  characters each.              (maximum length of entire filter is 2048
-	  characters)
+	  characters each for the next operators: ~, !~, ^, ^=              (maximum
+	  length of entire filter is 2048 characters)
 	 */
 	private String kSql;
 	/**
