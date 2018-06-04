@@ -249,12 +249,12 @@ public class SearchAssetFilterTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Asset/action/list - order by VIEWS")
     @Test
-    private void listVodAssetsByViews() {
-        MediaAsset assetWithTheMostViews = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        MediaAsset assetWithTheSecondMostViews = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+    private void OrderVodAssetsByViews() {
 
-        AssetUtils.addViewsToAsset(assetWithTheMostViews.getId(), 10, AssetType.MEDIA);
-        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + assetWithTheMostViews.getName() + "'name = '" + assetWithTheSecondMostViews.getName() + "')";
+        AssetUtils.addViewsToAsset(asset.getId(), 3, AssetType.MEDIA);
+        AssetUtils.addViewsToAsset(asset2.getId(), 2, AssetType.MEDIA);
+
+        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
         assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.VIEWS_DESC.getValue());
 
         listAssetBuilder = AssetService.list(assetFilter, null)
@@ -262,15 +262,15 @@ public class SearchAssetFilterTests extends BaseTest {
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
         assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
-        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(assetWithTheMostViews.getId());
-        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(assetWithTheSecondMostViews.getId());
-        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("Asset/action/list - order by NAME (DESC/ASC")
     @Test
-    private void listVodAssetsByNameAsc() {
+    private void OrderVodAssetsByName() {
 
         IngestUtils.updateVODName(asset, "AAA");
         IngestUtils.updateVODName(asset2, "BBB");
@@ -297,4 +297,28 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
         assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
     }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - order by LIKES")
+    @Test
+    private void orderVodAssetsByLikes() {
+
+        AssetUtils.addLikesToAsset(asset3.getId(), 3, AssetType.MEDIA);
+        AssetUtils.addLikesToAsset(asset2.getId(), 2, AssetType.MEDIA);
+
+
+        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.LIKES_DESC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+    }
 }
+
+
