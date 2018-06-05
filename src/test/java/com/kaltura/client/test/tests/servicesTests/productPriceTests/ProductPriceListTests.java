@@ -9,6 +9,7 @@ import com.kaltura.client.services.TransactionHistoryService.ListTransactionHist
 import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
@@ -630,6 +631,48 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
                 .setKs(getAdministratorKs());
         executor.executeSync(deleteHouseholdBuilder);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("/productPrice/action/list - with passed PPV")
+    @Test()
+    public void productPriceWithPassedPpvTest() {
+        // TODO: update to use dynamic data
+        double nonPassedPpvPrice = 4.99;
+        String ppvMobileModule = getSharedCommonPpv().getName() + ";;01/01/2017 00:00:00;Camilo_4_99_EUR_PPV;;";
+        MediaAsset mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        ProductPriceFilter ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(classMasterUserKs));
+        // should be 1 file with non passed PPV price only
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(nonPassedPpvPrice);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(
+                mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
+
+        ppvMobileModule = getSharedCommonPpv().getName() + ";;01/01/2017 00:00:00";
+        mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
+        productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(classMasterUserKs));
+        // should be 1 file and free
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FREE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(
+                mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
     }
 
     @AfterClass
