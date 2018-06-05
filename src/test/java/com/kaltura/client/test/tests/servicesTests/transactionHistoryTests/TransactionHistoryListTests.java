@@ -82,6 +82,7 @@ public class TransactionHistoryListTests extends BaseTest{
         //Purchase collection with master user
         transactionResponseCollection = PurchaseUtils.purchaseCollection(masterUserKs, Integer.parseInt(getSharedCommonCollection().getId()));
 
+
         //Show PPV entitlements
         entitlementFilter.setProductTypeEqual(TransactionType.PPV);
         ListEntitlementBuilder listEntitlementBuilder = EntitlementService.list(entitlementFilter).setKs(userKs);
@@ -98,10 +99,8 @@ public class TransactionHistoryListTests extends BaseTest{
                 ppvEntitlementList.add((PpvEntitlement) entitlement);
             }
         }
-        //TODO: change ppvModuleId to getSharedWebMediaFile().getPpvModules().getObjects().get(0).getValue() - right now it is null
-        String ppvModuleId = PurchaseUtils.purchasePpvDetailsMap.get(PPV_MODULE_ID_KEY);
         //Verify that PPV is correct
-        assertThat(ppvEntitlementList.get(0).getProductId()).isEqualTo(ppvModuleId);
+        assertThat(ppvEntitlementList.get(0).getProductId()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PPV_MODULE_ID_KEY));
         //Verify that asset file is correct
         assertThat(ppvEntitlementList.get(0).getMediaFileId()).isEqualTo(getSharedWebMediaFile().getId());
 
@@ -190,66 +189,45 @@ public class TransactionHistoryListTests extends BaseTest{
 
     private void assertMethod(String methodName, List<BillingTransaction> billingTransactionList) {
         Logger.getLogger(TransactionHistoryListTests.class).debug(methodName);
-        String price, currency;
         for(int i = 0; i < billingTransactionList.size(); i++) {
-            assertThat(listBillingTransactionResponse.results.getObjects().get(i).getClass()).isEqualTo(BillingTransaction.class);
+            assertThat(billingTransactionList.get(i).getClass()).isEqualTo(BillingTransaction.class);
+            assertThat(billingTransactionList.get(i).getBillingAction()).isEqualTo(BillingAction.PURCHASE);
+            assertThat(billingTransactionList.get(i).getIsRecurring()).isEqualTo(false);
+            assertThat(billingTransactionList.get(i).getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
             switch (billingTransactionList.get(i).getItemType()){
                 case SUBSCRIPTION:
                     BillingTransaction billingTransactionSubscription = billingTransactionList.get(i);
-                    //Get subscription details (Price, Currency)
-                    price = PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_CURRENCY);
                     assertThat(billingTransactionSubscription.getRecieptCode()).isEqualTo(transactionResponseSubscription.results.getId());
-                    assertThat(billingTransactionSubscription.getPurchasedItemName().length()).isGreaterThan(1);
+                    //TODO: Shared Subscription name not equals to transactionHistory name written (Title written). (deprecate this assertion or amend with another way)
+//                    assertThat(billingTransactionSubscription.getPurchasedItemName()).isEqualTo(getSharedCommonSubscription().getName());
                     assertThat(billingTransactionSubscription.getPurchasedItemCode()).isEqualTo(getSharedCommonSubscription().getId().toString());
                     assertThat(billingTransactionSubscription.getItemType()).isEqualTo(BillingItemsType.SUBSCRIPTION);
-                    assertThat(billingTransactionSubscription.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionSubscription.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionSubscription.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionSubscription.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionSubscription.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+                    assertThat(billingTransactionSubscription.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransactionSubscription.getPrice().getCurrency().toString()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_CURRENCY));
                     assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(billingTransactionSubscription.getActionDate());
                     assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(transactionResponseSubscription.results.getCreatedAt().longValue());
                     break;
 
                 case PPV:
                     BillingTransaction billingTransactionPpv = billingTransactionList.get(i);
-                    //Get PPV details (Price, Currency)
-                    price = PurchaseUtils.purchasePpvDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchasePpvDetailsMap.get(PRICE_CURRENCY);
                     assertThat(billingTransactionPpv.getRecieptCode()).isEqualTo(transactionResponsePpv.results.getId());
-                    assertThat(billingTransactionPpv.getPurchasedItemName().length()).isGreaterThan(1);
+                    assertThat(billingTransactionPpv.getPurchasedItemName()).isEqualTo(getSharedMediaAsset().getName());
                     assertThat(billingTransactionPpv.getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
                     assertThat(billingTransactionPpv.getItemType()).isEqualTo(BillingItemsType.PPV);
-                    assertThat(billingTransactionPpv.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionPpv.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionPpv.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionPpv.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionPpv.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+                    assertThat(billingTransactionPpv.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransactionPpv.getPrice().getCurrency().toString()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_CURRENCY));
                     assertThat(billingTransactionPpv.getStartDate()).isEqualTo(billingTransactionPpv.getActionDate());
                     assertThat(billingTransactionPpv.getStartDate()).isEqualTo(transactionResponsePpv.results.getCreatedAt().longValue());
                     break;
 
                 case COLLECTION:
                     BillingTransaction billingTransactionCollection = billingTransactionList.get(i);
-                    //Get collection details (Price, Currency)
-                    price = PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_CURRENCY);
                     assertThat(billingTransactionCollection.getRecieptCode()).isEqualTo(transactionResponseCollection.results.getId());
-                    assertThat(billingTransactionCollection.getPurchasedItemName().length()).isGreaterThan(1);
+                    assertThat(billingTransactionCollection.getPurchasedItemName()).isEqualTo(getSharedCommonCollection().getName());
                     assertThat(billingTransactionCollection.getPurchasedItemCode()).isEqualTo(getSharedCommonCollection().getId().toString());
                     assertThat(billingTransactionCollection.getItemType()).isEqualTo(BillingItemsType.COLLECTION);
-                    assertThat(billingTransactionCollection.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionCollection.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionCollection.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionCollection.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionCollection.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+                    assertThat(billingTransactionCollection.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransactionCollection.getPrice().getCurrency().toString()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_CURRENCY));
                     assertThat(billingTransactionCollection.getActionDate()).isEqualTo(transactionResponseCollection.results.getCreatedAt().longValue());
                     break;
 
