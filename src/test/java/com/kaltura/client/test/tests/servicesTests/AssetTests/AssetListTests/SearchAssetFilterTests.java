@@ -18,7 +18,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
@@ -39,8 +38,7 @@ public class SearchAssetFilterTests extends BaseTest {
     private String ksqlQuery;
     private AssetFilter assetFilter = null;
     private ListAssetBuilder listAssetBuilder = null;
-    private Map map = new HashMap();
-    private ArrayList<Long> assetList = new ArrayList<>();
+    private HashMap <String, List<String>> map = new HashMap<>();
     private ArrayList<String> list = new ArrayList<>();
     private String tagName = "Genre";
     private String tagValue = BaseUtils.getRandomValue(tagName + "_", 999999);
@@ -53,15 +51,12 @@ public class SearchAssetFilterTests extends BaseTest {
         asset = BaseTest.getSharedMediaAsset();
         list.add(tagValue);
         map.put(tagName, list);
-        asset2 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE, map);
-        asset3 = IngestUtils.ingestVOD(EPISODE_MEDIA_TYPE, map);
 
-        assetList.add(asset2.getId());
-        assetList.add(asset3.getId());
+        asset2 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE, map,String.valueOf(BaseUtils.getTimeInEpoch(-10)));
+        asset3 = IngestUtils.ingestVOD(EPISODE_MEDIA_TYPE, map,String.valueOf(BaseUtils.getTimeInEpoch(-100)));
 
         program = IngestUtils.ingestEPG(epgChannelName, 1).get(0);
         program2 = IngestUtils.ingestEPG(epgChannelName2, 1).get(0);
-
     }
 
 
@@ -196,6 +191,137 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset2.getId());
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD -  order by VIEWS")
+    @Test
+    private void OrderVodAssetsByViews() {
+
+        AssetUtils.addViewsToAsset(asset.getId(), 3, AssetType.MEDIA);
+        AssetUtils.addViewsToAsset(asset2.getId(), 2, AssetType.MEDIA);
+
+        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.VIEWS_DESC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD -  order by NAME (DESC/ASC")
+    @Test
+    private void OrderVodAssetsByName() {
+
+        IngestUtils.updateVODName(asset, "AAA");
+        IngestUtils.updateVODName(asset2, "BBB");
+        IngestUtils.updateVODName(asset3, "CCC");
+
+        ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
+
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_DESC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD -  order by LIKES")
+    @Test
+    private void orderVodAssetsByLikes() {
+
+        AssetUtils.addLikesToAsset(asset3.getId(), 3, AssetType.MEDIA);
+        AssetUtils.addLikesToAsset(asset2.getId(), 2, AssetType.MEDIA);
+
+
+        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.LIKES_DESC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD -  order by (num of) VOTES and RATING")
+    @Test
+    private void orderVodAssetsByVotesAndRating() {
+
+        AssetUtils.addVotesToAsset(asset2.getId(), 2, AssetType.MEDIA, 1);
+        AssetUtils.addVotesToAsset(asset3.getId(), 1, AssetType.MEDIA, 5);
+
+        // Order by number of votes (highest to lowest)
+
+        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.VOTES_DESC.getValue());
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset3.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+
+        // Order by Ratings (highest to lowest)
+
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.RATINGS_DESC.getValue());
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+        assetListResponse = executor.executeSync(listAssetBuilder);
+
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD -  order by CATALOG START DATE")
+    @Test
+    private void orderVodAssetsByCatalogStartDate() {
+
+        AssetUtils.addLikesToAsset(asset3.getId(), 3, AssetType.MEDIA);
+        AssetUtils.addLikesToAsset(asset2.getId(), 2, AssetType.MEDIA);
+
+
+        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.START_DATE_DESC.getValue());
+
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+    }
+
+
     // EPG
     // ******************************************
 
@@ -246,79 +372,6 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(program2.getId());
     }
 
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Asset/action/list - order by VIEWS")
-    @Test
-    private void OrderVodAssetsByViews() {
-
-        AssetUtils.addViewsToAsset(asset.getId(), 3, AssetType.MEDIA);
-        AssetUtils.addViewsToAsset(asset2.getId(), 2, AssetType.MEDIA);
-
-        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.VIEWS_DESC.getValue());
-
-        listAssetBuilder = AssetService.list(assetFilter, null)
-                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
-
-        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
-        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
-        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
-        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
-        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
-    }
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Asset/action/list - order by NAME (DESC/ASC")
-    @Test
-    private void OrderVodAssetsByName() {
-
-        IngestUtils.updateVODName(asset, "AAA");
-        IngestUtils.updateVODName(asset2, "BBB");
-        IngestUtils.updateVODName(asset3, "CCC");
-
-        ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());
-
-        listAssetBuilder = AssetService.list(assetFilter, null)
-                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
-
-        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
-        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
-        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
-        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
-
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_DESC.getValue());
-
-        listAssetBuilder = AssetService.list(assetFilter, null)
-                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
-
-        assetListResponse = executor.executeSync(listAssetBuilder);
-        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
-        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
-        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
-    }
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Asset/action/list - order by LIKES")
-    @Test
-    private void orderVodAssetsByLikes() {
-
-        AssetUtils.addLikesToAsset(asset3.getId(), 3, AssetType.MEDIA);
-        AssetUtils.addLikesToAsset(asset2.getId(), 2, AssetType.MEDIA);
-
-
-        ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
-        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.LIKES_DESC.getValue());
-
-        listAssetBuilder = AssetService.list(assetFilter, null)
-                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
-
-        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
-        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
-        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
-        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
-        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
-    }
 }
 
 
