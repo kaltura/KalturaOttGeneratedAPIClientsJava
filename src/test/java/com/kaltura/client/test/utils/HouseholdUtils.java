@@ -62,12 +62,7 @@ public class HouseholdUtils extends BaseUtils {
         // add household devices
         for (int i = 0; i < numberOfDevicesInHousehold; i++) {
             // create household device
-            long uniqueString = System.currentTimeMillis();
-            HouseholdDevice householdDevice = new HouseholdDevice();
-            householdDevice.setUdid(String.valueOf(uniqueString));
-            Random r = new Random();
-            householdDevice.setBrandId(r.nextInt(28 - 1) + 1);
-            householdDevice.setName(String.valueOf(uniqueString) + "device");
+            HouseholdDevice householdDevice = generateHouseholdDevice();
 
             // add device to household
             AddHouseholdDeviceBuilder addHouseholdDeviceBuilder = HouseholdDeviceService.add(householdDevice)
@@ -85,6 +80,18 @@ public class HouseholdUtils extends BaseUtils {
         }
 
         return household;
+    }
+
+    // generate household device
+    public static HouseholdDevice generateHouseholdDevice() {
+        long uniqueString = System.currentTimeMillis();
+        HouseholdDevice householdDevice = new HouseholdDevice();
+        householdDevice.setUdid(String.valueOf(uniqueString));
+        Random r = new Random();
+        householdDevice.setBrandId(r.nextInt(28 - 1) + 1);
+        householdDevice.setName(String.valueOf(uniqueString) + "device");
+
+        return householdDevice;
     }
 
     // get users list from given household

@@ -127,6 +127,26 @@ public class DBUtils extends BaseUtils {
         return assetId;
     }
 
+    public static String getSubscriptionWithPremiumService() {
+        Logger.getLogger(DBUtils.class).debug("getSubscriptionWithPremiumService()");
+        String result = null;
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT,
+                    partnerId), false);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return result;
+            }
+
+            result = jsonArray.getJSONObject(0).getInt(SUB_ID) + ":" +
+                    jsonArray.getJSONObject(0).getInt(SERV_ID);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(DBUtils.class).error("data about premium services can't be null");
+        }
+
+        return result;
+    }
+
 
 //    public static List<Integer> getUserRoles(String userId) {
 //        List<Integer> userRoles = new ArrayList<>();

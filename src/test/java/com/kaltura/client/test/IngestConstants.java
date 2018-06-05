@@ -12,6 +12,8 @@ public class IngestConstants {
     // currency
     public static final String CURRENCY_EUR = "EUR";
     public static final String CURRENCY_USD = "USD";
+    public static final String CURRENCY_ILS = "ILS";
+    public static final String CURRENCY_CLP = "CLP";
 
     // life cycles periods
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";

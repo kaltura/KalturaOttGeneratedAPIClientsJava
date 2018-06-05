@@ -43,7 +43,9 @@ public class PurchaseUtils {
         filter.setFileIdIn(String.valueOf(internalFileId));
         filter.setIsLowest(false);
 
-        ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(filter).setKs(ks);
+        ListProductPriceBuilder listProductPriceBuilder = purchaseCurrency == null
+                ? ProductPriceService.list(filter).setKs(ks)
+                : ProductPriceService.list(filter).setKs(ks).setCurrency(purchaseCurrency);
         productPriceResponse = executor.executeSync(listProductPriceBuilder);
 
         double price = productPriceResponse.results.getObjects().get(0).getPrice().getAmount();
