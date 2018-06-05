@@ -1,0 +1,56 @@
+{
+  "$id": "UserSocialActionResponse",
+  "definitions": {
+    "UserSocialActionResponse": {
+      "type": "object",
+      "properties": {
+        "socialAction": {
+          "type": "object",
+          "properties": {
+            "id": {"type": "string", "minLength": 0},
+            "actionType": {"type": "string", "minLength": 0},
+            "time": {"type": "integer", "minimum": 0},
+            "assetId": {"type": "integer", "minimum": 0},
+            "assetType": {"type": "string", "minLength": 0},
+            "objectType": {"type": "string", "minLength": 0}
+          },
+          "required": ["id", "actionType", "time", "assetId", "assetType"]
+        },
+        "failStatus": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "minLength": 0
+              },
+              "network": {
+                "type": "string",
+                "minLength": 0
+              },
+              "objectType": {
+                "type": "string",
+                "minLength": 0
+              }
+            }
+          }
+        },
+        "objectType": {
+          "type": "string",
+          "minLength": 0
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "ref": "#/definitions/UserSocialActionResponse"
+    },
+    "executionTime": {
+      "type": "number",
+      "minimum": 0
+    }
+  }
+}

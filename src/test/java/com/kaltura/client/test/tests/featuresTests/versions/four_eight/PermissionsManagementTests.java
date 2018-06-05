@@ -51,20 +51,6 @@ public class PermissionsManagementTests {
     public static final String IMPORT_KEY = "i=";
     public static final String DELETE_KEY = "d=";
 
-    @Description()
-    @Test(groups = {"Permission management"}, description = "just for deletion")
-    public void deleteData() {
-        //long roleId = 477L;
-        long permissionId = 32L;
-        /*long permissionItemId = 544L;
-        long permissionPermissionItemId = 1068;*/
-
-        //PermissionsManagementDBUtils.deleteRoleAndItsPermissions((int)roleId);
-        PermissionsManagementDBUtils.deletePermission((int)permissionId);
-        /*PermissionsManagementDBUtils.deletePermissionItem((int)permissionItemId);
-        PermissionsManagementDBUtils.deletePermissionPermissionItem((int)permissionPermissionItemId);*/
-    }
-
     @Severity(SeverityLevel.MINOR)
     @Test(groups = {"Permission management"}, description = "execute console util without parameters")
     public void runningWithoutParameters() {
