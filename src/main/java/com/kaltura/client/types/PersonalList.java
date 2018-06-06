@@ -29,10 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,14 +41,29 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSearchAssetFilter.Tokenizer.class)
-public abstract class BaseSearchAssetFilter extends AssetFilter {
+@MultiRequestBuilder.Tokenizer(PersonalList.Tokenizer.class)
+public class PersonalList extends ObjectBase {
 	
-	public interface Tokenizer extends AssetFilter.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String createDate();
 		String ksql();
-		RequestBuilder.ListTokenizer<AssetGroupBy.Tokenizer> groupBy();
+		String partnerListType();
 	}
 
+	/**
+	 * Id
+	 */
+	private Long id;
+	/**
+	 * Name
+	 */
+	private String name;
+	/**
+	 * Create Date
+	 */
+	private Long createDate;
 	/**
 	 * Search assets using dynamic criteria. Provided collection of nested expressions
 	  with key, comparison operators, value, and logical conjunction.             
@@ -78,9 +92,45 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 	 */
 	private String ksql;
 	/**
-	 * groupBy
+	 * Partner List Type (optional)
 	 */
-	private List<AssetGroupBy> groupBy;
+	private Integer partnerListType;
+
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	public void setCreateDate(Long createDate){
+		this.createDate = createDate;
+	}
+
+	public void createDate(String multirequestToken){
+		setToken("createDate", multirequestToken);
+	}
 
 	// ksql:
 	public String getKsql(){
@@ -94,35 +144,43 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		setToken("ksql", multirequestToken);
 	}
 
-	// groupBy:
-	public List<AssetGroupBy> getGroupBy(){
-		return this.groupBy;
+	// partnerListType:
+	public Integer getPartnerListType(){
+		return this.partnerListType;
 	}
-	public void setGroupBy(List<AssetGroupBy> groupBy){
-		this.groupBy = groupBy;
+	public void setPartnerListType(Integer partnerListType){
+		this.partnerListType = partnerListType;
+	}
+
+	public void partnerListType(String multirequestToken){
+		setToken("partnerListType", multirequestToken);
 	}
 
 
-	public BaseSearchAssetFilter() {
+	public PersonalList() {
 		super();
 	}
 
-	public BaseSearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public PersonalList(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		ksql = GsonParser.parseString(jsonObject.get("ksql"));
-		groupBy = GsonParser.parseArray(jsonObject.getAsJsonArray("groupBy"), AssetGroupBy.class);
+		partnerListType = GsonParser.parseInt(jsonObject.get("partnerListType"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSearchAssetFilter");
+		kparams.add("objectType", "KalturaPersonalList");
+		kparams.add("name", this.name);
 		kparams.add("ksql", this.ksql);
-		kparams.add("groupBy", this.groupBy);
+		kparams.add("partnerListType", this.partnerListType);
 		return kparams;
 	}
 
