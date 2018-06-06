@@ -9,12 +9,6 @@ public class IngestConstants {
     public static final Long MAX_RANDOM_GENERATED_VALUE_4_INGEST = 9999999999L;
     public static final String INGEST_VOD_DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
 
-    // currency
-    public static final String CURRENCY_EUR = "EUR";
-    public static final String CURRENCY_USD = "USD";
-    public static final String CURRENCY_ILS = "ILS";
-    public static final String CURRENCY_CLP = "CLP";
-
     // life cycles periods
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";
 
