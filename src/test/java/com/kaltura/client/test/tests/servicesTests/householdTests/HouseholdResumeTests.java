@@ -1,7 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.householdTests;
 
 import com.kaltura.client.enums.HouseholdState;
-import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.services.UserRoleService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
@@ -18,8 +17,7 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
-import static com.kaltura.client.services.HouseholdService.delete;
-import static com.kaltura.client.services.HouseholdService.get;
+import static com.kaltura.client.services.HouseholdService.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HouseholdResumeTests extends BaseTest {
@@ -50,7 +48,7 @@ public class HouseholdResumeTests extends BaseTest {
     @Test
     private void resume_suspended_household() {
         // suspend household
-        executor.executeSync(HouseholdService.suspend()
+        executor.executeSync(suspend()
                 .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId())));
 
@@ -59,7 +57,7 @@ public class HouseholdResumeTests extends BaseTest {
         assertThat(householdResponse.results.getState()).isEqualTo(HouseholdState.SUSPENDED);
 
         // resume household
-        Response<Boolean> booleanResponse = executor.executeSync(HouseholdService.resume()
+        Response<Boolean> booleanResponse = executor.executeSync(resume()
                 .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId())));
         assertThat(booleanResponse.results.booleanValue()).isTrue();
@@ -84,7 +82,7 @@ public class HouseholdResumeTests extends BaseTest {
         role = userRoleResponse.results;
 
         // suspend household
-        executor.executeSync(HouseholdService.suspend(Math.toIntExact(role.getId()))
+        executor.executeSync(suspend(Math.toIntExact(role.getId()))
                 .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId())));
 
@@ -93,7 +91,7 @@ public class HouseholdResumeTests extends BaseTest {
         assertThat(householdResponse.results.getState()).isEqualTo(HouseholdState.SUSPENDED);
 
         // resume household
-        Response<Boolean> booleanResponse = executor.executeSync(HouseholdService.resume()
+        Response<Boolean> booleanResponse = executor.executeSync(resume()
                 .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId())));
         assertThat(booleanResponse.results.booleanValue()).isTrue();

@@ -99,6 +99,25 @@ public class HouseholdUpdateTests extends BaseTest {
                 "frequencyNextDeviceAction", "frequencyNextUserAction", "restriction");
     }
 
+    @Severity(SeverityLevel.MINOR)
+    @Description("household/action/update - with empty household object")
+    @Test(enabled = false)
+    private void update_with_empty_household() {
+        // update household
+        String householdUpdatedDetails = "updated details with empty household";
+        Household updatedHousehold = new Household();
+
+        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null);
+
+        updatedHousehold = executor.executeSync(update(updatedHousehold)
+                .setKs(userKs))
+                .results;
+
+        assertThat(updatedHousehold).isEqualToIgnoringGivenFields(household, "frequencyNextDeviceAction",
+                "frequencyNextUserAction", "restriction");
+    }
+
     @AfterClass
     private void household_updateTests_afterClass() {
         // cleanup - delete household
