@@ -6,9 +6,9 @@ import com.kaltura.client.services.AssetService.GetAssetBuilder;
 import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
 import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
 import com.kaltura.client.services.TransactionHistoryService.ListTransactionHistoryBuilder;
-import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.Optional;
 import static com.kaltura.client.services.HouseholdService.delete;
+import static com.kaltura.client.test.tests.enums.Currency.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,7 +42,6 @@ public class ProductPriceListTests extends BaseTest {
 
     @BeforeClass
     public void beforeClass() {
-
         entitlementPpvsFilter = new EntitlementFilter();
         entitlementPpvsFilter.setOrderBy(EntitlementOrderBy.PURCHASE_DATE_ASC.getValue());
         entitlementPpvsFilter.setProductTypeEqual(TransactionType.PPV);
@@ -58,19 +58,10 @@ public class ProductPriceListTests extends BaseTest {
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         transactionHistoryFilter.setStartDateGreaterThanOrEqual(0);
 
-        /*Ppv ppv = IngestUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
-                Double.valueOf(getProperty(PRICE_CODE_AMOUNT_4_99)), CURRENCY_EUR, getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV), false, false,
-                getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
-
-        /*Response<ListResponse<Asset>> ingestedProgrammes = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
-                Optional.of("minutes"), Optional.empty(), Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty());
-        System.out.println("ID:" + ingestedProgrammes.results.getObjects().get(0).getId());*/
-
         int numberOfUsers = 2;
         int numberOfDevices = 1;
         household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
         classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -93,12 +84,12 @@ public class ProductPriceListTests extends BaseTest {
     public void listSubscriptionWithCurrencyTest() {
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
-        productPriceResponse = executor.executeSync(ProductPriceService.list(filter).setCurrency(IngestConstants.CURRENCY_EUR).setKs(getOperatorKs()));
+        productPriceResponse = executor.executeSync(ProductPriceService.list(filter).setCurrency(EUR.getValue()).setKs(getOperatorKs()));
         // TODO: should we create ENUMs for currencies? A: Yes if library doesn't contain them
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(get5MinRenewableSubscription().getId().trim());
         assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(EUR.getValue());
     }
 
     @Severity(SeverityLevel.MINOR)
@@ -138,7 +129,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(webMediaFileId);
 
-        PurchaseUtils.purchasePpv(classMasterUserKs, Optional.empty(), Optional.of(webMediaFileId), null);
+        PurchaseUtils.purchasePpv(classMasterUserKs, Optional.empty(), Optional.of(webMediaFileId), Optional.empty());
 
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(classMasterUserKs));
@@ -324,7 +315,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithMultiCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isGreaterThan(0);
         // as default group currency is EURO
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(EUR.getValue());
 
         PurchaseUtils.purchaseSubscription(masterKs, subWithMultiCurrencyId, Optional.empty());
         // to check purchase
@@ -346,7 +337,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithMultiCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
         // as default group currency is EURO
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(EUR.getValue());
 
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
@@ -370,7 +361,7 @@ public class ProductPriceListTests extends BaseTest {
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
-        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter).setCurrency(IngestConstants.CURRENCY_USD);
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter).setCurrency(USD.getValue());
         productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
         // should be 1 subscription
         assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
@@ -378,9 +369,9 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_USD);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(USD.getValue());
 
-        PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.of(IngestConstants.CURRENCY_USD));
+        PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.of(USD.getValue()));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementSubsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
@@ -400,7 +391,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_USD);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(USD.getValue());
 
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
@@ -424,7 +415,7 @@ public class ProductPriceListTests extends BaseTest {
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
-        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter).setCurrency(IngestConstants.CURRENCY_CLP);
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter).setCurrency(CLP.getValue());
         productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs));
         // should be 1 subscription
         assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
@@ -432,9 +423,9 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_CLP);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(CLP.getValue());
 
-        PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.of(IngestConstants.CURRENCY_CLP));
+        PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.of(CLP.getValue()));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementSubsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
@@ -454,7 +445,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_CLP);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(CLP.getValue());
 
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
@@ -486,7 +477,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(subPriceAfterDiscount);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(EUR.getValue());
 
         PurchaseUtils.purchaseSubscription(masterKs, subWithDiscountAndCurrencyId, Optional.empty());
         // to check purchase
@@ -508,7 +499,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(subWithDiscountAndCurrencyId));
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_EUR);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(EUR.getValue());
 
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
@@ -537,15 +528,15 @@ public class ProductPriceListTests extends BaseTest {
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setFileIdIn(String.valueOf(mediaFileId));
         ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
-        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs).setCurrency(IngestConstants.CURRENCY_ILS));
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs).setCurrency(ILS.getValue()));
         // should be 1 file
         assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(ILS.getValue());
 
-        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), Optional.of(ILS.getValue()));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
@@ -566,7 +557,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
         assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(mediaFileId);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(ILS.getValue());
 
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
@@ -595,15 +586,15 @@ public class ProductPriceListTests extends BaseTest {
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setFileIdIn(String.valueOf(mediaFileId));
         ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
-        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs).setCurrency(IngestConstants.CURRENCY_ILS));
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(masterKs).setCurrency(ILS.getValue()));
         // should be 1 file
         assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(ILS.getValue());
 
-        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), Optional.of(ILS.getValue()));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
@@ -624,12 +615,54 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
         assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(mediaFileId);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(ILS.getValue());
 
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
                 .setKs(getAdministratorKs());
         executor.executeSync(deleteHouseholdBuilder);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("/productPrice/action/list - with passed PPV")
+    @Test()
+    public void productPriceWithPassedPpvTest() {
+        // TODO: update to use dynamic data
+        double nonPassedPpvPrice = 4.99;
+        String ppvMobileModule = getSharedCommonPpv().getName() + ";;01/01/2017 00:00:00;Camilo_4_99_EUR_PPV;;";
+        MediaAsset mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        ProductPriceFilter ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(classMasterUserKs));
+        // should be 1 file with non passed PPV price only
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(nonPassedPpvPrice);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(
+                mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
+
+        ppvMobileModule = getSharedCommonPpv().getName() + ";;01/01/2017 00:00:00";
+        mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
+        productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(classMasterUserKs));
+        // should be 1 file and free
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FREE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(
+                mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
     }
 
     @AfterClass

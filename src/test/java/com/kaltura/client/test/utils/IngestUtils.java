@@ -5,7 +5,6 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.AssetService.*;
-import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -19,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.awaitility.Awaitility.await;
 
@@ -432,7 +432,7 @@ public class IngestUtils extends BaseUtils {
         Logger.getLogger(IngestUtils.class).debug(resp.asString());
         //System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
 
-        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "");
+        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
         Subscription subscription = new Subscription();
         subscription.setId(id);
@@ -529,7 +529,7 @@ public class IngestUtils extends BaseUtils {
         String viewLifeCycleValue = viewLifeCycle.orElse(FIVE_MINUTES_PERIOD);
         int maxViewsValue = maxViews.orElse(PP_DEFAULT_MAX_VIEWS_VALUE);
         String priceValue = price.orElse(getProperty(PRICE_CODE_AMOUNT));
-        String currencyValue = currency.orElse(IngestConstants.CURRENCY_EUR);
+        String currencyValue = currency.orElse(EUR.getValue());
         int defaultPercentageOfDiscount4IngestMpp = 100;
         DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount4IngestMpp);
         String discountValue = discount.orElse(discountModule.toParams().get("code").toString());
@@ -649,7 +649,7 @@ public class IngestUtils extends BaseUtils {
         int defaultPercentageOfDiscount4IngestPpv = 50;
         String discountValue = discount.orElse(IngestFixtureData.getDiscount(defaultCurrencyOfDiscount4IngestPpv, defaultPercentageOfDiscount4IngestPpv));
         double priceValue = price.orElse(Double.valueOf(getProperty(PRICE_CODE_AMOUNT)));
-        String currencyValue = currency.orElse(IngestConstants.CURRENCY_EUR);
+        String currencyValue = currency.orElse(EUR.getValue());
         String usageModuleValue = usageModule.orElse(getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV));
         boolean isSubscriptionOnlyValue = isSubscriptionOnly.isPresent() ? isSubscriptionOnly.get() : false;
         boolean isFirstDeviceLimitationValue = isFirstDeviceLimitation.isPresent() ? isFirstDeviceLimitation.get() : false;
@@ -694,7 +694,7 @@ public class IngestUtils extends BaseUtils {
         System.out.println(resp.asString());
         System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
 
-        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "");
+        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
         Ppv ppv = new Ppv();
         ppv.setId(id);
@@ -834,7 +834,7 @@ public class IngestUtils extends BaseUtils {
 
         MediaAsset mediaAsset = new MediaAsset();
         mediaAsset.setName(nameValue);
-        mediaAsset.setId(Long.valueOf(id));
+        mediaAsset.setId(Long.valueOf(id.trim()));
         mediaAsset.setDescription(descriptionValue);
         //mediaAsset.setStartDate(startDate);
         //mediaAsset.setEndDate(endDate);
