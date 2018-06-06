@@ -76,7 +76,7 @@ public class TransactionHistoryListTests extends BaseTest{
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(0);
 
         //Purchase asset with non-master user
-        transactionResponsePpv = PurchaseUtils.purchasePpv(userKs, Optional.of(getSharedMediaAsset().getId().intValue()), Optional.of(getSharedWebMediaFile().getId()), null);
+        transactionResponsePpv = PurchaseUtils.purchasePpv(userKs, Optional.of(getSharedMediaAsset().getId().intValue()), Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
         //Purchase subscription with non-master user
         transactionResponseSubscription = PurchaseUtils.purchaseSubscription(userKs, Integer.parseInt(getSharedCommonSubscription().getId()), Optional.empty());
         //Purchase collection with master user

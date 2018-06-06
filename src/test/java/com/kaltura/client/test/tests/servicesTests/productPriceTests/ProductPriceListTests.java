@@ -129,7 +129,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(webMediaFileId);
 
-        PurchaseUtils.purchasePpv(classMasterUserKs, Optional.empty(), Optional.of(webMediaFileId), null);
+        PurchaseUtils.purchasePpv(classMasterUserKs, Optional.empty(), Optional.of(webMediaFileId), Optional.empty());
 
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(classMasterUserKs));
@@ -536,7 +536,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
 
-        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), Optional.of(IngestConstants.CURRENCY_ILS));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
@@ -594,7 +594,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
 
-        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), Optional.of(IngestConstants.CURRENCY_ILS));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
