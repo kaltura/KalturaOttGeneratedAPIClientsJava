@@ -44,82 +44,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class PersonalListSearchFilter extends BaseSearchAssetFilter {
 	
 	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
-		String kSql();
-		String partnerListTypeEqual();
+		String partnerListTypeIn();
 	}
 
 	/**
-	 * Comma separated list of asset types to search within.               Possible
-	  values: 0 – EPG linear programs entries, any media type ID (according to media
-	  type IDs defined dynamically in the system).              If omitted – all
-	  types should be included.
+	 * Comma separated list of partner list types to search within.               If
+	  omitted – all types should be included.
 	 */
-	private String typeIn;
-	/**
-	 * Search assets using dynamic criteria. Provided collection of nested expressions
-	  with key, comparison operators, value, and logical conjunction.             
-	  Possible keys: any Tag or Meta defined in the system and the following reserved
-	  keys: start_date, end_date.               epg_id, media_id - for specific asset
-	  IDs.              geo_block - only valid value is &amp;quot;true&amp;quot;: When
-	  enabled, only assets that are not restricted to the user by geo-block rules will
-	  return.              parental_rules - only valid value is
-	  &amp;quot;true&amp;quot;: When enabled, only assets that the user
-	  doesn&amp;#39;t need to provide PIN code will return.             
-	  user_interests - only valid value is &amp;quot;true&amp;quot;. When enabled,
-	  only assets that the user defined as his interests (by tags and metas) will
-	  return.              epg_channel_id – the channel identifier of the EPG
-	  program.              entitled_assets - valid values: &amp;quot;free&amp;quot;,
-	  &amp;quot;entitled&amp;quot;, &amp;quot;not_entitled&amp;quot;,
-	  &amp;quot;both&amp;quot;. free - gets only free to watch assets. entitled - only
-	  those that the user is implicitly entitled to watch.              Comparison
-	  operators: for numerical fields =, &amp;gt;, &amp;gt;=, &amp;lt;, &amp;lt;=, :
-	  (in).               For alpha-numerical fields =, != (not), ~ (like), !~, ^ (any
-	  word starts with), ^= (phrase starts with), + (exists), !+ (not exists).        
-	       Logical conjunction: and, or.               Search values are limited to 20
-	  characters each for the next operators: ~, !~, ^, ^=              (maximum
-	  length of entire filter is 2048 characters)
-	 */
-	private String kSql;
-	/**
-	 * partnerListType
-	 */
-	private Integer partnerListTypeEqual;
+	private String partnerListTypeIn;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// partnerListTypeIn:
+	public String getPartnerListTypeIn(){
+		return this.partnerListTypeIn;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setPartnerListTypeIn(String partnerListTypeIn){
+		this.partnerListTypeIn = partnerListTypeIn;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
-	}
-
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
-
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
-	}
-
-	// partnerListTypeEqual:
-	public Integer getPartnerListTypeEqual(){
-		return this.partnerListTypeEqual;
-	}
-	public void setPartnerListTypeEqual(Integer partnerListTypeEqual){
-		this.partnerListTypeEqual = partnerListTypeEqual;
-	}
-
-	public void partnerListTypeEqual(String multirequestToken){
-		setToken("partnerListTypeEqual", multirequestToken);
+	public void partnerListTypeIn(String multirequestToken){
+		setToken("partnerListTypeIn", multirequestToken);
 	}
 
 
@@ -133,18 +76,14 @@ public class PersonalListSearchFilter extends BaseSearchAssetFilter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
-		partnerListTypeEqual = GsonParser.parseInt(jsonObject.get("partnerListTypeEqual"));
+		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("typeIn", this.typeIn);
-		kparams.add("kSql", this.kSql);
-		kparams.add("partnerListTypeEqual", this.partnerListTypeEqual);
+		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
 		return kparams;
 	}
 

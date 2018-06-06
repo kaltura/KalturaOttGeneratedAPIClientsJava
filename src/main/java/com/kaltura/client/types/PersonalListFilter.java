@@ -44,24 +44,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class PersonalListFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String partnerListTypeEqual();
+		String partnerListTypeIn();
 	}
 
 	/**
-	 * partnerListType
+	 * Comma separated list of partner list types to search within.               If
+	  omitted – all types should be included.
 	 */
-	private Integer partnerListTypeEqual;
+	private String partnerListTypeIn;
 
-	// partnerListTypeEqual:
-	public Integer getPartnerListTypeEqual(){
-		return this.partnerListTypeEqual;
+	// partnerListTypeIn:
+	public String getPartnerListTypeIn(){
+		return this.partnerListTypeIn;
 	}
-	public void setPartnerListTypeEqual(Integer partnerListTypeEqual){
-		this.partnerListTypeEqual = partnerListTypeEqual;
+	public void setPartnerListTypeIn(String partnerListTypeIn){
+		this.partnerListTypeIn = partnerListTypeIn;
 	}
 
-	public void partnerListTypeEqual(String multirequestToken){
-		setToken("partnerListTypeEqual", multirequestToken);
+	public void partnerListTypeIn(String multirequestToken){
+		setToken("partnerListTypeIn", multirequestToken);
 	}
 
 
@@ -75,14 +76,14 @@ public class PersonalListFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		partnerListTypeEqual = GsonParser.parseInt(jsonObject.get("partnerListTypeEqual"));
+		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaPersonalListFilter");
-		kparams.add("partnerListTypeEqual", this.partnerListTypeEqual);
+		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
 		return kparams;
 	}
 
