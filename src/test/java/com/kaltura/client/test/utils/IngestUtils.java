@@ -432,7 +432,7 @@ public class IngestUtils extends BaseUtils {
         Logger.getLogger(IngestUtils.class).debug(resp.asString());
         //System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
 
-        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "");
+        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
         Subscription subscription = new Subscription();
         subscription.setId(id);
@@ -694,7 +694,7 @@ public class IngestUtils extends BaseUtils {
         System.out.println(resp.asString());
         System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
 
-        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "");
+        String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
         Ppv ppv = new Ppv();
         ppv.setId(id);
@@ -834,7 +834,7 @@ public class IngestUtils extends BaseUtils {
 
         MediaAsset mediaAsset = new MediaAsset();
         mediaAsset.setName(nameValue);
-        mediaAsset.setId(Long.valueOf(id));
+        mediaAsset.setId(Long.valueOf(id.trim()));
         mediaAsset.setDescription(descriptionValue);
         //mediaAsset.setStartDate(startDate);
         //mediaAsset.setEndDate(endDate);

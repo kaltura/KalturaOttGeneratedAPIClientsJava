@@ -175,7 +175,7 @@ public class HouseholdSuspendTests extends BaseTest {
         // purchase ppv in order to verify suspend is specific to role
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
         transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
-                Optional.of(mediaFileId), null);
+                Optional.of(mediaFileId), Optional.empty());
 
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
@@ -323,7 +323,7 @@ public class HouseholdSuspendTests extends BaseTest {
         // purchase ppv
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
         Response<Transaction> transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
-                Optional.of(mediaFileId), null);
+                Optional.of(mediaFileId), Optional.empty());
 
         assertThat(transactionResponse.results).isNull();
         assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
@@ -365,7 +365,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // purchase ppv
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
-        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), null);
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), Optional.empty());
 
         // suspend with playback_ppv role
         SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))

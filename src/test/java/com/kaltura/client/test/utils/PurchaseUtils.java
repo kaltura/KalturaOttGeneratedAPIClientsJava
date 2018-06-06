@@ -26,7 +26,7 @@ public class PurchaseUtils {
     private static Response<ListResponse<ProductPrice>> productPriceResponse;
     private static Response<Asset> assetResponse;
 
-    public static Response<Transaction> purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, @Nullable String purchaseCurrency) {
+    public static Response<Transaction> purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, Optional<String> purchaseCurrency) {
         purchasePpvDetailsMap = new HashMap<>();
 
         int internalFileId;
@@ -43,9 +43,9 @@ public class PurchaseUtils {
         filter.setFileIdIn(String.valueOf(internalFileId));
         filter.setIsLowest(false);
 
-        ListProductPriceBuilder listProductPriceBuilder = purchaseCurrency == null
-                ? ProductPriceService.list(filter).setKs(ks)
-                : ProductPriceService.list(filter).setKs(ks).setCurrency(purchaseCurrency);
+        ListProductPriceBuilder listProductPriceBuilder = purchaseCurrency.isPresent()
+                ? ProductPriceService.list(filter).setKs(ks).setCurrency(purchaseCurrency.get())
+                : ProductPriceService.list(filter).setKs(ks);
         productPriceResponse = executor.executeSync(listProductPriceBuilder);
 
         double price = productPriceResponse.results.getObjects().get(0).getPrice().getAmount();
@@ -54,10 +54,7 @@ public class PurchaseUtils {
         Purchase purchase = new Purchase();
         purchase.setProductId(Integer.valueOf(ppvModuleId));
         purchase.setContentId(internalFileId);
-        String currency = purchaseCurrency;
-        if (purchaseCurrency == null || purchaseCurrency.isEmpty()) {
-            currency = productPriceResponse.results.getObjects().get(0).getPrice().getCurrency();
-        }
+        String currency = purchaseCurrency.orElse(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency());
         purchase.setCurrency(currency);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.PPV).get());

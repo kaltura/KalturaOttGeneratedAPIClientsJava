@@ -332,16 +332,18 @@ public class BaseTest {
     }
 
     public static Subscription get5MinRenewableSubscription() {
-        // TODO: add logic checking data from DB
         if (fiveMinRenewableSubscription == null) {
-            PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
-                    Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(IngestConstants.CURRENCY_EUR), Optional.of(""),
-                    Optional.of(true), Optional.of(3));
-            fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            fiveMinRenewableSubscription = IngestFixtureData.loadShared5MinutesRenewableSubscription();
+            if (fiveMinRenewableSubscription == null) {
+                PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
+                        Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(IngestConstants.CURRENCY_EUR), Optional.of(""),
+                        Optional.of(true), Optional.of(3));
+                fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            }
         }
         return fiveMinRenewableSubscription;
     }

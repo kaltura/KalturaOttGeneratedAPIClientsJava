@@ -9,6 +9,7 @@ import com.kaltura.client.services.TransactionHistoryService.ListTransactionHist
 import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
@@ -41,7 +42,6 @@ public class ProductPriceListTests extends BaseTest {
 
     @BeforeClass
     public void beforeClass() {
-
         entitlementPpvsFilter = new EntitlementFilter();
         entitlementPpvsFilter.setOrderBy(EntitlementOrderBy.PURCHASE_DATE_ASC.getValue());
         entitlementPpvsFilter.setProductTypeEqual(TransactionType.PPV);
@@ -58,19 +58,10 @@ public class ProductPriceListTests extends BaseTest {
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         transactionHistoryFilter.setStartDateGreaterThanOrEqual(0);
 
-        /*Ppv ppv = IngestUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
-                Double.valueOf(getProperty(PRICE_CODE_AMOUNT_4_99)), CURRENCY_EUR, getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV), false, false,
-                getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
-
-        /*Response<ListResponse<Asset>> ingestedProgrammes = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
-                Optional.of("minutes"), Optional.empty(), Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty());
-        System.out.println("ID:" + ingestedProgrammes.results.getObjects().get(0).getId());*/
-
         int numberOfUsers = 2;
         int numberOfDevices = 1;
         household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
         classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -138,7 +129,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(webMediaFileId);
 
-        PurchaseUtils.purchasePpv(classMasterUserKs, Optional.empty(), Optional.of(webMediaFileId), null);
+        PurchaseUtils.purchasePpv(classMasterUserKs, Optional.empty(), Optional.of(webMediaFileId), Optional.empty());
 
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(classMasterUserKs));
@@ -545,7 +536,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
 
-        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), Optional.of(IngestConstants.CURRENCY_ILS));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
@@ -603,7 +594,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(ppvPriceAfterDiscount);
         assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency()).isEqualTo(IngestConstants.CURRENCY_ILS);
 
-        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), IngestConstants.CURRENCY_ILS);
+        PurchaseUtils.purchasePpv(masterKs, Optional.of(assetWithMultiCurrencyId), Optional.of(mediaFileId), Optional.of(IngestConstants.CURRENCY_ILS));
         // to check purchase
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(entitlementPpvsFilter, null).setKs(masterKs);
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase);
@@ -630,6 +621,48 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()))
                 .setKs(getAdministratorKs());
         executor.executeSync(deleteHouseholdBuilder);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("/productPrice/action/list - with passed PPV")
+    @Test()
+    public void productPriceWithPassedPpvTest() {
+        // TODO: update to use dynamic data
+        double nonPassedPpvPrice = 4.99;
+        String ppvMobileModule = getSharedCommonPpv().getName() + ";;01/01/2017 00:00:00;Camilo_4_99_EUR_PPV;;";
+        MediaAsset mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        ProductPriceFilter ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
+        ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(classMasterUserKs));
+        // should be 1 file with non passed PPV price only
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(nonPassedPpvPrice);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(
+                mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
+
+        ppvMobileModule = getSharedCommonPpv().getName() + ";;01/01/2017 00:00:00";
+        mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        ppFilter = new ProductPriceFilter();
+        ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
+        productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
+        productPriceResponse = executor.executeSync(productPriceListBeforePurchase.setKs(classMasterUserKs));
+        // should be 1 file and free
+        assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FREE);
+        assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.PPV);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPrice().getAmount()).isEqualTo(0);
+        assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(
+                mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
     }
 
     @AfterClass
