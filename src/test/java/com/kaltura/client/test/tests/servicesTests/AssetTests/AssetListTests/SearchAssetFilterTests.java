@@ -52,9 +52,8 @@ public class SearchAssetFilterTests extends BaseTest {
         list.add(tagValue);
         map.put(tagName, list);
 
-        asset2 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE, map,String.valueOf(BaseUtils.getTimeInEpoch(-10)));
-        asset3 = IngestUtils.ingestVOD(EPISODE_MEDIA_TYPE, map,String.valueOf(BaseUtils.getTimeInEpoch(-100)));
-
+        asset2 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE, map,String.valueOf(BaseUtils.getTimeInDate(-100)));
+        asset3 = IngestUtils.ingestVOD(EPISODE_MEDIA_TYPE, map,String.valueOf(BaseUtils.getTimeInDate(-10)));
         program = IngestUtils.ingestEPG(epgChannelName, 1).get(0);
         program2 = IngestUtils.ingestEPG(epgChannelName2, 1).get(0);
     }
@@ -304,13 +303,8 @@ public class SearchAssetFilterTests extends BaseTest {
     @Test
     private void orderVodAssetsByCatalogStartDate() {
 
-        AssetUtils.addLikesToAsset(asset3.getId(), 3, AssetType.MEDIA);
-        AssetUtils.addLikesToAsset(asset2.getId(), 2, AssetType.MEDIA);
-
-
         ksqlQuery = "(or name = '" + asset.getName() + "' name = '" + asset2.getName() + "'name = '" + asset3.getName() + "')";
         assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.START_DATE_DESC.getValue());
-
         listAssetBuilder = AssetService.list(assetFilter, null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
 
@@ -319,7 +313,28 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset3.getId());
         assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
         assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
+
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.START_DATE_ASC.getValue());
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+        assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
+
     }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Asset/action/list - VOD - with PersistedFilter (search query will return in assetHistory/action/list")
+    @Test
+    private void listAssetsWithPersistedFilter() {
+
+        ksqlQuery = "name = ' This is my ksql query with PersistedFilter '";
+        assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, null);
+        listAssetBuilder = AssetService.list(assetFilter, null)
+                .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
+    }
+
 
 
     // EPG
@@ -371,7 +386,6 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(program2.getId());
     }
-
 }
 
 
