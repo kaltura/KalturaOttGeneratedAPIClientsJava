@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -35,9 +36,12 @@ public class BaseUtils {
         return dateFormat.format(cal.getTime());
     }
 
-    // Get Date time according to off set parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getTimeInDate(int offSetInMinutes) {
+    // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
+    public static String getTimeInDate(int offSetInMinutes, String timeZone) {
+        TimeZone theTimeZone;
+        theTimeZone = TimeZone.getTimeZone(timeZone);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        dateFormat.setTimeZone(theTimeZone);
         Date dNow = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dNow);
@@ -46,6 +50,12 @@ public class BaseUtils {
 
         return dateFormat.format(dNow);
     }
+
+    // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
+    public static String getTimeInDate(int offSetInMinutes) {
+        return getTimeInDate(offSetInMinutes,"israel");
+    }
+
 
     // Get epoch time in seconds according to off set parameter provided (in minutes)
     public static long getTimeInEpoch(int offSetInMinutes) {
@@ -143,7 +153,7 @@ public class BaseUtils {
             BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 
             String line = buf.readLine();
-            while(line != null){
+            while (line != null) {
                 sb.append(line).append("\n");
                 line = buf.readLine();
             }
