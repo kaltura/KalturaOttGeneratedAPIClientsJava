@@ -42,7 +42,6 @@ public class ProductPriceListTests extends BaseTest {
 
     @BeforeClass
     public void beforeClass() {
-
         entitlementPpvsFilter = new EntitlementFilter();
         entitlementPpvsFilter.setOrderBy(EntitlementOrderBy.PURCHASE_DATE_ASC.getValue());
         entitlementPpvsFilter.setProductTypeEqual(TransactionType.PPV);
@@ -59,19 +58,10 @@ public class ProductPriceListTests extends BaseTest {
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         transactionHistoryFilter.setStartDateGreaterThanOrEqual(0);
 
-        /*Ppv ppv = IngestUtils.ingestPPV(INGEST_ACTION_INSERT, true, "My ingest PPV", getProperty(FIFTY_PERCENTS_ILS_DISCOUNT_NAME),
-                Double.valueOf(getProperty(PRICE_CODE_AMOUNT_4_99)), CURRENCY_EUR, getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV), false, false,
-                getProperty(DEFAULT_PRODUCT_CODE), getProperty(WEB_FILE_TYPE), getProperty(MOBILE_FILE_TYPE));*/
-
-        /*Response<ListResponse<Asset>> ingestedProgrammes = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.of(2), Optional.empty(), Optional.of(30),
-                Optional.of("minutes"), Optional.empty(), Optional.of(1), Optional.empty(), Optional.empty(), Optional.empty());
-        System.out.println("ID:" + ingestedProgrammes.results.getObjects().get(0).getId());*/
-
         int numberOfUsers = 2;
         int numberOfDevices = 1;
         household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
         classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-
     }
 
     @Severity(SeverityLevel.NORMAL)
