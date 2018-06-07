@@ -190,7 +190,7 @@ public class IngestUtils extends BaseUtils {
 
         SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
-        assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch + "' Series_ID='" + seriesIdValue + "' end_date >= '" + firstProgramStartDateEpoch + "')");
+        assetFilter.setKsql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch + "' Series_ID='" + seriesIdValue + "' end_date >= '" + firstProgramStartDateEpoch + "')");
         int delayBetweenRetriesInSeconds = 3;
         int maxTimeExpectingValidResponseInSeconds = 60;
         await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)

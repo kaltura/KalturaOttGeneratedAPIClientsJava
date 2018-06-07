@@ -40,72 +40,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
+public class PersonalListSearchFilter extends BaseSearchAssetFilter {
 	
 	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
-		String idIn();
+		String partnerListTypeIn();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Comma separated list of partner list types to search within.               If
+	  omitted – all types should be included.
 	 */
-	private String typeIn;
-	/**
-	 * Comma separated list of EPG channel ids to search within.
-	 */
-	private String idIn;
+	private String partnerListTypeIn;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// partnerListTypeIn:
+	public String getPartnerListTypeIn(){
+		return this.partnerListTypeIn;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setPartnerListTypeIn(String partnerListTypeIn){
+		this.partnerListTypeIn = partnerListTypeIn;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
-	}
-
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
-	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	public void partnerListTypeIn(String multirequestToken){
+		setToken("partnerListTypeIn", multirequestToken);
 	}
 
 
-	public SearchAssetFilter() {
+	public PersonalListSearchFilter() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
-		kparams.add("idIn", this.idIn);
+		kparams.add("objectType", "KalturaPersonalListSearchFilter");
+		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
 		return kparams;
 	}
 

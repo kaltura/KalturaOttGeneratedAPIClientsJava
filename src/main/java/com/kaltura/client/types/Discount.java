@@ -39,73 +39,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Discount
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(Discount.Tokenizer.class)
+public class Discount extends Price {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
-		String idIn();
+	public interface Tokenizer extends Price.Tokenizer {
+		String percentage();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * The discount percentage
 	 */
-	private String typeIn;
-	/**
-	 * Comma separated list of EPG channel ids to search within.
-	 */
-	private String idIn;
+	private Integer percentage;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// percentage:
+	public Integer getPercentage(){
+		return this.percentage;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setPercentage(Integer percentage){
+		this.percentage = percentage;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
-	}
-
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
-	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	public void percentage(String multirequestToken){
+		setToken("percentage", multirequestToken);
 	}
 
 
-	public SearchAssetFilter() {
+	public Discount() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public Discount(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		percentage = GsonParser.parseInt(jsonObject.get("percentage"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
-		kparams.add("idIn", this.idIn);
+		kparams.add("objectType", "KalturaDiscount");
 		return kparams;
 	}
 

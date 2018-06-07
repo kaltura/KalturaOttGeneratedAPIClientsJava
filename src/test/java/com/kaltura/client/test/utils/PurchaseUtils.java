@@ -11,10 +11,11 @@ import com.kaltura.client.services.TransactionService;
 import com.kaltura.client.services.TransactionService.PurchaseTransactionBuilder;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
-import javax.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 import static com.kaltura.client.test.tests.BaseTest.executor;
 
 public class PurchaseUtils {
@@ -26,7 +27,7 @@ public class PurchaseUtils {
     private static Response<ListResponse<ProductPrice>> productPriceResponse;
     private static Response<Asset> assetResponse;
 
-    public static Response<Transaction> purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, Optional<String> purchaseCurrency) {
+    public static Response<Transaction> purchasePpv(String ks, Optional<Integer> mediaId, Optional<Integer> fileId, Optional<String> currency) {
         purchasePpvDetailsMap = new HashMap<>();
 
         int internalFileId;
@@ -43,8 +44,8 @@ public class PurchaseUtils {
         filter.setFileIdIn(String.valueOf(internalFileId));
         filter.setIsLowest(false);
 
-        ListProductPriceBuilder listProductPriceBuilder = purchaseCurrency.isPresent()
-                ? ProductPriceService.list(filter).setKs(ks).setCurrency(purchaseCurrency.get())
+        ListProductPriceBuilder listProductPriceBuilder = currency.isPresent()
+                ? ProductPriceService.list(filter).setKs(ks).setCurrency(currency.get())
                 : ProductPriceService.list(filter).setKs(ks);
         productPriceResponse = executor.executeSync(listProductPriceBuilder);
 
@@ -54,8 +55,8 @@ public class PurchaseUtils {
         Purchase purchase = new Purchase();
         purchase.setProductId(Integer.valueOf(ppvModuleId));
         purchase.setContentId(internalFileId);
-        String currency = purchaseCurrency.orElse(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency());
-        purchase.setCurrency(currency);
+        String currencyValue = currency.orElse(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency());
+        purchase.setCurrency(currencyValue);
         purchase.setPrice(price);
         purchase.setProductType(Optional.of(TransactionType.PPV).get());
 
@@ -64,7 +65,7 @@ public class PurchaseUtils {
 
         // TODO: complete the purchase ppv test
         purchasePpvDetailsMap.put("price", String.valueOf(price));
-        purchasePpvDetailsMap.put("currency", currency);
+        purchasePpvDetailsMap.put("currency", currencyValue);
         purchasePpvDetailsMap.put("ppvModuleId", ppvModuleId);
         purchasePpvDetailsMap.put("fileId", String.valueOf(internalFileId));
 
