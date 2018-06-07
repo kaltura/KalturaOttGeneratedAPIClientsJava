@@ -5,17 +5,21 @@ import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
@@ -34,6 +38,11 @@ public class BaseTest {
     public static Configuration config;
     public static TestAPIOkRequestsExecutor executor = TestAPIOkRequestsExecutor.getExecutor();
     private static Response<LoginResponse> loginResponse;
+
+
+    /*================================================================================
+    Shared Test Params - used as a helper common params across tests
+    ================================================================================*/
 
     // shared common params
     public static int partnerId;
@@ -83,33 +92,12 @@ public class BaseTest {
     }
 
     /*================================================================================
-    testing shared params list - used as a helper common params across tests
-
-    int partnerId
-    String defaultUserPassword
-
-    String administratorKs
-    String operatorKs
-    String managerKs
-    String anonymousKs
-
-    MediaAsset mediaAsset
-
-    MediaFile webMediaFile
-    MediaFile mobileMediaFile
-
-    Subscription fiveMinRenewableSubscription
-
-    Household sharedHousehold
-    HouseholdUser sharedMasterUser
-    HouseholdUser sharedUser
-    String sharedMasterUserKs
-    String sharedUserKs
+    Shared Test Params - end
     ================================================================================*/
 
 
     @BeforeSuite
-    public void base_test_before_suite() {
+    public void baseTest_beforeSuite() {
         // set configuration
         config = new Configuration();
         config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
@@ -124,6 +112,11 @@ public class BaseTest {
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
+    }
+
+    @BeforeMethod
+    public void baseTest_beforeMethod(Method method) {
+        Logger.getLogger(BaseTest.class).debug("Class: " + getClass().getSimpleName() + ", Test: " + method.getName());
     }
 
     /**

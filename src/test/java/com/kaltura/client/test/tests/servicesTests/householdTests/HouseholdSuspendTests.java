@@ -523,7 +523,7 @@ public class HouseholdSuspendTests extends BaseTest {
         // purchase ppv in order to verify suspend is specific to role
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
         transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
-                Optional.of(mediaFileId), null);
+                Optional.of(mediaFileId), Optional.empty());
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
 
