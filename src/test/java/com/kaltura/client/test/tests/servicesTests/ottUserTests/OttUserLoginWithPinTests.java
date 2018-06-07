@@ -27,6 +27,7 @@ public class OttUserLoginWithPinTests extends BaseTest {
     private Response<UserLoginPin> userLoginPinResponse;
 
     private final String SECRET = "secret";
+    private String pinSlowTest;
 
     @BeforeClass
     private void ottUser_login_tests_setup() {
@@ -78,8 +79,12 @@ public class OttUserLoginWithPinTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("ottUser/action/loginWithPin - loginWithPin with expired pinCode - error 2004")
-    @Test(groups = "slow")
-    private void loginWithPin_with_expired_pinCode() {
+    @Test(groups = "slow_before")
+    private void loginWithPin_with_expired_pinCode_before() {
+        System.out.println("before started");
+        // setup for test
+        ottUser_login_tests_setup();
+
         // add pin
         AddUserLoginPinBuilder addUserLoginPinBuilder = add(SECRET)
                 .setKs(getAdministratorKs())
@@ -87,19 +92,19 @@ public class OttUserLoginWithPinTests extends BaseTest {
         userLoginPinResponse = executor.executeSync(addUserLoginPinBuilder);
 
         // login with expired pin
-        String pin = userLoginPinResponse.results.getPinCode();
+        pinSlowTest = userLoginPinResponse.results.getPinCode();
+        System.out.println("before finished");
+    }
 
-        // sleep for 1.5 minutes
-        try {
-            Thread.sleep(120000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, pin, null, SECRET);
+    @Test(groups = "slow_after", dependsOnMethods = {"loginWithPin_with_expired_pinCode_before"})
+    private void loginWithPin_with_expired_pinCode_after() {
+        System.out.println("after started");
+        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, pinSlowTest, null, SECRET);
         loginResponse = executor.executeSync(loginWithPinOttUserBuilder);
 
         assertThat(loginResponse.results).isNull();
         assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2004).getCode());
+        System.out.println("after finished");
     }
 
     @Severity(SeverityLevel.NORMAL)

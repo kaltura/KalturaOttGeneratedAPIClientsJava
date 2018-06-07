@@ -11,6 +11,7 @@ import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.within;
 
 public class TransactionHistoryListTests extends BaseTest{
 
@@ -116,8 +119,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for non-master user")
-    public void testTransactionHistoryPerHouseholdWithUserKs() {
+    @Description("/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for non-master user")
+    @Test
+    public void transactionHistoryPerHouseholdWithUserKs() {
         //All transactions per non-master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(userKs);
@@ -134,8 +138,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per user are written correctly at transactionHistory for non-master user")
-    public void testTransactionHistoryPerUserWithUserKs() {
+    @Description("/transactionHistory/action/list - test purchases per user are written correctly at transactionHistory for non-master user")
+    @Test
+    public void transactionHistoryPerUserWithUserKs() {
         //All transactions per non-master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(userKs);
@@ -152,8 +157,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for master user")
-    public void testTransactionHistoryPerHouseholdWithMasterKs() {
+    @Description("/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for master user")
+    @Test
+    public void transactionHistoryPerHouseholdWithMasterKs() {
         //All transactions per master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
@@ -170,8 +176,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test no purchases per user were written at transactionHistory for master user")
-    public void testTransactionHistoryPerUserWithMasterKs() {
+    @Description("/transactionHistory/action/list - test no purchases per user were written at transactionHistory for master user")
+    @Test
+    public void transactionHistoryPerUserWithMasterKs() {
         //All transactions per master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
@@ -189,50 +196,49 @@ public class TransactionHistoryListTests extends BaseTest{
 
     private void assertMethod(String methodName, List<BillingTransaction> billingTransactionList) {
         Logger.getLogger(TransactionHistoryListTests.class).debug(methodName);
-        for(int i = 0; i < billingTransactionList.size(); i++) {
-            assertThat(billingTransactionList.get(i).getClass()).isEqualTo(BillingTransaction.class);
-            assertThat(billingTransactionList.get(i).getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-            assertThat(billingTransactionList.get(i).getIsRecurring()).isEqualTo(false);
-            assertThat(billingTransactionList.get(i).getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
-            switch (billingTransactionList.get(i).getItemType()){
+        for(BillingTransaction billingTransaction : billingTransactionList) {
+            assertThat(billingTransaction.getClass()).isEqualTo(BillingTransaction.class);
+            assertThat(billingTransaction.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
+            assertThat(billingTransaction.getIsRecurring()).isEqualTo(false);
+            assertThat(billingTransaction.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+            switch (billingTransaction.getItemType()){
                 case SUBSCRIPTION:
-                    BillingTransaction billingTransactionSubscription = billingTransactionList.get(i);
-                    assertThat(billingTransactionSubscription.getRecieptCode()).isEqualTo(transactionResponseSubscription.results.getId());
+                    assertThat(billingTransaction.getRecieptCode()).isEqualTo(transactionResponseSubscription.results.getId());
                     //TODO: Shared Subscription name not equals to transactionHistory name written (Title written). (deprecate this assertion or amend with another way)
 //                    assertThat(billingTransactionSubscription.getPurchasedItemName()).isEqualTo(getSharedCommonSubscription().getName());
-                    assertThat(billingTransactionSubscription.getPurchasedItemCode()).isEqualTo(getSharedCommonSubscription().getId().toString());
-                    assertThat(billingTransactionSubscription.getItemType()).isEqualTo(BillingItemsType.SUBSCRIPTION);
-                    assertThat(billingTransactionSubscription.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_AMOUNT));
-                    assertThat(billingTransactionSubscription.getPrice().getCurrency().toString()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_CURRENCY));
-                    assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(billingTransactionSubscription.getActionDate());
-                    assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(transactionResponseSubscription.results.getCreatedAt().longValue());
+                    assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(getSharedCommonSubscription().getId());
+                    assertThat(billingTransaction.getItemType()).isEqualTo(BillingItemsType.SUBSCRIPTION);
+                    assertThat(billingTransaction.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransaction.getPrice().getCurrency()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_CURRENCY));
+                    assertThat(billingTransaction.getStartDate().intValue()).isCloseTo(transactionResponseSubscription.results.getCreatedAt(), within(2));
+                    assertThat(billingTransaction.getActionDate().intValue()).isCloseTo(transactionResponseSubscription.results.getCreatedAt(), within(2));
                     break;
 
                 case PPV:
-                    BillingTransaction billingTransactionPpv = billingTransactionList.get(i);
-                    assertThat(billingTransactionPpv.getRecieptCode()).isEqualTo(transactionResponsePpv.results.getId());
-                    assertThat(billingTransactionPpv.getPurchasedItemName()).isEqualTo(getSharedMediaAsset().getName());
-                    assertThat(billingTransactionPpv.getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
-                    assertThat(billingTransactionPpv.getItemType()).isEqualTo(BillingItemsType.PPV);
-                    assertThat(billingTransactionPpv.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_AMOUNT));
-                    assertThat(billingTransactionPpv.getPrice().getCurrency().toString()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_CURRENCY));
-                    assertThat(billingTransactionPpv.getStartDate()).isEqualTo(billingTransactionPpv.getActionDate());
-                    assertThat(billingTransactionPpv.getStartDate()).isEqualTo(transactionResponsePpv.results.getCreatedAt().longValue());
+                    assertThat(billingTransaction.getRecieptCode()).isEqualTo(transactionResponsePpv.results.getId());
+                    assertThat(billingTransaction.getPurchasedItemName()).isEqualTo(getSharedMediaAsset().getName());
+                    assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
+                    assertThat(billingTransaction.getItemType()).isEqualTo(BillingItemsType.PPV);
+                    assertThat(billingTransaction.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransaction.getPrice().getCurrency()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_CURRENCY));
+                    assertThat(billingTransaction.getStartDate().intValue()).isCloseTo(transactionResponsePpv.results.getCreatedAt(), within(2));
+                    assertThat(billingTransaction.getActionDate().intValue()).isCloseTo(transactionResponsePpv.results.getCreatedAt(), within(2));
                     break;
 
                 case COLLECTION:
-                    BillingTransaction billingTransactionCollection = billingTransactionList.get(i);
-                    assertThat(billingTransactionCollection.getRecieptCode()).isEqualTo(transactionResponseCollection.results.getId());
-                    assertThat(billingTransactionCollection.getPurchasedItemName()).isEqualTo(getSharedCommonCollection().getName());
-                    assertThat(billingTransactionCollection.getPurchasedItemCode()).isEqualTo(getSharedCommonCollection().getId().toString());
-                    assertThat(billingTransactionCollection.getItemType()).isEqualTo(BillingItemsType.COLLECTION);
-                    assertThat(billingTransactionCollection.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT));
-                    assertThat(billingTransactionCollection.getPrice().getCurrency().toString()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_CURRENCY));
-                    assertThat(billingTransactionCollection.getActionDate()).isEqualTo(transactionResponseCollection.results.getCreatedAt().longValue());
+                    assertThat(billingTransaction.getRecieptCode()).isEqualTo(transactionResponseCollection.results.getId());
+                    assertThat(billingTransaction.getPurchasedItemName()).isEqualTo(getSharedCommonCollection().getName());
+                    assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(getSharedCommonCollection().getId());
+                    assertThat(billingTransaction.getItemType()).isEqualTo(BillingItemsType.COLLECTION);
+                    assertThat(billingTransaction.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransaction.getPrice().getCurrency()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_CURRENCY));
+                    assertThat(billingTransaction.getStartDate().intValue()).isCloseTo(transactionResponseCollection.results.getCreatedAt(), within(2));
+                    assertThat(billingTransaction.getActionDate().intValue()).isCloseTo(transactionResponseCollection.results.getCreatedAt(), within(2));
                     break;
 
                 default:
                     Logger.getLogger(TransactionHistoryListTests.class).error("No valid item type found!");
+                    fail("No valid item type found!");
                     break;
             }
         }
