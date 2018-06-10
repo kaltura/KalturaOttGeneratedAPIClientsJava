@@ -10,9 +10,9 @@ import java.lang.reflect.Method;
 public class SlowTestsRunner extends BaseTest{
 
     @BeforeSuite(groups = "slow_before")
-    public void setupSlowTests(Method method){
+    public void setupSlowTests(){
         baseTest_beforeSuite();
-        baseTest_beforeMethod(method);
+        //baseTest_beforeMethod(method);
     }
 
     @Test(groups = "slow", dependsOnGroups = {"slow_before"})
