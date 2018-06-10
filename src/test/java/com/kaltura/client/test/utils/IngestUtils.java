@@ -839,10 +839,10 @@ public class IngestUtils extends BaseUtils {
         //mediaAsset.setStartDate(startDate);
         //mediaAsset.setEndDate(endDate);
 
-        int delayBetweenRetriesInSeconds = 3;
-        int maxTimeExpectingValidResponseInSeconds = 60;
-        await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS).until(isDataReturned(getAnonymousKs(), id, actionValue));
         if (!INGEST_ACTION_DELETE.equals(actionValue)) {
+            int delayBetweenRetriesInSeconds = 3;
+            int maxTimeExpectingValidResponseInSeconds = 60;
+            await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS).until(isDataReturned(getAnonymousKs(), id, actionValue));
             mediaAsset.setMediaFiles(executor.executeSync(
                     AssetService.get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs())).results.getMediaFiles());
         }

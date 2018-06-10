@@ -5,9 +5,7 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.types.*;
 import org.json.JSONArray;
-
 import java.sql.SQLException;
-
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.ERROR_MESSAGE;
@@ -260,7 +258,7 @@ public class IngestFixtureData {
 
         Ppv ppv = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PPV_SELECT, partnerId,
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PPV_SELECT_BY_PRICE_PLAN, partnerId,
                     pricePlan.getId()), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return ppv;
@@ -294,7 +292,7 @@ public class IngestFixtureData {
             }
 
             subscription = new Subscription();
-            subscription.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+            subscription.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)).trim());
             subscription.setName(jsonArray.getJSONObject(0).getString(NAME));
             subscription.setPricePlanIds(String.valueOf(jsonArray.getJSONObject(0).getLong(PRICE_PLAN_ID)));
             subscription.setIsRenewable(false);
