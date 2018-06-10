@@ -1,6 +1,7 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.UserLoginPin;
@@ -12,12 +13,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.services.UserLoginPinService.AddUserLoginPinBuilder;
 import static com.kaltura.client.services.UserLoginPinService.add;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.given;
 
 public class OttUserLoginWithPinTests extends BaseTest {
 
@@ -78,7 +82,7 @@ public class OttUserLoginWithPinTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("ottUser/action/loginWithPin - loginWithPin with expired pinCode - error 2004")
-    @Test(groups = "slow")
+    @Test(groups = "slow", enabled = false)
     private void loginWithPin_with_expired_pinCode() {
         // add pin
         AddUserLoginPinBuilder addUserLoginPinBuilder = add(SECRET)
@@ -86,15 +90,16 @@ public class OttUserLoginWithPinTests extends BaseTest {
                 .setUserId(Integer.valueOf(user.getId()));
         userLoginPinResponse = executor.executeSync(addUserLoginPinBuilder);
 
+        // wait for pin to expire
+        given().pollThread(Thread::new).pollInterval(15, TimeUnit.SECONDS).await().atMost(3, TimeUnit.MINUTES).until(() -> {
+            long expire = userLoginPinResponse.results.getExpirationTime();
+            long now = BaseUtils.getTimeInEpoch(0);
+            System.out.println("now: " + now + " " + "expire: " + expire);
+            return now > expire + 65;
+        });
+
         // login with expired pin
         String pin = userLoginPinResponse.results.getPinCode();
-
-        // sleep for 1.5 minutes
-        try {
-            Thread.sleep(120000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, pin, null, SECRET);
         loginResponse = executor.executeSync(loginWithPinOttUserBuilder);
 
