@@ -25,40 +25,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementListTests extends BaseTest {
 
-    private Household sharedHousehold;
     private EntitlementFilter filter;
+    private Household household;
+    private String masterUserId;
+    private String masterUserKs;
+    private String regularUserId;
+    private String regularUserKs;
 
     private Response<ListResponse<Entitlement>> entitlementResponse;
 
-    private final int numberOfUsersInHousehold = 1;
+    private final int numberOfUsersInHousehold = 2;
     private final int numberOfDevicesInHousehold = 1;
-    private String classMasterUserKs;
 
     @BeforeClass
     public void setUp() {
-        sharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        classMasterUserKs = HouseholdUtils.getHouseholdUserKs(sharedHousehold, HouseholdUtils.getDevicesListFromHouseHold(sharedHousehold).get(0).getUdid());
-
         filter = new EntitlementFilter();
         filter.setOrderBy(PURCHASE_DATE_ASC.getValue());
         filter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
+
+        household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        regularUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        masterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
+        regularUserId = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0).getUserId();
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("/entitlement/action/list before purchase")
     @Test
     public void entitlementListBeforePurchase() {
+        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        String masterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+
         // subscription
         filter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
         filter.setIsExpiredEqual(false);
         ListEntitlementBuilder entitlementListBeforePurchase = EntitlementService.list(filter, null);
-        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(classMasterUserKs));
+        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(0);
 
         // ppv
         filter.setProductTypeEqual(TransactionType.PPV);
         entitlementListBeforePurchase = EntitlementService.list(filter, null);
-        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(classMasterUserKs));
+        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(0);
 
         //with is expiredEqual: true
@@ -66,30 +75,34 @@ public class EntitlementListTests extends BaseTest {
         // ppv
         filter.setProductTypeEqual(TransactionType.PPV);
         entitlementListBeforePurchase = EntitlementService.list(filter, null);
-        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(classMasterUserKs));
+        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(0);
 
         // subscription
         filter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
         EntitlementService.list(filter, null);
-        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(classMasterUserKs));
+        entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(0);
+
+        //delete household for cleanup
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
+        executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("/entitlement/action/list after purchase")
     @Test
     public void entitlementListAfterPurchase() {
-        PurchaseUtils.purchasePpv(classMasterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
                 Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
-        PurchaseUtils.purchaseSubscription(classMasterUserKs, Integer.valueOf(getSharedCommonSubscription().getId()),
+        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.valueOf(getSharedCommonSubscription().getId()),
                 Optional.empty());
 
         // subscription
         filter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
         filter.setIsExpiredEqual(false);
         ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(filter, null);
-        entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(classMasterUserKs));
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1); // only sub
         assertThat(entitlementResponse.results.getObjects().get(0).getProductId()).isEqualTo(getSharedCommonSubscription().getId());
         assertThat(entitlementResponse.results.getObjects().get(0).getEndDate()).isGreaterThan(
@@ -100,7 +113,7 @@ public class EntitlementListTests extends BaseTest {
         // ppv
         filter.setProductTypeEqual(TransactionType.PPV);
         entitlementListAfterPurchase = EntitlementService.list(filter, null);
-        entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(classMasterUserKs));
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1); // only Ppv
         assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(getSharedWebMediaFile().getId());
         assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(0)).getMediaId()).isEqualTo(Math.toIntExact(getSharedMediaAsset().getId()));
@@ -108,16 +121,19 @@ public class EntitlementListTests extends BaseTest {
                 entitlementResponse.results.getObjects().get(0).getCurrentDate());
         assertThat(entitlementResponse.results.getObjects().get(0).getPaymentMethod()).isIn(
                 PaymentMethodType.OFFLINE, PaymentMethodType.UNKNOWN);
+
+        //cancel household purchases for cleanup
+        ForceCancelEntitlementBuilder forceCancelEntitlementBuilder = EntitlementService.forceCancel(
+                Integer.valueOf(getSharedCommonSubscription().getId()), TransactionType.SUBSCRIPTION);
+        executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
+        forceCancelEntitlementBuilder = EntitlementService.forceCancel(getSharedWebMediaFile().getId(), TransactionType.PPV);
+        executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("/entitlement/action/list after forceCancel")
     @Test
     public void entitlementListAfterForceCancel() {
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        String masterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
-        String masterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
                 Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
         PurchaseUtils.purchaseSubscription(masterUserKs, Integer.valueOf(getSharedCommonSubscription().getId()),
@@ -168,20 +184,12 @@ public class EntitlementListTests extends BaseTest {
                 entitlementResponse.results.getObjects().get(0).getCurrentDate());
         assertThat(entitlementResponse.results.getObjects().get(0).getPaymentMethod()).isIn(
                 PaymentMethodType.OFFLINE, PaymentMethodType.UNKNOWN);
-
-        //delete household for cleanup
-        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
-        executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("/entitlement/action/list paging")
     @Test
     public void entitlementListWithPaging() {
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        //String masterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
-        String masterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
                 Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
@@ -215,15 +223,53 @@ public class EntitlementListTests extends BaseTest {
         assertThat(entitlementResponse.results.getObjects().size()).isEqualTo(1); // only 2nd file
         assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(getSharedMobileMediaFile().getId());
 
-        //delete household for cleanup
-        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
-        executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
+        //cancel household purchases for cleanup
+        ForceCancelEntitlementBuilder forceCancelEntitlementBuilder = EntitlementService.forceCancel(getSharedWebMediaFile().getId(), TransactionType.PPV);
+        executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
+        forceCancelEntitlementBuilder = EntitlementService.forceCancel(getSharedMobileMediaFile().getId(), TransactionType.PPV);
+        executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("/entitlement/action/list paging")
+    @Test
+    public void entitlementListByUser() {
+        EntitlementFilter filter = new EntitlementFilter();
+        filter.setEntityReferenceEqual(EntityReferenceBy.USER);
+        filter.setIsExpiredEqual(false);
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
+                Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
+        PurchaseUtils.purchaseSubscription(regularUserKs, Integer.valueOf(getSharedCommonSubscription().getId()),
+                Optional.empty());
+
+        // after purchase
+        // by 1st user
+        filter.setProductTypeEqual(TransactionType.PPV);
+        ListEntitlementBuilder entitlementListAfterPurchase = EntitlementService.list(filter, null);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(masterUserKs));
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(getSharedWebMediaFile().getId());
+
+        // by 2nd user
+        filter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
+        entitlementListAfterPurchase = EntitlementService.list(filter, null);
+        entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(regularUserKs));
+        assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(entitlementResponse.results.getObjects().get(0).getProductId()).isEqualTo(getSharedCommonSubscription().getId());
+
+        //cancel household purchases for cleanup
+        ForceCancelEntitlementBuilder forceCancelEntitlementBuilder = EntitlementService.forceCancel(getSharedWebMediaFile().getId(), TransactionType.PPV);
+        executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
+        forceCancelEntitlementBuilder = EntitlementService.forceCancel(Integer.valueOf(getSharedCommonSubscription().getId()), TransactionType.SUBSCRIPTION);
+        executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(regularUserId)));
     }
 
     @AfterClass
     public void tearDown() {
         //delete household for cleanup
-        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(sharedHousehold.getId()));
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
     }
 }
+
+// TODO: add tests for collections?

@@ -38,7 +38,7 @@ Migrate features tests from ReadyAPI
 | email                        |        |
 | engagement                   |        |
 | engagementAdapter            |        |
-| entitlement                  | Maksim - in progress       |
+| entitlement                  | Maksim - in progress, actions: cancel - CHECK, cancelRenewal, cancelScheduledSubscription, externalReconcile, forceCancel, getNextRenewal, grant - CHECK, list - done, swap, update
 | exportTask                   |        |
 | externalChannelProfile       |        |
 | favorite                     |        |

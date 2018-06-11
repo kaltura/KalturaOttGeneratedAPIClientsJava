@@ -7,14 +7,15 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.sql.*;
-
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 
 public class DBUtils extends BaseUtils {
+
+    private static boolean isActivationNeeded = false;
+    private static boolean isActivationNeededWasLoaded = false;
 
     private static SQLServerDataSource dataSource;
     private static Connection conn;
@@ -26,6 +27,9 @@ public class DBUtils extends BaseUtils {
 
     public static boolean isActivationOfUsersNeeded() {
         Logger.getLogger(DBUtils.class).debug("isActivationOfUsersNeeded()");
+        if (isActivationNeededWasLoaded) {
+            return isActivationNeeded;
+        }
         int result = -1;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, partnerId), false);
@@ -39,8 +43,10 @@ public class DBUtils extends BaseUtils {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error(IS_ACTIVATION_NEEDED + " can't be null");
         }
+        isActivationNeeded = result == 1;
+        isActivationNeededWasLoaded = true;
 
-        return result == 1;
+        return isActivationNeeded;
     }
 
     public static String getUserData(String userRole) {
