@@ -5,24 +5,29 @@ import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
 import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.AppToken;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.AppTokenService.AddAppTokenBuilder;
 import static com.kaltura.client.services.AppTokenService.GetAppTokenBuilder;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class AppTokenAddTests extends BaseTest {
 
     private String sessionUserId;
     private AppToken appToken;
     private String sessionPrivileges;
-    Response<AppToken> addAppTokenResponseSlowTest;
+    private Response<AppToken> addAppTokenResponseSlowTest;
+    private APIException apiException;;
 
     // TODO: 5/3/2018 Add comments!
     @BeforeClass
@@ -55,7 +60,7 @@ public class AppTokenAddTests extends BaseTest {
     @Test
     private void addAppTokenWithDefaultHashType() {
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, null, null);
-        
+
         // Invoke AppToken/action/add - with no hash type (will return the default hash type)
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
                 .setKs(getOperatorKs());
@@ -82,8 +87,8 @@ public class AppTokenAddTests extends BaseTest {
     @Test(groups = "slow_before")
     private void addAppTokenWithExpiryDate_before() {
         // setup for test
-        System.out.println("before started");
         add_tests_before_class();
+        // prepare token with expiration after 1 minute
         Long expiryDate = BaseUtils.getTimeInEpoch(1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
 
@@ -95,18 +100,26 @@ public class AppTokenAddTests extends BaseTest {
 
         // Wait until token is expired (according to expiry date)
         System.out.println("Waiting until token expiry date reached");
-        System.out.println("before finished");
     }
 
-    @Test(groups = "slow_after", dependsOnMethods = "addAppTokenWithExpiryDate_before")
+
+    @Test(groups = "slow_after", dependsOnMethods = "addAppTokenWithExpiryDate_before", priority = 1)
     private void addAppTokenWithExpiryDate_after() {
-        System.out.println("after started");
+        // prepare builder and variables for await() functionality
         GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponseSlowTest.results.getId())
                 .setKs(getOperatorKs());
-        Response<AppToken> getAppTokenResponse = executor.executeSync(getAppTokenBuilder);
+        int delayBetweenRetriesInSeconds = 10;
+        int maxTimeExpectingValidResponseInSeconds = 150;
+        // test that token expired
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() -> {
+                    apiException = executor.executeSync(getAppTokenBuilder).error;
+                    return (apiException != null);
+                });
 
-        assertThat(getAppTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
-        System.out.println("after finished");
+        assertThat(apiException.getCode().equals(getAPIExceptionFromList(500055).getCode()));
     }
 
     @Description("appToken/action/add - with no expiry date (return default expiry date -" +

@@ -1,6 +1,8 @@
 package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.UserLoginPin;
@@ -12,12 +14,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.services.UserLoginPinService.AddUserLoginPinBuilder;
 import static com.kaltura.client.services.UserLoginPinService.add;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class OttUserLoginWithPinTests extends BaseTest {
 
@@ -27,7 +32,7 @@ public class OttUserLoginWithPinTests extends BaseTest {
     private Response<UserLoginPin> userLoginPinResponse;
 
     private final String SECRET = "secret";
-    private String pinSlowTest;
+    private APIException apiException;
 
     @BeforeClass
     private void ottUser_login_tests_setup() {
@@ -81,30 +86,36 @@ public class OttUserLoginWithPinTests extends BaseTest {
     @Description("ottUser/action/loginWithPin - loginWithPin with expired pinCode - error 2004")
     @Test(groups = "slow_before")
     private void loginWithPin_with_expired_pinCode_before() {
-        System.out.println("before started");
         // setup for test
         ottUser_login_tests_setup();
-
         // add pin
         AddUserLoginPinBuilder addUserLoginPinBuilder = add(SECRET)
                 .setKs(getAdministratorKs())
                 .setUserId(Integer.valueOf(user.getId()));
         userLoginPinResponse = executor.executeSync(addUserLoginPinBuilder);
-
-        // login with expired pin
-        pinSlowTest = userLoginPinResponse.results.getPinCode();
-        System.out.println("before finished");
     }
 
-    @Test(groups = "slow_after", dependsOnMethods = {"loginWithPin_with_expired_pinCode_before"})
+    @Test(groups = "slow_after", dependsOnMethods = {"loginWithPin_with_expired_pinCode_before"}, priority = 2)
     private void loginWithPin_with_expired_pinCode_after() {
-        System.out.println("after started");
-        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, pinSlowTest, null, SECRET);
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 10;
+        int maxTimeExpectingValidResponseInSeconds = 200;
+        // wait for pin to expire
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() -> {
+                    long expire = userLoginPinResponse.results.getExpirationTime() + 70;
+                    long now = BaseUtils.getTimeInEpoch(0);
+                    return now > expire;
+                });
+
+        LoginWithPinOttUserBuilder loginWithPinOttUserBuilder = loginWithPin(partnerId, userLoginPinResponse.results.getPinCode(), null, SECRET);
         loginResponse = executor.executeSync(loginWithPinOttUserBuilder);
 
         assertThat(loginResponse.results).isNull();
         assertThat(loginResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2004).getCode());
-        System.out.println("after finished");
+
     }
 
     @Severity(SeverityLevel.NORMAL)

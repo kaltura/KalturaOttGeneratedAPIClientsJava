@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Regression" parallel="tests" thread-count="2">
+<suite name="Regression" parallel="tests" thread-count="2" configfailurepolicy="continue">
     <test name="Fast Tests">
         <groups>
             <run>
                 <exclude name="slow" />
-                <exclude name="slow-before" />
-                <exclude name="slow-after" />
+                <exclude name="slow_before" />
+                <exclude name="slow_after" />
                 <exclude name="Permission management"/>
             </run>
         </groups>
@@ -16,19 +16,19 @@
         </packages>
     </test>
 
-    <!--<test name="Slow Tests">-->
-        <!--<groups>-->
-            <!--<run>-->
-                <!--<include name="slow"/>-->
-                <!--<include name="slow_before" />-->
-                <!--<include name="slow_after"/>-->
-            <!--</run>-->
-        <!--</groups>-->
-        <!--<classes>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.householdTests.HouseholdSuspendTests"/>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.SlowTestsRunner.SlowTestsRunner"/>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserLoginWithPinTests"/>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.appTokenTests.AppTokenAddTests"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Slow Tests">
+        <groups>
+            <run>
+                <include name="slow"/>
+                <include name="slow_before" />
+                <include name="slow_after"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.kaltura.client.test.tests.servicesTests.householdTests.HouseholdSuspendTests"/>
+            <class name="com.kaltura.client.test.tests.servicesTests.SlowTestsRunner.SlowTestsRunner"/>
+            <class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserLoginWithPinTests"/>
+            <class name="com.kaltura.client.test.tests.servicesTests.appTokenTests.AppTokenAddTests"/>
+        </classes>
+    </test>
 </suite>
