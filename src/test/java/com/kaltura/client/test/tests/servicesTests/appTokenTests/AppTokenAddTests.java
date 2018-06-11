@@ -22,6 +22,7 @@ public class AppTokenAddTests extends BaseTest {
     private String sessionUserId;
     private AppToken appToken;
     private String sessionPrivileges;
+    Response<AppToken> addAppTokenResponseSlowTest;
 
     // TODO: 5/3/2018 Add comments!
     @BeforeClass
@@ -78,31 +79,34 @@ public class AppTokenAddTests extends BaseTest {
     }
 
     @Description("appToken/action/add - with expiry date")
-    @Test(groups = "slow")
-    private void addAppTokenWithExpiryDate() {
+    @Test(groups = "slow_before")
+    private void addAppTokenWithExpiryDate_before() {
+        // setup for test
+        System.out.println("before started");
+        add_tests_before_class();
         Long expiryDate = BaseUtils.getTimeInEpoch(1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
 
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
                 .setKs(getOperatorKs());
-        Response<AppToken> addAppTokenResponse = executor.executeSync(addAppTokenBuilder);
+        addAppTokenResponseSlowTest = executor.executeSync(addAppTokenBuilder);
 
-        assertThat(addAppTokenResponse.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
+        assertThat(addAppTokenResponseSlowTest.results.getExpiry()).isEqualTo(Math.toIntExact(expiryDate));
 
         // Wait until token is expired (according to expiry date)
-        System.out.println("Waiting 1 minute until token expiry date reached");
+        System.out.println("Waiting until token expiry date reached");
+        System.out.println("before finished");
+    }
 
-        try {
-            Thread.sleep(72000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponse.results.getId())
+    @Test(groups = "slow_after", dependsOnMethods = "addAppTokenWithExpiryDate_before")
+    private void addAppTokenWithExpiryDate_after() {
+        System.out.println("after started");
+        GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponseSlowTest.results.getId())
                 .setKs(getOperatorKs());
         Response<AppToken> getAppTokenResponse = executor.executeSync(getAppTokenBuilder);
 
         assertThat(getAppTokenResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
+        System.out.println("after finished");
     }
 
     @Description("appToken/action/add - with no expiry date (return default expiry date -" +

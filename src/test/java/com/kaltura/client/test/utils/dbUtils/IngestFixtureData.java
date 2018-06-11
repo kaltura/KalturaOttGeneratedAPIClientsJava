@@ -5,9 +5,7 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.types.*;
 import org.json.JSONArray;
-
 import java.sql.SQLException;
-
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.ERROR_MESSAGE;
@@ -82,16 +80,41 @@ public class IngestFixtureData {
                 return pricePlan;
             }
 
-            pricePlan = new PricePlan();
-            pricePlan.setId(jsonArray.getJSONObject(0).getLong(ID));
-            pricePlan.setName(jsonArray.getJSONObject(0).getString(NAME));
-            pricePlan.setViewLifeCycle(jsonArray.getJSONObject(0).getInt(VIEW_LIFE_CYCLE_MINUTES));
-            pricePlan.setFullLifeCycle(jsonArray.getJSONObject(0).getInt(FULL_LIFE_CYCLE_MINUTES));
-            pricePlan.setMaxViewsNumber(jsonArray.getJSONObject(0).getInt(MAX_VIEWS_COUNT));
-            pricePlan.setDiscountId(Long.valueOf(discountModule.toParams().get(ID).toString()));
-            pricePlan.setPriceDetailsId(priceCode.getId().longValue());
-            pricePlan.setIsRenewable(0 == jsonArray.getJSONObject(0).getInt(IS_RENEWED));
-            pricePlan.setRenewalsNumber(jsonArray.getJSONObject(0).getInt(NUMBER_OF_REC_PERIODS));
+            pricePlan = loadFirstPricePlanFromJsonArray(jsonArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("price plan data can't be null");
+        }
+        return pricePlan;
+    }
+
+    private static PricePlan loadFirstPricePlanFromJsonArray(JSONArray jsonArray) {
+        PricePlan pricePlan = new PricePlan();
+        pricePlan.setId(jsonArray.getJSONObject(0).getLong(ID));
+        pricePlan.setName(jsonArray.getJSONObject(0).getString(NAME));
+        pricePlan.setViewLifeCycle(jsonArray.getJSONObject(0).getInt(VIEW_LIFE_CYCLE_MINUTES));
+        pricePlan.setFullLifeCycle(jsonArray.getJSONObject(0).getInt(FULL_LIFE_CYCLE_MINUTES));
+        pricePlan.setMaxViewsNumber(jsonArray.getJSONObject(0).getInt(MAX_VIEWS_COUNT));
+        pricePlan.setDiscountId(jsonArray.getJSONObject(0).getLong(INT_DISCOUNT_ID));
+        pricePlan.setPriceDetailsId(jsonArray.getJSONObject(0).getLong(PRICING_ID));
+        pricePlan.setIsRenewable(0 == jsonArray.getJSONObject(0).getInt(IS_RENEWED));
+        pricePlan.setRenewalsNumber(jsonArray.getJSONObject(0).getInt(NUMBER_OF_REC_PERIODS));
+
+        return pricePlan;
+    }
+
+    public static PricePlan load5MinRenewablePricePlan() {
+        Logger.getLogger(IngestFixtureData.class).debug("load5MinRenewablePricePlan()");
+
+        PricePlan pricePlan = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_5_MIN_RENEW_SELECT, partnerId), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return pricePlan;
+            }
+
+            pricePlan = loadFirstPricePlanFromJsonArray(jsonArray);
         } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(IngestFixtureData.class).error("price plan data can't be null");
@@ -113,7 +136,7 @@ public class IngestFixtureData {
             subscription = new Subscription();
             subscription.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
             subscription.setName(jsonArray.getJSONObject(0).getString(NAME));
-            subscription.setPricePlanIds(String.valueOf(pricePlan.getId()));
+            subscription.setPricePlanIds(String.valueOf(jsonArray.getJSONObject(0).getLong(PRICE_PLAN_ID)));
             subscription.setIsRenewable(false);
             subscription.setDependencyType(SubscriptionDependencyType.BASE);
             // TODO: add more data in case it needed
@@ -235,7 +258,7 @@ public class IngestFixtureData {
 
         Ppv ppv = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PPV_SELECT, partnerId,
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PPV_SELECT_BY_PRICE_PLAN, partnerId,
                     pricePlan.getId()), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return ppv;
@@ -251,5 +274,34 @@ public class IngestFixtureData {
             Logger.getLogger(IngestFixtureData.class).error("Ppv data can't be null");
         }
         return ppv;
+    }
+
+    public static Subscription loadShared5MinutesRenewableSubscription() {
+        Logger.getLogger(IngestFixtureData.class).debug("loadShared5MinutesRenewableSubscription()");
+        PricePlan pricePlan = load5MinRenewablePricePlan();
+        if (pricePlan == null) {
+            return null;
+        }
+        Subscription subscription = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_5_MIN_RENEW_SELECT, partnerId,
+                    pricePlan.getId()), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return subscription;
+            }
+
+            subscription = new Subscription();
+            subscription.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)).trim());
+            subscription.setName(jsonArray.getJSONObject(0).getString(NAME));
+            subscription.setPricePlanIds(String.valueOf(jsonArray.getJSONObject(0).getLong(PRICE_PLAN_ID)));
+            subscription.setIsRenewable(false);
+            subscription.setDependencyType(SubscriptionDependencyType.BASE);
+            // TODO: add more data in case it needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("subscription data can't be null");
+        }
+        return subscription;
     }
 }

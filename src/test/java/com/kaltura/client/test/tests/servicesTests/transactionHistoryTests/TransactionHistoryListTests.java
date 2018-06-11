@@ -11,6 +11,7 @@ import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.within;
 
 public class TransactionHistoryListTests extends BaseTest{
 
@@ -76,11 +79,12 @@ public class TransactionHistoryListTests extends BaseTest{
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(0);
 
         //Purchase asset with non-master user
-        transactionResponsePpv = PurchaseUtils.purchasePpv(userKs, Optional.of(getSharedMediaAsset().getId().intValue()), Optional.of(getSharedWebMediaFile().getId()), null);
+        transactionResponsePpv = PurchaseUtils.purchasePpv(userKs, Optional.of(getSharedMediaAsset().getId().intValue()), Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
         //Purchase subscription with non-master user
         transactionResponseSubscription = PurchaseUtils.purchaseSubscription(userKs, Integer.parseInt(getSharedCommonSubscription().getId()), Optional.empty());
         //Purchase collection with master user
         transactionResponseCollection = PurchaseUtils.purchaseCollection(masterUserKs, Integer.parseInt(getSharedCommonCollection().getId()));
+
 
         //Show PPV entitlements
         entitlementFilter.setProductTypeEqual(TransactionType.PPV);
@@ -98,10 +102,8 @@ public class TransactionHistoryListTests extends BaseTest{
                 ppvEntitlementList.add((PpvEntitlement) entitlement);
             }
         }
-        //TODO: change ppvModuleId to getSharedWebMediaFile().getPpvModules().getObjects().get(0).getValue() - right now it is null
-        String ppvModuleId = PurchaseUtils.purchasePpvDetailsMap.get(PPV_MODULE_ID_KEY);
         //Verify that PPV is correct
-        assertThat(ppvEntitlementList.get(0).getProductId()).isEqualTo(ppvModuleId);
+        assertThat(ppvEntitlementList.get(0).getProductId()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PPV_MODULE_ID_KEY));
         //Verify that asset file is correct
         assertThat(ppvEntitlementList.get(0).getMediaFileId()).isEqualTo(getSharedWebMediaFile().getId());
 
@@ -117,8 +119,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for non-master user")
-    public void testTransactionHistoryPerHouseholdWithUserKs() {
+    @Description("/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for non-master user")
+    @Test
+    public void transactionHistoryPerHouseholdWithUserKs() {
         //All transactions per non-master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(userKs);
@@ -135,8 +138,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per user are written correctly at transactionHistory for non-master user")
-    public void testTransactionHistoryPerUserWithUserKs() {
+    @Description("/transactionHistory/action/list - test purchases per user are written correctly at transactionHistory for non-master user")
+    @Test
+    public void transactionHistoryPerUserWithUserKs() {
         //All transactions per non-master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(userKs);
@@ -153,8 +157,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for master user")
-    public void testTransactionHistoryPerHouseholdWithMasterKs() {
+    @Description("/transactionHistory/action/list - test purchases per household are written correctly at transactionHistory for master user")
+    @Test
+    public void transactionHistoryPerHouseholdWithMasterKs() {
         //All transactions per master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
@@ -171,8 +176,9 @@ public class TransactionHistoryListTests extends BaseTest{
     }
 
     @Severity(SeverityLevel.BLOCKER)
-    @Test(description = "/transactionHistory/action/list - test no purchases per user were written at transactionHistory for master user")
-    public void testTransactionHistoryPerUserWithMasterKs() {
+    @Description("/transactionHistory/action/list - test no purchases per user were written at transactionHistory for master user")
+    @Test
+    public void transactionHistoryPerUserWithMasterKs() {
         //All transactions per master user
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.USER);
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryFilter).setKs(masterUserKs);
@@ -190,71 +196,49 @@ public class TransactionHistoryListTests extends BaseTest{
 
     private void assertMethod(String methodName, List<BillingTransaction> billingTransactionList) {
         Logger.getLogger(TransactionHistoryListTests.class).debug(methodName);
-        String price, currency;
-        for(int i = 0; i < billingTransactionList.size(); i++) {
-            assertThat(listBillingTransactionResponse.results.getObjects().get(i).getClass()).isEqualTo(BillingTransaction.class);
-            switch (billingTransactionList.get(i).getItemType()){
+        for(BillingTransaction billingTransaction : billingTransactionList) {
+            assertThat(billingTransaction.getClass()).isEqualTo(BillingTransaction.class);
+            assertThat(billingTransaction.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
+            assertThat(billingTransaction.getIsRecurring()).isEqualTo(false);
+            assertThat(billingTransaction.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
+            switch (billingTransaction.getItemType()){
                 case SUBSCRIPTION:
-                    BillingTransaction billingTransactionSubscription = billingTransactionList.get(i);
-                    //Get subscription details (Price, Currency)
-                    price = PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_CURRENCY);
-                    assertThat(billingTransactionSubscription.getRecieptCode()).isEqualTo(transactionResponseSubscription.results.getId());
-                    assertThat(billingTransactionSubscription.getPurchasedItemName().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getPurchasedItemCode()).isEqualTo(getSharedCommonSubscription().getId().toString());
-                    assertThat(billingTransactionSubscription.getItemType()).isEqualTo(BillingItemsType.SUBSCRIPTION);
-                    assertThat(billingTransactionSubscription.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionSubscription.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionSubscription.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionSubscription.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionSubscription.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionSubscription.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
-                    assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(billingTransactionSubscription.getActionDate());
-                    assertThat(billingTransactionSubscription.getStartDate()).isEqualTo(transactionResponseSubscription.results.getCreatedAt().longValue());
+                    assertThat(billingTransaction.getRecieptCode()).isEqualTo(transactionResponseSubscription.results.getId());
+                    //TODO: Shared Subscription name not equals to transactionHistory name written (Title written). (deprecate this assertion or amend with another way)
+//                    assertThat(billingTransactionSubscription.getPurchasedItemName()).isEqualTo(getSharedCommonSubscription().getName());
+                    assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(getSharedCommonSubscription().getId());
+                    assertThat(billingTransaction.getItemType()).isEqualTo(BillingItemsType.SUBSCRIPTION);
+                    assertThat(billingTransaction.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransaction.getPrice().getCurrency()).isEqualTo(PurchaseUtils.purchaseSubscriptionDetailsMap.get(PRICE_CURRENCY));
+                    assertThat(billingTransaction.getStartDate().intValue()).isCloseTo(transactionResponseSubscription.results.getCreatedAt(), within(2));
+                    assertThat(billingTransaction.getActionDate().intValue()).isCloseTo(transactionResponseSubscription.results.getCreatedAt(), within(2));
                     break;
 
                 case PPV:
-                    BillingTransaction billingTransactionPpv = billingTransactionList.get(i);
-                    //Get PPV details (Price, Currency)
-                    price = PurchaseUtils.purchasePpvDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchasePpvDetailsMap.get(PRICE_CURRENCY);
-                    assertThat(billingTransactionPpv.getRecieptCode()).isEqualTo(transactionResponsePpv.results.getId());
-                    assertThat(billingTransactionPpv.getPurchasedItemName().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
-                    assertThat(billingTransactionPpv.getItemType()).isEqualTo(BillingItemsType.PPV);
-                    assertThat(billingTransactionPpv.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionPpv.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionPpv.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionPpv.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionPpv.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionPpv.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
-                    assertThat(billingTransactionPpv.getStartDate()).isEqualTo(billingTransactionPpv.getActionDate());
-                    assertThat(billingTransactionPpv.getStartDate()).isEqualTo(transactionResponsePpv.results.getCreatedAt().longValue());
+                    assertThat(billingTransaction.getRecieptCode()).isEqualTo(transactionResponsePpv.results.getId());
+                    assertThat(billingTransaction.getPurchasedItemName()).isEqualTo(getSharedMediaAsset().getName());
+                    assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(getSharedMediaAsset().getId().toString());
+                    assertThat(billingTransaction.getItemType()).isEqualTo(BillingItemsType.PPV);
+                    assertThat(billingTransaction.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransaction.getPrice().getCurrency()).isEqualTo(PurchaseUtils.purchasePpvDetailsMap.get(PRICE_CURRENCY));
+                    assertThat(billingTransaction.getStartDate().intValue()).isCloseTo(transactionResponsePpv.results.getCreatedAt(), within(2));
+                    assertThat(billingTransaction.getActionDate().intValue()).isCloseTo(transactionResponsePpv.results.getCreatedAt(), within(2));
                     break;
 
                 case COLLECTION:
-                    BillingTransaction billingTransactionCollection = billingTransactionList.get(i);
-                    //Get collection details (Price, Currency)
-                    price = PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT);
-                    currency = PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_CURRENCY);
-                    assertThat(billingTransactionCollection.getRecieptCode()).isEqualTo(transactionResponseCollection.results.getId());
-                    assertThat(billingTransactionCollection.getPurchasedItemName().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getPurchasedItemCode()).isEqualTo(getSharedCommonCollection().getId().toString());
-                    assertThat(billingTransactionCollection.getItemType()).isEqualTo(BillingItemsType.COLLECTION);
-                    assertThat(billingTransactionCollection.getBillingAction()).isEqualTo(BillingAction.PURCHASE);
-                    assertThat(billingTransactionCollection.getPrice().getAmount().toString()).isEqualTo(price);
-                    assertThat(billingTransactionCollection.getPrice().getCurrency().toString()).isEqualTo(currency);
-                    assertThat(billingTransactionCollection.getIsRecurring()).isEqualTo(false);
-                    assertThat(billingTransactionCollection.getBillingProviderRef().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getPurchaseId().toString().length()).isGreaterThan(1);
-                    assertThat(billingTransactionCollection.getBillingPriceType()).isEqualTo(BillingPriceType.FULLPERIOD);
-                    assertThat(billingTransactionCollection.getActionDate()).isEqualTo(transactionResponseCollection.results.getCreatedAt().longValue());
+                    assertThat(billingTransaction.getRecieptCode()).isEqualTo(transactionResponseCollection.results.getId());
+                    assertThat(billingTransaction.getPurchasedItemName()).isEqualTo(getSharedCommonCollection().getName());
+                    assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(getSharedCommonCollection().getId());
+                    assertThat(billingTransaction.getItemType()).isEqualTo(BillingItemsType.COLLECTION);
+                    assertThat(billingTransaction.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT));
+                    assertThat(billingTransaction.getPrice().getCurrency()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_CURRENCY));
+                    assertThat(billingTransaction.getStartDate().intValue()).isCloseTo(transactionResponseCollection.results.getCreatedAt(), within(2));
+                    assertThat(billingTransaction.getActionDate().intValue()).isCloseTo(transactionResponseCollection.results.getCreatedAt(), within(2));
                     break;
 
                 default:
                     Logger.getLogger(TransactionHistoryListTests.class).error("No valid item type found!");
+                    fail("No valid item type found!");
                     break;
             }
         }

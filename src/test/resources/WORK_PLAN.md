@@ -38,13 +38,13 @@ Migrate features tests from ReadyAPI
 | email                        |        |
 | engagement                   |        |
 | engagementAdapter            |        |
-| entitlement                  |        |
+| entitlement                  | Maksim - in progress       |
 | exportTask                   |        |
 | externalChannelProfile       |        |
 | favorite                     |        |
 | followTvSeries               |        |
 | homeNetwork                  |        |
-| household                    | Alon - in progress, actions: add - done, delete - done, get - done, suspend - in progress, purge, resume, resetFrequency, update |
+| household                    | Alon - in progress, actions: add - done, delete - done, get - done, suspend - done, resume - done, resetFrequency, update, purge |
 | householdDevice              |        |
 | householdLimitations         |        |
 | householdPaymentGateway      |        |
@@ -72,7 +72,7 @@ Migrate features tests from ReadyAPI
 | ppv                          |        |
 | priceDetails                 |        |
 | pricePlan                    |        |
-| productPrice                 | Max - in progress |
+| productPrice                 | Done   |
 | purchaseSettings             |        |
 | recommendationProfile        |        |
 | recording                    |        |

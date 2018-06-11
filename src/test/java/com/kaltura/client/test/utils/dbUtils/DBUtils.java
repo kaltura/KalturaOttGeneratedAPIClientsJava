@@ -45,6 +45,7 @@ public class DBUtils extends BaseUtils {
 
     public static String getUserData(String userRole) {
         Logger.getLogger(DBUtils.class).debug("getUserData(): userRole = " + userRole);
+
         String sqlQuery = USER_BY_ROLE_SELECT;
         if (isActivationOfUsersNeeded()) {
             sqlQuery += AND_ACTIVE_STATUS;
@@ -127,24 +128,23 @@ public class DBUtils extends BaseUtils {
         return assetId;
     }
 
-    public static String getSubscriptionWithPremiumService() {
-        Logger.getLogger(DBUtils.class).debug("getSubscriptionWithPremiumService()");
-        String result = null;
+    public static int getSubscriptionWithPremiumService() {
+        int subscriptionId = 0;
+
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT,
                     partnerId), false);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                return result;
+                return subscriptionId;
             }
 
-            result = jsonArray.getJSONObject(0).getInt(SUB_ID) + ":" +
-                    jsonArray.getJSONObject(0).getInt(SERV_ID);
+            subscriptionId = jsonArray.getJSONObject(0).getInt(SUB_ID);
         } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(DBUtils.class).error("data about premium services can't be null");
         }
 
-        return result;
+        return subscriptionId;
     }
 
 

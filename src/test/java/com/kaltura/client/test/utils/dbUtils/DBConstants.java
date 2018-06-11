@@ -8,12 +8,15 @@ public class DBConstants {
     static final String CP_TOKEN = "cp_token";
     static final String FULL_LIFE_CYCLE_MINUTES = "full_life_cycle_min";
     static final String ID = "id";
+    static final String INT_DISCOUNT_ID = "internal_discount_id";
     static final String IS_ACTIVATION_NEEDED = "is_activation_needed";
     static final String IS_RENEWED = "is_renew";
     static final String MAX_VIEWS_COUNT = "max_views_number";
     static final String NAME = "name";
     static final String NUMBER_OF_REC_PERIODS = "num_of_rec_periods";
     static final String PASSWORD = "password";
+    static final String PRICE_PLAN_ID = "usage_module_code";
+    static final String PRICING_ID = "pricing_id";
     static final String ROW_COUNT = "row_count";
     static final String SERV_ID = "serv_id";
     static final String SUBSCRIPTION_ONLY = "subscription_only";
@@ -31,6 +34,8 @@ public class DBConstants {
     static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
             "from [Users].[dbo].[groups_parameters]\n" +
             "where group_id=%d";
+
+    static final String CURRENCY_CODE_SELECT = "select ID from [Pricing].[dbo].[lu_currency] WHERE CODE3='%s'";
 
     static final String DISCOUNT_BY_PERCENT = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc \n" +
@@ -59,7 +64,7 @@ public class DBConstants {
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
 
-    static final String PPV_SELECT = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
+    static final String PPV_SELECT_BY_PRICE_PLAN = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and usage_module_code=%d\n" +
             "order by create_date";
@@ -73,9 +78,22 @@ public class DBConstants {
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and internal_discount_id=%d and pricing_id=%d";
 
+    static final String PRICE_PLAN_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
+            "where [status]=1 and is_active=1\n" +
+            "and view_life_cycle_min = 5\n" +
+            "and full_life_cycle_min = 5\n" +
+            "and is_renew=1\n" +
+            "and ((num_of_rec_periods > 2) or (num_of_rec_periods = 0))\n" + // TODO: do we really want it "num_of_rec_periods > 2"?
+            "and group_id=%d";
+
     static final String SUBSCRIPTION_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and usage_module_code=%d and discount_module_code=%d\n" +
+            "order by create_date";
+
+    static final String SUBSCRIPTION_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
+            "where [status]=1 and is_active=1 and [type]=0 and is_recurring=1\n" +
+            "and group_id=%d and usage_module_code=%d\n" +
             "order by create_date";
 
     static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) SUBSCRIPTION_ID as " + SUB_ID +

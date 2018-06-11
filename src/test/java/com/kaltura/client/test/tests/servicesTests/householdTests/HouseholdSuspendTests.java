@@ -4,6 +4,7 @@ import com.kaltura.client.enums.*;
 import com.kaltura.client.services.*;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.*;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -30,6 +31,11 @@ public class HouseholdSuspendTests extends BaseTest {
 
     private Subscription subscription;
     private Asset asset;
+    private Household householdSlowTest;
+    private Response<ListResponse<ProductPrice>> productPriceListResponseSlowTest;
+    private String masterUserKsSlowTest;
+    private UserRole roleSlowTest;
+    private Subscription fiveMinRenewSubscriptionSlowTest;
 
     private enum Permissions {
         PLAYBACK_SUBSCRIPTION,
@@ -37,7 +43,7 @@ public class HouseholdSuspendTests extends BaseTest {
         PURCHASE_SUBSCRIPTION,
         PURCHASE_PPV,
         RENEW_SUBSCRIPTION,
-        PURCHASE_SERVICE, // purchase premium services
+        PURCHASE_SERVICE,
         LOGIN,
         CANCEL_SUBSCRIPTION,
         DELETE_ALL_APP_TOKENS
@@ -174,7 +180,7 @@ public class HouseholdSuspendTests extends BaseTest {
         // purchase ppv in order to verify suspend is specific to role
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
         transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
-                Optional.of(mediaFileId), null);
+                Optional.of(mediaFileId), Optional.empty());
 
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
@@ -322,7 +328,7 @@ public class HouseholdSuspendTests extends BaseTest {
         // purchase ppv
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
         Response<Transaction> transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
-                Optional.of(mediaFileId), null);
+                Optional.of(mediaFileId), Optional.empty());
 
         assertThat(transactionResponse.results).isNull();
         assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
@@ -343,7 +349,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Issue("BEO-5166")
     @Description("household/action/suspend - with playback_ppv role")
-    @Test(enabled = true)
+    @Test
     private void suspend_with_playback_ppv_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
@@ -364,7 +370,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // purchase ppv
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
-        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), null);
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), Optional.empty());
 
         // suspend with playback_ppv role
         SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
@@ -400,80 +406,97 @@ public class HouseholdSuspendTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Issue("BEO-5173")
     @Description("household/action/suspend - with renew_subscription role")
-    @Test(enabled = true, groups = "slow")
-    private void suspend_with_renew_subscription_role() {
+    @Test(groups = "slow_before")
+    private void suspend_with_renew_subscription_role_before() {
+        System.out.println("before started");
+        // setup for test
+        household_suspendTests_beforeClass();
+
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        householdSlowTest = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(householdSlowTest);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
-        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
+        String udid = HouseholdUtils.getDevicesListFromHouseHold(householdSlowTest).get(0).getUdid();
+        masterUserKsSlowTest = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role
-        UserRole role = new UserRole();
-        role.setExcludedPermissionNames(Permissions.RENEW_SUBSCRIPTION.name());
-        role.setName(Permissions.RENEW_SUBSCRIPTION.name());
+        roleSlowTest = new UserRole();
+        roleSlowTest.setExcludedPermissionNames(Permissions.RENEW_SUBSCRIPTION.name());
+        roleSlowTest.setName(Permissions.RENEW_SUBSCRIPTION.name());
 
         // add role
-        Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
-        role = userRoleResponse.results;
+        Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(roleSlowTest).setKs(getOperatorKs()));
+        roleSlowTest = userRoleResponse.results;
 
         // purchase subscription
-        Subscription fiveMinRenewSubscription = get5MinRenewableSubscription();
-        int fiveMinRenewSubscriptionId = Integer.parseInt(fiveMinRenewSubscription.getId().trim());
-        PurchaseUtils.purchaseSubscription(masterUserKs, fiveMinRenewSubscriptionId, Optional.empty());
-
-        //***
-        System.out.println("here!!!");
-        EntitlementFilter filter1 = new EntitlementFilter();
-        filter1.setProductTypeEqual(TransactionType.SUBSCRIPTION);
-        executor.executeSync(EntitlementService.list(filter1).setKs(masterUserKs));
-
-        // set productPrice filter
-        ProductPriceFilter filter = new ProductPriceFilter();
-        filter.setSubscriptionIdIn(fiveMinRenewSubscription.getId());
+        fiveMinRenewSubscriptionSlowTest = get5MinRenewableSubscription();
+        int fiveMinRenewSubscriptionId = Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId().trim());
+        PurchaseUtils.purchaseSubscription(masterUserKsSlowTest, fiveMinRenewSubscriptionId, Optional.empty());
 
         //get productprice list - before renew
-        Response<ListResponse<ProductPrice>> productPriceListResponse = executor.executeSync(ProductPriceService.list(filter).setKs(masterUserKs));
-        assertThat(productPriceListResponse.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListResponse.results.getObjects().get(0).getProductId()).isEqualTo(fiveMinRenewSubscription.getId().trim());
-        assertThat(productPriceListResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
+        ProductPriceFilter subscriptionFilter = new ProductPriceFilter();
+        subscriptionFilter.setSubscriptionIdIn(fiveMinRenewSubscriptionSlowTest.getId());
+        productPriceListResponseSlowTest = executor.executeSync(ProductPriceService.list(subscriptionFilter)
+                .setKs(masterUserKsSlowTest));
+
+        assertThat(productPriceListResponseSlowTest.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceListResponseSlowTest.results.getObjects().get(0).getProductId()).isEqualTo(fiveMinRenewSubscriptionSlowTest.getId().trim());
+        assertThat(productPriceListResponseSlowTest.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
 
         // suspend with renew_subscription role
-        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
+        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(roleSlowTest.getId()))
                 .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId()));
         Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
         assertThat(booleanResponse.results).isTrue();
+        System.out.println("before finished");
+    }
 
-        // sleep for 5 min
-        try { Thread.sleep(300000); } catch (InterruptedException e) { e.printStackTrace(); }
+    @Test(groups = "slow_after", dependsOnMethods = {"suspend_with_renew_subscription_role_before"})
+    private void suspend_with_renew_subscription_role_after() {
+        System.out.println("after started");
+        // get productprice list for asset in subscription - after renew
+        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
+        ProductPriceFilter assetFilter = new ProductPriceFilter();
+        assetFilter.setFileIdIn(String.valueOf(asset.getMediaFiles().get(0).getId()));
 
-        //get productprice list - after renew
-        productPriceListResponse = executor.executeSync(ProductPriceService.list(filter).setKs(masterUserKs));
-        assertThat(productPriceListResponse.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListResponse.results.getObjects().get(0).getProductId()).isEqualTo(fiveMinRenewSubscription.getId().trim());
-        assertThat(productPriceListResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.USER_SUSPENDED);
+        productPriceListResponseSlowTest = executor.executeSync(ProductPriceService.list(assetFilter)
+                .setKs(masterUserKsSlowTest));
+        assertThat(productPriceListResponseSlowTest.results.getTotalCount()).isEqualTo(1);
+        assertThat(productPriceListResponseSlowTest.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
 
-        //transactionhistory/list - after sleep
-        Response<ListResponse<BillingTransaction>> billingTransactionListResponse = executor.executeSync(TransactionHistoryService.list().setKs(masterUserKs));
+        // transactionHistory list - verify media file related to subscription billing status = purchase
+        Response<ListResponse<BillingTransaction>> billingTransactionListResponse = executor.executeSync(TransactionHistoryService.list()
+                .setKs(masterUserKsSlowTest));
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
-        assertThat(billingTransactionListResponse.results.getObjects().get(0).getPurchasedItemCode()).isEqualTo(fiveMinRenewSubscription.getId().trim());
         assertThat(billingTransactionListResponse.results.getObjects().get(0).getBillingAction()).isEqualTo(BillingAction.PURCHASE);
 
+        // entitlement list - verify subscription isSuspend = true
+        EntitlementFilter entitlementFilter = new EntitlementFilter();
+        entitlementFilter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
+        entitlementFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
+        entitlementFilter.setIsExpiredEqual(false);
+
+        Response<ListResponse<Entitlement>> entitlementListResponse = executor.executeSync(EntitlementService.list(entitlementFilter)
+                .setKs(masterUserKsSlowTest));
+        assertThat(entitlementListResponse.results.getTotalCount()).isEqualTo(1);
+        SubscriptionEntitlement subscriptionEntitlement = (SubscriptionEntitlement) entitlementListResponse.results.getObjects().get(0);
+        assertThat(subscriptionEntitlement.getProductId()).isEqualTo(fiveMinRenewSubscriptionSlowTest.getId().trim());
+        assertThat(subscriptionEntitlement.getIsSuspended()).isTrue();
+
         // cleanup - delete role
-        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+        executor.executeSync(UserRoleService.delete(roleSlowTest.getId()).setKs(getOperatorKs()));
 
         // cleanup - delete household
-        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
+        executor.executeSync(delete(Math.toIntExact(householdSlowTest.getId())).setKs(getOperatorKs()));
+        System.out.println("after finished");
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("household/action/suspend - with purchase_service role")
-    @Test(enabled = false)
+    @Test(enabled = true)
     private void suspend_with_purchase_service_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
@@ -492,42 +515,30 @@ public class HouseholdSuspendTests extends BaseTest {
         Response<UserRole> userRoleResponse = executor.executeSync(UserRoleService.add(role).setKs(getOperatorKs()));
         role = userRoleResponse.results;
 
-        // TODO: 6/4/2018 finsih test
+        // suspend with purchase_service role
+        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
+                .setKs(getOperatorKs())
+                .setUserId(Integer.valueOf(masterUser.getUserId()));
+        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
+        assertThat(booleanResponse.results).isTrue();
 
-//        // purchase ppv
-//        Integer mediaFileId = asset.getMediaFiles().get(0).getId();
-//        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())), Optional.of(mediaFileId), null);
+        // purchase subscription with premium service
+        int subscriptionId = DBUtils.getSubscriptionWithPremiumService();
+        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, subscriptionId, Optional.empty());
+        assertThat(transactionResponse.results).isNull();
+        assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
 
-//        // suspend with playback_ppv role
-//        SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend(Math.toIntExact(role.getId()))
-//                .setKs(getOperatorKs())
-//                .setUserId(Integer.valueOf(masterUser.getUserId()));
-//        Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
-//        assertThat(booleanResponse.results).isTrue();
-//
-//        // get platbackContext
-//        PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
-//        playbackContextOptions.setContext(PlaybackContextType.PLAYBACK);
-//        playbackContextOptions.setStreamerType("applehttp");
-//        playbackContextOptions.setMediaProtocol("http");
-//
-//        GetPlaybackContextAssetBuilder getPlaybackContextAssetBuilder = getPlaybackContext(String.valueOf(asset.getId()), AssetType.MEDIA, playbackContextOptions)
-//                .setKs(masterUserKs);
-//        Response<PlaybackContext> playbackContextResponse = executor.executeSync(getPlaybackContextAssetBuilder);
-//
-//        assertThat(playbackContextResponse.results.getActions().get(0).getType()).isEqualTo(RuleActionType.BLOCK);
-//        assertThat(playbackContextResponse.results.getMessages().get(0).getMessage()).isEqualTo("Not entitled");
-//        assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
-//
-//        // purchase subscription in order to verify suspend is specific to role
-//        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()));
-//        assertThat(transactionResponse.error).isNull();
-//        assertThat(transactionResponse.results.getState()).isEqualTo("OK");
-//
-//        // cleanup - delete role
-//        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
-//
-//        // cleanup - delete household
-//        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
+        // purchase ppv in order to verify suspend is specific to role
+        Integer mediaFileId = asset.getMediaFiles().get(0).getId();
+        transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
+                Optional.of(mediaFileId), Optional.empty());
+        assertThat(transactionResponse.error).isNull();
+        assertThat(transactionResponse.results.getState()).isEqualTo("OK");
+
+        // cleanup - delete role
+        executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
+
+        // cleanup - delete household
+        executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
     }
 }

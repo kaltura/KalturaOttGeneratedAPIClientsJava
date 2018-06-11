@@ -4,23 +4,27 @@ import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.OttUserService;
-import com.kaltura.client.test.IngestConstants;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
@@ -34,6 +38,11 @@ public class BaseTest {
     public static Configuration config;
     public static TestAPIOkRequestsExecutor executor = TestAPIOkRequestsExecutor.getExecutor();
     private static Response<LoginResponse> loginResponse;
+
+
+    /*================================================================================
+    Shared Test Params - used as a helper common params across tests
+    ================================================================================*/
 
     // shared common params
     public static int partnerId;
@@ -83,33 +92,12 @@ public class BaseTest {
     }
 
     /*================================================================================
-    testing shared params list - used as a helper common params across tests
-
-    int partnerId
-    String defaultUserPassword
-
-    String administratorKs
-    String operatorKs
-    String managerKs
-    String anonymousKs
-
-    MediaAsset mediaAsset
-
-    MediaFile webMediaFile
-    MediaFile mobileMediaFile
-
-    Subscription fiveMinRenewableSubscription
-
-    Household sharedHousehold
-    HouseholdUser sharedMasterUser
-    HouseholdUser sharedUser
-    String sharedMasterUserKs
-    String sharedUserKs
+    Shared Test Params - end
     ================================================================================*/
 
 
     @BeforeSuite
-    public void base_test_before_suite() {
+    public void baseTest_beforeSuite() {
         // set configuration
         config = new Configuration();
         config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
@@ -126,6 +114,11 @@ public class BaseTest {
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
     }
 
+    @BeforeMethod
+    public void baseTest_beforeMethod(Method method) {
+        Logger.getLogger(BaseTest.class).debug("Class: " + getClass().getSimpleName() + ", Test: " + method.getName());
+    }
+
     /**
      * Regression requires existing of Price Plan with specific parameters.
      * Price should be 5 Euros
@@ -140,11 +133,11 @@ public class BaseTest {
         double defaultDiscountPrice = 0.0;
         double defaultDiscountPercentValue = 100.0;
         if (sharedCommonPricePlan == null) {
-            sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), IngestConstants.CURRENCY_EUR, defaultDiscountPrice, defaultDiscountPercentValue);
+            sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), EUR.getValue(), defaultDiscountPrice, defaultDiscountPercentValue);
             if (sharedCommonPricePlan == null) {
                 sharedCommonPricePlan = IngestUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
-                        Optional.of(IngestConstants.CURRENCY_EUR), Optional.of(IngestFixtureData.getDiscount(IngestConstants.CURRENCY_EUR, (int) defaultDiscountPercentValue)),
+                        Optional.of(EUR.getValue()), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue)),
                         Optional.of(true), Optional.of(0));
             }
         }
@@ -166,7 +159,7 @@ public class BaseTest {
             if (sharedCommonSubscription == null) {
                 sharedCommonSubscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(IngestFixtureData.getDiscount(IngestConstants.CURRENCY_EUR, (int) defaultDiscountPercentValue)), Optional.empty(),
+                        Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue)), Optional.empty(),
                         Optional.of(false), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()), Optional.empty(),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
             }
@@ -208,7 +201,7 @@ public class BaseTest {
             sharedCommonPpv = IngestFixtureData.loadSharedCommonPpv(getSharedCommonPricePlan());
             if (sharedCommonPpv == null) {
                 sharedCommonPpv = IngestUtils.ingestPPV(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
-                        Optional.empty(), Optional.of(IngestFixtureData.getDiscount(IngestConstants.CURRENCY_EUR, (int) discountPercentValue)),
+                        Optional.empty(), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) discountPercentValue)),
                         Optional.empty(), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()),
                         Optional.of(false), Optional.of(false), Optional.empty(), Optional.empty(), Optional.empty());
             }
@@ -332,16 +325,18 @@ public class BaseTest {
     }
 
     public static Subscription get5MinRenewableSubscription() {
-        // TODO: add logic checking data from DB
         if (fiveMinRenewableSubscription == null) {
-            PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
-                    Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(IngestConstants.CURRENCY_EUR), Optional.of(""),
-                    Optional.of(true), Optional.of(3));
-            fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            fiveMinRenewableSubscription = IngestFixtureData.loadShared5MinutesRenewableSubscription();
+            if (fiveMinRenewableSubscription == null) {
+                PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
+                        Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(EUR.getValue()), Optional.of(""),
+                        Optional.of(true), Optional.of(3));
+                fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
+                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            }
         }
         return fiveMinRenewableSubscription;
     }
