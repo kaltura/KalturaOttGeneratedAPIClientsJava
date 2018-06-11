@@ -124,7 +124,25 @@ public class AssetUtils extends BaseUtils {
         }
     }
 
+    public static void addVotesToAsset(Long assetId, int numOfActions, AssetType assetType, int rate) {
+        if (numOfActions <= 0) {
+            Logger.getLogger("Value must be equal or greater than 0");
+        } else {
+            for (int i = 0; i < numOfActions; i++) {
+                Household household = HouseholdUtils.createHousehold(1, 1, false);
+                HouseholdUser householdUser = HouseholdUtils.getMasterUserFromHousehold(household);
+                SocialActionRate socialActionRate = SocialUtils.getSocialActionRate(SocialActionType.RATE, null, assetId, assetType, null, rate);
+                AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add(socialActionRate)
+                        .setKs(BaseTest.getOperatorKs())
+                        .setUserId(Integer.valueOf(householdUser.getUserId()));
+                executor.executeSync(addSocialActionBuilder);
+
+                HouseholdService.delete(Math.toIntExact(household.getId()));
+            }
+        }
+    }
 }
+
 
 
 

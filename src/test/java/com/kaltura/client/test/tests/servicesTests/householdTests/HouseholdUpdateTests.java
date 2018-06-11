@@ -6,6 +6,7 @@ import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.types.Household;
 import com.kaltura.client.types.HouseholdUser;
 import io.qameta.allure.Description;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
@@ -101,6 +102,7 @@ public class HouseholdUpdateTests extends BaseTest {
 
     @Severity(SeverityLevel.MINOR)
     @Description("household/action/update - with empty household object")
+    @Issue("BEO-5169")
     @Test(enabled = false)
     private void update_with_empty_household() {
         // update household

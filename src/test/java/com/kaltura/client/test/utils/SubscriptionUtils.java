@@ -33,7 +33,7 @@ public class SubscriptionUtils extends BaseUtils {
 
             assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter, pager).setKs(getOperatorKs()));
         } else {
-            assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter).setKs(getOperatorKs()));
+            assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter).setKs(BaseTest.SharedHousehold.getSharedMasterUserKs()));
         }
 
         // remove assets without media files from list

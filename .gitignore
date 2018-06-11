@@ -10,3 +10,4 @@ src/test/resources/test.properties
 src/test/java/com/kaltura/client/test/tests/Sandbox.java
 src/test/resources/db_utils_list.txt
 src/test/resources/utils_list.txt
+src/test/resources/testXml.xml

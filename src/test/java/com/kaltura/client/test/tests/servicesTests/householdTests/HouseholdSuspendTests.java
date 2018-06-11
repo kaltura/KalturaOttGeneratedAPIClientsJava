@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.AssetService.GetPlaybackContextAssetBuilder;
 import static com.kaltura.client.services.AssetService.getPlaybackContext;
@@ -23,6 +24,7 @@ import static com.kaltura.client.services.EntitlementService.cancel;
 import static com.kaltura.client.services.HouseholdService.*;
 import static com.kaltura.client.services.OttUserService.login;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class HouseholdSuspendTests extends BaseTest {
 
@@ -409,7 +411,6 @@ public class HouseholdSuspendTests extends BaseTest {
     @Description("household/action/suspend - with renew_subscription role")
     @Test(groups = "slow_before")
     private void suspend_with_renew_subscription_role_before() {
-        System.out.println("before started");
         // setup for test
         household_suspendTests_beforeClass();
 
@@ -451,21 +452,29 @@ public class HouseholdSuspendTests extends BaseTest {
                 .setUserId(Integer.valueOf(masterUser.getUserId()));
         Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
         assertThat(booleanResponse.results).isTrue();
-        System.out.println("before finished");
     }
 
-    @Test(groups = "slow_after", dependsOnMethods = {"suspend_with_renew_subscription_role_before"})
+    @Test(groups = "slow_after", dependsOnMethods = {"suspend_with_renew_subscription_role_before"}, priority = 3)
     private void suspend_with_renew_subscription_role_after() {
-        System.out.println("after started");
         // get productprice list for asset in subscription - after renew
-        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
+        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId()), Optional.empty()).get(0);
         ProductPriceFilter assetFilter = new ProductPriceFilter();
         assetFilter.setFileIdIn(String.valueOf(asset.getMediaFiles().get(0).getId()));
 
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 20;
+        int maxTimeExpectingValidResponseInSeconds = 300;
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() ->{
+                    return (executor.executeSync(ProductPriceService.list(assetFilter)
+                            .setKs(masterUserKsSlowTest)).results.getObjects().get(0).getPurchaseStatus()).equals(PurchaseStatus.FOR_PURCHASE);
+                        });
         productPriceListResponseSlowTest = executor.executeSync(ProductPriceService.list(assetFilter)
                 .setKs(masterUserKsSlowTest));
         assertThat(productPriceListResponseSlowTest.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceListResponseSlowTest.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+//        assertThat(productPriceListResponseSlowTest.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
 
         // transactionHistory list - verify media file related to subscription billing status = purchase
         Response<ListResponse<BillingTransaction>> billingTransactionListResponse = executor.executeSync(TransactionHistoryService.list()

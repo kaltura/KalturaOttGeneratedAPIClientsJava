@@ -1050,6 +1050,15 @@ public class IngestUtils extends BaseUtils {
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
 
+
+    public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags, String catalogStartDate) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.of(catalogStartDate), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
+
     public static MediaAsset ingestVOD(String mediaType) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
@@ -1057,6 +1066,7 @@ public class IngestUtils extends BaseUtils {
 
         return mediaAsset;
     }
+
 
     public static MediaAsset updateVODName(MediaAsset asset, String name) {
         MediaAsset mediaAsset = ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name), Optional.empty(), Optional.empty(),
@@ -1066,14 +1076,6 @@ public class IngestUtils extends BaseUtils {
         return mediaAsset;
     }
 
-    //
-    public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags) {
-        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
-                Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
-
-        return mediaAsset;
-    }
 
 
     public static ArrayList ingestBasicVODNumOfTimes(int numOfAssets, String mediaType) {

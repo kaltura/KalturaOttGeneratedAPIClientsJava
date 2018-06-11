@@ -26,6 +26,7 @@ import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
+import static com.kaltura.client.test.utils.HouseholdUtils.getDevicesListFromHouseHold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static org.awaitility.Awaitility.setDefaultTimeout;
@@ -366,13 +367,13 @@ public class BaseTest {
                     }
                 }
 
-
+                List<HouseholdDevice> sharedHouseholdDevices = getDevicesListFromHouseHold(sharedHousehold);
                 String sharedMasterUserName = getOttUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername();
-                loginResponse = executor.executeSync(login(partnerId, sharedMasterUserName, defaultUserPassword,null,null));
+                loginResponse = executor.executeSync(login(partnerId, sharedMasterUserName, defaultUserPassword,null,sharedHouseholdDevices.get(0).getUdid()));
                 sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();
 
                 String sharedUserName = getOttUserById(Integer.parseInt(sharedUser.getUserId())).getUsername();
-                loginResponse = executor.executeSync(login(partnerId, sharedUserName, defaultUserPassword,null,null));
+                loginResponse = executor.executeSync(login(partnerId, sharedUserName, defaultUserPassword,null,sharedHouseholdDevices.get(1).getUdid()));
 
                 sharedUserKs = loginResponse.results.getLoginSession().getKs();
             }
