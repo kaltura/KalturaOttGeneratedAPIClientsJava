@@ -38,7 +38,7 @@ Migrate features tests from ReadyAPI
 | email                        |        |
 | engagement                   |        |
 | engagementAdapter            |        |
-| entitlement                  |        |
+| entitlement                  | Maksim - in progress       |
 | exportTask                   |        |
 | externalChannelProfile       |        |
 | favorite                     |        |
@@ -72,7 +72,7 @@ Migrate features tests from ReadyAPI
 | ppv                          |        |
 | priceDetails                 |        |
 | pricePlan                    |        |
-| productPrice                 | Max - in progress |
+| productPrice                 | Done   |
 | purchaseSettings             |        |
 | recommendationProfile        |        |
 | recording                    |        |
