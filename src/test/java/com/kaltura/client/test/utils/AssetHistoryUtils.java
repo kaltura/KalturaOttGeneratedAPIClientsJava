@@ -13,6 +13,7 @@ public class AssetHistoryUtils extends BaseUtils {
         assetHistoryFilter.setDaysLessThanOrEqual(days);
         assetHistoryFilter.setStatusEqual(statusEqual);
         assetHistoryFilter.setTypeIn(typeIn);
+        assetHistoryFilter.setOrderBy("NONE");
 
         return assetHistoryFilter;
 

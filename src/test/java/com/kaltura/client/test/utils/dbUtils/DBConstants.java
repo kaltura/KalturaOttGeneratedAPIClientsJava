@@ -35,6 +35,8 @@ public class DBConstants {
             "from [Users].[dbo].[groups_parameters]\n" +
             "where group_id=%d";
 
+    static final String CURRENCY_CODE_SELECT = "select ID from [Pricing].[dbo].[lu_currency] WHERE CODE3='%s'";
+
     static final String DISCOUNT_BY_PERCENT = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc \n" +
             "where dc.discount_percent=%d\n" + // percent amount
@@ -62,7 +64,7 @@ public class DBConstants {
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=%d order by UPDATE_DATE DESC";
 
-    static final String PPV_SELECT = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
+    static final String PPV_SELECT_BY_PRICE_PLAN = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
             "where [status]=1 and is_active=1\n" +
             "and group_id=%d and usage_module_code=%d\n" +
             "order by create_date";
