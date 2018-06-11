@@ -177,7 +177,6 @@ public class BaseTest {
      * @return Collection with mentioned parameters
      */
     public static Collection getSharedCommonCollection() {
-        double defaultDiscountPercentValue = 100.0;
         if (sharedCommonCollection == null) {
             sharedCommonCollection = IngestFixtureData.loadSharedCommonCollection(getSharedCommonPricePlan());
             if (sharedCommonCollection == null) {
@@ -304,24 +303,26 @@ public class BaseTest {
 
     public static MediaFile getSharedWebMediaFile() {
         if (webMediaFile == null) {
-            if (getProperty(WEB_FILE_TYPE).equals(getSharedMediaAsset().getMediaFiles().get(0).getType())) {
-                webMediaFile = mediaAsset.getMediaFiles().get(0);
-            } else {
-                webMediaFile = mediaAsset.getMediaFiles().get(1);
-            }
+            webMediaFile = getMediaFileByType(getSharedMediaAsset(), getProperty(WEB_FILE_TYPE));
         }
         return webMediaFile;
     }
 
     public static MediaFile getSharedMobileMediaFile() {
         if (mobileMediaFile == null) {
-            if (getProperty(MOBILE_FILE_TYPE).equals(getSharedMediaAsset().getMediaFiles().get(0).getType())) {
-                mobileMediaFile = mediaAsset.getMediaFiles().get(0);
-            } else {
-                mobileMediaFile = mediaAsset.getMediaFiles().get(1);
-            }
+            mobileMediaFile = getMediaFileByType(getSharedMediaAsset(), getProperty(MOBILE_FILE_TYPE));
         }
         return mobileMediaFile;
+    }
+
+    public static MediaFile getMediaFileByType(MediaAsset asset, String type) {
+        MediaFile result;
+        if (type.equals(asset.getMediaFiles().get(0).getType())) {
+            result = mediaAsset.getMediaFiles().get(0);
+        } else {
+            result = mediaAsset.getMediaFiles().get(1);
+        }
+        return result;
     }
 
     public static Subscription get5MinRenewableSubscription() {

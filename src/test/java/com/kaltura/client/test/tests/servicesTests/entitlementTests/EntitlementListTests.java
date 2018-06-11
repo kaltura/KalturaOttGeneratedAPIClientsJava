@@ -272,4 +272,4 @@ public class EntitlementListTests extends BaseTest {
     }
 }
 
-// TODO: add tests for collections?
+// TODO: add tests for collections? A: Yes. Examples can be found in BaseTest.getSharedCommonCollection()

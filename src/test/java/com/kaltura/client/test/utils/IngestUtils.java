@@ -418,7 +418,7 @@ public class IngestUtils extends BaseUtils {
                 .body(reqBody)
                 .post(url);
 
-        //Logger.getLogger(IngestUtils.class).debug(reqBody);
+        Logger.getLogger(IngestUtils.class).debug(reqBody);
         Logger.getLogger(IngestUtils.class).debug(resp.asString());
 
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
@@ -691,8 +691,8 @@ public class IngestUtils extends BaseUtils {
                 .log().all()
                 .get(url);
 
-        System.out.println(resp.asString());
-        System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
+        Logger.getLogger(IngestUtils.class).debug(resp.asString());
+        Logger.getLogger(IngestUtils.class).debug(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
 
         String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
