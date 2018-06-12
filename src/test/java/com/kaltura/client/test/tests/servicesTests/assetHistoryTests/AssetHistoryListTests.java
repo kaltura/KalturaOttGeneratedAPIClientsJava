@@ -82,16 +82,21 @@ public class AssetHistoryListTests extends BaseTest {
                 .setKs(masterUserKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
-        // First object
-        AssetHistory assetHistoryObject1 = assetHistoryListResponse.results.getObjects().get(0);
-        // Second object
-        AssetHistory assetHistoryObject2 = assetHistoryListResponse.results.getObjects().get(1);
+        // objects can be returned in any order
+        AssetHistory assetHistoryObject1, assetHistoryObject2;
+        if (assetHistoryListResponse.results.getObjects().get(0).getAssetId().equals(movie2.getId())) {
+            assetHistoryObject1 = assetHistoryListResponse.results.getObjects().get(0);
+            assetHistoryObject2 = assetHistoryListResponse.results.getObjects().get(1);
+        } else {
+            assetHistoryObject1 = assetHistoryListResponse.results.getObjects().get(1);
+            assetHistoryObject2 = assetHistoryListResponse.results.getObjects().get(0);
+        }
 
         // Assertions for first object returned
-        assertThat(assetHistoryObject1.getAssetId()).isEqualTo(movie2.getId());
         assertThat(assetHistoryObject1.getAssetType()).isEqualTo(AssetType.MEDIA);
-        assertThat(assetHistoryObject1.getPosition()).isEqualTo(position2);
         assertThat(assetHistoryObject1.getDuration()).isGreaterThan(0);
+        assertThat(assetHistoryObject1.getPosition()).isEqualTo(position2);
+        assertThat(assetHistoryObject1.getAssetId()).isEqualTo(movie2.getId());
 
         // Verify that flag is set to false (user hasn't finish watching the asset)
         assertThat(assetHistoryObject1.getFinishedWatching()).isFalse();
