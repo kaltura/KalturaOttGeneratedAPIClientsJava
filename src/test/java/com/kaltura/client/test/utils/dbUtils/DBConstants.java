@@ -115,8 +115,6 @@ public class DBConstants {
             // TODO: find instead of and u.username <> 'lfaingold' how to exclude suspended users
             "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d and u.username <> 'lfaingold'";
 
-    static final String USER_ROLES_SELECT = "SELECT [ROLE_ID] FROM [Users].[dbo].[users_roles] WHERE [USER_ID] = '%S'";
-
     static final String COUNT_RECORDS_BY_ROLE_NAME_IN_ROLES_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[roles]\n" +
             "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";

@@ -4,10 +4,12 @@ import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+import org.apache.commons.dbutils.DbUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.sql.*;
+
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
@@ -17,11 +19,10 @@ public class DBUtils extends BaseUtils {
     private static boolean isActivationNeeded = false;
     private static boolean isActivationNeededWasLoaded = false;
 
-    private static SQLServerDataSource dataSource;
-    private static Connection conn;
-    private static Statement stam;
-    static ResultSet rs;
-    static CallableStatement cStmt;
+//    private static Connection conn;
+//    private static Statement stam;
+//    static ResultSet rs;
+//    static CallableStatement cStmt;
 
     static final String ERROR_MESSAGE = "No results found";
 
@@ -153,130 +154,113 @@ public class DBUtils extends BaseUtils {
         return subscriptionId;
     }
 
-
-//    public static List<Integer> getUserRoles(String userId) {
-//        List<Integer> userRoles = new ArrayList<>();
-//
-//        try {
-//            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(USER_ROLES_SELECT, userId));
-//
-//            if (Strings.isNullOrEmpty(jsonArray.toString())) {
-//                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
-//                return userRoles;
-//            }
-//
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                userRoles.add(jsonArray.getInt(i));
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return userRoles;
-//    }
-
     // Return json array from DB
-    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed) throws Exception {
-        openConnection();
-        JSONArray jsonArray = new JSONArray();
-        rs = stam.executeQuery(query);
-        ResultSetMetaData rsmd = rs.getMetaData();
+    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed) {
+        SQLServerDataSource dataSource = getDataSource();
+        Connection conn = null;
+        Statement stam = null;
+        ResultSet rs = null;
 
-        if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
-            while (rs.next()) {
-                int numColumns = rsmd.getColumnCount();
-                JSONObject obj = new JSONObject();
+        JSONArray jsonArray = null;
 
-                for (int i = 1; i < numColumns + 1; i++) {
-                    String column_name = rsmd.getColumnName(i).toLowerCase();
+        try {
+            conn = dataSource.getConnection();
+            stam = conn.createStatement();
+            rs = stam.executeQuery(query);
 
-                    if (rsmd.getColumnType(i) == java.sql.Types.ARRAY) {
-                        obj.put(column_name, rs.getArray(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.BIGINT) {
-                        obj.put(column_name, rs.getInt(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.BOOLEAN) {
-                        obj.put(column_name, rs.getBoolean(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.BLOB) {
-                        obj.put(column_name, rs.getBlob(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.DOUBLE) {
-                        obj.put(column_name, rs.getDouble(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.FLOAT) {
-                        obj.put(column_name, rs.getFloat(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.INTEGER) {
-                        obj.put(column_name, rs.getInt(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.NVARCHAR) {
-                        obj.put(column_name, rs.getNString(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.VARCHAR) {
-                        obj.put(column_name, rs.getString(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.TINYINT) {
-                        obj.put(column_name, rs.getInt(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.SMALLINT) {
-                        obj.put(column_name, rs.getInt(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.DATE) {
-                        obj.put(column_name, rs.getDate(column_name));
-                    } else if (rsmd.getColumnType(i) == java.sql.Types.TIMESTAMP) {
-                        obj.put(column_name, rs.getTimestamp(column_name));
-                    } else {
-                        obj.put(column_name, rs.getObject(column_name));
-                    }
-                }
-                jsonArray.put(obj);
+            if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
+                jsonArray = buildJsonArrayFromQueryResult(rs);
+                Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
+            } else {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
             }
-            closeConnection();
-            Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
-            return jsonArray;
-
-        } else {
-            Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
-            closeConnection();
-            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(stam);
+            DbUtils.closeQuietly(conn);
         }
 
+        return jsonArray;
     }
 
-    private static void openConnection() {
-        dataSource = new SQLServerDataSource();
+    private static JSONArray buildJsonArrayFromQueryResult(ResultSet rs) throws SQLException {
+        JSONArray jsonArray = new JSONArray();
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        while (rs.next()) {
+            int numColumns = rsmd.getColumnCount();
+            JSONObject obj = new JSONObject();
+
+            for (int i = 1; i < numColumns + 1; i++) {
+                String column_name = rsmd.getColumnName(i).toLowerCase();
+
+                if (rsmd.getColumnType(i) == java.sql.Types.ARRAY) {
+                    obj.put(column_name, rs.getArray(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.BIGINT) {
+                    obj.put(column_name, rs.getInt(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.BOOLEAN) {
+                    obj.put(column_name, rs.getBoolean(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.BLOB) {
+                    obj.put(column_name, rs.getBlob(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.DOUBLE) {
+                    obj.put(column_name, rs.getDouble(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.FLOAT) {
+                    obj.put(column_name, rs.getFloat(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.INTEGER) {
+                    obj.put(column_name, rs.getInt(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.NVARCHAR) {
+                    obj.put(column_name, rs.getNString(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.VARCHAR) {
+                    obj.put(column_name, rs.getString(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.TINYINT) {
+                    obj.put(column_name, rs.getInt(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.SMALLINT) {
+                    obj.put(column_name, rs.getInt(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.DATE) {
+                    obj.put(column_name, rs.getDate(column_name));
+                } else if (rsmd.getColumnType(i) == java.sql.Types.TIMESTAMP) {
+                    obj.put(column_name, rs.getTimestamp(column_name));
+                } else {
+                    obj.put(column_name, rs.getObject(column_name));
+                }
+            }
+            jsonArray.put(obj);
+        }
+        return jsonArray;
+    }
+
+    private static SQLServerDataSource getDataSource(){
+        SQLServerDataSource dataSource = new SQLServerDataSource();
         dataSource.setUser(getProperty(DB_USER));
         dataSource.setPassword(getProperty(DB_PASSWORD));
         dataSource.setServerName(getProperty(DB_URL));
         dataSource.setApplicationIntent("ReadOnly");
         dataSource.setMultiSubnetFailover(true);
 
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLServerException e) {
-            e.printStackTrace();
-        }
-        try {
-            stam = conn.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return dataSource;
     }
 
-    static void closeConnection() {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            stam.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    private static void openConnection() {
+//        SQLServerDataSource dataSource = getDataSource();
+//
+//        try {
+//            conn = dataSource.getConnection();
+//            stam = conn.createStatement();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    static void closeConnection() {
+//        DbUtils.closeQuietly(rs);
+//        DbUtils.closeQuietly(stam);
+//        DbUtils.closeQuietly(conn);
+//    }
 
-    static void prepareCall(String sql) throws SQLException {
-        openConnection();
-        cStmt = conn.prepareCall(sql);
-    }
+//    static void prepareCall(String sql) throws SQLException {
+//        openConnection();
+//        cStmt = conn.prepareCall(sql);
+//    }
 }
