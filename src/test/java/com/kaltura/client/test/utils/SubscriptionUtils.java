@@ -1,5 +1,6 @@
 package com.kaltura.client.test.utils;
 
+import com.google.common.base.Verify;
 import com.kaltura.client.enums.BundleType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
@@ -33,11 +34,13 @@ public class SubscriptionUtils extends BaseUtils {
 
             assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter, pager).setKs(getOperatorKs()));
         } else {
-            assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter).setKs(BaseTest.SharedHousehold.getSharedMasterUserKs()));
+            assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter).setKs(getOperatorKs()));
         }
 
-        // remove assets without media files from list
         List<Asset> assets = assetListResponse.results.getObjects();
+        Verify.verify(assetListResponse.results.getTotalCount() > 0, "Asset list can't be empty");
+
+        // remove assets without media files from list
         List<Asset> assetsToRemove = new ArrayList<>();
 
         for (Asset asset : assets) {
@@ -50,4 +53,7 @@ public class SubscriptionUtils extends BaseUtils {
 
         return assets;
     }
+
+    // TODO: 6/12/2018 add getChannelsListBySubscription
+
 }
