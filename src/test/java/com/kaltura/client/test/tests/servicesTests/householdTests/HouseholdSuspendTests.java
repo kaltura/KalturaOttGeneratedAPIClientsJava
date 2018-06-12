@@ -56,6 +56,9 @@ public class HouseholdSuspendTests extends BaseTest {
         // set subscription
         subscription = BaseTest.getSharedCommonSubscription();
 
+        // set subscription with 5 min renew
+        fiveMinRenewSubscriptionSlowTest = get5MinRenewableSubscription();
+
         // set asset
         asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
     }
@@ -432,7 +435,6 @@ public class HouseholdSuspendTests extends BaseTest {
         roleSlowTest = userRoleResponse.results;
 
         // purchase subscription
-        fiveMinRenewSubscriptionSlowTest = get5MinRenewableSubscription();
         int fiveMinRenewSubscriptionId = Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId().trim());
         PurchaseUtils.purchaseSubscription(masterUserKsSlowTest, fiveMinRenewSubscriptionId, Optional.empty());
 
@@ -467,10 +469,9 @@ public class HouseholdSuspendTests extends BaseTest {
         await()
                 .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
                 .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
-                .until(() ->{
-                    return (executor.executeSync(ProductPriceService.list(assetFilter)
-                            .setKs(masterUserKsSlowTest)).results.getObjects().get(0).getPurchaseStatus()).equals(PurchaseStatus.FOR_PURCHASE);
-                        });
+                .until(() -> (executor.executeSync(ProductPriceService.list(assetFilter)
+                        .setKs(masterUserKsSlowTest)).results.getObjects().get(0).getPurchaseStatus()).equals(PurchaseStatus.FOR_PURCHASE));
+
         productPriceListResponseSlowTest = executor.executeSync(ProductPriceService.list(assetFilter)
                 .setKs(masterUserKsSlowTest));
         assertThat(productPriceListResponseSlowTest.results.getTotalCount()).isEqualTo(1);
