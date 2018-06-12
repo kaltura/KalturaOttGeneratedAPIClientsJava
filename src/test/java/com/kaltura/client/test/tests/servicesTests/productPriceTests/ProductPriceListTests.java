@@ -127,7 +127,6 @@ public class ProductPriceListTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("productPrice/action/list - ppv test")
-    @Issue("BEO-5184")
     @Test
     public void ppvTest() {
         // TODO: after fix of BEO-4967 change HouseholdDevice.json to have only 1 enum value in objectType
@@ -204,6 +203,12 @@ public class ProductPriceListTests extends BaseTest {
     @Test
     public void subscriptionTest() {
         // TODO: 3/7/2018 add remarks when possible such as below - show to Shmulik / Michael and see if test is clear
+        int numberOfUsers = 1;
+        int numberOfDevices = 1;
+        Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
+        //HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+
         // create mpp with supporting of 1 type only and having at least 1 media on its channel
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
@@ -272,10 +277,9 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualToIgnoringCase(subscription.getId());
         assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(1)).getFileId()).isEqualTo(Integer.valueOf(sharedWebMediaFileId));
 
-        //delete entitlement data for cleanup
-        ForceCancelEntitlementBuilder forceCancelEntitlementBuilder = EntitlementService.forceCancel(
-                Integer.valueOf(subscription.getId()), TransactionType.SUBSCRIPTION);
-        executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(classMasterUserId)));
+        //delete HH for cleanup
+        HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
+        executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
         //delete subscription
         IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
