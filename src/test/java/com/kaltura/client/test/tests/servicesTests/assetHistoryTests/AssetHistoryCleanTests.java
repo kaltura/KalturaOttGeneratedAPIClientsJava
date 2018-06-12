@@ -61,35 +61,35 @@ public class AssetHistoryCleanTests extends BaseTest {
     private void cleanHistory() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String masterUserKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household, null);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark second asset
         bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie2.getId()), movie2FileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
 
         //assetHistory/action/list - both assets should returned
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null)
-                .setKs(masterUserKs);
+                .setKs(userKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(2);
 
         //assetHistory/action/clean
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
-        cleanAssetHistoryBuilder.setKs(masterUserKs);
+        cleanAssetHistoryBuilder.setKs(userKs);
         executor.executeSync(cleanAssetHistoryBuilder);
 
         // assetHistory/action/list - after clean - no object returned
         listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null)
-                .setKs(masterUserKs);
+                .setKs(userKs);
         assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(0);
@@ -100,23 +100,23 @@ public class AssetHistoryCleanTests extends BaseTest {
     private void cleanSpecifcAssetHistory() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String masterUserKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household, null);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(movie2.getId()), movie2FileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(String.valueOf(movie.getId()), null, WatchStatus.ALL, null);
 
         //assetHistory/action/clean
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
-        cleanAssetHistoryBuilder.setKs(masterUserKs);
+        cleanAssetHistoryBuilder.setKs(userKs);
         executor.executeSync(cleanAssetHistoryBuilder);
 
         // Update assetHistoryFilter object (assetIdIn = null)
@@ -124,7 +124,7 @@ public class AssetHistoryCleanTests extends BaseTest {
 
         // assetHistory/action/list - after clean - only asset id 2 returned (was not cleaned)
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(masterUserKs);
+        listAssetHistoryBuilder.setKs(userKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
@@ -136,16 +136,16 @@ public class AssetHistoryCleanTests extends BaseTest {
     private void cleanSpecifcAssetTypeHistory() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String masterUserKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household, null);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(episode.getId()), episodeFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, getProperty(EPISODE_MEDIA_TYPE_ID));
@@ -153,7 +153,7 @@ public class AssetHistoryCleanTests extends BaseTest {
         //assetHistory/action/clean - only episode type (episode)
 
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
-        cleanAssetHistoryBuilder.setKs(masterUserKs);
+        cleanAssetHistoryBuilder.setKs(userKs);
         executor.executeSync(cleanAssetHistoryBuilder);
 
         // Update assetHistoryFilter object (assetIdIn = null)
@@ -162,7 +162,7 @@ public class AssetHistoryCleanTests extends BaseTest {
         // assetHistory/action/list - after clean - only movie returned (was not cleaned)
 
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(masterUserKs);
+        listAssetHistoryBuilder.setKs(userKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
@@ -174,16 +174,16 @@ public class AssetHistoryCleanTests extends BaseTest {
     private void cleanAssetsAccordingToWatchStatusDone() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String masterUserKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household, null);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(episode.getId()), episodeFileId, AssetType.MEDIA, BookmarkActionType.FINISH);
-        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.DONE, null);
@@ -191,7 +191,7 @@ public class AssetHistoryCleanTests extends BaseTest {
         //assetHistory/action/clean - only asset that were finished (episode)
 
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
-        cleanAssetHistoryBuilder.setKs(masterUserKs);
+        cleanAssetHistoryBuilder.setKs(userKs);
         executor.executeSync(cleanAssetHistoryBuilder);
 
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
@@ -199,7 +199,7 @@ public class AssetHistoryCleanTests extends BaseTest {
         // assetHistory/action/list - after clean - only movie returned (was not cleaned)
 
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(masterUserKs);
+        listAssetHistoryBuilder.setKs(userKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
@@ -211,30 +211,30 @@ public class AssetHistoryCleanTests extends BaseTest {
     private void cleanAssetsAccordingToWatchStatusProgress() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String masterUserKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household, null);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(episode.getId()), episodeFileId, AssetType.MEDIA, BookmarkActionType.FINISH);
-        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
+        addBookmarkBuilder = add(bookmark).setKs(userKs);
         executor.executeSync(addBookmarkBuilder);
 
         AssetHistoryFilter assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.PROGRESS, null);
 
         //assetHistory/action/clean - only asset that in progress (movie)
         CleanAssetHistoryBuilder cleanAssetHistoryBuilder = AssetHistoryService.clean(assetHistoryFilter);
-        cleanAssetHistoryBuilder.setKs(masterUserKs);
+        cleanAssetHistoryBuilder.setKs(userKs);
         executor.executeSync(cleanAssetHistoryBuilder);
 
         assetHistoryFilter = AssetHistoryUtils.getAssetHistoryFilter(null, null, WatchStatus.ALL, null);
 
         // assetHistory/action/list - after clean - only episode returned (was not cleaned)
         ListAssetHistoryBuilder listAssetHistoryBuilder = AssetHistoryService.list(assetHistoryFilter, null);
-        listAssetHistoryBuilder.setKs(masterUserKs);
+        listAssetHistoryBuilder.setKs(userKs);
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(listAssetHistoryBuilder);
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
