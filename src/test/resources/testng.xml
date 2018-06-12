@@ -4,7 +4,6 @@
     <test name="Fast Tests">
         <groups>
             <run>
-                <exclude name="slow" />
                 <exclude name="slow_before" />
                 <exclude name="slow_after" />
                 <exclude name="Permission management"/>
@@ -19,7 +18,6 @@
     <test name="Slow Tests">
         <groups>
             <run>
-                <include name="slow"/>
                 <include name="slow_before" />
                 <include name="slow_after"/>
             </run>
@@ -28,11 +26,5 @@
             <package name="com.kaltura.client.test.tests.servicesTests.*"/>
             <package name="com.kaltura.client.test.tests.featuresTests.*"/>
         </packages>
-        <!--<classes>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.householdTests.HouseholdSuspendTests"/>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.SlowTestsRunner.SlowTestsRunner"/>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserLoginWithPinTests"/>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.appTokenTests.AppTokenAddTests"/>-->
-        <!--</classes>-->
     </test>
 </suite>
