@@ -127,7 +127,6 @@ public class ProductPriceListTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("productPrice/action/list - ppv test")
-    @Issue("BEO-5184")
     @Test
     public void ppvTest() {
         // TODO: after fix of BEO-4967 change HouseholdDevice.json to have only 1 enum value in objectType
