@@ -33,13 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PersonalListOrderBy implements EnumAsString {
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC");
+public enum AssetRuleOrderBy implements EnumAsString {
+	NONE("NONE");
 
 	private String value;
 
-	PersonalListOrderBy(String value) {
+	AssetRuleOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -52,19 +51,19 @@ public enum PersonalListOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static PersonalListOrderBy get(String value) {
+	public static AssetRuleOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over PersonalListOrderBy defined values and compare the inner value with the given one:
-		for(PersonalListOrderBy item: values()) {
+		// goes over AssetRuleOrderBy defined values and compare the inner value with the given one:
+		for(AssetRuleOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PersonalListOrderBy.values().length > 0 ? PersonalListOrderBy.values()[0]: null;
+		return AssetRuleOrderBy.values().length > 0 ? AssetRuleOrderBy.values()[0]: null;
    }
 }

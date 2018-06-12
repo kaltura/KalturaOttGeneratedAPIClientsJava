@@ -29,8 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleConditionType;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.ConcurrencyLimitationType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,70 +41,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Condition
+ * Asset Condition
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Condition.Tokenizer.class)
-public abstract class Condition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ConcurrencyCondition.Tokenizer.class)
+public class ConcurrencyCondition extends AssetCondition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String type();
-		String description();
+	public interface Tokenizer extends AssetCondition.Tokenizer {
+		String limit();
+		String concurrencyLimitationType();
 	}
 
 	/**
-	 * The type of the condition
+	 * Concurrency limitation
 	 */
-	private RuleConditionType type;
+	private Integer limit;
 	/**
-	 * Description
+	 * Concurrency limitation type
 	 */
-	private String description;
+	private ConcurrencyLimitationType concurrencyLimitationType;
 
-	// type:
-	public RuleConditionType getType(){
-		return this.type;
+	// limit:
+	public Integer getLimit(){
+		return this.limit;
 	}
-	public void setType(RuleConditionType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
+	public void setLimit(Integer limit){
+		this.limit = limit;
 	}
 
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
+	public void limit(String multirequestToken){
+		setToken("limit", multirequestToken);
 	}
 
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
+	// concurrencyLimitationType:
+	public ConcurrencyLimitationType getConcurrencyLimitationType(){
+		return this.concurrencyLimitationType;
+	}
+	public void setConcurrencyLimitationType(ConcurrencyLimitationType concurrencyLimitationType){
+		this.concurrencyLimitationType = concurrencyLimitationType;
+	}
+
+	public void concurrencyLimitationType(String multirequestToken){
+		setToken("concurrencyLimitationType", multirequestToken);
 	}
 
 
-	public Condition() {
+	public ConcurrencyCondition() {
 		super();
 	}
 
-	public Condition(JsonObject jsonObject) throws APIException {
+	public ConcurrencyCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		type = RuleConditionType.get(GsonParser.parseString(jsonObject.get("type")));
-		description = GsonParser.parseString(jsonObject.get("description"));
+		limit = GsonParser.parseInt(jsonObject.get("limit"));
+		concurrencyLimitationType = ConcurrencyLimitationType.get(GsonParser.parseString(jsonObject.get("concurrencyLimitationType")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCondition");
-		kparams.add("description", this.description);
+		kparams.add("objectType", "KalturaConcurrencyCondition");
+		kparams.add("limit", this.limit);
+		kparams.add("concurrencyLimitationType", this.concurrencyLimitationType);
 		return kparams;
 	}
 
