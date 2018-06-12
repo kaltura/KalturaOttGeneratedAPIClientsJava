@@ -9,6 +9,7 @@ import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
 import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.IngestUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -21,6 +22,8 @@ import org.testng.annotations.Test;
 import java.util.Optional;
 import static com.kaltura.client.enums.EntitlementOrderBy.PURCHASE_DATE_ASC;
 import static com.kaltura.client.services.HouseholdService.delete;
+import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
+import static com.kaltura.client.test.Properties.PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementListTests extends BaseTest {
@@ -192,8 +195,13 @@ public class EntitlementListTests extends BaseTest {
     public void entitlementListWithPaging() {
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
                 Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
-        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
-                Optional.of(getSharedMobileMediaFile().getId()), Optional.empty());
+        MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty());
+        int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(mediaAsset.getId())),
+                Optional.of(mediaFileId), Optional.empty());
 
         // after purchase
         // without paging
@@ -203,7 +211,7 @@ public class EntitlementListTests extends BaseTest {
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(2); // 2 files
         assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(getSharedWebMediaFile().getId());
-        assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(1)).getMediaFileId()).isEqualTo(getSharedMobileMediaFile().getId());
+        assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(1)).getMediaFileId()).isEqualTo(mediaFileId);
 
         // with paging on 1st page
         FilterPager pager = new FilterPager();
@@ -221,13 +229,18 @@ public class EntitlementListTests extends BaseTest {
         entitlementResponse = executor.executeSync(entitlementListAfterPurchase.setKs(masterUserKs));
         assertThat(entitlementResponse.results.getTotalCount()).isEqualTo(2); // purchased 2 files
         assertThat(entitlementResponse.results.getObjects().size()).isEqualTo(1); // only 2nd file
-        assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(getSharedMobileMediaFile().getId());
+        assertThat(((PpvEntitlement)entitlementResponse.results.getObjects().get(0)).getMediaFileId()).isEqualTo(mediaFileId);
 
         //cancel household purchases for cleanup
         ForceCancelEntitlementBuilder forceCancelEntitlementBuilder = EntitlementService.forceCancel(getSharedWebMediaFile().getId(), TransactionType.PPV);
         executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
-        forceCancelEntitlementBuilder = EntitlementService.forceCancel(getSharedMobileMediaFile().getId(), TransactionType.PPV);
+        forceCancelEntitlementBuilder = EntitlementService.forceCancel(mediaFileId, TransactionType.PPV);
         executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
+        // delete media
+        IngestUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAsset.getName()), true, Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty());
     }
 
     @Severity(SeverityLevel.NORMAL)
