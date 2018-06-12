@@ -33,7 +33,7 @@ public class AssetUtils extends BaseUtils {
                                                          @Nullable DynamicOrderBy dynamicOrderBy, List<AssetGroupBy> groupBy, String name,
                                                          String orderBy) {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-        searchAssetFilter.setKsql(ksql);
+        searchAssetFilter.setKSql(ksql);
         searchAssetFilter.setIdIn(idIn);
         searchAssetFilter.setTypeIn(typeIn);
         searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);

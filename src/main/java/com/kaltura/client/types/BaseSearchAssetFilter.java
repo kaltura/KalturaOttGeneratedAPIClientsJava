@@ -46,7 +46,7 @@ import java.util.List;
 public abstract class BaseSearchAssetFilter extends AssetFilter {
 	
 	public interface Tokenizer extends AssetFilter.Tokenizer {
-		String ksql();
+		String kSql();
 		RequestBuilder.ListTokenizer<AssetGroupBy.Tokenizer> groupBy();
 	}
 
@@ -76,22 +76,22 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 	     Search values are limited to 20 characters each for the next operators: ~,
 	  !~, ^, ^=              (maximum length of entire filter is 2048 characters)
 	 */
-	private String ksql;
+	private String kSql;
 	/**
 	 * groupBy
 	 */
 	private List<AssetGroupBy> groupBy;
 
-	// ksql:
-	public String getKsql(){
-		return this.ksql;
+	// kSql:
+	public String getKSql(){
+		return this.kSql;
 	}
-	public void setKsql(String ksql){
-		this.ksql = ksql;
+	public void setKSql(String kSql){
+		this.kSql = kSql;
 	}
 
-	public void ksql(String multirequestToken){
-		setToken("ksql", multirequestToken);
+	public void kSql(String multirequestToken){
+		setToken("kSql", multirequestToken);
 	}
 
 	// groupBy:
@@ -113,7 +113,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		ksql = GsonParser.parseString(jsonObject.get("ksql"));
+		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		groupBy = GsonParser.parseArray(jsonObject.getAsJsonArray("groupBy"), AssetGroupBy.class);
 
 	}
@@ -121,7 +121,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBaseSearchAssetFilter");
-		kparams.add("ksql", this.ksql);
+		kparams.add("kSql", this.kSql);
 		kparams.add("groupBy", this.groupBy);
 		return kparams;
 	}

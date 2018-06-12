@@ -33,13 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PersonalListOrderBy implements EnumAsString {
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC");
+public enum ConcurrencyLimitationType implements EnumAsString {
+	SINGLE("Single"),
+	GROUP("Group");
 
 	private String value;
 
-	PersonalListOrderBy(String value) {
+	ConcurrencyLimitationType(String value) {
 		this.value = value;
 	}
 
@@ -52,19 +52,19 @@ public enum PersonalListOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static PersonalListOrderBy get(String value) {
+	public static ConcurrencyLimitationType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over PersonalListOrderBy defined values and compare the inner value with the given one:
-		for(PersonalListOrderBy item: values()) {
+		// goes over ConcurrencyLimitationType defined values and compare the inner value with the given one:
+		for(ConcurrencyLimitationType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PersonalListOrderBy.values().length > 0 ? PersonalListOrderBy.values()[0]: null;
+		return ConcurrencyLimitationType.values().length > 0 ? ConcurrencyLimitationType.values()[0]: null;
    }
 }
