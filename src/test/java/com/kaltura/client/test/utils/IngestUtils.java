@@ -5,6 +5,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.AssetService.*;
+import com.kaltura.client.test.tests.Sandbox;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -191,9 +192,12 @@ public class IngestUtils extends BaseUtils {
         SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
         assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch + "' Series_ID='" + seriesIdValue + "' end_date >= '" + firstProgramStartDateEpoch + "')");
+
         int delayBetweenRetriesInSeconds = 3;
-        int maxTimeExpectingValidResponseInSeconds = 60;
-        await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+        int maxTimeExpectingValidResponseInSeconds = 90;
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
                 .until(isDataReturned(getAnonymousKs(), assetFilter, programCountValue * seasonCountValue));
 
         Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(
@@ -202,7 +206,6 @@ public class IngestUtils extends BaseUtils {
         // TODO: complete Asset.json at least for programs
 
         return (List<ProgramAsset>) (Object) ingestedProgrammes.results.getObjects();
-
     }
 
     private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {
@@ -776,9 +779,8 @@ public class IngestUtils extends BaseUtils {
      */
     // ingest new VOD (Media) // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
     public static MediaAsset ingestVOD(Optional<String> action, Optional<String> coguid, boolean isActive, Optional<String> name, Optional<String> thumbUrl, Optional<String> description,
-                                       Optional<String> catalogStartDate, Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate,
-                                       Optional<String> mediaType, Optional<String> ppvWebName, Optional<String> ppvMobileName,
-                                       Optional<Map<String, List<String>>> tags, Optional<Map<String, String>> strings,
+                                       Optional<String> catalogStartDate, Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate, Optional<String> mediaType,
+                                       Optional<String> ppvWebName, Optional<String> ppvMobileName, Optional<Map<String, List<String>>> tags, Optional<Map<String, String>> strings,
                                        Optional<Map<String, Integer>> numbers, Optional<Map<String, String>> dates) {
         String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
         String coguidDatePattern = "yyMMddHHmmssSS";
@@ -806,7 +808,8 @@ public class IngestUtils extends BaseUtils {
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
         HashMap headerMap = new HashMap<>();
         headerMap.put("Content-Type", "text/xml;charset=UTF-8");
-        headerMap.put("SOAPAction", "\"http://tempuri.org/IService/IngestTvinciData\"");
+        headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestTvinciData");
+
         String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
                 "   <soapenv:Header/>\n" +
                 "   <soapenv:Body>\n" +
@@ -816,14 +819,23 @@ public class IngestUtils extends BaseUtils {
                 "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
                 "   </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
+
+        String reqBody1 = null;
+        try {
+            reqBody1 = Sandbox.buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
+                    catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         io.restassured.response.Response resp = RestAssured.given()
                 .log().all()
                 .headers(headerMap)
-                .body(reqBody)
+                .body(reqBody1)
                 .post(url);
 
-        Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug(resp.asString());
+//        Logger.getLogger(IngestUtils.class).debug(reqBody);
+        Logger.getLogger(IngestUtils.class).debug("\n" + resp.asString());
 
         String id;
         if (INGEST_ACTION_INSERT.equals(actionValue)) {
@@ -841,8 +853,12 @@ public class IngestUtils extends BaseUtils {
 
         if (!INGEST_ACTION_DELETE.equals(actionValue)) {
             int delayBetweenRetriesInSeconds = 3;
-            int maxTimeExpectingValidResponseInSeconds = 60;
-            await().pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS).atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS).until(isDataReturned(getAnonymousKs(), id, actionValue));
+            int maxTimeExpectingValidResponseInSeconds = 90;
+            await()
+                    .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                    .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                    .until(isDataReturned(getAnonymousKs(), id, actionValue));
+
             mediaAsset.setMediaFiles(executor.executeSync(
                     AssetService.get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs())).results.getMediaFiles());
         }
@@ -1028,6 +1044,7 @@ public class IngestUtils extends BaseUtils {
         if (metas.isEmpty()) {
             return "";
         }
+
         StringBuilder result = new StringBuilder();
         String key;
         List<String> values;
@@ -1050,7 +1067,6 @@ public class IngestUtils extends BaseUtils {
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
 
-
     public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags, String catalogStartDate) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(catalogStartDate), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
@@ -1067,7 +1083,6 @@ public class IngestUtils extends BaseUtils {
         return mediaAsset;
     }
 
-
     public static MediaAsset updateVODName(MediaAsset asset, String name) {
         MediaAsset mediaAsset = ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
@@ -1075,8 +1090,6 @@ public class IngestUtils extends BaseUtils {
 
         return mediaAsset;
     }
-
-
 
     public static ArrayList ingestBasicVODNumOfTimes(int numOfAssets, String mediaType) {
         MediaAsset mediaAsset;

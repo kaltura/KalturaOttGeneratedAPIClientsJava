@@ -84,7 +84,7 @@ public class AppTokenAddTests extends BaseTest {
     }
 
     @Description("appToken/action/add - with expiry date")
-    @Test(groups = "slow_before")
+    @Test(groups = "slow_before", priority = 1)
     private void addAppTokenWithExpiryDate_before() {
         // setup for test
         add_tests_before_class();

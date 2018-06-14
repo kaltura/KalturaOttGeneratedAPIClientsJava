@@ -286,7 +286,7 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+            mediaAsset = IngestUtils.ingestVOD (Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty());
         }
