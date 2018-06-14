@@ -466,7 +466,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 20;
-        int maxTimeExpectingValidResponseInSeconds = 300;
+        int maxTimeExpectingValidResponseInSeconds = 360;
         await()
                 .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
                 .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)

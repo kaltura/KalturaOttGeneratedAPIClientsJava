@@ -58,7 +58,6 @@ public class Properties {
     // TODO: should we document it as requirement?
     public static final String PPV_WITH_MULTI_CURRENCIES_AND_FIXED_DISCOUNT = "multi price code with fixed amount discount";
 
-
     //cycles
     public static final int CYCLE_1_DAY = 1440; // in minutes
 

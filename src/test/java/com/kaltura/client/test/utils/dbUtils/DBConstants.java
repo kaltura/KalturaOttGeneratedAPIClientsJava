@@ -1,11 +1,15 @@
 package com.kaltura.client.test.utils.dbUtils;
 
+import com.kaltura.client.test.tests.enums.ChannelType;
+
 public class DBConstants {
 
     // fields:
     static final String ACTIVATION_TOKEN = "activation_token";
     static final String CODE = "code";
+    static final String CHANNEL_TYPE = "channel_type";
     static final String CP_TOKEN = "cp_token";
+    static final String FILTER_EXPRESSION = "ksql_filter";
     static final String FULL_LIFE_CYCLE_MINUTES = "full_life_cycle_min";
     static final String ID = "id";
     static final String INT_DISCOUNT_ID = "internal_discount_id";
@@ -21,6 +25,8 @@ public class DBConstants {
     static final String SERV_ID = "serv_id";
     static final String SUBSCRIPTION_ONLY = "subscription_only";
     static final String SUB_ID = "sub_id";
+    static final String TAG_TYPE = "tag_type";
+    static final String TAG_VALUE = "tag_value";
     static final String USERNAME = "username";
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
 
@@ -30,6 +36,14 @@ public class DBConstants {
     static final String AND_ACTIVE_STATUS = " and u.activate_status=1";
 
     static final String RESET_PASSWORD_TOKEN_SELECT = "SELECT [CP_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
+
+    static final String CHANNEL_EXPRESSION_SELECT = "select t.tag_type_id as tag_name, t.value as tag_value\n" +
+            "from [TVinci].[dbo].[tags] t, [TVinci].[dbo].[channel_tags] ct\n" +
+            "where ct.status=1 and t.status=1 and ct.channel_id=%d and ct.tag_id=t.id";
+
+    static final String CHANNEL_SELECT = "select *\n" +
+            "from [TVinci].[dbo].[channels]\n" +
+            "where id=%d";
 
     static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
             "from [Users].[dbo].[groups_parameters]\n" +
@@ -91,10 +105,16 @@ public class DBConstants {
             "and group_id=%d and usage_module_code=%d and discount_module_code=%d\n" +
             "order by create_date";
 
-    static final String SUBSCRIPTION_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
-            "where [status]=1 and is_active=1 and [type]=0 and is_recurring=1\n" +
-            "and group_id=%d and usage_module_code=%d\n" +
-            "order by create_date";
+    static final String SUBSCRIPTION_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions] s with(nolock)\n" +
+            "join [Pricing].[dbo].[usage_modules] um with(nolock) on (s.usage_module_code=um.id)\n" +
+            "join [Pricing].[dbo].[subscriptions_channels] sc with(nolock) on (sc.subscription_id=s.id)\n" +
+            "join [TVinci].[dbo].[channels] c with(nolock) on (c.id=sc.channel_id)\n" +
+            "where um.[status]=1 and um.is_active=1 and um.view_life_cycle_min=5 and um.full_life_cycle_min=5 and " +
+            // TODO: not sure about um.num_of_rec_periods > 2
+            "um.is_renew=1 and ((um.num_of_rec_periods > 2) or (um.num_of_rec_periods = 0))\n" +
+            "and s.is_recurring=1 and c.channel_type!=" + ChannelType.MANUAL_CHANNEL_TYPE.getValue() + " " +
+            "and s.group_id=%d and s.is_active=1 and s.[status]=1 and s.[type]=0\n" +
+            "order by s.create_date";
 
     static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) SUBSCRIPTION_ID as " + SUB_ID +
             ", SERVICE_ID as " + SERV_ID + "\n" +

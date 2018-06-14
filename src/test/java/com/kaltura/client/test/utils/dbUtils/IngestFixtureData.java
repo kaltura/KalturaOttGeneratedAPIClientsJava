@@ -1,11 +1,18 @@
 package com.kaltura.client.test.utils.dbUtils;
 
 import com.google.common.base.Strings;
+import com.google.common.base.Verify;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
+import com.kaltura.client.services.SubscriptionService;
+import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.SubscriptionUtils;
 import com.kaltura.client.types.*;
+import com.kaltura.client.utils.response.base.Response;
 import org.json.JSONArray;
 import java.sql.SQLException;
+
+import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.ERROR_MESSAGE;
@@ -278,15 +285,10 @@ public class IngestFixtureData {
 
     public static Subscription loadShared5MinutesRenewableSubscription() {
         Logger.getLogger(IngestFixtureData.class).debug("loadShared5MinutesRenewableSubscription()");
-        PricePlan pricePlan = load5MinRenewablePricePlan();
-        if (pricePlan == null) {
-            return null;
-        }
         Subscription subscription = null;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_5_MIN_RENEW_SELECT, partnerId,
-                    pricePlan.getId()), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_5_MIN_RENEW_SELECT, partnerId), true);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscription;
             }
@@ -303,5 +305,48 @@ public class IngestFixtureData {
             Logger.getLogger(IngestFixtureData.class).error("subscription data can't be null");
         }
         return subscription;
+    }
+
+    public static Channel getChannel(int id) {
+        Logger.getLogger(IngestFixtureData.class).debug("getChannel(): id = " + id);
+        Channel channel = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHANNEL_SELECT, id), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return channel;
+            }
+
+            channel = new Channel();
+            channel.setId(jsonArray.getJSONObject(0).getLong(ID));
+            channel.setName(jsonArray.getJSONObject(0).getString(NAME));
+            // logic if FILTER_EXPRESSION is not null so we have KSQL channel, otherwise we have automatic channel
+            channel.setFilterExpression(jsonArray.getJSONObject(0).getString(FILTER_EXPRESSION));
+            channel.setToken(CHANNEL_TYPE, String.valueOf(jsonArray.getJSONObject(0).getInt(CHANNEL_TYPE)));
+            // TODO: add more data in case it needed
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("channel data can't be null");
+        }
+        return channel;
+    }
+
+    public static String getAutomaticChannelExpression(int channelId) {
+        Logger.getLogger(IngestFixtureData.class).debug("getAutomaticChannelExpression(): channelId = " + channelId);
+        String result = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHANNEL_EXPRESSION_SELECT, channelId), true);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return result;
+            }
+
+            result = jsonArray.getJSONObject(0).getString(TAG_TYPE) + ":" +
+                    jsonArray.getJSONObject(0).getString(TAG_VALUE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("channel tags data can't be null");
+        }
+        return result;
     }
 }

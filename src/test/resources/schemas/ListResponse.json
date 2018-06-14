@@ -41,6 +41,9 @@
               },
               {
                 "$ref": "UserRole.json#/definitions/UserRole"
+              },
+              {
+                "$ref": "Subscription.json#/definitions/Subscription"
               }
             ]
           }
@@ -62,7 +65,8 @@
             "KalturaBookmarkListResponse",
             "KalturaAssetCommentListResponse",
             "KalturaAssetHistoryListResponse",
-            "KalturaUserRoleListResponse"
+            "KalturaUserRoleListResponse",
+            "KalturaSubscriptionListResponse"
           ]
         }
       },
