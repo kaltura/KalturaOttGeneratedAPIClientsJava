@@ -101,26 +101,10 @@ public class Engagement extends ObjectBase {
 	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// totalNumberOfRecipients:
 	public Integer getTotalNumberOfRecipients(){
 		return this.totalNumberOfRecipients;
 	}
-	public void setTotalNumberOfRecipients(Integer totalNumberOfRecipients){
-		this.totalNumberOfRecipients = totalNumberOfRecipients;
-	}
-
-	public void totalNumberOfRecipients(String multirequestToken){
-		setToken("totalNumberOfRecipients", multirequestToken);
-	}
-
 	// type:
 	public EngagementType getType(){
 		return this.type;
