@@ -24,8 +24,7 @@ public enum Currency implements EnumAsString {
 	}
 
 	public static Currency get(String value) {
-		if(value == null)
-		{
+		if(value == null) {
 			return null;
 		}
 		

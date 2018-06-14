@@ -5,7 +5,7 @@ import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;

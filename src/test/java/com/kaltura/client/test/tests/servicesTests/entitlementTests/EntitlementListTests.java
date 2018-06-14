@@ -9,7 +9,7 @@ import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
 import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
-import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -23,7 +23,6 @@ import java.util.Optional;
 import static com.kaltura.client.enums.EntitlementOrderBy.PURCHASE_DATE_ASC;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
-import static com.kaltura.client.test.Properties.PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementListTests extends BaseTest {

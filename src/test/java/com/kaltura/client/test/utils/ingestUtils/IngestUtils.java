@@ -1,25 +1,28 @@
-package com.kaltura.client.test.utils;
+package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
-import com.kaltura.client.services.AssetService.*;
-import com.kaltura.client.test.tests.Sandbox;
+import com.kaltura.client.services.AssetService.GetAssetBuilder;
+import com.kaltura.client.services.AssetService.ListAssetBuilder;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.restassured.RestAssured;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.buildIngestVodXml;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.awaitility.Awaitility.await;
 
@@ -810,19 +813,9 @@ public class IngestUtils extends BaseUtils {
         headerMap.put("Content-Type", "text/xml;charset=UTF-8");
         headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestTvinciData");
 
-        String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
-                "   <soapenv:Header/>\n" +
-                "   <soapenv:Body>\n" +
-                "      <tem:IngestTvinciData><tem:request><userName>" + getIngestAssetUserName() + "</userName><passWord>" + getIngestAssetUserPassword() + "</passWord><data>" +
-                "         <![CDATA[" + buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
-                catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue) +
-                "                 ]]></data></tem:request></tem:IngestTvinciData>\n" +
-                "   </soapenv:Body>\n" +
-                "</soapenv:Envelope>";
-
-        String reqBody1 = null;
+        String reqBody = null;
         try {
-            reqBody1 = Sandbox.buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
+            reqBody = buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
                     catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue);
         } catch (Exception e) {
             e.printStackTrace();
@@ -831,11 +824,11 @@ public class IngestUtils extends BaseUtils {
         io.restassured.response.Response resp = RestAssured.given()
                 .log().all()
                 .headers(headerMap)
-                .body(reqBody1)
+                .body(reqBody)
                 .post(url);
 
 //        Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug("\n" + resp.asString());
+        Logger.getLogger(IngestUtils.class).debug("Ingest response: \n" + resp.asString());
 
         String id;
         if (INGEST_ACTION_INSERT.equals(actionValue)) {
@@ -886,8 +879,6 @@ public class IngestUtils extends BaseUtils {
         tags.put("Free", tagValues);
         tagValues = new ArrayList<>();
         tags.put("Parental Rating", tagValues);
-        /*tagValues = new ArrayList<>();
-        tags.put("", tagValues);*/
 
         return tags;
     }
@@ -926,147 +917,7 @@ public class IngestUtils extends BaseUtils {
         }
     }
 
-    private static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl,
-                                            String description, String catalogStartDate, String catalogEndDate,
-                                            String startDate, String endDate, String mediaType, String ppvWebName,
-                                            String ppvMobileName, Map<String, List<String>> tags,
-                                            Map<String, String> strings, Map<String, Integer> numbers, Map<String, String> dates) {
-        return "<feed>\n" +
-                "  <export>\n" +
-                "    <media co_guid=\"" + coguid + "\" entry_id=\"entry_" + coguid + "\" action=\"" + action + "\" is_active=\"" + isActive + "\" erase=\"false\">\n" +
-                "      <basic>\n" +
-                "        <name>\n" +
-                "          <value lang=\"eng\">" + name + "</value>\n" +
-                "        </name>\n" +
-                "        <thumb url=\"" + thumbUrl + "\"/>\n" +
-                "        <description>\n" +
-                "          <value lang=\"eng\">" + description + "</value>\n" +
-                "        </description>\n" +
-                "        <dates>\n" +
-                "          <catalog_start>" + catalogStartDate + "</catalog_start>\n" +
-                "          <start>" + startDate + "</start>\n" +
-                "          <catalog_end>" + catalogEndDate + "</catalog_end>\n" +
-                "          <end>" + endDate + "</end>\n" +
-                "        </dates>\n" +
-                "        <pic_ratios>\n" +
-                "          <ratio thumb=\"" + thumbUrl + "\" ratio=\"4:3\"/>\n" +
-                "          <ratio thumb=\"" + thumbUrl + "\" ratio=\"16:9\"/>\n" +
-                "        </pic_ratios>\n" +
-                "        <media_type>" + mediaType + "</media_type>\n" +
-                "        <rules>\n" +
-                //"          <geo_block_rule>${#TestCase#i_geo_block_rule}</geo_block_rule>\n" +
-                // TODO: check where to put that value (is it env-dependent?)
-                "          <watch_per_rule>Parent Allowed</watch_per_rule>\n" +
-                //"          <device_rule>${#TestCase#i_device_block_rule}</device_rule>\n" +
-                "        </rules>\n" +
-                "      </basic>\n" +
-                "      <structure>\n" +
-                generateStringsXml(strings) +
-                "        <booleans/>\n" +
-                generateNumbersXml(numbers) +
-                generateDatesXml(dates) +
-                generateTagsXml(tags) + "\n" +
-                "      </structure>\n" +
-                "      <files>\n" +
-                "        <file type=\"" + getProperty(WEB_FILE_TYPE) + "\" assetDuration=\"1000\" quality=\"HIGH\" handling_type=\"CLIP\" cdn_name=\"Default CDN\" cdn_code=\"http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" alt_cdn_code=\"http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" co_guid=\"web_" + coguid + "\" billing_type=\"Tvinci\" PPV_MODULE=\"" + ppvWebName + "\" product_code=\"productExampleCode\"/>\n" +
-                "        <file type=\"" + getProperty(MOBILE_FILE_TYPE) + "\" assetDuration=\"1000\" quality=\"HIGH\" handling_type=\"CLIP\" cdn_name=\"Default CDN\" cdn_code=\"http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8\" alt_cdn_code=\"http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8\" co_guid=\"ipad_" + coguid + "\" billing_type=\"Tvinci\" PPV_MODULE=\"" + ppvMobileName + "\" product_code=\"productExampleCode\"/>\n" +
-                "      </files>\n" +
-                "    </media>\n" +
-                "  </export>\n" +
-                "</feed>";
-    }
-
-    private static String generateNumbersXml(Map<String, Integer> numbers) {
-        if (numbers.isEmpty()) {
-            return "";
-        }
-        StringBuilder result = new StringBuilder();
-        String key;
-        int value;
-        result.append("        <doubles>\n");
-        for (Map.Entry<String, Integer> entry : numbers.entrySet()) {
-            key = entry.getKey();
-            value = entry.getValue();
-            result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
-        }
-        result.append("        </doubles>\n");
-
-        return result.toString();
-    }
-
-    private static String getMetaXml(String key, String value) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
-        sb.append("              <value lang=\"eng\">" + value + "</value>\n");
-        sb.append("          </meta>\n");
-
-        return sb.toString();
-    }
-
-    private static String generateStringsXml(Map<String, String> strings) {
-        if (strings.isEmpty()) {
-            return "";
-        }
-        StringBuilder result = new StringBuilder();
-        String key, value;
-        result.append("        <strings>\n");
-        for (Map.Entry<String, String> entry : strings.entrySet()) {
-            key = entry.getKey();
-            value = entry.getValue();
-            result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
-            result.append("              <value lang=\"eng\">" + value + "</value>\n");
-            result.append("          </meta>\n");
-            //result.append(getMetaXml(key, value));
-        }
-        result.append("        </strings>\n");
-
-        return result.toString();
-    }
-
-    private static String generateDatesXml(Map<String, String> dates) {
-        if (dates.isEmpty()) {
-            return "";
-        }
-        StringBuilder result = new StringBuilder();
-        String key, value;
-        result.append("        <dates>\n");
-        for (Map.Entry<String, String> entry : dates.entrySet()) {
-            key = entry.getKey();
-            value = entry.getValue();
-            result.append("<meta name=\"" + key + "\" ml_handling=\"unique\">" + value + "</meta>\n");
-        }
-        result.append("        </dates>\n");
-
-        return result.toString();
-    }
-
-    private static String generateTagsXml(Map<String, List<String>> metas) {
-        if (metas.isEmpty()) {
-            return "";
-        }
-
-        StringBuilder result = new StringBuilder();
-        String key;
-        List<String> values;
-        result.append("        <metas>\n");
-        for (Map.Entry<String, List<String>> entry : metas.entrySet()) {
-            key = entry.getKey();
-            values = entry.getValue();
-            result.append("          <meta name=\"" + key + "\" ml_handling=\"unique\">\n");
-            for (String value : values) {
-                result.append("            <container>\n");
-                result.append("              <value lang=\"eng\">" + value + "</value>\n");
-                result.append("            </container>\n");
-            }
-            result.append("          </meta>\n");
-        }
-        result.append("        </metas>\n");
-
-        return result.toString();
-    }
-
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
-
     public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags, String catalogStartDate) {
         MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(catalogStartDate), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),

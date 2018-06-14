@@ -7,6 +7,7 @@ import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.*;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -146,8 +147,9 @@ public class SearchAssetFilterTests extends BaseTest {
         listAssetBuilder = AssetService.list(assetFilter, null)
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
         List<Asset> assets = executor.executeSync(listAssetBuilder).results.getObjects();
-        assertThat(assets.size()).isEqualTo(2);
 
+        assertThat(assets).isNotNull();
+        assertThat(assets.size()).isEqualTo(2);
         assertThat(assets).extracting("id").contains(asset3.getId(), asset2.getId()).doesNotContain(asset.getId());
     }
 

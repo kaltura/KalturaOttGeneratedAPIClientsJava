@@ -4,61 +4,61 @@
     <soapenv:Body>
         <tem:IngestTvinciData>
             <tem:request>
-                <userName></userName>
-                <passWord></passWord>
+                <userName/>
+                <passWord/>
                 <data>
                     <!--<![CDATA[-->
                     <feed>
                         <export>
-                            <media co_guid="" entry_id="" action="" is_active="" erase="false">
+                            <media erase="false">
                                 <basic>
                                     <name>
-                                        <value lang="eng"></value>
+                                        <value lang="eng"/>
                                     </name>
-                                    <thumb url=""/>
+                                    <thumb/>
                                     <description>
-                                        <value lang="eng"></value>
+                                        <value lang="eng"/>
                                     </description>
                                     <dates>
-                                        <catalog_start></catalog_start>
-                                        <start></start>
-                                        <catalog_end></catalog_end>
-                                        <end></end>
+                                        <catalog_start/>
+                                        <start/>
+                                        <catalog_end/>
+                                        <end/>
                                     </dates>
                                     <pic_ratios>
-                                        <ratio thumb="" ratio="4:3"/>
-                                        <ratio thumb="" ratio="16:9"/>
+                                        <ratio ratio="4:3"/>
+                                        <ratio ratio="16:9"/>
                                     </pic_ratios>
-                                    <media_type></media_type>
+                                    <media_type/>
                                     <rules>
-                                        <geo_block_rule></geo_block_rule>
+                                        <geo_block_rule/>
                                         <watch_per_rule>Parent Allowed</watch_per_rule>
-                                        <device_rule></device_rule>
+                                        <device_rule/>
                                     </rules>
                                 </basic>
                                 <structure>
-                                    <strings></strings>
+                                    <strings/>
                                     <booleans/>
-                                    <doubles></doubles>
-                                    <dates></dates>
-                                    <metas></metas>
+                                    <doubles/>
+                                    <dates/>
+                                    <metas/>
                                 </structure>
                                 <files>
-                                    <file type="" assetDuration="1000" quality="HIGH" handling_type="CLIP"
+                                    <file assetDuration="1000"
+                                          quality="HIGH"
+                                          handling_type="CLIP"
                                           cdn_name="Default CDN"
                                           cdn_code="http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m"
                                           alt_cdn_code="http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m"
-                                          co_guid=""
                                           billing_type="Tvinci"
-                                          PPV_MODULE=""
                                           product_code="productExampleCode"/>
-                                    <file type="" assetDuration="1000" quality="HIGH"
-                                          handling_type="CLIP" cdn_name="Default CDN"
+                                    <file assetDuration="1000"
+                                          quality="HIGH"
+                                          handling_type="CLIP"
+                                          cdn_name="Default CDN"
                                           cdn_code="http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8"
                                           alt_cdn_code="http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8"
-                                          co_guid=""
                                           billing_type="Tvinci"
-                                          PPV_MODULE=""
                                           product_code="productExampleCode"/>
                                 </files>
                             </media>

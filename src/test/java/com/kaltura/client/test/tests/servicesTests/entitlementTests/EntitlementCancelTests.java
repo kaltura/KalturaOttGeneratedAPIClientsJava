@@ -9,6 +9,7 @@ import com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import com.kaltura.client.services.LicensedUrlService.GetLicensedUrlBuilder;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.*;
+import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
