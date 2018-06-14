@@ -57,7 +57,7 @@ public class CouponsGroup extends ObjectBase {
 		String maxUsesNumberOnRenewableSub();
 		String couponGroupType();
 		String maxHouseholdUses();
-		String discountId();
+		String discountCode();
 	}
 
 	/**
@@ -93,9 +93,9 @@ public class CouponsGroup extends ObjectBase {
 	 */
 	private Integer maxHouseholdUses;
 	/**
-	 * Discount ID
+	 * Discount code
 	 */
-	private Long discountId;
+	private Long discountCode;
 
 	// id:
 	public String getId(){
@@ -193,16 +193,16 @@ public class CouponsGroup extends ObjectBase {
 		setToken("maxHouseholdUses", multirequestToken);
 	}
 
-	// discountId:
-	public Long getDiscountId(){
-		return this.discountId;
+	// discountCode:
+	public Long getDiscountCode(){
+		return this.discountCode;
 	}
-	public void setDiscountId(Long discountId){
-		this.discountId = discountId;
+	public void setDiscountCode(Long discountCode){
+		this.discountCode = discountCode;
 	}
 
-	public void discountId(String multirequestToken){
-		setToken("discountId", multirequestToken);
+	public void discountCode(String multirequestToken){
+		setToken("discountCode", multirequestToken);
 	}
 
 
@@ -224,7 +224,7 @@ public class CouponsGroup extends ObjectBase {
 		maxUsesNumberOnRenewableSub = GsonParser.parseInt(jsonObject.get("maxUsesNumberOnRenewableSub"));
 		couponGroupType = CouponGroupType.get(GsonParser.parseString(jsonObject.get("couponGroupType")));
 		maxHouseholdUses = GsonParser.parseInt(jsonObject.get("maxHouseholdUses"));
-		discountId = GsonParser.parseLong(jsonObject.get("discountId"));
+		discountCode = GsonParser.parseLong(jsonObject.get("discountCode"));
 
 	}
 
@@ -238,7 +238,7 @@ public class CouponsGroup extends ObjectBase {
 		kparams.add("maxUsesNumberOnRenewableSub", this.maxUsesNumberOnRenewableSub);
 		kparams.add("couponGroupType", this.couponGroupType);
 		kparams.add("maxHouseholdUses", this.maxHouseholdUses);
-		kparams.add("discountId", this.discountId);
+		kparams.add("discountCode", this.discountCode);
 		return kparams;
 	}
 

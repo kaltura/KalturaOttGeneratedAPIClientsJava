@@ -42,7 +42,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(FollowDataBase.Tokenizer.class)
-public abstract class FollowDataBase extends ObjectBase {
+public class FollowDataBase extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String announcementId();

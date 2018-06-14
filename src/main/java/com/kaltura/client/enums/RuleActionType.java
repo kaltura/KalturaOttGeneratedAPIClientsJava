@@ -34,10 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum RuleActionType implements EnumAsString {
-	BLOCK("BLOCK"),
-	START_DATE_OFFSET("START_DATE_OFFSET"),
-	END_DATE_OFFSET("END_DATE_OFFSET"),
-	USER_BLOCK("USER_BLOCK");
+	BLOCK("BLOCK");
 
 	private String value;
 
