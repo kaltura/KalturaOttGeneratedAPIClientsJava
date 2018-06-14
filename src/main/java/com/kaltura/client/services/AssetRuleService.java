@@ -28,7 +28,6 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.AssetRule;
-import com.kaltura.client.types.AssetRuleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -81,23 +80,16 @@ public class AssetRuleService {
 	
 	public static class ListAssetRuleBuilder extends ListResponseRequestBuilder<AssetRule, AssetRule.Tokenizer, ListAssetRuleBuilder> {
 		
-		public ListAssetRuleBuilder(AssetRuleFilter filter) {
+		public ListAssetRuleBuilder() {
 			super(AssetRule.class, "assetrule", "list");
-			params.add("filter", filter);
 		}
-	}
-
-	public static ListAssetRuleBuilder list()  {
-		return list(null);
 	}
 
 	/**
 	 * Get the list of asset rules for the partner
-	 * 
-	 * @param filter filter by condition name
 	 */
-    public static ListAssetRuleBuilder list(AssetRuleFilter filter)  {
-		return new ListAssetRuleBuilder(filter);
+    public static ListAssetRuleBuilder list()  {
+		return new ListAssetRuleBuilder();
 	}
 	
 	public static class UpdateAssetRuleBuilder extends RequestBuilder<AssetRule, AssetRule.Tokenizer, UpdateAssetRuleBuilder> {
