@@ -114,7 +114,7 @@ public class DBConstants {
             "um.is_renew=1 and ((um.num_of_rec_periods > 2) or (um.num_of_rec_periods = 0))\n" +
             "and s.is_recurring=1 and c.channel_type!=" + ChannelType.MANUAL_CHANNEL_TYPE.getValue() + " " +
             "and s.group_id=? and s.is_active=1 and s.[status]=1 and s.[type]=0\n" +
-            "order by s.create_date";
+            "order by s.create_date desc";
 
     static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) SUBSCRIPTION_ID as " + SUB_ID +
             ", SERVICE_ID as " + SERV_ID + "\n" +
