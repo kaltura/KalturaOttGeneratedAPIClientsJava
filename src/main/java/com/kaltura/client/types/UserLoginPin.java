@@ -94,14 +94,6 @@ public class UserLoginPin extends ObjectBase {
 	public String getUserId(){
 		return this.userId;
 	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
-
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
-
 
 	public UserLoginPin() {
 		super();

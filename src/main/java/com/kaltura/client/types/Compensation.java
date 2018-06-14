@@ -91,26 +91,10 @@ public class Compensation extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// subscriptionId:
 	public Long getSubscriptionId(){
 		return this.subscriptionId;
 	}
-	public void setSubscriptionId(Long subscriptionId){
-		this.subscriptionId = subscriptionId;
-	}
-
-	public void subscriptionId(String multirequestToken){
-		setToken("subscriptionId", multirequestToken);
-	}
-
 	// compensationType:
 	public CompensationType getCompensationType(){
 		return this.compensationType;
@@ -151,14 +135,6 @@ public class Compensation extends ObjectBase {
 	public Integer getAppliedRenewalIterations(){
 		return this.appliedRenewalIterations;
 	}
-	public void setAppliedRenewalIterations(Integer appliedRenewalIterations){
-		this.appliedRenewalIterations = appliedRenewalIterations;
-	}
-
-	public void appliedRenewalIterations(String multirequestToken){
-		setToken("appliedRenewalIterations", multirequestToken);
-	}
-
 	// purchaseId:
 	public Integer getPurchaseId(){
 		return this.purchaseId;

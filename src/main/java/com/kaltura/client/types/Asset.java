@@ -150,14 +150,6 @@ public abstract class Asset extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// type:
 	public Integer getType(){
 		return this.type;

@@ -94,14 +94,6 @@ public class Favorite extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
 
 	public Favorite() {
 		super();

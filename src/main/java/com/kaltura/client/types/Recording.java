@@ -97,26 +97,10 @@ public class Recording extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// status:
 	public RecordingStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(RecordingStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// assetId:
 	public Long getAssetId(){
 		return this.assetId;
@@ -133,62 +117,22 @@ public class Recording extends ObjectBase {
 	public RecordingType getType(){
 		return this.type;
 	}
-	public void setType(RecordingType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
 	// viewableUntilDate:
 	public Long getViewableUntilDate(){
 		return this.viewableUntilDate;
 	}
-	public void setViewableUntilDate(Long viewableUntilDate){
-		this.viewableUntilDate = viewableUntilDate;
-	}
-
-	public void viewableUntilDate(String multirequestToken){
-		setToken("viewableUntilDate", multirequestToken);
-	}
-
 	// isProtected:
 	public Boolean getIsProtected(){
 		return this.isProtected;
 	}
-	public void setIsProtected(Boolean isProtected){
-		this.isProtected = isProtected;
-	}
-
-	public void isProtected(String multirequestToken){
-		setToken("isProtected", multirequestToken);
-	}
-
 	// createDate:
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
 	// updateDate:
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	public void setUpdateDate(Long updateDate){
-		this.updateDate = updateDate;
-	}
-
-	public void updateDate(String multirequestToken){
-		setToken("updateDate", multirequestToken);
-	}
-
 
 	public Recording() {
 		super();

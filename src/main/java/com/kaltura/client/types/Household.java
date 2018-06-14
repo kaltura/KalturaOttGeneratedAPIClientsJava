@@ -132,14 +132,6 @@ public class Household extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -180,134 +172,46 @@ public class Household extends ObjectBase {
 	public Integer getHouseholdLimitationsId(){
 		return this.householdLimitationsId;
 	}
-	public void setHouseholdLimitationsId(Integer householdLimitationsId){
-		this.householdLimitationsId = householdLimitationsId;
-	}
-
-	public void householdLimitationsId(String multirequestToken){
-		setToken("householdLimitationsId", multirequestToken);
-	}
-
 	// devicesLimit:
 	public Integer getDevicesLimit(){
 		return this.devicesLimit;
 	}
-	public void setDevicesLimit(Integer devicesLimit){
-		this.devicesLimit = devicesLimit;
-	}
-
-	public void devicesLimit(String multirequestToken){
-		setToken("devicesLimit", multirequestToken);
-	}
-
 	// usersLimit:
 	public Integer getUsersLimit(){
 		return this.usersLimit;
 	}
-	public void setUsersLimit(Integer usersLimit){
-		this.usersLimit = usersLimit;
-	}
-
-	public void usersLimit(String multirequestToken){
-		setToken("usersLimit", multirequestToken);
-	}
-
 	// concurrentLimit:
 	public Integer getConcurrentLimit(){
 		return this.concurrentLimit;
 	}
-	public void setConcurrentLimit(Integer concurrentLimit){
-		this.concurrentLimit = concurrentLimit;
-	}
-
-	public void concurrentLimit(String multirequestToken){
-		setToken("concurrentLimit", multirequestToken);
-	}
-
 	// regionId:
 	public Integer getRegionId(){
 		return this.regionId;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
-	}
-
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
-	}
-
 	// state:
 	public HouseholdState getState(){
 		return this.state;
 	}
-	public void setState(HouseholdState state){
-		this.state = state;
-	}
-
-	public void state(String multirequestToken){
-		setToken("state", multirequestToken);
-	}
-
 	// isFrequencyEnabled:
 	public Boolean getIsFrequencyEnabled(){
 		return this.isFrequencyEnabled;
 	}
-	public void setIsFrequencyEnabled(Boolean isFrequencyEnabled){
-		this.isFrequencyEnabled = isFrequencyEnabled;
-	}
-
-	public void isFrequencyEnabled(String multirequestToken){
-		setToken("isFrequencyEnabled", multirequestToken);
-	}
-
 	// frequencyNextDeviceAction:
 	public Long getFrequencyNextDeviceAction(){
 		return this.frequencyNextDeviceAction;
 	}
-	public void setFrequencyNextDeviceAction(Long frequencyNextDeviceAction){
-		this.frequencyNextDeviceAction = frequencyNextDeviceAction;
-	}
-
-	public void frequencyNextDeviceAction(String multirequestToken){
-		setToken("frequencyNextDeviceAction", multirequestToken);
-	}
-
 	// frequencyNextUserAction:
 	public Long getFrequencyNextUserAction(){
 		return this.frequencyNextUserAction;
 	}
-	public void setFrequencyNextUserAction(Long frequencyNextUserAction){
-		this.frequencyNextUserAction = frequencyNextUserAction;
-	}
-
-	public void frequencyNextUserAction(String multirequestToken){
-		setToken("frequencyNextUserAction", multirequestToken);
-	}
-
 	// restriction:
 	public HouseholdRestriction getRestriction(){
 		return this.restriction;
 	}
-	public void setRestriction(HouseholdRestriction restriction){
-		this.restriction = restriction;
-	}
-
-	public void restriction(String multirequestToken){
-		setToken("restriction", multirequestToken);
-	}
-
 	// roleId:
 	public Integer getRoleId(){
 		return this.roleId;
 	}
-	public void setRoleId(Integer roleId){
-		this.roleId = roleId;
-	}
-
-	public void roleId(String multirequestToken){
-		setToken("roleId", multirequestToken);
-	}
-
 
 	public Household() {
 		super();

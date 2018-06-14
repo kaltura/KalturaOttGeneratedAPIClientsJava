@@ -72,14 +72,6 @@ public class PaymentMethodProfile extends ObjectBase {
 	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// paymentGatewayId:
 	public Integer getPaymentGatewayId(){
 		return this.paymentGatewayId;
