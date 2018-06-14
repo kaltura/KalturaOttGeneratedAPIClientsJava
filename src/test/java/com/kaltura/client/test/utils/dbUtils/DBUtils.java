@@ -13,16 +13,12 @@ import java.sql.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
+import static org.assertj.core.api.Assertions.fail;
 
 public class DBUtils extends BaseUtils {
 
     private static boolean isActivationNeeded = false;
     private static boolean isActivationNeededWasLoaded = false;
-
-//    private static Connection conn;
-//    private static Statement stam;
-//    static ResultSet rs;
-//    static CallableStatement cStmt;
 
     static final String ERROR_MESSAGE = "No results found";
 
@@ -33,7 +29,7 @@ public class DBUtils extends BaseUtils {
         }
         int result = -1;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHECK_IS_ACTIVATION_USERS_NEEDED, partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(CHECK_IS_ACTIVATION_USERS_NEEDED, false, partnerId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
                 return false;
@@ -59,7 +55,7 @@ public class DBUtils extends BaseUtils {
         }
         String userdData = "";
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(sqlQuery, userRole, partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(sqlQuery, false, userRole, partnerId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
                 return null;
@@ -80,7 +76,7 @@ public class DBUtils extends BaseUtils {
         String activationToken = null;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ACTIVATION_TOKEN_SELECT, username), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(ACTIVATION_TOKEN_SELECT, false, username);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
                 return null;
@@ -98,7 +94,7 @@ public class DBUtils extends BaseUtils {
         String resetPasswordToken = null;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(RESET_PASSWORD_TOKEN_SELECT, username), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(RESET_PASSWORD_TOKEN_SELECT, false, username);
             resetPasswordToken = jsonArray.getJSONObject(0).getString(CP_TOKEN);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +107,7 @@ public class DBUtils extends BaseUtils {
     public static JSONArray getLinearAssetIdAndEpgChannelNameJsonArray() {
         JSONArray jsonArray = null;
         try {
-            jsonArray = getJsonArrayFromQueryResult(String.format(ASSET_ID_SELECT, Integer.valueOf(getProperty(PARTNER_ID)) + 1), false);
+            jsonArray = getJsonArrayFromQueryResult(ASSET_ID_SELECT, false, Integer.valueOf(getProperty(PARTNER_ID)) + 1);
             if (jsonArray == null || jsonArray.length() <= 0) {
                 Logger.getLogger("Response is empty");
             }
@@ -126,8 +122,7 @@ public class DBUtils extends BaseUtils {
         int assetId = 0;
 
         try {
-            assetId = getJsonArrayFromQueryResult(String.format(UNACTIVE_ASSET_ID_SELECT,
-                    Integer.valueOf(getProperty(PARTNER_ID)) + 1), false).getJSONObject(0).getInt("id");
+            assetId = getJsonArrayFromQueryResult(UNACTIVE_ASSET_ID_SELECT, false, Integer.valueOf(getProperty(PARTNER_ID)) + 1).getJSONObject(0).getInt("id");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,8 +134,7 @@ public class DBUtils extends BaseUtils {
         int subscriptionId = 0;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT,
-                    partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT, false, partnerId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscriptionId;
             }
@@ -155,35 +149,35 @@ public class DBUtils extends BaseUtils {
     }
 
     // Return json array from DB
-    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed) {
-        SQLServerDataSource dataSource = getDataSource();
-        Connection conn = null;
-        Statement stam = null;
-        ResultSet rs = null;
-
-        JSONArray jsonArray = null;
-
-        try {
-            conn = dataSource.getConnection();
-            stam = conn.createStatement();
-            rs = stam.executeQuery(query);
-
-            if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
-                jsonArray = buildJsonArrayFromQueryResult(rs);
-                Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
-            } else {
-                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbUtils.closeQuietly(rs);
-            DbUtils.closeQuietly(stam);
-            DbUtils.closeQuietly(conn);
-        }
-
-        return jsonArray;
-    }
+//    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed) {
+//        SQLServerDataSource dataSource = getDataSource();
+//        Connection conn = null;
+//        Statement stam = null;
+//        ResultSet rs = null;
+//
+//        JSONArray jsonArray = null;
+//
+//        try {
+//            conn = dataSource.getConnection();
+//            stam = conn.createStatement();
+//            rs = stam.executeQuery(query);
+//
+//            if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
+//                jsonArray = buildJsonArrayFromQueryResult(rs);
+//                Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
+//            } else {
+//                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            DbUtils.closeQuietly(rs);
+//            DbUtils.closeQuietly(stam);
+//            DbUtils.closeQuietly(conn);
+//        }
+//
+//        return jsonArray;
+//    }
 
     private static JSONArray buildJsonArrayFromQueryResult(ResultSet rs) throws SQLException {
         JSONArray jsonArray = new JSONArray();
@@ -241,6 +235,74 @@ public class DBUtils extends BaseUtils {
 
         return dataSource;
     }
+
+
+    // Return json array from DB
+    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed, Object... args) {
+        SQLServerDataSource dataSource = getDataSource();
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        JSONArray jsonArray = null;
+
+        try {
+            conn = dataSource.getConnection();
+            if (args.length >0) {
+                pstm = preparedStatementExecution(conn, query, args);
+            }
+            else {
+                pstm = conn.prepareStatement(query);
+            }
+            rs = pstm.executeQuery();
+
+            if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
+                jsonArray = buildJsonArrayFromQueryResult(rs);
+                Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
+            } else {
+                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(pstm);
+            DbUtils.closeQuietly(conn);
+        }
+
+        return jsonArray;
+    }
+
+    private static PreparedStatement preparedStatementExecution(Connection conn, String query, Object... args) {
+        PreparedStatement pstm = null;
+        try {
+            pstm = conn.prepareStatement(query);
+            for (int i = 0; i < args.length; i++) {
+                switch(args[i].getClass().getSimpleName()){
+                    case "String":
+                        pstm.setString(i+1, (String) args[i]);
+                        break;
+                    case "Integer":
+                        pstm.setInt(i+1, (int) args[i]);
+                        break;
+                    case "Double":
+                        pstm.setDouble(i+1, (double) args[i]);
+                        break;
+                    case "Long":
+                        pstm.setLong(i+1, (long) args[i]);
+                        break;
+                    default:
+                        Logger.getLogger(DBUtils.class).error("No valid type found!");
+                        fail("No valid type found!");
+                        break;
+                }
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return pstm;
+    }
+
 
 //    private static void openConnection() {
 //        SQLServerDataSource dataSource = getDataSource();

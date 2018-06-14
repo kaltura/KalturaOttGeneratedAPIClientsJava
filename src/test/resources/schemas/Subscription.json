@@ -1,0 +1,297 @@
+{
+  "$id": "Subscription",
+  "definitions": {
+    "Subscription": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "objects": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "channels": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "default": 0
+                        },
+                        "objectType": {
+                          "type": "string",
+                          "default": "KalturaBaseChannel"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "objectType"
+                      ]
+                    }
+                  },
+                  "startDate": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "endDate": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "fileTypes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "value": {
+                          "type": "integer",
+                          "default": 0
+                        },
+                        "objectType": {
+                          "type": "string",
+                          "default": "KalturaIntegerValue"
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "objectType"
+                      ]
+                    }
+                  },
+                  "isRenewable": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "renewalsNumber": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "isInfiniteRenewal": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "price": {
+                    "$ref": "Price.json#/definitions/Price"
+                  },
+                  "discountModule": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "percent": {
+                        "type": "integer",
+                        "default": 0
+                      },
+                      "startDate": {
+                        "type": "integer",
+                        "default": 0
+                      },
+                      "endDate": {
+                        "type": "integer",
+                        "default": 0
+                      },
+                      "objectType": {
+                        "type": "string",
+                        "default": "KalturaDiscountModule"
+                      }
+                    },
+                    "required": [
+                      "percent",
+                      "startDate",
+                      "endDate",
+                      "objectType"
+                    ]
+                  },
+                  "name": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "description": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "mediaId": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "prorityInOrder": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "pricePlanIds": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "householdLimitationsId": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "gracePeriodMinutes": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "premiumServices": {
+                    "type": "array"
+                  },
+                  "maxViewsNumber": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "viewLifeCycle": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "waiverPeriod": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "isWaiverEnabled": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "userTypes": {
+                    "type": "array"
+                  },
+                  "couponsGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "name": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "startDate": {
+                          "type": "integer",
+                          "default": 0
+                        },
+                        "endDate": {
+                          "type": "integer",
+                          "default": 0
+                        },
+                        "maxUsesNumber": {
+                          "type": "integer",
+                          "default": 0
+                        },
+                        "maxUsesNumberOnRenewableSub": {
+                          "type": "integer",
+                          "default": 0
+                        },
+                        "couponGroupType": {
+                          "type": "string",
+                          "default": ""
+                        },
+                        "maxHouseholdUses": {
+                          "type": "integer",
+                          "default": 0
+                        },
+                        "objectType": {
+                          "type": "string",
+                          "default": "KalturaCouponsGroup"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "startDate",
+                        "endDate",
+                        "maxUsesNumber",
+                        "maxUsesNumberOnRenewableSub",
+                        "couponGroupType",
+                        "maxHouseholdUses",
+                        "objectType"
+                      ]
+                    }
+                  },
+                  "productCodes": {
+                    "type": "array"
+                  },
+                  "dependencyType": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "externalId": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "isCancellationBlocked": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "objectType": {
+                    "type": "string",
+                    "default": "KalturaSubscription"
+                  }
+                },
+                "required": [
+                  "id",
+                  "channels",
+                  "startDate",
+                  "endDate",
+                  "fileTypes",
+                  "isRenewable",
+                  "renewalsNumber",
+                  "isInfiniteRenewal",
+                  "name",
+                  "description",
+                  "mediaId",
+                  "prorityInOrder",
+                  "pricePlanIds",
+                  "householdLimitationsId",
+                  "gracePeriodMinutes",
+                  "premiumServices",
+                  "maxViewsNumber",
+                  "viewLifeCycle",
+                  "waiverPeriod",
+                  "isWaiverEnabled",
+                  "userTypes",
+                  "couponsGroups",
+                  "productCodes",
+                  "dependencyType",
+                  "externalId",
+                  "isCancellationBlocked",
+                  "objectType"
+                ]
+              }
+            },
+            "totalCount": {
+              "type": "integer",
+              "default": 0
+            },
+            "objectType": {
+              "type": "string",
+              "default": "KalturaSubscriptionListResponse"
+            }
+          },
+          "required": [
+            "objects",
+            "totalCount",
+            "objectType"
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/Subscription"
+    },
+    "executionTime": {"type": "number"}
+  },
+  "required": ["result", "executionTime"]
+}
