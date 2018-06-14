@@ -10,32 +10,28 @@ import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-<<<<<<< HEAD
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
-=======
 import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.test.utils.IngestUtils;
-import com.kaltura.client.test.utils.SubscriptionUtils;
->>>>>>> master
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
+import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
-import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getDevicesListFromHouseHold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
+import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
+import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -173,8 +169,8 @@ public class BaseTest {
             }
 
             // it should have at least 1 VOD
-            if (SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true) == null ||
-                    SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true).size() == 0) {
+            if (getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true) == null ||
+                    getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true).size() == 0) {
                 ingestVODIntoSubscription(sharedCommonSubscription);
             }
         }
@@ -343,8 +339,8 @@ public class BaseTest {
         if (fiveMinRenewableSubscription == null) {
             fiveMinRenewableSubscription = IngestFixtureData.loadShared5MinutesRenewableSubscription();
             // it should have at least 1 VOD
-            if (SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true) == null ||
-                    SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true).size() == 0) {
+            if (getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true) == null ||
+                    getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true).size() == 0) {
                 ingestVODIntoSubscription(fiveMinRenewableSubscription);
             }
             if (fiveMinRenewableSubscription == null) {
