@@ -77,14 +77,6 @@ public abstract class SubscriptionSet extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -101,14 +93,6 @@ public abstract class SubscriptionSet extends ObjectBase {
 	public SubscriptionSetType getType(){
 		return this.type;
 	}
-	public void setType(SubscriptionSetType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
 	// subscriptionIds:
 	public String getSubscriptionIds(){
 		return this.subscriptionIds;

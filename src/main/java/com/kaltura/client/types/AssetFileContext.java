@@ -67,38 +67,14 @@ public class AssetFileContext extends ObjectBase {
 	public String getViewLifeCycle(){
 		return this.viewLifeCycle;
 	}
-	public void setViewLifeCycle(String viewLifeCycle){
-		this.viewLifeCycle = viewLifeCycle;
-	}
-
-	public void viewLifeCycle(String multirequestToken){
-		setToken("viewLifeCycle", multirequestToken);
-	}
-
 	// fullLifeCycle:
 	public String getFullLifeCycle(){
 		return this.fullLifeCycle;
 	}
-	public void setFullLifeCycle(String fullLifeCycle){
-		this.fullLifeCycle = fullLifeCycle;
-	}
-
-	public void fullLifeCycle(String multirequestToken){
-		setToken("fullLifeCycle", multirequestToken);
-	}
-
 	// isOfflinePlayBack:
 	public Boolean getIsOfflinePlayBack(){
 		return this.isOfflinePlayBack;
 	}
-	public void setIsOfflinePlayBack(Boolean isOfflinePlayBack){
-		this.isOfflinePlayBack = isOfflinePlayBack;
-	}
-
-	public void isOfflinePlayBack(String multirequestToken){
-		setToken("isOfflinePlayBack", multirequestToken);
-	}
-
 
 	public AssetFileContext() {
 		super();

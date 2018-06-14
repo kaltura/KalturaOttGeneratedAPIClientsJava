@@ -64,26 +64,10 @@ public class PpvEntitlement extends Entitlement {
 	public Integer getMediaFileId(){
 		return this.mediaFileId;
 	}
-	public void setMediaFileId(Integer mediaFileId){
-		this.mediaFileId = mediaFileId;
-	}
-
-	public void mediaFileId(String multirequestToken){
-		setToken("mediaFileId", multirequestToken);
-	}
-
 	// mediaId:
 	public Integer getMediaId(){
 		return this.mediaId;
 	}
-	public void setMediaId(Integer mediaId){
-		this.mediaId = mediaId;
-	}
-
-	public void mediaId(String multirequestToken){
-		setToken("mediaId", multirequestToken);
-	}
-
 
 	public PpvEntitlement() {
 		super();

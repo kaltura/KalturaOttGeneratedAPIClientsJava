@@ -97,14 +97,6 @@ public class CDNAdapterProfile extends ObjectBase {
 	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -177,14 +169,6 @@ public class CDNAdapterProfile extends ObjectBase {
 	public String getSharedSecret(){
 		return this.sharedSecret;
 	}
-	public void setSharedSecret(String sharedSecret){
-		this.sharedSecret = sharedSecret;
-	}
-
-	public void sharedSecret(String multirequestToken){
-		setToken("sharedSecret", multirequestToken);
-	}
-
 
 	public CDNAdapterProfile() {
 		super();

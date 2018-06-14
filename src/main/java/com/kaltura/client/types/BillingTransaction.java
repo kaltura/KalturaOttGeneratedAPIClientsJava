@@ -140,190 +140,66 @@ public class BillingTransaction extends ObjectBase {
 	public String getRecieptCode(){
 		return this.recieptCode;
 	}
-	public void setRecieptCode(String recieptCode){
-		this.recieptCode = recieptCode;
-	}
-
-	public void recieptCode(String multirequestToken){
-		setToken("recieptCode", multirequestToken);
-	}
-
 	// purchasedItemName:
 	public String getPurchasedItemName(){
 		return this.purchasedItemName;
 	}
-	public void setPurchasedItemName(String purchasedItemName){
-		this.purchasedItemName = purchasedItemName;
-	}
-
-	public void purchasedItemName(String multirequestToken){
-		setToken("purchasedItemName", multirequestToken);
-	}
-
 	// purchasedItemCode:
 	public String getPurchasedItemCode(){
 		return this.purchasedItemCode;
 	}
-	public void setPurchasedItemCode(String purchasedItemCode){
-		this.purchasedItemCode = purchasedItemCode;
-	}
-
-	public void purchasedItemCode(String multirequestToken){
-		setToken("purchasedItemCode", multirequestToken);
-	}
-
 	// itemType:
 	public BillingItemsType getItemType(){
 		return this.itemType;
 	}
-	public void setItemType(BillingItemsType itemType){
-		this.itemType = itemType;
-	}
-
-	public void itemType(String multirequestToken){
-		setToken("itemType", multirequestToken);
-	}
-
 	// billingAction:
 	public BillingAction getBillingAction(){
 		return this.billingAction;
 	}
-	public void setBillingAction(BillingAction billingAction){
-		this.billingAction = billingAction;
-	}
-
-	public void billingAction(String multirequestToken){
-		setToken("billingAction", multirequestToken);
-	}
-
 	// price:
 	public Price getPrice(){
 		return this.price;
 	}
-	public void setPrice(Price price){
-		this.price = price;
-	}
-
 	// actionDate:
 	public Long getActionDate(){
 		return this.actionDate;
 	}
-	public void setActionDate(Long actionDate){
-		this.actionDate = actionDate;
-	}
-
-	public void actionDate(String multirequestToken){
-		setToken("actionDate", multirequestToken);
-	}
-
 	// startDate:
 	public Long getStartDate(){
 		return this.startDate;
 	}
-	public void setStartDate(Long startDate){
-		this.startDate = startDate;
-	}
-
-	public void startDate(String multirequestToken){
-		setToken("startDate", multirequestToken);
-	}
-
 	// endDate:
 	public Long getEndDate(){
 		return this.endDate;
 	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
-	}
-
 	// paymentMethod:
 	public PaymentMethodType getPaymentMethod(){
 		return this.paymentMethod;
 	}
-	public void setPaymentMethod(PaymentMethodType paymentMethod){
-		this.paymentMethod = paymentMethod;
-	}
-
-	public void paymentMethod(String multirequestToken){
-		setToken("paymentMethod", multirequestToken);
-	}
-
 	// paymentMethodExtraDetails:
 	public String getPaymentMethodExtraDetails(){
 		return this.paymentMethodExtraDetails;
 	}
-	public void setPaymentMethodExtraDetails(String paymentMethodExtraDetails){
-		this.paymentMethodExtraDetails = paymentMethodExtraDetails;
-	}
-
-	public void paymentMethodExtraDetails(String multirequestToken){
-		setToken("paymentMethodExtraDetails", multirequestToken);
-	}
-
 	// isRecurring:
 	public Boolean getIsRecurring(){
 		return this.isRecurring;
 	}
-	public void setIsRecurring(Boolean isRecurring){
-		this.isRecurring = isRecurring;
-	}
-
-	public void isRecurring(String multirequestToken){
-		setToken("isRecurring", multirequestToken);
-	}
-
 	// billingProviderRef:
 	public Integer getBillingProviderRef(){
 		return this.billingProviderRef;
 	}
-	public void setBillingProviderRef(Integer billingProviderRef){
-		this.billingProviderRef = billingProviderRef;
-	}
-
-	public void billingProviderRef(String multirequestToken){
-		setToken("billingProviderRef", multirequestToken);
-	}
-
 	// purchaseId:
 	public Integer getPurchaseId(){
 		return this.purchaseId;
 	}
-	public void setPurchaseId(Integer purchaseId){
-		this.purchaseId = purchaseId;
-	}
-
-	public void purchaseId(String multirequestToken){
-		setToken("purchaseId", multirequestToken);
-	}
-
 	// remarks:
 	public String getRemarks(){
 		return this.remarks;
 	}
-	public void setRemarks(String remarks){
-		this.remarks = remarks;
-	}
-
-	public void remarks(String multirequestToken){
-		setToken("remarks", multirequestToken);
-	}
-
 	// billingPriceType:
 	public BillingPriceType getBillingPriceType(){
 		return this.billingPriceType;
 	}
-	public void setBillingPriceType(BillingPriceType billingPriceType){
-		this.billingPriceType = billingPriceType;
-	}
-
-	public void billingPriceType(String multirequestToken){
-		setToken("billingPriceType", multirequestToken);
-	}
-
 
 	public BillingTransaction() {
 		super();

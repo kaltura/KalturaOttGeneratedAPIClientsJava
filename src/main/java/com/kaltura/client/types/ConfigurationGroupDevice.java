@@ -79,14 +79,6 @@ public class ConfigurationGroupDevice extends ObjectBase {
 	public Integer getPartnerId(){
 		return this.partnerId;
 	}
-	public void setPartnerId(Integer partnerId){
-		this.partnerId = partnerId;
-	}
-
-	public void partnerId(String multirequestToken){
-		setToken("partnerId", multirequestToken);
-	}
-
 	// udid:
 	public String getUdid(){
 		return this.udid;

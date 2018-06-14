@@ -135,14 +135,6 @@ public class MediaAsset extends Asset {
 	public Boolean getEnableRecordingPlaybackNonEntitledChannel(){
 		return this.enableRecordingPlaybackNonEntitledChannel;
 	}
-	public void setEnableRecordingPlaybackNonEntitledChannel(Boolean enableRecordingPlaybackNonEntitledChannel){
-		this.enableRecordingPlaybackNonEntitledChannel = enableRecordingPlaybackNonEntitledChannel;
-	}
-
-	public void enableRecordingPlaybackNonEntitledChannel(String multirequestToken){
-		setToken("enableRecordingPlaybackNonEntitledChannel", multirequestToken);
-	}
-
 	// typeDescription:
 	public String getTypeDescription(){
 		return this.typeDescription;

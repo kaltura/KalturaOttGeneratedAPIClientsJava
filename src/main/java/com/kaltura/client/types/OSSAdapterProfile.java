@@ -125,14 +125,6 @@ public class OSSAdapterProfile extends OSSAdapterBaseProfile {
 	public String getSharedSecret(){
 		return this.sharedSecret;
 	}
-	public void setSharedSecret(String sharedSecret){
-		this.sharedSecret = sharedSecret;
-	}
-
-	public void sharedSecret(String multirequestToken){
-		setToken("sharedSecret", multirequestToken);
-	}
-
 
 	public OSSAdapterProfile() {
 		super();
