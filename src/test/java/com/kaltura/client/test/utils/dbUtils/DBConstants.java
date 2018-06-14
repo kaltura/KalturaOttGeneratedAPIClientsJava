@@ -25,58 +25,58 @@ public class DBConstants {
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
 
     //queries
-    static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
+    static final String ACTIVATION_TOKEN_SELECT = "SELECT [ACTIVATION_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = ?";
 
     static final String AND_ACTIVE_STATUS = " and u.activate_status=1";
 
-    static final String RESET_PASSWORD_TOKEN_SELECT = "SELECT [CP_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = '%S'";
+    static final String RESET_PASSWORD_TOKEN_SELECT = "SELECT [CP_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = ?";
 
     static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
             "from [Users].[dbo].[groups_parameters]\n" +
-            "where group_id=%d";
+            "where group_id= ?";
 
-    static final String CURRENCY_CODE_SELECT = "select ID from [Pricing].[dbo].[lu_currency] WHERE CODE3='%s'";
+    static final String CURRENCY_CODE_SELECT = "select ID from [Pricing].[dbo].[lu_currency] WHERE CODE3=?";
 
     static final String DISCOUNT_BY_PERCENT = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc \n" +
-            "where dc.discount_percent=%d\n" + // percent amount
-            "and dc.group_id=%d\n" + // group
+            "where dc.discount_percent=?\n" + // percent amount
+            "and dc.group_id=?\n" + // group
             "and dc.[status]=1 and dc.is_active=1";
 
     static final String DISCOUNT_BY_PERCENT_AND_CURRENCY = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes] dc with(nolock)\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (dc.currency_cd=lc.id)\n" +
-            "where lc.code3='%S'\n" + // CURRENCY
-            "and dc.discount_percent=%d\n" + // percent amount
-            "and dc.group_id=%d\n" + // group
+            "where lc.code3=?\n" + // CURRENCY
+            "and dc.discount_percent=?\n" + // percent amount
+            "and dc.group_id=?\n" + // group
             "and dc.[status]=1 and dc.is_active=1";
 
     static final String DISCOUNT_BY_PRICE_AND_PERCENT_SELECT = "select TOP (1) *\n" +
             "from [Pricing].[dbo].[discount_codes]\n" +
             "where [status]=1 and is_active=1\n" +
-            "and group_id=%d\n" + // group
-            "and price=%f\n" + // price amount
-            "and discount_percent=%f";  // percent amount
+            "and group_id=?\n" + // group
+            "and price=?\n" + // price amount
+            "and discount_percent=?";  // percent amount
 
-    static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = %d AND [NAME] = '%S'";
+    static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = ? AND [NAME] = ?";
 
     static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
-            "where [group_id]=%d order by UPDATE_DATE DESC";
+            "where [group_id]=? order by UPDATE_DATE DESC";
 
     static final String PPV_SELECT_BY_PRICE_PLAN = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
             "where [status]=1 and is_active=1\n" +
-            "and group_id=%d and usage_module_code=%d\n" +
+            "and group_id=? and usage_module_code=?\n" +
             "order by create_date";
 
     static final String PRICE_CODE_SELECT = "select top 1 * from [Pricing].[dbo].[price_codes] pc\n" +
             "join [Pricing].[dbo].[lu_currency] lc with(nolock) on (pc.currency_cd=lc.id)\n" +
             "where pc.[status]=1 and pc.is_active=1\n" +
-            "and pc.group_id=%d and pc.price=%f and lc.CODE3='%S'";
+            "and pc.group_id=? and pc.price=? and lc.CODE3=?";
 
     static final String PRICE_PLAN_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
-            "and group_id=%d and internal_discount_id=%d and pricing_id=%d";
+            "and group_id=? and internal_discount_id=? and pricing_id=?";
 
     static final String PRICE_PLAN_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
@@ -84,16 +84,16 @@ public class DBConstants {
             "and full_life_cycle_min = 5\n" +
             "and is_renew=1\n" +
             "and ((num_of_rec_periods > 2) or (num_of_rec_periods = 0))\n" + // TODO: do we really want it "num_of_rec_periods > 2"?
-            "and group_id=%d";
+            "and group_id=?";
 
     static final String SUBSCRIPTION_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
             "where [status]=1 and is_active=1\n" +
-            "and group_id=%d and usage_module_code=%d and discount_module_code=%d\n" +
+            "and group_id=? and usage_module_code=? and discount_module_code=?\n" +
             "order by create_date";
 
     static final String SUBSCRIPTION_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
             "where [status]=1 and is_active=1 and [type]=0 and is_recurring=1\n" +
-            "and group_id=%d and usage_module_code=%d\n" +
+            "and group_id=? and usage_module_code=?\n" +
             "order by create_date";
 
     static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) SUBSCRIPTION_ID as " + SUB_ID +
@@ -101,11 +101,11 @@ public class DBConstants {
             "FROM [Pricing].[dbo].[subscriptions] s\n" +
             "INNER JOIN [Pricing].[dbo].[subscriptions_services] ss\n" +
             "ON s.ID = SS.SUBSCRIPTION_ID\n" +
-            "where s.group_id=%d";
+            "where s.group_id=?";
 
     static final String COLLECTION_SELECT = "select top 1 * from [Pricing].[dbo].[collections]\n" +
             "where [status]=1 and is_active=1\n" +
-            "and group_id=%d and discount_id=%d and price_id=%d and usage_module_id=%d\n" +
+            "and group_id=? and discount_id=? and price_id=? and usage_module_id=?\n" +
             "order by create_date";
 
     static final String USER_BY_ROLE_SELECT = "select top(1) u.username, u.[password]\n" +
@@ -113,43 +113,43 @@ public class DBConstants {
             "join [Users].[dbo].[users_roles] ur with(nolock) on (u.id=ur.[user_id])\n" +
             "join [TVinci].[dbo].[roles] r with(nolock) on (r.id=ur.role_id)\n" +
             // TODO: find instead of and u.username <> 'lfaingold' how to exclude suspended users
-            "where r.[NAME]='%S' and u.is_active=1 and u.[status]=1 and u.group_id=%d and u.username <> 'lfaingold'";
+            "where r.[NAME]=? and u.is_active=1 and u.[status]=1 and u.group_id=? and u.username <> 'lfaingold'";
 
     static final String COUNT_RECORDS_BY_ROLE_NAME_IN_ROLES_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[roles]\n" +
-            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
 
     static final String ID_BY_ROLE_NAME_IN_ROLES_SELECT = "select " + ID + "\n" +
             "from [TVinci].[dbo].[roles]\n" +
-            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
 
     static final String COUNT_RECORDS_BY_ROLE_NAME_IN_PERMISSIONS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[permissions]\n" +
-            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
 
     static final String ID_BY_ROLE_NAME_IN_PERMISSIONS_SELECT = "select " + ID + "\n" +
             "from [TVinci].[dbo].[permissions]\n" +
-            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
 
     static final String COUNT_RECORDS_IN_ROLES_PERMISSIONS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[roles_permissions]\n" +
-            "where role_id=%d and permission_id=%d and is_active=1 and [status]=1 and group_id=%d";
+            "where role_id=? and permission_id=? and is_active=1 and [status]=1 and group_id=?";
 
     static final String COUNT_RECORDS_BY_NAME_IN_PERMISSION_ITEMS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[permission_items]\n" +
-            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
 
     static final String ID_BY_NAME_IN_PERMISSION_ITEMS_SELECT = "select " + ID + "\n" +
             "from [TVinci].[dbo].[permission_items]\n" +
-            "where [NAME]='%S' and is_active=1 and [status]=1 and group_id=%d";
+            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
 
     static final String COUNT_RECORDS_IN_PERMISSIONS_PERMISSIONS_ITEMS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[permissions_permission_items]\n" +
-            "where permission_id=%d and permission_item_id=%d and is_active=1 and [status]=1 and group_id=%d";
+            "where permission_id=? and permission_item_id=? and is_active=1 and [status]=1 and group_id=?";
 
-    static final String ASSET_ID_SELECT = "SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=%d and status=1 and DATALENGTH(media_id) > 0";
+    static final String ASSET_ID_SELECT = "SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=? and status=1 and DATALENGTH(media_id) > 0";
 
-    static final String UNACTIVE_ASSET_ID_SELECT = "SELECT top 1 [id] FROM [TVinci].[dbo].[media] where group_id = %d and status = 2";
+    static final String UNACTIVE_ASSET_ID_SELECT = "SELECT top 1 [id] FROM [TVinci].[dbo].[media] where group_id = ? and status = 2";
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";
