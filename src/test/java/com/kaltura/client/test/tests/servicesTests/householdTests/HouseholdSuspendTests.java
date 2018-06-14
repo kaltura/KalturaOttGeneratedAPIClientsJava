@@ -60,7 +60,7 @@ public class HouseholdSuspendTests extends BaseTest {
         fiveMinRenewSubscriptionSlowTest = get5MinRenewableSubscription();
 
         // set asset
-        asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty()).get(0);
+        asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty(), false).get(0);
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -460,7 +460,7 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_renew_subscription_role_after_wait() {
         // get productprice list for asset in subscription - after renew
 
-        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId()), Optional.empty()).get(0);
+        Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId()), Optional.empty(), false).get(0);
         ProductPriceFilter assetFilter = new ProductPriceFilter();
         assetFilter.setFileIdIn(String.valueOf(asset.getMediaFiles().get(0).getId()));
 

@@ -83,8 +83,9 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(appTokenResponse.results.getSessionPrivileges()).isEqualTo(sessionPrivileges);
     }
 
+    // priority needed, because at parralel execution both test threads launch setup method of this class and this cause to Error 1 at login with operator user.
     @Description("appToken/action/add - with expiry date")
-    @Test(groups = "slow_before")
+    @Test(groups = "slow_before", priority = 1)
     private void addAppTokenWithExpiryDate_before() {
         // setup for test
         add_tests_before_class();
@@ -119,7 +120,7 @@ public class AppTokenAddTests extends BaseTest {
                     return (apiException != null);
                 });
 
-        assertThat(apiException.getCode().equals(getAPIExceptionFromList(500055).getCode()));
+        assertThat(apiException.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
     }
 
     @Description("appToken/action/add - with no expiry date (return default expiry date -" +

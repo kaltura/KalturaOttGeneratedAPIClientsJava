@@ -24,7 +24,7 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("loadPriceCode(): priceAmount = " + priceAmount + " currency = " + currency);
         PriceDetails result = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_CODE_SELECT, partnerId, priceAmount, currency), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_CODE_SELECT, true, partnerId, priceAmount, currency);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
@@ -48,8 +48,7 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("loadDiscount(): discountPrice = " + discountPrice + " discountPercent = " + discountPercent);
         DiscountModule result = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PRICE_AND_PERCENT_SELECT,
-                    partnerId, discountPrice, discountPercent), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(DISCOUNT_BY_PRICE_AND_PERCENT_SELECT, true, partnerId, discountPrice, discountPercent);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
@@ -81,8 +80,8 @@ public class IngestFixtureData {
                 return pricePlan;
             }
 
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_SELECT, partnerId,
-                    Integer.valueOf(discountModule.toParams().get("id").toString()), priceCode.getId()), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_SELECT, true, partnerId,
+                    Integer.valueOf(discountModule.toParams().get("id").toString()), priceCode.getId());
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return pricePlan;
             }
@@ -116,7 +115,7 @@ public class IngestFixtureData {
         PricePlan pricePlan = null;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PRICE_PLAN_5_MIN_RENEW_SELECT, partnerId), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_5_MIN_RENEW_SELECT, true, partnerId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return pricePlan;
             }
@@ -134,8 +133,8 @@ public class IngestFixtureData {
 
         Subscription subscription = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_SELECT, partnerId,
-                    pricePlan.getId(), pricePlan.getDiscountId()), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(SUBSCRIPTION_SELECT, true, partnerId,
+                    pricePlan.getId(), pricePlan.getDiscountId());
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscription;
             }
@@ -160,8 +159,8 @@ public class IngestFixtureData {
 
         Collection collection = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(COLLECTION_SELECT, partnerId,
-                    pricePlan.getDiscountId(), pricePlan.getPriceDetailsId(), pricePlan.getId()), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(COLLECTION_SELECT, true, partnerId,
+                    pricePlan.getDiscountId(), pricePlan.getPriceDetailsId(), pricePlan.getId());
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return collection;
             }
@@ -181,8 +180,7 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("getDiscount(): currency = " + currency + " percent = " + percent);
         String code = "";
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency,
-                    percent, partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(DISCOUNT_BY_PERCENT_AND_CURRENCY, false, currency, percent, partnerId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return null;
             }
@@ -203,8 +201,8 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("getDiscount(): percent = " + percent);
         DiscountModule result = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(DISCOUNT_BY_PERCENT,
-                    percent, partnerId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(DISCOUNT_BY_PERCENT, false,
+                    percent, partnerId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return null;
             }
@@ -227,7 +225,7 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("getEpgChannelId(): channelName = " + channelName);
         int epgChannelId = -1;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(EPG_CHANNEL_ID_SELECT, partnerId + 1, channelName), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(EPG_CHANNEL_ID_SELECT, false, partnerId + 1, channelName);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 Logger.getLogger(IngestFixtureData.class).error(ERROR_MESSAGE);
                 return epgChannelId;
@@ -245,7 +243,7 @@ public class IngestFixtureData {
         Logger.getLogger(IngestFixtureData.class).debug("getIngestItemUserData(): accountId = " + accountId);
         String result = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(INGEST_ITEMS_DATA_SELECT, accountId), false);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(INGEST_ITEMS_DATA_SELECT, false, accountId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
@@ -265,8 +263,8 @@ public class IngestFixtureData {
 
         Ppv ppv = null;
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(PPV_SELECT_BY_PRICE_PLAN, partnerId,
-                    pricePlan.getId()), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(PPV_SELECT_BY_PRICE_PLAN, true, partnerId,
+                    pricePlan.getId());
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return ppv;
             }
@@ -288,7 +286,7 @@ public class IngestFixtureData {
         Subscription subscription = null;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(SUBSCRIPTION_5_MIN_RENEW_SELECT, partnerId), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(SUBSCRIPTION_5_MIN_RENEW_SELECT, true, partnerId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscription;
             }

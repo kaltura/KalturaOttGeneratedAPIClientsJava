@@ -169,7 +169,8 @@ public class BaseTest {
             }
 
             // it should have at least 1 VOD
-            if (SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty()).size() == 0) {
+            if (SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true) == null ||
+                    SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true).size() == 0) {
                 ingestVODIntoSubscription(sharedCommonSubscription);
             }
         }
@@ -338,7 +339,8 @@ public class BaseTest {
         if (fiveMinRenewableSubscription == null) {
             fiveMinRenewableSubscription = IngestFixtureData.loadShared5MinutesRenewableSubscription();
             // it should have at least 1 VOD
-            if (SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty()).size() == 0) {
+            if (SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true) == null ||
+                    SubscriptionUtils.getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true).size() == 0) {
                 ingestVODIntoSubscription(fiveMinRenewableSubscription);
             }
             if (fiveMinRenewableSubscription == null) {

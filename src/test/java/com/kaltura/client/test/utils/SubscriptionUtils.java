@@ -18,7 +18,7 @@ import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
 public class SubscriptionUtils extends BaseUtils {
 
 
-    public static List<Asset> getAssetsListBySubscription(int subscriptionId, Optional<Integer> numOfPages) {
+    public static List<Asset> getAssetsListBySubscription(int subscriptionId, Optional<Integer> numOfPages, boolean isListCanBeEmpty) {
         Response<ListResponse<Asset>> assetListResponse;
 
         // set filter
@@ -37,19 +37,20 @@ public class SubscriptionUtils extends BaseUtils {
         }
 
         List<Asset> assets = assetListResponse.results.getObjects();
-        Verify.verify(assetListResponse.results.getTotalCount() > 0, "Asset list can't be empty");
+        // Asset list can be empty in case creation of new MPP
+        if (!isListCanBeEmpty) {
+            Verify.verify(assetListResponse.results.getTotalCount() > 0, "Asset list can't be empty");
+            // remove assets without media files from list
+            List<Asset> assetsToRemove = new ArrayList<>();
 
-        // remove assets without media files from list
-        List<Asset> assetsToRemove = new ArrayList<>();
-
-        for (Asset asset : assets) {
-            if (asset.getMediaFiles().size() < 1) {
-                assetsToRemove.add(asset);
+            for (Asset asset : assets) {
+                if (asset.getMediaFiles().size() < 1) {
+                    assetsToRemove.add(asset);
+                }
             }
+
+            assets.removeAll(assetsToRemove);
         }
-
-        assets.removeAll(assetsToRemove);
-
         return assets;
     }
 
