@@ -135,26 +135,10 @@ public class HouseholdUser extends ObjectBase {
 	public HouseholdUserStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(HouseholdUserStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// isDefault:
 	public Boolean getIsDefault(){
 		return this.isDefault;
 	}
-	public void setIsDefault(Boolean isDefault){
-		this.isDefault = isDefault;
-	}
-
-	public void isDefault(String multirequestToken){
-		setToken("isDefault", multirequestToken);
-	}
-
 
 	public HouseholdUser() {
 		super();

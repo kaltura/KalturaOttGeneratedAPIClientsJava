@@ -95,98 +95,34 @@ public class SearchHistory extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// filter:
 	public String getFilter(){
 		return this.filter;
 	}
-	public void setFilter(String filter){
-		this.filter = filter;
-	}
-
-	public void filter(String multirequestToken){
-		setToken("filter", multirequestToken);
-	}
-
 	// language:
 	public String getLanguage(){
 		return this.language;
 	}
-	public void setLanguage(String language){
-		this.language = language;
-	}
-
-	public void language(String multirequestToken){
-		setToken("language", multirequestToken);
-	}
-
 	// createdAt:
 	public Long getCreatedAt(){
 		return this.createdAt;
 	}
-	public void setCreatedAt(Long createdAt){
-		this.createdAt = createdAt;
-	}
-
-	public void createdAt(String multirequestToken){
-		setToken("createdAt", multirequestToken);
-	}
-
 	// service:
 	public String getService(){
 		return this.service;
 	}
-	public void setService(String service){
-		this.service = service;
-	}
-
-	public void service(String multirequestToken){
-		setToken("service", multirequestToken);
-	}
-
 	// action:
 	public String getAction(){
 		return this.action;
 	}
-	public void setAction(String action){
-		this.action = action;
-	}
-
-	public void action(String multirequestToken){
-		setToken("action", multirequestToken);
-	}
-
 	// deviceId:
 	public String getDeviceId(){
 		return this.deviceId;
 	}
-	public void setDeviceId(String deviceId){
-		this.deviceId = deviceId;
-	}
-
-	public void deviceId(String multirequestToken){
-		setToken("deviceId", multirequestToken);
-	}
-
 
 	public SearchHistory() {
 		super();

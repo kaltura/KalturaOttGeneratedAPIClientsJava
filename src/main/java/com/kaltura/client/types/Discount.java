@@ -59,14 +59,6 @@ public class Discount extends Price {
 	public Integer getPercentage(){
 		return this.percentage;
 	}
-	public void setPercentage(Integer percentage){
-		this.percentage = percentage;
-	}
-
-	public void percentage(String multirequestToken){
-		setToken("percentage", multirequestToken);
-	}
-
 
 	public Discount() {
 		super();

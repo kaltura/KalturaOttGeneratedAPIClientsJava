@@ -4,13 +4,14 @@
 <!-- KalturaOttApiClient Java library. -->
 <!-- -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <!-- Define the GAV coordinate for the project -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kaltura</groupId>
     <artifactId>KalturaOttApiClient</artifactId>
-    <version>4.82.4.19259-SNAPSHOT</version>
+    <version>4.82.4.13107-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <properties>
@@ -35,7 +36,7 @@
             <name>GNU Affero General Public License, Version 3.0</name>
             <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
             <distribution>repo</distribution>
-            <comments />
+            <comments/>
         </license>
     </licenses>
 
@@ -133,6 +134,13 @@
         </dependency>
 
         <!-- Dependencies for testing -->
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.12</version>
+		    <scope>test</scope>
+		</dependency>		        
+		        
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -291,7 +299,7 @@
                         <tag>
                             <name>hide</name>
                             <placement>X</placement>
-                            <head />
+                            <head></head>
                         </tag>
                     </tags>
                 </configuration>

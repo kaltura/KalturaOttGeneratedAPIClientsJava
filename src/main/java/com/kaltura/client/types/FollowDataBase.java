@@ -77,62 +77,22 @@ public class FollowDataBase extends ObjectBase {
 	public Long getAnnouncementId(){
 		return this.announcementId;
 	}
-	public void setAnnouncementId(Long announcementId){
-		this.announcementId = announcementId;
-	}
-
-	public void announcementId(String multirequestToken){
-		setToken("announcementId", multirequestToken);
-	}
-
 	// status:
 	public Integer getStatus(){
 		return this.status;
 	}
-	public void setStatus(Integer status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// title:
 	public String getTitle(){
 		return this.title;
 	}
-	public void setTitle(String title){
-		this.title = title;
-	}
-
-	public void title(String multirequestToken){
-		setToken("title", multirequestToken);
-	}
-
 	// timestamp:
 	public Long getTimestamp(){
 		return this.timestamp;
 	}
-	public void setTimestamp(Long timestamp){
-		this.timestamp = timestamp;
-	}
-
-	public void timestamp(String multirequestToken){
-		setToken("timestamp", multirequestToken);
-	}
-
 	// followPhrase:
 	public String getFollowPhrase(){
 		return this.followPhrase;
 	}
-	public void setFollowPhrase(String followPhrase){
-		this.followPhrase = followPhrase;
-	}
-
-	public void followPhrase(String multirequestToken){
-		setToken("followPhrase", multirequestToken);
-	}
-
 
 	public FollowDataBase() {
 		super();
