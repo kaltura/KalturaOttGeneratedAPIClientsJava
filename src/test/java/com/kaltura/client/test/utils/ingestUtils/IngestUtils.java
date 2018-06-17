@@ -22,8 +22,11 @@ import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
+import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestPpUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.buildIngestVodXml;
 import static io.restassured.path.xml.XmlPath.from;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 public class IngestUtils extends BaseUtils {
@@ -52,48 +55,6 @@ public class IngestUtils extends BaseUtils {
 
     private static String titleOfIngestedItem = "";
 
-    // INGEST MPP PARAMS
-    private static boolean MPP_DEFAULT_IS_ACTIVE_VALUE = true;
-    private static String MPP_DEFAULT_DESCRIPTION_VALUE = "Ingest MPP description";
-    private static String MPP_DEFAULT_START_DATE_VALUE = "20/03/2016 00:00:00";
-    private static String MPP_DEFAULT_END_DATE_VALUE = "20/03/2099 00:00:00";
-    private static boolean MPP_DEFAULT_IS_RENEWABLE_VALUE = false;
-    private static int MPP_DEFAULT_GRACE_PERIOD_VALUE = 0;
-
-    // TODO: THIS VALUES RELATED TO OUR ENV ONLY discuss with Alon
-    private static String MPP_DEFAULT_COUPON_GROUP_VALUE =
-            "<coupon_group_id>\n" +
-                    "<start_date>01/05/2017 00:00:00</start_date>\n" +
-                    "<end_date>31/12/2099 23:59:59</end_date>\n" +
-                    "<code>100% unlimited</code>\n" +
-                    "</coupon_group_id>\n" +
-                    "<coupon_group_id>\n" +
-                    "<start_date>01/05/2017 00:00:00</start_date>\n" +
-                    "<end_date>31/05/2017 23:59:59</end_date>\n" +
-                    "<code>Expired coupon group 1</code>\n" +
-                    "</coupon_group_id>";
-
-    private static String MPP_DEFAULT_PRODUCT_CODES_VALUE =
-            "<product_code>\n" +
-                    "<code>ProductCode1</code>\n" +
-                    "<verification_payment_gateway>Google</verification_payment_gateway>\n" +
-                    "</product_code>\n" +
-                    "<product_code>\n" +
-                    "<code>ProductCode2</code>\n" +
-                    "<verification_payment_gateway>Apple</verification_payment_gateway>\n" +
-                    "</product_code>";
-
-    // INGEST PP PARAMS
-    private static boolean PP_DEFAULT_IS_ACTIVE_VALUE = true;
-    private static int PP_DEFAULT_MAX_VIEWS_VALUE = 0;
-    private static boolean PP_DEFAULT_IS_RENEWABLE_VALUE = false;
-    private static int PP_DEFAULT_RECURRING_PERIODS_VALUE = 1;
-
-
-    public static List<ProgramAsset> ingestEPG(String epgChannelName, Integer programCount) {
-        return ingestEPG(epgChannelName, Optional.of(programCount), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-    }
 
     // ingest new EPG (Programmes) // TODO: complete one-by-one needed fields to cover util ingest_epg from old project
     public static List<ProgramAsset> ingestEPG(String epgChannelName, Optional<Integer> programCount, Optional<String> firstProgramStartDate,
@@ -103,8 +64,7 @@ public class IngestUtils extends BaseUtils {
 
         int programCountValue = programCount.orElse(EPG_DEFAULT_COUNT_OF_PROGRAMMES);
         if (programCountValue <= 0) {
-            Logger.getLogger(IngestUtils.class).error("Invalid programCount value " + programCount.get() +
-                    ". Should be bigger than 0");
+            Logger.getLogger(IngestUtils.class).error("Invalid programCount value " + programCount.get() + ". Should be bigger than 0");
             return null;
         }
         int seasonCountValue = seasonCount.orElse(EPG_DEFAULT_COUNT_OF_SEASONS);
@@ -158,9 +118,7 @@ public class IngestUtils extends BaseUtils {
         String epgChannelIngestXml = getChannelXML(partnerId, epgChannelName, output);
 
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-        HashMap headerMap = new HashMap<>();
-        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
-        headerMap.put("SOAPAction", "\"http://tempuri.org/IService/IngestKalturaEpg\"");
+
         String reqBody = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                 "   <s:Header/>\n" +
                 "   <s:Body>\n" +
@@ -173,14 +131,18 @@ public class IngestUtils extends BaseUtils {
                 "           </IngestKalturaEpg>\n" +
                 "   </s:Body>\n" +
                 "</s:Envelope>";
-        io.restassured.response.Response resp = RestAssured.given()
-                .log().all()
-                .headers(headerMap)
-                .body(reqBody)
-                .post(url);
+
+        io.restassured.response.Response resp = RestAssured
+                .given()
+                    .header("Content-Type", "text/xml;charset=UTF-8")
+                    .header("SOAPAction", "http://tempuri.org/IService/IngestKalturaEpg")
+                    .body(reqBody)
+                .when()
+                    .post(url);
 
         Logger.getLogger(IngestUtils.class).debug(reqBody);
         Logger.getLogger(IngestUtils.class).debug(resp.asString());
+
         int epgChannelId = IngestFixtureData.getEpgChannelId(epgChannelName);
         // TODO: create method getting epoch value from String and pattern
         long epoch = 0L;
@@ -209,6 +171,11 @@ public class IngestUtils extends BaseUtils {
         // TODO: complete Asset.json at least for programs
 
         return (List<ProgramAsset>) (Object) ingestedProgrammes.results.getObjects();
+    }
+
+    public static List<ProgramAsset> ingestEPG(String epgChannelName, Integer programCount) {
+        return ingestEPG(epgChannelName, Optional.of(programCount), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {
@@ -401,31 +368,22 @@ public class IngestUtils extends BaseUtils {
 
 
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-        HashMap headerMap = new HashMap<>();
-        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
-        headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
 
-        String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
-                "   <soapenv:Header/>\n" +
-                "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getIngestBusinessModuleUserName() + "</tem:username><tem:password>" +
-                getIngestBusinessModuleUserPassword() + "</tem:password><tem:xml>" +
-                "         <![CDATA[" + buildIngestMppXML(actionValue, mppCodeValue, isActiveValue, titleValue,
+        String reqBody = IngestMppUtils.buildIngestMppXml(actionValue, mppCodeValue, isActiveValue, titleValue,
                 descriptionValue, startDateValue, endDateValue, internalDiscountValue, productCodeValue,
                 isRenewableValue, gracePeriodMinuteValue, pricePlanCode1Value, pricePlanCode2Value,
-                channel1Value, channel2Value, fileType1Value, fileType2Value, couponGroupValue, productCodesValue) +
-                "                 ]]></tem:xml></tem:IngestBusinessModules>\n" +
-                "   </soapenv:Body>\n" +
-                "</soapenv:Envelope>";
+                channel1Value, channel2Value, fileType1Value, fileType2Value, couponGroupValue, productCodesValue);
 
-        io.restassured.response.Response resp = RestAssured.given()
-                .log().all()
-                .headers(headerMap)
-                .body(reqBody)
+        io.restassured.response.Response resp = RestAssured
+                .given()
+                    .header("Content-Type", "text/xml;charset=UTF-8")
+                    .header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules")
+                    .body(reqBody)
+                .when()
                 .post(url);
 
         Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug(resp.asString());
+        Logger.getLogger(IngestUtils.class).debug("\n Response:!!! " + resp.asString());
 
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //Logger.getLogger(IngestUtils.class).debug("ReportId = " + reportId);
@@ -456,48 +414,6 @@ public class IngestUtils extends BaseUtils {
         //subscription.setFileTypes();
         //subscription.setCouponsGroups();
         return subscription;
-    }
-
-    private static String buildIngestMppXML(String action, String mppCode, boolean isActive, String title, String description,
-                                            String startDate, String endDate, String internalDiscount, String productCode,
-                                            boolean isRenewable, int gracePeriodMinute, String pricePlanCode1,
-                                            String pricePlanCode2, String channel1, String channel2, String fileType1,
-                                            String fileType2, String couponGroup, String productCodes) {
-        return "<ingest id=\"" + mppCode + "\">\n" +
-                "<multi_price_plans>\n" +
-                "<multi_price_plan code=\"" + mppCode + "\" action=\"" + action + "\" is_active=\"" + isActive + "\">\n" +
-                "<titles>\n" +
-                "<title lang=\"eng\">" + title + "</title>\n" +
-                "</titles>\n" +
-                "<descriptions>\n" +
-                "<description lang=\"eng\">" + description + "</description>" +
-                "</descriptions>\n" +
-                "<start_date>" + startDate + "</start_date>\n" +
-                "<end_date>" + endDate + "</end_date>\n" +
-                "<internal_discount>" + internalDiscount + "</internal_discount>\n" +
-                "<coupon_group/>\n" +
-                "<product_code>" + productCode + "</product_code>\n" +
-                "<is_renewable>" + isRenewable + "</is_renewable>\n" +
-                "<priview_module/>\n" +
-                "<grace_period_minutes>" + gracePeriodMinute + "</grace_period_minutes>\n" +
-                "<price_plan_codes>\n" +
-                "<price_plan_code>" + pricePlanCode1 + "</price_plan_code>\n" +
-                "<price_plan_code>" + pricePlanCode2 + "</price_plan_code>\n" +
-                "</price_plan_codes>\n" +
-                "<channels>\n" +
-                "<channel>" + channel1 + "</channel>\n" +
-                "<channel>" + channel2 + "</channel>\n" +
-                "</channels>\n" +
-                "<file_types>\n" +
-                "<file_type>" + fileType1 + "</file_type>\n" +
-                "<file_type>" + fileType2 + "</file_type>\n" +
-                "</file_types>\n" +
-                "<order_number/>\n" +
-                "<subscription_coupon_group>" + couponGroup + "</subscription_coupon_group>\n" +
-                "<product_codes>" + productCodes + "</product_codes>\n" +
-                "</multi_price_plan>\n" +
-                "</multi_price_plans>\n" +
-                "</ingest>\n";
     }
 
     // ingest new PP
@@ -543,27 +459,17 @@ public class IngestUtils extends BaseUtils {
         int recurringPeriodsValue = recurringPeriods.orElse(PP_DEFAULT_RECURRING_PERIODS_VALUE);
 
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-        HashMap headerMap = new HashMap<>();
-        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
-        headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
 
-        String reqBody = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
-                "   <soapenv:Header/>\n" +
-                "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getIngestBusinessModuleUserName() + "</tem:username><tem:password>" +
-                getIngestBusinessModuleUserPassword() + "</tem:password><tem:xml>" +
-                "         <![CDATA[" + buildIngestPpXML(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
-                viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue,
-                isRenewableValue, recurringPeriodsValue) +
-                "                 ]]></tem:xml></tem:IngestBusinessModules>\n" +
-                "   </soapenv:Body>\n" +
-                "</soapenv:Envelope>";
+        String reqBody = IngestPpUtils.buildIngestPpXml(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
+                viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue, isRenewableValue, recurringPeriodsValue);
 
-        io.restassured.response.Response resp = RestAssured.given()
-                .log().all()
-                .headers(headerMap)
-                .body(reqBody)
-                .post(url);
+        io.restassured.response.Response resp = RestAssured
+                .given()
+                    .header("Content-Type", "text/xml;charset=UTF-8")
+                    .header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules")
+                    .body(reqBody)
+                .when()
+                    .post(url);
 
         Logger.getLogger(IngestUtils.class).debug(reqBody);
         Logger.getLogger(IngestUtils.class).debug(resp.asString());
@@ -596,28 +502,6 @@ public class IngestUtils extends BaseUtils {
         return pricePlan;
     }
 
-    private static String buildIngestPpXML(String action, String ppCode, boolean isActive, String fullLifeCycle,
-                                           String viewLifeCycle, int maxViews, String price, String currency,
-                                           String discount, boolean isRenewable, int recurringPeriods) {
-        String id = "reportIngestPricePlan" + action.substring(0, 1).toUpperCase() + action.substring(1);
-        return "<ingest id=\"" + id + "\">\n" +
-                "<price_plans>\n" +
-                "<price_plan code=\"" + ppCode + "\"  action=\"" + action + "\" is_active=\"" + isActive + "\">\n" +
-                "<full_life_cycle>" + fullLifeCycle + "</full_life_cycle>\n" +
-                "<view_life_cycle>" + viewLifeCycle + "</view_life_cycle>\n" +
-                "<max_views>" + maxViews + "</max_views>\n" +
-                "<price_code>\n" +
-                "<price>" + price + "</price>\n" +
-                "<currency>" + currency + "</currency>\n" +
-                "</price_code>\n" +
-                "<discount>" + discount + "</discount>\n" +
-                "<is_renewable>" + isRenewable + "</is_renewable>\n" +
-                "<recurring_periods>" + recurringPeriods + "</recurring_periods>\n" +
-                "</price_plan>\n" +
-                "</price_plans>\n" +
-                "</ingest>\n";
-    }
-
     /**
      * IMPORTANT: please delete inserted by that method items
      *
@@ -643,9 +527,8 @@ public class IngestUtils extends BaseUtils {
      */
     // ingest new PPV
     public static Ppv ingestPPV(Optional<String> action, Optional<String> ppvCode, Optional<Boolean> isActive, Optional<String> description,
-                                Optional<String> discount, Optional<Double> price, Optional<String> currency,
-                                Optional<String> usageModule, Optional<Boolean> isSubscriptionOnly,
-                                Optional<Boolean> isFirstDeviceLimitation, Optional<String> productCode,
+                                Optional<String> discount, Optional<Double> price, Optional<String> currency, Optional<String> usageModule,
+                                Optional<Boolean> isSubscriptionOnly, Optional<Boolean> isFirstDeviceLimitation, Optional<String> productCode,
                                 Optional<String> firstFileType, Optional<String> secondFileType) {
         String actionValue = action.orElse(INGEST_ACTION_INSERT);
         String ppvCodeValue = ppvCode.orElse(getRandomValue("PPV_", MAX_RANDOM_GENERATED_VALUE_4_INGEST));
@@ -664,30 +547,21 @@ public class IngestUtils extends BaseUtils {
         String secondFileTypeValue = secondFileType.orElse(getProperty(MOBILE_FILE_TYPE));
 
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-        HashMap headerMap = new HashMap<>();
-        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
-        headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
 
-        String reqBody = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>\n" +
-                "   <soapenv:Header/>\n" +
-                "   <soapenv:Body>\n" +
-                "      <tem:IngestBusinessModules><tem:username>" + getIngestBusinessModuleUserName() + "</tem:username><tem:password>" +
-                getIngestBusinessModuleUserPassword() + "</tem:password><tem:xml>" +
-                "         <![CDATA[" + buildIngestPpvXML(actionValue, ppvCodeValue, isActiveValue, descriptionValue,
+        String reqBody = IngestPpvUtils.buildIngestPpvXml(actionValue, ppvCodeValue, isActiveValue, descriptionValue,
                 discountValue, priceValue, currencyValue, usageModuleValue, isSubscriptionOnlyValue,
-                isFirstDeviceLimitationValue, productCodeValue, firstFileTypeValue, secondFileTypeValue) +
-                "                 ]]></tem:xml></tem:IngestBusinessModules>\n" +
-                "   </soapenv:Body>\n" +
-                "</soapenv:Envelope>";
+                isFirstDeviceLimitationValue, productCodeValue, firstFileTypeValue, secondFileTypeValue);
 
-        io.restassured.response.Response resp = RestAssured.given()
-                .log().all()
-                .headers(headerMap)
-                .body(reqBody)
-                .post(url);
+        io.restassured.response.Response resp = RestAssured
+                .given()
+                    .header("Content-Type", "text/xml;charset=UTF-8")
+                    .header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules")
+                    .body(reqBody)
+                .when()
+                    .post(url);
 
         Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug(resp.asString());
+        Logger.getLogger(IngestUtils.class).debug("\n Response!!!: " + resp.asString());
 
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //System.out.println("ReportId = " + reportId);
@@ -724,35 +598,6 @@ public class IngestUtils extends BaseUtils {
         ppv.setName(ppvCodeValue);
 
         return ppv;
-    }
-
-    private static String buildIngestPpvXML(String action, String ppvCode, boolean isActive, String description, String discount,
-                                            double price, String currency, String usageModule, boolean isSubscriptionOnly,
-                                            boolean isFirstDeviceLimitation, String productCode, String firstFileType,
-                                            String secondFileType) {
-        return "<ingest id=\"" + ppvCode + "\">\n" +
-                "  <ppvs>\n" +
-                "    <ppv code=\"" + ppvCode + "\" action=\"" + action + "\" is_active=\"" + isActive + "\">\n" +
-                "      <descriptions>\n" +
-                "        <description lang=\"eng\">" + description + "</description>\n" +
-                "      </descriptions>\n" +
-                "      <price_code>\n" +
-                "        <price>" + price + "</price>\n" +
-                "        <currency>" + currency + "</currency>\n" +
-                "      </price_code>\n" +
-                "      <usage_module>" + usageModule + "</usage_module>\n" +
-                "      <discount>" + discount + "</discount>\n" +
-                "      <coupon_group/>\n" +
-                "      <subscription_only>" + isSubscriptionOnly + "</subscription_only>\n" +
-                "      <first_device_limitation>" + isFirstDeviceLimitation + "</first_device_limitation>\n" +
-                "      <product_code>" + productCode + "</product_code>\n" +
-                "      <file_types>\n" +
-                "        <file_type>" + firstFileType + "</file_type>\n" +
-                "        <file_type>" + secondFileType + "</file_type>\n" +
-                "      </file_types>\n" +
-                "    </ppv>\n" +
-                "  </ppvs>\n" +
-                "</ingest>\n";
     }
 
     /**
@@ -809,26 +654,22 @@ public class IngestUtils extends BaseUtils {
         Map<String, String> datesValue = dates.orElse(getDefaultDates());
         // TODO: check if ingest url is the same for all ingest actions
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-        HashMap headerMap = new HashMap<>();
-        headerMap.put("Content-Type", "text/xml;charset=UTF-8");
-        headerMap.put("SOAPAction", "http://tempuri.org/IService/IngestTvinciData");
 
-        String reqBody = null;
-        try {
-            reqBody = buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
-                    catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String reqBody = buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
+                catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue);
 
-        io.restassured.response.Response resp = RestAssured.given()
-                .log().all()
-                .headers(headerMap)
-                .body(reqBody)
-                .post(url);
+        io.restassured.response.Response resp = RestAssured
+                .given()
+                    .header("Content-Type", "text/xml;charset=UTF-8")
+                    .header("SOAPAction", "http://tempuri.org/IService/IngestTvinciData")
+                    .body(reqBody)
+                .when()
+                    .post(url);
 
 //        Logger.getLogger(IngestUtils.class).debug(reqBody);
         Logger.getLogger(IngestUtils.class).debug("Ingest response: \n" + resp.asString());
+        assertThat(resp).isNotNull();
+        assertThat(from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.IngestStatus.Message").toString()).isEqualTo("OK");
 
         String id;
         if (INGEST_ACTION_INSERT.equals(actionValue)) {

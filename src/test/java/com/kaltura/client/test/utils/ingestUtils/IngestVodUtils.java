@@ -6,24 +6,15 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import static com.kaltura.client.test.Properties.MOBILE_FILE_TYPE;
-import static com.kaltura.client.test.Properties.WEB_FILE_TYPE;
-import static com.kaltura.client.test.Properties.getProperty;
+import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.getIngestAssetUserName;
 import static com.kaltura.client.test.tests.BaseTest.getIngestAssetUserPassword;
 import static com.kaltura.client.test.utils.XmlUtils.asList;
 
-public class IngestVodUtils {
+public class IngestVodUtils extends BaseIngestUtils {
 
     public static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl, String description, String catalogStartDate, String catalogEndDate,
                                            String startDate, String endDate, String mediaType, String ppvWebName, String ppvMobileName, Map<String, List<String>> tags, Map<String, String> strings,
@@ -161,31 +152,5 @@ public class IngestVodUtils {
         rootElement.appendChild(meta);
 
         return meta;
-    }
-
-    private static String docToString(Document doc) {
-        try {
-            StringWriter sw = new StringWriter();
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-            transformer.transform(new DOMSource(doc), new StreamResult(sw));
-            return sw.toString();
-        } catch (Exception ex) {
-            throw new RuntimeException("Error converting to String", ex);
-        }
-    }
-
-    private static void prettyPrint(Document doc) throws Exception {
-        Transformer tf = TransformerFactory.newInstance().newTransformer();
-        tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        tf.setOutputProperty(OutputKeys.INDENT, "yes");
-        Writer out = new StringWriter();
-        tf.transform(new DOMSource(doc), new StreamResult(out));
-        System.out.println(out.toString());
     }
 }

@@ -88,7 +88,7 @@ public class BaseTest {
     private static Ppv sharedCommonPpv;
 
     // cycles map with values related view/full life cycles of price plans
-    private static Map<Integer, String> cycles = new HashMap<>();
+    public static Map<Integer, String> cycles = new HashMap<>();
 
     {
         // TODO: complete other values
@@ -103,7 +103,7 @@ public class BaseTest {
     @BeforeSuite
     public void baseTest_beforeSuite() {
         // set configuration
-        config = new Configuration();
+        config  = new Configuration();
         config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
         config.setAcceptGzipEncoding(false);
 
