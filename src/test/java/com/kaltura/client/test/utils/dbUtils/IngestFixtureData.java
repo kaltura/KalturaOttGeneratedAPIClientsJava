@@ -94,7 +94,7 @@ public class IngestFixtureData {
         return pricePlan;
     }
 
-    private static PricePlan loadFirstPricePlanFromJsonArray(JSONArray jsonArray) {
+    static PricePlan loadFirstPricePlanFromJsonArray(JSONArray jsonArray) {
         PricePlan pricePlan = new PricePlan();
         pricePlan.setId(jsonArray.getJSONObject(0).getLong(ID));
         pricePlan.setName(jsonArray.getJSONObject(0).getString(NAME));

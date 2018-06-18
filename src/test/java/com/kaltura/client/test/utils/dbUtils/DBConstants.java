@@ -92,6 +92,9 @@ public class DBConstants {
             "where [status]=1 and is_active=1\n" +
             "and group_id=? and internal_discount_id=? and pricing_id=?";
 
+    static final String PRICE_PLAN_WITH_WAVER_SELECT = "SELECT TOP 1 * FROM [Pricing].[dbo].[usage_modules]\n" +
+            "WHERE group_id=? and WAIVER=1 AND WAIVER_PERIOD>0 and IS_ACTIVE=1 and [STATUS]=1";
+
     static final String PRICE_PLAN_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
             "and view_life_cycle_min = 5\n" +

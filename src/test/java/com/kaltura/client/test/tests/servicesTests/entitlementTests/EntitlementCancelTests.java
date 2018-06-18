@@ -9,6 +9,7 @@ import com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import com.kaltura.client.services.LicensedUrlService.GetLicensedUrlBuilder;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.*;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -119,19 +120,14 @@ public class EntitlementCancelTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("entitlement/action/cancel - cancel played subscription - error 3005")
-    @Test//(enabled = false) // TODO: as not completed
+    @Test
     public void cancelPlayedSubscription() {
         // create mpp having at least 1 media on its channel
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         sharedChannel.setId(channelResponse.results.getId());
-        PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty());
-
-        /*pricePlan.setWaiverPeriod(1440); // TODO: update
-        pricePlan.setIsWaiverEnabled(false);*/
+        PricePlan pricePlan = DBUtils.loadPPWithWaiver();
 
         Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
@@ -171,7 +167,6 @@ public class EntitlementCancelTests extends BaseTest {
         booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(masterKs));
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(3005).getCode());
-        // TODO: 5/23/2018 complete test
 
         // delete household for cleanup
         executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
@@ -180,10 +175,6 @@ public class EntitlementCancelTests extends BaseTest {
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
-        //delete PP
-        IngestUtils.ingestPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(pricePlan.getName()), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty());
     }
 
     @AfterClass

@@ -3,6 +3,7 @@ package com.kaltura.client.test.utils.dbUtils;
 import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.types.PricePlan;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.json.JSONArray;
@@ -13,6 +14,7 @@ import java.sql.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
+import static com.kaltura.client.test.utils.dbUtils.IngestFixtureData.loadFirstPricePlanFromJsonArray;
 import static org.assertj.core.api.Assertions.fail;
 
 public class DBUtils extends BaseUtils {
@@ -301,6 +303,24 @@ public class DBUtils extends BaseUtils {
             e.printStackTrace();
         }
         return pstm;
+    }
+
+    public static PricePlan loadPPWithWaiver() {
+        Logger.getLogger(IngestFixtureData.class).debug("loadPPWithWaiver()");
+        PricePlan pricePlan = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITH_WAVER_SELECT, true, partnerId);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return pricePlan;
+            }
+
+            pricePlan = loadFirstPricePlanFromJsonArray(jsonArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("price plan data can't be null");
+        }
+        return pricePlan;
     }
 
 
