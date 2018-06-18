@@ -119,16 +119,23 @@ public class EntitlementCancelTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("entitlement/action/cancel - cancel played subscription - error 3005")
-    @Test(enabled = false) // TODO: as not completed
+    @Test//(enabled = false) // TODO: as not completed
     public void cancelPlayedSubscription() {
         // create mpp having at least 1 media on its channel
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         sharedChannel.setId(channelResponse.results.getId());
+        PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.of(true), Optional.empty());
+
+        /*pricePlan.setWaiverPeriod(1440); // TODO: update
+        pricePlan.setIsWaiverEnabled(false);*/
+
         Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
+                Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
         // set household
@@ -140,7 +147,7 @@ public class EntitlementCancelTests extends BaseTest {
 
         // get CDN code for media
         MediaFile mediaFile = getMediaFileByType(getSharedMediaAsset(), getProperty(WEB_FILE_TYPE));
-        String cdnCode = mediaFile.getCdnCode();
+        String cdnCode = mediaFile.getUrl();
 
         // check license for play
         LicensedUrlMediaRequest licensedUrlRequest = new LicensedUrlMediaRequest();
@@ -173,6 +180,10 @@ public class EntitlementCancelTests extends BaseTest {
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+        //delete PP
+        IngestUtils.ingestPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(pricePlan.getName()), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.of(true), Optional.empty());
     }
 
     @AfterClass
