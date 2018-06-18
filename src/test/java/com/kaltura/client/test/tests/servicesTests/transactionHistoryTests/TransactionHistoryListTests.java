@@ -129,6 +129,7 @@ public class TransactionHistoryListTests extends BaseTest{
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
         //No errors appeared at response
         assertThat(listBillingTransactionResponse.error).isNull();
+        assertThat(listBillingTransactionResponse.results).isNotNull();
         //Verify that two transactions were performed
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(3);
         assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(3);
@@ -148,6 +149,7 @@ public class TransactionHistoryListTests extends BaseTest{
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
         //No errors appeared at response
         assertThat(listBillingTransactionResponse.error).isNull();
+        assertThat(listBillingTransactionResponse.results).isNotNull();
         //Verify that two transactions were performed
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(2);
         assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(2);
@@ -167,6 +169,7 @@ public class TransactionHistoryListTests extends BaseTest{
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
         //No errors appeared at response
         assertThat(listBillingTransactionResponse.error).isNull();
+        assertThat(listBillingTransactionResponse.results).isNotNull();
         //Verify that two transactions were performed
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(3);
         assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(3);
@@ -186,6 +189,7 @@ public class TransactionHistoryListTests extends BaseTest{
         listBillingTransactionResponse = executor.executeSync(listTransactionHistoryBuilder);
         //No errors appeared at response
         assertThat(listBillingTransactionResponse.error).isNull();
+        assertThat(listBillingTransactionResponse.results).isNotNull();
         //Verify that one transaction was performed
         assertThat(listBillingTransactionResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(listBillingTransactionResponse.results.getObjects().size()).isEqualTo(1);
