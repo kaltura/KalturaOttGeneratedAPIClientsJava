@@ -5,7 +5,7 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.AssetComment;
 import com.kaltura.client.types.AssetCommentFilter;
 import com.kaltura.client.types.Household;
@@ -45,7 +45,7 @@ public class AssetCommentListTests extends BaseTest {
         String subHeader = "subHeader";
         String text = "A lot of text";
 
-        Long assetId = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+        Long assetId = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(MOVIE_MEDIA_TYPE)), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty()).getId();
 

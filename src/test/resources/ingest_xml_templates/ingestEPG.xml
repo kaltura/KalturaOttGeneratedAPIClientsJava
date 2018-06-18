@@ -11,53 +11,10 @@
                     <EpgChannels xmlns="http://tempuri.org/xmltv"
                                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                 parent-group-id="203"
-                                 group-id="204"
                                  main-lang="eng"
                                  updater-id="587">
-                        <channel id="Camilo_4"/>
-                        <programme start="20180617170200" stop="20180617173200" channel="Camilo_4"
-                                   external_id="18061717020028_1_1">
-                            <title lang="eng">Program_20180617170200_ser18061717020028_seas1_e1</title>
-                            <crid>18061717020028_1_1</crid>
-                            <desc lang="eng">20180617170200 until 20180617173200</desc>
-                            <date>20180617170200</date>
-                            <language lang="eng">eng</language>
-                            <metas>
-                                <MetaType>season_num</MetaType>
-                                <MetaValues lang="eng">1</MetaValues>
-                            </metas>
-                            <metas>
-                                <MetaType>Series_ID</MetaType>
-                                <MetaValues lang="eng">18061717020028</MetaValues>
-                            </metas>
-                            <metas>
-                                <MetaType>Episode number</MetaType>
-                                <MetaValues lang="eng">1</MetaValues>
-                            </metas>
-                        </programme>
-                        <programme start="20180617173200" stop="20180617180200" channel="Camilo_4"
-                                   external_id="18061717020028_1_2">
-                            <title lang="eng">Program_20180617173200_ser18061717020028_seas1_e2</title>
-                            <crid>18061717020028_1_2</crid>
-                            <desc lang="eng">20180617173200 until 20180617180200</desc>
-                            <date>20180617170200</date>
-                            <language lang="eng">eng</language>
-                            <metas>
-                                <MetaType>season_num</MetaType>
-                                <MetaValues lang="eng">1</MetaValues>
-                            </metas>
-                            <metas>
-                                <MetaType>Series_ID</MetaType>
-                                <MetaValues lang="eng">18061717020028</MetaValues>
-                            </metas>
-                            <metas>
-                                <MetaType>Episode number</MetaType>
-                                <MetaValues lang="eng">2</MetaValues>
-                            </metas>
-                        </programme>
+                        <channel/>
                     </EpgChannels>
-
                     <!--]]>-->
                 </data>
             </request>

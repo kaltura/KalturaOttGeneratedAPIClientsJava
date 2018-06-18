@@ -7,7 +7,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -69,7 +68,7 @@ public class BaseUtils {
     }
 
     // generate current data String in specified format
-    public static String getCurrentDataInFormat(String pattern) {
+    public static String getCurrentDateInFormat(String pattern) {
         return getOffsetDateInFormat(0, pattern);
     }
 

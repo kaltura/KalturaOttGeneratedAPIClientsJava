@@ -3,13 +3,19 @@ package com.kaltura.client.test.tests.servicesTests.entitlementTests;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.TransactionType;
-import com.kaltura.client.services.*;
-import com.kaltura.client.services.ChannelService.AddChannelBuilder;
+import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
+import com.kaltura.client.services.ChannelService;
+import com.kaltura.client.services.ChannelService.AddChannelBuilder;
+import com.kaltura.client.services.EntitlementService;
+import com.kaltura.client.services.LicensedUrlService;
 import com.kaltura.client.services.LicensedUrlService.GetLicensedUrlBuilder;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.*;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.OttUserUtils;
+import com.kaltura.client.test.utils.PurchaseUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestMppUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -18,8 +24,10 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import java.util.List;
 import java.util.Optional;
+
 import static com.kaltura.client.services.EntitlementService.*;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
@@ -126,7 +134,7 @@ public class EntitlementCancelTests extends BaseTest {
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         sharedChannel.setId(channelResponse.results.getId());
-        Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
+        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
@@ -169,7 +177,7 @@ public class EntitlementCancelTests extends BaseTest {
         // delete household for cleanup
         executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
         //delete subscription
-        IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
+        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
