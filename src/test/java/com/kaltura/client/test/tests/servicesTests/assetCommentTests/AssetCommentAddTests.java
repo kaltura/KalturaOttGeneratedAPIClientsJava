@@ -6,7 +6,7 @@ import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
 import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;

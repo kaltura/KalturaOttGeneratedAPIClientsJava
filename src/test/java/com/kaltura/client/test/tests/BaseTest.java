@@ -1,23 +1,27 @@
 package com.kaltura.client.test.tests;
 
+import com.google.common.base.Verify;
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
+import com.kaltura.client.services.ChannelService;
+import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.services.OttUserService;
+import com.kaltura.client.services.SubscriptionService;
+import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
+import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.types.*;
+import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.OttUserService.login;
@@ -25,10 +29,9 @@ import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
-import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getDevicesListFromHouseHold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getUsersListFromHouseHold;
+import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
+import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -164,6 +167,12 @@ public class BaseTest {
                         Optional.of(false), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()), Optional.empty(),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
             }
+
+            // it should have at least 1 VOD
+            if (getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true) == null ||
+                    getAssetsListBySubscription(Integer.valueOf(sharedCommonSubscription.getId()), Optional.empty(), true).size() == 0) {
+                ingestVODIntoSubscription(sharedCommonSubscription);
+            }
         }
         return sharedCommonSubscription;
     }
@@ -286,7 +295,7 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+            mediaAsset = IngestUtils.ingestVOD (Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty());
         }
@@ -329,18 +338,91 @@ public class BaseTest {
     public static Subscription get5MinRenewableSubscription() {
         if (fiveMinRenewableSubscription == null) {
             fiveMinRenewableSubscription = IngestFixtureData.loadShared5MinutesRenewableSubscription();
+            // it should have at least 1 VOD
+            if (getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true) == null ||
+                    getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true).size() == 0) {
+                ingestVODIntoSubscription(fiveMinRenewableSubscription);
+            }
             if (fiveMinRenewableSubscription == null) {
                 PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
                         Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
                         Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(EUR.getValue()), Optional.of(""),
                         Optional.of(true), Optional.of(3));
+
+                // it should have at least 1 VOD
+                Channel channel = loadDefaultChannel();
+                channel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
+                AddChannelBuilder addChannelBuilder = ChannelService.add(channel);
+                Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
+                channel.setId(channelResponse.results.getId());
+
                 fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+                        Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(),
+                        Optional.of(channel.getName()), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
             }
         }
         return fiveMinRenewableSubscription;
+    }
+
+    private static void ingestVODIntoSubscription(Subscription subscription) {
+        // getting channel
+        SubscriptionFilter filter = new SubscriptionFilter();
+        filter.setSubscriptionIdIn(subscription.getId());
+        ListSubscriptionBuilder listSubscriptionBuilder = SubscriptionService.list(filter);
+        Response<ListResponse<Subscription>> listResponse = executor.executeSync(listSubscriptionBuilder.setKs(getOperatorKs()));
+        Verify.verify(listResponse.results.getObjects().get(0).getChannels().size() > 0);
+        int channelId = listResponse.results.getObjects().get(0).getChannels().get(0).getId().intValue();
+
+        Channel channel = IngestFixtureData.getChannel(channelId);
+        String[] parameters;
+        String tag = null, name = null;
+        if (null == channel.getFilterExpression()) {
+            // automatic channel
+            String automaticChannelExpression = IngestFixtureData.getAutomaticChannelExpression(channelId);
+            parameters = automaticChannelExpression.split(":");
+            Verify.verify(parameters.length == 2);
+            tag = parameters[0];
+        } else {
+            // KSQL channel
+            parameters = channel.getFilterExpression().split("=");
+            Verify.verify(parameters.length == 2);
+            if ("name".equals(parameters[0].toLowerCase())) {
+                // ingest VOD with mentioned name
+                name = parameters[0];
+            } else {
+                // ingest VOD with Tag/Meta (currently supports only tags!!!)
+                tag = parameters[0];
+            }
+        }
+        if (name != null) {
+            // ingest VOD by name
+            MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty());
+            IngestUtils.updateVODName(mediaAsset, name);
+        }
+        if (tag != null) {
+            // ingest VOD by tag
+            Map<String, List<String>> tags = new HashMap<>();
+            List<String> values = new ArrayList<>();
+            values.add(parameters[1].replaceAll("'", ""));
+            tags.put(tag, values);
+            IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(tags), Optional.empty(),
+                    Optional.empty(), Optional.empty());
+        }
+    }
+
+    private static Channel loadDefaultChannel() {
+        Channel channel = new Channel();
+        channel.setName(BaseUtils.getRandomValue("Channel_", 999999));
+        channel.setDescription("Description of " + channel.getName());
+        channel.setIsActive(true);
+        channel.setAssetTypes(null);
+        return channel;
     }
 
     // shared household
