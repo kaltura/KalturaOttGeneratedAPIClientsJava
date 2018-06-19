@@ -8,6 +8,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.*;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -53,9 +54,9 @@ public class SearchAssetFilterTests extends BaseTest {
         list.add(tagValue);
         map.put(tagName, list);
 
-        asset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        asset2 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE, map, String.valueOf(BaseUtils.getTimeInDate(-100)));
-        asset3 = IngestUtils.ingestVOD(EPISODE_MEDIA_TYPE, map, String.valueOf(BaseUtils.getTimeInDate(-10)));
+        asset = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        asset2 = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE, map, String.valueOf(BaseUtils.getTimeInDate(-100)));
+        asset3 = IngestVodUtils.ingestVOD(EPISODE_MEDIA_TYPE, map, String.valueOf(BaseUtils.getTimeInDate(-10)));
         program = IngestUtils.ingestEPG(epgChannelName, 1).get(0);
         program2 = IngestUtils.ingestEPG(epgChannelName2, 1).get(0);
     }
@@ -212,9 +213,9 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("Asset/action/list - VOD -  order by NAME (DESC/ASC")
     @Test(enabled = false)
     private void OrderVodAssetsByName() {
-        IngestUtils.updateVODName(asset, "AAA");
-        IngestUtils.updateVODName(asset2, "BBB");
-        IngestUtils.updateVODName(asset3, "CCC");
+        IngestVodUtils.updateVODName(asset, "AAA");
+        IngestVodUtils.updateVODName(asset2, "BBB");
+        IngestVodUtils.updateVODName(asset3, "CCC");
 
         ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
         assetFilter = AssetUtils.getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());

@@ -8,16 +8,16 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetHistoryUtils;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BookmarkUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.services.BookmarkService.*;
 import static com.kaltura.client.services.AssetHistoryService.CleanAssetHistoryBuilder;
 import static com.kaltura.client.services.AssetHistoryService.ListAssetHistoryBuilder;
+import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import static com.kaltura.client.services.BookmarkService.add;
 import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
@@ -46,13 +46,13 @@ public class AssetHistoryCleanTests extends BaseTest {
     // TODO: 5/3/2018 change before method name
     private void clean_tests_before_class() {
         // Ingest first movie asset
-        movie = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        movie = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
         movieFileId = AssetUtils.getAssetFileIds(String.valueOf(movie.getId())).get(0);
         // Ingest second movie asset
-        movie2 = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        movie2 = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
         movie2FileId = AssetUtils.getAssetFileIds(String.valueOf(movie2.getId())).get(0);
         // Ingest episode asset
-        episode = IngestUtils.ingestVOD(EPISODE_MEDIA_TYPE);
+        episode = IngestVodUtils.ingestVOD(EPISODE_MEDIA_TYPE);
         episodeFileId = AssetUtils.getAssetFileIds(String.valueOf(episode.getId())).get(0);
     }
 
