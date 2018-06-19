@@ -47,7 +47,7 @@ public class EntitlementCancelTests extends BaseTest {
         subscriptionId = Integer.valueOf(getSharedCommonSubscription().getId());
 
         // set household
-        testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
         testSharedMasterUser = HouseholdUtils.getMasterUserFromHousehold(testSharedHousehold);
 
         playerData = new BookmarkPlayerData();
@@ -136,7 +136,6 @@ public class EntitlementCancelTests extends BaseTest {
 
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        //HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
         String masterKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
 
         PurchaseUtils.purchaseSubscription(masterKs, Integer.valueOf(subscription.getId()), Optional.empty());
@@ -174,7 +173,70 @@ public class EntitlementCancelTests extends BaseTest {
         IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        // delete channel
+        executor.executeSync(ChannelService.delete(Math.toIntExact(sharedChannel.getId())).setKs(getManagerKs()));
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/cancel - cancel subscription in cancellation window - error 3001")
+    @Test(enabled = false) //TODO: as not completed
+    public void cancelSubscriptionInCancellationWindow() {
+/*        // create mpp having at least 1 media on its channel
+        sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
+        AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
+        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
+        sharedChannel.setId(channelResponse.results.getId());*/
+        PricePlan pricePlan = DBUtils.loadPPWithoutWaiver();
+
+        Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        // set household
+        /*Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        String masterKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());*/
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(testSharedMasterUser.getUserId()), null);
+
+        PurchaseUtils.purchaseSubscription(masterKs, Integer.valueOf(subscription.getId()), Optional.empty());
+
+        /*// get CDN code for media
+        MediaFile mediaFile = getMediaFileByType(getSharedMediaAsset(), getProperty(WEB_FILE_TYPE));
+        String cdnCode = mediaFile.getUrl();
+
+        // check license for play
+        LicensedUrlMediaRequest licensedUrlRequest = new LicensedUrlMediaRequest();
+        licensedUrlRequest.setAssetId(String.valueOf(getSharedMediaAsset().getId()));
+        licensedUrlRequest.setContentId(mediaFile.getId());
+        licensedUrlRequest.setBaseUrl(cdnCode);
+        GetLicensedUrlBuilder licensedUrlBuilder = LicensedUrlService.get(licensedUrlRequest);
+        Response<LicensedUrl> urlResponse = executor.executeSync(licensedUrlBuilder.setKs(masterKs));
+        assertThat(urlResponse.results).isNotNull();
+        // play
+        playerData.setFileId(mediaFile.getId().longValue());
+        bookmark.setPlayerData(playerData);
+        bookmark.setId(String.valueOf(getSharedMediaAsset().getId()));
+        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
+        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder.setKs(masterKs));
+        assertThat(booleanResponse.results.booleanValue()).isTrue();*/
+
+        // try cancel
+        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Integer.valueOf(subscription.getId()),
+                TransactionType.SUBSCRIPTION);
+        Response<Boolean> booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(masterKs));
+        assertThat(booleanResponse.results).isNull();
+        assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(3001).getCode());
+
+        // delete household for cleanup
+        //executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
+        //delete subscription
+        IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        // delete channel
+        //executor.executeSync(ChannelService.delete(Math.toIntExact(sharedChannel.getId())).setKs(getManagerKs()));
     }
 
     @AfterClass

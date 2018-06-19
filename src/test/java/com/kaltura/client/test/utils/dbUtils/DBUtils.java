@@ -323,6 +323,24 @@ public class DBUtils extends BaseUtils {
         return pricePlan;
     }
 
+    public static PricePlan loadPPWithoutWaiver() {
+        Logger.getLogger(IngestFixtureData.class).debug("loadPPWithoutWaiver()");
+        PricePlan pricePlan = null;
+
+        try {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITHOUT_WAVER_SELECT, true, partnerId);
+            if (Strings.isNullOrEmpty(jsonArray.toString())) {
+                return pricePlan;
+            }
+
+            pricePlan = loadFirstPricePlanFromJsonArray(jsonArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.getLogger(IngestFixtureData.class).error("price plan data can't be null");
+        }
+        return pricePlan;
+    }
+
 
 //    private static void openConnection() {
 //        SQLServerDataSource dataSource = getDataSource();

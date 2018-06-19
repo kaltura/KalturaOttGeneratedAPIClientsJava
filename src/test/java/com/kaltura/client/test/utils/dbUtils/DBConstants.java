@@ -93,7 +93,10 @@ public class DBConstants {
             "and group_id=? and internal_discount_id=? and pricing_id=?";
 
     static final String PRICE_PLAN_WITH_WAVER_SELECT = "SELECT TOP 1 * FROM [Pricing].[dbo].[usage_modules]\n" +
-            "WHERE group_id=? and WAIVER=1 AND WAIVER_PERIOD>0 and IS_ACTIVE=1 and [STATUS]=1";
+            "WHERE group_id=? AND WAIVER=1 AND WAIVER_PERIOD>0 AND IS_ACTIVE=1 AND [STATUS]=1";
+
+    static final String PRICE_PLAN_WITHOUT_WAVER_SELECT = "SELECT TOP 1 * FROM [Pricing].[dbo].[usage_modules]\n" +
+            "WHERE group_id=? AND WAIVER=0 AND IS_ACTIVE=1 AND [STATUS]=1";
 
     static final String PRICE_PLAN_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
@@ -116,7 +119,7 @@ public class DBConstants {
             // TODO: not sure about um.num_of_rec_periods > 2
             "um.is_renew=1 and ((um.num_of_rec_periods > 2) or (um.num_of_rec_periods = 0))\n" +
             "and s.is_recurring=1 and c.channel_type!=" + ChannelType.MANUAL_CHANNEL_TYPE.getValue() + " " +
-            "and s.group_id=? and s.is_active=1 and s.[status]=1 and s.[type]=0\n" +
+            "and s.group_id=? and s.is_active=1 and s.[status]=1 and s.[type]=0 and sc.is_active=1 and sc.[status]=1\n" +
             "order by s.create_date desc";
 
     static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) SUBSCRIPTION_ID as " + SUB_ID +
