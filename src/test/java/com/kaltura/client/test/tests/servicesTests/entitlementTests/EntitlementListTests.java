@@ -9,8 +9,8 @@ import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
 import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -19,10 +19,12 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import java.util.Optional;
+
 import static com.kaltura.client.enums.EntitlementOrderBy.PURCHASE_DATE_ASC;
 import static com.kaltura.client.services.HouseholdService.delete;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementListTests extends BaseTest {
@@ -46,10 +48,10 @@ public class EntitlementListTests extends BaseTest {
         filter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
 
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-        regularUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-        masterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
-        regularUserId = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0).getUserId();
+        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
+        regularUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
+        masterUserId = HouseholdUtils.getMasterUser(household).getUserId();
+        regularUserId = HouseholdUtils.getRegularUsersList(household).get(0).getUserId();
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -57,7 +59,7 @@ public class EntitlementListTests extends BaseTest {
     @Test
     public void entitlementListBeforePurchase() {
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        String masterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        String masterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         // subscription
         filter.setProductTypeEqual(TransactionType.SUBSCRIPTION);
@@ -194,7 +196,7 @@ public class EntitlementListTests extends BaseTest {
     public void entitlementListWithPaging() {
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
                 Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
-        MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
+        MediaAsset mediaAsset = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty());
@@ -236,7 +238,7 @@ public class EntitlementListTests extends BaseTest {
         forceCancelEntitlementBuilder = EntitlementService.forceCancel(mediaFileId, TransactionType.PPV);
         executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
         // delete media
-        IngestUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAsset.getName()), true, Optional.empty(),
+        IngestVodUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAsset.getName()), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty());

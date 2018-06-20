@@ -102,7 +102,7 @@ public class OttUserLoginTests extends BaseTest {
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
 
         // get regular user
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
         // suspend household
         SuspendHouseholdBuilder suspendHouseholdBuilder = suspend()
@@ -148,7 +148,7 @@ public class OttUserLoginTests extends BaseTest {
 //        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
 //
 //        // get regular user
-//        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+//        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 //
 //        // login user with invalid udid
 //        String username = getOttUserById(Integer.parseInt(user.getUserId())).getUsername();

@@ -55,7 +55,7 @@ public class OttUserAddRoleTests extends BaseTest {
 
         int userId = Integer.parseInt(user.getId());
         ListUserRoleBuilder listUserRoleBuilder = UserRoleService.list(filter)
-                .setKs(getKs(userId, null));
+                .setKs(getKs(userId));
         List<UserRole> userRoles = executor.executeSync(listUserRoleBuilder).results.getObjects();
 
         // assert new added role is return

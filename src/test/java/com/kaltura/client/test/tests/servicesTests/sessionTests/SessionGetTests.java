@@ -22,8 +22,8 @@ public class SessionGetTests extends BaseTest {
     @Test
     private void getMasterUserSession() {
         Household household = HouseholdUtils.createHousehold(2, 1, false);
-        HouseholdUser user = HouseholdUtils.getMasterUserFromHousehold(household);
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        HouseholdUser user = HouseholdUtils.getMasterUser(household);
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String session = OttUserUtils.getKs(Integer.parseInt(user.getUserId()), udid);
 
         GetSessionBuilder getSessionBuilder = SessionService.get(session).setKs(getAdministratorKs());

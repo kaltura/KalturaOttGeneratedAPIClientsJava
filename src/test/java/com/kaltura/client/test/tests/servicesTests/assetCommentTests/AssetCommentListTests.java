@@ -5,7 +5,7 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.AssetComment;
 import com.kaltura.client.types.AssetCommentFilter;
 import com.kaltura.client.types.Household;
@@ -18,9 +18,9 @@ import org.testng.annotations.Test;
 import java.util.Optional;
 
 import static com.kaltura.client.services.AssetCommentService.ListAssetCommentBuilder;
-import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetCommentListTests extends BaseTest {
@@ -33,7 +33,7 @@ public class AssetCommentListTests extends BaseTest {
         int numOfUsers = 1;
         int numOfDevices = 1;
         household = createHousehold(numOfUsers, numOfDevices, false);
-        householdMasterUserKs = getHouseholdMasterUserKs(household, null);
+        householdMasterUserKs = getHouseholdMasterUserKs(household);
     }
 
     @Description("AssetComment/action/list - check order by functionality")
@@ -45,7 +45,7 @@ public class AssetCommentListTests extends BaseTest {
         String subHeader = "subHeader";
         String text = "A lot of text";
 
-        Long assetId = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+        Long assetId = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(MOVIE_MEDIA_TYPE)), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty()).getId();
 

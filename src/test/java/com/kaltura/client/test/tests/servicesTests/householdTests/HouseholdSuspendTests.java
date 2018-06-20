@@ -69,7 +69,7 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // suspend household
         SuspendHouseholdBuilder suspendHouseholdBuilder = HouseholdService.suspend()
@@ -94,10 +94,10 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_masterUser_ks() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // suspend household
@@ -116,7 +116,7 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_login_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // create role
         UserRole role = new UserRole();
@@ -154,10 +154,10 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_purchase_subscription_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role
@@ -209,10 +209,10 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_cancel_subscription_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role
@@ -256,10 +256,10 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_playback_subscription_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role
@@ -308,10 +308,10 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_purchase_ppv_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role
@@ -358,10 +358,10 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_playback_ppv_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role
@@ -419,10 +419,10 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // set household
         householdSlowTest = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(householdSlowTest);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(householdSlowTest);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(householdSlowTest).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(householdSlowTest).get(0).getUdid();
         masterUserKsSlowTest = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role
@@ -512,10 +512,10 @@ public class HouseholdSuspendTests extends BaseTest {
     private void suspend_with_purchase_service_role() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // create role

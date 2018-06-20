@@ -19,8 +19,8 @@ import static com.kaltura.client.services.HouseholdService.*;
 import static com.kaltura.client.services.HouseholdService.DeleteHouseholdBuilder;
 import static com.kaltura.client.services.OttUserService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
-import static com.kaltura.client.test.utils.HouseholdUtils.getDefaultUserFromHousehold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getMasterUserFromHousehold;
+import static com.kaltura.client.test.utils.HouseholdUtils.getDefaultUser;
+import static com.kaltura.client.test.utils.HouseholdUtils.getMasterUser;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,7 +68,7 @@ public class OttUserDeleteTests extends BaseTest {
     @Test()
     private void delete_master_user() {
         // get household master user
-        HouseholdUser masterUser = getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = getMasterUser(household);
 
         // try to delete master user and assert error
         deleteOttUserBuilder = OttUserService.delete()
@@ -85,7 +85,7 @@ public class OttUserDeleteTests extends BaseTest {
     @Test()
     private void delete_default_user() {
         // get household default user
-        HouseholdUser defaultUser = getDefaultUserFromHousehold(household);
+        HouseholdUser defaultUser = getDefaultUser(household);
 
         // try to delete default user and assert error
         deleteOttUserBuilder = OttUserService.delete()
@@ -120,7 +120,7 @@ public class OttUserDeleteTests extends BaseTest {
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
 
         // get regular user
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
         // suspend household
         SuspendHouseholdBuilder suspendHouseholdBuilder = suspend()

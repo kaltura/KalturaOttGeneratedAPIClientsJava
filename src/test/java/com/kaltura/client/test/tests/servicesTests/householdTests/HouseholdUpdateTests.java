@@ -29,10 +29,10 @@ public class HouseholdUpdateTests extends BaseTest {
         int numberOfUsersInHousehold = 2;
         int numberOfDevicesInHousehold = 1;
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
     }
 
@@ -87,8 +87,8 @@ public class HouseholdUpdateTests extends BaseTest {
         updatedHousehold.setName(householdUpdatedDetails);
         updatedHousehold.setDescription(householdUpdatedDetails);
 
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
-        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()));
 
         updatedHousehold = executor.executeSync(update(updatedHousehold)
                 .setKs(userKs))
@@ -109,8 +109,8 @@ public class HouseholdUpdateTests extends BaseTest {
         String householdUpdatedDetails = "updated details with empty household";
         Household updatedHousehold = new Household();
 
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
-        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()));
 
         updatedHousehold = executor.executeSync(update(updatedHousehold)
                 .setKs(userKs))

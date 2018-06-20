@@ -2,15 +2,19 @@ package com.kaltura.client.test.tests.servicesTests.productPriceTests;
 
 import com.kaltura.client.enums.*;
 import com.kaltura.client.services.*;
+import com.kaltura.client.services.AssetService.ListAssetBuilder;
 import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
-import com.kaltura.client.services.AssetService.ListAssetBuilder;
 import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
 import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
 import com.kaltura.client.services.TransactionHistoryService.ListTransactionHistoryBuilder;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.*;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.OttUserUtils;
+import com.kaltura.client.test.utils.PurchaseUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestMppUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -21,13 +25,15 @@ import org.hamcrest.Matchers;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import java.util.Optional;
+
 import static com.kaltura.client.services.HouseholdService.delete;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductPriceListTests extends BaseTest {
@@ -66,8 +72,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 2;
         int numberOfDevices = 1;
         household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-        classMasterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
+        classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
+        classMasterUserId = HouseholdUtils.getMasterUser(household).getUserId();
 
         sharedChannel = new Channel();
         sharedChannel.setName(BaseUtils.getRandomValue("Channel_", 999999));
@@ -75,7 +81,7 @@ public class ProductPriceListTests extends BaseTest {
         sharedChannel.setIsActive(true);
         sharedChannel.setAssetTypes(null);
 
-        subscriptionWithMultiCurrenciesAndDiscountPercentage = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT),
+        subscriptionWithMultiCurrenciesAndDiscountPercentage = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.of(true), Optional.empty(),
                 Optional.of(PRICE_PLAN_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS), Optional.empty(), Optional.empty(),
@@ -178,7 +184,7 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
@@ -186,7 +192,7 @@ public class ProductPriceListTests extends BaseTest {
         filter.setIsLowest(false);
         ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(filter);
         productPriceResponse = executor.executeSync(productPriceListBeforePurchase
-                .setKs(OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null)));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()))));
         // should be 2 ss one item is subscription an another is media file
         assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(2);
         assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
@@ -205,15 +211,15 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        //HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        //HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         // create mpp with supporting of 1 type only and having at least 1 media on its channel
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         sharedChannel.setId(channelResponse.results.getId());
-        Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
+        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
@@ -280,7 +286,7 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
         //delete subscription
-        IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
+        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
@@ -295,7 +301,7 @@ public class ProductPriceListTests extends BaseTest {
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         sharedChannel.setId(channelResponse.results.getId());
-        Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
+        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
@@ -304,8 +310,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(webHDFileOnlySubId));
@@ -349,7 +355,7 @@ public class ProductPriceListTests extends BaseTest {
         DeleteChannelBuilder deleteChannelBuilder = ChannelService.delete(Math.toIntExact(sharedChannel.getId()));
         executor.executeSync(deleteChannelBuilder.setKs(getManagerKs()));
         //delete subscription
-        IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
+        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
@@ -359,7 +365,7 @@ public class ProductPriceListTests extends BaseTest {
     @Description("productPrice/action/list - subscription - no specifed currency")
     @Test()
     public void productPriceSubscriptionNoSpecifiedCurrencyTest() {
-        Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
+        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.of(PRICE_PLAN_WITH_MULTI_CURRENCIES), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
@@ -368,8 +374,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithMultiCurrencyId));
@@ -410,7 +416,7 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
         //delete subscription
-        IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
+        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
@@ -427,8 +433,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
@@ -475,7 +481,7 @@ public class ProductPriceListTests extends BaseTest {
     public void productPriceSubscriptionWithFixedDiscountAndSpecifiedCurrencyNotInLocaleTest() {
         // TODO: should we save it in Properties?
         double subPriceAfterDiscount = 4; // as price 5 and discount is 1
-        Subscription subscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
+        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.of(PRICE_PLAN_WITH_MULTI_CURRENCIES_AND_DISCOUNT_FIXED),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
@@ -484,8 +490,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
@@ -525,7 +531,7 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
         //delete subscription
-        IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
+        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
@@ -542,8 +548,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
@@ -592,12 +598,12 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         // TODO: should we save it in Properties?
         double ppvPriceAfterDiscount = 33.3; // as price 37 ILS and discount is 10%
-        MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
+        MediaAsset mediaAsset = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS),
                 Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS), Optional.empty(), Optional.empty(),
@@ -642,7 +648,7 @@ public class ProductPriceListTests extends BaseTest {
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
-        IngestUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAsset.getName()), true, Optional.empty(),
+        IngestVodUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAsset.getName()), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS),
                 Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS), Optional.empty(), Optional.empty(),
@@ -656,10 +662,10 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
-        MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
+        MediaAsset mediaAsset = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_FIXED_DISCOUNT),
                 Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_FIXED_DISCOUNT), Optional.empty(), Optional.empty(),
@@ -705,7 +711,7 @@ public class ProductPriceListTests extends BaseTest {
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
-        IngestUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAsset.getName()), true, Optional.empty(),
+        IngestVodUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAsset.getName()), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS),
                 Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS), Optional.empty(), Optional.empty(),
@@ -718,7 +724,7 @@ public class ProductPriceListTests extends BaseTest {
     public void productPriceWithPassedPpvTest() {
         String ppvWithExpiredDate = ";;01/01/2017 00:00:00";
         String ppvMobileModule = getSharedCommonPpv().getName() + ppvWithExpiredDate + PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS + ";;";
-        MediaAsset mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+        MediaAsset mediaAssetWith2Ppv1Expired = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
@@ -736,7 +742,7 @@ public class ProductPriceListTests extends BaseTest {
                 mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
 
         ppvMobileModule = getSharedCommonPpv().getName() + ppvWithExpiredDate;
-        mediaAssetWith2Ppv1Expired = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
+        mediaAssetWith2Ppv1Expired = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true,
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(ppvMobileModule),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
@@ -752,7 +758,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(
                 mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
         // delete media
-        IngestUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAssetWith2Ppv1Expired.getName()), true, Optional.empty(),
+        IngestVodUtils.ingestVOD(Optional.of(INGEST_ACTION_DELETE), Optional.of(mediaAssetWith2Ppv1Expired.getName()), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS),
                 Optional.of(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS), Optional.empty(), Optional.empty(),
@@ -765,7 +771,7 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
         // delete subscription
-        IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscriptionWithMultiCurrenciesAndDiscountPercentage.getName()),
+        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscriptionWithMultiCurrenciesAndDiscountPercentage.getName()),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());

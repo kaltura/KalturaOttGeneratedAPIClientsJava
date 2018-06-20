@@ -129,14 +129,6 @@ public class OTTUser extends BaseOTTUser {
 	public Integer getHouseholdId(){
 		return this.householdId;
 	}
-	public void setHouseholdId(Integer householdId){
-		this.householdId = householdId;
-	}
-
-	public void householdId(String multirequestToken){
-		setToken("householdId", multirequestToken);
-	}
-
 	// email:
 	public String getEmail(){
 		return this.email;
@@ -253,38 +245,14 @@ public class OTTUser extends BaseOTTUser {
 	public Boolean getIsHouseholdMaster(){
 		return this.isHouseholdMaster;
 	}
-	public void setIsHouseholdMaster(Boolean isHouseholdMaster){
-		this.isHouseholdMaster = isHouseholdMaster;
-	}
-
-	public void isHouseholdMaster(String multirequestToken){
-		setToken("isHouseholdMaster", multirequestToken);
-	}
-
 	// suspensionState:
 	public HouseholdSuspensionState getSuspensionState(){
 		return this.suspensionState;
 	}
-	public void setSuspensionState(HouseholdSuspensionState suspensionState){
-		this.suspensionState = suspensionState;
-	}
-
-	public void suspensionState(String multirequestToken){
-		setToken("suspensionState", multirequestToken);
-	}
-
 	// userState:
 	public UserState getUserState(){
 		return this.userState;
 	}
-	public void setUserState(UserState userState){
-		this.userState = userState;
-	}
-
-	public void userState(String multirequestToken){
-		setToken("userState", multirequestToken);
-	}
-
 
 	public OTTUser() {
 		super();

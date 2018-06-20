@@ -92,7 +92,7 @@ public class AssetUtils extends BaseUtils {
         } else {
             for (int i = 0; i < numOfActions; i++) {
                 Household household = HouseholdUtils.createHousehold(1, 1, false);
-                HouseholdUser householdUser = HouseholdUtils.getMasterUserFromHousehold(household);
+                HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
                 Bookmark bookmark = BookmarkUtils.addBookmark(0, String.valueOf(assetId),
                         AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0),
                         assetType, BookmarkActionType.FIRST_PLAY);
@@ -112,7 +112,7 @@ public class AssetUtils extends BaseUtils {
         } else {
             for (int i = 0; i < numOfActions; i++) {
                 Household household = HouseholdUtils.createHousehold(1, 1, false);
-                HouseholdUser householdUser = HouseholdUtils.getMasterUserFromHousehold(household);
+                HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
                 SocialAction socialAction = SocialUtils.getSocialAction(SocialActionType.LIKE, null, assetId, assetType, null);
                 AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add(socialAction)
                         .setKs(BaseTest.getOperatorKs())
@@ -130,7 +130,7 @@ public class AssetUtils extends BaseUtils {
         } else {
             for (int i = 0; i < numOfActions; i++) {
                 Household household = HouseholdUtils.createHousehold(1, 1, false);
-                HouseholdUser householdUser = HouseholdUtils.getMasterUserFromHousehold(household);
+                HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
                 SocialActionRate socialActionRate = SocialUtils.getSocialActionRate(SocialActionType.RATE, null, assetId, assetType, null, rate);
                 AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add(socialActionRate)
                         .setKs(BaseTest.getOperatorKs())

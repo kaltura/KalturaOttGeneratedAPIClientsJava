@@ -41,7 +41,7 @@ public class OttUserListTests extends BaseTest {
     @Test
     private void list_with_masterUserKs() {
         // get master user from household
-        HouseholdUser masterUser = getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = getMasterUser(household);
 
         // login master user
         String username = getOttUserById(Integer.parseInt(masterUser.getUserId())).getUsername();
@@ -64,7 +64,7 @@ public class OttUserListTests extends BaseTest {
     @Test
     private void list_with_regularUserKs() {
         // get master user from household
-        HouseholdUser user = getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser user = getRegularUsersList(household).get(0);
 
         // login regular user
         String username = getOttUserById(Integer.parseInt(user.getUserId())).getUsername();
@@ -87,7 +87,7 @@ public class OttUserListTests extends BaseTest {
     @Test
     private void list_with_id_filter() {
         // get users from household
-        List<HouseholdUser> householdUsers = getUsersListFromHouseHold(household);
+        List<HouseholdUser> householdUsers = getUsersList(household);
 
         // set user filter
         OTTUserFilter ottUserFilter = new OTTUserFilter();
@@ -110,7 +110,7 @@ public class OttUserListTests extends BaseTest {
     @Test
     private void list_with_username_filter() {
         // get users from household
-        List<HouseholdUser> householdUsers = getUsersListFromHouseHold(household);
+        List<HouseholdUser> householdUsers = getUsersList(household);
 
         // set user filter
         OTTUserFilter ottUserFilter = new OTTUserFilter();
@@ -133,7 +133,7 @@ public class OttUserListTests extends BaseTest {
     @Test
     private void list_with_invalid_filter() {
         // get users from household
-        List<HouseholdUser> householdUsers = getUsersListFromHouseHold(household);
+        List<HouseholdUser> householdUsers = getUsersList(household);
 
         // set invalid user filter
         OTTUserFilter ottUserFilter = new OTTUserFilter();

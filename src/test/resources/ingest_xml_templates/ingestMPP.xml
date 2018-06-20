@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <tem:IngestBusinessModules>
+            <tem:username/>
+            <tem:password/>
+            <tem:xml>
+                <!--<![CDATA[-->
+                <ingest>
+                    <multi_price_plans>
+                        <multi_price_plan>
+                            <titles>
+                                <title lang="eng"/>
+                            </titles>
+                            <descriptions>
+                                <description lang="eng"/>
+                            </descriptions>
+                            <start_date/>
+                            <end_date/>
+                            <internal_discount/>
+                            <coupon_group/>
+                            <product_code/>
+                            <is_renewable/>
+                            <priview_module/>
+                            <grace_period_minutes/>
+                            <price_plan_codes>
+                                <price_plan_code/>
+                                <price_plan_code/>
+                            </price_plan_codes>
+                            <channels>
+                                <channel/>
+                                <channel/>
+                            </channels>
+                            <file_types>
+                                <file_type/>
+                                <file_type/>
+                            </file_types>
+                            <order_number/>
+                            <subscription_coupon_group/>
+                            <product_codes>
+                                <product_code/>
+                            </product_codes>
+                        </multi_price_plan>
+                    </multi_price_plans>
+                </ingest>
+                <!--]]>-->
+            </tem:xml>
+        </tem:IngestBusinessModules>
+    </soapenv:Body>
+</soapenv:Envelope>

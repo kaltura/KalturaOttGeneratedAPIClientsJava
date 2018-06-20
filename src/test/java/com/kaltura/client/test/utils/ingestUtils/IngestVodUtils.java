@@ -1,44 +1,137 @@
 package com.kaltura.client.test.utils.ingestUtils;
 
+import com.kaltura.client.Logger;
+import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.services.AssetService;
+import com.kaltura.client.types.MediaAsset;
+import io.restassured.response.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
-import static com.kaltura.client.test.Properties.MOBILE_FILE_TYPE;
-import static com.kaltura.client.test.Properties.WEB_FILE_TYPE;
-import static com.kaltura.client.test.Properties.getProperty;
-import static com.kaltura.client.test.tests.BaseTest.getIngestAssetUserName;
-import static com.kaltura.client.test.tests.BaseTest.getIngestAssetUserPassword;
+import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
+import static com.kaltura.client.test.utils.BaseUtils.getOffsetDateInFormat;
 import static com.kaltura.client.test.utils.XmlUtils.asList;
+import static io.restassured.RestAssured.given;
+import static io.restassured.path.xml.XmlPath.from;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
-public class IngestVodUtils {
+public class IngestVodUtils extends BaseIngestUtils {
 
-    public static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl, String description, String catalogStartDate, String catalogEndDate,
+    /**
+     * IMPORTANT: please delete inserted by that method items
+     *
+     * @param action           - can be "insert", "update" and "delete"
+     * @param coguid           - should have value in case "action" one of {"update" and "delete"}
+     * @param isActive
+     * @param name
+     * @param thumbUrl
+     * @param description
+     * @param catalogStartDate
+     * @param catalogEndDate
+     * @param startDate
+     * @param endDate
+     * @param mediaType
+     * @param ppvWebName
+     * @param ppvMobileName
+     * @param tags
+     * @param strings
+     * @param numbers
+     * @param dates
+     * @return to update or delete existed VOD use corresponded action and value vod.getName() as "coguid"
+     * (where vod is a variable that contains VOD data)
+     * <p>
+     * !!!Only created by that method VOD can be deleted/update!!!
+     */
+    // ingest new VOD (Media) // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
+    public static MediaAsset ingestVOD(Optional<String> action, Optional<String> coguid, boolean isActive, Optional<String> name, Optional<String> thumbUrl, Optional<String> description,
+                                       Optional<String> catalogStartDate, Optional<String> catalogEndDate, Optional<String> startDate, Optional<String> endDate, Optional<String> mediaType,
+                                       Optional<String> ppvWebName, Optional<String> ppvMobileName, Optional<Map<String, List<String>>> tags, Optional<Map<String, String>> strings,
+                                       Optional<Map<String, Integer>> numbers, Optional<Map<String, String>> dates) {
+        String startEndDatePattern = "dd/MM/yyyy hh:mm:ss";
+        String coguidDatePattern = "yyMMddHHmmssSS";
+        String maxEndDateValue = "14/10/2099 17:00:00";
+        String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
+        int defaultDayOffset = -1;
+
+        String actionValue = action.orElse(INGEST_ACTION_INSERT);
+        String coguidValue = coguid.orElse(getCurrentDateInFormat(coguidDatePattern));
+        String nameValue = INGEST_ACTION_INSERT.equals(actionValue) ? coguidValue : name.orElse(coguidValue);
+        String thumbUrlValue = thumbUrl.orElse(DEFAULT_THUMB);
+        String descriptionValue = description.orElse("description of " + coguidValue);
+        String catalogStartDateValue = catalogStartDate.orElse(getOffsetDateInFormat(defaultDayOffset, startEndDatePattern));
+        String catalogEndDateValue = catalogEndDate.orElse(maxEndDateValue);
+        String startDateValue = startDate.orElse(getOffsetDateInFormat(defaultDayOffset, startEndDatePattern));
+        String endDateValue = endDate.orElse(maxEndDateValue);
+        String mediaTypeValue = mediaType.orElse(MOVIE_MEDIA_TYPE);
+        String ppvWebNameValue = ppvWebName.orElse(ppvModuleName);
+        String ppvMobileNameValue = ppvMobileName.orElse(ppvModuleName);
+        Map<String, List<String>> tagsValue = tags.orElse(getDefaultTags());
+        Map<String, String> stringsValue = strings.orElse(getDefaultStrings());
+        Map<String, Integer> numbersValue = numbers.orElse(getDefaultNumbers());
+        Map<String, String> datesValue = dates.orElse(getDefaultDates());
+
+        // TODO: check if ingest url is the same for all ingest actions
+        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+
+        String reqBody = buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
+                catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue);
+
+        Response resp =
+                given()
+                    .header(contentTypeXml)
+                    .header(soapActionIngestTvinciData)
+                    .body(reqBody)
+                .when()
+                    .post(url);
+
+        Logger.getLogger(IngestVodUtils.class).debug(reqBody);
+        Logger.getLogger(IngestVodUtils.class).debug("Ingest response: \n" + resp.asString());
+
+        assertThat(resp).isNotNull();
+        assertThat(from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.IngestStatus.Message").toString()).isEqualTo("OK");
+
+        String id;
+        if (INGEST_ACTION_INSERT.equals(actionValue)) {
+            id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.InternalAssetId").toString();
+        } else {
+            id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID").toString();
+        }
+
+        MediaAsset mediaAsset = new MediaAsset();
+        mediaAsset.setName(nameValue);
+        mediaAsset.setId(Long.valueOf(id.trim()));
+        mediaAsset.setDescription(descriptionValue);
+        //mediaAsset.setStartDate(startDate);
+        //mediaAsset.setEndDate(endDate);
+
+        if (!INGEST_ACTION_DELETE.equals(actionValue)) {
+            int delayBetweenRetriesInSeconds = 5;
+            int maxTimeExpectingValidResponseInSeconds = 90;
+            await()
+                    .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                    .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                    .until(isDataReturned(getAnonymousKs(), id, actionValue));
+
+            mediaAsset.setMediaFiles(executor.executeSync(
+                    AssetService.get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs())).results.getMediaFiles());
+        }
+
+        // TODO: 4/15/2018 add log for ingest and index failures
+        return mediaAsset;
+    }
+
+    private static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl, String description, String catalogStartDate, String catalogEndDate,
                                            String startDate, String endDate, String mediaType, String ppvWebName, String ppvMobileName, Map<String, List<String>> tags, Map<String, String> strings,
                                            Map<String, Integer> numbers, Map<String, String> dates)  {
-
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        Document doc = null;
-
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-            doc = docBuilder.parse("src/test/resources/ingest_xml_templates/ingestVOD.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
         doc.getElementsByTagName("userName").item(0).setTextContent(getIngestAssetUserName());
@@ -163,29 +256,90 @@ public class IngestVodUtils {
         return meta;
     }
 
-    private static String docToString(Document doc) {
-        try {
-            StringWriter sw = new StringWriter();
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    // TODO: these values should be get in another way than now
+    private static Map<String, List<String>> getDefaultTags() {
+        Map<String, List<String>> tags = new HashMap<>();
 
-            transformer.transform(new DOMSource(doc), new StreamResult(sw));
-            return sw.toString();
-        } catch (Exception ex) {
-            throw new RuntimeException("Error converting to String", ex);
+        List<String> tagValues = new ArrayList<>();
+        tagValues.add("Costa Rica;Israel");
+        tags.put("Country", tagValues);
+
+        tagValues = new ArrayList<>();
+        tagValues.add("GIH");
+        tagValues.add("ABC");
+        tagValues.add("DEF");
+        tags.put("Genre", tagValues);
+
+        tagValues = new ArrayList<>();
+        tagValues.add("Shay_Series");
+        tags.put("Series name", tagValues);
+
+        tagValues = new ArrayList<>();
+        tagValues.add("KSQL channel_573349");
+        tags.put("Free", tagValues);
+
+        tagValues = new ArrayList<>();
+        tags.put("Parental Rating", tagValues);
+
+        return tags;
+    }
+
+    // TODO: these values should be get in another way than now
+    private static Map<String, String> getDefaultStrings() {
+        Map<String, String> strings = new HashMap<>();
+        strings.put("Synopsis", "syno pino sister");
+        strings.put("meta_name", "meta_value");
+
+        return strings;
+    }
+
+    // TODO: these values should be get in another way than now
+    private static Map<String, Integer> getDefaultNumbers() {
+        Map<String, Integer> doubles = new HashMap<>();
+        doubles.put("Release year", 1900);
+
+        return doubles;
+    }
+
+    // TODO: these values should be get in another way than now
+    private static Map<String, String> getDefaultDates() {
+        Map<String, String> dates = new HashMap<>();
+        dates.put("Life cycle start date", "23/03/2017 12:34:56");
+
+        return dates;
+    }
+
+    private static Callable<Boolean> isDataReturned(String ks, String mediaId, String action) {
+        AssetService.GetAssetBuilder getAssetBuilder = AssetService.get(mediaId, AssetReferenceType.MEDIA).setKs(ks);
+        if (INGEST_ACTION_DELETE.equals(action)) {
+            return () -> (executor.executeSync(getAssetBuilder).error != null);
+        } else {
+            return () -> (executor.executeSync(getAssetBuilder).error == null);
         }
     }
 
-    private static void prettyPrint(Document doc) throws Exception {
-        Transformer tf = TransformerFactory.newInstance().newTransformer();
-        tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        tf.setOutputProperty(OutputKeys.INDENT, "yes");
-        Writer out = new StringWriter();
-        tf.transform(new DOMSource(doc), new StreamResult(out));
-        System.out.println(out.toString());
+    // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
+    public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags, String catalogStartDate) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.of(catalogStartDate), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
+
+    public static MediaAsset ingestVOD(String mediaType) {
+        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
+    }
+
+    public static MediaAsset updateVODName(MediaAsset asset, String name) {
+        MediaAsset mediaAsset = ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        return mediaAsset;
     }
 }

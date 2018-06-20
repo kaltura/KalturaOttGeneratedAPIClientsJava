@@ -7,7 +7,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.ChannelUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -18,10 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kaltura.client.services.AssetService.*;
-import static com.kaltura.client.services.ChannelService.*;
-import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
+import static com.kaltura.client.services.AssetService.ListAssetBuilder;
+import static com.kaltura.client.services.ChannelService.AddChannelBuilder;
+import static com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelAddTests extends BaseTest {
@@ -58,16 +59,16 @@ public class ChannelAddTests extends BaseTest {
     @Test
     private void checkOrderOfAssetsInChannel() {
 
-        String asset1Name = "Movie_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
-        String asset2Name = "Episode_" + BaseUtils.getCurrentDataInFormat("yyMMddHHmmss");
+        String asset1Name = "Movie_" + BaseUtils.getCurrentDateInFormat("yyMMddHHmmss");
+        String asset2Name = "Episode_" + BaseUtils.getCurrentDateInFormat("yyMMddHHmmss");
 
         // Ingest first asset
-        MediaAsset movieAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        movieAsset = IngestUtils.updateVODName(movieAsset, asset1Name);
+        MediaAsset movieAsset = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        movieAsset = IngestVodUtils.updateVODName(movieAsset, asset1Name);
 
         // Ingest second asset
-        MediaAsset episodeAsset = IngestUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        episodeAsset = IngestUtils.updateVODName(episodeAsset, asset2Name);
+        MediaAsset episodeAsset = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
+        episodeAsset = IngestVodUtils.updateVODName(episodeAsset, asset2Name);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);

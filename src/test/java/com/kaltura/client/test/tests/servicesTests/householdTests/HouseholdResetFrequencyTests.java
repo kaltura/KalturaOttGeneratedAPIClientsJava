@@ -36,10 +36,10 @@ public class HouseholdResetFrequencyTests extends BaseTest {
         int numberOfUsersInHousehold = 3;
         int numberOfDevicesInHousehold = 3;
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
     }
 
@@ -48,7 +48,7 @@ public class HouseholdResetFrequencyTests extends BaseTest {
     @Test
     private void resetFrequency_household_devices() {
         // delete devices until error 1014 return
-        List<HouseholdDevice> devices = HouseholdUtils.getDevicesListFromHouseHold(household);
+        List<HouseholdDevice> devices = HouseholdUtils.getDevicesList(household);
 
         executor.executeSync(delete(devices.get(1).getUdid()).setKs(masterUserKs));
         Response<Boolean> booleanResponse = executor.executeSync(delete(devices.get(2).getUdid()).setKs(masterUserKs));
@@ -66,7 +66,7 @@ public class HouseholdResetFrequencyTests extends BaseTest {
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
         // assert devices list size = 1
-        devices = HouseholdUtils.getDevicesListFromHouseHold(household);
+        devices = HouseholdUtils.getDevicesList(household);
         assertThat(devices.size()).isEqualTo(1);
     }
 
@@ -75,7 +75,7 @@ public class HouseholdResetFrequencyTests extends BaseTest {
     @Test
     private void resetFrequency_household_users() {
         // delete users until error 1014 return
-        List<HouseholdUser> users = HouseholdUtils.getRegularUsersListFromHouseHold(household);
+        List<HouseholdUser> users = HouseholdUtils.getRegularUsersList(household);
 
         executor.executeSync(HouseholdUserService.delete(users.get(0).getUserId()).setKs(masterUserKs));
         Response<Boolean> booleanResponse = executor.executeSync(HouseholdUserService.delete(users.get(1).getUserId()).setKs(masterUserKs));
@@ -93,7 +93,7 @@ public class HouseholdResetFrequencyTests extends BaseTest {
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
         // assert regular users list size = 1
-        users = HouseholdUtils.getRegularUsersListFromHouseHold(household);
+        users = HouseholdUtils.getRegularUsersList(household);
         assertThat(users.size()).isEqualTo(1);
     }
 

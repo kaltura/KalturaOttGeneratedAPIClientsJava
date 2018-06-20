@@ -28,10 +28,10 @@ public class HouseholdDeleteTests extends BaseTest {
     private void delete_with_household_masterUser() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // delete household
-        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
         Response<Boolean> booleanResponse = executor.executeSync(delete().setKs(masterUserKs));
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
@@ -49,10 +49,10 @@ public class HouseholdDeleteTests extends BaseTest {
     private void delete_with_household_regularUser() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
         // delete household
-        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()));
         Response<Boolean> booleanResponse = executor.executeSync(delete().setKs(userKs));
 
         assertThat(booleanResponse.results).isNull();

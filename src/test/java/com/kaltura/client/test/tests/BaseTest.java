@@ -13,7 +13,7 @@ import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
@@ -25,13 +25,13 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.OttUserService.login;
-import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.FIVE_MINUTES_PERIOD;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -88,7 +88,7 @@ public class BaseTest {
     private static Ppv sharedCommonPpv;
 
     // cycles map with values related view/full life cycles of price plans
-    private static Map<Integer, String> cycles = new HashMap<>();
+    public static Map<Integer, String> cycles = new HashMap<>();
 
     {
         // TODO: complete other values
@@ -103,7 +103,7 @@ public class BaseTest {
     @BeforeSuite
     public void baseTest_beforeSuite() {
         // set configuration
-        config = new Configuration();
+        config  = new Configuration();
         config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
         config.setAcceptGzipEncoding(false);
 
@@ -139,7 +139,7 @@ public class BaseTest {
         if (sharedCommonPricePlan == null) {
             sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), EUR.getValue(), defaultDiscountPrice, defaultDiscountPercentValue);
             if (sharedCommonPricePlan == null) {
-                sharedCommonPricePlan = IngestUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
+                sharedCommonPricePlan = IngestPpUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
                         Optional.of(EUR.getValue()), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue)),
                         Optional.of(true), Optional.of(0));
@@ -161,7 +161,7 @@ public class BaseTest {
         if (sharedCommonSubscription == null) {
             sharedCommonSubscription = IngestFixtureData.loadSharedCommonSubscription(getSharedCommonPricePlan());
             if (sharedCommonSubscription == null) {
-                sharedCommonSubscription = IngestUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
+                sharedCommonSubscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                         Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue)), Optional.empty(),
                         Optional.of(false), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()), Optional.empty(),
@@ -209,7 +209,7 @@ public class BaseTest {
         if (sharedCommonPpv == null) {
             sharedCommonPpv = IngestFixtureData.loadSharedCommonPpv(getSharedCommonPricePlan());
             if (sharedCommonPpv == null) {
-                sharedCommonPpv = IngestUtils.ingestPPV(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
+                sharedCommonPpv = IngestPpvUtils.ingestPPV(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.empty(), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) discountPercentValue)),
                         Optional.empty(), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()),
                         Optional.of(false), Optional.of(false), Optional.empty(), Optional.empty(), Optional.empty());
@@ -295,7 +295,7 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            mediaAsset = IngestUtils.ingestVOD (Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+            mediaAsset = IngestVodUtils.ingestVOD (Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty());
         }
@@ -304,8 +304,7 @@ public class BaseTest {
 
     public static ProgramAsset getSharedEpgProgram() {
         if (epgProgram == null) {
-            epgProgram = IngestUtils.ingestEPG(epgChannelName, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty()).get(0);
+            epgProgram = IngestEpgUtils.ingestEPG(epgChannelName).get(0);
         }
         return (ProgramAsset) epgProgram;
     }
@@ -344,7 +343,7 @@ public class BaseTest {
                 ingestVODIntoSubscription(fiveMinRenewableSubscription);
             }
             if (fiveMinRenewableSubscription == null) {
-                PricePlan pricePlan = IngestUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                PricePlan pricePlan = IngestPpUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
                         Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
                         Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(EUR.getValue()), Optional.of(""),
                         Optional.of(true), Optional.of(3));
@@ -356,7 +355,7 @@ public class BaseTest {
                 Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
                 channel.setId(channelResponse.results.getId());
 
-                fiveMinRenewableSubscription = IngestUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                fiveMinRenewableSubscription = IngestMppUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
                         Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                         Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(),
                         Optional.of(channel.getName()), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
@@ -397,11 +396,11 @@ public class BaseTest {
         }
         if (name != null) {
             // ingest VOD by name
-            MediaAsset mediaAsset = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
+            MediaAsset mediaAsset = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty());
-            IngestUtils.updateVODName(mediaAsset, name);
+            IngestVodUtils.updateVODName(mediaAsset, name);
         }
         if (tag != null) {
             // ingest VOD by tag
@@ -409,7 +408,7 @@ public class BaseTest {
             List<String> values = new ArrayList<>();
             values.add(parameters[1].replaceAll("'", ""));
             tags.put(tag, values);
-            IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(),
+            IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(tags), Optional.empty(),
                     Optional.empty(), Optional.empty());
@@ -439,7 +438,7 @@ public class BaseTest {
 
             if (sharedHousehold == null) {
                 sharedHousehold = createHousehold(numOfUsers, numOfDevices, true);
-                List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
+                List<HouseholdUser> sharedHouseholdUsers = getUsersList(sharedHousehold);
                 for (HouseholdUser user : sharedHouseholdUsers) {
                     if (user.getIsMaster() != null && user.getIsMaster()) {
                         sharedMasterUser = user;
@@ -449,7 +448,7 @@ public class BaseTest {
                     }
                 }
 
-                List<HouseholdDevice> sharedHouseholdDevices = getDevicesListFromHouseHold(sharedHousehold);
+                List<HouseholdDevice> sharedHouseholdDevices = getDevicesList(sharedHousehold);
                 String sharedMasterUserName = getOttUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedMasterUserName, defaultUserPassword,null,sharedHouseholdDevices.get(0).getUdid()));
                 sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();

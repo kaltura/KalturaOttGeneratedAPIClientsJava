@@ -33,10 +33,10 @@ public class HouseholdResumeTests extends BaseTest {
         int numberOfUsersInHousehold = 2;
         int numberOfDevicesInHousehold = 1;
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
 
         // set subscription

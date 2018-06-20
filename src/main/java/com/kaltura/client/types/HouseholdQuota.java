@@ -67,38 +67,14 @@ public class HouseholdQuota extends ObjectBase {
 	public Long getHouseholdId(){
 		return this.householdId;
 	}
-	public void setHouseholdId(Long householdId){
-		this.householdId = householdId;
-	}
-
-	public void householdId(String multirequestToken){
-		setToken("householdId", multirequestToken);
-	}
-
 	// totalQuota:
 	public Integer getTotalQuota(){
 		return this.totalQuota;
 	}
-	public void setTotalQuota(Integer totalQuota){
-		this.totalQuota = totalQuota;
-	}
-
-	public void totalQuota(String multirequestToken){
-		setToken("totalQuota", multirequestToken);
-	}
-
 	// availableQuota:
 	public Integer getAvailableQuota(){
 		return this.availableQuota;
 	}
-	public void setAvailableQuota(Integer availableQuota){
-		this.availableQuota = availableQuota;
-	}
-
-	public void availableQuota(String multirequestToken){
-		setToken("availableQuota", multirequestToken);
-	}
-
 
 	public HouseholdQuota() {
 		super();

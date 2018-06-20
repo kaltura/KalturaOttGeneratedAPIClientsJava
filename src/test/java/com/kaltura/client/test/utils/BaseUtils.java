@@ -7,7 +7,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,8 +37,7 @@ public class BaseUtils {
 
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
     public static String getTimeInDate(int offSetInMinutes, String timeZone) {
-        TimeZone theTimeZone;
-        theTimeZone = TimeZone.getTimeZone(timeZone);
+        TimeZone theTimeZone = TimeZone.getTimeZone(timeZone);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         dateFormat.setTimeZone(theTimeZone);
         Date dNow = new Date();
@@ -56,7 +54,6 @@ public class BaseUtils {
         return getTimeInDate(offSetInMinutes,"israel");
     }
 
-
     // Get epoch time in seconds according to off set parameter provided (in minutes)
     public static long getTimeInEpoch(int offSetInMinutes) {
         //DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -69,7 +66,7 @@ public class BaseUtils {
     }
 
     // generate current data String in specified format
-    public static String getCurrentDataInFormat(String pattern) {
+    public static String getCurrentDateInFormat(String pattern) {
         return getOffsetDateInFormat(0, pattern);
     }
 

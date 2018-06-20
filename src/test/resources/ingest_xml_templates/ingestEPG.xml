@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header/>
+    <s:Body>
+        <IngestKalturaEpg xmlns="http://tempuri.org/">
+            <request xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <userName xmlns=""/>
+                <passWord xmlns=""/>
+                <data xmlns="">
+                    <!--<![CDATA[-->
+                    <EpgChannels xmlns="http://tempuri.org/xmltv"
+                                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                 main-lang="eng"
+                                 updater-id="587">
+                        <channel/>
+                    </EpgChannels>
+                    <!--]]>-->
+                </data>
+            </request>
+        </IngestKalturaEpg>
+    </s:Body>
+</s:Envelope>
+

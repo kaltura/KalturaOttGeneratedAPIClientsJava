@@ -77,14 +77,6 @@ public class UserAssetRule extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// ruleType:
 	public RuleType getRuleType(){
 		return this.ruleType;

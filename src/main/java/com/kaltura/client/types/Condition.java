@@ -66,14 +66,6 @@ public abstract class Condition extends ObjectBase {
 	public RuleConditionType getType(){
 		return this.type;
 	}
-	public void setType(RuleConditionType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
 	// description:
 	public String getDescription(){
 		return this.description;
