@@ -54,7 +54,7 @@ public class SSOAdapterProfile extends ObjectBase {
 		String name();
 		String isActive();
 		String adapterUrl();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> ssoAdapterSettings();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> settings();
 		String externalIdentifier();
 		String sharedSecret();
 	}
@@ -78,7 +78,7 @@ public class SSOAdapterProfile extends ObjectBase {
 	/**
 	 * SSO Adapter extra parameters
 	 */
-	private Map<String, StringValue> ssoAdapterSettings;
+	private Map<String, StringValue> settings;
 	/**
 	 * SSO Adapter external identifier
 	 */
@@ -128,12 +128,12 @@ public class SSOAdapterProfile extends ObjectBase {
 		setToken("adapterUrl", multirequestToken);
 	}
 
-	// ssoAdapterSettings:
-	public Map<String, StringValue> getSsoAdapterSettings(){
-		return this.ssoAdapterSettings;
+	// settings:
+	public Map<String, StringValue> getSettings(){
+		return this.settings;
 	}
-	public void setSsoAdapterSettings(Map<String, StringValue> ssoAdapterSettings){
-		this.ssoAdapterSettings = ssoAdapterSettings;
+	public void setSettings(Map<String, StringValue> settings){
+		this.settings = settings;
 	}
 
 	// externalIdentifier:
@@ -175,7 +175,7 @@ public class SSOAdapterProfile extends ObjectBase {
 		name = GsonParser.parseString(jsonObject.get("name"));
 		isActive = GsonParser.parseInt(jsonObject.get("isActive"));
 		adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
-		ssoAdapterSettings = GsonParser.parseMap(jsonObject.getAsJsonObject("ssoAdapterSettings"), StringValue.class);
+		settings = GsonParser.parseMap(jsonObject.getAsJsonObject("settings"), StringValue.class);
 		externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
 		sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
 
@@ -187,7 +187,7 @@ public class SSOAdapterProfile extends ObjectBase {
 		kparams.add("name", this.name);
 		kparams.add("isActive", this.isActive);
 		kparams.add("adapterUrl", this.adapterUrl);
-		kparams.add("ssoAdapterSettings", this.ssoAdapterSettings);
+		kparams.add("settings", this.settings);
 		kparams.add("externalIdentifier", this.externalIdentifier);
 		kparams.add("sharedSecret", this.sharedSecret);
 		return kparams;
