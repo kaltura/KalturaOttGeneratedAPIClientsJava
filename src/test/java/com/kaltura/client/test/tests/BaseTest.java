@@ -353,12 +353,12 @@ public class BaseTest {
                 channel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
                 AddChannelBuilder addChannelBuilder = ChannelService.add(channel);
                 Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
-                channel.setId(channelResponse.results.getId());
-
-                fiveMinRenewableSubscription = IngestMppUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(),
-                        Optional.of(channel.getName()), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+                if (channelResponse.results != null && channelResponse.results.getName() != null) {
+                    fiveMinRenewableSubscription = IngestMppUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
+                            Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                            Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(),
+                            Optional.of(channelResponse.results.getName()), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+                }
             }
         }
         return fiveMinRenewableSubscription;
