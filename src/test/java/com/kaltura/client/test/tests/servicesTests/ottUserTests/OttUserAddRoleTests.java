@@ -40,10 +40,12 @@ public class OttUserAddRoleTests extends BaseTest {
         // add role
         AddUserRoleBuilder addUserRoleBuilder = add(userRole)
                 .setKs(getAdministratorKs());
-        executor.executeSync(addUserRoleBuilder);
+        Response<UserRole> userRoleResponse = executor.executeSync(addUserRoleBuilder);
+        assertThat(userRoleResponse.results).isNotNull();
+        UserRole userRoleResult = userRoleResponse.results;
 
         // add role to user
-        AddRoleOttUserBuilder addRoleOttUserBuilder = OttUserService.addRole(userRole.getId())
+        AddRoleOttUserBuilder addRoleOttUserBuilder = OttUserService.addRole(userRoleResult.getId())
                 .setKs(getAdministratorKs())
                 .setUserId(Integer.valueOf(user.getId()));
         Response<Boolean> booleanResponse = executor.executeSync(addRoleOttUserBuilder);
@@ -64,7 +66,7 @@ public class OttUserAddRoleTests extends BaseTest {
             userRolesIds.add(ur.getId());
         }
 
-        assertThat(userRolesIds).contains(userRole.getId());
+        assertThat(userRolesIds).contains(userRoleResult.getId());
 
         // cleanup - delete role
         // TODO: 5/14/2018 finish test after when reletead bug will be fixed
