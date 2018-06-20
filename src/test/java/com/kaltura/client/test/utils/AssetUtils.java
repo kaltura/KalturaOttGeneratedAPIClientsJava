@@ -14,16 +14,18 @@ import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import static com.kaltura.client.services.SocialActionService.*;
-import static com.kaltura.client.services.BookmarkService.*;
-import static com.kaltura.client.services.AssetService.*;
-import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.services.AssetService.GetAssetBuilder;
+import static com.kaltura.client.services.AssetService.ListAssetBuilder;
+import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
+import static com.kaltura.client.services.SocialActionService.AddSocialActionBuilder;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.tests.BaseTest.executor;
+import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AssetUtils extends BaseUtils {
@@ -56,7 +58,6 @@ public class AssetUtils extends BaseUtils {
     }
 
     public static List<Integer> getAssetFileIds(String assetId) {
-
         AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
 
         GetAssetBuilder getAssetBuilder = AssetService.get(assetId, assetReferenceType);
@@ -64,13 +65,16 @@ public class AssetUtils extends BaseUtils {
         Response<Asset> assetResponse = executor.executeSync(getAssetBuilder);
 
         List<MediaFile> mediaFiles = assetResponse.results.getMediaFiles();
+        assertThat(mediaFiles.size()).as("media files list").isGreaterThan(0);
 
-        List<Integer> fileIdsList = new ArrayList<>();
-        for (MediaFile mediaFile : mediaFiles) {
-            fileIdsList.add(mediaFile.getId());
-        }
+//        List<Integer> fileIdsList = new ArrayList<>();
+//        for (MediaFile mediaFile : mediaFiles) {
+//            fileIdsList.add(mediaFile.getId());
+//        }
+//
+//        return fileIdsList;
 
-        return fileIdsList;
+        return mediaFiles.stream().map(MediaFile::getId).collect(Collectors.toList());
     }
 
     public static List<Asset> getAssetsByType(String typeIn) {

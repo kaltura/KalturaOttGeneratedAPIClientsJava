@@ -28,10 +28,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 //
 public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
 
-    public static final String TAG = "TestAPIOkRequestsExecutor";
-    private static ILogger logger = Logger.getLogger(TAG);
+    private static final String TAG = "TestAPIOkRequestsExecutor";
 
+    private static ILogger logger = Logger.getLogger(TAG);
     private static TestAPIOkRequestsExecutor executor;
+
+    private final int[] genericErrors = {
+            ConnectionError.getCode(),
+            BadRequestError.getCode(),
+            GeneralError.getCode(),
+            NotFound.getCode(),
+            LoadError.getCode(),
+            ServiceUnavailableError.getCode(),
+            SessionError.getCode()
+    };
 
     private TestAPIOkRequestsExecutor() {
     }
@@ -61,10 +71,11 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 String s2 = response.results.getClass().getSimpleName();
                 String s3 = ".json";
 
-                // if returned list without objects scheme should not be checked
+                // if returned list empty or greater than 'MAX_OBJECTS_AT_LIST_RESPONSE' skip schema validation
                 if (s2.equals("ListResponse")) {
                     com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response;
-                    if (listResponse.results.getTotalCount() == 0 || listResponse.results.getTotalCount() > MAX_OBJECTS_AT_LIST_RESPONSE) {
+                    if (listResponse.results.getTotalCount() == 0 ||
+                            listResponse.results.getTotalCount() > MAX_OBJECTS_AT_LIST_RESPONSE) {
                         return responseElement;
                     }
                 }
@@ -104,19 +115,10 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
 
             APIException error = response.error;
             if (error != null) {
-                int[] genericErrors = {
-                        ConnectionError.getCode(),
-                        BadRequestError.getCode(),
-                        GeneralError.getCode(),
-                        NotFound.getCode(),
-                        LoadError.getCode(),
-                        ServiceUnavailableError.getCode(),
-                        SessionError.getCode()
-                };
-
                 int errorCode = Integer.parseInt(error.getCode());
                 if (Ints.asList(genericErrors).contains(errorCode)) {
                     logger.error(error.getMessage() + " : " + error.getCode());
+                    try { throw error; } catch (APIException e) { e.printStackTrace(); }
                 }
             }
 
