@@ -1,0 +1,35 @@
+{
+  "$id": "LicensedUrl",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "mainUrl": {
+          "type": "string"
+        },
+        "altUrl": {
+          "type": "string"
+        },
+        "objectType": {
+          "type": "string",
+          "enum": [
+            "KalturaLicensedUrl"
+          ]
+        }
+      },
+      "required": [
+        "mainUrl",
+        "altUrl",
+        "objectType"
+      ]
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result",
+    "executionTime"
+  ]
+}
