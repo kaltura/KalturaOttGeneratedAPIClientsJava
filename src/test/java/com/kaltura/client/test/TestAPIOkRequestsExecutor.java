@@ -14,6 +14,7 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.kaltura.client.test.Properties.MAX_OBJECTS_AT_LIST_RESPONSE;
 import static com.kaltura.client.test.tests.BaseTest.LOG_HEADERS;
 import static com.kaltura.client.test.tests.BaseTest.client;
 import static com.kaltura.client.utils.ErrorElement.*;
@@ -63,7 +64,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 // if returned list without objects scheme should not be checked
                 if (s2.equals("ListResponse")) {
                     com.kaltura.client.utils.response.base.Response<ListResponse> listResponse = response;
-                    if (listResponse.results.getTotalCount() == 0) {
+                    if (listResponse.results.getTotalCount() == 0 || listResponse.results.getTotalCount() > MAX_OBJECTS_AT_LIST_RESPONSE) {
                         return responseElement;
                     }
                 }

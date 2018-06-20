@@ -218,10 +218,12 @@ public class ProductPriceListTests extends BaseTest {
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
-        sharedChannel.setId(channelResponse.results.getId());
+        assertThat(channelResponse.results).isNotNull();
+        Channel channel = channelResponse.results;
+        assertThat(channel.getName()).isNotNull();
         Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
+                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
 
         ListEntitlementBuilder entitlementListBeforePurchase = EntitlementService.list(entitlementSubsFilter, null);
@@ -288,7 +290,7 @@ public class ProductPriceListTests extends BaseTest {
         //delete subscription
         IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
+                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
     }
 
@@ -300,10 +302,12 @@ public class ProductPriceListTests extends BaseTest {
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
-        sharedChannel.setId(channelResponse.results.getId());
+        assertThat(channelResponse.results).isNotNull();
+        Channel channel = channelResponse.results;
+        assertThat(channel.getName()).isNotNull();
         Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
+                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
         int webHDFileOnlySubId = Integer.valueOf(subscription.getId());
 
@@ -352,12 +356,12 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
         // delete channel
-        DeleteChannelBuilder deleteChannelBuilder = ChannelService.delete(Math.toIntExact(sharedChannel.getId()));
+        DeleteChannelBuilder deleteChannelBuilder = ChannelService.delete(Math.toIntExact(channel.getId()));
         executor.executeSync(deleteChannelBuilder.setKs(getManagerKs()));
         //delete subscription
         IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
+                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
                 Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
     }
 

@@ -44,6 +44,9 @@
               },
               {
                 "$ref": "Subscription.json#/definitions/Subscription"
+              },
+              {
+                "$ref": "PaymentGatewayProfile.json#/definitions/PaymentGatewayProfile"
               }
             ]
           }
@@ -66,7 +69,8 @@
             "KalturaAssetCommentListResponse",
             "KalturaAssetHistoryListResponse",
             "KalturaUserRoleListResponse",
-            "KalturaSubscriptionListResponse"
+            "KalturaSubscriptionListResponse",
+            "KalturaPaymentGatewayProfileListResponse"
           ]
         }
       },

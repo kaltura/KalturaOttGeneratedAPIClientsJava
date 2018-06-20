@@ -134,12 +134,14 @@ public class EntitlementCancelTests extends BaseTest {
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
-        sharedChannel.setId(channelResponse.results.getId());
+        assertThat(channelResponse.results).isNotNull();
+        Channel channel = channelResponse.results;
+        assertThat(channel.getName()).isNotNull();
         PricePlan pricePlan = DBUtils.loadPPWithWaiver();
 
         Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
             Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.of(sharedChannel.getName()),
+                Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.of(channel.getName()),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
         // set household
@@ -181,10 +183,10 @@ public class EntitlementCancelTests extends BaseTest {
         //delete subscription
         IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
+                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         // delete channel
-        executor.executeSync(ChannelService.delete(Math.toIntExact(sharedChannel.getId())).setKs(getManagerKs()));
+        executor.executeSync(ChannelService.delete(Math.toIntExact(channel.getId())).setKs(getManagerKs()));
     }
 
     @Severity(SeverityLevel.NORMAL)
