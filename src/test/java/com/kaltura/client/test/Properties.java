@@ -68,6 +68,14 @@ public class Properties {
     // product codes
     public static final String DEFAULT_PRODUCT_CODE = "default_product_code";
 
+    // processing apps logs from remote connection
+    public static final String PHOENIX_SERVER_DOMAIN_NAME = "phoenix_server_domain_name";
+    public static final String PHOENIX_SERVER_USER_NAME = "phoenix_server_user_name";
+    public static final String PHOENIX_SERVER_PASSWORD = "phoenix_server_password";
+    public static final String PHOENIX_SERVER_LOGS_DIRECTORY = "phoenix_server_logs_directory";
+    public static final String PHOENIX_SERVER_LOG_FILE_NAME = "phoenix_server_logs_file_name";
+    public static final String PHOENIX_SERVER_LOGS_LOCAL_PATH = "phoenix_server_logs_local_path";
+
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {
             resourceBundle = ResourceBundle.getBundle("test");
