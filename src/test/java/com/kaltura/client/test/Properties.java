@@ -39,6 +39,9 @@ public class Properties {
     public static final String PRICE_CODE_AMOUNT = "price_code_amount"; // 4.99
     public static final String COMMON_PRICE_CODE_AMOUNT = "5"; // TODO: should we document it as requirement?
 
+    // maximum objects at list response for validating JSON schema
+    public static final int MAX_OBJECTS_AT_LIST_RESPONSE = 20;
+
     // price plans
     // INGEST doesn't allow create PP with multi-currencies
     // TODO: should we document it as requirement? price plan having few locales (EUR + few others) with different prices
