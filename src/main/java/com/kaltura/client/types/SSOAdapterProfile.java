@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -42,46 +43,72 @@ import java.util.Map;
  */
 
 /**
- * Engagement Adapter
+ * SSO adapter configuration
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(EngagementAdapter.Tokenizer.class)
-public class EngagementAdapter extends EngagementAdapterBase {
+@MultiRequestBuilder.Tokenizer(SSOAdapterProfile.Tokenizer.class)
+public class SSOAdapterProfile extends ObjectBase {
 	
-	public interface Tokenizer extends EngagementAdapterBase.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
 		String isActive();
 		String adapterUrl();
-		String providerUrl();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> engagementAdapterSettings();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> settings();
+		String externalIdentifier();
 		String sharedSecret();
 	}
 
 	/**
-	 * Engagement adapter active status
+	 * SSO Adapter id
 	 */
-	private Boolean isActive;
+	private Integer id;
 	/**
-	 * Engagement adapter adapter URL
+	 * SSO Adapter name
+	 */
+	private String name;
+	/**
+	 * SSO Adapter is active status
+	 */
+	private Integer isActive;
+	/**
+	 * SSO Adapter URL
 	 */
 	private String adapterUrl;
 	/**
-	 * Engagement provider adapter URL
+	 * SSO Adapter extra parameters
 	 */
-	private String providerUrl;
+	private Map<String, StringValue> settings;
 	/**
-	 * Engagement adapter extra parameters
+	 * SSO Adapter external identifier
 	 */
-	private Map<String, StringValue> engagementAdapterSettings;
+	private String externalIdentifier;
 	/**
 	 * Shared Secret
 	 */
 	private String sharedSecret;
 
+	// id:
+	public Integer getId(){
+		return this.id;
+	}
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
 	// isActive:
-	public Boolean getIsActive(){
+	public Integer getIsActive(){
 		return this.isActive;
 	}
-	public void setIsActive(Boolean isActive){
+	public void setIsActive(Integer isActive){
 		this.isActive = isActive;
 	}
 
@@ -101,56 +128,68 @@ public class EngagementAdapter extends EngagementAdapterBase {
 		setToken("adapterUrl", multirequestToken);
 	}
 
-	// providerUrl:
-	public String getProviderUrl(){
-		return this.providerUrl;
+	// settings:
+	public Map<String, StringValue> getSettings(){
+		return this.settings;
 	}
-	public void setProviderUrl(String providerUrl){
-		this.providerUrl = providerUrl;
-	}
-
-	public void providerUrl(String multirequestToken){
-		setToken("providerUrl", multirequestToken);
+	public void setSettings(Map<String, StringValue> settings){
+		this.settings = settings;
 	}
 
-	// engagementAdapterSettings:
-	public Map<String, StringValue> getEngagementAdapterSettings(){
-		return this.engagementAdapterSettings;
+	// externalIdentifier:
+	public String getExternalIdentifier(){
+		return this.externalIdentifier;
 	}
-	public void setEngagementAdapterSettings(Map<String, StringValue> engagementAdapterSettings){
-		this.engagementAdapterSettings = engagementAdapterSettings;
+	public void setExternalIdentifier(String externalIdentifier){
+		this.externalIdentifier = externalIdentifier;
+	}
+
+	public void externalIdentifier(String multirequestToken){
+		setToken("externalIdentifier", multirequestToken);
 	}
 
 	// sharedSecret:
 	public String getSharedSecret(){
 		return this.sharedSecret;
 	}
+	public void setSharedSecret(String sharedSecret){
+		this.sharedSecret = sharedSecret;
+	}
 
-	public EngagementAdapter() {
+	public void sharedSecret(String multirequestToken){
+		setToken("sharedSecret", multirequestToken);
+	}
+
+
+	public SSOAdapterProfile() {
 		super();
 	}
 
-	public EngagementAdapter(JsonObject jsonObject) throws APIException {
+	public SSOAdapterProfile(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		id = GsonParser.parseInt(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		isActive = GsonParser.parseInt(jsonObject.get("isActive"));
 		adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
-		providerUrl = GsonParser.parseString(jsonObject.get("providerUrl"));
-		engagementAdapterSettings = GsonParser.parseMap(jsonObject.getAsJsonObject("engagementAdapterSettings"), StringValue.class);
+		settings = GsonParser.parseMap(jsonObject.getAsJsonObject("settings"), StringValue.class);
+		externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
 		sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaEngagementAdapter");
+		kparams.add("objectType", "KalturaSSOAdapterProfile");
+		kparams.add("name", this.name);
 		kparams.add("isActive", this.isActive);
 		kparams.add("adapterUrl", this.adapterUrl);
-		kparams.add("providerUrl", this.providerUrl);
-		kparams.add("engagementAdapterSettings", this.engagementAdapterSettings);
+		kparams.add("settings", this.settings);
+		kparams.add("externalIdentifier", this.externalIdentifier);
+		kparams.add("sharedSecret", this.sharedSecret);
 		return kparams;
 	}
 

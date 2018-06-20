@@ -24,7 +24,7 @@ import java.util.Optional;
 
 import static com.kaltura.client.enums.EntitlementOrderBy.PURCHASE_DATE_ASC;
 import static com.kaltura.client.services.HouseholdService.delete;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementListTests extends BaseTest {
@@ -48,10 +48,10 @@ public class EntitlementListTests extends BaseTest {
         filter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);
 
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-        regularUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-        masterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
-        regularUserId = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0).getUserId();
+        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
+        regularUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
+        masterUserId = HouseholdUtils.getMasterUser(household).getUserId();
+        regularUserId = HouseholdUtils.getRegularUsersList(household).get(0).getUserId();
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -59,7 +59,7 @@ public class EntitlementListTests extends BaseTest {
     @Test
     public void entitlementListBeforePurchase() {
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        String masterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        String masterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         // subscription
         filter.setProductTypeEqual(TransactionType.SUBSCRIPTION);

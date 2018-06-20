@@ -29,11 +29,11 @@ import org.testng.annotations.Test;
 import java.util.Optional;
 
 import static com.kaltura.client.services.HouseholdService.delete;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductPriceListTests extends BaseTest {
@@ -72,8 +72,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 2;
         int numberOfDevices = 1;
         household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-        classMasterUserId = HouseholdUtils.getMasterUserFromHousehold(household).getUserId();
+        classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
+        classMasterUserId = HouseholdUtils.getMasterUser(household).getUserId();
 
         sharedChannel = new Channel();
         sharedChannel.setName(BaseUtils.getRandomValue("Channel_", 999999));
@@ -184,7 +184,7 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         ProductPriceFilter filter = new ProductPriceFilter();
         filter.setSubscriptionIdIn(get5MinRenewableSubscription().getId());
@@ -192,7 +192,7 @@ public class ProductPriceListTests extends BaseTest {
         filter.setIsLowest(false);
         ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(filter);
         productPriceResponse = executor.executeSync(productPriceListBeforePurchase
-                .setKs(OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null)));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()))));
         // should be 2 ss one item is subscription an another is media file
         assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(2);
         assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
@@ -211,8 +211,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        //HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        //HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         // create mpp with supporting of 1 type only and having at least 1 media on its channel
         sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
@@ -310,8 +310,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(webHDFileOnlySubId));
@@ -374,8 +374,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithMultiCurrencyId));
@@ -433,8 +433,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
@@ -490,8 +490,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
@@ -548,8 +548,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setSubscriptionIdIn(String.valueOf(subWithDiscountAndCurrencyId));
@@ -598,8 +598,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         // TODO: should we save it in Properties?
         double ppvPriceAfterDiscount = 33.3; // as price 37 ILS and discount is 10%
@@ -662,8 +662,8 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         MediaAsset mediaAsset = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),

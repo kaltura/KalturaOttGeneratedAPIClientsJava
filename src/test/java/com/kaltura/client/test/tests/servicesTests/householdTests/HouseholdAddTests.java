@@ -29,7 +29,7 @@ public class HouseholdAddTests extends BaseTest {
         int numberOfUsersInHousehold = 1;
         int numberOfDevicesInHousehold = 1;
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        masterUser = HouseholdUtils.getMasterUser(household);
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -42,7 +42,7 @@ public class HouseholdAddTests extends BaseTest {
         household.setDescription(masterUser.getUserId() + " Description");
 
         // add household
-        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
         Response<Household> householdResponse = executor.executeSync(add(household).setKs(masterUserKs));
 
         assertThat(householdResponse.results).isNull();

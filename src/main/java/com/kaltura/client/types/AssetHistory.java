@@ -86,74 +86,26 @@ public class AssetHistory extends ObjectBase {
 	public Long getAssetId(){
 		return this.assetId;
 	}
-	public void setAssetId(Long assetId){
-		this.assetId = assetId;
-	}
-
-	public void assetId(String multirequestToken){
-		setToken("assetId", multirequestToken);
-	}
-
 	// assetType:
 	public AssetType getAssetType(){
 		return this.assetType;
 	}
-	public void setAssetType(AssetType assetType){
-		this.assetType = assetType;
-	}
-
-	public void assetType(String multirequestToken){
-		setToken("assetType", multirequestToken);
-	}
-
 	// position:
 	public Integer getPosition(){
 		return this.position;
 	}
-	public void setPosition(Integer position){
-		this.position = position;
-	}
-
-	public void position(String multirequestToken){
-		setToken("position", multirequestToken);
-	}
-
 	// duration:
 	public Integer getDuration(){
 		return this.duration;
 	}
-	public void setDuration(Integer duration){
-		this.duration = duration;
-	}
-
-	public void duration(String multirequestToken){
-		setToken("duration", multirequestToken);
-	}
-
 	// watchedDate:
 	public Long getWatchedDate(){
 		return this.watchedDate;
 	}
-	public void setWatchedDate(Long watchedDate){
-		this.watchedDate = watchedDate;
-	}
-
-	public void watchedDate(String multirequestToken){
-		setToken("watchedDate", multirequestToken);
-	}
-
 	// finishedWatching:
 	public Boolean getFinishedWatching(){
 		return this.finishedWatching;
 	}
-	public void setFinishedWatching(Boolean finishedWatching){
-		this.finishedWatching = finishedWatching;
-	}
-
-	public void finishedWatching(String multirequestToken){
-		setToken("finishedWatching", multirequestToken);
-	}
-
 
 	public AssetHistory() {
 		super();

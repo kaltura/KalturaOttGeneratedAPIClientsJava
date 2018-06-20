@@ -57,8 +57,8 @@ public class EntitlementGrantTests extends BaseTest {
     private void grant_subscription_with_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
 
         // grant subscription - history = true
@@ -90,7 +90,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         TransactionHistoryService.ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -102,7 +102,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -123,7 +123,7 @@ public class EntitlementGrantTests extends BaseTest {
     private void grant_subscription_without_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
 
         // grant subscription - history = true
@@ -140,7 +140,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         TransactionHistoryService.ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(0);
 
@@ -148,7 +148,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(0);
 
@@ -165,8 +165,8 @@ public class EntitlementGrantTests extends BaseTest {
     private void grant_ppv_with_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
         // grant subscription - history = true
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, contentId)
@@ -198,7 +198,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -210,7 +210,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -230,8 +230,8 @@ public class EntitlementGrantTests extends BaseTest {
     private void grant_ppv_without_history() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
         // grant subscription - history = true
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, contentId)
@@ -248,7 +248,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.USER.getValue());
 
         ListTransactionHistoryBuilder listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -260,7 +260,7 @@ public class EntitlementGrantTests extends BaseTest {
         transactionHistoryfilter.entityReferenceEqual(EntityReferenceBy.HOUSEHOLD.getValue());
 
         listTransactionHistoryBuilder = TransactionHistoryService.list(transactionHistoryfilter, null)
-                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null));
+                .setKs(OttUserUtils.getKs(Integer.parseInt(user.getUserId())));
         billingTransactionListResponse = executor.executeSync(listTransactionHistoryBuilder);
         assertThat(billingTransactionListResponse.results.getTotalCount()).isEqualTo(1);
 
@@ -280,7 +280,7 @@ public class EntitlementGrantTests extends BaseTest {
         int productId = 1;
 
         // get user form test shared household
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(testSharedHousehold).get(0);
 
         // grant ppv with wrong id
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(productId, TransactionType.PPV, true, contentId)
@@ -299,7 +299,7 @@ public class EntitlementGrantTests extends BaseTest {
     @Test
     private void grant_purchased_ppv() {
         // get user form test shared household
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(testSharedHousehold).get(0);
 
         // grant ppv - first time
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(ppvId, TransactionType.PPV, true, contentId)
@@ -324,7 +324,7 @@ public class EntitlementGrantTests extends BaseTest {
     @Test
     private void grant_purchased_subscription() {
         // get user form test shared household
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(testSharedHousehold).get(0);
 
         // grant subscription - first time
         GrantEntitlementBuilder grantEntitlementBuilder = EntitlementService.grant(subscriptionId, TransactionType.SUBSCRIPTION, false, 0)
@@ -357,7 +357,7 @@ public class EntitlementGrantTests extends BaseTest {
     @Test(enabled = false)
     private void grant_ppv_with_invalid_contentId() {
         // get user form test shared household
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(testSharedHousehold).get(0);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(testSharedHousehold).get(0);
 
         // grant ppv with invalid content id
         int invalidContentId = 1;
@@ -399,7 +399,7 @@ public class EntitlementGrantTests extends BaseTest {
     private void grant_ppv_user_suspend() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // suspend household
         SuspendHouseholdBuilder suspendHouseholdBuilder = suspend(0)

@@ -34,8 +34,8 @@ public class HouseholdGetTests extends BaseTest {
     @Test
     private void get_with_masterUser_ks() {
         // get master user ks
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         // get household
         GetHouseholdBuilder getHouseholdBuilder = get()
@@ -51,8 +51,8 @@ public class HouseholdGetTests extends BaseTest {
     @Test
     private void get_with_regularUser_ks() {
         // get regular user ks
-        HouseholdUser user = HouseholdUtils.getRegularUsersListFromHouseHold(household).get(0);
-        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()), null);
+        HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(user.getUserId()));
 
         // get household
         GetHouseholdBuilder getHouseholdBuilder = get()

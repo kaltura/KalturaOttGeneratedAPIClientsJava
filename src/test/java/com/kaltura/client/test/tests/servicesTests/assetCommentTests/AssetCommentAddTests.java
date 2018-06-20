@@ -6,7 +6,7 @@ import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
 import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -14,7 +14,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.kaltura.client.services.AssetCommentService.AddAssetCommentBuilder;
 import static com.kaltura.client.services.AssetCommentService.ListAssetCommentBuilder;
@@ -38,7 +37,7 @@ public class AssetCommentAddTests extends BaseTest {
         int numOfUsers = 1;
         int numOfDevices = 1;
         household = createHousehold(numOfUsers, numOfDevices, false);
-        householdMasterUserKs = getHouseholdMasterUserKs(household,null);
+        householdMasterUserKs = getHouseholdMasterUserKs(household);
     }
 
     @Description("AssetComment/action/add - vod asset")
@@ -51,7 +50,7 @@ public class AssetCommentAddTests extends BaseTest {
 
         // AssetComment/action/add
         AddAssetCommentBuilder addAssetCommentBuilder = AssetCommentService.add(assetComment)
-                .setKs(getHouseholdMasterUserKs(household,null));
+                .setKs(getHouseholdMasterUserKs(household));
         Response<AssetComment> assetCommentResponse = executor.executeSync(addAssetCommentBuilder);
 
         //Assertions for AssetComment/action/add
@@ -91,8 +90,7 @@ public class AssetCommentAddTests extends BaseTest {
     @Test
     private void addCommentForEPGProgram() {
         // Ingest EPG program
-        List<ProgramAsset> epgPrograms = IngestUtils.ingestEPG("Shmulik_Series_1", Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        List<ProgramAsset> epgPrograms = IngestEpgUtils.ingestEPG("Shmulik_Series_1");
         Long epgProgramId = epgPrograms.get(0).getId();
 
         // Initialize assetComment object

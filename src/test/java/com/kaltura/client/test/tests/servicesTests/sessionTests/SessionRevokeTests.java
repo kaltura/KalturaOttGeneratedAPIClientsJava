@@ -21,8 +21,8 @@ public class SessionRevokeTests extends BaseTest {
     @Test
     private void RevokeKs() {
         Household household = HouseholdUtils.createHousehold(2, 2, false);
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
-        String masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, null);
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
+        String masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household);
         String masterUserKs2 = HouseholdUtils.getHouseholdMasterUserKs(household, udid);
 
         try {

@@ -25,13 +25,13 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.OttUserService.login;
-import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.FIVE_MINUTES_PERIOD;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -304,8 +304,7 @@ public class BaseTest {
 
     public static ProgramAsset getSharedEpgProgram() {
         if (epgProgram == null) {
-            epgProgram = IngestUtils.ingestEPG(epgChannelName, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty()).get(0);
+            epgProgram = IngestEpgUtils.ingestEPG(epgChannelName).get(0);
         }
         return (ProgramAsset) epgProgram;
     }
@@ -439,7 +438,7 @@ public class BaseTest {
 
             if (sharedHousehold == null) {
                 sharedHousehold = createHousehold(numOfUsers, numOfDevices, true);
-                List<HouseholdUser> sharedHouseholdUsers = getUsersListFromHouseHold(sharedHousehold);
+                List<HouseholdUser> sharedHouseholdUsers = getUsersList(sharedHousehold);
                 for (HouseholdUser user : sharedHouseholdUsers) {
                     if (user.getIsMaster() != null && user.getIsMaster()) {
                         sharedMasterUser = user;
@@ -449,7 +448,7 @@ public class BaseTest {
                     }
                 }
 
-                List<HouseholdDevice> sharedHouseholdDevices = getDevicesListFromHouseHold(sharedHousehold);
+                List<HouseholdDevice> sharedHouseholdDevices = getDevicesList(sharedHousehold);
                 String sharedMasterUserName = getOttUserById(Integer.parseInt(sharedMasterUser.getUserId())).getUsername();
                 loginResponse = executor.executeSync(login(partnerId, sharedMasterUserName, defaultUserPassword,null,sharedHouseholdDevices.get(0).getUdid()));
                 sharedMasterUserKs = loginResponse.results.getLoginSession().getKs();

@@ -79,14 +79,6 @@ public class Bookmark extends SlimAsset {
 	public String getUserId(){
 		return this.userId;
 	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
-
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
-
 	// position:
 	public Integer getPosition(){
 		return this.position;
@@ -103,26 +95,10 @@ public class Bookmark extends SlimAsset {
 	public PositionOwner getPositionOwner(){
 		return this.positionOwner;
 	}
-	public void setPositionOwner(PositionOwner positionOwner){
-		this.positionOwner = positionOwner;
-	}
-
-	public void positionOwner(String multirequestToken){
-		setToken("positionOwner", multirequestToken);
-	}
-
 	// finishedWatching:
 	public Boolean getFinishedWatching(){
 		return this.finishedWatching;
 	}
-	public void setFinishedWatching(Boolean finishedWatching){
-		this.finishedWatching = finishedWatching;
-	}
-
-	public void finishedWatching(String multirequestToken){
-		setToken("finishedWatching", multirequestToken);
-	}
-
 	// playerData:
 	public BookmarkPlayerData getPlayerData(){
 		return this.playerData;

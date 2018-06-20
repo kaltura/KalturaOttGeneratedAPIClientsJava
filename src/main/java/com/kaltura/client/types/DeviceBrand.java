@@ -70,14 +70,6 @@ public class DeviceBrand extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -94,14 +86,6 @@ public class DeviceBrand extends ObjectBase {
 	public Long getDeviceFamilyid(){
 		return this.deviceFamilyid;
 	}
-	public void setDeviceFamilyid(Long deviceFamilyid){
-		this.deviceFamilyid = deviceFamilyid;
-	}
-
-	public void deviceFamilyid(String multirequestToken){
-		setToken("deviceFamilyid", multirequestToken);
-	}
-
 
 	public DeviceBrand() {
 		super();

@@ -3,22 +3,17 @@ package com.kaltura.client.test.utils.ingestUtils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.Subscription;
-import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import java.util.Optional;
 
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.Properties.PARTNER_ID;
-import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserName;
 import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserPassword;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
+import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestMppUtils extends BaseIngestUtils {
@@ -106,7 +101,6 @@ public class IngestMppUtils extends BaseIngestUtils {
         String productCodeValue = productCode.orElse("");
         boolean isRenewableValue = isRenewable.orElse(MPP_DEFAULT_IS_RENEWABLE_VALUE);
         int gracePeriodMinuteValue = gracePeriodMinute.orElse(MPP_DEFAULT_GRACE_PERIOD_VALUE);
-
         String pricePlanCode1Value = pricePlanCode1.orElse(getProperty(DEFAULT_USAGE_MODULE_4_INGEST_MPP));
         String pricePlanCode2Value = pricePlanCode2.orElse("");
         String channel1Value = channel1.orElse(getProperty(DEFAULT_CHANNEL));
@@ -124,27 +118,29 @@ public class IngestMppUtils extends BaseIngestUtils {
                 isRenewableValue, gracePeriodMinuteValue, pricePlanCode1Value, pricePlanCode2Value,
                 channel1Value, channel2Value, fileType1Value, fileType2Value, couponGroupValue, productCodesValue);
 
-        io.restassured.response.Response resp = RestAssured
-                .given()
-                .header("Content-Type", "text/xml;charset=UTF-8")
-                .header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules")
-                .body(reqBody)
+        Response resp =
+                given()
+                     .header(contentTypeXml)
+                    .header(soapActionIngestBusinessModules)
+                    .body(reqBody)
                 .when()
-                .post(url);
+                    .post(url);
 
-        Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug("\n Response:!!! " + resp.asString());
+        Logger.getLogger(IngestMppUtils.class).debug(reqBody);
+        Logger.getLogger(IngestMppUtils.class).debug("\n Response: " + resp.asString());
+
+        // TODO: 6/20/2018 add response assertion
+//        assertThat(from(resp.asString())
+//                .get("").toString())
+//                .isEqualTo("OK");
 
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //Logger.getLogger(IngestUtils.class).debug("ReportId = " + reportId);
 
         url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
-        resp = RestAssured.given()
-                .log().all()
-                .get(url);
+        resp = given().get(url);
 
-        Logger.getLogger(IngestUtils.class).debug(resp.asString());
-        //System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
+        Logger.getLogger(IngestMppUtils.class).debug(resp.asString());
 
         String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
@@ -152,13 +148,13 @@ public class IngestMppUtils extends BaseIngestUtils {
         subscription.setId(id);
         subscription.setName(titleValue);
         subscription.setDescription(descriptionValue);
+        subscription.isRenewable(String.valueOf(isRenewableValue));
+        subscription.setGracePeriodMinutes(gracePeriodMinuteValue);
         // TODO: complete COMMENTED IF NEEDED
         //subscription.setStartDate();
         //subscription.setEndDate();
         //subscription.setDiscountModule();
         //subscription.setProductCodes();
-        subscription.isRenewable(String.valueOf(isRenewableValue));
-        subscription.setGracePeriodMinutes(gracePeriodMinuteValue);
         //subscription.setPricePlanIds();
         //subscription.setChannels();
         //subscription.setFileTypes();
@@ -171,17 +167,7 @@ public class IngestMppUtils extends BaseIngestUtils {
                                            boolean isRenewable, int gracePeriodMinute, String pricePlanCode1,
                                            String pricePlanCode2, String channel1, String channel2, String fileType1,
                                            String fileType2, String couponGroup, String productCodes) {
-
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        Document doc = null;
-
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-            doc = docBuilder.parse("src/test/resources/ingest_xml_templates/ingestMPP.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestMPP.xml");
 
         // user and password
         doc.getElementsByTagName("tem:username").item(0).setTextContent(getIngestBusinessModuleUserName());

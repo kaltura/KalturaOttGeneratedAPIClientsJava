@@ -33,8 +33,8 @@ public class OttUserUpdateTests extends BaseTest {
         int numOfUsersInHousehold = 2;
         int numOfDevicesInHousehold = 1;
         Household household = HouseholdUtils.createHousehold(numOfUsersInHousehold, numOfDevicesInHousehold, true);
-        HouseholdUser householdUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        userKs = OttUserUtils.getKs(Integer.parseInt(householdUser.getUserId()), null);
+        HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
+        userKs = OttUserUtils.getKs(Integer.parseInt(householdUser.getUserId()));
 
         // get ottUser
         user = executor.executeSync(get().setKs(userKs)).results;

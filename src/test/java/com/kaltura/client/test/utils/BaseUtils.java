@@ -37,8 +37,7 @@ public class BaseUtils {
 
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
     public static String getTimeInDate(int offSetInMinutes, String timeZone) {
-        TimeZone theTimeZone;
-        theTimeZone = TimeZone.getTimeZone(timeZone);
+        TimeZone theTimeZone = TimeZone.getTimeZone(timeZone);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         dateFormat.setTimeZone(theTimeZone);
         Date dNow = new Date();
@@ -54,7 +53,6 @@ public class BaseUtils {
     public static String getTimeInDate(int offSetInMinutes) {
         return getTimeInDate(offSetInMinutes,"israel");
     }
-
 
     // Get epoch time in seconds according to off set parameter provided (in minutes)
     public static long getTimeInEpoch(int offSetInMinutes) {

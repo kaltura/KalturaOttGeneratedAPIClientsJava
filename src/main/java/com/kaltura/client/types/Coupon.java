@@ -77,46 +77,18 @@ public class Coupon extends ObjectBase {
 	public CouponsGroup getCouponsGroup(){
 		return this.couponsGroup;
 	}
-	public void setCouponsGroup(CouponsGroup couponsGroup){
-		this.couponsGroup = couponsGroup;
-	}
-
 	// status:
 	public CouponStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(CouponStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// totalUses:
 	public Integer getTotalUses(){
 		return this.totalUses;
 	}
-	public void setTotalUses(Integer totalUses){
-		this.totalUses = totalUses;
-	}
-
-	public void totalUses(String multirequestToken){
-		setToken("totalUses", multirequestToken);
-	}
-
 	// leftUses:
 	public Integer getLeftUses(){
 		return this.leftUses;
 	}
-	public void setLeftUses(Integer leftUses){
-		this.leftUses = leftUses;
-	}
-
-	public void leftUses(String multirequestToken){
-		setToken("leftUses", multirequestToken);
-	}
-
 
 	public Coupon() {
 		super();

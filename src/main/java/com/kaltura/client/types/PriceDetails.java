@@ -84,14 +84,6 @@ public class PriceDetails extends ObjectBase {
 	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -108,10 +100,6 @@ public class PriceDetails extends ObjectBase {
 	public Price getPrice(){
 		return this.price;
 	}
-	public void setPrice(Price price){
-		this.price = price;
-	}
-
 	// multiCurrencyPrice:
 	public List<Price> getMultiCurrencyPrice(){
 		return this.multiCurrencyPrice;
