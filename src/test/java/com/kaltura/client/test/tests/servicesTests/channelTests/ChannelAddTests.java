@@ -21,8 +21,8 @@ import java.util.Optional;
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import static com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
-import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelAddTests extends BaseTest {

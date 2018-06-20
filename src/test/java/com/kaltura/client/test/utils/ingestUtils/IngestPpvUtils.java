@@ -3,24 +3,20 @@ package com.kaltura.client.test.utils.ingestUtils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
-import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
-import static com.kaltura.client.test.IngestConstants.MAX_RANDOM_GENERATED_VALUE_4_INGEST;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserName;
 import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserPassword;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
+import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestPpvUtils extends BaseIngestUtils {
@@ -54,7 +50,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
                                 Optional<Boolean> isSubscriptionOnly, Optional<Boolean> isFirstDeviceLimitation, Optional<String> productCode,
                                 Optional<String> firstFileType, Optional<String> secondFileType) {
         String actionValue = action.orElse(INGEST_ACTION_INSERT);
-        String ppvCodeValue = ppvCode.orElse(getRandomValue("PPV_", MAX_RANDOM_GENERATED_VALUE_4_INGEST));
+        String ppvCodeValue = ppvCode.orElse(getRandomValue("PPV_", MAX_RANDOM_VALUE));
         boolean isActiveValue = isActive.isPresent() ? isActive.get() : true;
         String descriptionValue = description.orElse("My ingest PPV");
         String defaultCurrencyOfDiscount4IngestPpv = "ILS";
@@ -75,27 +71,27 @@ public class IngestPpvUtils extends BaseIngestUtils {
                 discountValue, priceValue, currencyValue, usageModuleValue, isSubscriptionOnlyValue,
                 isFirstDeviceLimitationValue, productCodeValue, firstFileTypeValue, secondFileTypeValue);
 
-        io.restassured.response.Response resp = RestAssured
-                .given()
-                .header("Content-Type", "text/xml;charset=UTF-8")
-                .header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules")
-                .body(reqBody)
+        Response resp =
+                given()
+                    .header(contentTypeXml)
+                    .header(soapActionIngestBusinessModules)
+                    .body(reqBody)
                 .when()
-                .post(url);
+                    .post(url);
 
-        Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug("\n Response!!!: " + resp.asString());
+        Logger.getLogger(IngestPpvUtils.class).debug(reqBody);
+        Logger.getLogger(IngestPpvUtils.class).debug("\n Response: " + resp.asString());
+
+        // TODO: 6/20/2018 add response assertion
 
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //System.out.println("ReportId = " + reportId);
 
         url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
-        resp = RestAssured.given()
-                .log().all()
-                .get(url);
+        resp = given().get(url);
 
-        Logger.getLogger(IngestUtils.class).debug(resp.asString());
-        Logger.getLogger(IngestUtils.class).debug(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
+        Logger.getLogger(IngestPpvUtils.class).debug(resp.asString());
+        Logger.getLogger(IngestPpvUtils.class).debug(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
 
         String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
@@ -126,16 +122,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
     private static String buildIngestPpvXml(String action, String ppvCode, boolean isActive, String description, String discount,
                                            double price, String currency, String usageModule, boolean isSubscriptionOnly,
                                            boolean isFirstDeviceLimitation, String productCode, String firstFileType, String secondFileType) {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        Document doc = null;
-
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-            doc = docBuilder.parse("src/test/resources/ingest_xml_templates/ingestPPV.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestPPV.xml");
 
         // user and password
         doc.getElementsByTagName("tem:username").item(0).setTextContent(getIngestBusinessModuleUserName());

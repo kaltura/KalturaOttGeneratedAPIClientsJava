@@ -4,9 +4,7 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.WatchStatus;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.AssetHistoryUtils;
-import com.kaltura.client.test.utils.AssetUtils;
-import com.kaltura.client.test.utils.BookmarkUtils;
+import com.kaltura.client.test.utils.*;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -21,14 +19,14 @@ import static com.kaltura.client.services.AssetHistoryService.ListAssetHistoryBu
 import static com.kaltura.client.services.AssetHistoryService.list;
 import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import static com.kaltura.client.services.BookmarkService.add;
-import static com.kaltura.client.test.IngestConstants.EPISODE_MEDIA_TYPE;
-import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.Properties.MOVIE_MEDIA_TYPE_ID;
 import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.utils.BaseUtils.getConcatenatedString;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryListTests extends BaseTest {
@@ -57,13 +55,14 @@ public class AssetHistoryListTests extends BaseTest {
         episodeFileId = AssetUtils.getAssetFileIds(String.valueOf(episode.getId())).get(0);
     }
 
-    @Description("/AssetHistory/action/list - with no filter")
+    @Description("assetHistory/action/list - with no filter")
     @Test
     private void vodAssetHistory() {
 
         // Create HH with one user and one device
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String userKs = getHouseholdMasterUserKs(household, null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
@@ -112,12 +111,11 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(2);
     }
 
-    @Description("/AssetHistory/action/list -filtered by movie asset id")
+    @Description("assetHistory/action/list - filtered by movie asset id")
     @Test
     private void vodAssetHistoryFilteredByAssetId() {
-
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String userKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
@@ -165,12 +163,12 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryIdsList).containsOnly(movie2.getId(), episode.getId());
     }
 
-    @Description("/AssetHistory/action/list -filtered by movie type id")
+    @Description("assetHistory/action/list -filtered by movie type id")
     @Test
     private void vodAssetHistoryFilteredByAssetType() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String userKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
@@ -195,12 +193,12 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(movie.getId());
     }
 
-    @Description("/AssetHistory/action/list -filtered by assets progress")
+    @Description("assetHistory/action/list -filtered by assets progress")
     @Test
     private void vodAssetHistoryFilteredByAssetProgress() {
 
         Household household = createHousehold(numOfUsers, numbOfDevices, false);
-        String userKs = getHouseholdMasterUserKs(household, null);
+        String userKs = getHouseholdMasterUserKs(household);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);

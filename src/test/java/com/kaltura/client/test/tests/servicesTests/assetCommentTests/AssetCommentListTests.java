@@ -18,9 +18,9 @@ import org.testng.annotations.Test;
 import java.util.Optional;
 
 import static com.kaltura.client.services.AssetCommentService.ListAssetCommentBuilder;
-import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetCommentListTests extends BaseTest {
@@ -33,7 +33,7 @@ public class AssetCommentListTests extends BaseTest {
         int numOfUsers = 1;
         int numOfDevices = 1;
         household = createHousehold(numOfUsers, numOfDevices, false);
-        householdMasterUserKs = getHouseholdMasterUserKs(household, null);
+        householdMasterUserKs = getHouseholdMasterUserKs(household);
     }
 
     @Description("AssetComment/action/list - check order by functionality")

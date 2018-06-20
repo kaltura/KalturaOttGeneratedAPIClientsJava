@@ -30,10 +30,10 @@ import java.util.Optional;
 
 import static com.kaltura.client.services.EntitlementService.*;
 import static com.kaltura.client.services.HouseholdService.delete;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_DELETE;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.Properties.WEB_FILE_TYPE;
 import static com.kaltura.client.test.Properties.getProperty;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementCancelTests extends BaseTest {
@@ -55,7 +55,7 @@ public class EntitlementCancelTests extends BaseTest {
 
         // set household
         testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        testSharedMasterUser = HouseholdUtils.getMasterUserFromHousehold(testSharedHousehold);
+        testSharedMasterUser = HouseholdUtils.getMasterUser(testSharedHousehold);
 
         playerData = new BookmarkPlayerData();
         playerData.setAction(BookmarkActionType.FIRST_PLAY);
@@ -80,8 +80,8 @@ public class EntitlementCancelTests extends BaseTest {
     public void cancelSubscription() {
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String userKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), null);
+        HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         // grant subscription
         GrantEntitlementBuilder grantEntitlementBuilder = grant(subscriptionId, TransactionType.SUBSCRIPTION, true, 0)
@@ -117,7 +117,7 @@ public class EntitlementCancelTests extends BaseTest {
     public void cancelWithInvalidSubscription() {
         // cancel subscription
         int invalidSubscriptionId = 1;
-        String userKs = OttUserUtils.getKs(Integer.parseInt(testSharedMasterUser.getUserId()), null);
+        String userKs = OttUserUtils.getKs(Integer.parseInt(testSharedMasterUser.getUserId()));
 
         CancelEntitlementBuilder cancelEntitlementBuilder = cancel(invalidSubscriptionId, TransactionType.SUBSCRIPTION);
         Response<Boolean> booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(userKs));
@@ -141,8 +141,8 @@ public class EntitlementCancelTests extends BaseTest {
 
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        //HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        String masterKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        //HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
+        String masterKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         PurchaseUtils.purchaseSubscription(masterKs, Integer.valueOf(subscription.getId()), Optional.empty());
 

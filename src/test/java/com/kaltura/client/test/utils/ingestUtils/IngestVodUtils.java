@@ -4,24 +4,21 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.types.MediaAsset;
-import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import static com.kaltura.client.test.IngestConstants.*;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
-import static com.kaltura.client.test.tests.BaseTest.getAnonymousKs;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
 import static com.kaltura.client.test.utils.BaseUtils.getOffsetDateInFormat;
 import static com.kaltura.client.test.utils.XmlUtils.asList;
+import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -67,7 +64,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         String actionValue = action.orElse(INGEST_ACTION_INSERT);
         String coguidValue = coguid.orElse(getCurrentDateInFormat(coguidDatePattern));
         String nameValue = INGEST_ACTION_INSERT.equals(actionValue) ? coguidValue : name.orElse(coguidValue);
-        String thumbUrlValue = thumbUrl.orElse(INGEST_VOD_DEFAULT_THUMB);
+        String thumbUrlValue = thumbUrl.orElse(DEFAULT_THUMB);
         String descriptionValue = description.orElse("description of " + coguidValue);
         String catalogStartDateValue = catalogStartDate.orElse(getOffsetDateInFormat(defaultDayOffset, startEndDatePattern));
         String catalogEndDateValue = catalogEndDate.orElse(maxEndDateValue);
@@ -80,22 +77,24 @@ public class IngestVodUtils extends BaseIngestUtils {
         Map<String, String> stringsValue = strings.orElse(getDefaultStrings());
         Map<String, Integer> numbersValue = numbers.orElse(getDefaultNumbers());
         Map<String, String> datesValue = dates.orElse(getDefaultDates());
+
         // TODO: check if ingest url is the same for all ingest actions
         String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
 
         String reqBody = buildIngestVodXml(actionValue, coguidValue, isActive, nameValue, thumbUrlValue, descriptionValue, catalogStartDateValue,
                 catalogEndDateValue, startDateValue, endDateValue, mediaTypeValue, ppvWebNameValue, ppvMobileNameValue, tagsValue, stringsValue, numbersValue, datesValue);
 
-        io.restassured.response.Response resp = RestAssured
-                .given()
-                .header("Content-Type", "text/xml;charset=UTF-8")
-                .header("SOAPAction", "http://tempuri.org/IService/IngestTvinciData")
-                .body(reqBody)
+        Response resp =
+                given()
+                    .header(contentTypeXml)
+                    .header(soapActionIngestTvinciData)
+                    .body(reqBody)
                 .when()
-                .post(url);
+                    .post(url);
 
-//        Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug("Ingest response: \n" + resp.asString());
+        Logger.getLogger(IngestVodUtils.class).debug(reqBody);
+        Logger.getLogger(IngestVodUtils.class).debug("Ingest response: \n" + resp.asString());
+
         assertThat(resp).isNotNull();
         assertThat(from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.IngestStatus.Message").toString()).isEqualTo("OK");
 
@@ -114,7 +113,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         //mediaAsset.setEndDate(endDate);
 
         if (!INGEST_ACTION_DELETE.equals(actionValue)) {
-            int delayBetweenRetriesInSeconds = 3;
+            int delayBetweenRetriesInSeconds = 5;
             int maxTimeExpectingValidResponseInSeconds = 90;
             await()
                     .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
@@ -132,17 +131,7 @@ public class IngestVodUtils extends BaseIngestUtils {
     private static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl, String description, String catalogStartDate, String catalogEndDate,
                                            String startDate, String endDate, String mediaType, String ppvWebName, String ppvMobileName, Map<String, List<String>> tags, Map<String, String> strings,
                                            Map<String, Integer> numbers, Map<String, String> dates)  {
-
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        Document doc = null;
-
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-            doc = docBuilder.parse("src/test/resources/ingest_xml_templates/ingestVOD.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
         doc.getElementsByTagName("userName").item(0).setTextContent(getIngestAssetUserName());

@@ -4,23 +4,18 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.PricePlan;
-import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import java.util.Optional;
 
-import static com.kaltura.client.test.IngestConstants.FIVE_MINUTES_PERIOD;
-import static com.kaltura.client.test.IngestConstants.INGEST_ACTION_INSERT;
-import static com.kaltura.client.test.IngestConstants.MAX_RANDOM_GENERATED_VALUE_4_INGEST;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserName;
 import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserPassword;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
+import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
 
 public class IngestPpUtils extends BaseIngestUtils {
@@ -52,11 +47,10 @@ public class IngestPpUtils extends BaseIngestUtils {
      * <p>
      * !!!Only created by that method PP can be deleted/updated!!!
      */
-    public static PricePlan ingestPP(Optional<String> action, Optional<String> ppCode, Optional<Boolean> isActive,
-                                     Optional<String> fullLifeCycle, Optional<String> viewLifeCycle, Optional<Integer> maxViews,
-                                     Optional<String> price, Optional<String> currency, Optional<String> discount, Optional<Boolean> isRenewable,
-                                     Optional<Integer> recurringPeriods) {
-        String ppCodeValue = ppCode.orElse(getRandomValue("AUTOPricePlan_", MAX_RANDOM_GENERATED_VALUE_4_INGEST));
+    public static PricePlan ingestPP(Optional<String> action, Optional<String> ppCode, Optional<Boolean> isActive, Optional<String> fullLifeCycle, 
+                                     Optional<String> viewLifeCycle, Optional<Integer> maxViews, Optional<String> price, Optional<String> currency, 
+                                     Optional<String> discount, Optional<Boolean> isRenewable, Optional<Integer> recurringPeriods) {
+        String ppCodeValue = ppCode.orElse(getRandomValue("AUTOPricePlan_", MAX_RANDOM_VALUE));
         String actionValue = action.orElse(INGEST_ACTION_INSERT);
         boolean isActiveValue = isActive.orElse(PP_DEFAULT_IS_ACTIVE_VALUE);
         String fullLifeCycleValue = fullLifeCycle.orElse(FIVE_MINUTES_PERIOD);
@@ -75,30 +69,27 @@ public class IngestPpUtils extends BaseIngestUtils {
         String reqBody = IngestPpUtils.buildIngestPpXml(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
                 viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue, isRenewableValue, recurringPeriodsValue);
 
-        io.restassured.response.Response resp = RestAssured
-                .given()
-                .header("Content-Type", "text/xml;charset=UTF-8")
-                .header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules")
-                .body(reqBody)
+        Response resp =
+                given()
+                    .header(contentTypeXml)
+                    .header(soapActionIngestBusinessModules)
+                    .body(reqBody)
                 .when()
-                .post(url);
+                    .post(url);
 
-        Logger.getLogger(IngestUtils.class).debug(reqBody);
-        Logger.getLogger(IngestUtils.class).debug(resp.asString());
+        Logger.getLogger(IngestPpUtils.class).debug(reqBody);
+        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
 
+        // TODO: 6/20/2018 add response assertion 
+        
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
-        //Logger.getLogger(IngestUtils.class).debug("ReportId = " + reportId);
 
         url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
-        resp = RestAssured.given()
-                .log().all()
-                .get(url);
+        resp = given().get(url);
 
-        Logger.getLogger(IngestUtils.class).debug(resp.asString());
-        //System.out.println(resp.asString().split(" = ")[1].replaceAll("\\.", ""));
+        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
 
         String id = resp.asString().split(" = ")[1].trim().replaceAll("\\.", "");
-        //Logger.getLogger(IngestUtils.class).debug("ID: " + id);
 
         PricePlan pricePlan = new PricePlan();
         pricePlan.setId(Long.valueOf(id));
@@ -116,17 +107,7 @@ public class IngestPpUtils extends BaseIngestUtils {
 
     private static String buildIngestPpXml(String action, String ppCode, boolean isActive, String fullLifeCycle, String viewLifeCycle,
                                           int maxViews, String price, String currency, String discount, boolean isRenewable, int recurringPeriods) {
-
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        Document doc = null;
-
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-            doc = docBuilder.parse("src/test/resources/ingest_xml_templates/ingestPP.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestPP.xml");
 
         // user and password
         doc.getElementsByTagName("tem:username").item(0).setTextContent(getIngestBusinessModuleUserName());

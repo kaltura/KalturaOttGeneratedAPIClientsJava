@@ -1,22 +1,24 @@
 package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
-import com.kaltura.client.services.*;
+import com.kaltura.client.services.HouseholdDeviceService;
+import com.kaltura.client.services.HouseholdPaymentGatewayService;
+import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.kaltura.client.services.HouseholdDeviceService.*;
-import static com.kaltura.client.services.HouseholdPaymentGatewayService.*;
+import static com.kaltura.client.services.HouseholdDeviceService.AddHouseholdDeviceBuilder;
+import static com.kaltura.client.services.HouseholdDeviceService.ListHouseholdDeviceBuilder;
+import static com.kaltura.client.services.HouseholdPaymentGatewayService.SetChargeIDHouseholdPaymentGatewayBuilder;
+import static com.kaltura.client.services.HouseholdService.AddHouseholdBuilder;
 import static com.kaltura.client.services.HouseholdUserService.*;
+import static com.kaltura.client.services.HouseholdUserService.list;
 import static com.kaltura.client.services.OttUserService.*;
-import static com.kaltura.client.services.HouseholdService.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
-import static com.kaltura.client.test.tests.BaseTest.getAdministratorKs;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class HouseholdUtils extends BaseUtils {
@@ -95,7 +97,7 @@ public class HouseholdUtils extends BaseUtils {
     }
 
     // get users list from given household
-    public static List<HouseholdDevice> getDevicesListFromHouseHold(Household household) {
+    public static List<HouseholdDevice> getDevicesList(Household household) {
 
         HouseholdDeviceFilter filter = new HouseholdDeviceFilter();
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
@@ -109,7 +111,7 @@ public class HouseholdUtils extends BaseUtils {
     }
 
     // get users list from given household
-    public static List<HouseholdUser> getUsersListFromHouseHold(Household household) {
+    public static List<HouseholdUser> getUsersList(Household household) {
         HouseholdUserFilter filter = new HouseholdUserFilter();
         filter.setHouseholdIdEqual(Math.toIntExact(household.getId()));
 
@@ -121,8 +123,8 @@ public class HouseholdUtils extends BaseUtils {
     }
 
     // get master user from given household
-    public static HouseholdUser getMasterUserFromHousehold(Household household) {
-        List<HouseholdUser> users = getUsersListFromHouseHold(household);
+    public static HouseholdUser getMasterUser(Household household) {
+        List<HouseholdUser> users = getUsersList(household);
 
         for (HouseholdUser user : users) {
             if (user.getIsMaster() != null && user.getIsMaster()) {
@@ -135,8 +137,8 @@ public class HouseholdUtils extends BaseUtils {
     }
 
     // get default user from given household
-    public static HouseholdUser getDefaultUserFromHousehold(Household household) {
-        List<HouseholdUser> users = getUsersListFromHouseHold(household);
+    public static HouseholdUser getDefaultUser(Household household) {
+        List<HouseholdUser> users = getUsersList(household);
 
         for (HouseholdUser user : users) {
             if (user.getIsDefault() != null && user.getIsDefault()) {
@@ -149,8 +151,8 @@ public class HouseholdUtils extends BaseUtils {
     }
 
     // get regular users list from given household
-    public static List<HouseholdUser> getRegularUsersListFromHouseHold(Household household) {
-        List<HouseholdUser> users = getUsersListFromHouseHold(household);
+    public static List<HouseholdUser> getRegularUsersList(Household household) {
+        List<HouseholdUser> users = getUsersList(household);
         List<HouseholdUser> usersToRemove = new ArrayList<>();
 
         for (HouseholdUser user : users) {
@@ -166,14 +168,26 @@ public class HouseholdUtils extends BaseUtils {
     }
 
     // Get master KS by providing household object
-    public static String getHouseholdMasterUserKs(Household household, @Nullable String udid) {
-        HouseholdUser masterUser = getMasterUserFromHousehold(household);
+    public static String getHouseholdMasterUserKs(Household household) {
+        HouseholdUser masterUser = getMasterUser(household);
+        return OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
+    }
+
+    // Get regular user KS by providing household object
+    public static String getHouseholdUserKs(Household household) {
+        HouseholdUser user = getRegularUsersList(household).get(0);
+        return OttUserUtils.getKs(Integer.parseInt(user.getUserId()));
+    }
+
+    // Get master KS by providing household object
+    public static String getHouseholdMasterUserKs(Household household, String udid) {
+        HouseholdUser masterUser = getMasterUser(household);
         return OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
     }
 
     // Get regular user KS by providing household object
-    public static String getHouseholdUserKs(Household household, @Nullable String udid) {
-        HouseholdUser user = getRegularUsersListFromHouseHold(household).get(0);
+    public static String getHouseholdUserKs(Household household, String udid) {
+        HouseholdUser user = getRegularUsersList(household).get(0);
         return OttUserUtils.getKs(Integer.parseInt(user.getUserId()), udid);
     }
 }

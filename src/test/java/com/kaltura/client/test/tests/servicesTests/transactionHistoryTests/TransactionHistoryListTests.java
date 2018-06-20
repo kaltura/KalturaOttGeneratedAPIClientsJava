@@ -64,9 +64,9 @@ public class TransactionHistoryListTests extends BaseTest{
 
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold,true);
         //Login with master to first device
-        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
         //Login with user to second device
-        userKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(1).getUdid());
+        userKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(1).getUdid());
 
         //All transactions per household - empty
         transactionHistoryFilter.setEntityReferenceEqual(EntityReferenceBy.HOUSEHOLD);

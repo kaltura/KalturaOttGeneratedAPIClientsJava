@@ -28,10 +28,10 @@ public class HouseholdPurgeTests extends BaseTest {
         int numberOfUsersInHousehold = 1;
         int numberOfDevicesInHousehold = 1;
         household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+        masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
-        String udid = HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid();
+        String udid = HouseholdUtils.getDevicesList(household).get(0).getUdid();
         masterUserKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()), udid);
     }
 
@@ -46,7 +46,7 @@ public class HouseholdPurgeTests extends BaseTest {
 
 
 //        // delete devices until error 1014 return
-//        List<HouseholdDevice> devices = HouseholdUtils.getDevicesListFromHouseHold(household);
+//        List<HouseholdDevice> devices = HouseholdUtils.getDevicesList(household);
 //
 //        executor.executeSync(delete(devices.get(1).getUdid()).setKs(masterUserKs));
 //        Response<Boolean> booleanResponse = executor.executeSync(delete(devices.get(2).getUdid()).setKs(masterUserKs));
@@ -64,7 +64,7 @@ public class HouseholdPurgeTests extends BaseTest {
 //        assertThat(booleanResponse.results.booleanValue()).isTrue();
 //
 //        // assert devices list size = 1
-//        devices = HouseholdUtils.getDevicesListFromHouseHold(household);
+//        devices = HouseholdUtils.getDevicesList(household);
 //        assertThat(devices.size()).isEqualTo(1);
     }
 
