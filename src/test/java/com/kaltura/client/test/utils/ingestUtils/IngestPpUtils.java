@@ -1,18 +1,18 @@
 package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
+import com.kaltura.client.services.PricePlanService;
+import com.kaltura.client.services.PricePlanService.ListPricePlanBuilder;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.DiscountModule;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PricePlan;
-import io.restassured.response.Response;
+import com.kaltura.client.types.PricePlanFilter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import java.util.Optional;
-
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserName;
-import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserPassword;
+import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static io.restassured.RestAssured.given;
@@ -69,7 +69,7 @@ public class IngestPpUtils extends BaseIngestUtils {
         String reqBody = IngestPpUtils.buildIngestPpXml(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
                 viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue, isRenewableValue, recurringPeriodsValue);
 
-        Response resp =
+        io.restassured.response.Response resp =
                 given()
                     .header(contentTypeXml)
                     .header(soapActionIngestBusinessModules)
@@ -91,18 +91,12 @@ public class IngestPpUtils extends BaseIngestUtils {
 
         String id = resp.asString().split(" = ")[1].trim().replaceAll("\\.", "");
 
-        PricePlan pricePlan = new PricePlan();
-        pricePlan.setId(Long.valueOf(id));
-        pricePlan.setMaxViewsNumber(maxViewsValue);
-        pricePlan.setIsRenewable(isRenewableValue);
-        pricePlan.setRenewalsNumber(recurringPeriodsValue);
-        pricePlan.setName(ppCodeValue);
-        pricePlan.setDiscountId(Long.valueOf(discountModule.toParams().get("id").toString()));
-        // TODO: complete COMMENTED IF NEEDED
-        //pricePlan.setFullLifeCycle();
-        //pricePlan.setViewLifeCycle();
-        //pricePlan.setPriceDetailsId();
-        return pricePlan;
+        PricePlanFilter filter = new PricePlanFilter();
+        filter.setIdIn(id);
+        ListPricePlanBuilder pricePlanBuilder = PricePlanService.list(filter);
+        com.kaltura.client.utils.response.base.Response<ListResponse<PricePlan>> pricePlanListResponse =
+                executor.executeSync(pricePlanBuilder.setKs(getOperatorKs()));
+        return pricePlanListResponse.results.getObjects().get(0);
     }
 
     private static String buildIngestPpXml(String action, String ppCode, boolean isActive, String fullLifeCycle, String viewLifeCycle,

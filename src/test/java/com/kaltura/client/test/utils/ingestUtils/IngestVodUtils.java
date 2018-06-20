@@ -3,6 +3,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
+import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.response.Response;
 import org.w3c.dom.Document;
@@ -105,12 +106,8 @@ public class IngestVodUtils extends BaseIngestUtils {
             id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID").toString();
         }
 
-        MediaAsset mediaAsset = new MediaAsset();
-        mediaAsset.setName(nameValue);
-        mediaAsset.setId(Long.valueOf(id.trim()));
-        mediaAsset.setDescription(descriptionValue);
-        //mediaAsset.setStartDate(startDate);
-        //mediaAsset.setEndDate(endDate);
+        AssetService.GetAssetBuilder getAssetBuilder = AssetService.get(id.trim(), AssetReferenceType.MEDIA);
+        com.kaltura.client.utils.response.base.Response<Asset> assetResponse = executor.executeSync(getAssetBuilder.setKs(getAnonymousKs()));
 
         if (!INGEST_ACTION_DELETE.equals(actionValue)) {
             int delayBetweenRetriesInSeconds = 5;
@@ -120,12 +117,11 @@ public class IngestVodUtils extends BaseIngestUtils {
                     .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
                     .until(isDataReturned(getAnonymousKs(), id, actionValue));
 
-            mediaAsset.setMediaFiles(executor.executeSync(
-                    AssetService.get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs())).results.getMediaFiles());
+            return (MediaAsset) assetResponse.results;
         }
 
         // TODO: 4/15/2018 add log for ingest and index failures
-        return mediaAsset;
+        return null;
     }
 
     private static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl, String description, String catalogStartDate, String catalogEndDate,

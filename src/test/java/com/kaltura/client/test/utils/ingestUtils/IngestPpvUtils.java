@@ -1,19 +1,16 @@
 package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
+import com.kaltura.client.services.PpvService;
+import com.kaltura.client.services.PpvService.GetPpvBuilder;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import io.restassured.response.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserName;
-import static com.kaltura.client.test.tests.BaseTest.getIngestBusinessModuleUserPassword;
+import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static io.restassured.RestAssured.given;
@@ -95,28 +92,10 @@ public class IngestPpvUtils extends BaseIngestUtils {
 
         String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
-        Ppv ppv = new Ppv();
-        ppv.setId(id);
-        List<TranslationToken> descriptions = new ArrayList<>();
-        TranslationToken translationToken = new TranslationToken();
-        translationToken.setValue(descriptionValue);
-        descriptions.add(translationToken);
-        ppv.setDescriptions(descriptions);
-        PriceDetails priceDetails = new PriceDetails();
-        Price priceObj = new Price();
-        priceObj.setAmount(priceValue);
-        priceObj.setCurrency(currencyValue);
-        priceDetails.setPrice(priceObj);
-        ppv.setPrice(priceDetails);
-        UsageModule usageModuleObj = new UsageModule();
-        usageModuleObj.setName(usageModuleValue);
-        ppv.setUsageModule(usageModuleObj);
-        ppv.setIsSubscriptionOnly(isSubscriptionOnlyValue);
-        ppv.setFirstDeviceLimitation(isFirstDeviceLimitationValue);
-        ppv.setProductCode(productCodeValue);
-        ppv.setName(ppvCodeValue);
+        GetPpvBuilder getPpvBuilder = PpvService.get(Long.valueOf(id));
+        com.kaltura.client.utils.response.base.Response<Ppv> ppvResponse = executor.executeSync(getPpvBuilder.setKs(getOperatorKs()));
 
-        return ppv;
+        return ppvResponse.results;
     }
 
     private static String buildIngestPpvXml(String action, String ppvCode, boolean isActive, String description, String discount,

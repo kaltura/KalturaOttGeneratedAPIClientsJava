@@ -1,46 +1,47 @@
 package com.kaltura.client.test.utils.dbUtils;
 
 import com.google.common.base.Strings;
-import com.google.common.base.Verify;
+import static com.kaltura.client.test.tests.BaseTest.*;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
-import com.kaltura.client.services.SubscriptionService;
-import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.SubscriptionUtils;
+import com.kaltura.client.services.ChannelService;
+import com.kaltura.client.services.ChannelService.GetChannelBuilder;
+import com.kaltura.client.services.PriceDetailsService;
+import com.kaltura.client.services.PriceDetailsService.ListPriceDetailsBuilder;
+import com.kaltura.client.services.PricePlanService;
+import com.kaltura.client.services.PricePlanService.ListPricePlanBuilder;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.json.JSONArray;
 import java.sql.SQLException;
-
 import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.ERROR_MESSAGE;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getJsonArrayFromQueryResult;
 
-public class IngestFixtureData {
+public class IngestFixtureData extends BaseUtils {
 
     public static PriceDetails loadPriceCode(Double priceAmount, String currency) {
         Logger.getLogger(IngestFixtureData.class).debug("loadPriceCode(): priceAmount = " + priceAmount + " currency = " + currency);
-        PriceDetails result = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_CODE_SELECT, true, partnerId, priceAmount, currency);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                return result;
+                return null;
             }
 
-            result = new PriceDetails();
-            result.setName(jsonArray.getJSONObject(0).getString(CODE));
-            result.setId(jsonArray.getJSONObject(0).getInt(ID));
-            Price price = new Price();
-            price.setCurrency(currency);
-            price.setAmount(priceAmount);
-            result.setPrice(price);
+            PriceDetailsFilter filter = new PriceDetailsFilter();
+            filter.setIdIn(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+            ListPriceDetailsBuilder priceDetailsBuilder = PriceDetailsService.list(filter);
+            Response<ListResponse<PriceDetails>> priceDetailsListResponse = executor.executeSync(priceDetailsBuilder.setKs(getOperatorKs()));
+
+            return priceDetailsListResponse.results.getObjects().get(0);
         } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(IngestFixtureData.class).error("discount code can't be null");
         }
-        return result;
+        return null;
     }
 
 
@@ -95,18 +96,12 @@ public class IngestFixtureData {
     }
 
     static PricePlan loadFirstPricePlanFromJsonArray(JSONArray jsonArray) {
-        PricePlan pricePlan = new PricePlan();
-        pricePlan.setId(jsonArray.getJSONObject(0).getLong(ID));
-        pricePlan.setName(jsonArray.getJSONObject(0).getString(NAME));
-        pricePlan.setViewLifeCycle(jsonArray.getJSONObject(0).getInt(VIEW_LIFE_CYCLE_MINUTES));
-        pricePlan.setFullLifeCycle(jsonArray.getJSONObject(0).getInt(FULL_LIFE_CYCLE_MINUTES));
-        pricePlan.setMaxViewsNumber(jsonArray.getJSONObject(0).getInt(MAX_VIEWS_COUNT));
-        pricePlan.setDiscountId(jsonArray.getJSONObject(0).getLong(INT_DISCOUNT_ID));
-        pricePlan.setPriceDetailsId(jsonArray.getJSONObject(0).getLong(PRICING_ID));
-        pricePlan.setIsRenewable(0 == jsonArray.getJSONObject(0).getInt(IS_RENEWED));
-        pricePlan.setRenewalsNumber(jsonArray.getJSONObject(0).getInt(NUMBER_OF_REC_PERIODS));
-
-        return pricePlan;
+        PricePlanFilter filter = new PricePlanFilter();
+        filter.setIdIn(String.valueOf(jsonArray.getJSONObject(0).getLong(ID)));
+        ListPricePlanBuilder pricePlanBuilder = PricePlanService.list(filter);
+        com.kaltura.client.utils.response.base.Response<ListResponse<PricePlan>> pricePlanListResponse =
+                executor.executeSync(pricePlanBuilder.setKs(getOperatorKs()));
+        return pricePlanListResponse.results.getObjects().get(0);
     }
 
     public static PricePlan load5MinRenewablePricePlan() {
@@ -315,13 +310,9 @@ public class IngestFixtureData {
                 return channel;
             }
 
-            channel = new Channel();
-            channel.setId(jsonArray.getJSONObject(0).getLong(ID));
-            channel.setName(jsonArray.getJSONObject(0).getString(NAME));
-            // logic if FILTER_EXPRESSION is not null so we have KSQL channel, otherwise we have automatic channel
-            channel.setFilterExpression(jsonArray.getJSONObject(0).getString(FILTER_EXPRESSION));
-            channel.setToken(CHANNEL_TYPE, String.valueOf(jsonArray.getJSONObject(0).getInt(CHANNEL_TYPE)));
-            // TODO: add more data in case it needed
+            GetChannelBuilder getChannelBuilder = ChannelService.get(jsonArray.getJSONObject(0).getInt(ID));
+            Response<Channel> channelResponse = executor.executeSync(getChannelBuilder.setKs(getOperatorKs()));
+            channel = channelResponse.results;
         } catch (Exception e) {
             e.printStackTrace();
             Logger.getLogger(IngestFixtureData.class).error("channel data can't be null");
