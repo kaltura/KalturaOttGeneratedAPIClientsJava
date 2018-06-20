@@ -63,14 +63,6 @@ public abstract class RuleAction extends ObjectBase {
 	public RuleActionType getType(){
 		return this.type;
 	}
-	public void setType(RuleActionType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
 	// description:
 	public String getDescription(){
 		return this.description;

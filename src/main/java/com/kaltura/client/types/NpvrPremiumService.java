@@ -59,14 +59,6 @@ public class NpvrPremiumService extends PremiumService {
 	public Long getQuotaInMinutes(){
 		return this.quotaInMinutes;
 	}
-	public void setQuotaInMinutes(Long quotaInMinutes){
-		this.quotaInMinutes = quotaInMinutes;
-	}
-
-	public void quotaInMinutes(String multirequestToken){
-		setToken("quotaInMinutes", multirequestToken);
-	}
-
 
 	public NpvrPremiumService() {
 		super();

@@ -112,130 +112,46 @@ public class HouseholdLimitations extends ObjectBase {
 	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// concurrentLimit:
 	public Integer getConcurrentLimit(){
 		return this.concurrentLimit;
 	}
-	public void setConcurrentLimit(Integer concurrentLimit){
-		this.concurrentLimit = concurrentLimit;
-	}
-
-	public void concurrentLimit(String multirequestToken){
-		setToken("concurrentLimit", multirequestToken);
-	}
-
 	// deviceLimit:
 	public Integer getDeviceLimit(){
 		return this.deviceLimit;
 	}
-	public void setDeviceLimit(Integer deviceLimit){
-		this.deviceLimit = deviceLimit;
-	}
-
-	public void deviceLimit(String multirequestToken){
-		setToken("deviceLimit", multirequestToken);
-	}
-
 	// deviceFrequency:
 	public Integer getDeviceFrequency(){
 		return this.deviceFrequency;
 	}
-	public void setDeviceFrequency(Integer deviceFrequency){
-		this.deviceFrequency = deviceFrequency;
-	}
-
-	public void deviceFrequency(String multirequestToken){
-		setToken("deviceFrequency", multirequestToken);
-	}
-
 	// deviceFrequencyDescription:
 	public String getDeviceFrequencyDescription(){
 		return this.deviceFrequencyDescription;
 	}
-	public void setDeviceFrequencyDescription(String deviceFrequencyDescription){
-		this.deviceFrequencyDescription = deviceFrequencyDescription;
-	}
-
-	public void deviceFrequencyDescription(String multirequestToken){
-		setToken("deviceFrequencyDescription", multirequestToken);
-	}
-
 	// userFrequency:
 	public Integer getUserFrequency(){
 		return this.userFrequency;
 	}
-	public void setUserFrequency(Integer userFrequency){
-		this.userFrequency = userFrequency;
-	}
-
-	public void userFrequency(String multirequestToken){
-		setToken("userFrequency", multirequestToken);
-	}
-
 	// userFrequencyDescription:
 	public String getUserFrequencyDescription(){
 		return this.userFrequencyDescription;
 	}
-	public void setUserFrequencyDescription(String userFrequencyDescription){
-		this.userFrequencyDescription = userFrequencyDescription;
-	}
-
-	public void userFrequencyDescription(String multirequestToken){
-		setToken("userFrequencyDescription", multirequestToken);
-	}
-
 	// npvrQuotaInSeconds:
 	public Integer getNpvrQuotaInSeconds(){
 		return this.npvrQuotaInSeconds;
 	}
-	public void setNpvrQuotaInSeconds(Integer npvrQuotaInSeconds){
-		this.npvrQuotaInSeconds = npvrQuotaInSeconds;
-	}
-
-	public void npvrQuotaInSeconds(String multirequestToken){
-		setToken("npvrQuotaInSeconds", multirequestToken);
-	}
-
 	// usersLimit:
 	public Integer getUsersLimit(){
 		return this.usersLimit;
 	}
-	public void setUsersLimit(Integer usersLimit){
-		this.usersLimit = usersLimit;
-	}
-
-	public void usersLimit(String multirequestToken){
-		setToken("usersLimit", multirequestToken);
-	}
-
 	// deviceFamiliesLimitations:
 	public List<HouseholdDeviceFamilyLimitations> getDeviceFamiliesLimitations(){
 		return this.deviceFamiliesLimitations;
 	}
-	public void setDeviceFamiliesLimitations(List<HouseholdDeviceFamilyLimitations> deviceFamiliesLimitations){
-		this.deviceFamiliesLimitations = deviceFamiliesLimitations;
-	}
-
 
 	public HouseholdLimitations() {
 		super();

@@ -104,14 +104,6 @@ public abstract class Social extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -176,14 +168,6 @@ public abstract class Social extends ObjectBase {
 	public String getUserId(){
 		return this.userId;
 	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
-
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
-
 	// birthday:
 	public String getBirthday(){
 		return this.birthday;
@@ -200,14 +184,6 @@ public abstract class Social extends ObjectBase {
 	public String getStatus(){
 		return this.status;
 	}
-	public void setStatus(String status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// pictureUrl:
 	public String getPictureUrl(){
 		return this.pictureUrl;
