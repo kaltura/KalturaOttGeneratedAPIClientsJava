@@ -24,17 +24,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BookmarkListTests extends BaseTest {
 
-    private Long assetId;
-    private int fileId;
-
-
-    private Long assetId2;
-    private int fileId2;
-
-    private List <String> assetList = new ArrayList<>();
+    private long assetId, assetId2;
+    private int fileId, fileId2;
+    private List<String> assetList;
 
     @BeforeClass
-    private void list_tests_before_class() {
+    private void bookmark_listTests_before_class() {
+        assetList = new ArrayList<>();
 
         assetId = BaseTest.getSharedMediaAsset().getId();
         List<Integer> assetFileIds = AssetUtils.getAssetFileIds(String.valueOf(assetId));
@@ -49,13 +45,10 @@ public class BookmarkListTests extends BaseTest {
 
     @Description("bookmark/action/list - order by")
     @Test
-
     private void BookmarkOrderBy() {
-
         // Bookmark asset1
         Bookmark bookmark = BookmarkUtils.addBookmark(0, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        BookmarkService.AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
-        addBookmarkBuilder.setKs(getSharedMasterUserKs());
+        BookmarkService.AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
@@ -63,14 +56,13 @@ public class BookmarkListTests extends BaseTest {
         // Bookmark asset2
         Bookmark bookmark2 = BookmarkUtils.addBookmark(10, String.valueOf(assetId2), fileId2, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
 
-        AddBookmarkBuilder addBookmarkBuilder2 = BookmarkService.add(bookmark2);
-        addBookmarkBuilder2.setKs(getSharedMasterUserKs());
+        AddBookmarkBuilder addBookmarkBuilder2 = BookmarkService.add(bookmark2).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse2 = executor.executeSync(addBookmarkBuilder2);
         assertThat(booleanResponse2.results.booleanValue()).isTrue();
 
+        // set filter
         BookmarkFilter bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_DESC,AssetType.MEDIA, assetList);
-        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter);
-        listBookmarkBuilder.setKs(getSharedMasterUserKs());
+        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter).setKs(getSharedMasterUserKs());
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
 
         Bookmark bookmarkObject = bookmarkListResponse.results.getObjects().get(0);
@@ -81,8 +73,7 @@ public class BookmarkListTests extends BaseTest {
         assertThat( bookmarkObject2.getId()).isEqualTo(String.valueOf(assetId));
 
         bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_ASC,AssetType.MEDIA, assetList);
-        listBookmarkBuilder = BookmarkService.list(bookmarkFilter);
-        listBookmarkBuilder.setKs(getSharedMasterUserKs());
+        listBookmarkBuilder = BookmarkService.list(bookmarkFilter).setKs(getSharedMasterUserKs());
         bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
 
         bookmarkObject = bookmarkListResponse.results.getObjects().get(0);

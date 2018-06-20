@@ -38,6 +38,15 @@
               },
               {
                 "$ref": "HouseholdDevice.json#/definitions/HouseholdDevice"
+              },
+              {
+                "$ref": "UserRole.json#/definitions/UserRole"
+              },
+              {
+                "$ref": "Subscription.json#/definitions/Subscription"
+              },
+              {
+                "$ref": "PaymentGatewayProfile.json#/definitions/PaymentGatewayProfile"
               }
             ]
           }
@@ -58,7 +67,10 @@
             "KalturaProductPriceListResponse",
             "KalturaBookmarkListResponse",
             "KalturaAssetCommentListResponse",
-            "KalturaAssetHistoryListResponse"
+            "KalturaAssetHistoryListResponse",
+            "KalturaUserRoleListResponse",
+            "KalturaSubscriptionListResponse",
+            "KalturaPaymentGatewayProfileListResponse"
           ]
         }
       },

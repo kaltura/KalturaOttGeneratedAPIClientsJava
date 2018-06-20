@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Main Suite" parallel="tests" thread-count="3" configfailurepolicy="continue">
-    <test name="Services Tests">
+<suite name="Regression" parallel="tests" thread-count="2" configfailurepolicy="continue">
+    <test name="Fast Tests">
         <groups>
             <run>
-                <exclude name="slow" />
+                <exclude name="slow_before" />
+                <exclude name="slow_after" />
+                <exclude name="Permission management"/>
             </run>
         </groups>
-
         <packages>
             <package name="com.kaltura.client.test.tests.servicesTests.*"/>
             <package name="com.kaltura.client.test.tests.featuresTests.*"/>
         </packages>
+    </test>
 
-        <!--<classes>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.LoginTests" >-->
-                <!--<methods>-->
-                    <!--<include name="login" />-->
-                <!--</methods>-->
-            <!--</class>-->
-        <!--</classes>-->
+    <test name="Slow Tests">
+        <groups>
+            <run>
+                <include name="slow_before" />
+                <include name="slow_after"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.kaltura.client.test.tests.servicesTests.*"/>
+            <package name="com.kaltura.client.test.tests.featuresTests.*"/>
+        </packages>
     </test>
 </suite>

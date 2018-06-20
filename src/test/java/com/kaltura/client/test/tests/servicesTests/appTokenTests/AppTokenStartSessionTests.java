@@ -127,7 +127,7 @@ public class AppTokenStartSessionTests extends BaseTest {
 
     @Issue("BEO-4980")
     @Description("appToken/action/startSession - token id with default expiry date (according to the value in group_203 CB document")
-    @Test
+    @Test(enabled = false)
     private void startSessionDefaultExpiryDate() {
         // TODO: 5/3/2018 add comments! 
         int expiryDate = 0;

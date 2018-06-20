@@ -1,0 +1,138 @@
+{
+  "$id": "ProgramAsset",
+  "type": "object",
+  "definitions": {
+    "ProgramAsset": {
+      "type": "object",
+      "properties": {
+        "epgChannelId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "epgId": {
+          "type": "string",
+          "minLength": 0
+        },
+        "relatedMediaId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "crid": {
+          "type": "string",
+          "minLength": 0
+        },
+        "linearAssetId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "type": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "type": "string",
+          "minLength": 0
+        },
+        "description": {
+          "type": "string",
+          "minLength": 0
+        },
+        "images": {
+          "type": "array"
+        },
+        "metas": {
+          "type": "object",
+          "properties": {
+            "season_num": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 0
+                },
+                "objectType": {
+                  "type": "string",
+                  "minLength": 0
+                }
+              }
+            },
+            "Series_ID": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 0
+                },
+                "objectType": {
+                  "type": "string",
+                  "minLength": 0
+                }
+              }
+            },
+            "Episode number": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 0
+                },
+                "objectType": {
+                  "type": "string",
+                  "minLength": 0
+                }
+              }
+            }
+          }
+        },
+        "tags": {
+          "type": "object"
+        },
+        "startDate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "endDate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "enableCdvr": {
+          "type": "boolean"
+        },
+        "enableCatchUp": {
+          "type": "boolean"
+        },
+        "enableStartOver": {
+          "type": "boolean"
+        },
+        "enableTrickPlay": {
+          "type": "boolean"
+        },
+        "objectType": {
+          "type": "string",
+          "minLength": 0
+        }
+      },
+      "required": [
+        "epgChannelId",
+        "epgId",
+        "type",
+        "name",
+        "startDate",
+        "endDate"
+      ]
+    }
+  },
+  "properties": {
+    "result": {
+      "ref":"#/definitions/ProgramAsset"
+    },
+    "executionTime": {
+      "type": "number",
+      "minimum": 0
+    }
+  }
+}

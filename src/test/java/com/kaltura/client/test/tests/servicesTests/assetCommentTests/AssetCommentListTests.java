@@ -5,7 +5,7 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
-import com.kaltura.client.test.utils.IngestUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.AssetComment;
 import com.kaltura.client.types.AssetCommentFilter;
 import com.kaltura.client.types.Household;
@@ -18,9 +18,9 @@ import org.testng.annotations.Test;
 import java.util.Optional;
 
 import static com.kaltura.client.services.AssetCommentService.ListAssetCommentBuilder;
-import static com.kaltura.client.test.IngestConstants.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetCommentListTests extends BaseTest {
@@ -29,32 +29,30 @@ public class AssetCommentListTests extends BaseTest {
     private String householdMasterUserKs;
 
     @BeforeClass
-    // TODO: 5/3/2018 edit before method name 
-    private void add_tests_before_class() {
+    private void asset_comment_listTests_before_class() {
         int numOfUsers = 1;
         int numOfDevices = 1;
         household = createHousehold(numOfUsers, numOfDevices, false);
-        householdMasterUserKs = getHouseholdMasterUserKs(household, null);
+        householdMasterUserKs = getHouseholdMasterUserKs(household);
     }
 
     @Description("AssetComment/action/list - check order by functionality")
     @Test
     private void checkCommentsOrder() {
-
         String writer = "Shmulik";
         Long createDate = 0L;
         String header = "header";
         String subHeader = "subHeader";
         String text = "A lot of text";
 
-        Long assetId = IngestUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(MOVIE_MEDIA_TYPE)), Optional.empty(), Optional.empty()).getId();
+        Long assetId = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(String.valueOf(MOVIE_MEDIA_TYPE)), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty()).getId();
 
         // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);
 
         // AssetComment/action/add - first comment
-
         AssetCommentService.AddAssetCommentBuilder addAssetCommentBuilder = AssetCommentService.add(assetComment)
                 .setKs(householdMasterUserKs);
         Response<AssetComment> assetComment1Response = executor.executeSync(addAssetCommentBuilder);
@@ -69,7 +67,6 @@ public class AssetCommentListTests extends BaseTest {
                 AssetCommentOrderBy.CREATE_DATE_DESC);
 
         //AssetComment/action/list - return both comments
-
         ListAssetCommentBuilder listAssetCommentBuilder = AssetCommentService.list(assetCommentFilter, null)
                 .setKs(householdMasterUserKs);
         Response<ListResponse<AssetComment>> assetCommentListResponse = executor.executeSync(listAssetCommentBuilder);

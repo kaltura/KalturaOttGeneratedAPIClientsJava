@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:tem='http://tempuri.org/'>
+    <soapenv:Header/>
+    <soapenv:Body>
+        <tem:IngestBusinessModules>
+            <tem:username/>
+            <tem:password/>
+            <tem:xml>
+                <!--<![CDATA[-->
+                <ingest>
+                    <ppvs>
+                        <ppv>
+                            <descriptions>
+                                <description lang="eng"/>
+                            </descriptions>
+                            <price_code>
+                                <price/>
+                                <currency/>
+                            </price_code>
+                            <usage_module/>
+                            <discount/>
+                            <coupon_group/>
+                            <subscription_only/>
+                            <first_device_limitation/>
+                            <product_code/>
+                            <file_types>
+                                <file_type/>
+                                <file_type/>
+                            </file_types>
+                        </ppv>
+                    </ppvs>
+                </ingest>
+                <!--]]>-->
+            </tem:xml>
+        </tem:IngestBusinessModules>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+

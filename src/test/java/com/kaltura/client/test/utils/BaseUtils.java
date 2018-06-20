@@ -10,7 +10,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,9 +35,11 @@ public class BaseUtils {
         return dateFormat.format(cal.getTime());
     }
 
-    // Get Date time according to off set parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getTimeInDate(int offSetInMinutes) {
+    // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
+    public static String getTimeInDate(int offSetInMinutes, String timeZone) {
+        TimeZone theTimeZone = TimeZone.getTimeZone(timeZone);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        dateFormat.setTimeZone(theTimeZone);
         Date dNow = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dNow);
@@ -45,6 +47,11 @@ public class BaseUtils {
         dNow = calendar.getTime();
 
         return dateFormat.format(dNow);
+    }
+
+    // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
+    public static String getTimeInDate(int offSetInMinutes) {
+        return getTimeInDate(offSetInMinutes,"israel");
     }
 
     // Get epoch time in seconds according to off set parameter provided (in minutes)
@@ -59,7 +66,7 @@ public class BaseUtils {
     }
 
     // generate current data String in specified format
-    public static String getCurrentDataInFormat(String pattern) {
+    public static String getCurrentDateInFormat(String pattern) {
         return getOffsetDateInFormat(0, pattern);
     }
 
@@ -133,5 +140,36 @@ public class BaseUtils {
             assetIds.add(arg);
         }
         return String.join(",", assetIds);
+    }
+
+    public static String getFileContent(String filePath) {
+        String result = "";
+        try {
+            StringBuilder sb = new StringBuilder();
+            InputStream is = new FileInputStream(filePath);
+            BufferedReader buf = new BufferedReader(new InputStreamReader(is));
+
+            String line = buf.readLine();
+            while (line != null) {
+                sb.append(line).append("\n");
+                line = buf.readLine();
+            }
+
+            result = sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
+    public static void deleteFile(String filePath) {
+        File file = new File(filePath);
+
+        if (file.delete()) {
+            Logger.getLogger(BaseUtils.class).debug("File deleted successfully: " + filePath);
+        } else {
+            Logger.getLogger(BaseUtils.class).error("Failed to delete the file: " + filePath);
+        }
     }
 }

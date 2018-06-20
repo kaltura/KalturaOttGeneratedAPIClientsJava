@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <tem:IngestTvinciData>
+            <tem:request>
+                <userName/>
+                <passWord/>
+                <data>
+                    <!--<![CDATA[-->
+                    <feed>
+                        <export>
+                            <media erase="false">
+                                <basic>
+                                    <name>
+                                        <value lang="eng"/>
+                                    </name>
+                                    <thumb/>
+                                    <description>
+                                        <value lang="eng"/>
+                                    </description>
+                                    <dates>
+                                        <catalog_start/>
+                                        <start/>
+                                        <catalog_end/>
+                                        <end/>
+                                    </dates>
+                                    <pic_ratios>
+                                        <ratio ratio="4:3"/>
+                                        <ratio ratio="16:9"/>
+                                    </pic_ratios>
+                                    <media_type/>
+                                    <rules>
+                                        <geo_block_rule/>
+                                        <watch_per_rule>Parent Allowed</watch_per_rule>
+                                        <device_rule/>
+                                    </rules>
+                                </basic>
+                                <structure>
+                                    <strings/>
+                                    <booleans/>
+                                    <doubles/>
+                                    <dates/>
+                                    <metas/>
+                                </structure>
+                                <files>
+                                    <file assetDuration="1000"
+                                          quality="HIGH"
+                                          handling_type="CLIP"
+                                          cdn_name="Default CDN"
+                                          cdn_code="http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m"
+                                          alt_cdn_code="http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m"
+                                          billing_type="Tvinci"
+                                          product_code="productExampleCode"/>
+                                    <file assetDuration="1000"
+                                          quality="HIGH"
+                                          handling_type="CLIP"
+                                          cdn_name="Default CDN"
+                                          cdn_code="http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8"
+                                          alt_cdn_code="http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8"
+                                          billing_type="Tvinci"
+                                          product_code="productExampleCode"/>
+                                </files>
+                            </media>
+                        </export>
+                    </feed>
+                    <!--]]>-->
+                </data>
+            </tem:request>
+        </tem:IngestTvinciData>
+    </soapenv:Body>
+</soapenv:Envelope>
