@@ -33,9 +33,9 @@ public class TransactionPurchaseTests extends BaseTest {
     public void beforeClass(){
         // Prepare household with users and devices
         household =  HouseholdUtils.createHousehold(numberOfUsersInDomain, numberOfDevicesInDomain, false);
-        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
-        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
-        userKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(1).getUdid());
+//        HouseholdUser masterUser = HouseholdUtils.getMasterUserFromHousehold(household);
+//        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
+//        userKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(1).getUdid());
 
 
         PaymentGatewayProfile paymentGatewayProfile = new PaymentGatewayProfile();
