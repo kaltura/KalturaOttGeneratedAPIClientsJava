@@ -1,7 +1,6 @@
 package com.kaltura.client.test.utils.dbUtils;
 
 import com.google.common.base.Strings;
-import static com.kaltura.client.test.tests.BaseTest.*;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.services.ChannelService;
@@ -14,9 +13,10 @@ import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.json.JSONArray;
+
 import java.sql.SQLException;
-import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
-import static com.kaltura.client.test.tests.BaseTest.partnerId;
+
+import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.ERROR_MESSAGE;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getJsonArrayFromQueryResult;
@@ -43,7 +43,6 @@ public class IngestFixtureData extends BaseUtils {
         }
         return null;
     }
-
 
     public static DiscountModule loadDiscount(Double discountPrice, Double discountPercent) {
         Logger.getLogger(IngestFixtureData.class).debug("loadDiscount(): discountPrice = " + discountPrice + " discountPercent = " + discountPercent);

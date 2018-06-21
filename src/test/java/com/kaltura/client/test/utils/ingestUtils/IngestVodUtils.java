@@ -207,12 +207,12 @@ public class IngestVodUtils extends BaseIngestUtils {
         Element metasElement = (Element) media.getElementsByTagName("metas").item(0);
         for (Map.Entry<String, List<String>> entry : tags.entrySet()) {
             // meta node
-            generateAndAppendMetaNode(doc, metasElement, entry.getKey());
+            Element metaElement = generateAndAppendMetaNode(doc, metasElement, entry.getKey());
             if (entry.getValue() != null) {
                 // container node
                 for (String s : entry.getValue()) {
                     Element container = doc.createElement("container");
-                    metasElement.appendChild(container);
+                    metaElement.appendChild(container);
 
                     // value node
                     Element value = doc.createElement("value");
@@ -333,10 +333,8 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     public static MediaAsset updateVODName(MediaAsset asset, String name) {
-        MediaAsset mediaAsset = ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-
-        return mediaAsset;
+        Optional o = Optional.empty();
+        return ingestVOD(Optional.of(INGEST_ACTION_UPDATE), Optional.of(asset.getName()), true, Optional.of(name),
+                o, o, o, o, o, o, o, o, o, o, o, o, o);
     }
 }

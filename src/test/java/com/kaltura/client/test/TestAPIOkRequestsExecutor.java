@@ -103,8 +103,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
     private void write2LogFile(String serviceMethod, String kalturaSession) {
         try(FileWriter fw = new FileWriter(getProperty(REGRESSION_LOGS_LOCAL_PATH), true);
             BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw))
-        {
+            PrintWriter out = new PrintWriter(bw)) {
             out.println(serviceMethod + " " + kalturaSession);
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,14 +5,16 @@ import com.kaltura.client.enums.BundleType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
-import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.ChannelType;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.kaltura.client.test.tests.BaseTest.executor;
 import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
 
 public class SubscriptionUtils extends BaseUtils {
@@ -31,9 +33,9 @@ public class SubscriptionUtils extends BaseUtils {
             pager.setPageSize(numOfPages.get());
             pager.setPageIndex(1);
 
-            assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter, pager).setKs(getOperatorKs()));
+            assetListResponse = executor.executeSync(AssetService.list(filter, pager).setKs(getOperatorKs()));
         } else {
-            assetListResponse = BaseTest.executor.executeSync(AssetService.list(filter).setKs(getOperatorKs()));
+            assetListResponse = executor.executeSync(AssetService.list(filter).setKs(getOperatorKs()));
         }
 
         List<Asset> assets = assetListResponse.results.getObjects();
@@ -73,7 +75,7 @@ public class SubscriptionUtils extends BaseUtils {
         SubscriptionFilter filter = new SubscriptionFilter();
         filter.setSubscriptionIdIn(subscriptionId);
         ListSubscriptionBuilder listSubscriptionBuilder = SubscriptionService.list(filter);
-        Response<ListResponse<Subscription>> listResponse = BaseTest.executor.executeSync(listSubscriptionBuilder.setKs(getOperatorKs()));
+        Response<ListResponse<Subscription>> listResponse = executor.executeSync(listSubscriptionBuilder.setKs(getOperatorKs()));
         Verify.verify(listResponse.results.getObjects().get(0).getChannels().size() > 0);
         return listResponse.results.getObjects().get(0).getChannels();
     }

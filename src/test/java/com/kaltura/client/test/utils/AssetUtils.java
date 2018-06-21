@@ -7,9 +7,7 @@ import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.SocialActionType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.BookmarkService;
-import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.services.SocialActionService;
-import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -21,6 +19,7 @@ import java.util.stream.Collectors;
 import static com.kaltura.client.services.AssetService.GetAssetBuilder;
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
+import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.SocialActionService.AddSocialActionBuilder;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.tests.BaseTest.executor;
@@ -30,10 +29,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetUtils extends BaseUtils {
 
-
+    // TODO: 6/21/2018 Use Optional instead of nullable
     public static SearchAssetFilter getSearchAssetFilter(@Nullable String ksql, @Nullable String idIn, @Nullable String typeIn,
-                                                         @Nullable DynamicOrderBy dynamicOrderBy, List<AssetGroupBy> groupBy, String name,
-                                                         String orderBy) {
+                                                         @Nullable DynamicOrderBy dynamicOrderBy, List<AssetGroupBy> groupBy, String name, String orderBy) {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         searchAssetFilter.setKSql(ksql);
         searchAssetFilter.setIdIn(idIn);
@@ -42,6 +40,13 @@ public class AssetUtils extends BaseUtils {
         searchAssetFilter.setGroupBy(groupBy);
         searchAssetFilter.setName(name);
         searchAssetFilter.setOrderBy(orderBy);
+
+        return searchAssetFilter;
+    }
+
+    public static SearchAssetFilter getSearchAssetFilter(String ksql) {
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        searchAssetFilter.setKSql(ksql);
 
         return searchAssetFilter;
     }
@@ -79,9 +84,11 @@ public class AssetUtils extends BaseUtils {
 
     public static List<Asset> getAssetsByType(String typeIn) {
         AssetFilter assetFilter = getSearchAssetFilter(null, null, typeIn, null, null, null, null);
+
         FilterPager filterPager = new FilterPager();
         filterPager.setPageSize(20);
         filterPager.setPageIndex(1);
+
         ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter, filterPager)
                 .setKs(getSharedMasterUserKs());
         Response<ListResponse<Asset>> assetResponse = executor.executeSync(listAssetBuilder);
@@ -95,17 +102,25 @@ public class AssetUtils extends BaseUtils {
             Logger.getLogger("Value must be equal or greater than 0");
         } else {
             for (int i = 0; i < numOfActions; i++) {
-                Household household = HouseholdUtils.createHousehold(1, 1, false);
+                int j = 1;
+                Household household = HouseholdUtils.createHousehold(j, j, false);
                 HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
-                Bookmark bookmark = BookmarkUtils.addBookmark(0, String.valueOf(assetId),
+
+                Bookmark bookmark = BookmarkUtils.addBookmark(
+                        0,
+                        String.valueOf(assetId),
                         AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0),
-                        assetType, BookmarkActionType.FIRST_PLAY);
+                        assetType,
+                        BookmarkActionType.FIRST_PLAY
+                );
+
                 AddBookmarkBuilder bookmarkBuilder = BookmarkService.add(bookmark)
                         .setKs(getOperatorKs())
                         .setUserId(Integer.valueOf(householdUser.getUserId()));
                 executor.executeSync(bookmarkBuilder);
 
-                HouseholdService.delete(Math.toIntExact(household.getId()));
+                // cleanup - delete household
+                executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
             }
         }
     }
@@ -115,15 +130,19 @@ public class AssetUtils extends BaseUtils {
             Logger.getLogger("Value must be equal or greater than 0");
         } else {
             for (int i = 0; i < numOfActions; i++) {
-                Household household = HouseholdUtils.createHousehold(1, 1, false);
+                int j = 1;
+                Household household = HouseholdUtils.createHousehold(j, j, false);
                 HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
+
                 SocialAction socialAction = SocialUtils.getSocialAction(SocialActionType.LIKE, null, assetId, assetType, null);
+
                 AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add(socialAction)
-                        .setKs(BaseTest.getOperatorKs())
+                        .setKs(getOperatorKs())
                         .setUserId(Integer.valueOf(householdUser.getUserId()));
                 executor.executeSync(addSocialActionBuilder);
 
-                HouseholdService.delete(Math.toIntExact(household.getId()));
+                // cleanup - delete household
+                executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
             }
         }
     }
@@ -133,15 +152,19 @@ public class AssetUtils extends BaseUtils {
             Logger.getLogger("Value must be equal or greater than 0");
         } else {
             for (int i = 0; i < numOfActions; i++) {
-                Household household = HouseholdUtils.createHousehold(1, 1, false);
+                int j = 1;
+                Household household = HouseholdUtils.createHousehold(j, j, false);
                 HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
+
                 SocialActionRate socialActionRate = SocialUtils.getSocialActionRate(SocialActionType.RATE, null, assetId, assetType, null, rate);
+
                 AddSocialActionBuilder addSocialActionBuilder = SocialActionService.add(socialActionRate)
-                        .setKs(BaseTest.getOperatorKs())
+                        .setKs(getOperatorKs())
                         .setUserId(Integer.valueOf(householdUser.getUserId()));
                 executor.executeSync(addSocialActionBuilder);
 
-                HouseholdService.delete(Math.toIntExact(household.getId()));
+                // cleanup - delete household
+                executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
             }
         }
     }
