@@ -64,20 +64,15 @@ public class IngestFixtureData extends BaseUtils {
         return result;
     }
 
-    public static PricePlan loadPricePlan(Double priceAmount, String currency, Double discountPrice, Double discountPercent) {
+    public static PricePlan loadPricePlan(Double priceAmount, String currency, DiscountModule discountModule) {
         Logger.getLogger(IngestFixtureData.class).debug("loadPricePlan(): priceAmount = " + priceAmount + " currency = " + currency +
-                " discountPrice = " + discountPrice + " discountPercent = " + discountPercent);
+                " discountPercent = " + discountModule.getPercent());
 
         PricePlan pricePlan = null;
 
         try {
             PriceDetails priceCode = loadPriceCode(priceAmount, currency);
             if (priceCode == null) {
-                return pricePlan;
-            }
-
-            DiscountModule discountModule = loadDiscount(discountPrice, discountPercent);
-            if (discountModule == null) {
                 return pricePlan;
             }
 
@@ -129,7 +124,7 @@ public class IngestFixtureData extends BaseUtils {
         Subscription subscription = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(SUBSCRIPTION_SELECT, true, partnerId,
-                    pricePlan.getId(), pricePlan.getDiscountId());
+                    pricePlan.getId(), getSharedCommonDiscount().toParams().get("id"));
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return subscription;
             }
@@ -155,7 +150,7 @@ public class IngestFixtureData extends BaseUtils {
         Collection collection = null;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(COLLECTION_SELECT, true, partnerId,
-                    pricePlan.getDiscountId(), pricePlan.getPriceDetailsId(), pricePlan.getId());
+                    getSharedCommonDiscount().toParams().get("id"), pricePlan.getPriceDetailsId(), pricePlan.getId());
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return collection;
             }

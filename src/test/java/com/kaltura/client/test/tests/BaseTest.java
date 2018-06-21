@@ -78,6 +78,9 @@ public class BaseTest {
     // shared ingested PP
     private static PricePlan sharedCommonPricePlan;
 
+    // shared discount module for shared PP
+    private static DiscountModule sharedCommonDiscountModule;
+
     // shared ingested subscription
     private static Subscription sharedCommonSubscription;
 
@@ -134,20 +137,34 @@ public class BaseTest {
      * @return common shared Price Plan with mentioned parameters
      */
     public static PricePlan getSharedCommonPricePlan() {
-        double defaultDiscountPrice = 0.0;
-        double defaultDiscountPercentValue = 100.0;
         if (sharedCommonPricePlan == null) {
-            sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), EUR.getValue(), defaultDiscountPrice, defaultDiscountPercentValue);
+            sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), EUR.getValue(), getSharedCommonDiscount());
             if (sharedCommonPricePlan == null) {
                 sharedCommonPricePlan = IngestPpUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
                         Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
-                        Optional.of(EUR.getValue()), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue)),
+                        Optional.of(EUR.getValue()), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue())),
                         Optional.of(true), Optional.of(0));
             }
         }
         return sharedCommonPricePlan;
     }
 
+    /**
+    * Regression requires existing of Price Plan with specific parameters.
+     * One of them:
+     * Discount percent should be equal 100%
+     * Can't work in case proper Discount and PriceCode aren't found in DB
+     *
+     * @return common shared Discount Module with mentioned parameters
+    */
+    public static DiscountModule getSharedCommonDiscount() {
+        double defaultDiscountPrice = 0.0;
+        double defaultDiscountPercentValue = 100.0;
+        if (sharedCommonDiscountModule == null) {
+            sharedCommonDiscountModule = IngestFixtureData.loadDiscount(defaultDiscountPrice, defaultDiscountPercentValue);
+        }
+        return sharedCommonDiscountModule;
+    }
     /**
      * Regression requires existing of MPP with specific parameters.
      * Price Plan should be as for method public static PricePlan getSharedCommonPricePlan()

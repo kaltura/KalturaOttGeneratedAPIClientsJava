@@ -106,10 +106,13 @@ public class DBConstants {
             "and ((num_of_rec_periods > 2) or (num_of_rec_periods = 0))\n" + // TODO: do we really want it "num_of_rec_periods > 2"?
             "and group_id=?";
 
-    static final String SUBSCRIPTION_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions]\n" +
-            "where [status]=1 and is_active=1\n" +
-            "and group_id=? and usage_module_code=? and discount_module_code=?\n" +
-            "order by create_date";
+    static final String SUBSCRIPTION_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions] s with(nolock)\n" +
+            "join [Pricing].[dbo].[subscriptions_channels] sc with(nolock) on (sc.subscription_id=s.id)\n" +
+            "join [TVinci].[dbo].[channels] c with(nolock) on (c.id=sc.channel_id)\n" +
+            "where s.[status]=1 and s.is_active=1\n" +
+            "and s.group_id=? and s.usage_module_code=? and s.discount_module_code=? and c.channel_type!=" +
+            ChannelType.MANUAL_CHANNEL_TYPE.getValue() + " and sc.is_active=1 and sc.[status]=1\n" +
+            "order by s.create_date";
 
     static final String SUBSCRIPTION_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[subscriptions] s with(nolock)\n" +
             "join [Pricing].[dbo].[usage_modules] um with(nolock) on (s.usage_module_code=um.id)\n" +
