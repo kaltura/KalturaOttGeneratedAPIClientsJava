@@ -127,170 +127,58 @@ public class Entitlement extends ObjectBase {
 	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// productId:
 	public String getProductId(){
 		return this.productId;
 	}
-	public void setProductId(String productId){
-		this.productId = productId;
-	}
-
-	public void productId(String multirequestToken){
-		setToken("productId", multirequestToken);
-	}
-
 	// currentUses:
 	public Integer getCurrentUses(){
 		return this.currentUses;
 	}
-	public void setCurrentUses(Integer currentUses){
-		this.currentUses = currentUses;
-	}
-
-	public void currentUses(String multirequestToken){
-		setToken("currentUses", multirequestToken);
-	}
-
 	// endDate:
 	public Long getEndDate(){
 		return this.endDate;
 	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
-	}
-
 	// currentDate:
 	public Long getCurrentDate(){
 		return this.currentDate;
 	}
-	public void setCurrentDate(Long currentDate){
-		this.currentDate = currentDate;
-	}
-
-	public void currentDate(String multirequestToken){
-		setToken("currentDate", multirequestToken);
-	}
-
 	// lastViewDate:
 	public Long getLastViewDate(){
 		return this.lastViewDate;
 	}
-	public void setLastViewDate(Long lastViewDate){
-		this.lastViewDate = lastViewDate;
-	}
-
-	public void lastViewDate(String multirequestToken){
-		setToken("lastViewDate", multirequestToken);
-	}
-
 	// purchaseDate:
 	public Long getPurchaseDate(){
 		return this.purchaseDate;
 	}
-	public void setPurchaseDate(Long purchaseDate){
-		this.purchaseDate = purchaseDate;
-	}
-
-	public void purchaseDate(String multirequestToken){
-		setToken("purchaseDate", multirequestToken);
-	}
-
 	// paymentMethod:
 	public PaymentMethodType getPaymentMethod(){
 		return this.paymentMethod;
 	}
-	public void setPaymentMethod(PaymentMethodType paymentMethod){
-		this.paymentMethod = paymentMethod;
-	}
-
-	public void paymentMethod(String multirequestToken){
-		setToken("paymentMethod", multirequestToken);
-	}
-
 	// deviceUdid:
 	public String getDeviceUdid(){
 		return this.deviceUdid;
 	}
-	public void setDeviceUdid(String deviceUdid){
-		this.deviceUdid = deviceUdid;
-	}
-
-	public void deviceUdid(String multirequestToken){
-		setToken("deviceUdid", multirequestToken);
-	}
-
 	// deviceName:
 	public String getDeviceName(){
 		return this.deviceName;
 	}
-	public void setDeviceName(String deviceName){
-		this.deviceName = deviceName;
-	}
-
-	public void deviceName(String multirequestToken){
-		setToken("deviceName", multirequestToken);
-	}
-
 	// isCancelationWindowEnabled:
 	public Boolean getIsCancelationWindowEnabled(){
 		return this.isCancelationWindowEnabled;
 	}
-	public void setIsCancelationWindowEnabled(Boolean isCancelationWindowEnabled){
-		this.isCancelationWindowEnabled = isCancelationWindowEnabled;
-	}
-
-	public void isCancelationWindowEnabled(String multirequestToken){
-		setToken("isCancelationWindowEnabled", multirequestToken);
-	}
-
 	// maxUses:
 	public Integer getMaxUses(){
 		return this.maxUses;
 	}
-	public void setMaxUses(Integer maxUses){
-		this.maxUses = maxUses;
-	}
-
-	public void maxUses(String multirequestToken){
-		setToken("maxUses", multirequestToken);
-	}
-
 	// userId:
 	public String getUserId(){
 		return this.userId;
 	}
-	public void setUserId(String userId){
-		this.userId = userId;
-	}
-
-	public void userId(String multirequestToken){
-		setToken("userId", multirequestToken);
-	}
-
 	// householdId:
 	public Long getHouseholdId(){
 		return this.householdId;
 	}
-	public void setHouseholdId(Long householdId){
-		this.householdId = householdId;
-	}
-
-	public void householdId(String multirequestToken){
-		setToken("householdId", multirequestToken);
-	}
-
 
 	public Entitlement() {
 		super();

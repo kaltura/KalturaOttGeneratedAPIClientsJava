@@ -84,14 +84,6 @@ public class InboxMessage extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// message:
 	public String getMessage(){
 		return this.message;
@@ -108,14 +100,6 @@ public class InboxMessage extends ObjectBase {
 	public InboxMessageStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(InboxMessageStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// type:
 	public InboxMessageType getType(){
 		return this.type;
@@ -132,14 +116,6 @@ public class InboxMessage extends ObjectBase {
 	public Long getCreatedAt(){
 		return this.createdAt;
 	}
-	public void setCreatedAt(Long createdAt){
-		this.createdAt = createdAt;
-	}
-
-	public void createdAt(String multirequestToken){
-		setToken("createdAt", multirequestToken);
-	}
-
 	// url:
 	public String getUrl(){
 		return this.url;

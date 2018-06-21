@@ -89,14 +89,6 @@ public class ConfigurationGroup extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -113,14 +105,6 @@ public class ConfigurationGroup extends ObjectBase {
 	public Integer getPartnerId(){
 		return this.partnerId;
 	}
-	public void setPartnerId(Integer partnerId){
-		this.partnerId = partnerId;
-	}
-
-	public void partnerId(String multirequestToken){
-		setToken("partnerId", multirequestToken);
-	}
-
 	// isDefault:
 	public Boolean getIsDefault(){
 		return this.isDefault;
@@ -137,30 +121,14 @@ public class ConfigurationGroup extends ObjectBase {
 	public List<StringValue> getTags(){
 		return this.tags;
 	}
-	public void setTags(List<StringValue> tags){
-		this.tags = tags;
-	}
-
 	// numberOfDevices:
 	public Long getNumberOfDevices(){
 		return this.numberOfDevices;
 	}
-	public void setNumberOfDevices(Long numberOfDevices){
-		this.numberOfDevices = numberOfDevices;
-	}
-
-	public void numberOfDevices(String multirequestToken){
-		setToken("numberOfDevices", multirequestToken);
-	}
-
 	// configurationIdentifiers:
 	public List<ConfigurationIdentifier> getConfigurationIdentifiers(){
 		return this.configurationIdentifiers;
 	}
-	public void setConfigurationIdentifiers(List<ConfigurationIdentifier> configurationIdentifiers){
-		this.configurationIdentifiers = configurationIdentifiers;
-	}
-
 
 	public ConfigurationGroup() {
 		super();

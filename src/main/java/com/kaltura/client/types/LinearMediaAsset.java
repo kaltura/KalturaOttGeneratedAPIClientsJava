@@ -251,86 +251,30 @@ public class LinearMediaAsset extends MediaAsset {
 	public Boolean getCdvrEnabled(){
 		return this.cdvrEnabled;
 	}
-	public void setCdvrEnabled(Boolean cdvrEnabled){
-		this.cdvrEnabled = cdvrEnabled;
-	}
-
-	public void cdvrEnabled(String multirequestToken){
-		setToken("cdvrEnabled", multirequestToken);
-	}
-
 	// catchUpEnabled:
 	public Boolean getCatchUpEnabled(){
 		return this.catchUpEnabled;
 	}
-	public void setCatchUpEnabled(Boolean catchUpEnabled){
-		this.catchUpEnabled = catchUpEnabled;
-	}
-
-	public void catchUpEnabled(String multirequestToken){
-		setToken("catchUpEnabled", multirequestToken);
-	}
-
 	// startOverEnabled:
 	public Boolean getStartOverEnabled(){
 		return this.startOverEnabled;
 	}
-	public void setStartOverEnabled(Boolean startOverEnabled){
-		this.startOverEnabled = startOverEnabled;
-	}
-
-	public void startOverEnabled(String multirequestToken){
-		setToken("startOverEnabled", multirequestToken);
-	}
-
 	// summedCatchUpBuffer:
 	public Long getSummedCatchUpBuffer(){
 		return this.summedCatchUpBuffer;
 	}
-	public void setSummedCatchUpBuffer(Long summedCatchUpBuffer){
-		this.summedCatchUpBuffer = summedCatchUpBuffer;
-	}
-
-	public void summedCatchUpBuffer(String multirequestToken){
-		setToken("summedCatchUpBuffer", multirequestToken);
-	}
-
 	// summedTrickPlayBuffer:
 	public Long getSummedTrickPlayBuffer(){
 		return this.summedTrickPlayBuffer;
 	}
-	public void setSummedTrickPlayBuffer(Long summedTrickPlayBuffer){
-		this.summedTrickPlayBuffer = summedTrickPlayBuffer;
-	}
-
-	public void summedTrickPlayBuffer(String multirequestToken){
-		setToken("summedTrickPlayBuffer", multirequestToken);
-	}
-
 	// recordingPlaybackNonEntitledChannelEnabled:
 	public Boolean getRecordingPlaybackNonEntitledChannelEnabled(){
 		return this.recordingPlaybackNonEntitledChannelEnabled;
 	}
-	public void setRecordingPlaybackNonEntitledChannelEnabled(Boolean recordingPlaybackNonEntitledChannelEnabled){
-		this.recordingPlaybackNonEntitledChannelEnabled = recordingPlaybackNonEntitledChannelEnabled;
-	}
-
-	public void recordingPlaybackNonEntitledChannelEnabled(String multirequestToken){
-		setToken("recordingPlaybackNonEntitledChannelEnabled", multirequestToken);
-	}
-
 	// trickPlayEnabled:
 	public Boolean getTrickPlayEnabled(){
 		return this.trickPlayEnabled;
 	}
-	public void setTrickPlayEnabled(Boolean trickPlayEnabled){
-		this.trickPlayEnabled = trickPlayEnabled;
-	}
-
-	public void trickPlayEnabled(String multirequestToken){
-		setToken("trickPlayEnabled", multirequestToken);
-	}
-
 	// channelType:
 	public LinearChannelType getChannelType(){
 		return this.channelType;

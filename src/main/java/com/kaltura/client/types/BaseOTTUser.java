@@ -75,14 +75,6 @@ public class BaseOTTUser extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// username:
 	public String getUsername(){
 		return this.username;

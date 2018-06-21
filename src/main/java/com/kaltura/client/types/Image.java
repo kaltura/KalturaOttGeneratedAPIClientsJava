@@ -99,26 +99,10 @@ public class Image extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// version:
 	public String getVersion(){
 		return this.version;
 	}
-	public void setVersion(String version){
-		this.version = version;
-	}
-
-	public void version(String multirequestToken){
-		setToken("version", multirequestToken);
-	}
-
 	// imageTypeId:
 	public Long getImageTypeId(){
 		return this.imageTypeId;
@@ -159,50 +143,18 @@ public class Image extends ObjectBase {
 	public ImageStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(ImageStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// url:
 	public String getUrl(){
 		return this.url;
 	}
-	public void setUrl(String url){
-		this.url = url;
-	}
-
-	public void url(String multirequestToken){
-		setToken("url", multirequestToken);
-	}
-
 	// contentId:
 	public String getContentId(){
 		return this.contentId;
 	}
-	public void setContentId(String contentId){
-		this.contentId = contentId;
-	}
-
-	public void contentId(String multirequestToken){
-		setToken("contentId", multirequestToken);
-	}
-
 	// isDefault:
 	public Boolean getIsDefault(){
 		return this.isDefault;
 	}
-	public void setIsDefault(Boolean isDefault){
-		this.isDefault = isDefault;
-	}
-
-	public void isDefault(String multirequestToken){
-		setToken("isDefault", multirequestToken);
-	}
-
 
 	public Image() {
 		super();

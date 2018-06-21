@@ -67,22 +67,10 @@ public class Coupon extends ObjectBase {
 	public CouponsGroup getCouponsGroup(){
 		return this.couponsGroup;
 	}
-	public void setCouponsGroup(CouponsGroup couponsGroup){
-		this.couponsGroup = couponsGroup;
-	}
-
 	// status:
 	public CouponStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(CouponStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 
 	public Coupon() {
 		super();

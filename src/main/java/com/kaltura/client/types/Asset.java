@@ -140,14 +140,6 @@ public abstract class Asset extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// type:
 	public Integer getType(){
 		return this.type;
@@ -204,18 +196,10 @@ public abstract class Asset extends ObjectBase {
 	public List<MediaImage> getImages(){
 		return this.images;
 	}
-	public void setImages(List<MediaImage> images){
-		this.images = images;
-	}
-
 	// mediaFiles:
 	public List<MediaFile> getMediaFiles(){
 		return this.mediaFiles;
 	}
-	public void setMediaFiles(List<MediaFile> mediaFiles){
-		this.mediaFiles = mediaFiles;
-	}
-
 	// metas:
 	public Map<String, Value> getMetas(){
 		return this.metas;
@@ -260,26 +244,10 @@ public abstract class Asset extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
 	// updateDate:
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	public void setUpdateDate(Long updateDate){
-		this.updateDate = updateDate;
-	}
-
-	public void updateDate(String multirequestToken){
-		setToken("updateDate", multirequestToken);
-	}
-
 	// externalId:
 	public String getExternalId(){
 		return this.externalId;

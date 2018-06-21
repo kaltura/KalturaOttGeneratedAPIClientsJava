@@ -78,62 +78,22 @@ public class UploadToken extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// status:
 	public UploadTokenStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(UploadTokenStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// fileSize:
 	public Double getFileSize(){
 		return this.fileSize;
 	}
-	public void setFileSize(Double fileSize){
-		this.fileSize = fileSize;
-	}
-
-	public void fileSize(String multirequestToken){
-		setToken("fileSize", multirequestToken);
-	}
-
 	// createDate:
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
 	// updateDate:
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	public void setUpdateDate(Long updateDate){
-		this.updateDate = updateDate;
-	}
-
-	public void updateDate(String multirequestToken){
-		setToken("updateDate", multirequestToken);
-	}
-
 
 	public UploadToken() {
 		super();

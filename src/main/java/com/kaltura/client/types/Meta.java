@@ -106,7 +106,7 @@ public class Meta extends ObjectBase {
 	 */
 	private String parentId;
 	/**
-	 * Specifies when was the meta was created. Date and time represented as epoch.
+	 * Specifies when was the meta created. Date and time represented as epoch.
 	 */
 	private Long createDate;
 	/**
@@ -118,14 +118,6 @@ public class Meta extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -234,26 +226,10 @@ public class Meta extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
 	// updateDate:
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	public void setUpdateDate(Long updateDate){
-		this.updateDate = updateDate;
-	}
-
-	public void updateDate(String multirequestToken){
-		setToken("updateDate", multirequestToken);
-	}
-
 
 	public Meta() {
 		super();

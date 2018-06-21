@@ -100,50 +100,18 @@ public class SubscriptionEntitlement extends Entitlement {
 	public Long getNextRenewalDate(){
 		return this.nextRenewalDate;
 	}
-	public void setNextRenewalDate(Long nextRenewalDate){
-		this.nextRenewalDate = nextRenewalDate;
-	}
-
-	public void nextRenewalDate(String multirequestToken){
-		setToken("nextRenewalDate", multirequestToken);
-	}
-
 	// isRenewableForPurchase:
 	public Boolean getIsRenewableForPurchase(){
 		return this.isRenewableForPurchase;
 	}
-	public void setIsRenewableForPurchase(Boolean isRenewableForPurchase){
-		this.isRenewableForPurchase = isRenewableForPurchase;
-	}
-
-	public void isRenewableForPurchase(String multirequestToken){
-		setToken("isRenewableForPurchase", multirequestToken);
-	}
-
 	// isRenewable:
 	public Boolean getIsRenewable(){
 		return this.isRenewable;
 	}
-	public void setIsRenewable(Boolean isRenewable){
-		this.isRenewable = isRenewable;
-	}
-
-	public void isRenewable(String multirequestToken){
-		setToken("isRenewable", multirequestToken);
-	}
-
 	// isInGracePeriod:
 	public Boolean getIsInGracePeriod(){
 		return this.isInGracePeriod;
 	}
-	public void setIsInGracePeriod(Boolean isInGracePeriod){
-		this.isInGracePeriod = isInGracePeriod;
-	}
-
-	public void isInGracePeriod(String multirequestToken){
-		setToken("isInGracePeriod", multirequestToken);
-	}
-
 	// paymentGatewayId:
 	public Integer getPaymentGatewayId(){
 		return this.paymentGatewayId;
@@ -196,14 +164,6 @@ public class SubscriptionEntitlement extends Entitlement {
 	public Boolean getIsSuspended(){
 		return this.isSuspended;
 	}
-	public void setIsSuspended(Boolean isSuspended){
-		this.isSuspended = isSuspended;
-	}
-
-	public void isSuspended(String multirequestToken){
-		setToken("isSuspended", multirequestToken);
-	}
-
 
 	public SubscriptionEntitlement() {
 		super();

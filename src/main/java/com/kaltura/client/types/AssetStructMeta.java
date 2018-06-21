@@ -92,26 +92,10 @@ public class AssetStructMeta extends ObjectBase {
 	public Long getAssetStructId(){
 		return this.assetStructId;
 	}
-	public void setAssetStructId(Long assetStructId){
-		this.assetStructId = assetStructId;
-	}
-
-	public void assetStructId(String multirequestToken){
-		setToken("assetStructId", multirequestToken);
-	}
-
 	// metaId:
 	public Long getMetaId(){
 		return this.metaId;
 	}
-	public void setMetaId(Long metaId){
-		this.metaId = metaId;
-	}
-
-	public void metaId(String multirequestToken){
-		setToken("metaId", multirequestToken);
-	}
-
 	// ingestReferencePath:
 	public String getIngestReferencePath(){
 		return this.ingestReferencePath;
@@ -152,26 +136,10 @@ public class AssetStructMeta extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
 	// updateDate:
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	public void setUpdateDate(Long updateDate){
-		this.updateDate = updateDate;
-	}
-
-	public void updateDate(String multirequestToken){
-		setToken("updateDate", multirequestToken);
-	}
-
 
 	public AssetStructMeta() {
 		super();

@@ -64,6 +64,9 @@ public class ParentalRule extends ObjectBase {
 		RequestBuilder.ListTokenizer<StringValue.Tokenizer> epgTagValues();
 		String isDefault();
 		String origin();
+		String isActive();
+		String createDate();
+		String updateDate();
 	}
 
 	/**
@@ -114,19 +117,25 @@ public class ParentalRule extends ObjectBase {
 	 * Where was this rule defined account, household or user
 	 */
 	private RuleLevel origin;
+	/**
+	 * active status
+	 */
+	private Boolean isActive;
+	/**
+	 * Specifies when was the parental rule created. Date and time represented as
+	  epoch.
+	 */
+	private Long createDate;
+	/**
+	 * Specifies when was the parental rule last updated. Date and time represented as
+	  epoch.
+	 */
+	private Long updateDate;
 
 	// id:
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -243,14 +252,26 @@ public class ParentalRule extends ObjectBase {
 	public RuleLevel getOrigin(){
 		return this.origin;
 	}
-	public void setOrigin(RuleLevel origin){
-		this.origin = origin;
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
 	}
 
-	public void origin(String multirequestToken){
-		setToken("origin", multirequestToken);
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
 	}
 
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
 
 	public ParentalRule() {
 		super();
@@ -274,6 +295,9 @@ public class ParentalRule extends ObjectBase {
 		epgTagValues = GsonParser.parseArray(jsonObject.getAsJsonArray("epgTagValues"), StringValue.class);
 		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
 		origin = RuleLevel.get(GsonParser.parseString(jsonObject.get("origin")));
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 
@@ -290,7 +314,7 @@ public class ParentalRule extends ObjectBase {
 		kparams.add("mediaTagValues", this.mediaTagValues);
 		kparams.add("epgTagValues", this.epgTagValues);
 		kparams.add("isDefault", this.isDefault);
-		kparams.add("origin", this.origin);
+		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
 

@@ -157,34 +157,14 @@ public class HouseholdDevice extends ObjectBase {
 	public DeviceStatus getStatus(){
 		return this.status;
 	}
-	public void setStatus(DeviceStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 	// deviceFamilyId:
 	public Long getDeviceFamilyId(){
 		return this.deviceFamilyId;
 	}
-	public void setDeviceFamilyId(Long deviceFamilyId){
-		this.deviceFamilyId = deviceFamilyId;
-	}
-
-	public void deviceFamilyId(String multirequestToken){
-		setToken("deviceFamilyId", multirequestToken);
-	}
-
 	// drm:
 	public CustomDrmPlaybackPluginData getDrm(){
 		return this.drm;
 	}
-	public void setDrm(CustomDrmPlaybackPluginData drm){
-		this.drm = drm;
-	}
-
 
 	public HouseholdDevice() {
 		super();

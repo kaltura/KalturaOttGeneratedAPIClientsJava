@@ -117,14 +117,6 @@ public class MediaFileType extends ObjectBase {
 	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -165,26 +157,10 @@ public class MediaFileType extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	public void setCreateDate(Long createDate){
-		this.createDate = createDate;
-	}
-
-	public void createDate(String multirequestToken){
-		setToken("createDate", multirequestToken);
-	}
-
 	// updateDate:
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	public void setUpdateDate(Long updateDate){
-		this.updateDate = updateDate;
-	}
-
-	public void updateDate(String multirequestToken){
-		setToken("updateDate", multirequestToken);
-	}
-
 	// isTrailer:
 	public Boolean getIsTrailer(){
 		return this.isTrailer;
