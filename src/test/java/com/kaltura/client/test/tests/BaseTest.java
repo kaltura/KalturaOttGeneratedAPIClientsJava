@@ -109,6 +109,7 @@ public class BaseTest {
         config  = new Configuration();
         config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
         config.setAcceptGzipEncoding(false);
+        config.setReadTimeout(Integer.valueOf(getProperty(DEFAULT_TIMEOUT_IN_SEC))*1000);
 
         // set client
         client = new Client(config);
