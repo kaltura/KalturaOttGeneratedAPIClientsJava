@@ -1,0 +1,35 @@
+{
+  "$id": "PriceDetails",
+  "definitions": {
+    "PriceDetails": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "integer", "minimum": 0},
+        "name": {"type": "string", "minLength": 0},
+        "multiCurrencyPrice": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {"type": "integer", "minimum": 0},
+              "currency": {"type": "string", "minLength": 0},
+              "currencySign": {"type": "string", "minLength": 0},
+              "objectType": {"type": "string", "enum": ["KalturaPriceDetails"]}
+            },
+            "required": ["amount", "currency", "currencySign", "objectType"]
+          }
+        },
+        "objectType": {"type": "string", "minLength": 0}
+      },
+      "required": ["id", "name", "multiCurrencyPrice"]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/PriceDetails"
+    },
+    "executionTime": {"type": "number"}
+  },
+  "required": ["result", "executionTime"]
+}

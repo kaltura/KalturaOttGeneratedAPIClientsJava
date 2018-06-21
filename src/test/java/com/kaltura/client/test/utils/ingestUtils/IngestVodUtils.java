@@ -2,8 +2,6 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
-import com.kaltura.client.services.AssetService;
-import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.response.Response;
 import org.w3c.dom.Document;
@@ -14,6 +12,8 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import static com.kaltura.client.services.AssetService.GetAssetBuilder;
+import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
@@ -106,9 +106,6 @@ public class IngestVodUtils extends BaseIngestUtils {
             id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID").toString();
         }
 
-        AssetService.GetAssetBuilder getAssetBuilder = AssetService.get(id.trim(), AssetReferenceType.MEDIA);
-        com.kaltura.client.utils.response.base.Response<Asset> assetResponse = executor.executeSync(getAssetBuilder.setKs(getAnonymousKs()));
-
         if (!INGEST_ACTION_DELETE.equals(actionValue)) {
             int delayBetweenRetriesInSeconds = 5;
             int maxTimeExpectingValidResponseInSeconds = 90;
@@ -117,10 +114,14 @@ public class IngestVodUtils extends BaseIngestUtils {
                     .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
                     .until(isDataReturned(getAnonymousKs(), id, actionValue));
 
-            return (MediaAsset) assetResponse.results;
+
+            return (MediaAsset) executor.executeSync(get(id, AssetReferenceType.MEDIA)
+                    .setKs(getAnonymousKs()))
+                    .results;
         }
 
         // TODO: 4/15/2018 add log for ingest and index failures
+
         return null;
     }
 
@@ -306,7 +307,7 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     private static Callable<Boolean> isDataReturned(String ks, String mediaId, String action) {
-        AssetService.GetAssetBuilder getAssetBuilder = AssetService.get(mediaId, AssetReferenceType.MEDIA).setKs(ks);
+        GetAssetBuilder getAssetBuilder = get(mediaId, AssetReferenceType.MEDIA).setKs(ks);
         if (INGEST_ACTION_DELETE.equals(action)) {
             return () -> (executor.executeSync(getAssetBuilder).error != null);
         } else {

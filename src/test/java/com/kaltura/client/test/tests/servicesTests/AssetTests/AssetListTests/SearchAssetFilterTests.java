@@ -164,7 +164,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .setKs(BaseTest.SharedHousehold.getSharedMasterUserKs());
         List<Asset> assets = executor.executeSync(listAssetBuilder).results.getObjects();
 
-        assertThat(assets).isNotNull().as("assets list");
+        assertThat(assets).as("assets list").isNotNull();
         assertThat(assets.size()).isEqualTo(2);
         assertThat(assets).extracting("id").contains(asset3.getId(), asset2.getId()).doesNotContain(asset.getId());
     }

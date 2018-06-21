@@ -1,0 +1,92 @@
+{
+  "$id": "PricePlan",
+  "definitions": {
+    "PricePlan": {
+      "type": "object",
+      "properties": {
+        "isRenewable": {
+          "type": "boolean"
+        },
+        "renewalsNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "discountId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "priceDetailsId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "type": "string",
+          "minLength": 0
+        },
+        "maxViewsNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "viewLifeCycle": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fullLifeCycle": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "couponId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "waiverPeriod": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isWaiverEnabled": {
+          "type": "boolean"
+        },
+        "isOfflinePlayback": {
+          "type": "boolean"
+        },
+        "objectType": {
+          "type": "string",
+          "enum": ["KalturaPricePlan"]
+        }
+      },
+      "required": [
+        "isRenewable",
+        "renewalsNumber",
+        "discountId",
+        "priceDetailsId",
+        "id",
+        "name",
+        "maxViewsNumber",
+        "viewLifeCycle",
+        "fullLifeCycle",
+        "couponId",
+        "waiverPeriod",
+        "isWaiverEnabled",
+        "isOfflinePlayback",
+        "objectType"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/PricePlan"
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result",
+    "executionTime"
+  ]
+}

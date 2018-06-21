@@ -173,6 +173,7 @@ public class EntitlementGrantTests extends BaseTest {
                 .setUserId(Integer.valueOf(user.getUserId()))
                 .setKs(getAdministratorKs());
         Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
+        assertThat(booleanResponse).isNotNull();
         assertThat(booleanResponse.results.booleanValue()).isEqualTo(true);
 
 
@@ -238,6 +239,7 @@ public class EntitlementGrantTests extends BaseTest {
                 .setUserId(Integer.valueOf(user.getUserId()))
                 .setKs(getAdministratorKs());
         Response<Boolean> booleanResponse = executor.executeSync(grantEntitlementBuilder);
+        assertThat(booleanResponse).isNotNull();
         assertThat(booleanResponse.results.booleanValue()).isEqualTo(true);
 
 
