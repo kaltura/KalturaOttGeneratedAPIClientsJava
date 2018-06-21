@@ -33,16 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PlaybackContextType implements EnumAsString {
-	TRAILER("TRAILER"),
-	CATCHUP("CATCHUP"),
-	START_OVER("START_OVER"),
-	PLAYBACK("PLAYBACK"),
-	DOWNLOAD("DOWNLOAD");
+public enum UrlType implements EnumAsString {
+	PLAYMANIFEST("PLAYMANIFEST"),
+	DIRECT("DIRECT");
 
 	private String value;
 
-	PlaybackContextType(String value) {
+	UrlType(String value) {
 		this.value = value;
 	}
 
@@ -55,19 +52,19 @@ public enum PlaybackContextType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static PlaybackContextType get(String value) {
+	public static UrlType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over PlaybackContextType defined values and compare the inner value with the given one:
-		for(PlaybackContextType item: values()) {
+		// goes over UrlType defined values and compare the inner value with the given one:
+		for(UrlType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PlaybackContextType.values().length > 0 ? PlaybackContextType.values()[0]: null;
+		return UrlType.values().length > 0 ? UrlType.values()[0]: null;
    }
 }
