@@ -12,9 +12,12 @@ import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 import com.kaltura.client.utils.response.base.ResponseElement;
 
+import java.io.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.test.Properties.MAX_OBJECTS_AT_LIST_RESPONSE;
+import static com.kaltura.client.test.Properties.REGRESSION_LOGS_LOCAL_PATH;
+import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.LOG_HEADERS;
 import static com.kaltura.client.test.tests.BaseTest.client;
 import static com.kaltura.client.utils.ErrorElement.*;
@@ -77,9 +80,24 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                 assertThat(responseElement.getResponse(), matchesJsonSchemaInClasspath(schema));
                     /*date = new Date();
                     System.out.println("AFTER VALIDATION: " + formatter.format(date));*/
+
+                String serviceMethod = action.getUrl().split("service")[1];
+                String kalturaSession = okhttpResponse.headers().get("X-Kaltura-Session");
+                write2LogFile(serviceMethod, kalturaSession);
             }
         }
         return responseElement;
+    }
+
+    private void write2LogFile(String serviceMethod, String kalturaSession) {
+        try(FileWriter fw = new FileWriter(getProperty(REGRESSION_LOGS_LOCAL_PATH), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+            out.println(serviceMethod + " " + kalturaSession);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public <T> Response<T> executeSync(RequestBuilder<T, ?, ?> requestBuilder) {

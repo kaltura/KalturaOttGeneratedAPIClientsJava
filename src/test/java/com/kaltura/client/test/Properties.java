@@ -78,6 +78,7 @@ public class Properties {
     public static final String PHOENIX_SERVER_LOGS_DIRECTORY = "phoenix_server_logs_directory";
     public static final String PHOENIX_SERVER_LOG_FILE_NAME = "phoenix_server_logs_file_name";
     public static final String PHOENIX_SERVER_LOGS_LOCAL_PATH = "phoenix_server_logs_local_path";
+    public static final String REGRESSION_LOGS_LOCAL_PATH = "regression_logs_local_path";
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {
