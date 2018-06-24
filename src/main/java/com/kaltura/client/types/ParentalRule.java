@@ -240,14 +240,6 @@ public class ParentalRule extends ObjectBase {
 	public Boolean getIsDefault(){
 		return this.isDefault;
 	}
-	public void setIsDefault(Boolean isDefault){
-		this.isDefault = isDefault;
-	}
-
-	public void isDefault(String multirequestToken){
-		setToken("isDefault", multirequestToken);
-	}
-
 	// origin:
 	public RuleLevel getOrigin(){
 		return this.origin;
@@ -313,7 +305,6 @@ public class ParentalRule extends ObjectBase {
 		kparams.add("ruleType", this.ruleType);
 		kparams.add("mediaTagValues", this.mediaTagValues);
 		kparams.add("epgTagValues", this.epgTagValues);
-		kparams.add("isDefault", this.isDefault);
 		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
