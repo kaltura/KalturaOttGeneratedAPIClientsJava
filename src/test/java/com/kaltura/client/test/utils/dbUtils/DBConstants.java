@@ -39,11 +39,11 @@ public class DBConstants {
 
     static final String CHANNEL_EXPRESSION_SELECT = "select t.tag_type_id as tag_name, t.value as tag_value\n" +
             "from [TVinci].[dbo].[tags] t, [TVinci].[dbo].[channel_tags] ct\n" +
-            "where ct.status=1 and t.status=1 and ct.channel_id=%d and ct.tag_id=t.id";
+            "where ct.status=1 and t.status=1 and ct.channel_id=? and ct.tag_id=t.id";
 
     static final String CHANNEL_SELECT = "select *\n" +
             "from [TVinci].[dbo].[channels]\n" +
-            "where id=%d";
+            "where id=?";
 
     static final String CHECK_IS_ACTIVATION_USERS_NEEDED = "select [IS_ACTIVATION_NEEDED]\n" +
             "from [Users].[dbo].[groups_parameters]\n" +

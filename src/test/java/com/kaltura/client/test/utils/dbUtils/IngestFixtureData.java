@@ -299,7 +299,7 @@ public class IngestFixtureData extends BaseUtils {
         Channel channel = null;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHANNEL_SELECT, id), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(CHANNEL_SELECT, true, id);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return channel;
             }
@@ -319,7 +319,7 @@ public class IngestFixtureData extends BaseUtils {
         String result = null;
 
         try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(CHANNEL_EXPRESSION_SELECT, channelId), true);
+            JSONArray jsonArray = getJsonArrayFromQueryResult(CHANNEL_EXPRESSION_SELECT, true, channelId);
             if (Strings.isNullOrEmpty(jsonArray.toString())) {
                 return result;
             }
