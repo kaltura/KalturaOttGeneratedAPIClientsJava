@@ -105,7 +105,7 @@ public class OttUserLoginWithPinTests extends BaseTest {
                 .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
                 .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
                 .until(() -> {
-                    long expire = userLoginPinResponse.results.getExpirationTime() + 70;
+                    long expire = userLoginPinResponse.results.getExpirationTime() + 120;
                     long now = BaseUtils.getTimeInEpoch(0);
                     return now > expire;
                 });
