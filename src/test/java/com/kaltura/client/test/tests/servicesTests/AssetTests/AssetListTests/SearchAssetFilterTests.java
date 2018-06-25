@@ -2,6 +2,7 @@ package com.kaltura.client.test.tests.servicesTests.AssetTests.AssetListTests;
 
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
@@ -9,6 +10,7 @@ import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.json.JSONArray;
@@ -33,16 +35,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SearchAssetFilterTests extends BaseTest {
 
-    private final String tagName = "Genre";
-
     private MediaAsset asset;
     private MediaAsset asset2;
     private MediaAsset asset3;
     private ProgramAsset program;
     private ProgramAsset program2;
+    private final String tagName = "Genre";
+    private String tagValue;
+    private final String metaName = "synopsis";
+    private String metaValue1 = "A" + getRandomValue("_", 999999);
+    private String metaValue2 = "B" + getRandomValue("_", 999999);
     private String ksqlQuery;
     private AssetFilter assetFilter;
-    private String tagValue;
+
 
     @BeforeClass
     private void asset_list_before_class() {
@@ -52,23 +57,31 @@ public class SearchAssetFilterTests extends BaseTest {
         ArrayList<String> list = new ArrayList<>();
         list.add(tagValue);
 
-        HashMap<String, List<String>> map = new HashMap<>();
-        map.put(tagName, list);
+        HashMap<String, List<String>> tagMap = new HashMap<>();
+        tagMap.put(tagName, list);
+
+        HashMap<String, String> stringMetaMap1 = new HashMap<>();
+        stringMetaMap1.put(metaName, metaValue1);
+
+        HashMap<String, String> stringMetaMap2 = new HashMap<>();
+        stringMetaMap2.put(metaName, metaValue2);
 
         JSONArray ja = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray();
         String epgChannelName = ja.getJSONObject(0).getString("name");
         String epgChannelName2 = ja.getJSONObject(1).getString("name");
 
         asset = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        asset2 = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE, map, getTimeInDate(-100));
-        asset3 = IngestVodUtils.ingestVOD(EPISODE_MEDIA_TYPE, map, getTimeInDate(-10));
+        asset2 = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE, tagMap, stringMetaMap1, getTimeInDate(-100));
+        asset3 = IngestVodUtils.ingestVOD(EPISODE_MEDIA_TYPE, tagMap, stringMetaMap2, getTimeInDate(-10));
         program = IngestEpgUtils.ingestEPG(epgChannelName, 1).get(0);
         program2 = IngestEpgUtils.ingestEPG(epgChannelName2, 1).get(0);
     }
 
-    // VOD
+    // Filter by KSQL
+    // *********************
+
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - VOD - name equal query")
+    @Description("asset/action/list - VOD - filter by asset name")
     @Test
     private void listVodAssetsWithExactKsqlQuery() {
         ksqlQuery = "name = '" + asset.getName() + "'";
@@ -82,9 +95,9 @@ public class SearchAssetFilterTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - VOD - id equal query")
+    @Description("Reserved key: asset/action/list - VOD - filter by media_id")
     @Test
-    private void listVodAssetsWithExactKsqlQuery2() {
+    private void listVodAssetsByMediaId() {
         ksqlQuery = "media_id = '" + asset.getId() + "'";
         assetFilter = getSearchAssetFilter(ksqlQuery);
 
@@ -96,7 +109,22 @@ public class SearchAssetFilterTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - VOD - OR query")
+    @Description("asset/action/list - VOD - filter by meta")
+    @Test
+    private void listVodAssetsByMeta() {
+        ksqlQuery = "" +  metaName + " = '" + metaValue1 + "'";
+        assetFilter = getSearchAssetFilter(ksqlQuery);
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
+                .setKs(getSharedMasterUserKs()));
+
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset2.getId());
+    }
+
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Logical conjunction: asset/action/list - VOD - OR query")
     @Test
     private void listVodAssetsWithOrQuery() {
         ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "')";
@@ -111,7 +139,7 @@ public class SearchAssetFilterTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - VOD - AND query")
+    @Description("Logical conjunction: asset/action/list - VOD - AND query")
     @Test
     private void listVodAssetsWithAndQuery() {
         ksqlQuery = "(and media_id = '" + asset3.getId() + "' " + tagName + " = '" + tagValue + "')";
@@ -125,7 +153,7 @@ public class SearchAssetFilterTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - VOD - not query")
+    @Description("Alpha numeric field: asset/action/list - VOD - not query")
     @Test
     private void listVodAssetsWithNotKsqlQuery() {
         ksqlQuery = "(and media_id != '" + asset3.getId() + "' " + tagName + " = '" + tagValue + "')";
@@ -139,7 +167,7 @@ public class SearchAssetFilterTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - VOD - like query")
+    @Description("Alpha numeric field: asset/action/list - VOD - like query")
     @Test
     private void listVodAssetsWithLikeKsqlQuery() {
         ksqlQuery = "" + tagName + " ~ '" + tagValue + "'";
@@ -156,7 +184,7 @@ public class SearchAssetFilterTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - VOD - start with query")
+    @Description("Alpha numeric field: asset/action/list - VOD - start with query")
     @Test
     private void listVodAssetsWithStartWithKsqlQuery() {
         ksqlQuery = "" + tagName + " ^ '" + tagValue + "'";
@@ -176,8 +204,8 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("asset/action/list - VOD - filtered by type (Movie)")
     @Test
     private void listVodAssetsFilteredByType() {
-        ksqlQuery = "" + tagName + " = '" + tagValue + "'";
-        assetFilter = getSearchAssetFilter(ksqlQuery, null, getProperty(MOVIE_MEDIA_TYPE_ID), null, null, null, null);
+        ksqlQuery = "(and " + tagName + " = '" + tagValue + "' asset_type = '" + getProperty(MOVIE_MEDIA_TYPE_ID) + "')";
+        assetFilter = getSearchAssetFilter(ksqlQuery, null, null, null, null, null, null);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -267,7 +295,7 @@ public class SearchAssetFilterTests extends BaseTest {
         ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
         assetFilter = getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.VOTES_DESC.getValue());
 
-        ListAssetBuilder  listAssetBuilder = list(assetFilter)
+        ListAssetBuilder listAssetBuilder = list(assetFilter)
                 .setKs(getSharedMasterUserKs());
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
 
@@ -314,9 +342,31 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
     }
 
+    @Issue("BEO-5254")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list - VOD -  dynamicOrderBy meta (ASC/DESC")
+    @Test(enabled = false)
+
+    private void dynamicOrderByMeta() {
+        ksqlQuery = "(and (or media_id = '" + asset2.getId() + "' media_id = '" + asset3.getId() + "') asset_type = '" + getProperty(MOVIE_MEDIA_TYPE_ID) + "')";
+        DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+        dynamicOrderBy.setName(metaName);
+        dynamicOrderBy.setOrderBy(MetaTagOrderBy.META_ASC);
+        assetFilter = getSearchAssetFilter(ksqlQuery, null, null, dynamicOrderBy, null, null, null);
+
+        ListAssetBuilder listAssetBuilder = list(assetFilter)
+                .setKs(getSharedMasterUserKs());
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(2);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset2.getId());
+        assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset3.getId());
+    }
+
+
     //TODO - add test for  KalturaPersistedFilter in searchHistory class
 
     // EPG
+    // ***************************************************
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - EPG - name equal query")
     @Test
