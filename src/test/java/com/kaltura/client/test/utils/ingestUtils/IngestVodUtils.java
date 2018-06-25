@@ -87,11 +87,11 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         Response resp =
                 given()
-                    .header(contentTypeXml)
-                    .header(soapActionIngestTvinciData)
-                    .body(reqBody)
-                .when()
-                    .post(url);
+                        .header(contentTypeXml)
+                        .header(soapActionIngestTvinciData)
+                        .body(reqBody)
+                        .when()
+                        .post(url);
 
         Logger.getLogger(IngestVodUtils.class).debug(reqBody);
         Logger.getLogger(IngestVodUtils.class).debug("Ingest response: \n" + resp.asString());
@@ -126,8 +126,8 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     private static String buildIngestVodXml(String action, String coguid, boolean isActive, String name, String thumbUrl, String description, String catalogStartDate, String catalogEndDate,
-                                           String startDate, String endDate, String mediaType, String ppvWebName, String ppvMobileName, Map<String, List<String>> tags, Map<String, String> strings,
-                                           Map<String, Integer> numbers, Map<String, String> dates)  {
+                                            String startDate, String endDate, String mediaType, String ppvWebName, String ppvMobileName, Map<String, List<String>> tags, Map<String, String> strings,
+                                            Map<String, Integer> numbers, Map<String, String> dates) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
@@ -316,20 +316,16 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     // Provide only media type (mandatory) and media name (Optional - if not provided will generate a name)
-    public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags, String catalogStartDate) {
-        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+    public static MediaAsset ingestVOD(String mediaType, Map<String, List<String>> tags, Map<String, String> stringMetas, String catalogStartDate) {
+        return ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.of(catalogStartDate), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
-                Optional.of(tags), Optional.empty(), Optional.empty(), Optional.empty());
-
-        return mediaAsset;
+                Optional.of(tags), Optional.of(stringMetas), Optional.empty(), Optional.empty());
     }
 
     public static MediaAsset ingestVOD(String mediaType) {
-        MediaAsset mediaAsset = ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
+        return ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(mediaType), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-
-        return mediaAsset;
     }
 
     public static MediaAsset updateVODName(MediaAsset asset, String name) {
