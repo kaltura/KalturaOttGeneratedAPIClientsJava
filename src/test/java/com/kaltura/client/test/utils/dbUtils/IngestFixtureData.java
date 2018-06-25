@@ -23,6 +23,7 @@ import static com.kaltura.client.test.utils.dbUtils.DBUtils.getJsonArrayFromQuer
 
 public class IngestFixtureData extends BaseUtils {
 
+    // TODO: 6/25/2018 Max please update methods by removing try catch and if statements (see example in DBUtils class)
     public static PriceDetails loadPriceCode(Double priceAmount, String currency) {
         Logger.getLogger(IngestFixtureData.class).debug("loadPriceCode(): priceAmount = " + priceAmount + " currency = " + currency);
         try {

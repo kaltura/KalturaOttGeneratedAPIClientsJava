@@ -56,16 +56,15 @@ public class BaseTest {
     private static String administratorKs, operatorKs, managerKs, anonymousKs;
 
     // shared ingest users data
-    private static String ingestAssetUserUsername, ingestAssetUserPassword, ingestBusinessModuleUserUsername,
-            ingestBusinessModuleUserPassword;
+    private static String ingestAssetUserUsername, ingestAssetUserPassword, ingestBusinessModuleUserUsername, ingestBusinessModuleUserPassword;
 
     // shared VOD
     private static MediaAsset mediaAsset;
 
-    // TODO - dynamic
-    private static String epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
+    // shared channel name
+    private static String epgChannelName;
 
-    //Shared EPG program
+    // shared EPG program
     private static Asset epgProgram;
 
     // shared files
@@ -102,7 +101,6 @@ public class BaseTest {
     Shared Test Params - end
     ================================================================================*/
 
-
     @BeforeSuite
     public void baseTest_beforeSuite() {
         // set configuration
@@ -120,6 +118,9 @@ public class BaseTest {
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
+
+        // TODO - dynamic
+        epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
     }
 
     @BeforeMethod

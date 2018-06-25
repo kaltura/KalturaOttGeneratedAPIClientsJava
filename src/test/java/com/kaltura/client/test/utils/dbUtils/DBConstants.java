@@ -180,6 +180,11 @@ public class DBConstants {
 
     static final String UNACTIVE_ASSET_ID_SELECT = "SELECT top 1 [id] FROM [TVinci].[dbo].[media] where group_id = ? and status = 2";
 
+    static final String HOUSEHOLD_BY_ID_SELECT = "SELECT * from [Users].[dbo].[domains] where group_id = ? and ID = ?";
+
+    static final String USER_BY_ID_SELECT = "SELECT * from [Users].[dbo].[users] where group_id = ? and ID = ?";
+
+
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";
     static final String SP_INSERT_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Insert_PermissionItem(?, ?, ?, ?, ?, ?)}";

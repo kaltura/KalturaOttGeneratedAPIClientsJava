@@ -1,6 +1,5 @@
 package com.kaltura.client.test.utils.dbUtils;
 
-import com.google.common.base.Strings;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.PricePlan;
@@ -10,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.sql.*;
+import java.util.Arrays;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.partnerId;
@@ -19,167 +19,10 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class DBUtils extends BaseUtils {
 
+    static final String ERROR_MESSAGE = "*** no data found ***";
+
     private static boolean isActivationNeeded = false;
     private static boolean isActivationNeededWasLoaded = false;
-
-    static final String ERROR_MESSAGE = "No results found";
-
-    public static boolean isActivationOfUsersNeeded() {
-        Logger.getLogger(DBUtils.class).debug("isActivationOfUsersNeeded()");
-        if (isActivationNeededWasLoaded) {
-            return isActivationNeeded;
-        }
-        int result = -1;
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(CHECK_IS_ACTIVATION_USERS_NEEDED, false, partnerId);
-            if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
-                return false;
-            }
-
-            result = jsonArray.getJSONObject(0).getInt(IS_ACTIVATION_NEEDED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error(IS_ACTIVATION_NEEDED + " can't be null");
-        }
-        isActivationNeeded = result == 1;
-        isActivationNeededWasLoaded = true;
-
-        return isActivationNeeded;
-    }
-
-    public static String getUserData(String userRole) {
-        Logger.getLogger(DBUtils.class).debug("getUserData(): userRole = " + userRole);
-
-        String sqlQuery = USER_BY_ROLE_SELECT;
-        if (isActivationOfUsersNeeded()) {
-            sqlQuery += AND_ACTIVE_STATUS;
-        }
-        String userdData = "";
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(sqlQuery, false, userRole, partnerId);
-            if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
-                return null;
-            }
-
-            userdData = jsonArray.getJSONObject(0).getString(USERNAME) + ":" +
-                    jsonArray.getJSONObject(0).getString(PASSWORD);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("username/password can't be null");
-        }
-
-        return userdData;
-    }
-
-    public static String getActivationToken(String username) {
-        Logger.getLogger(DBUtils.class).debug("getActivationToken(): username = " + username);
-        String activationToken = null;
-
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(ACTIVATION_TOKEN_SELECT, false, username);
-            if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
-                return null;
-            }
-
-            activationToken = jsonArray.getJSONObject(0).getString(ACTIVATION_TOKEN);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return activationToken;
-    }
-
-    public static String getResetPasswordToken(String username) {
-        String resetPasswordToken = null;
-
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(RESET_PASSWORD_TOKEN_SELECT, false, username);
-            resetPasswordToken = jsonArray.getJSONObject(0).getString(CP_TOKEN);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return resetPasswordToken;
-    }
-
-    // Get epg channel name and linear asset id json array
-    public static JSONArray getLinearAssetIdAndEpgChannelNameJsonArray() {
-        JSONArray jsonArray = null;
-        try {
-            jsonArray = getJsonArrayFromQueryResult(ASSET_ID_SELECT, false, Integer.valueOf(getProperty(PARTNER_ID)) + 1);
-            if (jsonArray == null || jsonArray.length() <= 0) {
-                Logger.getLogger("Response is empty");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return jsonArray;
-    }
-
-    // Get un active asset from DB (status = 2)
-    public static int getUnActiveAsset() {
-        int assetId = 0;
-
-        try {
-            assetId = getJsonArrayFromQueryResult(UNACTIVE_ASSET_ID_SELECT, false, Integer.valueOf(getProperty(PARTNER_ID)) + 1).getJSONObject(0).getInt("id");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return assetId;
-    }
-
-    public static int getSubscriptionWithPremiumService() {
-        int subscriptionId = 0;
-
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT, false, partnerId);
-            if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                return subscriptionId;
-            }
-
-            subscriptionId = jsonArray.getJSONObject(0).getInt(SUB_ID);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(DBUtils.class).error("data about premium services can't be null");
-        }
-
-        return subscriptionId;
-    }
-
-    // Return json array from DB
-//    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed) {
-//        SQLServerDataSource dataSource = getDataSource();
-//        Connection conn = null;
-//        Statement stam = null;
-//        ResultSet rs = null;
-//
-//        JSONArray jsonArray = null;
-//
-//        try {
-//            conn = dataSource.getConnection();
-//            stam = conn.createStatement();
-//            rs = stam.executeQuery(query);
-//
-//            if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
-//                jsonArray = buildJsonArrayFromQueryResult(rs);
-//                Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
-//            } else {
-//                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            DbUtils.closeQuietly(rs);
-//            DbUtils.closeQuietly(stam);
-//            DbUtils.closeQuietly(conn);
-//        }
-//
-//        return jsonArray;
-//    }
 
     private static JSONArray buildJsonArrayFromQueryResult(ResultSet rs) throws SQLException {
         JSONArray jsonArray = new JSONArray();
@@ -227,7 +70,7 @@ public class DBUtils extends BaseUtils {
         return jsonArray;
     }
 
-    private static SQLServerDataSource getDataSource(){
+    private static SQLServerDataSource getDataSource() {
         SQLServerDataSource dataSource = new SQLServerDataSource();
         dataSource.setUser(getProperty(DB_USER));
         dataSource.setPassword(getProperty(DB_PASSWORD));
@@ -238,9 +81,8 @@ public class DBUtils extends BaseUtils {
         return dataSource;
     }
 
-
     // Return json array from DB
-    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed, Object... args) {
+    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed, Object... queryParams) {
         SQLServerDataSource dataSource = getDataSource();
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -249,19 +91,20 @@ public class DBUtils extends BaseUtils {
 
         try {
             conn = dataSource.getConnection();
-            if (args.length >0) {
-                pstm = preparedStatementExecution(conn, query, args);
-            }
-            else {
+            if (queryParams.length > 0) {
+                pstm = preparedStatementExecution(conn, query, queryParams);
+            } else {
                 pstm = conn.prepareStatement(query);
             }
+
             rs = pstm.executeQuery();
 
             if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
                 jsonArray = buildJsonArrayFromQueryResult(rs);
                 Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
             } else {
-                Logger.getLogger(DBUtils.class).error(ERROR_MESSAGE);
+                // TODO: 6/25/2018 move query log once we'll have private repo
+                fail(ERROR_MESSAGE + "\nquery: " + query + "\nparams: " + Arrays.deepToString(queryParams));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -279,88 +122,104 @@ public class DBUtils extends BaseUtils {
         try {
             pstm = conn.prepareStatement(query);
             for (int i = 0; i < args.length; i++) {
-                switch(args[i].getClass().getSimpleName()){
+                switch (args[i].getClass().getSimpleName()) {
                     case "String":
-                        pstm.setString(i+1, (String) args[i]);
+                        pstm.setString(i + 1, (String) args[i]);
                         break;
                     case "Integer":
-                        pstm.setInt(i+1, (int) args[i]);
+                        pstm.setInt(i + 1, (int) args[i]);
                         break;
                     case "Double":
-                        pstm.setDouble(i+1, (double) args[i]);
+                        pstm.setDouble(i + 1, (double) args[i]);
                         break;
                     case "Long":
-                        pstm.setLong(i+1, (long) args[i]);
+                        pstm.setLong(i + 1, (long) args[i]);
                         break;
                     default:
-                        Logger.getLogger(DBUtils.class).error("No valid type found!");
                         fail("No valid type found!");
                         break;
                 }
             }
-
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return pstm;
     }
 
-    public static PricePlan loadPPWithWaiver() {
-        Logger.getLogger(IngestFixtureData.class).debug("loadPPWithWaiver()");
-        PricePlan pricePlan = null;
 
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITH_WAVER_SELECT, true, partnerId);
-            if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                return pricePlan;
-            }
-
-            pricePlan = loadFirstPricePlanFromJsonArray(jsonArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(IngestFixtureData.class).error("price plan data can't be null");
+    // queries
+    public static boolean isActivationOfUsersNeeded() {
+        if (isActivationNeededWasLoaded) {
+            return isActivationNeeded;
         }
-        return pricePlan;
+
+        JSONArray jsonArray = getJsonArrayFromQueryResult(CHECK_IS_ACTIVATION_USERS_NEEDED, false, partnerId);
+        int result = jsonArray.getJSONObject(0).getInt(IS_ACTIVATION_NEEDED);
+
+        isActivationNeeded = result == 1;
+        isActivationNeededWasLoaded = true;
+
+        return isActivationNeeded;
+    }
+
+    public static String getUserData(String userRole) {
+        String sqlQuery = USER_BY_ROLE_SELECT;
+
+        if (isActivationOfUsersNeeded()) {
+            sqlQuery += AND_ACTIVE_STATUS;
+        }
+
+        JSONArray jsonArray = getJsonArrayFromQueryResult(sqlQuery, false, userRole, partnerId);
+        return jsonArray.getJSONObject(0).getString(USERNAME) + ":" + jsonArray.getJSONObject(0).getString(PASSWORD);
+    }
+
+    public static String getActivationToken(String username) {
+        return getJsonArrayFromQueryResult(ACTIVATION_TOKEN_SELECT, false, username)
+                .getJSONObject(0)
+                .getString(ACTIVATION_TOKEN);
+    }
+
+    public static String getResetPasswordToken(String username) {
+        return getJsonArrayFromQueryResult(RESET_PASSWORD_TOKEN_SELECT, false, username)
+                .getJSONObject(0)
+                .getString(CP_TOKEN);
+    }
+
+    // Get epg channel name and linear asset id json array
+    public static JSONArray getLinearAssetIdAndEpgChannelNameJsonArray() {
+        return getJsonArrayFromQueryResult(ASSET_ID_SELECT, false, partnerId + 1);
+    }
+
+    // Get un active asset from DB (status = 2)
+    public static int getUnActiveAsset() {
+        return getJsonArrayFromQueryResult(UNACTIVE_ASSET_ID_SELECT, false, partnerId + 1)
+                .getJSONObject(0)
+                .getInt("id");
+    }
+
+    public static int getSubscriptionWithPremiumService() {
+        return getJsonArrayFromQueryResult(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT, false, partnerId)
+                .getJSONObject(0)
+                .getInt(SUB_ID);
+    }
+
+    public static PricePlan loadPPWithWaiver() {
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITH_WAVER_SELECT, true, partnerId);
+        return loadFirstPricePlanFromJsonArray(jsonArray);
     }
 
     public static PricePlan loadPPWithoutWaiver() {
-        Logger.getLogger(IngestFixtureData.class).debug("loadPPWithoutWaiver()");
-        PricePlan pricePlan = null;
-
-        try {
-            JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITHOUT_WAVER_SELECT, true, partnerId);
-            if (Strings.isNullOrEmpty(jsonArray.toString())) {
-                return pricePlan;
-            }
-
-            pricePlan = loadFirstPricePlanFromJsonArray(jsonArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(IngestFixtureData.class).error("price plan data can't be null");
-        }
-        return pricePlan;
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITHOUT_WAVER_SELECT, true, partnerId);
+        return loadFirstPricePlanFromJsonArray(jsonArray);
     }
 
+    public static JSONObject getHouseholdById(int householdId) {
+        return getJsonArrayFromQueryResult(HOUSEHOLD_BY_ID_SELECT, false, partnerId, householdId)
+                .getJSONObject(0);
+    }
 
-//    private static void openConnection() {
-//        SQLServerDataSource dataSource = getDataSource();
-//
-//        try {
-//            conn = dataSource.getConnection();
-//            stam = conn.createStatement();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    static void closeConnection() {
-//        DbUtils.closeQuietly(rs);
-//        DbUtils.closeQuietly(stam);
-//        DbUtils.closeQuietly(conn);
-//    }
-
-//    static void prepareCall(String sql) throws SQLException {
-//        openConnection();
-//        cStmt = conn.prepareCall(sql);
-//    }
+    public static JSONObject getUserById(int userId) {
+        return getJsonArrayFromQueryResult(USER_BY_ID_SELECT, false, partnerId, userId)
+                .getJSONObject(0);
+    }
 }

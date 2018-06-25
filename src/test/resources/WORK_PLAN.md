@@ -44,7 +44,7 @@ Migrate features tests from ReadyAPI
 | favorite                     |        |
 | followTvSeries               |        |
 | homeNetwork                  |        |
-| household                    | Alon - in progress, actions: add - done, delete - done, get - done, suspend - done, resume - done, resetFrequency - done, update, purge |
+| household                    | Alon - in progress, actions: purge |
 | householdDevice              |        |
 | householdLimitations         |        |
 | householdPaymentGateway      |        |
