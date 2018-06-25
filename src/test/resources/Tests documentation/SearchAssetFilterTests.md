@@ -1,5 +1,19 @@
 asset/action/list with KalturaSearchAssetFilter
 
+Inherited from KalturaFilter
+----------------------------
+1. OrderBy:
+    * VIEWS_DESC
+    * NAME_ASC
+    * NAME_DESC
+    * LIKES_DESC
+    * VOTES_DESC
+    * RATINGS_DESC
+    * START_DATE_DESC
+    * START_DATE_ASC
+    * RELEVANCY_DESC (edge case)
+
+
 Inherited from KalturaPersistedFilter
 -------------------------------------
 * Should be tested in /searchhistory/action/list tests
@@ -8,14 +22,14 @@ If empty, no action will be done. If has value, the filter will be saved and per
 
 Inherited from KalturaAssetFilter
 ---------------------------------
-1. dynamicOrderBy
+2. dynamicOrderBy
     * order by meta
-        * META_ASC (TODO)
-        * META_DESC (TODO)
+        * META_ASC (BEO-5254)
+        * META_DESC (BEO-5254)
 
 Inherited from KalturaBaseSearchAssetFilter
 -------------------------------------------
-2. Filter by KSQL - Search assets using various dynamic criteria
+3. Filter by KSQL - Search assets using various dynamic criteria
 * by asset name
 * by tag value
 * by meta value (TODO)
@@ -68,7 +82,7 @@ Inherited from KalturaBaseSearchAssetFilter
 
 KalturaSearchAssetFilter
 ----------------------------
-3. Filter by asset type (typeIn) - DEPRECATED (use KalturaBaseSearchAssetFilter kSql)
+4. Filter by asset type (typeIn) - DEPRECATED (use KalturaBaseSearchAssetFilter kSql)
     * specific asset type
     * list of assets types (TODO)
 

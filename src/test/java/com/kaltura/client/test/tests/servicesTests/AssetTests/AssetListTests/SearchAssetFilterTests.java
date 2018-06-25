@@ -207,7 +207,6 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
     }
 
-    //TODO - Enable test after fixing updateVodName method
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD -  order by NAME (DESC/ASC")
     @Test(enabled = false)
@@ -316,6 +315,7 @@ public class SearchAssetFilterTests extends BaseTest {
     }
 
     //TODO - add test for  KalturaPersistedFilter in searchHistory class
+
     // EPG
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - EPG - name equal query")
