@@ -32,7 +32,7 @@ Inherited from KalturaBaseSearchAssetFilter
 3. Filter by KSQL - Search assets using various dynamic criteria
 * by asset name
 * by tag value
-* by meta value (TODO)
+* by meta value
 
 * By reserved keys
     * media_id
@@ -41,9 +41,10 @@ Inherited from KalturaBaseSearchAssetFilter
     * asset start date (TODO)
     * asset end date (TODO)
     * asset_type - valid values:
-        * media
-        * epg
-        * recording
+        * media (TODO)
+        * epg (TODO)
+        * recording (TODO)
+        * asset type id
     * geo_block - only valid value is "true": When enabled, only assets that are not restricted to the user by geo-block rules will return (TODO)
     * parental_rules - only valid value is "true": When enabled, only assets that the user doesn't need to provide PIN code will return (TODO)
     * user_interests - only valid value is "true". When enabled, only assets that the user defined as his interests (by tags and metas) (TODO)
