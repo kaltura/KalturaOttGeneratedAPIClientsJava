@@ -4,6 +4,8 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
@@ -20,6 +22,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.AssetService.list;
@@ -47,6 +50,7 @@ public class SearchAssetFilterTests extends BaseTest {
     private String metaValue2 = "B" + getRandomValue("_", 999999);
     private String ksqlQuery;
     private AssetFilter assetFilter;
+    String masterUserKs;
 
 
     @BeforeClass
@@ -75,15 +79,36 @@ public class SearchAssetFilterTests extends BaseTest {
         asset3 = IngestVodUtils.ingestVOD(EPISODE_MEDIA_TYPE, tagMap, stringMetaMap2, getTimeInDate(-10));
         program = IngestEpgUtils.ingestEPG(epgChannelName, 1).get(0);
         program2 = IngestEpgUtils.ingestEPG(epgChannelName2, 1).get(0);
+
+        Household household = HouseholdUtils.createHousehold(1, 1, true);
+        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household);
+
+        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(asset.getId().intValue()), Optional.empty(), Optional.empty());
+
     }
 
     // Filter by KSQL
     // *********************
 
     @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list - VOD - filter by entitled asset")
+    @Test
+    private void listVodAssetsByEntitled() {
+        ksqlQuery = "(and (or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "') entitled_assets = 'entitled')";
+        assetFilter = getSearchAssetFilter(ksqlQuery);
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
+                .setKs(masterUserKs));
+
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+    }
+
+
+    @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD - filter by asset name")
     @Test
-    private void listVodAssetsWithExactKsqlQuery() {
+    private void listVodAssetsByAssetName() {
         ksqlQuery = "name = '" + asset.getName() + "'";
         assetFilter = getSearchAssetFilter(ksqlQuery);
 
@@ -112,7 +137,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("asset/action/list - VOD - filter by meta")
     @Test
     private void listVodAssetsByMeta() {
-        ksqlQuery = "" +  metaName + " = '" + metaValue1 + "'";
+        ksqlQuery = "" + metaName + " = '" + metaValue1 + "'";
         assetFilter = getSearchAssetFilter(ksqlQuery);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
@@ -370,7 +395,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - EPG - name equal query")
     @Test
-    private void listEpgProgramWithExactKsqlQuery() {
+    private void listEpgProgramByNamr() {
         ksqlQuery = "name = '" + program.getName() + "'";
         assetFilter = getSearchAssetFilter(ksqlQuery, null, "0", null, null, null, null);
 
@@ -384,7 +409,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - EPG - epg channel id equal query")
     @Test
-    private void listEpgProgramWithExactKsqlQuery2() {
+    private void listEpgProgramByChannelId() {
         ksqlQuery = "epg_channel_id = '" + program.getEpgChannelId() + "'";
         assetFilter = getSearchAssetFilter(ksqlQuery);
 
