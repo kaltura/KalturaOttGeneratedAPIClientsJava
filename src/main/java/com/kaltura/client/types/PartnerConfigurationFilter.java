@@ -29,8 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleConditionType;
-import com.kaltura.client.types.SlimAsset;
+import com.kaltura.client.enums.PartnerConfigurationType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,68 +41,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset rule filter
+ * Partner configuration filter
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetRuleFilter.Tokenizer.class)
-public class AssetRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(PartnerConfigurationFilter.Tokenizer.class)
+public class PartnerConfigurationFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String conditionsContainType();
-		SlimAsset.Tokenizer assetApplied();
+		String partnerConfigurationTypeEqual();
 	}
 
 	/**
-	 * Indicates which asset rule list to return by it KalturaRuleConditionType.       
-	        Default value: KalturaRuleConditionType.COUNTRY
+	 * Indicates which partner configuration list to return
 	 */
-	private RuleConditionType conditionsContainType;
-	/**
-	 * Indicates if to return an asset rule list that related to specific asset
-	 */
-	private SlimAsset assetApplied;
+	private PartnerConfigurationType partnerConfigurationTypeEqual;
 
-	// conditionsContainType:
-	public RuleConditionType getConditionsContainType(){
-		return this.conditionsContainType;
+	// partnerConfigurationTypeEqual:
+	public PartnerConfigurationType getPartnerConfigurationTypeEqual(){
+		return this.partnerConfigurationTypeEqual;
 	}
-	public void setConditionsContainType(RuleConditionType conditionsContainType){
-		this.conditionsContainType = conditionsContainType;
+	public void setPartnerConfigurationTypeEqual(PartnerConfigurationType partnerConfigurationTypeEqual){
+		this.partnerConfigurationTypeEqual = partnerConfigurationTypeEqual;
 	}
 
-	public void conditionsContainType(String multirequestToken){
-		setToken("conditionsContainType", multirequestToken);
-	}
-
-	// assetApplied:
-	public SlimAsset getAssetApplied(){
-		return this.assetApplied;
-	}
-	public void setAssetApplied(SlimAsset assetApplied){
-		this.assetApplied = assetApplied;
+	public void partnerConfigurationTypeEqual(String multirequestToken){
+		setToken("partnerConfigurationTypeEqual", multirequestToken);
 	}
 
 
-	public AssetRuleFilter() {
+	public PartnerConfigurationFilter() {
 		super();
 	}
 
-	public AssetRuleFilter(JsonObject jsonObject) throws APIException {
+	public PartnerConfigurationFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		conditionsContainType = RuleConditionType.get(GsonParser.parseString(jsonObject.get("conditionsContainType")));
-		assetApplied = GsonParser.parseObject(jsonObject.getAsJsonObject("assetApplied"), SlimAsset.class);
+		partnerConfigurationTypeEqual = PartnerConfigurationType.get(GsonParser.parseString(jsonObject.get("partnerConfigurationTypeEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetRuleFilter");
-		kparams.add("conditionsContainType", this.conditionsContainType);
-		kparams.add("assetApplied", this.assetApplied);
+		kparams.add("objectType", "KalturaPartnerConfigurationFilter");
+		kparams.add("partnerConfigurationTypeEqual", this.partnerConfigurationTypeEqual);
 		return kparams;
 	}
 

@@ -29,8 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleConditionType;
-import com.kaltura.client.types.SlimAsset;
+import com.kaltura.client.enums.EvictionPolicyType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,68 +41,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset rule filter
+ * Partner concurrency configuration
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetRuleFilter.Tokenizer.class)
-public class AssetRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(ConcurrencyPartnerConfig.Tokenizer.class)
+public class ConcurrencyPartnerConfig extends PartnerConfiguration {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String conditionsContainType();
-		SlimAsset.Tokenizer assetApplied();
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		String deviceFamilyIds();
+		String evictionPolicy();
 	}
 
 	/**
-	 * Indicates which asset rule list to return by it KalturaRuleConditionType.       
-	        Default value: KalturaRuleConditionType.COUNTRY
+	 * Comma separated list of device Family Ids order by their priority.
 	 */
-	private RuleConditionType conditionsContainType;
+	private String deviceFamilyIds;
 	/**
-	 * Indicates if to return an asset rule list that related to specific asset
+	 * Policy of eviction devices
 	 */
-	private SlimAsset assetApplied;
+	private EvictionPolicyType evictionPolicy;
 
-	// conditionsContainType:
-	public RuleConditionType getConditionsContainType(){
-		return this.conditionsContainType;
+	// deviceFamilyIds:
+	public String getDeviceFamilyIds(){
+		return this.deviceFamilyIds;
 	}
-	public void setConditionsContainType(RuleConditionType conditionsContainType){
-		this.conditionsContainType = conditionsContainType;
-	}
-
-	public void conditionsContainType(String multirequestToken){
-		setToken("conditionsContainType", multirequestToken);
+	public void setDeviceFamilyIds(String deviceFamilyIds){
+		this.deviceFamilyIds = deviceFamilyIds;
 	}
 
-	// assetApplied:
-	public SlimAsset getAssetApplied(){
-		return this.assetApplied;
+	public void deviceFamilyIds(String multirequestToken){
+		setToken("deviceFamilyIds", multirequestToken);
 	}
-	public void setAssetApplied(SlimAsset assetApplied){
-		this.assetApplied = assetApplied;
+
+	// evictionPolicy:
+	public EvictionPolicyType getEvictionPolicy(){
+		return this.evictionPolicy;
+	}
+	public void setEvictionPolicy(EvictionPolicyType evictionPolicy){
+		this.evictionPolicy = evictionPolicy;
+	}
+
+	public void evictionPolicy(String multirequestToken){
+		setToken("evictionPolicy", multirequestToken);
 	}
 
 
-	public AssetRuleFilter() {
+	public ConcurrencyPartnerConfig() {
 		super();
 	}
 
-	public AssetRuleFilter(JsonObject jsonObject) throws APIException {
+	public ConcurrencyPartnerConfig(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		conditionsContainType = RuleConditionType.get(GsonParser.parseString(jsonObject.get("conditionsContainType")));
-		assetApplied = GsonParser.parseObject(jsonObject.getAsJsonObject("assetApplied"), SlimAsset.class);
+		deviceFamilyIds = GsonParser.parseString(jsonObject.get("deviceFamilyIds"));
+		evictionPolicy = EvictionPolicyType.get(GsonParser.parseString(jsonObject.get("evictionPolicy")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetRuleFilter");
-		kparams.add("conditionsContainType", this.conditionsContainType);
-		kparams.add("assetApplied", this.assetApplied);
+		kparams.add("objectType", "KalturaConcurrencyPartnerConfig");
+		kparams.add("deviceFamilyIds", this.deviceFamilyIds);
+		kparams.add("evictionPolicy", this.evictionPolicy);
 		return kparams;
 	}
 
