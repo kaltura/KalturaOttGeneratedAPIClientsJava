@@ -83,7 +83,7 @@ public class DBUtils extends BaseUtils {
     }
 
     // Return json array from DB
-    static JSONArray getJsonArrayFromQueryResult(String query, boolean isNullResultAllowed, Object... queryParams) {
+    static JSONArray getJsonArrayFromQueryResult(String query, Object... queryParams) {
         SQLServerDataSource dataSource = getDataSource();
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -100,7 +100,7 @@ public class DBUtils extends BaseUtils {
 
             rs = pstm.executeQuery();
 
-            if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
+            if (rs != null && rs.isBeforeFirst()) {
                 jsonArray = buildJsonArrayFromQueryResult(rs);
                 Logger.getLogger(DBUtils.class).debug("query: " + query + "\nparams: " + Arrays.deepToString(queryParams));
                 Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
@@ -155,7 +155,7 @@ public class DBUtils extends BaseUtils {
             return isActivationNeeded;
         }
 
-        JSONArray jsonArray = getJsonArrayFromQueryResult(CHECK_IS_ACTIVATION_USERS_NEEDED, false, partnerId);
+        JSONArray jsonArray = getJsonArrayFromQueryResult(CHECK_IS_ACTIVATION_USERS_NEEDED, partnerId);
         int result = jsonArray.getJSONObject(0).getInt(IS_ACTIVATION_NEEDED);
 
         isActivationNeeded = result == 1;
@@ -171,19 +171,19 @@ public class DBUtils extends BaseUtils {
             sqlQuery += AND_ACTIVE_STATUS;
         }
 
-        JSONArray jsonArray = getJsonArrayFromQueryResult(sqlQuery, false, userRole, partnerId);
+        JSONArray jsonArray = getJsonArrayFromQueryResult(sqlQuery, userRole, partnerId);
         return jsonArray.getJSONObject(0).getString(USERNAME) + ":" + jsonArray.getJSONObject(0).getString(PASSWORD);
     }
 
     public static String getActivationToken(String username) {
-        return getJsonArrayFromQueryResult(ACTIVATION_TOKEN_SELECT, false, username)
+        return getJsonArrayFromQueryResult(ACTIVATION_TOKEN_SELECT, username)
                 .getJSONObject(0)
                 .getString(ACTIVATION_TOKEN);
     }
 
     public static String getResetPasswordToken(String username) {
         try {
-            return getJsonArrayFromQueryResult(RESET_PASSWORD_TOKEN_SELECT, false, username)
+            return getJsonArrayFromQueryResult(RESET_PASSWORD_TOKEN_SELECT, username)
                     .getJSONObject(0)
                     .getString(CP_TOKEN);
         } catch (JSONException e) {
@@ -193,39 +193,39 @@ public class DBUtils extends BaseUtils {
 
     // Get epg channel name and linear asset id json array
     public static JSONArray getLinearAssetIdAndEpgChannelNameJsonArray() {
-        return getJsonArrayFromQueryResult(ASSET_ID_SELECT, false, partnerId + 1);
+        return getJsonArrayFromQueryResult(ASSET_ID_SELECT, partnerId + 1);
     }
 
     // Get un active asset from DB (status = 2)
     public static int getUnActiveAsset() {
-        return getJsonArrayFromQueryResult(UNACTIVE_ASSET_ID_SELECT, false, partnerId + 1)
+        return getJsonArrayFromQueryResult(UNACTIVE_ASSET_ID_SELECT, partnerId + 1)
                 .getJSONObject(0)
                 .getInt("id");
     }
 
     public static int getSubscriptionWithPremiumService() {
-        return getJsonArrayFromQueryResult(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT, false, partnerId)
+        return getJsonArrayFromQueryResult(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT, partnerId)
                 .getJSONObject(0)
                 .getInt(SUB_ID);
     }
 
     public static PricePlan loadPPWithWaiver() {
-        JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITH_WAVER_SELECT, true, partnerId);
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITH_WAVER_SELECT, partnerId);
         return loadFirstPricePlanFromJsonArray(jsonArray);
     }
 
     public static PricePlan loadPPWithoutWaiver() {
-        JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITHOUT_WAVER_SELECT, true, partnerId);
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITHOUT_WAVER_SELECT, partnerId);
         return loadFirstPricePlanFromJsonArray(jsonArray);
     }
 
     public static JSONObject getHouseholdById(int householdId) {
-        return getJsonArrayFromQueryResult(HOUSEHOLD_BY_ID_SELECT, false, partnerId, householdId)
+        return getJsonArrayFromQueryResult(HOUSEHOLD_BY_ID_SELECT, partnerId, householdId)
                 .getJSONObject(0);
     }
 
     public static JSONObject getUserById(int userId) {
-        return getJsonArrayFromQueryResult(USER_BY_ID_SELECT, false, partnerId, userId)
+        return getJsonArrayFromQueryResult(USER_BY_ID_SELECT, partnerId, userId)
                 .getJSONObject(0);
     }
 }
