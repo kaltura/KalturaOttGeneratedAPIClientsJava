@@ -175,6 +175,6 @@ Migrate features tests from ReadyAPI
 | 4.8 - Watched content should not be displayed in recommendations [BEO-4823]                           |        |
 | 4.8 - Scheduling rule for business model change[BEO-4221]                                             |        |
 | 4.8 - Coupons Updates[BEO-4901]                                                                       |        |
-| 4.8.2 - GDPR - create scripts that delete the deleted and purged HH[BEO-5010]                         |        |
+| 4.8.2 - GDPR - create scripts that delete the deleted and purged HH[BEO-5010]                         | Tests moved to HouseholdPurgeTests |
 | 4.8.2 - Multi-Geo Asset Availability Windowing                                                        |        |
 | 4.8.2 - Master user can hide part of the linear channel[BEO-4765]                                     |        |

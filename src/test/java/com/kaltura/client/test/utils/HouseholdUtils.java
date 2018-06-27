@@ -75,7 +75,8 @@ public class HouseholdUtils extends BaseUtils {
         if (isPreparePG) {
             // TODO: there should be added logic with getting and using default PG currently it all hardcoded
             //HouseholdPaymentGateway/action/setChargeId
-            SetChargeIDHouseholdPaymentGatewayBuilder setChargeIDHouseholdPaymentGatewayBuilder = HouseholdPaymentGatewayService.setChargeID("0110151474255957105", "1234")
+            SetChargeIDHouseholdPaymentGatewayBuilder setChargeIDHouseholdPaymentGatewayBuilder = HouseholdPaymentGatewayService
+                    .setChargeID("0110151474255957105", "1234")
                     .setKs(getOperatorKs())
                     .setUserId(Integer.valueOf(masterUser.getId()));
             executor.executeSync(setChargeIDHouseholdPaymentGatewayBuilder);

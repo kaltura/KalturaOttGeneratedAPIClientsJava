@@ -6,6 +6,7 @@ import com.kaltura.client.types.PricePlan;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.*;
@@ -101,6 +102,7 @@ public class DBUtils extends BaseUtils {
 
             if (rs != null && rs.isBeforeFirst() || isNullResultAllowed) {
                 jsonArray = buildJsonArrayFromQueryResult(rs);
+                Logger.getLogger(DBUtils.class).debug("query: " + query + "\nparams: " + Arrays.deepToString(queryParams));
                 Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
             } else {
                 // TODO: 6/25/2018 move query log once we'll have private repo
@@ -180,9 +182,13 @@ public class DBUtils extends BaseUtils {
     }
 
     public static String getResetPasswordToken(String username) {
-        return getJsonArrayFromQueryResult(RESET_PASSWORD_TOKEN_SELECT, false, username)
-                .getJSONObject(0)
-                .getString(CP_TOKEN);
+        try {
+            return getJsonArrayFromQueryResult(RESET_PASSWORD_TOKEN_SELECT, false, username)
+                    .getJSONObject(0)
+                    .getString(CP_TOKEN);
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
     // Get epg channel name and linear asset id json array

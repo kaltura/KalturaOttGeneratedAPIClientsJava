@@ -5,7 +5,6 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -28,7 +27,9 @@ import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SearchAssetFilterTests extends BaseTest {
@@ -59,9 +60,28 @@ public class SearchAssetFilterTests extends BaseTest {
         String epgChannelName = ja.getJSONObject(0).getString("name");
         String epgChannelName2 = ja.getJSONObject(1).getString("name");
 
-        asset = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        asset2 = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE, map, getTimeInDate(-100));
-        asset3 = IngestVodUtils.ingestVOD(EPISODE_MEDIA_TYPE, map, getTimeInDate(-10));
+        // ingest asset 1
+        VodData vodData1 = VodData.builder(INGEST_ACTION_INSERT)
+                .mediaType(MOVIE_MEDIA_TYPE)
+                .build();
+        asset = ingestVOD(vodData1);
+
+        // ingest asset 2
+        VodData vodData2 = VodData.builder(INGEST_ACTION_INSERT)
+                .mediaType(MOVIE_MEDIA_TYPE)
+                .catalogStartDate(getTimeInDate(-100))
+                .tags(map)
+                .build();
+        asset2 = ingestVOD(vodData2);
+
+        // ingest asset 3
+        VodData vodData3 = VodData.builder(INGEST_ACTION_INSERT)
+                .mediaType(EPISODE_MEDIA_TYPE)
+                .catalogStartDate(getTimeInDate(-10))
+                .tags(map)
+                .build();
+        asset3 = ingestVOD(vodData3);
+
         program = IngestEpgUtils.ingestEPG(epgChannelName, 1).get(0);
         program2 = IngestEpgUtils.ingestEPG(epgChannelName2, 1).get(0);
     }
@@ -212,9 +232,9 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("asset/action/list - VOD -  order by NAME (DESC/ASC")
     @Test(enabled = false)
     private void orderVodAssetsByName() {
-        IngestVodUtils.updateVODName(asset, "AAA");
-        IngestVodUtils.updateVODName(asset2, "BBB");
-        IngestVodUtils.updateVODName(asset3, "CCC");
+        updateVodName(asset, "AAA");
+        updateVodName(asset2, "BBB");
+        updateVodName(asset3, "CCC");
 
         ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
         assetFilter = getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());
@@ -268,7 +288,7 @@ public class SearchAssetFilterTests extends BaseTest {
         ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
         assetFilter = getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.VOTES_DESC.getValue());
 
-        ListAssetBuilder  listAssetBuilder = list(assetFilter)
+        ListAssetBuilder listAssetBuilder = list(assetFilter)
                 .setKs(getSharedMasterUserKs());
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(listAssetBuilder);
 
