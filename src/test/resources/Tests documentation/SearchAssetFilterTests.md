@@ -36,8 +36,8 @@ Inherited from KalturaBaseSearchAssetFilter
 
 * By reserved keys
     * media_id
-    * epg_id (EPG TODO)
-    * epg_channel_id (TODO)
+    * epg_id
+    * epg_channel_id
     * asset start date (TODO)
     * asset end date (TODO)
     * asset_type - valid values:
@@ -85,7 +85,7 @@ KalturaSearchAssetFilter
 ----------------------------
 4. Filter by asset type (typeIn) - DEPRECATED (use KalturaBaseSearchAssetFilter kSql)
     * specific asset type
-    * list of assets types (TODO)
+    * list of assets types
 
 
 
