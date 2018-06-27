@@ -46,11 +46,12 @@ public class SearchAssetFilterTests extends BaseTest {
     private final String tagName = "Genre";
     private String tagValue;
     private final String metaName = "synopsis";
+    private final String metaName2 = "Short title";
     private String metaValue1 = "A" + getRandomValue("_", 999999);
     private String metaValue2 = "B" + getRandomValue("_", 999999);
     private String ksqlQuery;
     private AssetFilter assetFilter;
-    String masterUserKs;
+    private String masterUserKs;
 
 
     @BeforeClass
@@ -66,6 +67,7 @@ public class SearchAssetFilterTests extends BaseTest {
 
         HashMap<String, String> stringMetaMap1 = new HashMap<>();
         stringMetaMap1.put(metaName, metaValue1);
+        stringMetaMap1.put(metaName2, metaValue1);
 
         HashMap<String, String> stringMetaMap2 = new HashMap<>();
         stringMetaMap2.put(metaName, metaValue2);
@@ -89,6 +91,8 @@ public class SearchAssetFilterTests extends BaseTest {
 
     // Filter by KSQL
     // *********************
+
+    // TODO: 27/06/2018  - Add test that filter by Geo block after Alon will refactor the ingest util
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD - filter by entitled asset")
@@ -182,6 +186,21 @@ public class SearchAssetFilterTests extends BaseTest {
     @Test
     private void listVodAssetsWithNotKsqlQuery() {
         ksqlQuery = "(and media_id != '" + asset3.getId() + "' " + tagName + " = '" + tagValue + "')";
+        assetFilter = getSearchAssetFilter(ksqlQuery);
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
+                .setKs(getSharedMasterUserKs()));
+
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset2.getId());
+    }
+
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Alpha numeric field: asset/action/list - VOD - with existing meta value (+)")
+    @Test
+    private void listVodAssetsWithExistingMetaValue() {
+        ksqlQuery = "(and (or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "')" + metaName2 + "+''" + " )";
         assetFilter = getSearchAssetFilter(ksqlQuery);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
@@ -395,7 +414,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - EPG - name equal query")
     @Test
-    private void listEpgProgramByNamr() {
+    private void listEpgProgramByName() {
         ksqlQuery = "name = '" + program.getName() + "'";
         assetFilter = getSearchAssetFilter(ksqlQuery, null, "0", null, null, null, null);
 
