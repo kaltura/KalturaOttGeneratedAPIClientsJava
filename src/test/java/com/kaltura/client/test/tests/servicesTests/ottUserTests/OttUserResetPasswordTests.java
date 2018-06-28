@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OttUserResetPasswordTests extends BaseTest {
 
-
     @Severity(SeverityLevel.CRITICAL)
     @Description("ottUser/action/resetPassword - resetPassword")
     @Test()

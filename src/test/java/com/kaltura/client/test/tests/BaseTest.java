@@ -32,6 +32,7 @@ import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -314,9 +315,8 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            mediaAsset = IngestVodUtils.ingestVOD (Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty());
+            VodData vodData = VodData.builder(INGEST_ACTION_INSERT).build();
+            mediaAsset = ingestVOD (vodData);
         }
         return mediaAsset;
     }
@@ -415,11 +415,10 @@ public class BaseTest {
         }
         if (name != null) {
             // ingest VOD by name
-            MediaAsset mediaAsset = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty());
-            IngestVodUtils.updateVODName(mediaAsset, name);
+            VodData vodData = VodData.builder(INGEST_ACTION_INSERT).build();
+            MediaAsset mediaAsset = ingestVOD(vodData);
+
+            updateVodName(mediaAsset, name);
         }
         if (tag != null) {
             // ingest VOD by tag
@@ -427,10 +426,12 @@ public class BaseTest {
             List<String> values = new ArrayList<>();
             values.add(parameters[1].replaceAll("'", ""));
             tags.put(tag, values);
-            IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(tags), Optional.empty(),
-                    Optional.empty(), Optional.empty());
+
+            VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
+                    .tags(tags)
+                    .build();
+
+            ingestVOD(vodData);
         }
     }
 
