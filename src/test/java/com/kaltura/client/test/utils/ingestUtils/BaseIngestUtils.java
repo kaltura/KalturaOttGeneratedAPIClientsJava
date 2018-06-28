@@ -35,6 +35,7 @@ public class BaseIngestUtils {
 
     // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts
     public static final String MOVIE_MEDIA_TYPE = "Movie";
+    public static final String SERIES_MEDIA_TYPE = "Series";
     public static final String EPISODE_MEDIA_TYPE = "Episode";
     public static final String LINEAR_MEDIA_TYPE = "Linear";
 
@@ -95,7 +96,7 @@ public class BaseIngestUtils {
         System.out.println(out.toString());
     }
 
-    static String uncommentCdata(String docAsString) {
+    static String uncommentCdataSection(String docAsString) {
         docAsString = docAsString
                 .replace("<!--<![CDATA[-->", "<![CDATA[")
                 .replace("<!--]]>-->", "]]>");

@@ -33,8 +33,7 @@ import static com.kaltura.client.test.tests.enums.Currency.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.ingestVOD;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductPriceListTests extends BaseTest {
@@ -609,11 +608,10 @@ public class ProductPriceListTests extends BaseTest {
         // TODO: should we save it in Properties?
         double ppvPriceAfterDiscount = 33.3; // as price 37 ILS and discount is 10%
 
-        VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
+        VodData vodData = new VodData()
                 .ppvWebName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS)
-                .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS)
-                .build();
-        MediaAsset mediaAsset = ingestVOD(vodData);
+                .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS);
+        MediaAsset mediaAsset = insertVod(vodData);
 
         int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
         int assetWithMultiCurrencyId = Math.toIntExact(mediaAsset.getId());
@@ -656,10 +654,8 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
 
-        vodData
-                .setAction(INGEST_ACTION_DELETE)
-                .setCoguid(mediaAsset.getName());
-        ingestVOD(vodData);
+        // delete media
+        deleteVod(mediaAsset.getName());
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -672,11 +668,10 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
         String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
-        VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
+        VodData vodData = new VodData()
                 .ppvWebName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS)
-                .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS)
-                .build();
-        MediaAsset mediaAsset = ingestVOD(vodData);
+                .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS);
+        MediaAsset mediaAsset = insertVod(vodData);
 
         int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
         int assetWithMultiCurrencyId = Math.toIntExact(mediaAsset.getId());
@@ -720,10 +715,8 @@ public class ProductPriceListTests extends BaseTest {
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
 
-        vodData
-                .setAction(INGEST_ACTION_DELETE)
-                .setCoguid(mediaAsset.getName());
-        ingestVOD(vodData);
+        // delete media
+        deleteVod(mediaAsset.getName());
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -733,10 +726,9 @@ public class ProductPriceListTests extends BaseTest {
         String ppvWithExpiredDate = ";;01/01/2017 00:00:00";
         String ppvMobileModule = getSharedCommonPpv().getName() + ppvWithExpiredDate + PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS + ";;";
 
-        VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
-                .ppvMobileName(ppvMobileModule)
-                .build();
-        MediaAsset mediaAssetWith2Ppv1Expired = ingestVOD(vodData);
+        VodData vodData = new VodData()
+                .ppvMobileName(ppvMobileModule);
+        MediaAsset mediaAssetWith2Ppv1Expired = insertVod(vodData);
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
@@ -751,10 +743,9 @@ public class ProductPriceListTests extends BaseTest {
                 mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
 
         ppvMobileModule = getSharedCommonPpv().getName() + ppvWithExpiredDate;
-        VodData vodData1 = VodData.builder(INGEST_ACTION_INSERT)
-                .ppvMobileName(ppvMobileModule)
-                .build();
-        mediaAssetWith2Ppv1Expired = ingestVOD(vodData1);
+        VodData vodData1 = new VodData()
+                .ppvMobileName(ppvMobileModule);
+        mediaAssetWith2Ppv1Expired = insertVod(vodData1);
 
         ppFilter = new ProductPriceFilter();
         ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
@@ -769,13 +760,7 @@ public class ProductPriceListTests extends BaseTest {
                 mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId());
 
         // delete media
-        vodData
-                .setAction(INGEST_ACTION_DELETE)
-                .setCoguid(mediaAssetWith2Ppv1Expired.getName())
-                .setPpvWebName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS)
-                .setPpvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS);
-
-        ingestVOD(vodData);
+        deleteVod(mediaAssetWith2Ppv1Expired.getName());
     }
 
     @AfterClass

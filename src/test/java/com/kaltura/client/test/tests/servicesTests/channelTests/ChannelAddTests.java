@@ -22,7 +22,6 @@ import static com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import static com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,20 +63,16 @@ public class ChannelAddTests extends BaseTest {
         String asset2Name = "Episode_" + BaseUtils.getCurrentDateInFormat("yyMMddHHmmss");
 
         // Ingest first asset
-        VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
-                .mediaType(MOVIE_MEDIA_TYPE)
-                .build();
-
-        MediaAsset movieAsset = ingestVOD(vodData);
-        movieAsset = updateVodName(movieAsset, asset1Name);
+        VodData vodData = new VodData()
+                .name(asset1Name)
+                .mediaType(MOVIE_MEDIA_TYPE);
+        MediaAsset movieAsset = insertVod(vodData);
 
         // Ingest second asset
-        VodData vodData1 = VodData.builder(INGEST_ACTION_INSERT)
-                .mediaType(EPISODE_MEDIA_TYPE)
-                .build();
-
-        MediaAsset episodeAsset = ingestVOD(vodData1);
-        episodeAsset = updateVodName(episodeAsset, asset2Name);
+        VodData vodData1 = new VodData()
+                .name(asset2Name)
+                .mediaType(EPISODE_MEDIA_TYPE);
+        MediaAsset episodeAsset = insertVod(vodData1);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);

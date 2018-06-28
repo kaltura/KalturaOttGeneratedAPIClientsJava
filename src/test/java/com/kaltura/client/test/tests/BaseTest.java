@@ -274,6 +274,24 @@ public class BaseTest {
         return ingestAssetUserPassword;
     }
 
+    public static String getIngestVirualAssetUserName() {
+        if (ingestAssetUserUsername == null) {
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
+            ingestAssetUserUsername = userInfo.split(":")[0];
+            ingestAssetUserPassword = userInfo.split(":")[1];
+        }
+        return ingestAssetUserUsername;
+    }
+
+    public static String getIngestVirualAssetUserPassword() {
+        if (ingestAssetUserPassword == null) {
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
+            ingestAssetUserUsername = userInfo.split(":")[0];
+            ingestAssetUserPassword = userInfo.split(":")[1];
+        }
+        return ingestAssetUserPassword;
+    }
+
     // getters for shared params
     public static String getAdministratorKs() {
         if (administratorKs == null) {
@@ -315,8 +333,8 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            VodData vodData = VodData.builder(INGEST_ACTION_INSERT).build();
-            mediaAsset = ingestVOD (vodData);
+            VodData vodData = new VodData();
+            mediaAsset = insertVod(vodData);
         }
         return mediaAsset;
     }
@@ -415,10 +433,11 @@ public class BaseTest {
         }
         if (name != null) {
             // ingest VOD by name
-            VodData vodData = VodData.builder(INGEST_ACTION_INSERT).build();
-            MediaAsset mediaAsset = ingestVOD(vodData);
+            VodData vodData = new VodData();
+            MediaAsset mediaAsset = insertVod(vodData);
 
-            updateVodName(mediaAsset, name);
+            vodData.name(name);
+            updateVod(mediaAsset.getName(), vodData);
         }
         if (tag != null) {
             // ingest VOD by tag
@@ -427,11 +446,8 @@ public class BaseTest {
             values.add(parameters[1].replaceAll("'", ""));
             tags.put(tag, values);
 
-            VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
-                    .tags(tags)
-                    .build();
-
-            ingestVOD(vodData);
+            VodData vodData = new VodData().tags(tags);
+            insertVod(vodData);
         }
     }
 

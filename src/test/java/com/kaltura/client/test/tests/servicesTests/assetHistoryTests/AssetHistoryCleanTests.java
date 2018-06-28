@@ -22,9 +22,10 @@ import static com.kaltura.client.test.Properties.EPISODE_MEDIA_TYPE_ID;
 import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.ingestVOD;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetHistoryCleanTests extends BaseTest {
@@ -46,27 +47,24 @@ public class AssetHistoryCleanTests extends BaseTest {
     // TODO: 5/3/2018 change before method name
     private void clean_tests_before_class() {
         // Ingest first movie asset
-        VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
-                .mediaType(MOVIE_MEDIA_TYPE)
-                .build();
+        VodData vodData = new VodData()
+                .mediaType(MOVIE_MEDIA_TYPE);
 
-        movie = ingestVOD(vodData);
+        movie = insertVod(vodData);
         movieFileId = AssetUtils.getAssetFileIds(String.valueOf(movie.getId())).get(0);
 
         // Ingest second movie asset
-        VodData vodData2 = VodData.builder(INGEST_ACTION_INSERT)
-                .mediaType(MOVIE_MEDIA_TYPE)
-                .build();
+        VodData vodData2 = new VodData()
+                .mediaType(MOVIE_MEDIA_TYPE);
 
-        movie2 = ingestVOD(vodData2);
+        movie2 = insertVod(vodData2);
         movie2FileId = AssetUtils.getAssetFileIds(String.valueOf(movie2.getId())).get(0);
 
         // Ingest episode asset
-        VodData vodData3 = VodData.builder(INGEST_ACTION_INSERT)
-                .mediaType(EPISODE_MEDIA_TYPE)
-                .build();
+        VodData vodData3 = new VodData()
+                .mediaType(EPISODE_MEDIA_TYPE);
 
-        episode = ingestVOD(vodData3);
+        episode = insertVod(vodData3);
         episodeFileId = AssetUtils.getAssetFileIds(String.valueOf(episode.getId())).get(0);
     }
 
