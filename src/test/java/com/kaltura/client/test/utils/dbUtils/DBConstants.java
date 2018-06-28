@@ -76,7 +76,7 @@ public class DBConstants {
 
     static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
-            "where [group_id]=? order by UPDATE_DATE DESC";
+            "where [group_id]=? and is_active=1 and [status]=1 order by UPDATE_DATE DESC";
 
     static final String PPV_SELECT_BY_PRICE_PLAN = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
             "where [status]=1 and is_active=1\n" +
