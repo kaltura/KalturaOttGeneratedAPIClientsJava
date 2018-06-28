@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.response.Response;
 import lombok.AccessLevel;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.common.base.Verify.verify;
 import static com.kaltura.client.services.AssetService.GetAssetBuilder;
 import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.test.Properties.*;
@@ -34,104 +36,196 @@ import static org.awaitility.Awaitility.await;
 
 public class IngestVodUtils extends BaseIngestUtils {
 
-    private static final String coguidDatePattern = "yyMMddHHmmssSS";
+    private static final String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+    private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.";
+    private static final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
+    private static final String ingestAssetIdPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus.InternalAssetId";
 
-    @Builder(builderMethodName = "hiddenBuilder")
+
+    @Builder(builderMethodName = "hiddenBuilder") //builderMethodName = "hiddenBuilder"
     @Accessors(chain = true)
+    //  @NoArgsConstructor
     @Data
     public static class VodData {
-        private static final String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
-        private static final String endDateValue = "14/10/2099 17:00:00";
-        private static final String datePattern = "dd/MM/yyyy hh:mm:ss";
-
-        private String action;
-//        @Setter(AccessLevel.NONE)
+        //@Setter(AccessLevel.NONE)
         private String coguid;
-//        @Setter(AccessLevel.NONE)
+        //        @Setter(AccessLevel.NONE)
         private String name;
-        @Setter(AccessLevel.NONE) private String description;
+        @Setter(AccessLevel.NONE)
+        private String description;
+        ///
+        private String action;
+        ///
+        @Builder.Default
+        private boolean isActive = true;
 
-        @Builder.Default private boolean isActive = true;
-        @Builder.Default private String thumbUrl = DEFAULT_THUMB;
-        @Builder.Default private String catalogStartDate = getOffsetDateInFormat(-1, datePattern);
-        @Builder.Default private String catalogEndDate = endDateValue;
-        @Builder.Default private String startDate = getOffsetDateInFormat(-1, datePattern);
-        @Builder.Default private String endDate = endDateValue;
-        @Builder.Default private String mediaType = MOVIE_MEDIA_TYPE;
-        @Builder.Default private String ppvWebName = ppvModuleName;
-        @Builder.Default private String ppvMobileName = ppvModuleName;
-        @Builder.Default private String geoBlockRule = "";
+        private String thumbUrl;
+        private String catalogStartDate;
+        private String catalogEndDate;
+        private String startDate;
+        private String endDate;
+        private String mediaType;
+        private String ppvWebName;
+        private String ppvMobileName;
+        private String geoBlockRule;
 
-        @Builder.Default private Map<String, List<String>> tags = getDefaultTags();
-        @Builder.Default private Map<String, String> strings = getDefaultStrings();
-        @Builder.Default private Map<String, String> dates = getDefaultDates();
-        @Builder.Default private Map<String, Integer> numbers = getDefaultNumbers();
+        private Map<String, List<String>> tags;
+        private Map<String, String> strings;
+        private Map<String, String> dates;
+        private Map<String, Integer> numbers;
 
         public static VodDataBuilder builder(String action) {
-            return hiddenBuilder().action(action);
+            return hiddenBuilder();
         }
     }
 
     /**
-     * IMPORTANT: please delete inserted by that method items
-     * @return to update or delete existed VOD use corresponded action and value vod.getName() as "coguid"
-     * (where vod is a variable that contains VOD data)
-     * !!!Only created by that method VOD can be deleted/update!!!
+     * IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid"
      */
-    // ingest new VOD (Media)
-    public static MediaAsset ingestVOD(VodData vodData) {
 
-        // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
-        // TODO: check if ingest url is the same for all ingest actions
-
-        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+    public static MediaAsset insertVod(VodData vodData) {
+        final String coguidDatePattern = "yyMMddHHmmssSS";
+        final String datePattern = "dd/MM/yyyy hh:mm:ss";
+        final String endDateValue = "14/10/2099 17:00:00";
+        final String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
 
         vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
-        vodData.name = vodData.getCoguid();
-        vodData.description = "description of " + vodData.getCoguid();
+        vodData.name = vodData.coguid;
 
-        String reqBody = buildIngestVodXml(vodData);
-
-        Response resp =
-                given()
-                    .header(contentTypeXml)
-                    .header(soapActionIngestTvinciData)
-                    .body(reqBody)
-                .when()
-                    .post(url);
-
-        Logger.getLogger(IngestVodUtils.class).debug(reqBody);
-        Logger.getLogger(IngestVodUtils.class).debug("Ingest response: \n" + resp.asString());
-
-        assertThat(resp).isNotNull();
-        assertThat(from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.IngestStatus.Message").toString()).isEqualTo("OK");
-
-        String id;
-        if (INGEST_ACTION_INSERT.equals(vodData.getAction())) {
-            id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.InternalAssetId").toString();
-        } else {
-            id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID").toString();
+        if (vodData.thumbUrl == null) {
+            vodData.thumbUrl = DEFAULT_THUMB;
+        }
+        if (vodData.catalogStartDate == null) {
+            vodData.catalogStartDate = getOffsetDateInFormat(-1, datePattern);
+        }
+        if (vodData.catalogEndDate == null) {
+            vodData.catalogEndDate = endDateValue;
+        }
+        if (vodData.startDate == null) {
+            vodData.startDate = getOffsetDateInFormat(-1, datePattern);
+        }
+        if (vodData.endDate == null) {
+            vodData.endDate = endDateValue;
+        }
+        if (vodData.mediaType == null) {
+            vodData.mediaType = MOVIE_MEDIA_TYPE;
+        }
+        if (vodData.ppvWebName == null) {
+            vodData.ppvWebName = ppvModuleName;
+        }
+        if (vodData.ppvMobileName == null) {
+            vodData.ppvMobileName = ppvModuleName;
+        }
+        if (vodData.tags == null) {
+            vodData.tags = getDefaultTags();
+        }
+        if (vodData.strings == null) {
+            vodData.strings = getDefaultStrings();
+        }
+        if (vodData.dates == null) {
+            vodData.dates = getDefaultDates();
+        }
+        if (vodData.numbers == null) {
+            vodData.numbers = getDefaultNumbers();
         }
 
-        if (!INGEST_ACTION_DELETE.equals(vodData.getAction())) {
-            int delayBetweenRetriesInSeconds = 5;
-            int maxTimeExpectingValidResponseInSeconds = 120;
-            await()
-                    .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
-                    .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
-                    .until(isDataReturned(getAnonymousKs(), id, vodData.getAction()));
+        String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_INSERT);
 
+        Response resp = executeIngestVodRequest(reqBody);
+        String id = from(resp.asString()).get(ingestAssetIdPath).toString();
 
-            return (MediaAsset) executor.executeSync(get(id, AssetReferenceType.MEDIA)
-                    .setKs(getAnonymousKs()))
-                    .results;
-        }
+        GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() -> (executor.executeSync(getAssetBuilder).error == null));
+
+        Asset asset = executor.executeSync(getAssetBuilder).results;
+        verify(asset.getId().toString().equals(id));
+        return (MediaAsset) asset;
+    }
+
+    public static MediaAsset updateVod(String coguid, VodData vodData) {
+        vodData.coguid = coguid;
+        String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_UPDATE);
+
+        Response resp = executeIngestVodRequest(reqBody);
+        String id = from(resp.asString()).get(ingestAssetIdPath).toString();
+
+        GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() -> (executor.executeSync(getAssetBuilder).error == null));
+
+        Asset asset = executor.executeSync(getAssetBuilder).results;
+        verify(asset.getId().toString().equals(id));
+        return (MediaAsset) asset;
+    }
+
+    public static void deleteVod(String coguid) {
+        VodData vodData = VodData.builder("1").build();
+        vodData.coguid = coguid;
+        String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_DELETE);
+
+        Response resp = executeIngestVodRequest(reqBody);
+        assertThat(from(resp.asString()).getInt(ingestAssetIdPath)).isEqualTo(0);
+    }
+
+    // ingest new VOD (Media)
+    public static MediaAsset ingestVOD(VodData vodData) {
+//
+//        // TODO: complete one-by-one needed fields to cover util ingest_vod from old project
+//        // TODO: check if ingest url is the same for all ingest actions
+//
+//        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+//
+//        vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
+//        vodData.name = vodData.getCoguid();
+//        vodData.description = "description of " + vodData.getCoguid();
+//
+//        String reqBody = buildIngestVodXml(vodData);
+//
+//        Response resp =
+//                given()
+//                    .header(contentTypeXml)
+//                    .header(soapActionIngestTvinciData)
+//                    .body(reqBody)
+//                .when()
+//                    .post(url);
+//
+//        Logger.getLogger(IngestVodUtils.class).debug(reqBody);
+//        Logger.getLogger(IngestVodUtils.class).debug("Ingest response: \n" + resp.asString());
+//
+//        assertThat(resp).isNotNull();
+//        assertThat(from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.IngestStatus.Message").toString()).isEqualTo("OK");
+//
+//        String id;
+//        if (INGEST_ACTION_INSERT.equals(vodData.getAction())) {
+//            id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.InternalAssetId").toString();
+//        } else {
+//            id = from(resp.asString()).get("Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.tvmID").toString();
+//        }
+//
+//        if (!INGEST_ACTION_DELETE.equals(vodData.getAction())) {
+//            int delayBetweenRetriesInSeconds = 5;
+//            int maxTimeExpectingValidResponseInSeconds = 120;
+//            await()
+//                    .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+//                    .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+//                    .until(isDataReturned(getAnonymousKs(), id, vodData.getAction()));
+//
+//
+//            return (MediaAsset) executor.executeSync(get(id, AssetReferenceType.MEDIA)
+//                    .setKs(getAnonymousKs()))
+//                    .results;
+//        }
 
         // TODO: 4/15/2018 add log for ingest and index failures
         return null;
     }
 
-    private static String buildIngestVodXml(VodData vodData)  {
+    private static String buildIngestVodXml(VodData vodData, String action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
@@ -146,8 +240,12 @@ public class IngestVodUtils extends BaseIngestUtils {
         Element media = (Element) doc.getElementsByTagName("media").item(0);
         media.setAttribute("co_guid", vodData.getCoguid());
         media.setAttribute("entry_id", "entry_" + vodData.getCoguid());
-        media.setAttribute("action", vodData.getAction());
+        media.setAttribute("action", action);
         media.setAttribute("is_active", Boolean.toString(vodData.isActive()));
+
+        if (action.equals(INGEST_ACTION_DELETE)) {
+            return uncommentCdata(docToString(doc));
+        }
 
         // name
         Element nameElement = (Element) media.getElementsByTagName("name").item(0);
@@ -182,50 +280,58 @@ public class IngestVodUtils extends BaseIngestUtils {
         media.getElementsByTagName("geo_block_rule").item(0).setTextContent(vodData.getGeoBlockRule());
 
         // strings
-        Element stringsElement = (Element) media.getElementsByTagName("strings").item(0);
-        for (Map.Entry<String, String> entry : vodData.getStrings().entrySet()) {
-            // meta node
-            Element meta = generateAndAppendMetaNode(doc, stringsElement, entry.getKey());
+        if (vodData.getStrings() != null) {
+            Element stringsElement = (Element) media.getElementsByTagName("strings").item(0);
+            for (Map.Entry<String, String> entry : vodData.getStrings().entrySet()) {
+                // meta node
+                Element meta = generateAndAppendMetaNode(doc, stringsElement, entry.getKey());
 
-            // value node
-            Element value = doc.createElement("value");
-            value.setAttribute("lang", "eng");
-            value.setTextContent(entry.getValue());
-            meta.appendChild(value);
+                // value node
+                Element value = doc.createElement("value");
+                value.setAttribute("lang", "eng");
+                value.setTextContent(entry.getValue());
+                meta.appendChild(value);
+            }
         }
 
         // doubles
-        Element doublesElement = (Element) media.getElementsByTagName("doubles").item(0);
-        for (Map.Entry<String, Integer> entry : vodData.getNumbers().entrySet()) {
-            // meta node
-            Element meta = generateAndAppendMetaNode(doc, doublesElement, entry.getKey());
-            meta.setTextContent(String.valueOf(entry.getValue()));
+        if (vodData.getNumbers() != null) {
+            Element doublesElement = (Element) media.getElementsByTagName("doubles").item(0);
+            for (Map.Entry<String, Integer> entry : vodData.getNumbers().entrySet()) {
+                // meta node
+                Element meta = generateAndAppendMetaNode(doc, doublesElement, entry.getKey());
+                meta.setTextContent(String.valueOf(entry.getValue()));
+            }
         }
 
         // dates
-        Element datesMetaElement = (Element) media.getElementsByTagName("dates").item(1);
-        for (Map.Entry<String, String> entry : vodData.getDates().entrySet()) {
-            // meta node
-            Element metaElement = generateAndAppendMetaNode(doc, datesMetaElement, entry.getKey());
-            metaElement.setTextContent(entry.getValue());
+        if (vodData.getDates() != null) {
+            Element datesMetaElement = (Element) media.getElementsByTagName("dates").item(1);
+            for (Map.Entry<String, String> entry : vodData.getDates().entrySet()) {
+                // meta node
+                Element metaElement = generateAndAppendMetaNode(doc, datesMetaElement, entry.getKey());
+                metaElement.setTextContent(entry.getValue());
+            }
         }
 
         // metas
-        Element metasElement = (Element) media.getElementsByTagName("metas").item(0);
-        for (Map.Entry<String, List<String>> entry : vodData.getTags().entrySet()) {
-            // meta node
-            Element metaElement = generateAndAppendMetaNode(doc, metasElement, entry.getKey());
-            if (entry.getValue() != null) {
-                // container node
-                for (String s : entry.getValue()) {
-                    Element container = doc.createElement("container");
-                    metaElement.appendChild(container);
+        if (vodData.getTags() != null) {
+            Element metasElement = (Element) media.getElementsByTagName("metas").item(0);
+            for (Map.Entry<String, List<String>> entry : vodData.getTags().entrySet()) {
+                // meta node
+                Element metaElement = generateAndAppendMetaNode(doc, metasElement, entry.getKey());
+                if (entry.getValue() != null) {
+                    // container node
+                    for (String s : entry.getValue()) {
+                        Element container = doc.createElement("container");
+                        metaElement.appendChild(container);
 
-                    // value node
-                    Element value = doc.createElement("value");
-                    value.setTextContent(s);
-                    value.setAttribute("lang", "eng");
-                    container.appendChild(value);
+                        // value node
+                        Element value = doc.createElement("value");
+                        value.setTextContent(s);
+                        value.setAttribute("lang", "eng");
+                        container.appendChild(value);
+                    }
                 }
             }
         }
@@ -243,11 +349,8 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         // uncomment cdata
         String docAsString = docToString(doc);
-        docAsString = docAsString
-                .replace("<!--<![CDATA[-->", "<![CDATA[")
-                .replace("<!--]]>-->", "]]>");
 
-        return docAsString;
+        return uncommentCdata(docAsString);
     }
 
     private static Element generateAndAppendMetaNode(Document doc, Element rootElement, String name) {
@@ -313,6 +416,23 @@ public class IngestVodUtils extends BaseIngestUtils {
         return dates;
     }
 
+    private static Response executeIngestVodRequest(String reqBody) {
+        Response resp = given()
+                .header(contentTypeXml)
+                .header(soapActionIngestTvinciData)
+                .body(reqBody)
+                .when()
+                .post(url);
+
+        Logger.getLogger(IngestVodUtils.class).debug(reqBody + "\n");
+        Logger.getLogger(IngestVodUtils.class).debug(resp.asString());
+
+        assertThat(resp).isNotNull();
+        assertThat(from(resp.asString()).getString(ingestStatusMessagePath)).isEqualTo("OK");
+
+        return resp;
+    }
+
     private static Callable<Boolean> isDataReturned(String ks, String mediaId, String action) {
         GetAssetBuilder getAssetBuilder = get(mediaId, AssetReferenceType.MEDIA).setKs(ks);
         if (INGEST_ACTION_DELETE.equals(action)) {
@@ -323,19 +443,12 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     public static MediaAsset updateVodName(MediaAsset asset, String name) {
-        VodData vodData = VodData.builder(INGEST_ACTION_UPDATE)
-                .coguid(asset.getName())
-                .name(name)
-                .build();
-
-        return ingestVOD(vodData);
-    }
-
-    public static void deleteVod(String coGuid) {
-        VodData vodData = VodData.builder(INGEST_ACTION_DELETE)
-                .coguid(coGuid)
-                .build();
-        ingestVOD(vodData);
-        //<![CDATA[<feed><export><media co_guid="123456789" action="delete"/></export></feed>]]>
+//        VodData vodData = VodData.builder(INGEST_ACTION_UPDATE)
+//                .coguid(asset.getName())
+//                .name(name)
+//                .build();
+//
+//        return ingestVOD(vodData);
+        return null;
     }
 }
