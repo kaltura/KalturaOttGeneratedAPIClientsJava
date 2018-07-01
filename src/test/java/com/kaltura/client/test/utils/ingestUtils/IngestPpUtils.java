@@ -64,8 +64,6 @@ public class IngestPpUtils extends BaseIngestUtils {
         boolean isRenewableValue = isRenewable.orElse(PP_DEFAULT_IS_RENEWABLE_VALUE);
         int recurringPeriodsValue = recurringPeriods.orElse(PP_DEFAULT_RECURRING_PERIODS_VALUE);
 
-        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-
         String reqBody = IngestPpUtils.buildIngestPpXml(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
                 viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue, isRenewableValue, recurringPeriodsValue);
 
@@ -84,8 +82,8 @@ public class IngestPpUtils extends BaseIngestUtils {
         
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
 
-        url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
-        resp = given().get(url);
+        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
+        resp = given().get(reportUrl);
 
         Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
 

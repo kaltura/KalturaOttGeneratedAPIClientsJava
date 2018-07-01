@@ -13,9 +13,16 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import static com.kaltura.client.test.Properties.API_VERSION;
+import static com.kaltura.client.test.Properties.INGEST_BASE_URL;
+import static com.kaltura.client.test.Properties.getProperty;
+
 public class BaseIngestUtils {
 
     // urls
+    static final String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+
+    // headers
     static final Header contentTypeXml = new Header("Content-Type", "text/xml;charset=UTF-8");
     static final Header soapActionIngestTvinciData = new Header("SOAPAction", "http://tempuri.org/IService/IngestTvinciData");
     static final Header soapActionIngestBusinessModules = new Header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");

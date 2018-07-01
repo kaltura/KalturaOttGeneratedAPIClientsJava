@@ -7,7 +7,6 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -33,6 +32,8 @@ import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -97,8 +98,13 @@ public class SearchAssetFilterTests extends BaseTest {
                 .strings(stringMetaMap2);
         asset3 = insertVod(vodData3);
 
-        program = IngestEpgUtils.ingestEPG(epgChannelName, 1).get(0);
-        program2 = IngestEpgUtils.ingestEPG(epgChannelName2, 1).get(0);
+        // ingest epg 1
+        EpgData epgData1 = new EpgData(epgChannelName).episodesNum(1);
+        program = insertEpg(epgData1).get(0);
+
+        // ingest epg 2
+        EpgData epgData2 = new EpgData(epgChannelName2).episodesNum(1);
+        program2 = insertEpg(epgData2).get(0);
 
         Household household = HouseholdUtils.createHousehold(1, 1, true);
         masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household);

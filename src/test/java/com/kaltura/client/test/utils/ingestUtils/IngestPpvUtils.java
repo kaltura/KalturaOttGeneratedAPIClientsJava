@@ -62,8 +62,6 @@ public class IngestPpvUtils extends BaseIngestUtils {
         String firstFileTypeValue = firstFileType.orElse(getProperty(WEB_FILE_TYPE));
         String secondFileTypeValue = secondFileType.orElse(getProperty(MOBILE_FILE_TYPE));
 
-        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
-
         String reqBody = IngestPpvUtils.buildIngestPpvXml(actionValue, ppvCodeValue, isActiveValue, descriptionValue,
                 discountValue, priceValue, currencyValue, usageModuleValue, isSubscriptionOnlyValue,
                 isFirstDeviceLimitationValue, productCodeValue, firstFileTypeValue, secondFileTypeValue);
@@ -84,8 +82,8 @@ public class IngestPpvUtils extends BaseIngestUtils {
         String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
         //System.out.println("ReportId = " + reportId);
 
-        url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
-        resp = given().get(url);
+        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
+        resp = given().get(reportUrl);
 
         Logger.getLogger(IngestPpvUtils.class).debug(resp.asString());
         Logger.getLogger(IngestPpvUtils.class).debug(resp.asString().split(" = ")[1].replaceAll("\\.", ""));

@@ -32,6 +32,8 @@ import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
@@ -119,9 +121,6 @@ public class BaseTest {
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
-
-        // TODO - dynamic
-        epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
     }
 
     @BeforeMethod
@@ -168,6 +167,7 @@ public class BaseTest {
         }
         return sharedCommonDiscountModule;
     }
+
     /**
      * Regression requires existing of MPP with specific parameters.
      * Price Plan should be as for method public static PricePlan getSharedCommonPricePlan()
@@ -339,9 +339,16 @@ public class BaseTest {
         return mediaAsset;
     }
 
+    public static String getSharedEpgChannelName() {
+        if (epgChannelName == null) {
+            epgChannelName = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray().getJSONObject(0).getString("name");
+        }
+        return epgChannelName;
+    }
+
     public static ProgramAsset getSharedEpgProgram() {
         if (epgProgram == null) {
-            epgProgram = IngestEpgUtils.ingestEPG(epgChannelName).get(0);
+            epgProgram = insertEpg(new EpgData(getSharedEpgChannelName())).get(0);
         }
         return (ProgramAsset) epgProgram;
     }
