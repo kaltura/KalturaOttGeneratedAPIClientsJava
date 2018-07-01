@@ -96,7 +96,7 @@ public class DBConstants {
             "WHERE group_id=? AND WAIVER=1 AND WAIVER_PERIOD>0 AND IS_ACTIVE=1 AND [STATUS]=1";
 
     static final String PRICE_PLAN_WITHOUT_WAVER_SELECT = "SELECT TOP 1 * FROM [Pricing].[dbo].[usage_modules]\n" +
-            "WHERE group_id=? AND WAIVER=0 AND IS_ACTIVE=1 AND [STATUS]=1";
+            "WHERE group_id=? AND WAIVER=0 AND IS_ACTIVE=1 AND [STATUS]=1 AND EXT_DISCOUNT_ID IS NOT NULL AND INTERNAL_DISCOUNT_ID IS NOT NULL";
 
     static final String PRICE_PLAN_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
