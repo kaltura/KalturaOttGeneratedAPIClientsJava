@@ -27,7 +27,6 @@ import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,26 +60,23 @@ public class SearchAssetFilterTests extends BaseTest {
         String epgChannelName2 = ja.getJSONObject(1).getString("name");
 
         // ingest asset 1
-        VodData vodData1 = VodData.builder(INGEST_ACTION_INSERT)
-                .mediaType(MOVIE_MEDIA_TYPE)
-                .build();
-        asset = ingestVOD(vodData1);
+        VodData vodData1 = new VodData()
+                .mediaType(MOVIE_MEDIA_TYPE);
+        asset = insertVod(vodData1);
 
         // ingest asset 2
-        VodData vodData2 = VodData.builder(INGEST_ACTION_INSERT)
+        VodData vodData2 = new VodData()
                 .mediaType(MOVIE_MEDIA_TYPE)
                 .catalogStartDate(getTimeInDate(-100))
-                .tags(map)
-                .build();
-        asset2 = ingestVOD(vodData2);
+                .tags(map);
+        asset2 = insertVod(vodData2);
 
         // ingest asset 3
-        VodData vodData3 = VodData.builder(INGEST_ACTION_INSERT)
+        VodData vodData3 = new VodData()
                 .mediaType(EPISODE_MEDIA_TYPE)
                 .catalogStartDate(getTimeInDate(-10))
-                .tags(map)
-                .build();
-        asset3 = ingestVOD(vodData3);
+                .tags(map);
+        asset3 = insertVod(vodData3);
 
         program = IngestEpgUtils.ingestEPG(epgChannelName, 1).get(0);
         program2 = IngestEpgUtils.ingestEPG(epgChannelName2, 1).get(0);
@@ -230,11 +226,16 @@ public class SearchAssetFilterTests extends BaseTest {
     //TODO - Enable test after fixing updateVodName method
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD -  order by NAME (DESC/ASC")
-    @Test(enabled = false)
+    @Test(enabled = true)
     private void orderVodAssetsByName() {
-        updateVodName(asset, "AAA");
-        updateVodName(asset2, "BBB");
-        updateVodName(asset3, "CCC");
+        VodData vodData = new VodData().name("AAA");
+        updateVod(asset.getName(), vodData);
+
+        vodData.name("BBB");
+        updateVod(asset2.getName(), vodData);
+
+        vodData.name("CCC");
+        updateVod(asset3.getName(), vodData);
 
         ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "'media_id = '" + asset3.getId() + "')";
         assetFilter = getSearchAssetFilter(ksqlQuery, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());

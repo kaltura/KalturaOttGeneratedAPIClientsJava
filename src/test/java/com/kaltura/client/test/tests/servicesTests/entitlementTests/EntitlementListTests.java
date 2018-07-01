@@ -23,10 +23,7 @@ import java.util.Optional;
 
 import static com.kaltura.client.enums.EntitlementOrderBy.PURCHASE_DATE_ASC;
 import static com.kaltura.client.services.HouseholdService.delete;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.ingestVOD;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementListTests extends BaseTest {
@@ -199,8 +196,8 @@ public class EntitlementListTests extends BaseTest {
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(getSharedMediaAsset().getId())),
                 Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
 
-        VodData vodData = VodData.builder(INGEST_ACTION_INSERT).build();
-        MediaAsset mediaAsset = ingestVOD(vodData);
+        VodData vodData = new VodData();
+        MediaAsset mediaAsset = insertVod(vodData);
 
         int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(mediaAsset.getId())),
@@ -241,11 +238,7 @@ public class EntitlementListTests extends BaseTest {
         executor.executeSync(forceCancelEntitlementBuilder.setKs(getOperatorKs()).setUserId(Integer.valueOf(masterUserId)));
 
         // delete media
-        vodData
-                .setAction(INGEST_ACTION_DELETE)
-                .setName(mediaAsset.getName());
-
-        ingestVOD(vodData);
+        deleteVod(mediaAsset.getName());
     }
 
     @Severity(SeverityLevel.NORMAL)

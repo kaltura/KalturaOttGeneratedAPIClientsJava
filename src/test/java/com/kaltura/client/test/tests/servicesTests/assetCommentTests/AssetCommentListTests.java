@@ -43,11 +43,9 @@ public class AssetCommentListTests extends BaseTest {
         String subHeader = "subHeader";
         String text = "A lot of text";
 
-        VodData vodData = VodData.builder(INGEST_ACTION_INSERT)
-                .mediaType(MOVIE_MEDIA_TYPE)
-                .build();
-
-        Long assetId = ingestVOD(vodData).getId();
+        VodData vodData = new VodData()
+                .mediaType(MOVIE_MEDIA_TYPE);
+        Long assetId = insertVod(vodData).getId();
 
         // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);
