@@ -140,26 +140,10 @@ public class SubscriptionEntitlement extends Entitlement {
 	public Long getScheduledSubscriptionId(){
 		return this.scheduledSubscriptionId;
 	}
-	public void setScheduledSubscriptionId(Long scheduledSubscriptionId){
-		this.scheduledSubscriptionId = scheduledSubscriptionId;
-	}
-
-	public void scheduledSubscriptionId(String multirequestToken){
-		setToken("scheduledSubscriptionId", multirequestToken);
-	}
-
 	// unifiedPaymentId:
 	public Long getUnifiedPaymentId(){
 		return this.unifiedPaymentId;
 	}
-	public void setUnifiedPaymentId(Long unifiedPaymentId){
-		this.unifiedPaymentId = unifiedPaymentId;
-	}
-
-	public void unifiedPaymentId(String multirequestToken){
-		setToken("unifiedPaymentId", multirequestToken);
-	}
-
 	// isSuspended:
 	public Boolean getIsSuspended(){
 		return this.isSuspended;
@@ -192,8 +176,6 @@ public class SubscriptionEntitlement extends Entitlement {
 		kparams.add("objectType", "KalturaSubscriptionEntitlement");
 		kparams.add("paymentGatewayId", this.paymentGatewayId);
 		kparams.add("paymentMethodId", this.paymentMethodId);
-		kparams.add("scheduledSubscriptionId", this.scheduledSubscriptionId);
-		kparams.add("unifiedPaymentId", this.unifiedPaymentId);
 		return kparams;
 	}
 

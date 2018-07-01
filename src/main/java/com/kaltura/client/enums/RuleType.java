@@ -37,7 +37,8 @@ public enum RuleType implements EnumAsString {
 	PARENTAL("parental"),
 	GEO("geo"),
 	USER_TYPE("user_type"),
-	DEVICE("device");
+	DEVICE("device"),
+	ASSETUSER("assetUser");
 
 	private String value;
 

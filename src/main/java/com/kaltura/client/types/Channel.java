@@ -80,11 +80,11 @@ public class Channel extends ObjectBase {
 	 */
 	private String systemName;
 	/**
-	 * Channel description
+	 * Cannel description
 	 */
 	private String description;
 	/**
-	 * Channel description
+	 * Cannel description
 	 */
 	private List<TranslationToken> multilingualDescription;
 	/**

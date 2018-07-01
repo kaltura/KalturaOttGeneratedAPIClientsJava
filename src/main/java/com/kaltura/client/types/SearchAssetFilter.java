@@ -67,19 +67,22 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	  entitled_assets - valid values: &amp;quot;free&amp;quot;,
 	  &amp;quot;entitled&amp;quot;, &amp;quot;both&amp;quot;. free - gets only free to
 	  watch assets. entitled - only those that the user is implicitly entitled to
-	  watch.              Comparison operators: for numerical fields =, &amp;gt;,
-	  &amp;gt;=, &amp;lt;, &amp;lt;=, : (in).               For alpha-numerical fields
-	  =, != (not), ~ (like), !~, ^ (any word starts with), ^= (phrase starts with), +
-	  (exists), !+ (not exists).              Logical conjunction: and, or.           
-	     Search values are limited to 20 characters each.              (maximum length
-	  of entire filter is 2048 characters)
+	  watch.              asset_type - valid values: &amp;quot;media&amp;quot;,
+	  &amp;quot;epg&amp;quot;, &amp;quot;recording&amp;quot; or any number that
+	  represents media type in group.              Comparison operators: for numerical
+	  fields =, &amp;gt;, &amp;gt;=, &amp;lt;, &amp;lt;=, : (in).               For
+	  alpha-numerical fields =, != (not), ~ (like), !~, ^ (any word starts with), ^=
+	  (phrase starts with), + (exists), !+ (not exists).              Logical
+	  conjunction: and, or.               Search values are limited to 20 characters
+	  each.              (maximum length of entire filter is 2048 characters)
 	 */
 	private String kSql;
 	/**
-	 * Comma separated list of asset types to search within.               Possible
-	  values: 0 – EPG linear programs entries; 1 - Recordings; Any media type ID
-	  (according to media type IDs defined dynamically in the system).              If
-	  omitted – all types should be included.
+	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
+	  separated list of asset types to search within.               Possible values: 0
+	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
+	  media type IDs defined dynamically in the system).              If omitted –
+	  all types should be included.
 	 */
 	private String typeIn;
 	/**

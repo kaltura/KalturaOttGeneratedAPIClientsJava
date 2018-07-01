@@ -40,9 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AccessControlBlockAction.Tokenizer.class)
-public class AccessControlBlockAction extends RuleAction {
+public class AccessControlBlockAction extends AssetRuleAction {
 	
-	public interface Tokenizer extends RuleAction.Tokenizer {
+	public interface Tokenizer extends AssetRuleAction.Tokenizer {
 	}
 
 

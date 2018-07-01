@@ -37,7 +37,8 @@ public enum PlaybackContextType implements EnumAsString {
 	TRAILER("TRAILER"),
 	CATCHUP("CATCHUP"),
 	START_OVER("START_OVER"),
-	PLAYBACK("PLAYBACK");
+	PLAYBACK("PLAYBACK"),
+	DOWNLOAD("DOWNLOAD");
 
 	private String value;
 

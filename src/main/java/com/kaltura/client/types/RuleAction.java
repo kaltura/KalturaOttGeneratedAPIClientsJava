@@ -43,27 +43,36 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RuleAction.Tokenizer.class)
-public class RuleAction extends ObjectBase {
+public abstract class RuleAction extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String type();
+		String description();
 	}
 
 	/**
 	 * The type of the action
 	 */
 	private RuleActionType type;
+	/**
+	 * Description
+	 */
+	private String description;
 
 	// type:
 	public RuleActionType getType(){
 		return this.type;
 	}
-	public void setType(RuleActionType type){
-		this.type = type;
+	// description:
+	public String getDescription(){
+		return this.description;
+	}
+	public void setDescription(String description){
+		this.description = description;
 	}
 
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
 	}
 
 
@@ -78,13 +87,14 @@ public class RuleAction extends ObjectBase {
 
 		// set members values:
 		type = RuleActionType.get(GsonParser.parseString(jsonObject.get("type")));
+		description = GsonParser.parseString(jsonObject.get("description"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRuleAction");
-		kparams.add("type", this.type);
+		kparams.add("description", this.description);
 		return kparams;
 	}
 
