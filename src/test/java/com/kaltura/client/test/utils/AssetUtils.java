@@ -168,6 +168,11 @@ public class AssetUtils extends BaseUtils {
             }
         }
     }
+
+    public static String getCoguid(Asset asset) {
+        // TODO: 7/1/2018 finsih util 
+        return null;
+    }
 }
 
 

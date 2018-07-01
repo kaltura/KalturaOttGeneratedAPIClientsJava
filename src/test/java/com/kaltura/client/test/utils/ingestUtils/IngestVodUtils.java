@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 public class IngestVodUtils extends BaseIngestUtils {
-    private static final String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+
     private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.";
     private static final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
     private static final String ingestAssetIdPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus.InternalAssetId";
@@ -47,7 +47,6 @@ public class IngestVodUtils extends BaseIngestUtils {
         private boolean isActive = true;
         private boolean isVirtual = false;
 
-//      @Setter(AccessLevel.NONE)
         private String name;
         private String description;
         private String thumbUrl;
