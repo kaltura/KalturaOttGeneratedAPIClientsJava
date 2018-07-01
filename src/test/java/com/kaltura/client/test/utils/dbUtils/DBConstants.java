@@ -76,7 +76,7 @@ public class DBConstants {
 
     static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
-            "where [group_id]=? order by UPDATE_DATE DESC";
+            "where [group_id]=? and is_active=1 and [status]=1 order by UPDATE_DATE DESC";
 
     static final String PPV_SELECT_BY_PRICE_PLAN = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
             "where [status]=1 and is_active=1\n" +
@@ -96,7 +96,7 @@ public class DBConstants {
             "WHERE group_id=? AND WAIVER=1 AND WAIVER_PERIOD>0 AND IS_ACTIVE=1 AND [STATUS]=1";
 
     static final String PRICE_PLAN_WITHOUT_WAVER_SELECT = "SELECT TOP 1 * FROM [Pricing].[dbo].[usage_modules]\n" +
-            "WHERE group_id=? AND WAIVER=0 AND IS_ACTIVE=1 AND [STATUS]=1";
+            "WHERE group_id=? AND WAIVER=0 AND IS_ACTIVE=1 AND [STATUS]=1 AND EXT_DISCOUNT_ID IS NOT NULL AND INTERNAL_DISCOUNT_ID IS NOT NULL";
 
     static final String PRICE_PLAN_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
