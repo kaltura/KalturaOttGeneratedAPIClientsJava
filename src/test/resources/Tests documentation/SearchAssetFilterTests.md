@@ -50,7 +50,7 @@ Inherited from KalturaBaseSearchAssetFilter
     * user_interests - only valid value is "true". When enabled, only assets that the user defined as his interests (by tags and metas) (TODO)
     * entitled_assets - valid values:
         * free - gets only free to watch assets(TODO)
-        * entitled - only those that the user is implicitly entitled to watch (TODO)
+        * entitled - only those that the user is implicitly entitled to watch
         * "both"
 
 * Logical conjunction
@@ -72,7 +72,7 @@ Inherited from KalturaBaseSearchAssetFilter
         * not (!=)
         * like (~)
         * Not like (!~)(edge case)
-        * Exists (+)(edge case)
+        * Exists (+)
         * Not exists (!+)(edge case)
 
 
