@@ -15,25 +15,33 @@ import java.io.Writer;
 
 public class BaseIngestUtils {
 
+    // urls
     static final Header contentTypeXml = new Header("Content-Type", "text/xml;charset=UTF-8");
     static final Header soapActionIngestTvinciData = new Header("SOAPAction", "http://tempuri.org/IService/IngestTvinciData");
     static final Header soapActionIngestBusinessModules = new Header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
     static final Header soapActionIngestKalturaEpg = new Header("SOAPAction", "http://tempuri.org/IService/IngestKalturaEpg");
 
+    // actions
     public static final String INGEST_ACTION_INSERT = "insert";
     public static final String INGEST_ACTION_UPDATE = "update";
     public static final String INGEST_ACTION_DELETE = "delete";
 
-    static final Long MAX_RANDOM_VALUE = 9999999999L;
-    static final String DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
+    // wait configuration
+    static final int delayBetweenRetriesInSeconds = 5;
+    static final int maxTimeExpectingValidResponseInSeconds = 120;
 
     // life cycles periods
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";
 
     // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts
     public static final String MOVIE_MEDIA_TYPE = "Movie";
+    public static final String SERIES_MEDIA_TYPE = "Series";
     public static final String EPISODE_MEDIA_TYPE = "Episode";
     public static final String LINEAR_MEDIA_TYPE = "Linear";
+
+    // data
+    static final Long MAX_RANDOM_VALUE = 9999999999L;
+    static final String DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
 
     /*
     // PG adapter data
@@ -46,7 +54,6 @@ public class BaseIngestUtils {
     public static final int PG_DEFAULT_RENEW_START_MINUTES =-5;
     public static final String PG_DEFAULT_PG_SETTINGS = "{}";
     */
-
 
     static Document getDocument(String uri) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -87,5 +94,13 @@ public class BaseIngestUtils {
         Writer out = new StringWriter();
         tf.transform(new DOMSource(doc), new StreamResult(out));
         System.out.println(out.toString());
+    }
+
+    static String uncommentCdataSection(String docAsString) {
+        docAsString = docAsString
+                .replace("<!--<![CDATA[-->", "<![CDATA[")
+                .replace("<!--]]>-->", "]]>");
+
+            return docAsString;
     }
 }

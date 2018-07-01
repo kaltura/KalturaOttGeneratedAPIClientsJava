@@ -7,7 +7,6 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.ChannelUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -22,7 +21,9 @@ import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import static com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelAddTests extends BaseTest {
@@ -58,17 +59,20 @@ public class ChannelAddTests extends BaseTest {
     @Description("channel/action/add - order by NAME_DESC")
     @Test
     private void checkOrderOfAssetsInChannel() {
-
         String asset1Name = "Movie_" + BaseUtils.getCurrentDateInFormat("yyMMddHHmmss");
         String asset2Name = "Episode_" + BaseUtils.getCurrentDateInFormat("yyMMddHHmmss");
 
         // Ingest first asset
-        MediaAsset movieAsset = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        movieAsset = IngestVodUtils.updateVODName(movieAsset, asset1Name);
+        VodData vodData = new VodData()
+                .name(asset1Name)
+                .mediaType(MOVIE_MEDIA_TYPE);
+        MediaAsset movieAsset = insertVod(vodData);
 
         // Ingest second asset
-        MediaAsset episodeAsset = IngestVodUtils.ingestVOD(MOVIE_MEDIA_TYPE);
-        episodeAsset = IngestVodUtils.updateVODName(episodeAsset, asset2Name);
+        VodData vodData1 = new VodData()
+                .name(asset2Name)
+                .mediaType(EPISODE_MEDIA_TYPE);
+        MediaAsset episodeAsset = insertVod(vodData1);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);

@@ -32,6 +32,7 @@ import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.FIVE_MINUTES_PERIOD;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
@@ -273,6 +274,24 @@ public class BaseTest {
         return ingestAssetUserPassword;
     }
 
+    public static String getIngestVirualAssetUserName() {
+        if (ingestAssetUserUsername == null) {
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
+            ingestAssetUserUsername = userInfo.split(":")[0];
+            ingestAssetUserPassword = userInfo.split(":")[1];
+        }
+        return ingestAssetUserUsername;
+    }
+
+    public static String getIngestVirualAssetUserPassword() {
+        if (ingestAssetUserPassword == null) {
+            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
+            ingestAssetUserUsername = userInfo.split(":")[0];
+            ingestAssetUserPassword = userInfo.split(":")[1];
+        }
+        return ingestAssetUserPassword;
+    }
+
     // getters for shared params
     public static String getAdministratorKs() {
         if (administratorKs == null) {
@@ -314,9 +333,8 @@ public class BaseTest {
 
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
-            mediaAsset = IngestVodUtils.ingestVOD (Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty());
+            VodData vodData = new VodData();
+            mediaAsset = insertVod(vodData);
         }
         return mediaAsset;
     }
@@ -415,11 +433,11 @@ public class BaseTest {
         }
         if (name != null) {
             // ingest VOD by name
-            MediaAsset mediaAsset = IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty());
-            IngestVodUtils.updateVODName(mediaAsset, name);
+            VodData vodData = new VodData();
+            MediaAsset mediaAsset = insertVod(vodData);
+
+            vodData.name(name);
+            updateVod(mediaAsset.getName(), vodData);
         }
         if (tag != null) {
             // ingest VOD by tag
@@ -427,10 +445,9 @@ public class BaseTest {
             List<String> values = new ArrayList<>();
             values.add(parameters[1].replaceAll("'", ""));
             tags.put(tag, values);
-            IngestVodUtils.ingestVOD(Optional.empty(), Optional.empty(), true, Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(tags), Optional.empty(),
-                    Optional.empty(), Optional.empty());
+
+            VodData vodData = new VodData().tags(tags);
+            insertVod(vodData);
         }
     }
 

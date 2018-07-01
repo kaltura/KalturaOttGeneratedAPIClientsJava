@@ -86,7 +86,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch + "' Series_ID='" + seriesIdValue + "' end_date >= '" + firstProgramStartDateEpoch + "')");
 
         int delayBetweenRetriesInSeconds = 5;
-        int maxTimeExpectingValidResponseInSeconds = 90;
+        int maxTimeExpectingValidResponseInSeconds = 120;
         await()
                 .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
                 .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)

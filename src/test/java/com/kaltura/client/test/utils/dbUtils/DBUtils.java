@@ -102,6 +102,7 @@ public class DBUtils extends BaseUtils {
 
             if (rs != null && rs.isBeforeFirst()) {
                 jsonArray = buildJsonArrayFromQueryResult(rs);
+                Logger.getLogger(DBUtils.class).debug("query: " + query + "\nparams: " + Arrays.deepToString(queryParams));
                 Logger.getLogger(DBUtils.class).debug("DB jsonArray: " + jsonArray.toString());
             } else {
                 // TODO: 6/25/2018 move query log once we'll have private repo
