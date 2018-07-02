@@ -8,9 +8,15 @@ import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PricePlan;
 import com.kaltura.client.types.PricePlanFilter;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import java.util.Optional;
+
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
@@ -25,6 +31,81 @@ public class IngestPpUtils extends BaseIngestUtils {
     static final boolean PP_DEFAULT_IS_RENEWABLE_VALUE = false;
     static final int PP_DEFAULT_MAX_VIEWS_VALUE = 0;
     static final int PP_DEFAULT_RECURRING_PERIODS_VALUE = 1;
+
+
+    @Accessors(fluent = true)
+    @Data
+    public static class PpData {
+        boolean isActive = true;
+        boolean isRenewable = false;
+
+        @Setter(AccessLevel.NONE) String ppCode;
+
+        String fullLifeCycle;
+        String viewLifeCycle;
+        String price;
+        String currency;
+        String discount;
+
+        Integer maxViews;
+        Integer recurringPeriods;
+    }
+
+    public static PricePlan insertPp(PpData ppData) {
+        final int defaultPercentageOfDiscount = 100;
+        DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount);
+
+        ppData.ppCode = getRandomValue("AUTOPricePlan_", MAX_RANDOM_VALUE);
+
+        if (ppData.fullLifeCycle == null) { ppData.fullLifeCycle = FIVE_MINUTES_PERIOD; }
+        if (ppData.viewLifeCycle == null) { ppData.viewLifeCycle = FIVE_MINUTES_PERIOD; }
+        if (ppData.maxViews == null) { ppData.maxViews = PP_DEFAULT_MAX_VIEWS_VALUE; }
+        if (ppData.price == null) { ppData.price = getProperty(PRICE_CODE_AMOUNT); }
+        if (ppData.currency == null) { ppData.currency = EUR.getValue(); }
+        if (ppData.discount == null) { ppData.discount = discountModule.toParams().get("code").toString(); }
+        if (ppData.recurringPeriods == null) { ppData.recurringPeriods = PP_DEFAULT_RECURRING_PERIODS_VALUE; }
+
+        String reqBody = IngestPpUtils.buildIngestPpXml(ppData, INGEST_ACTION_INSERT);
+
+        io.restassured.response.Response resp =
+                given()
+                        .header(contentTypeXml)
+                        .header(soapActionIngestBusinessModules)
+                        .body(reqBody)
+                        .when()
+                        .post(ingestUrl);
+
+        Logger.getLogger(IngestPpUtils.class).debug(reqBody);
+        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
+
+        // TODO: 6/20/2018 add response assertion
+
+        String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
+
+        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
+        resp = given().get(reportUrl);
+
+        Logger.getLogger(IngestPpUtils.class).debug(reportUrl);
+        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
+
+        String id = resp.asString().split(" = ")[1].trim().replaceAll("\\.", "");
+
+
+        PricePlanFilter filter = new PricePlanFilter();
+        filter.setIdIn(id);
+
+        return executor.executeSync(PricePlanService.list(filter)
+                .setKs(getOperatorKs()))
+                .results.getObjects().get(0);
+    }
+
+    public static void updatePp(String ppCode, PpData ppData) {
+
+    }
+
+    public static void deletePp(String ppCode) {
+
+    }
 
     /**
      * IMPORTANT: please delete inserted by that method items
@@ -144,5 +225,48 @@ public class IngestPpUtils extends BaseIngestUtils {
                 .replace("<!--]]>-->", "]]>");
 
         return docAsString;
+    }
+
+    private static String buildIngestPpXml(PpData ppData, String action) {
+        Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestPP.xml");
+
+        // user and password
+        doc.getElementsByTagName("tem:username").item(0).setTextContent(getIngestBusinessModuleUserName());
+        doc.getElementsByTagName("tem:password").item(0).setTextContent(getIngestBusinessModuleUserPassword());
+
+        // ingest
+        Element ingest = (Element) doc.getElementsByTagName("ingest").item(0);
+        ingest.setAttribute("id", "reportIngestPricePlan");
+
+        // price plan
+        Element pp = (Element) ingest.getElementsByTagName("price_plan").item(0);
+        pp.setAttribute("code", ppData.ppCode);
+        pp.setAttribute("action", action);
+        pp.setAttribute("is_active", Boolean.toString(ppData.isActive));
+
+        // full life cycles
+        pp.getElementsByTagName("full_life_cycle").item(0).setTextContent(ppData.fullLifeCycle);
+
+        // view life cycle
+        pp.getElementsByTagName("view_life_cycle").item(0).setTextContent(ppData.viewLifeCycle);
+
+        // max views
+        pp.getElementsByTagName("max_views").item(0).setTextContent(String.valueOf(ppData.maxViews));
+
+        // price code
+        pp.getElementsByTagName("price").item(0).setTextContent(ppData.price);
+        pp.getElementsByTagName("currency").item(0).setTextContent(ppData.currency);
+
+        // discount
+        pp.getElementsByTagName("discount").item(0).setTextContent(ppData.discount);
+
+        // is renewable
+        pp.getElementsByTagName("is_renewable").item(0).setTextContent(Boolean.toString(ppData.isRenewable));
+
+        // recurring periods
+        pp.getElementsByTagName("recurring_periods").item(0).setTextContent(String.valueOf(ppData.recurringPeriods));
+
+        // uncomment cdata
+        return uncommentCdataSection(docToString(doc));
     }
 }
