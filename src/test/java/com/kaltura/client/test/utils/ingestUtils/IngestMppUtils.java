@@ -122,9 +122,8 @@ public class IngestMppUtils extends BaseIngestUtils {
     }
 
     /** Mpp update seems to be broken */
-/*
-    public static Subscription updateMpp(String subscriptionName, MppData mppData) {
-        mppData.mppCode = subscriptionName;
+/*    public static Subscription updateMpp(String mppCode, MppData mppData) {
+        mppData.mppCode = mppCode;
         String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_UPDATE);
         Response resp = executeIngesMppRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
@@ -142,12 +141,13 @@ public class IngestMppUtils extends BaseIngestUtils {
         return executor.executeSync(SubscriptionService.list(filter)
                 .setKs(getAnonymousKs()))
                 .results.getObjects().get(0);
-    }
-*/
 
-    public static void deleteMpp(String subscriptionName) {
+       // TODO: 7/1/2018 add wait until SubscriptionService.list(filter) is updated in case needed
+    }*/
+
+    public static void deleteMpp(String mppCode) {
         MppData mppData = new MppData();
-        mppData.mppCode = subscriptionName;
+        mppData.mppCode = mppCode;
         String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_DELETE);
 
         Response resp = executeIngesMppRequest(reqBody);

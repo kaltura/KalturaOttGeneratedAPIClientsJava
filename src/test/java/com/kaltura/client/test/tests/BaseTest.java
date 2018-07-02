@@ -35,6 +35,7 @@ import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_A
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestPpUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
@@ -143,10 +144,17 @@ public class BaseTest {
         if (sharedCommonPricePlan == null) {
             sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), EUR.getValue(), getSharedCommonDiscount());
             if (sharedCommonPricePlan == null) {
-                sharedCommonPricePlan = IngestPpUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
-                        Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
-                        Optional.of(EUR.getValue()), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue())),
-                        Optional.of(true), Optional.of(0));
+                PpData ppData = new PpData()
+                        .fullLifeCycle(cycles.get(CYCLE_1_DAY))
+                        .viewLifeCycle(cycles.get(CYCLE_1_DAY))
+                        .maxViews(0)
+                        .price(COMMON_PRICE_CODE_AMOUNT)
+                        .currency(EUR.getValue())
+                        .discount(IngestFixtureData.getDiscount(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue()))
+                        .isRenewable(true)
+                        .recurringPeriods(0);
+
+                sharedCommonPricePlan = insertPp(ppData);
             }
         }
         return sharedCommonPricePlan;
@@ -387,10 +395,15 @@ public class BaseTest {
                 ingestVODIntoSubscription(fiveMinRenewableSubscription);
             }
             if (fiveMinRenewableSubscription == null) {
-                PricePlan pricePlan = IngestPpUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
-                        Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(EUR.getValue()), Optional.of(""),
-                        Optional.of(true), Optional.of(3));
+                PpData ppData = new PpData()
+                        .fullLifeCycle(FIVE_MINUTES_PERIOD)
+                        .viewLifeCycle(FIVE_MINUTES_PERIOD)
+                        .price(PRICE_CODE_AMOUNT)
+                        .currency(EUR.getValue())
+                        .isRenewable(true)
+                        .recurringPeriods(3);
+
+                PricePlan pricePlan = insertPp(ppData);
 
                 // it should have at least 1 VOD
                 Channel channel = loadDefaultChannel();
