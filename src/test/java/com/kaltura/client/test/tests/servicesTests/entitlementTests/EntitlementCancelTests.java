@@ -11,12 +11,11 @@ import com.kaltura.client.services.EntitlementService;
 import com.kaltura.client.services.LicensedUrlService;
 import com.kaltura.client.services.LicensedUrlService.GetLicensedUrlBuilder;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestMppUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -33,8 +32,7 @@ import static com.kaltura.client.services.EntitlementService.*;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.Properties.WEB_FILE_TYPE;
 import static com.kaltura.client.test.Properties.getProperty;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
+import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementCancelTests extends BaseTest {
@@ -139,10 +137,11 @@ public class EntitlementCancelTests extends BaseTest {
         assertThat(channel.getName()).isNotNull();
         PricePlan pricePlan = DBUtils.loadPPWithWaiver();
 
-        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
-            Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.of(channel.getName()),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        MppData mppData = new MppData()
+                .isRenewable(true)
+                .pricePlanCode1(pricePlan.getName())
+                .channel1(channel.getName());
+        Subscription subscription = insertMpp(mppData);
 
         // set household
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
@@ -181,10 +180,7 @@ public class EntitlementCancelTests extends BaseTest {
         // delete household for cleanup
         executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
         //delete subscription
-        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        deleteMpp(subscription.getName());
         // delete channel
         executor.executeSync(ChannelService.delete(Math.toIntExact(channel.getId())).setKs(getManagerKs()));
     }
@@ -200,10 +196,10 @@ public class EntitlementCancelTests extends BaseTest {
         sharedChannel.setId(channelResponse.results.getId());*/
         PricePlan pricePlan = DBUtils.loadPPWithoutWaiver();
 
-        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        MppData mppData = new MppData()
+                .pricePlanCode1(pricePlan.getName())
+                .isRenewable(true);
+        Subscription subscription = insertMpp(mppData);
 
         // set household
         /*Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
@@ -241,11 +237,10 @@ public class EntitlementCancelTests extends BaseTest {
 
         // delete household for cleanup
         //executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
+
         //delete subscription
-        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        deleteMpp(subscription.getName());
+
         // delete channel
         //executor.executeSync(ChannelService.delete(Math.toIntExact(sharedChannel.getId())).setKs(getManagerKs()));
     }
