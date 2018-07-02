@@ -53,6 +53,7 @@ public class SearchAssetFilterTests extends BaseTest {
     private String ksqlQuery;
     private AssetFilter assetFilter;
     private String masterUserKs;
+    private String geoBlockRule = "Philippines Only";
 
 
     @BeforeClass
@@ -87,7 +88,9 @@ public class SearchAssetFilterTests extends BaseTest {
                 .mediaType(MOVIE_MEDIA_TYPE)
                 .catalogStartDate(getTimeInDate(-100))
                 .tags(tagMap)
-                .strings(stringMetaMap1);
+                .strings(stringMetaMap1)
+                .geoBlockRule(geoBlockRule);
+
         asset2 = insertVod(vodData2);
 
         // ingest asset 3
@@ -116,7 +119,22 @@ public class SearchAssetFilterTests extends BaseTest {
     // Filter by KSQL
     // *********************
 
-    // TODO: 27/06/2018  - Add test that filter by Geo block after Alon will refactor the ingest util
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list - VOD - filter by geo blocked assets." +
+            "The filter return only asset that are not blocked for playback because of geo restriction")
+    @Test
+    private void listVodAssetsByGeoBlock() {
+        ksqlQuery = "(and (or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "') geo_block = 'true')";
+        assetFilter = getSearchAssetFilter(ksqlQuery);
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
+                .setKs(masterUserKs));
+
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        // Only asset 1 returned (asset 2 has geo block rule)
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+    }
+
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD - filter by entitled asset")

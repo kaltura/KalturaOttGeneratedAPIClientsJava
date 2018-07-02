@@ -51,7 +51,7 @@ Inherited from KalturaBaseSearchAssetFilter
     * entitled_assets - valid values:
         * free - gets only free to watch assets(TODO)
         * entitled - only those that the user is implicitly entitled to watch
-        * "both"
+        * "both" (TODO)
 
 * Logical conjunction
     * or
