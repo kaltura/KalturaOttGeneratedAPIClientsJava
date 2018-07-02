@@ -1,0 +1,202 @@
+{
+  "$id": "Ppv",
+  "definitions": {
+    "Ppv": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 0
+        },
+        "name": {
+          "type": "string",
+          "minLength": 0
+        },
+        "price": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0
+            },
+            "price": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "currency": {
+                  "type": "string",
+                  "minLength": 0
+                },
+                "currencySign": {
+                  "type": "string",
+                  "minLength": 0
+                },
+                "objectType": {
+                  "type": "string",
+                  "minLength": 0
+                }
+              }
+            },
+            "descriptions": {
+              "type": "array"
+            },
+            "objectType": {
+              "type": "string",
+              "minLength": 0
+            }
+          },
+          "required": [
+            "price"
+          ]
+        },
+        "fileTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "objectType": {
+                "type": "string",
+                "minLength": 0
+              }
+            }
+          }
+        },
+        "discountModule": {
+          "type": "object",
+          "properties": {
+            "percent": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "startDate": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "endDate": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "objectType": {
+              "type": "string",
+              "minLength": 0
+            }
+          }
+        },
+        "descriptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "minLength": 0
+              },
+              "value": {
+                "type": "string",
+                "minLength": 0
+              },
+              "objectType": {
+                "type": "string",
+                "minLength": 0
+              }
+            }
+          }
+        },
+        "productCode": {
+          "type": "string",
+          "minLength": 0
+        },
+        "isSubscriptionOnly": {
+          "type": "boolean"
+        },
+        "firstDeviceLimitation": {
+          "type": "boolean"
+        },
+        "usageModule": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0
+            },
+            "maxViewsNumber": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "viewLifeCycle": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fullLifeCycle": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "couponId": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "waiverPeriod": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "isWaiverEnabled": {
+              "type": "boolean"
+            },
+            "isOfflinePlayback": {
+              "type": "boolean"
+            },
+            "objectType": {
+              "type": "string",
+              "minLength": 0
+            }
+          }
+        },
+        "objectType": {
+          "type": "string",
+          "minLength": 0
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "price",
+        "fileTypes",
+        "discountModule",
+        "descriptions",
+        "productCode",
+        "isSubscriptionOnly",
+        "firstDeviceLimitation",
+        "usageModule"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/Ppv"
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result",
+    "executionTime"
+  ]
+}
+

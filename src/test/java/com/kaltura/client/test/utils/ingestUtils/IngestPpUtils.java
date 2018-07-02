@@ -28,23 +28,23 @@ public class IngestPpUtils extends BaseIngestUtils {
     private static final String ingestStatusMessagePath = ingestDataResultPath + "Status.Message";
     private static final String ingestReportIdPath = ingestDataResultPath + "ReportId";
 
-
     @Accessors(fluent = true)
     @Data
     public static class PpData {
-        boolean isActive = true;
-        boolean isRenewable = false;
+        private boolean isActive = true;
+        private boolean isRenewable = false;
 
-        @Setter(AccessLevel.NONE) String ppCode;
+        @Setter(AccessLevel.NONE)
+        private String ppCode;
 
-        String fullLifeCycle;
-        String viewLifeCycle;
-        String price;
-        String currency;
-        String discount;
+        private String fullLifeCycle;
+        private String viewLifeCycle;
+        private String price;
+        private String currency;
+        private String discount;
 
-        Integer maxViews;
-        Integer recurringPeriods;
+        private Integer maxViews;
+        private Integer recurringPeriods;
     }
 
     /**
@@ -59,23 +59,34 @@ public class IngestPpUtils extends BaseIngestUtils {
 
         ppData.ppCode = getRandomValue("AUTOPricePlan_", MAX_RANDOM_VALUE);
 
-        if (ppData.fullLifeCycle == null) { ppData.fullLifeCycle = FIVE_MINUTES_PERIOD; }
-        if (ppData.viewLifeCycle == null) { ppData.viewLifeCycle = FIVE_MINUTES_PERIOD; }
-        if (ppData.maxViews == null) { ppData.maxViews = DEFAULT_MAX_VIEWS; }
-        if (ppData.price == null) { ppData.price = getProperty(PRICE_CODE_AMOUNT); }
-        if (ppData.currency == null) { ppData.currency = EUR.getValue(); }
-        if (ppData.discount == null) { ppData.discount = discountModule.toParams().get("code").toString(); }
-        if (ppData.recurringPeriods == null) { ppData.recurringPeriods = DEFAULT_RECURRING_PERIODS; }
+        if (ppData.fullLifeCycle == null) {
+            ppData.fullLifeCycle = FIVE_MINUTES_PERIOD;
+        }
+        if (ppData.viewLifeCycle == null) {
+            ppData.viewLifeCycle = FIVE_MINUTES_PERIOD;
+        }
+        if (ppData.maxViews == null) {
+            ppData.maxViews = DEFAULT_MAX_VIEWS;
+        }
+        if (ppData.price == null) {
+            ppData.price = getProperty(PRICE_CODE_AMOUNT);
+        }
+        if (ppData.currency == null) {
+            ppData.currency = EUR.getValue();
+        }
+        if (ppData.discount == null) {
+            ppData.discount = discountModule.toParams().get("code").toString();
+        }
+        if (ppData.recurringPeriods == null) {
+            ppData.recurringPeriods = DEFAULT_RECURRING_PERIODS;
+        }
 
         String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_INSERT);
-        Response resp = executeIngesPpRequest(reqBody);
+        Response resp = executeIngestPpRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
-        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
+        resp = executeIngestReportRequest(reportId);
 
-        resp = given().get(reportUrl);
-        Logger.getLogger(IngestPpUtils.class).debug(reportUrl);
-        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
         String id = resp.asString().split(" = ")[1].trim().replaceAll("\\.", "");
 
         PricePlanFilter filter = new PricePlanFilter();
@@ -90,14 +101,11 @@ public class IngestPpUtils extends BaseIngestUtils {
         ppData.ppCode = ppCode;
 
         String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_UPDATE);
-        Response resp = executeIngesPpRequest(reqBody);
+        Response resp = executeIngestPpRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
-        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
+        resp = executeIngestReportRequest(reportId);
 
-        resp = given().get(reportUrl);
-        Logger.getLogger(IngestPpUtils.class).debug(reportUrl);
-        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
         String id = resp.asString().split(" = ")[1].trim().replaceAll("\\.", "");
 
         PricePlanFilter filter = new PricePlanFilter();
@@ -115,13 +123,10 @@ public class IngestPpUtils extends BaseIngestUtils {
         ppData.ppCode = ppCode;
         String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_DELETE);
 
-        Response resp = executeIngesPpRequest(reqBody);
+        Response resp = executeIngestPpRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
-        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
 
-        resp = given().get(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(resp.asString());
+        resp = executeIngestReportRequest(reportId);
 
         assertThat(resp.asString()).contains("delete succeeded");
 
@@ -129,8 +134,8 @@ public class IngestPpUtils extends BaseIngestUtils {
     }
 
     //private methods
-    private static Response executeIngesPpRequest(String reqBody) {
-        io.restassured.response.Response resp =
+    private static Response executeIngestPpRequest(String reqBody) {
+        Response resp =
                 given()
                         .header(contentTypeXml)
                         .header(soapActionIngestBusinessModules)

@@ -102,14 +102,11 @@ public class IngestMppUtils extends BaseIngestUtils {
         if (mppData.productCodes == null) { mppData.productCodes = DEFAULT_PRODUCT_CODES; }
 
         String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_INSERT);
-        Response resp = executeIngesMppRequest(reqBody);
+        Response resp = executeIngestMppRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
-        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
+        resp = executeIngestReportRequest(reportId);
 
-        resp = given().get(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(resp.asString());
         String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
         // TODO: 7/1/2018 add wait until in case needed
@@ -125,14 +122,11 @@ public class IngestMppUtils extends BaseIngestUtils {
 /*    public static Subscription updateMpp(String mppCode, MppData mppData) {
         mppData.mppCode = mppCode;
         String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_UPDATE);
-        Response resp = executeIngesMppRequest(reqBody);
+        Response resp = executeIngestMppRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
-        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
+        resp = executeIngestReportRequest(reportId);
 
-        resp = given().get(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(resp.asString());
         String id = resp.asString().split(" = ")[1].replaceAll("\\.", "").trim();
 
         SubscriptionFilter filter = new SubscriptionFilter();
@@ -150,13 +144,10 @@ public class IngestMppUtils extends BaseIngestUtils {
         mppData.mppCode = mppCode;
         String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_DELETE);
 
-        Response resp = executeIngesMppRequest(reqBody);
+        Response resp = executeIngestMppRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
-        String reportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
 
-        resp = given().get(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(reportUrl);
-        Logger.getLogger(IngestMppUtils.class).debug(resp.asString());
+        resp = executeIngestReportRequest(reportId);
 
         assertThat(resp.asString()).contains("delete succeeded");
 
@@ -164,7 +155,7 @@ public class IngestMppUtils extends BaseIngestUtils {
     }
 
     // private methods
-    private static Response executeIngesMppRequest(String reqBody) {
+    private static Response executeIngestMppRequest(String reqBody) {
         Response resp = given()
                 .header(contentTypeXml)
                 .header(soapActionIngestBusinessModules)
