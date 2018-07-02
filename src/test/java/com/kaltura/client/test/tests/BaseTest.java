@@ -34,6 +34,7 @@ import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.FIVE_MIN
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
+import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
@@ -181,11 +182,10 @@ public class BaseTest {
         if (sharedCommonSubscription == null) {
             sharedCommonSubscription = IngestFixtureData.loadSharedCommonSubscription(getSharedCommonPricePlan());
             if (sharedCommonSubscription == null) {
-                sharedCommonSubscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
-                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue)), Optional.empty(),
-                        Optional.of(false), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()), Optional.empty(),
-                        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+                MppData mppData = new MppData()
+                        .pricePlanCode1(getSharedCommonPricePlan().getName())
+                        .internalDiscount(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue));
+                sharedCommonSubscription = insertMpp(mppData);
             }
 
             // it should have at least 1 VOD
@@ -398,10 +398,10 @@ public class BaseTest {
                 AddChannelBuilder addChannelBuilder = ChannelService.add(channel);
                 Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
                 if (channelResponse.results != null && channelResponse.results.getName() != null) {
-                    fiveMinRenewableSubscription = IngestMppUtils.ingestMPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                            Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                            Optional.of(true), Optional.empty(), Optional.of(pricePlan.getName()), Optional.empty(), Optional.empty(),
-                            Optional.of(channelResponse.results.getName()), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+                    MppData mppData = new MppData()
+                            .pricePlanCode1(pricePlan.getName())
+                            .channel2(channelResponse.results.getName());
+                    fiveMinRenewableSubscription = insertMpp(mppData);
                 }
             }
         }

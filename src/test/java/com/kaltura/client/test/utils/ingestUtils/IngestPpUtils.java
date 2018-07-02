@@ -73,7 +73,7 @@ public class IngestPpUtils extends BaseIngestUtils {
                     .header(soapActionIngestBusinessModules)
                     .body(reqBody)
                 .when()
-                    .post(url);
+                    .post(ingestUrl);
 
         Logger.getLogger(IngestPpUtils.class).debug(reqBody);
         Logger.getLogger(IngestPpUtils.class).debug(resp.asString());

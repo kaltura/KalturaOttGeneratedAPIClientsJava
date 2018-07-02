@@ -121,7 +121,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
                 .header(soapActionIngestKalturaEpg)
                 .body(reqBody)
                 .when()
-                .post(url);
+                .post(ingestUrl);
 
         Logger.getLogger(IngestVodUtils.class).debug(reqBody + "\n");
         Logger.getLogger(IngestVodUtils.class).debug(resp.asString());

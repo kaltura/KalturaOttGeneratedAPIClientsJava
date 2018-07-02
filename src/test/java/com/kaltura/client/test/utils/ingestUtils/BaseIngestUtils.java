@@ -20,7 +20,7 @@ import static com.kaltura.client.test.Properties.getProperty;
 public class BaseIngestUtils {
 
     // urls
-    static final String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+    static final String ingestUrl = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
 
     // headers
     static final Header contentTypeXml = new Header("Content-Type", "text/xml;charset=UTF-8");

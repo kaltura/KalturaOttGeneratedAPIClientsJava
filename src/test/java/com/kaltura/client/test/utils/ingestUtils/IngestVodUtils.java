@@ -38,7 +38,6 @@ public class IngestVodUtils extends BaseIngestUtils {
     private static final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
     private static final String ingestAssetIdPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus.InternalAssetId";
 
-
     @Accessors(fluent = true)
     @Data
     public static class VodData {
@@ -141,7 +140,7 @@ public class IngestVodUtils extends BaseIngestUtils {
                 .header(soapActionIngestTvinciData)
                 .body(reqBody)
                 .when()
-                .post(url);
+                .post(ingestUrl);
 
         Logger.getLogger(IngestVodUtils.class).debug(reqBody + "\n");
         Logger.getLogger(IngestVodUtils.class).debug(resp.asString());
@@ -185,7 +184,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         // thumb
         Element thumb = (Element) media.getElementsByTagName("thumb").item(0);
-        thumb.setAttribute("url", vodData.thumbUrl());
+        thumb.setAttribute("ingestUrl", vodData.thumbUrl());
 
         // description
         Element descriptionElement = (Element) media.getElementsByTagName("description").item(0);

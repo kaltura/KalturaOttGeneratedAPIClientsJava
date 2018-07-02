@@ -13,7 +13,6 @@ import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestMppUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -31,8 +30,7 @@ import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_DELETE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
+import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -81,11 +79,10 @@ public class ProductPriceListTests extends BaseTest {
         sharedChannel.setIsActive(true);
         sharedChannel.setAssetTypes(null);
 
-        subscriptionWithMultiCurrenciesAndDiscountPercentage = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.of(true), Optional.empty(),
-                Optional.of(PRICE_PLAN_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        MppData mppData = new MppData()
+                .isRenewable(true)
+                .pricePlanCode1(PRICE_PLAN_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS);
+        subscriptionWithMultiCurrenciesAndDiscountPercentage = insertMpp(mppData);
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -221,10 +218,12 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(channelResponse.results).isNotNull();
         Channel channel = channelResponse.results;
         assertThat(channel.getName()).isNotNull();
-        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+
+        MppData mppData = new MppData()
+                .isRenewable(true)
+                .channel1(channel.getName())
+                .fileType1(getProperty(WEB_FILE_TYPE));
+        Subscription subscription = insertMpp(mppData);
 
         ListEntitlementBuilder entitlementListBeforePurchase = EntitlementService.list(entitlementSubsFilter, null);
         entitlementResponse = executor.executeSync(entitlementListBeforePurchase.setKs(classMasterUserKs));
@@ -287,11 +286,9 @@ public class ProductPriceListTests extends BaseTest {
         //delete HH for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
+
         //delete subscription
-        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+        deleteMpp(subscription.getName());
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -305,10 +302,13 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(channelResponse.results).isNotNull();
         Channel channel = channelResponse.results;
         assertThat(channel.getName()).isNotNull();
-        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+
+        MppData mppData = new MppData()
+                .isRenewable(true)
+                .channel1(channel.getName())
+                .fileType1(getProperty(WEB_FILE_TYPE));
+        Subscription subscription = insertMpp(mppData);
+
         int webHDFileOnlySubId = Integer.valueOf(subscription.getId());
 
         int numberOfUsers = 1;
@@ -355,24 +355,24 @@ public class ProductPriceListTests extends BaseTest {
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
+
         // delete channel
         DeleteChannelBuilder deleteChannelBuilder = ChannelService.delete(Math.toIntExact(channel.getId()));
         executor.executeSync(deleteChannelBuilder.setKs(getManagerKs()));
+
         //delete subscription
-        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(channel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+        deleteMpp(subscription.getName());
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("productPrice/action/list - subscription - no specifed currency")
     @Test()
     public void productPriceSubscriptionNoSpecifiedCurrencyTest() {
-        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.of(PRICE_PLAN_WITH_MULTI_CURRENCIES), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        MppData mppData = new MppData()
+                .isRenewable(true)
+                .pricePlanCode1(PRICE_PLAN_WITH_MULTI_CURRENCIES);
+        Subscription subscription = insertMpp(mppData);
+
         int subWithMultiCurrencyId = Integer.valueOf(subscription.getId());
 
         int numberOfUsers = 1;
@@ -419,11 +419,9 @@ public class ProductPriceListTests extends BaseTest {
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
+
         //delete subscription
-        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+        deleteMpp(subscription.getName());
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -485,10 +483,12 @@ public class ProductPriceListTests extends BaseTest {
     public void productPriceSubscriptionWithFixedDiscountAndSpecifiedCurrencyNotInLocaleTest() {
         // TODO: should we save it in Properties?
         double subPriceAfterDiscount = 4; // as price 5 and discount is 1
-        Subscription subscription = IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.of(PRICE_PLAN_WITH_MULTI_CURRENCIES_AND_DISCOUNT_FIXED),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        MppData mppData = new MppData()
+                .isRenewable(true)
+                .pricePlanCode1(PRICE_PLAN_WITH_MULTI_CURRENCIES_AND_DISCOUNT_FIXED);
+        Subscription subscription = insertMpp(mppData);
+
         int subWithDiscountAndCurrencyId = Integer.valueOf(subscription.getId());
 
         int numberOfUsers = 1;
@@ -534,11 +534,9 @@ public class ProductPriceListTests extends BaseTest {
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
+
         //delete subscription
-        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscription.getName()), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+        deleteMpp(subscription.getName());
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -768,10 +766,8 @@ public class ProductPriceListTests extends BaseTest {
         //delete household for cleanup
         HouseholdService.DeleteHouseholdBuilder deleteHouseholdBuilder = delete(Math.toIntExact(household.getId()));
         executor.executeSync(deleteHouseholdBuilder.setKs(getAdministratorKs()));
+
         // delete subscription
-        IngestMppUtils.ingestMPP(Optional.of(INGEST_ACTION_DELETE), Optional.of(subscriptionWithMultiCurrenciesAndDiscountPercentage.getName()),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.of(true), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(sharedChannel.getName()),
-                Optional.empty(), Optional.of(getProperty(WEB_FILE_TYPE)), Optional.empty(), Optional.empty(), Optional.empty());
+        deleteMpp(subscriptionWithMultiCurrenciesAndDiscountPercentage.getName());
     }
 }
