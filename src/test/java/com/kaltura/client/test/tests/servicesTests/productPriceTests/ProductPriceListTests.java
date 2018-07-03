@@ -669,8 +669,8 @@ public class ProductPriceListTests extends BaseTest {
         String masterKs = OttUserUtils.getKs(Integer.parseInt(masterUser.getUserId()));
 
         VodData vodData = new VodData()
-                .ppvWebName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS)
-                .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS);
+                .ppvWebName(PPV_WITH_MULTI_CURRENCIES_AND_FIXED_DISCOUNT)
+                .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_FIXED_DISCOUNT);
         MediaAsset mediaAsset = insertVod(vodData);
 
         int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
