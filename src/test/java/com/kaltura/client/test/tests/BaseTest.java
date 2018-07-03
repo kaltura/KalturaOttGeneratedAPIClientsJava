@@ -13,7 +13,6 @@ import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
-import com.kaltura.client.test.utils.ingestUtils.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
@@ -31,10 +30,14 @@ import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.FIVE_MINUTES_PERIOD;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.INGEST_ACTION_INSERT;
-import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
-import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.MppData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.insertMpp;
+import static com.kaltura.client.test.utils.ingestUtils.IngestPpUtils.PpData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestPpUtils.insertPp;
+import static com.kaltura.client.test.utils.ingestUtils.IngestPpvUtils.PpvData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestPpvUtils.insertPpv;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.awaitility.Awaitility.setDefaultTimeout;
 
@@ -143,10 +146,17 @@ public class BaseTest {
         if (sharedCommonPricePlan == null) {
             sharedCommonPricePlan = IngestFixtureData.loadPricePlan(Double.valueOf(COMMON_PRICE_CODE_AMOUNT), EUR.getValue(), getSharedCommonDiscount());
             if (sharedCommonPricePlan == null) {
-                sharedCommonPricePlan = IngestPpUtils.ingestPP(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
-                        Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(cycles.get(CYCLE_1_DAY)), Optional.of(0), Optional.of(COMMON_PRICE_CODE_AMOUNT),
-                        Optional.of(EUR.getValue()), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue())),
-                        Optional.of(true), Optional.of(0));
+                PpData ppData = new PpData()
+                        .fullLifeCycle(cycles.get(CYCLE_1_DAY))
+                        .viewLifeCycle(cycles.get(CYCLE_1_DAY))
+                        .maxViews(0)
+                        .price(COMMON_PRICE_CODE_AMOUNT)
+                        .currency(EUR.getValue())
+                        .discount(IngestFixtureData.getDiscount(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue()))
+                        .isRenewable(true)
+                        .recurringPeriods(0);
+
+                sharedCommonPricePlan = insertPp(ppData);
             }
         }
         return sharedCommonPricePlan;
@@ -229,10 +239,10 @@ public class BaseTest {
         if (sharedCommonPpv == null) {
             sharedCommonPpv = IngestFixtureData.loadSharedCommonPpv(getSharedCommonPricePlan());
             if (sharedCommonPpv == null) {
-                sharedCommonPpv = IngestPpvUtils.ingestPPV(Optional.of(INGEST_ACTION_INSERT), Optional.empty(), Optional.of(true),
-                        Optional.empty(), Optional.of(IngestFixtureData.getDiscount(EUR.getValue(), (int) discountPercentValue)),
-                        Optional.empty(), Optional.empty(), Optional.of(getSharedCommonPricePlan().getName()),
-                        Optional.of(false), Optional.of(false), Optional.empty(), Optional.empty(), Optional.empty());
+                PpvData ppvData = new PpvData()
+                        .discount(IngestFixtureData.getDiscount(EUR.getValue(), (int) discountPercentValue))
+                        .usageModule(getSharedCommonPricePlan().getName());
+                sharedCommonPpv = insertPpv(ppvData);
             }
         }
         return sharedCommonPpv;
@@ -387,10 +397,15 @@ public class BaseTest {
                 ingestVODIntoSubscription(fiveMinRenewableSubscription);
             }
             if (fiveMinRenewableSubscription == null) {
-                PricePlan pricePlan = IngestPpUtils.ingestPP(Optional.empty(), Optional.empty(), Optional.empty(),
-                        Optional.of(FIVE_MINUTES_PERIOD), Optional.of(FIVE_MINUTES_PERIOD), Optional.empty(),
-                        Optional.of(getProperty(PRICE_CODE_AMOUNT)), Optional.of(EUR.getValue()), Optional.of(""),
-                        Optional.of(true), Optional.of(3));
+                PpData ppData = new PpData()
+                        .fullLifeCycle(FIVE_MINUTES_PERIOD)
+                        .viewLifeCycle(FIVE_MINUTES_PERIOD)
+                        .price(PRICE_CODE_AMOUNT)
+                        .currency(EUR.getValue())
+                        .isRenewable(true)
+                        .recurringPeriods(3);
+
+                PricePlan pricePlan = insertPp(ppData);
 
                 // it should have at least 1 VOD
                 Channel channel = loadDefaultChannel();
