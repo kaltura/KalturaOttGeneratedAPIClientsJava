@@ -143,6 +143,10 @@ public class IngestPpvUtils extends BaseIngestUtils {
         ppv.setAttribute("action", action);
         ppv.setAttribute("is_active", Boolean.toString(ppvData.isActive));
 
+        if (action.equals(INGEST_ACTION_DELETE)) {
+            return uncommentCdataSection(docToString(doc));
+        }
+
         // description
         ppv.getElementsByTagName("description").item(0).setTextContent(ppvData.description);
 

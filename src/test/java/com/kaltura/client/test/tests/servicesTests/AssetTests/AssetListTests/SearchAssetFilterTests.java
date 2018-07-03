@@ -5,6 +5,7 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
@@ -27,6 +28,8 @@ import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.Properties.MOVIE_MEDIA_TYPE_ID;
 import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
+import static com.kaltura.client.test.tests.enums.KsqlKeys.ENTITLED_ASSETS;
+import static com.kaltura.client.test.tests.enums.KsqlKeys.MEDIA_ID;
 import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
@@ -122,8 +125,16 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("asset/action/list - VOD - filter by entitled asset")
     @Test
     private void listVodAssetsByEntitled() {
-        ksqlQuery = "(and (or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "') entitled_assets = 'entitled')";
-        assetFilter = getSearchAssetFilter(ksqlQuery);
+        String query = new KsqlBuilder()
+                .openAnd()
+                .openOr()
+                    .equal(MEDIA_ID.getValue(), Math.toIntExact(asset.getId()))
+                    .equal(MEDIA_ID.getValue(), Math.toIntExact(asset2.getId()))
+                .closeOr()
+                .equal(ENTITLED_ASSETS.getValue(), "entitled")
+                .closeAnd()
+                .toString();
+        assetFilter = getSearchAssetFilter(query);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(masterUserKs));
@@ -132,13 +143,12 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
     }
 
-
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD - filter by asset name")
     @Test
     private void listVodAssetsByAssetName() {
-        ksqlQuery = "name = '" + asset.getName() + "'";
-        assetFilter = getSearchAssetFilter(ksqlQuery);
+        String query = new KsqlBuilder().equal("name", asset.getName()).toString();
+        assetFilter = getSearchAssetFilter(query);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -151,8 +161,8 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("Reserved key: asset/action/list - VOD - filter by media_id")
     @Test
     private void listVodAssetsByMediaId() {
-        ksqlQuery = "media_id = '" + asset.getId() + "'";
-        assetFilter = getSearchAssetFilter(ksqlQuery);
+        String query = new KsqlBuilder().equal(MEDIA_ID.getValue(), Math.toIntExact(asset.getId())).toString();
+        assetFilter = getSearchAssetFilter(query);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -165,8 +175,8 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("asset/action/list - VOD - filter by meta")
     @Test
     private void listVodAssetsByMeta() {
-        ksqlQuery = "" + metaName + " = '" + metaValue1 + "'";
-        assetFilter = getSearchAssetFilter(ksqlQuery);
+        String query = new KsqlBuilder().equal(metaName, metaValue1).toString();
+        assetFilter = getSearchAssetFilter(query);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -180,8 +190,13 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("Logical conjunction: asset/action/list - VOD - OR query")
     @Test
     private void listVodAssetsWithOrQuery() {
-        ksqlQuery = "(or media_id = '" + asset.getId() + "' media_id = '" + asset2.getId() + "')";
-        assetFilter = getSearchAssetFilter(ksqlQuery);
+        String query = new KsqlBuilder()
+                .openOr()
+                .equal(MEDIA_ID.getValue(), Math.toIntExact(asset.getId()))
+                .equal(MEDIA_ID.getValue(), Math.toIntExact(asset2.getId()))
+                .closeOr()
+                .toString();
+        assetFilter = getSearchAssetFilter(query);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -195,8 +210,13 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("Logical conjunction: asset/action/list - VOD - AND query")
     @Test
     private void listVodAssetsWithAndQuery() {
-        ksqlQuery = "(and media_id = '" + asset3.getId() + "' " + tagName + " = '" + tagValue + "')";
-        assetFilter = getSearchAssetFilter(ksqlQuery);
+        String query = new KsqlBuilder()
+                .openAnd()
+                .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
+                .equal(tagName, tagValue)
+                .closeAnd()
+                .toString();
+        assetFilter = getSearchAssetFilter(query);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -209,8 +229,13 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("Alpha numeric field: asset/action/list - VOD - not query")
     @Test
     private void listVodAssetsWithNotKsqlQuery() {
-        ksqlQuery = "(and media_id != '" + asset3.getId() + "' " + tagName + " = '" + tagValue + "')";
-        assetFilter = getSearchAssetFilter(ksqlQuery);
+        String query = new KsqlBuilder()
+                .openAnd()
+                .notEqual(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
+                .equal(tagName, tagValue)
+                .closeAnd()
+                .toString();
+        assetFilter = getSearchAssetFilter(query);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
