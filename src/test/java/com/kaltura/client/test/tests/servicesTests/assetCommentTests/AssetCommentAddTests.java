@@ -6,7 +6,6 @@ import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetCommentUtils;
 import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -19,6 +18,8 @@ import static com.kaltura.client.services.AssetCommentService.AddAssetCommentBui
 import static com.kaltura.client.services.AssetCommentService.ListAssetCommentBuilder;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AssetCommentAddTests extends BaseTest {
@@ -90,7 +91,7 @@ public class AssetCommentAddTests extends BaseTest {
     @Test
     private void addCommentForEPGProgram() {
         // Ingest EPG program
-        List<ProgramAsset> epgPrograms = IngestEpgUtils.ingestEPG("Shmulik_Series_1");
+        List<ProgramAsset> epgPrograms = insertEpg(new EpgData("Shmulik_Series_1"));
         Long epgProgramId = epgPrograms.get(0).getId();
 
         // Initialize assetComment object

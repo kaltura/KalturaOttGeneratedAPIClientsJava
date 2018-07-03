@@ -2,7 +2,6 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetOrderBy;
-import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.enums.DurationPeriod;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.Asset;
@@ -10,6 +9,11 @@ import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ProgramAsset;
 import com.kaltura.client.types.SearchAssetFilter;
 import com.kaltura.client.utils.response.base.Response;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -17,110 +21,120 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.services.AssetService.ListAssetBuilder;
+import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
 import static io.restassured.RestAssured.given;
+import static io.restassured.path.xml.XmlPath.from;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 public class IngestEpgUtils extends BaseIngestUtils {
+    private static final SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    // INGEST EPG PARAMS
-    static final int EPG_DEFAULT_COUNT_OF_SEASONS = 2;
-    static final int EPG_DEFAULT_COUNT_OF_PROGRAMMES = 2;
-    static final int EPG_DEFAULT_PROGRAM_DURATION = 30;
+    private static Response<ListResponse<Asset>> assetListResponse;
+    private static int epgChannelId;
 
 
-    // ingest new EPG (Programmes)
-    public static List<ProgramAsset> ingstEPG(String epgChannelName, Optional<Integer> programCount, Optional<Calendar> startDate,
-                                               Optional<Integer> programDuration, Optional<DurationPeriod> programDurationPeriod,
-                                               Optional<Boolean> isCridUnique4AllPrograms, Optional<Integer> seasonCount,
-                                               Optional<String> coguid, Optional<String> crid, Optional<String> seriesId,
-                                               Optional<String> thumb, Optional<String> programNamePrefix) {
+    @Accessors(fluent = true)
+    @Data
+    public static class EpgData {
+        @Setter(AccessLevel.NONE) private String coguid;
+        @NonNull private String epgChannelName;
+
+        private boolean isCridUnique4AllPrograms = true;
+
+        private String crid;
+        private String seriesId;
+        private String thumb;
+        private String programNamePrefix;
+
+        private int episodesNum;
+        private int seasonsNum;
+        private int programDuration;
+
+        private Calendar startDate;
+        private DurationPeriod programDurationPeriod;
+    }
+
+    public static List<ProgramAsset> insertEpg(EpgData epgData) {
+        final String coguidDatePattern = "yyMMddHHmmssSS";
+        final int DEFAULT_SEASONS_COUNT = 2;
+        final int DEFAULT_PROGRAMMES_COUNT = 2;
+        final int DEFAULT_PROGRAM_DURATION = 30;
 
         // TODO: complete one-by-one needed fields to cover util ingest_epg from old project
-        int programCountValue = programCount.orElse(EPG_DEFAULT_COUNT_OF_PROGRAMMES);
-        int seasonCountValue = seasonCount.orElse(EPG_DEFAULT_COUNT_OF_SEASONS);
-        Calendar startDateValue = startDate.orElse(Calendar.getInstance());
-        int programDurationValue = programDuration.orElse(EPG_DEFAULT_PROGRAM_DURATION);
-        DurationPeriod programDurationPeriodValue = programDurationPeriod.orElse(DurationPeriod.MINUTES);
-        boolean isCridUnique4AllProgramsValue = isCridUnique4AllPrograms.orElse(true);
-        String coguidValue = coguid.orElseGet(() -> getCurrentDateInFormat("yyMMddHHmmssSS"));
-        String cridValue = crid.orElse(coguidValue);
-        String seriesIdValue = seriesId.orElse(coguidValue);
-        String thumbValue = thumb.orElse(DEFAULT_THUMB);
-        String programNamePrefixValue = programNamePrefix.orElse("Program");
+        epgData.coguid = getCurrentDateInFormat(coguidDatePattern);
 
-        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+        if (epgData.crid == null) { epgData.crid = epgData.coguid; }
+        if (epgData.seriesId == null) { epgData.seriesId = epgData.coguid; }
+        if (epgData.episodesNum == 0) { epgData.episodesNum = DEFAULT_PROGRAMMES_COUNT; }
+        if (epgData.seasonsNum == 0) { epgData.seasonsNum = DEFAULT_SEASONS_COUNT; }
+        if (epgData.startDate == null) { epgData.startDate = Calendar.getInstance(); }
+        if (epgData.programDuration == 0) { epgData.programDuration = DEFAULT_PROGRAM_DURATION; }
+        if (epgData.programDurationPeriod == null) { epgData.programDurationPeriod = DurationPeriod.MINUTES; }
+        if (epgData.thumb == null) { epgData.thumb = DEFAULT_THUMB; }
+        if (epgData.programNamePrefix == null) { epgData.programNamePrefix = "Program"; }
 
-        String reqBody1 = IngestEpgUtils.buildIngestEpgXml(epgChannelName, programCountValue, startDateValue, programDurationValue,
-                programDurationPeriodValue, isCridUnique4AllProgramsValue, seasonCountValue, coguidValue, cridValue, seriesIdValue,
-                thumbValue, programNamePrefixValue);
+        epgChannelId = IngestFixtureData.getEpgChannelId(epgData.epgChannelName);
+        String reqBody = buildIngestEpgXml(epgData);
+        executeIngestEpgRequest(reqBody);
 
-        io.restassured.response.Response resp =
-                given()
-                    .header(contentTypeXml)
-                    .header(soapActionIngestKalturaEpg)
-                    .body(reqBody1)
-                .when()
-                    .post(url);
-
-        Logger.getLogger(IngestEpgUtils.class).debug(reqBody1);
-        Logger.getLogger(IngestEpgUtils.class).debug(resp.asString());
-
-        // TODO: 6/20/2018 add response assertion
-
-        int epgChannelId = IngestFixtureData.getEpgChannelId(epgChannelName);
         // TODO: create method getting epoch value from String and pattern
-        Date firstProgramStartDateAsDate = startDateValue.getTime();
-        long epoch = firstProgramStartDateAsDate.getTime() / 1000; // 1000 milliseconds in 1 second
-
-        String firstProgramStartDateEpoch = String.valueOf(epoch);
-
+        String firstProgramStartDateEpoch = String.valueOf(epgData.startDate.getTime().getTime() / 1000);
         SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
-        assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch + "' Series_ID='" + seriesIdValue + "' end_date >= '" + firstProgramStartDateEpoch + "')");
+        // TODO: 6/29/2018 create ksql builder util
+        assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch
+                + "' Series_ID='" + epgData.seriesId + "' end_date >= '" + firstProgramStartDateEpoch + "')");
 
-        int delayBetweenRetriesInSeconds = 5;
-        int maxTimeExpectingValidResponseInSeconds = 120;
+        ListAssetBuilder listAssetBuilder = list(assetFilter).setKs(getAnonymousKs());
         await()
                 .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
                 .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
-                .until(isDataReturned(getAnonymousKs(), assetFilter, programCountValue * seasonCountValue));
-
-        Response<ListResponse<Asset>> ingestedProgrammes = executor.executeSync(
-                AssetService.list(assetFilter, null).setKs(getAnonymousKs()));
+                .until(isDataReturned(listAssetBuilder, epgData.seasonsNum * epgData.episodesNum));
 
         // TODO: complete Asset.json at least for programs
-
-        return (List<ProgramAsset>) (Object) ingestedProgrammes.results.getObjects();
+        return (List<ProgramAsset>) (Object) assetListResponse.results.getObjects();
     }
 
-    private static Callable<Boolean> isDataReturned(String ks, SearchAssetFilter assetFilter, int totalCount) {
+    // private methods
+    private static Callable<Boolean> isDataReturned(ListAssetBuilder listAssetBuilder, int totalCount) {
         return () -> {
-            AssetService.ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter, null).setKs(ks);
-            return executor.executeSync(listAssetBuilder).error == null &&
-                    executor.executeSync(listAssetBuilder).results.getTotalCount() == totalCount;
+            assetListResponse = executor.executeSync(listAssetBuilder);
+            return assetListResponse.error == null &&
+                    assetListResponse.results.getTotalCount() == totalCount;
         };
     }
 
-    public static List<ProgramAsset> ingestEPG(String epgChannelName, Integer programCount) {
-        Optional o = Optional.empty();
-        return ingstEPG(epgChannelName, Optional.of(programCount), o, o, o, o, o, o, o, o, o, o);
+    private static io.restassured.response.Response executeIngestEpgRequest(String reqBody) {
+        final String ingestDataResultPath = "Envelope.Body.IngestKalturaEpgResponse.IngestKalturaEpgResult.";
+        final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
+        final String ingestInternalAssetIdPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus.InternalAssetId";
+
+        io.restassured.response.Response resp = given()
+                .header(contentTypeXml)
+                .header(soapActionIngestKalturaEpg)
+                .body(reqBody)
+                .when()
+                .post(ingestUrl);
+
+        Logger.getLogger(IngestVodUtils.class).debug(reqBody + "\n");
+        Logger.getLogger(IngestVodUtils.class).debug(resp.asString());
+
+        // response assertions
+        assertThat(resp).isNotNull();
+        assertThat(from(resp.asString()).getString(ingestStatusMessagePath)).isEqualTo("OK");
+        assertThat(from(resp.asString()).getList(ingestInternalAssetIdPath)).containsOnly(String.valueOf(epgChannelId));
+
+        return resp;
     }
 
-    public static List<ProgramAsset> ingestEPG(String epgChannelName) {
-        Optional o = Optional.empty();
-        return ingstEPG(epgChannelName, o, o, o, o, o, o, o, o, o, o, o);
-    }
-
-    private static String buildIngestEpgXml(String epgChannelName, int episodesNum, Calendar startDate, int programDuration,
-                                    DurationPeriod programDurationPeriod, boolean isCridUnique4AllPrograms, int seasonsNum,
-                                    String coguid, String crid, String seriesId, String thumb, String programNamePrefix) {
+    private static String buildIngestEpgXml(EpgData epgData) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestEPG.xml");
 
         // user and password
@@ -134,51 +148,40 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // channel
         Element channel = (Element) epgChannels.getElementsByTagName("channel").item(0);
-        channel.setAttribute("id", epgChannelName);
+        channel.setAttribute("id", epgData.epgChannelName);
 
         // programme
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-
         int seasonNum = 1;
-        while (seasonNum <= seasonsNum) {
+        while (seasonNum <= epgData.seasonsNum) {
             int episodeNum = 1;
-            while (episodeNum <= episodesNum) {
-                Date endDate = loadEndDate(startDate.getTime(), programDuration, programDurationPeriod);
-                String startDateFormatted = df.format(startDate.getTime());
+            while (episodeNum <= epgData.episodesNum) {
+                Date endDate = loadEndDate(epgData.startDate.getTime(), epgData.programDuration, epgData.programDurationPeriod);
+                String startDateFormatted = df.format(epgData.startDate.getTime());
                 String endDateFormatted = df.format(endDate.getTime());
-                String nowDateFormatted = df.format(Calendar.getInstance().getTime());
 
-                Element programmeNode = getProgrammeNode(doc, episodeNum, startDateFormatted, endDateFormatted, epgChannelName,
-                        coguid, crid, programNamePrefix, nowDateFormatted, seriesId, seasonNum, isCridUnique4AllPrograms, thumb);
+                Element programmeNode = getProgrammeNode(doc, episodeNum, seasonNum, startDateFormatted, endDateFormatted, epgData);
                 epgChannels.appendChild(programmeNode);
 
-                startDate.setTime(endDate);
+                epgData.startDate.setTime(endDate);
                 episodeNum++;
             }
             seasonNum++;
         }
 
         // uncomment cdata
-        String docAsString = docToString(doc);
-        docAsString = docAsString
-                .replace("<!--<![CDATA[-->", "<![CDATA[")
-                .replace("<!--]]>-->", "]]>");
-
-        return docAsString;
+        return uncommentCdataSection(docToString(doc));
     }
 
-    private static Element getProgrammeNode(Document doc, int episodeNumber, String startDate, String endDate, String channel, String coguid, String crid,
-                                            String programNamePrefix, String currentDate, String seriesId, int seasonNumber, boolean isCridUnique4AllPrograms,
-                                            String thumb) {
-        String name = programNamePrefix + "_" + startDate + "_ser" + seriesId + "_seas" + seasonNumber + "_e" + episodeNumber;
-        String cridValue = isCridUnique4AllPrograms ? crid + "_" + seasonNumber + "_" + episodeNumber : crid + "_" + episodeNumber;
+    private static Element getProgrammeNode(Document doc, int episodeNum, int seasonNum, String startDate, String endDate, EpgData epgData) {
+        String name = epgData.programNamePrefix + "_" + startDate + "_ser" + epgData.seriesId + "_seas" + seasonNum + "_e" + episodeNum;
+        String crid = epgData.isCridUnique4AllPrograms ? epgData.crid + "_" + seasonNum + "_" + episodeNum : epgData.crid + "_" + episodeNum;
 
         // programme
         Element programme = doc.createElement("programme");
         programme.setAttribute("start", startDate);
         programme.setAttribute("stop", endDate);
-        programme.setAttribute("channel", channel);
-        programme.setAttribute("external_id", coguid + "_" + seasonNumber + "_" + episodeNumber);
+        programme.setAttribute("channel", epgData.epgChannelName);
+        programme.setAttribute("external_id", epgData.coguid + "_" + seasonNum + "_" + episodeNum);
 
         // title
         Element title = doc.createElement("title");
@@ -188,7 +191,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // crid
         Element cridElement = doc.createElement("crid");
-        cridElement.setTextContent(cridValue);
+        cridElement.setTextContent(crid);
         programme.appendChild(cridElement);
 
         // desc
@@ -199,7 +202,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // date
         Element date = doc.createElement("date");
-        date.setTextContent(currentDate);
+        date.setTextContent(df.format(Calendar.getInstance().getTime()));
         programme.appendChild(date);
 
         // language
@@ -211,16 +214,17 @@ public class IngestEpgUtils extends BaseIngestUtils {
         // icon
         Element icon = doc.createElement("icon");
         icon.setAttribute("ratio", "16:9");
-        icon.setAttribute("src", thumb);
+        icon.setAttribute("src", epgData.thumb);
+        programme.appendChild(icon);
 
         // season num meta
-        programme.appendChild(generateMetasNode(doc, "season_num", String.valueOf(seasonNumber)));
+        programme.appendChild(generateMetasNode(doc, "season_num", String.valueOf(seasonNum)));
 
         // series id meta
-        programme.appendChild(generateMetasNode(doc, "series_id", seriesId));
+        programme.appendChild(generateMetasNode(doc, "series_id", epgData.seriesId));
 
         // episode num meta
-        programme.appendChild(generateMetasNode(doc, "episode_num", String.valueOf(episodeNumber)));
+        programme.appendChild(generateMetasNode(doc, "episode_num", String.valueOf(episodeNum)));
 
         // TODO: 6/19/2018 add missing parameters according to needed tests
 
@@ -232,7 +236,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         Element metas = doc.createElement("metas");
 
         // metaType
-        Element metaType =  doc.createElement("MetaType");
+        Element metaType = doc.createElement("MetaType");
         metaType.setTextContent(metaTypeString);
         metas.appendChild(metaType);
 
@@ -250,7 +254,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         Element tags = doc.createElement("tags");
 
         // TagType
-        Element tagType =  doc.createElement("TagType");
+        Element tagType = doc.createElement("TagType");
         tagType.setTextContent(tagTypeString);
         tags.appendChild(tagType);
 
@@ -263,7 +267,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         return tags;
     }
 
-    static Date loadEndDate(Date startDate, int durationValue, DurationPeriod durationPeriod) {
+    private static Date loadEndDate(Date startDate, int durationValue, DurationPeriod durationPeriod) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
         switch (durationPeriod) {

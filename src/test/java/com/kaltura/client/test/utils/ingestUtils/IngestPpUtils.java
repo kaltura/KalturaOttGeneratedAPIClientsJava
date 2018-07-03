@@ -2,105 +2,157 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.PricePlanService;
-import com.kaltura.client.services.PricePlanService.ListPricePlanBuilder;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.DiscountModule;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.PricePlan;
 import com.kaltura.client.types.PricePlanFilter;
+import io.restassured.response.Response;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import java.util.Optional;
+
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IngestPpUtils extends BaseIngestUtils {
 
-    // INGEST PP PARAMS
-    static final boolean PP_DEFAULT_IS_ACTIVE_VALUE = true;
-    static final boolean PP_DEFAULT_IS_RENEWABLE_VALUE = false;
-    static final int PP_DEFAULT_MAX_VIEWS_VALUE = 0;
-    static final int PP_DEFAULT_RECURRING_PERIODS_VALUE = 1;
+    private static final String ingestDataResultPath = "Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.";
+    private static final String ingestStatusMessagePath = ingestDataResultPath + "Status.Message";
+    private static final String ingestReportIdPath = ingestDataResultPath + "ReportId";
+
+    @Accessors(fluent = true)
+    @Data
+    public static class PpData {
+        private boolean isActive = true;
+        private boolean isRenewable = false;
+
+        @Setter(AccessLevel.NONE)
+        private String ppCode;
+
+        private String fullLifeCycle;
+        private String viewLifeCycle;
+        private String price;
+        private String currency;
+        private String discount;
+
+        private Integer maxViews;
+        private Integer recurringPeriods;
+    }
 
     /**
-     * IMPORTANT: please delete inserted by that method items
-     *
-     * @param action           - can be "insert", "update" and "delete"
-     * @param ppCode           - should have value in case "action" one of {"update" and "delete"}
-     * @param isActive
-     * @param fullLifeCycle
-     * @param viewLifeCycle
-     * @param maxViews
-     * @param price
-     * @param currency
-     * @param discount
-     * @param isRenewable
-     * @param recurringPeriods
-     * @return PricePlan data
-     * <p>
-     * to update or delete existed price plan use corresponded action and value pricePlan.getName() as "ppCode"
-     * (where pricePlan is a variable that contains price plan data)
-     * <p>
-     * !!!Only created by that method PP can be deleted/updated!!!
+     * IMPORTANT: In order to update or delete existed price plan use pricePlan.getName() as "ppCode"
      */
-    public static PricePlan ingestPP(Optional<String> action, Optional<String> ppCode, Optional<Boolean> isActive, Optional<String> fullLifeCycle, 
-                                     Optional<String> viewLifeCycle, Optional<Integer> maxViews, Optional<String> price, Optional<String> currency, 
-                                     Optional<String> discount, Optional<Boolean> isRenewable, Optional<Integer> recurringPeriods) {
-        String ppCodeValue = ppCode.orElse(getRandomValue("AUTOPricePlan_", MAX_RANDOM_VALUE));
-        String actionValue = action.orElse(INGEST_ACTION_INSERT);
-        boolean isActiveValue = isActive.orElse(PP_DEFAULT_IS_ACTIVE_VALUE);
-        String fullLifeCycleValue = fullLifeCycle.orElse(FIVE_MINUTES_PERIOD);
-        String viewLifeCycleValue = viewLifeCycle.orElse(FIVE_MINUTES_PERIOD);
-        int maxViewsValue = maxViews.orElse(PP_DEFAULT_MAX_VIEWS_VALUE);
-        String priceValue = price.orElse(getProperty(PRICE_CODE_AMOUNT));
-        String currencyValue = currency.orElse(EUR.getValue());
-        int defaultPercentageOfDiscount4IngestMpp = 100;
-        DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount4IngestMpp);
-        String discountValue = discount.orElse(discountModule.toParams().get("code").toString());
-        boolean isRenewableValue = isRenewable.orElse(PP_DEFAULT_IS_RENEWABLE_VALUE);
-        int recurringPeriodsValue = recurringPeriods.orElse(PP_DEFAULT_RECURRING_PERIODS_VALUE);
+    public static PricePlan insertPp(PpData ppData) {
+        final int DEFAULT_MAX_VIEWS = 0;
+        final int DEFAULT_RECURRING_PERIODS = 1;
 
-        String url = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+        final int defaultPercentageOfDiscount = 100;
+        DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount);
 
-        String reqBody = IngestPpUtils.buildIngestPpXml(actionValue, ppCodeValue, isActiveValue, fullLifeCycleValue,
-                viewLifeCycleValue, maxViewsValue, priceValue, currencyValue, discountValue, isRenewableValue, recurringPeriodsValue);
+        ppData.ppCode = getRandomValue("AUTOPricePlan_", MAX_RANDOM_VALUE);
 
-        io.restassured.response.Response resp =
-                given()
-                    .header(contentTypeXml)
-                    .header(soapActionIngestBusinessModules)
-                    .body(reqBody)
-                .when()
-                    .post(url);
+        if (ppData.fullLifeCycle == null) {
+            ppData.fullLifeCycle = FIVE_MINUTES_PERIOD;
+        }
+        if (ppData.viewLifeCycle == null) {
+            ppData.viewLifeCycle = FIVE_MINUTES_PERIOD;
+        }
+        if (ppData.maxViews == null) {
+            ppData.maxViews = DEFAULT_MAX_VIEWS;
+        }
+        if (ppData.price == null) {
+            ppData.price = getProperty(PRICE_CODE_AMOUNT);
+        }
+        if (ppData.currency == null) {
+            ppData.currency = EUR.getValue();
+        }
+        if (ppData.discount == null) {
+            ppData.discount = discountModule.toParams().get("code").toString();
+        }
+        if (ppData.recurringPeriods == null) {
+            ppData.recurringPeriods = DEFAULT_RECURRING_PERIODS;
+        }
 
-        Logger.getLogger(IngestPpUtils.class).debug(reqBody);
-        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
+        String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_INSERT);
+        Response resp = executeIngestPpRequest(reqBody);
+        String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
-        // TODO: 6/20/2018 add response assertion 
-        
-        String reportId = from(resp.asString()).get("Envelope.Body.IngestBusinessModulesResponse.IngestBusinessModulesResult.ReportId").toString();
-
-        url = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/" + reportId;
-        resp = given().get(url);
-
-        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
+        resp = executeIngestReportRequest(reportId);
 
         String id = resp.asString().split(" = ")[1].trim().replaceAll("\\.", "");
 
         PricePlanFilter filter = new PricePlanFilter();
         filter.setIdIn(id);
-        ListPricePlanBuilder pricePlanBuilder = PricePlanService.list(filter);
-        com.kaltura.client.utils.response.base.Response<ListResponse<PricePlan>> pricePlanListResponse =
-                executor.executeSync(pricePlanBuilder.setKs(getOperatorKs()));
-        return pricePlanListResponse.results.getObjects().get(0);
+
+        return executor.executeSync(PricePlanService.list(filter)
+                .setKs(getOperatorKs()))
+                .results.getObjects().get(0);
     }
 
-    private static String buildIngestPpXml(String action, String ppCode, boolean isActive, String fullLifeCycle, String viewLifeCycle,
-                                          int maxViews, String price, String currency, String discount, boolean isRenewable, int recurringPeriods) {
+    public static PricePlan updatePp(String ppCode, PpData ppData) {
+        ppData.ppCode = ppCode;
+
+        String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_UPDATE);
+        Response resp = executeIngestPpRequest(reqBody);
+        String reportId = from(resp.asString()).getString(ingestReportIdPath);
+
+        resp = executeIngestReportRequest(reportId);
+
+        String id = resp.asString().split(" = ")[1].trim().replaceAll("\\.", "");
+
+        PricePlanFilter filter = new PricePlanFilter();
+        filter.setIdIn(id);
+
+        return executor.executeSync(PricePlanService.list(filter)
+                .setKs(getOperatorKs()))
+                .results.getObjects().get(0);
+
+        // TODO: 7/1/2018 add wait until PricePlanService.list(filter) is updated in case needed
+    }
+
+    public static void deletePp(String ppCode) {
+        PpData ppData = new PpData();
+        ppData.ppCode = ppCode;
+        String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_DELETE);
+
+        Response resp = executeIngestPpRequest(reqBody);
+        String reportId = from(resp.asString()).getString(ingestReportIdPath);
+
+        resp = executeIngestReportRequest(reportId);
+
+        assertThat(resp.asString()).contains("delete succeeded");
+
+        // TODO: 7/1/2018 add wait until SubscriptionService.list(filter) is empty in case needed
+    }
+
+    //private methods
+    private static Response executeIngestPpRequest(String reqBody) {
+        Response resp =
+                given()
+                        .header(contentTypeXml)
+                        .header(soapActionIngestBusinessModules)
+                        .body(reqBody)
+                        .when()
+                        .post(ingestUrl);
+
+        Logger.getLogger(IngestPpUtils.class).debug(reqBody);
+        Logger.getLogger(IngestPpUtils.class).debug(resp.asString());
+
+        assertThat(resp).isNotNull();
+        assertThat(from(resp.asString()).getString(ingestStatusMessagePath)).isEqualTo("OK");
+
+        return resp;
+    }
+
+    private static String buildIngestPpXml(PpData ppData, String action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestPP.xml");
 
         // user and password
@@ -113,38 +165,33 @@ public class IngestPpUtils extends BaseIngestUtils {
 
         // price plan
         Element pp = (Element) ingest.getElementsByTagName("price_plan").item(0);
-        pp.setAttribute("code", ppCode);
+        pp.setAttribute("code", ppData.ppCode);
         pp.setAttribute("action", action);
-        pp.setAttribute("is_active", Boolean.toString(isActive));
+        pp.setAttribute("is_active", Boolean.toString(ppData.isActive));
 
         // full life cycles
-        pp.getElementsByTagName("full_life_cycle").item(0).setTextContent(fullLifeCycle);
+        pp.getElementsByTagName("full_life_cycle").item(0).setTextContent(ppData.fullLifeCycle);
 
         // view life cycle
-        pp.getElementsByTagName("view_life_cycle").item(0).setTextContent(viewLifeCycle);
+        pp.getElementsByTagName("view_life_cycle").item(0).setTextContent(ppData.viewLifeCycle);
 
         // max views
-        pp.getElementsByTagName("max_views").item(0).setTextContent(String.valueOf(maxViews));
+        pp.getElementsByTagName("max_views").item(0).setTextContent(String.valueOf(ppData.maxViews));
 
         // price code
-        pp.getElementsByTagName("price").item(0).setTextContent(price);
-        pp.getElementsByTagName("currency").item(0).setTextContent(currency);
+        pp.getElementsByTagName("price").item(0).setTextContent(ppData.price);
+        pp.getElementsByTagName("currency").item(0).setTextContent(ppData.currency);
 
         // discount
-        pp.getElementsByTagName("discount").item(0).setTextContent(discount);
+        pp.getElementsByTagName("discount").item(0).setTextContent(ppData.discount);
 
         // is renewable
-        pp.getElementsByTagName("is_renewable").item(0).setTextContent(Boolean.toString(isRenewable));
+        pp.getElementsByTagName("is_renewable").item(0).setTextContent(Boolean.toString(ppData.isRenewable));
 
         // recurring periods
-        pp.getElementsByTagName("recurring_periods").item(0).setTextContent(String.valueOf(recurringPeriods));
+        pp.getElementsByTagName("recurring_periods").item(0).setTextContent(String.valueOf(ppData.recurringPeriods));
 
         // uncomment cdata
-        String docAsString = docToString(doc);
-        docAsString = docAsString
-                .replace("<!--<![CDATA[-->", "<![CDATA[")
-                .replace("<!--]]>-->", "]]>");
-
-        return docAsString;
+        return uncommentCdataSection(docToString(doc));
     }
 }

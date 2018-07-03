@@ -1,6 +1,8 @@
 package com.kaltura.client.test.utils.ingestUtils;
 
+import com.kaltura.client.Logger;
 import io.restassured.http.Header;
+import io.restassured.response.Response;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -13,9 +15,17 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.Properties.PARTNER_ID;
+import static io.restassured.RestAssured.given;
+
 public class BaseIngestUtils {
 
     // urls
+    static final String ingestUrl = getProperty(INGEST_BASE_URL) + "/Ingest_" + getProperty(API_VERSION) + "/Service.svc?wsdl";
+    private static final String ingestBaseReportUrl = getProperty(INGEST_REPORT_URL) + "/" + getProperty(PARTNER_ID) + "/";
+
+    // headers
     static final Header contentTypeXml = new Header("Content-Type", "text/xml;charset=UTF-8");
     static final Header soapActionIngestTvinciData = new Header("SOAPAction", "http://tempuri.org/IService/IngestTvinciData");
     static final Header soapActionIngestBusinessModules = new Header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
@@ -102,5 +112,15 @@ public class BaseIngestUtils {
                 .replace("<!--]]>-->", "]]>");
 
             return docAsString;
+    }
+
+    static Response executeIngestReportRequest(String reportId) {
+        String reportUrl = ingestBaseReportUrl + reportId;
+        Logger.getLogger(IngestMppUtils.class).debug(reportUrl);
+
+        Response resp = given().get(reportUrl);
+        Logger.getLogger(IngestMppUtils.class).debug(resp.asString());
+
+        return resp;
     }
 }

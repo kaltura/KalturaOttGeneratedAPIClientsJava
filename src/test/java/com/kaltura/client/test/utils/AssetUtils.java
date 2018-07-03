@@ -72,13 +72,6 @@ public class AssetUtils extends BaseUtils {
         List<MediaFile> mediaFiles = assetResponse.results.getMediaFiles();
         assertThat(mediaFiles.size()).as("media files list").isGreaterThan(0);
 
-//        List<Integer> fileIdsList = new ArrayList<>();
-//        for (MediaFile mediaFile : mediaFiles) {
-//            fileIdsList.add(mediaFile.getId());
-//        }
-//
-//        return fileIdsList;
-
         return mediaFiles.stream().map(MediaFile::getId).collect(Collectors.toList());
     }
 
@@ -167,6 +160,11 @@ public class AssetUtils extends BaseUtils {
                 executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
             }
         }
+    }
+
+    public static String getCoguid(Asset asset) {
+        // TODO: 7/1/2018 finsih util 
+        return null;
     }
 }
 
