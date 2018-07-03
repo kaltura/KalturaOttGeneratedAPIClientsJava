@@ -76,9 +76,12 @@ public class Properties {
     public static final String PHOENIX_SERVER_USER_NAME = "phoenix_server_user_name";
     public static final String PHOENIX_SERVER_PASSWORD = "phoenix_server_password";
     public static final String PHOENIX_SERVER_LOGS_DIRECTORY = "phoenix_server_logs_directory";
-    public static final String PHOENIX_SERVER_LOG_FILE_NAME = "phoenix_server_logs_file_name";
-    public static final String PHOENIX_SERVER_LOGS_LOCAL_PATH = "phoenix_server_logs_local_path";
-    public static final String REGRESSION_LOGS_LOCAL_PATH = "regression_logs_local_path";
+    public static final String PHOENIX_SERVER_LOG_FILE_NAME_PREFIX = "phoenix_server_logs_file_name_prefix";
+    public static final String PHOENIX_SERVER_LOG_FILE_EXTENSION = "phoenix_server_logs_file_extension";
+    public static final String PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH = "phoenix_server_logs_local_folder_path";
+    public static final String REGRESSION_LOGS_LOCAL_FILE = "regression_logs_local_file";
+    public static final String SHOULD_REGRESSION_LOGS_BE_SAVED = "should_regression_logs_be_saved";
+    public static final String MAX_ALLOWED_PERCENTAGE = "max_allowed_percentage";
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {
