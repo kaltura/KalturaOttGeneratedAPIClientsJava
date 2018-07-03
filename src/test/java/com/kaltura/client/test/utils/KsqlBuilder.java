@@ -65,9 +65,20 @@ public class KsqlBuilder {
         return this;
     }
 
-    // searching one value in a list of numeric values
+    // searching one value in a list of numeric values operator
     public KsqlBuilder inList(String key, String value) {
         sb.append(key).append(":").append("'").append(String.valueOf(value)).append("' ");
+        return this;
+    }
+
+    // exists operators
+    public KsqlBuilder exists(String key) {
+        sb.append(key).append("+''");
+        return this;
+    }
+
+    public KsqlBuilder notExists(String key) {
+        sb.append(key).append("!+''");
         return this;
     }
 
