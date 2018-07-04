@@ -32,9 +32,9 @@ public class BaseIngestUtils {
     static final Header soapActionIngestKalturaEpg = new Header("SOAPAction", "http://tempuri.org/IService/IngestKalturaEpg");
 
     // actions
-    public static final String INGEST_ACTION_INSERT = "insert";
-    public static final String INGEST_ACTION_UPDATE = "update";
-    public static final String INGEST_ACTION_DELETE = "delete";
+    static final String INGEST_ACTION_INSERT = "insert";
+    static final String INGEST_ACTION_UPDATE = "update";
+    static final String INGEST_ACTION_DELETE = "delete";
 
     // wait configuration
     static final int delayBetweenRetriesInSeconds = 5;
@@ -42,12 +42,6 @@ public class BaseIngestUtils {
 
     // life cycles periods
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";
-
-    // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts (ask Elram)
-    public static final String MOVIE_MEDIA_TYPE = "Movie";
-    public static final String SERIES_MEDIA_TYPE = "Series";
-    public static final String EPISODE_MEDIA_TYPE = "Episode";
-    public static final String LINEAR_MEDIA_TYPE = "Linear";
 
     // data
     static final Long MAX_RANDOM_VALUE = 9999999999L;

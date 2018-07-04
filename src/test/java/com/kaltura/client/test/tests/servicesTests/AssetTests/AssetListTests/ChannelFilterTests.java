@@ -2,6 +2,7 @@ package com.kaltura.client.test.tests.servicesTests.AssetTests.AssetListTests;
 
 import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.types.*;
 import io.qameta.allure.Description;
@@ -16,9 +17,6 @@ import static com.kaltura.client.test.tests.enums.KsqlKey.NAME;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.SERIES_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
@@ -36,18 +34,18 @@ public class ChannelFilterTests extends BaseTest {
     private void asset_list_channelFilter_before_class() {
         // ingest movie
         VodData movieData = new VodData()
-                .mediaType(MOVIE_MEDIA_TYPE);
+                .mediaType(MediaType.MOVIE);
         asset1 = insertVod(movieData);
 
         // ingest series
         VodData seriesData = new VodData()
-                .mediaType(SERIES_MEDIA_TYPE)
+                .mediaType(MediaType.SERIES)
                 .isVirtual(true);
         asset2 = insertVod(seriesData);
 
         // ingest episode
         VodData episodeData = new VodData()
-                .mediaType(EPISODE_MEDIA_TYPE);
+                .mediaType(MediaType.EPISODE);
         asset3 = insertVod(episodeData);
 
         // ingest epg

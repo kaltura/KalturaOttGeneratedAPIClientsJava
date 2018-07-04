@@ -4,6 +4,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.PurchaseUtils;
@@ -33,8 +34,6 @@ import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
@@ -78,12 +77,12 @@ public class SearchAssetFilterTests extends BaseTest {
 
         // ingest asset 1
         VodData vodData1 = new VodData()
-                .mediaType(MOVIE_MEDIA_TYPE);
+                .mediaType(MediaType.MOVIE);
         asset = insertVod(vodData1);
 
         // ingest asset 2
         VodData vodData2 = new VodData()
-                .mediaType(MOVIE_MEDIA_TYPE)
+                .mediaType(MediaType.MOVIE)
                 .catalogStartDate(getTimeInDate(-100))
                 .tags(tagMap)
                 .strings(stringMetaMap1);
@@ -91,7 +90,7 @@ public class SearchAssetFilterTests extends BaseTest {
 
         // ingest asset 3
         VodData vodData3 = new VodData()
-                .mediaType(EPISODE_MEDIA_TYPE)
+                .mediaType(MediaType.EPISODE)
                 .catalogStartDate(getTimeInDate(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
