@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.dbUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.tests.enums.KsqlKey;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.types.MediaAsset;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.Properties.*;
@@ -235,7 +237,7 @@ public class DBUtils extends BaseUtils {
                 .getJSONObject(0);
     }
 
-    public static List<MediaAsset> getAssets(int numOfAssets, boolean isVirtual) {
+    public static List<MediaAsset> getAssets(int numOfAssets, boolean isVirtual, Optional<MediaType> mediaType) {
         JSONArray jsonArray;
         if (isVirtual) {
             jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT, numOfAssets, partnerId + 2);
@@ -255,15 +257,5 @@ public class DBUtils extends BaseUtils {
         SearchAssetFilter filter = new SearchAssetFilter();
         filter.setKSql(query);
         return (List<MediaAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
-//
-//        SELECT top (10) m.ID, m.NAME, m.MEDIA_TYPE_ID, mt.NAME
-//        FROM [TVinci].[dbo].[media] m
-//        inner join [TVinci].[dbo].[media_types] mt
-//        on m.MEDIA_TYPE_ID = mt.ID
-//        where m.group_id = 204
-//        and m.status = 1
-//        and m.is_Active = 1
-//        and mt.NAME = 'Episode'
-//        order by m.id desc
     }
 }

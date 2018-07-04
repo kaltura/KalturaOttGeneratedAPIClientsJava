@@ -186,6 +186,16 @@ public class DBConstants {
 
     static final String ASSETS_SELECT = "SELECT top (?) NAME FROM [TVinci].[dbo].[media] where group_id = ? and status = 1 and is_Active = 1 order by id desc";
 
+    static final String ASSETS_SELECT_WITH_MEDIA_TYPE = "SELECT top (?) m.ID, m.NAME, m.MEDIA_TYPE_ID, mt.NAME " +
+            "FROM [TVinci].[dbo].[media] m" +
+            "inner join [TVinci].[dbo].[media_types] mt " +
+            "on m.MEDIA_TYPE_ID = mt.ID" +
+            "where m.group_id = ?" +
+            "and m.status = 1" +
+            "and m.is_Active = 1" +
+            "and mt.NAME = ?" +
+            "order by m.id desc";
+
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";

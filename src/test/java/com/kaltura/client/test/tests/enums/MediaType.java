@@ -7,7 +7,8 @@ public enum MediaType implements EnumAsString {
     MOVIE("Movie"),
     SERIES("Series"),
     EPISODE("Episode"),
-    LINEAR("Linear");
+    LINEAR("Linear"),
+    PACKAGE("Package");
 
     private String value;
 
