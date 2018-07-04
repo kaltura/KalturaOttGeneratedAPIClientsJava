@@ -3,6 +3,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.test.tests.enums.DurationPeriod;
+import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
@@ -27,6 +28,9 @@ import java.util.concurrent.TimeUnit;
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.tests.enums.KsqlKeys.END_DATE;
+import static com.kaltura.client.test.tests.enums.KsqlKeys.EPG_CHANNEL_ID;
+import static com.kaltura.client.test.tests.enums.KsqlKeys.START_DATE;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
@@ -88,9 +92,16 @@ public class IngestEpgUtils extends BaseIngestUtils {
         String firstProgramStartDateEpoch = String.valueOf(epgData.startDate.getTime().getTime() / 1000);
         SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
-        // TODO: 6/29/2018 create ksql builder util
-        assetFilter.setKSql("(and epg_channel_id='" + epgChannelId + "' start_date >= '" + firstProgramStartDateEpoch
-                + "' Series_ID='" + epgData.seriesId + "' end_date >= '" + firstProgramStartDateEpoch + "')");
+
+        String query = new KsqlBuilder()
+                .openAnd()
+                .equal(EPG_CHANNEL_ID.getValue(), epgChannelId)
+                .greaterOrEqual(START_DATE.getValue(), Integer.valueOf(firstProgramStartDateEpoch))
+                .equal("Series_ID", epgData.seriesId)
+                .greaterOrEqual(END_DATE.getValue(), Integer.valueOf(firstProgramStartDateEpoch))
+                .closeAnd()
+                .toString();
+        assetFilter.setKSql(query);
 
         ListAssetBuilder listAssetBuilder = list(assetFilter).setKs(getAnonymousKs());
         await()

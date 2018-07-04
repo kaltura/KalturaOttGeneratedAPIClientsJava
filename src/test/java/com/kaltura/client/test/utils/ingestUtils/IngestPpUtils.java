@@ -169,6 +169,10 @@ public class IngestPpUtils extends BaseIngestUtils {
         pp.setAttribute("action", action);
         pp.setAttribute("is_active", Boolean.toString(ppData.isActive));
 
+        if (action.equals(INGEST_ACTION_DELETE)) {
+            return uncommentCdataSection(docToString(doc));
+        }
+
         // full life cycles
         pp.getElementsByTagName("full_life_cycle").item(0).setTextContent(ppData.fullLifeCycle);
 
