@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -63,6 +64,10 @@ public class BaseUtils {
         calendar.add(Calendar.MINUTE, offSetInMinutes);
 
         return calendar.getTimeInMillis() / 1000;
+    }
+
+    public static long getTimeInEpoch() {
+        return Instant.now().toEpochMilli();
     }
 
     // generate current data String in specified format

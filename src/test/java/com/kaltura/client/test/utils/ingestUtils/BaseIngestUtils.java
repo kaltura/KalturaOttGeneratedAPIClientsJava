@@ -43,7 +43,7 @@ public class BaseIngestUtils {
     // life cycles periods
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";
 
-    // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts
+    // media types // TODO: ask if these types (from TVM edit VOD page) are default for all accounts (ask Elram)
     public static final String MOVIE_MEDIA_TYPE = "Movie";
     public static final String SERIES_MEDIA_TYPE = "Series";
     public static final String EPISODE_MEDIA_TYPE = "Episode";
