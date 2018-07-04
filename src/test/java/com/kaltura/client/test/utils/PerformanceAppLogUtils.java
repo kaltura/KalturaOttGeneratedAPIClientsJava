@@ -1,18 +1,17 @@
 package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.Sandbox;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.auth.StaticUserAuthenticator;
 import org.apache.commons.vfs2.impl.DefaultFileSystemConfigBuilder;
+
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.Properties.API_VERSION;
-import static com.kaltura.client.test.Properties.getProperty;
 
 public class PerformanceAppLogUtils extends BaseUtils {
 
@@ -109,7 +108,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
             File targetFile = new File(targetFileName);
             if (targetFile.exists()) {
                 deleteFile(fileName);
-                Logger.getLogger(Sandbox.class).debug("File: [" + targetFileName + "] has been created");
+                Logger.getLogger(PerformanceAppLogUtils.class).debug("File: [" + targetFileName + "] has been created");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,7 +117,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
     private static void logIfValueMoreThanZero(double time, String message) {
         if (time > 0) {
-            Logger.getLogger(Sandbox.class).debug(message + time);
+            Logger.getLogger(PerformanceAppLogUtils.class).debug(message + time);
         }
     }
 

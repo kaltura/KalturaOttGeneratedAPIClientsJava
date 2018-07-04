@@ -31,11 +31,10 @@ public class IngestPpUtils extends BaseIngestUtils {
     @Accessors(fluent = true)
     @Data
     public static class PpData {
-        private boolean isActive = true;
-        private boolean isRenewable = false;
+        @Setter(AccessLevel.NONE) private boolean isActive = true;
+        @Setter(AccessLevel.NONE) private String ppCode;
 
-        @Setter(AccessLevel.NONE)
-        private String ppCode;
+        private boolean isRenewable = false;
 
         private String fullLifeCycle;
         private String viewLifeCycle;

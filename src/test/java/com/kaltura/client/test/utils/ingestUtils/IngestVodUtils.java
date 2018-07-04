@@ -34,16 +34,16 @@ import static org.awaitility.Awaitility.await;
 
 public class IngestVodUtils extends BaseIngestUtils {
 
-    private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.";
-    private static final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
-    private static final String ingestAssetIdPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus.InternalAssetId";
+    private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.";
+    private static final String ingestStatusMessagePath = ingestDataResultPath + "Status.Message";
+    private static final String ingestAssetIdPath = ingestDataResultPath + "InternalAssetId";
 
     @Accessors(fluent = true)
     @Data
     public static class VodData {
         @Setter(AccessLevel.NONE) private String coguid;
+        @Setter(AccessLevel.NONE) private boolean isActive = true;
 
-        private boolean isActive = true;
         private boolean isVirtual = false;
 
         private String name;

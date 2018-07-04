@@ -55,7 +55,7 @@ public class SearchAssetFilterTests extends BaseTest {
 
 
     @BeforeClass
-    private void asset_list_before_class() {
+    private void asset_list_searchAssetFilter_before_class() {
         // Get asset from shared asset method
         tagValue = getRandomValue(tagName + "_", 999999);
 
@@ -109,7 +109,6 @@ public class SearchAssetFilterTests extends BaseTest {
         masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household);
 
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(asset.getId().intValue()), Optional.empty(), Optional.empty());
-
     }
 
     // Filter by KSQL
