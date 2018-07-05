@@ -1,19 +1,30 @@
 package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
+import lombok.Data;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.auth.StaticUserAuthenticator;
 import org.apache.commons.vfs2.impl.DefaultFileSystemConfigBuilder;
-
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-
+import java.util.stream.Stream;
 import static com.kaltura.client.test.Properties.*;
+import static com.kaltura.client.test.Properties.API_VERSION;
+import static com.kaltura.client.test.Properties.getProperty;
 
 public class PerformanceAppLogUtils extends BaseUtils {
+
+    /**
+     * class to save data about count of slow executions and count of total executions for methods checking in regression
+     */
+    @Data
+    static class SlowRatio {
+        private int slowCount;
+        private int totalCount;
+    }
 
     private static final int maxAllowedPercentage = Integer.valueOf(getProperty(MAX_ALLOWED_PERCENTAGE));
     private static final String domain = getProperty(PHOENIX_SERVER_DOMAIN_NAME);
@@ -28,14 +39,15 @@ public class PerformanceAppLogUtils extends BaseUtils {
     private static final String ELASTIC_SEARCH_LOG_DATA = "\"e\":\"es\"";
     private static final String RABBIT_LOG_DATA = "\"e\":\"rabbit\"";
 
-    private static final List<String> nonRelated2CodeStringsList = new ArrayList<>();
-    {
-        nonRelated2CodeStringsList.add("\"e\":\"start_api\"");
-        nonRelated2CodeStringsList.add(COUCHBASE_LOG_DATA);
-        nonRelated2CodeStringsList.add(DB_LOG_DATA);
-        nonRelated2CodeStringsList.add(ELASTIC_SEARCH_LOG_DATA);
-        nonRelated2CodeStringsList.add(RABBIT_LOG_DATA);
-    }
+    private static List<String> appLogLocalFileNames = new ArrayList<>();
+
+    private static final List<String> nonRelated2CodeStringsList = new ArrayList<String>() {{
+        add("\"e\":\"start_api\"");
+        add(COUCHBASE_LOG_DATA);
+        add(DB_LOG_DATA);
+        add(ELASTIC_SEARCH_LOG_DATA);
+        add(RABBIT_LOG_DATA);
+    }};
 
     private static double timeOfCode;
     private static double timeOfCB;
@@ -43,9 +55,9 @@ public class PerformanceAppLogUtils extends BaseUtils {
     private static double timeOfES;
     private static double timeOfRabbit;
     private static double totalTime;
-    private static boolean isKalturaSessionFoundInFile;
+    private static boolean isKalturaSessionFoundInAppLogFile;
 
-    public static void testPerformanceCode() {
+    public static void createPerformanceCodeReport() {
         try {
             List<String> appRemoteFileNames = getRemoteAppLogFileNames();
             for (String fileName: appRemoteFileNames) {
@@ -54,12 +66,18 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
             Map<String, List<String>> methodsAndKalturaSessions = loadMethodsAndSessionsFromTestFile();
 
+            Map<String, SlowRatio> methodsAndSlowRatioData = new HashMap<>();
+            SlowRatio slowRatio;
             for (String method: methodsAndKalturaSessions.keySet()) {
-                Logger.getLogger(PerformanceAppLogUtils.class).debug("Method: [" + method + "]");
+                methodsAndSlowRatioData.put(method, new SlowRatio());
+                //Logger.getLogger(PerformanceAppLogUtils.class).debug("Method: [" + method + "]");
                 for (String xKalturaSession: methodsAndKalturaSessions.get(method)) {
-                    Logger.getLogger(PerformanceAppLogUtils.class).debug("xKalturaSession: [" + xKalturaSession + "]");
+                    slowRatio = methodsAndSlowRatioData.get(method);
+                    slowRatio.totalCount++;
+                    methodsAndSlowRatioData.put(method, slowRatio);
+                    //Logger.getLogger(PerformanceAppLogUtils.class).debug("xKalturaSession: [" + xKalturaSession + "]");
                     for (String appFileName: appRemoteFileNames) {
-                        isKalturaSessionFoundInFile = false;
+                        isKalturaSessionFoundInAppLogFile = false;
                         timeOfCode = 0.0;
                         timeOfCB = 0.0;
                         timeOfDB = 0.0;
@@ -69,55 +87,106 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
                         calcTimeExecution(appFileName, xKalturaSession);
 
-                        if (isKalturaSessionFoundInFile) {
-                            // display results
+                        if (isKalturaSessionFoundInAppLogFile) {
                             double percentageCodeTime2TotalTime = timeOfCode / totalTime * 100;
                             if (percentageCodeTime2TotalTime > maxAllowedPercentage) {
-                                // TODO: save report into file and add summary
-                                Logger.getLogger(PerformanceAppLogUtils.class).debug("code time = " + timeOfCode + " PERFORMANCE LEVEL IS TOO WEAK: " +
-                                        String.format("%.2f", percentageCodeTime2TotalTime) + "%" + " \"" + xKalturaSession + "\"");
-                            } /* THAT PART COMMENTED TO GET IT EASY IN CASE IT NEEDED LATEE
-                            else {
-                                logIfValueMoreThanZero(timeOfCode, "code time = ");
-                                logIfValueMoreThanZero(timeOfCB, "Couchbase time = ");
-                                logIfValueMoreThanZero(timeOfDB, "Database time = ");
-                                logIfValueMoreThanZero(timeOfES, "Elastic search time = ");
-                                logIfValueMoreThanZero(timeOfRabbit, "Rabbit time = ");
-                            }*/
+                                slowRatio = methodsAndSlowRatioData.get(method);
+                                slowRatio.slowCount++;
+                                methodsAndSlowRatioData.put(method, slowRatio);
+
+                                // save results
+                                writeReport2File(method, xKalturaSession, percentageCodeTime2TotalTime);
+                            }
                         }
                     }
                 }
             }
-
-            deleteResultsOfRegressionExecution();
+            addSummary2Report(methodsAndSlowRatioData);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * After execution of util we have to delete log file created during regression execution to not affect results of next checking
-     */
-    private static void deleteResultsOfRegressionExecution() {
-        String fileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) + getProperty(REGRESSION_LOGS_LOCAL_FILE);
-        String prefix = getOffsetDateInFormat(0, "dd.MM.yyyy hh.mm");
-        String targetFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) + prefix +
-                getProperty(REGRESSION_LOGS_LOCAL_FILE);
-        try {
-            Files.copy(Paths.get(fileName), new FileOutputStream(targetFileName));
-            File targetFile = new File(targetFileName);
-            if (targetFile.exists()) {
-                deleteFile(fileName);
-                Logger.getLogger(PerformanceAppLogUtils.class).debug("File: [" + targetFileName + "] has been created");
+    private static void addSummary2Report(Map<String, SlowRatio> methodsAndSlowRatioData) throws IOException {
+        if (methodsAndSlowRatioData.keySet().size() > 0) {
+            String reportFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
+                    getProperty(CODE_PERFORMANCE_REPORT_FILE);
+            String summaryTemporaryFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) + "SUMMARY" +
+                    getProperty(CODE_PERFORMANCE_REPORT_FILE);
+
+            createSummaryFile(methodsAndSlowRatioData, summaryTemporaryFileName);
+            addReportDataIntoSummaryFile(reportFileName, summaryTemporaryFileName);
+
+            File source = new File(summaryTemporaryFileName);
+            File target = new File(reportFileName);
+            deleteFile(reportFileName);
+            boolean success = source.renameTo(target);
+            if (!success) {
+                throw new IOException("File can't be renamed");
+            }
+            Logger.getLogger(PerformanceAppLogUtils.class).debug("Report was successfully created: [" + reportFileName + "]");
+        }
+    }
+
+    private static void addReportDataIntoSummaryFile(String fromFile, String toFile) {
+        try(BufferedReader br = Files.newBufferedReader(Paths.get(fromFile));
+            FileWriter fw = new FileWriter(toFile, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)) {
+            Stream<String> lines = br.lines();
+            lines.forEach(out::println);
+            lines.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createSummaryFile(Map<String, SlowRatio> methodsAndSlowRatioData, String summaryTemporaryFileName) {
+        try(FileWriter fw = new FileWriter(summaryTemporaryFileName, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)) {
+            out.println("Report of slow methods on " + getCurrentDateInFormat("dd/MM/yyyy HH:mm"));
+            out.println("Max allowed percentage: " + getProperty(MAX_ALLOWED_PERCENTAGE));
+            out.println();
+            for (String method: methodsAndSlowRatioData.keySet()) {
+                if (methodsAndSlowRatioData.get(method).slowCount > 0) {
+                    out.println(method + " was slow " + String.format("%.2f", methodsAndSlowRatioData.get(method).slowCount *
+                            1.0 / methodsAndSlowRatioData.get(method).totalCount * 100) + "% of executions");
+                }
+            }
+
+            out.println();
+            out.println("Details of slow methods are below:");
+            out.println();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeReport2File(String method, String xKalturaSession, double codeTimePercentage) {
+        try(FileWriter fw = new FileWriter(getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
+                getProperty(CODE_PERFORMANCE_REPORT_FILE), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)) {
+            // we want to see only data where code time is less than 100%
+            if (timeOfCB > 0 || timeOfDB > 0 || timeOfES > 0 || timeOfRabbit > 0) {
+                out.println(method);
+                out.println("\"" + xKalturaSession + "\"");
+                out.println("Code: " + String.format("%.2f", codeTimePercentage) + "%");
+                writeIfValueMoreThanZero(out, "Couchbase: ", timeOfCB, totalTime);
+                writeIfValueMoreThanZero(out, "DB: ", timeOfDB, totalTime);
+                writeIfValueMoreThanZero(out, "Elastic: ", timeOfES, totalTime);
+                writeIfValueMoreThanZero(out, "Rabbit: ", timeOfRabbit, totalTime);
+                out.println();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void logIfValueMoreThanZero(double time, String message) {
-        if (time > 0) {
-            Logger.getLogger(PerformanceAppLogUtils.class).debug(message + time);
+    private static void writeIfValueMoreThanZero(PrintWriter out, String title, double timeOfEvent, double totalTime) {
+        if (timeOfEvent > 0) {
+            out.println(title + " " + String.format("%.2f", timeOfEvent / totalTime * 100) + "% (" + timeOfEvent + ")");
         }
     }
 
@@ -134,6 +203,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
         String remoteFilePath = remoteSourceFileDir + remoteFileName;
         String localTargetFilePath = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) + "copied-" + remoteFileName;
+        appLogLocalFileNames.add(localTargetFilePath);
 
         // remove local target file in case it exists and create it empty
         File targetFile = new File(localTargetFilePath);
@@ -155,7 +225,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
         destination.close();
         Logger.getLogger(PerformanceAppLogUtils.class).debug("File [" + remoteFilePath + "] was copied into [" + localTargetFilePath + "]");
 
-        Logger.getLogger(PerformanceAppLogUtils.class).debug("copyRemoteFile2LocalMachine(): closed");
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("copyRemoteFile2LocalMachine(): completed");
     }
 
     private static List<String> getRemoteAppLogFileNames() throws IOException {
@@ -235,7 +305,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
         try(BufferedReader br = new BufferedReader(new FileReader(path2File))) {
             for(String line; (line = br.readLine()) != null; ) {
                 if (line.contains(kalturaSession)) {
-                    isKalturaSessionFoundInFile = true;
+                    isKalturaSessionFoundInAppLogFile = true;
                     // this is a usual position of time in the whole string
                     executionTimeString = line.split("\"")[3];
                     // "e": "ws" should be ignored as it partially described in other events
@@ -243,7 +313,6 @@ public class PerformanceAppLogUtils extends BaseUtils {
                         timeOfCode = timeOfCode - Double.valueOf(executionTimeString);
                     } else {
                         if (line.contains("\"e\":\"end_api\"")) {
-                            //System.out.println(2);
                             totalTime = Double.valueOf(executionTimeString);
                             timeOfCode = timeOfCode + totalTime;
                         }
@@ -271,5 +340,14 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
     private static boolean stringContainsItemFromArray(String inputStr, String[] items) {
         return Arrays.stream(items).parallel().anyMatch(inputStr::contains);
+    }
+
+    /**
+     * method removes from local computer copied on it from remote machine app log files
+     */
+    public static void removeCopiedAppLogFiles() {
+        for (String file: appLogLocalFileNames) {
+            deleteFile(file);
+        }
     }
 }

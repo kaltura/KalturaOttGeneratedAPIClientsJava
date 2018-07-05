@@ -11,18 +11,18 @@ import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.test.utils.PerformanceAppLogUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
@@ -538,6 +538,34 @@ public class BaseTest {
         public static HouseholdUser getSharedUser() {
             if (sharedHousehold == null) getSharedHousehold();
             return sharedUser;
+        }
+    }
+
+    // as we have only 1 suite it helps do cleaning after regression execution
+    @AfterSuite
+    public void tearDownSuite() {
+        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
+            // processing of logs and creation of app performance code report
+            PerformanceAppLogUtils.createPerformanceCodeReport();
+            PerformanceAppLogUtils.removeCopiedAppLogFiles();
+        }
+    }
+
+    // as we have only 1 suite it helps process fixture etc before regression execution
+    @BeforeSuite
+    public void setupSuite() {
+        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
+            // Before execution of regression we have to delete log file created during previous regression execution
+            // to not affect results of current check
+            String regressionLogsFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
+                    getProperty(REGRESSION_LOGS_LOCAL_FILE);
+            deleteFile(regressionLogsFileName);
+
+            // Before execution of regression we have to delete report file created during previous regression execution
+            // to not affect results of current check
+            String codePerformanceReportFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
+                    getProperty(CODE_PERFORMANCE_REPORT_FILE);
+            deleteFile(codePerformanceReportFileName);
         }
     }
 }

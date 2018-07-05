@@ -82,6 +82,7 @@ public class Properties {
     public static final String REGRESSION_LOGS_LOCAL_FILE = "regression_logs_local_file";
     public static final String SHOULD_REGRESSION_LOGS_BE_SAVED = "should_regression_logs_be_saved";
     public static final String MAX_ALLOWED_PERCENTAGE = "max_allowed_percentage";
+    public static final String CODE_PERFORMANCE_REPORT_FILE = "code_performance_report_file";
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {
