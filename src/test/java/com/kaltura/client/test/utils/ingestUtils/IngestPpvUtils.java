@@ -29,11 +29,11 @@ public class IngestPpvUtils extends BaseIngestUtils {
     @Accessors(fluent = true)
     @Data
     public static class PpvData {
-        private boolean isActive = true;
+        @Setter(AccessLevel.NONE) private boolean isActive = true;
+        @Setter(AccessLevel.NONE) private String ppvCode;
+
         private boolean isSubscriptionOnly = false;
         private boolean isFirstDeviceLimitation = false;
-
-        @Setter(AccessLevel.NONE) private String ppvCode;
 
         private String description;
         private String discount;

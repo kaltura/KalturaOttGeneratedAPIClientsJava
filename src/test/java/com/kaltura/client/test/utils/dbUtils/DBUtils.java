@@ -1,8 +1,14 @@
 package com.kaltura.client.test.utils.dbUtils;
 
 import com.kaltura.client.Logger;
+import com.kaltura.client.test.tests.enums.KsqlKey;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.test.utils.KsqlBuilder;
+import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.PricePlan;
+import com.kaltura.client.types.ProgramAsset;
+import com.kaltura.client.types.SearchAssetFilter;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.json.JSONArray;
@@ -11,9 +17,12 @@ import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
+import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.tests.BaseTest.partnerId;
+import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.IngestFixtureData.loadFirstPricePlanFromJsonArray;
 import static org.assertj.core.api.Assertions.fail;
@@ -227,5 +236,68 @@ public class DBUtils extends BaseUtils {
     public static JSONObject getUserById(int userId) {
         return getJsonArrayFromQueryResult(USER_BY_ID_SELECT, partnerId, userId)
                 .getJSONObject(0);
+    }
+
+    public static List<MediaAsset> getAssets(int numOfAssets, Optional<MediaType> mediaType) {
+        JSONArray jsonArray;
+        if (mediaType.isPresent()) {
+            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT_WITH_MEDIA_TYPE, numOfAssets, partnerId + 1,
+                    mediaType.get().getValue());
+        } else {
+            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT, numOfAssets, partnerId + 1);
+        }
+
+        KsqlBuilder builder = new KsqlBuilder();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            builder.equal(KsqlKey.NAME.getValue(), jsonArray.getJSONObject(i).getString("name"));
+        }
+        
+        String query = new KsqlBuilder()
+                .or(builder.toString())
+                .toString();
+        
+        SearchAssetFilter filter = new SearchAssetFilter();
+        filter.setKSql(query);
+        return (List<MediaAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+    }
+
+    public static List<MediaAsset> getVirtualAssets(int numOfAssets, Optional<MediaType> mediaType) {
+        JSONArray jsonArray;
+        if (mediaType.isPresent()) {
+            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT_WITH_MEDIA_TYPE, numOfAssets, partnerId + 2,
+                    mediaType.get().getValue());
+        } else {
+            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT, numOfAssets, partnerId + 2);
+        }
+
+        KsqlBuilder builder = new KsqlBuilder();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            builder.equal(KsqlKey.NAME.getValue(), jsonArray.getJSONObject(i).getString("name"));
+        }
+
+        String query = new KsqlBuilder()
+                .or(builder.toString())
+                .toString();
+
+        SearchAssetFilter filter = new SearchAssetFilter();
+        filter.setKSql(query);
+        return (List<MediaAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+    }
+
+    public static List<ProgramAsset> getPrograms(int numOfPrograms) {
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PROGRAMS_SELECT, numOfPrograms, partnerId + 1);
+
+        KsqlBuilder builder = new KsqlBuilder();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            builder.equal(KsqlKey.NAME.getValue(), jsonArray.getJSONObject(i).getString("name"));
+        }
+
+        String query = new KsqlBuilder()
+                .or(builder.toString())
+                .toString();
+
+        SearchAssetFilter filter = new SearchAssetFilter();
+        filter.setKSql(query);
+        return (List<ProgramAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
     }
 }
