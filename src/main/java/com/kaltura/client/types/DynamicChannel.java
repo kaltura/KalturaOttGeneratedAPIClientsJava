@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,14 +43,13 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RelatedFilter.Tokenizer.class)
-public class RelatedFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(DynamicChannel.Tokenizer.class)
+public class DynamicChannel extends Channel {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
+	public interface Tokenizer extends Channel.Tokenizer {
 		String kSql();
-		String idEqual();
-		String typeIn();
-		String excludeWatched();
+		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> assetTypes();
+		AssetGroupBy.Tokenizer groupBy();
 	}
 
 	/**
@@ -77,20 +79,13 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 	 */
 	private String kSql;
 	/**
-	 * the ID of the asset for which to return related assets
+	 * Asset types in the channel.              -26 is EPG
 	 */
-	private Integer idEqual;
+	private List<IntegerValue> assetTypes;
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values:
-	  any media type ID (according to media type IDs defined dynamically in the
-	  system).              If omitted –   same type as the provided asset.
+	 * Channel group by
 	 */
-	private String typeIn;
-	/**
-	 * Exclude watched asset.
-	 */
-	private Boolean excludeWatched;
+	private AssetGroupBy groupBy;
 
 	// kSql:
 	public String getKSql(){
@@ -104,67 +99,45 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 		setToken("kSql", multirequestToken);
 	}
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// assetTypes:
+	public List<IntegerValue> getAssetTypes(){
+		return this.assetTypes;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
+	public void setAssetTypes(List<IntegerValue> assetTypes){
+		this.assetTypes = assetTypes;
 	}
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// groupBy:
+	public AssetGroupBy getGroupBy(){
+		return this.groupBy;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
-	}
-
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
-	}
-
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
-	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
-	}
-
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
+	public void setGroupBy(AssetGroupBy groupBy){
+		this.groupBy = groupBy;
 	}
 
 
-	public RelatedFilter() {
+	public DynamicChannel() {
 		super();
 	}
 
-	public RelatedFilter(JsonObject jsonObject) throws APIException {
+	public DynamicChannel(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
+		assetTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("assetTypes"), IntegerValue.class);
+		groupBy = GsonParser.parseObject(jsonObject.getAsJsonObject("groupBy"), AssetGroupBy.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRelatedFilter");
+		kparams.add("objectType", "KalturaDynamicChannel");
 		kparams.add("kSql", this.kSql);
-		kparams.add("idEqual", this.idEqual);
-		kparams.add("typeIn", this.typeIn);
-		kparams.add("excludeWatched", this.excludeWatched);
+		kparams.add("assetTypes", this.assetTypes);
+		kparams.add("groupBy", this.groupBy);
 		return kparams;
 	}
 

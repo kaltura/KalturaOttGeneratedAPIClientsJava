@@ -27,8 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
+import com.kaltura.client.types.Ratio;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,30 +38,45 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class MetaService {
+public class RatioService {
 	
-	public static class AddMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, AddMetaBuilder> {
+	public static class AddRatioBuilder extends RequestBuilder<Ratio, Ratio.Tokenizer, AddRatioBuilder> {
 		
-		public AddMetaBuilder(Meta meta) {
-			super(Meta.class, "meta", "add");
-			params.add("meta", meta);
+		public AddRatioBuilder(Ratio ratio) {
+			super(Ratio.class, "ratio", "add");
+			params.add("ratio", ratio);
 		}
 	}
 
 	/**
-	 * Add a new meta
+	 * Add new group ratio
 	 * 
-	 * @param meta Meta Object
+	 * @param ratio Ratio to add for the partner
 	 */
-    public static AddMetaBuilder add(Meta meta)  {
-		return new AddMetaBuilder(meta);
+    public static AddRatioBuilder add(Ratio ratio)  {
+		return new AddRatioBuilder(ratio);
 	}
 	
-	public static class DeleteMetaBuilder extends RequestBuilder<Boolean, String, DeleteMetaBuilder> {
+	public static class ListRatioBuilder extends ListResponseRequestBuilder<Ratio, Ratio.Tokenizer, ListRatioBuilder> {
 		
-		public DeleteMetaBuilder(long id) {
-			super(Boolean.class, "meta", "delete");
+		public ListRatioBuilder() {
+			super(Ratio.class, "ratio", "list");
+		}
+	}
+
+	/**
+	 * Get the list of available ratios
+	 */
+    public static ListRatioBuilder list()  {
+		return new ListRatioBuilder();
+	}
+	
+	public static class UpdateRatioBuilder extends RequestBuilder<Ratio, Ratio.Tokenizer, UpdateRatioBuilder> {
+		
+		public UpdateRatioBuilder(long id, Ratio ratio) {
+			super(Ratio.class, "ratio", "update");
 			params.add("id", id);
+			params.add("ratio", ratio);
 		}
 		
 		public void id(String multirequestToken) {
@@ -71,55 +85,12 @@ public class MetaService {
 	}
 
 	/**
-	 * Delete an existing meta
+	 * Update group ratio&amp;#39;s PrecisionPrecentage
 	 * 
-	 * @param id Meta Identifier
+	 * @param id The ratio ID
+	 * @param ratio Ratio to update for the partner
 	 */
-    public static DeleteMetaBuilder delete(long id)  {
-		return new DeleteMetaBuilder(id);
-	}
-	
-	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
-		
-		public ListMetaBuilder(MetaFilter filter) {
-			super(Meta.class, "meta", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	public static ListMetaBuilder list()  {
-		return list(null);
-	}
-
-	/**
-	 * Return a list of metas for the account with optional filter
-	 * 
-	 * @param filter Meta filter
-	 */
-    public static ListMetaBuilder list(MetaFilter filter)  {
-		return new ListMetaBuilder(filter);
-	}
-	
-	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
-		
-		public UpdateMetaBuilder(long id, Meta meta) {
-			super(Meta.class, "meta", "update");
-			params.add("id", id);
-			params.add("meta", meta);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update an existing meta
-	 * 
-	 * @param id Meta identifier
-	 * @param meta Meta
-	 */
-    public static UpdateMetaBuilder update(long id, Meta meta)  {
-		return new UpdateMetaBuilder(id, meta);
+    public static UpdateRatioBuilder update(long id, Ratio ratio)  {
+		return new UpdateRatioBuilder(id, ratio);
 	}
 }

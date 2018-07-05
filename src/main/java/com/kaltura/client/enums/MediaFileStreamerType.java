@@ -33,22 +33,15 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum AssetOrderBy implements EnumAsString {
-	RELEVANCY_DESC("RELEVANCY_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC"),
-	VIEWS_DESC("VIEWS_DESC"),
-	RATINGS_DESC("RATINGS_DESC"),
-	VOTES_DESC("VOTES_DESC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	START_DATE_ASC("START_DATE_ASC"),
-	LIKES_DESC("LIKES_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
+public enum MediaFileStreamerType implements EnumAsString {
+	APPLE_HTTP("APPLE_HTTP"),
+	MPEG_DASH("MPEG_DASH"),
+	URL("URL"),
+	SMOOTH_STREAMING("SMOOTH_STREAMING");
 
 	private String value;
 
-	AssetOrderBy(String value) {
+	MediaFileStreamerType(String value) {
 		this.value = value;
 	}
 
@@ -61,19 +54,19 @@ public enum AssetOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static AssetOrderBy get(String value) {
+	public static MediaFileStreamerType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over AssetOrderBy defined values and compare the inner value with the given one:
-		for(AssetOrderBy item: values()) {
+		// goes over MediaFileStreamerType defined values and compare the inner value with the given one:
+		for(MediaFileStreamerType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetOrderBy.values().length > 0 ? AssetOrderBy.values()[0]: null;
+		return MediaFileStreamerType.values().length > 0 ? MediaFileStreamerType.values()[0]: null;
    }
 }

@@ -27,8 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
+import com.kaltura.client.types.Bulk;
+import com.kaltura.client.types.BulkFilter;
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,73 +40,40 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class MetaService {
+public class BulkService {
 	
-	public static class AddMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, AddMetaBuilder> {
+	public static class ListBulkBuilder extends ListResponseRequestBuilder<Bulk, Bulk.Tokenizer, ListBulkBuilder> {
 		
-		public AddMetaBuilder(Meta meta) {
-			super(Meta.class, "meta", "add");
-			params.add("meta", meta);
-		}
-	}
-
-	/**
-	 * Add a new meta
-	 * 
-	 * @param meta Meta Object
-	 */
-    public static AddMetaBuilder add(Meta meta)  {
-		return new AddMetaBuilder(meta);
-	}
-	
-	public static class DeleteMetaBuilder extends RequestBuilder<Boolean, String, DeleteMetaBuilder> {
-		
-		public DeleteMetaBuilder(long id) {
-			super(Boolean.class, "meta", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete an existing meta
-	 * 
-	 * @param id Meta Identifier
-	 */
-    public static DeleteMetaBuilder delete(long id)  {
-		return new DeleteMetaBuilder(id);
-	}
-	
-	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
-		
-		public ListMetaBuilder(MetaFilter filter) {
-			super(Meta.class, "meta", "list");
+		public ListBulkBuilder(BulkFilter filter, FilterPager pager) {
+			super(Bulk.class, "bulk", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
-	public static ListMetaBuilder list()  {
+	public static ListBulkBuilder list()  {
 		return list(null);
 	}
 
+	public static ListBulkBuilder list(BulkFilter filter)  {
+		return list(filter, null);
+	}
+
 	/**
-	 * Return a list of metas for the account with optional filter
+	 * List bulk actions
 	 * 
-	 * @param filter Meta filter
+	 * @param filter Filtering the bulk action request
+	 * @param pager Paging the request
 	 */
-    public static ListMetaBuilder list(MetaFilter filter)  {
-		return new ListMetaBuilder(filter);
+    public static ListBulkBuilder list(BulkFilter filter, FilterPager pager)  {
+		return new ListBulkBuilder(filter, pager);
 	}
 	
-	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
+	public static class ServeLog BulkBuilder extends RequestBuilder<Bulk, Bulk.Tokenizer, ServeLog BulkBuilder> {
 		
-		public UpdateMetaBuilder(long id, Meta meta) {
-			super(Meta.class, "meta", "update");
+		public ServeLog BulkBuilder(long id) {
+			super(Bulk.class, "bulk", "serveLog ");
 			params.add("id", id);
-			params.add("meta", meta);
 		}
 		
 		public void id(String multirequestToken) {
@@ -114,12 +82,11 @@ public class MetaService {
 	}
 
 	/**
-	 * Update an existing meta
+	 * ServeLog action returns the log file for the bulk action
 	 * 
-	 * @param id Meta identifier
-	 * @param meta Meta
+	 * @param id bulk action id
 	 */
-    public static UpdateMetaBuilder update(long id, Meta meta)  {
-		return new UpdateMetaBuilder(id, meta);
+    public static ServeLog BulkBuilder serveLog (long id)  {
+		return new ServeLog BulkBuilder(id);
 	}
 }

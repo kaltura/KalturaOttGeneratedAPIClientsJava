@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.MetaDataType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,47 +40,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Meta filter
+ * Filtering Asset Struct Metas
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(MetaFilter.Tokenizer.class)
-public class MetaFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(AssetStructMetaFilter.Tokenizer.class)
+public class AssetStructMetaFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
 		String assetStructIdEqual();
-		String dataTypeEqual();
-		String multipleValueEqual();
+		String metaIdEqual();
 	}
 
 	/**
-	 * Comma separated identifiers
-	 */
-	private String idIn;
-	/**
-	 * Filter Metas that are contained in a specific asset struct
+	 * Filter Asset Struct metas that contain a specific asset struct id
 	 */
 	private Long assetStructIdEqual;
 	/**
-	 * Meta data type to filter by
+	 * Filter Asset Struct metas that contain a specific meta id
 	 */
-	private MetaDataType dataTypeEqual;
-	/**
-	 * Filter metas by multipleValueEqual value
-	 */
-	private Boolean multipleValueEqual;
-
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
-	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
+	private Long metaIdEqual;
 
 	// assetStructIdEqual:
 	public Long getAssetStructIdEqual(){
@@ -95,55 +72,39 @@ public class MetaFilter extends Filter {
 		setToken("assetStructIdEqual", multirequestToken);
 	}
 
-	// dataTypeEqual:
-	public MetaDataType getDataTypeEqual(){
-		return this.dataTypeEqual;
+	// metaIdEqual:
+	public Long getMetaIdEqual(){
+		return this.metaIdEqual;
 	}
-	public void setDataTypeEqual(MetaDataType dataTypeEqual){
-		this.dataTypeEqual = dataTypeEqual;
-	}
-
-	public void dataTypeEqual(String multirequestToken){
-		setToken("dataTypeEqual", multirequestToken);
+	public void setMetaIdEqual(Long metaIdEqual){
+		this.metaIdEqual = metaIdEqual;
 	}
 
-	// multipleValueEqual:
-	public Boolean getMultipleValueEqual(){
-		return this.multipleValueEqual;
-	}
-	public void setMultipleValueEqual(Boolean multipleValueEqual){
-		this.multipleValueEqual = multipleValueEqual;
-	}
-
-	public void multipleValueEqual(String multirequestToken){
-		setToken("multipleValueEqual", multirequestToken);
+	public void metaIdEqual(String multirequestToken){
+		setToken("metaIdEqual", multirequestToken);
 	}
 
 
-	public MetaFilter() {
+	public AssetStructMetaFilter() {
 		super();
 	}
 
-	public MetaFilter(JsonObject jsonObject) throws APIException {
+	public AssetStructMetaFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 		assetStructIdEqual = GsonParser.parseLong(jsonObject.get("assetStructIdEqual"));
-		dataTypeEqual = MetaDataType.get(GsonParser.parseString(jsonObject.get("dataTypeEqual")));
-		multipleValueEqual = GsonParser.parseBoolean(jsonObject.get("multipleValueEqual"));
+		metaIdEqual = GsonParser.parseLong(jsonObject.get("metaIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaMetaFilter");
-		kparams.add("idIn", this.idIn);
+		kparams.add("objectType", "KalturaAssetStructMetaFilter");
 		kparams.add("assetStructIdEqual", this.assetStructIdEqual);
-		kparams.add("dataTypeEqual", this.dataTypeEqual);
-		kparams.add("multipleValueEqual", this.multipleValueEqual);
+		kparams.add("metaIdEqual", this.metaIdEqual);
 		return kparams;
 	}
 

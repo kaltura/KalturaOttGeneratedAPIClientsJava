@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.MetaDataType;
+import com.kaltura.client.enums.ImageObjectType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,36 +40,33 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Meta filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(MetaFilter.Tokenizer.class)
-public class MetaFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(ImageFilter.Tokenizer.class)
+public class ImageFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String idIn();
-		String assetStructIdEqual();
-		String dataTypeEqual();
-		String multipleValueEqual();
+		String imageObjectIdEqual();
+		String imageObjectTypeEqual();
+		String isDefaultEqual();
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * IDs to filter by
 	 */
 	private String idIn;
 	/**
-	 * Filter Metas that are contained in a specific asset struct
+	 * ID of the object the is related to, to filter by
 	 */
-	private Long assetStructIdEqual;
+	private Long imageObjectIdEqual;
 	/**
-	 * Meta data type to filter by
+	 * Type of the object the image is related to, to filter by
 	 */
-	private MetaDataType dataTypeEqual;
+	private ImageObjectType imageObjectTypeEqual;
 	/**
-	 * Filter metas by multipleValueEqual value
+	 * Filter images that are default on atleast on image type or not default at any
 	 */
-	private Boolean multipleValueEqual;
+	private Boolean isDefaultEqual;
 
 	// idIn:
 	public String getIdIn(){
@@ -83,67 +80,67 @@ public class MetaFilter extends Filter {
 		setToken("idIn", multirequestToken);
 	}
 
-	// assetStructIdEqual:
-	public Long getAssetStructIdEqual(){
-		return this.assetStructIdEqual;
+	// imageObjectIdEqual:
+	public Long getImageObjectIdEqual(){
+		return this.imageObjectIdEqual;
 	}
-	public void setAssetStructIdEqual(Long assetStructIdEqual){
-		this.assetStructIdEqual = assetStructIdEqual;
-	}
-
-	public void assetStructIdEqual(String multirequestToken){
-		setToken("assetStructIdEqual", multirequestToken);
+	public void setImageObjectIdEqual(Long imageObjectIdEqual){
+		this.imageObjectIdEqual = imageObjectIdEqual;
 	}
 
-	// dataTypeEqual:
-	public MetaDataType getDataTypeEqual(){
-		return this.dataTypeEqual;
-	}
-	public void setDataTypeEqual(MetaDataType dataTypeEqual){
-		this.dataTypeEqual = dataTypeEqual;
+	public void imageObjectIdEqual(String multirequestToken){
+		setToken("imageObjectIdEqual", multirequestToken);
 	}
 
-	public void dataTypeEqual(String multirequestToken){
-		setToken("dataTypeEqual", multirequestToken);
+	// imageObjectTypeEqual:
+	public ImageObjectType getImageObjectTypeEqual(){
+		return this.imageObjectTypeEqual;
+	}
+	public void setImageObjectTypeEqual(ImageObjectType imageObjectTypeEqual){
+		this.imageObjectTypeEqual = imageObjectTypeEqual;
 	}
 
-	// multipleValueEqual:
-	public Boolean getMultipleValueEqual(){
-		return this.multipleValueEqual;
-	}
-	public void setMultipleValueEqual(Boolean multipleValueEqual){
-		this.multipleValueEqual = multipleValueEqual;
+	public void imageObjectTypeEqual(String multirequestToken){
+		setToken("imageObjectTypeEqual", multirequestToken);
 	}
 
-	public void multipleValueEqual(String multirequestToken){
-		setToken("multipleValueEqual", multirequestToken);
+	// isDefaultEqual:
+	public Boolean getIsDefaultEqual(){
+		return this.isDefaultEqual;
+	}
+	public void setIsDefaultEqual(Boolean isDefaultEqual){
+		this.isDefaultEqual = isDefaultEqual;
+	}
+
+	public void isDefaultEqual(String multirequestToken){
+		setToken("isDefaultEqual", multirequestToken);
 	}
 
 
-	public MetaFilter() {
+	public ImageFilter() {
 		super();
 	}
 
-	public MetaFilter(JsonObject jsonObject) throws APIException {
+	public ImageFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		assetStructIdEqual = GsonParser.parseLong(jsonObject.get("assetStructIdEqual"));
-		dataTypeEqual = MetaDataType.get(GsonParser.parseString(jsonObject.get("dataTypeEqual")));
-		multipleValueEqual = GsonParser.parseBoolean(jsonObject.get("multipleValueEqual"));
+		imageObjectIdEqual = GsonParser.parseLong(jsonObject.get("imageObjectIdEqual"));
+		imageObjectTypeEqual = ImageObjectType.get(GsonParser.parseString(jsonObject.get("imageObjectTypeEqual")));
+		isDefaultEqual = GsonParser.parseBoolean(jsonObject.get("isDefaultEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaMetaFilter");
+		kparams.add("objectType", "KalturaImageFilter");
 		kparams.add("idIn", this.idIn);
-		kparams.add("assetStructIdEqual", this.assetStructIdEqual);
-		kparams.add("dataTypeEqual", this.dataTypeEqual);
-		kparams.add("multipleValueEqual", this.multipleValueEqual);
+		kparams.add("imageObjectIdEqual", this.imageObjectIdEqual);
+		kparams.add("imageObjectTypeEqual", this.imageObjectTypeEqual);
+		kparams.add("isDefaultEqual", this.isDefaultEqual);
 		return kparams;
 	}
 

@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
+import com.kaltura.client.types.MediaFile;
+import com.kaltura.client.types.MediaFileFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,29 +39,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class MetaService {
+public class MediaFileService {
 	
-	public static class AddMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, AddMetaBuilder> {
+	public static class AddMediaFileBuilder extends RequestBuilder<MediaFile, MediaFile.Tokenizer, AddMediaFileBuilder> {
 		
-		public AddMetaBuilder(Meta meta) {
-			super(Meta.class, "meta", "add");
-			params.add("meta", meta);
+		public AddMediaFileBuilder(MediaFile mediaFile) {
+			super(MediaFile.class, "mediafile", "add");
+			params.add("mediaFile", mediaFile);
 		}
 	}
 
 	/**
-	 * Add a new meta
+	 * Add a new media file
 	 * 
-	 * @param meta Meta Object
+	 * @param mediaFile Media file object
 	 */
-    public static AddMetaBuilder add(Meta meta)  {
-		return new AddMetaBuilder(meta);
+    public static AddMediaFileBuilder add(MediaFile mediaFile)  {
+		return new AddMediaFileBuilder(mediaFile);
 	}
 	
-	public static class DeleteMetaBuilder extends RequestBuilder<Boolean, String, DeleteMetaBuilder> {
+	public static class DeleteMediaFileBuilder extends RequestBuilder<Boolean, String, DeleteMediaFileBuilder> {
 		
-		public DeleteMetaBuilder(long id) {
-			super(Boolean.class, "meta", "delete");
+		public DeleteMediaFileBuilder(long id) {
+			super(Boolean.class, "mediafile", "delete");
 			params.add("id", id);
 		}
 		
@@ -71,41 +71,41 @@ public class MetaService {
 	}
 
 	/**
-	 * Delete an existing meta
+	 * Delete an existing media file
 	 * 
-	 * @param id Meta Identifier
+	 * @param id Media file identifier
 	 */
-    public static DeleteMetaBuilder delete(long id)  {
-		return new DeleteMetaBuilder(id);
+    public static DeleteMediaFileBuilder delete(long id)  {
+		return new DeleteMediaFileBuilder(id);
 	}
 	
-	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
+	public static class ListMediaFileBuilder extends ListResponseRequestBuilder<MediaFile, MediaFile.Tokenizer, ListMediaFileBuilder> {
 		
-		public ListMetaBuilder(MetaFilter filter) {
-			super(Meta.class, "meta", "list");
+		public ListMediaFileBuilder(MediaFileFilter filter) {
+			super(MediaFile.class, "mediafile", "list");
 			params.add("filter", filter);
 		}
 	}
 
-	public static ListMetaBuilder list()  {
+	public static ListMediaFileBuilder list()  {
 		return list(null);
 	}
 
 	/**
-	 * Return a list of metas for the account with optional filter
+	 * Returns a list of media-file
 	 * 
-	 * @param filter Meta filter
+	 * @param filter Filter
 	 */
-    public static ListMetaBuilder list(MetaFilter filter)  {
-		return new ListMetaBuilder(filter);
+    public static ListMediaFileBuilder list(MediaFileFilter filter)  {
+		return new ListMediaFileBuilder(filter);
 	}
 	
-	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
+	public static class UpdateMediaFileBuilder extends RequestBuilder<MediaFile, MediaFile.Tokenizer, UpdateMediaFileBuilder> {
 		
-		public UpdateMetaBuilder(long id, Meta meta) {
-			super(Meta.class, "meta", "update");
+		public UpdateMediaFileBuilder(long id, MediaFile mediaFile) {
+			super(MediaFile.class, "mediafile", "update");
 			params.add("id", id);
-			params.add("meta", meta);
+			params.add("mediaFile", mediaFile);
 		}
 		
 		public void id(String multirequestToken) {
@@ -114,12 +114,12 @@ public class MetaService {
 	}
 
 	/**
-	 * Update an existing meta
+	 * update an existing media file
 	 * 
-	 * @param id Meta identifier
-	 * @param meta Meta
+	 * @param id Media file identifier
+	 * @param mediaFile Media file object
 	 */
-    public static UpdateMetaBuilder update(long id, Meta meta)  {
-		return new UpdateMetaBuilder(id, meta);
+    public static UpdateMediaFileBuilder update(long id, MediaFile mediaFile)  {
+		return new UpdateMediaFileBuilder(id, mediaFile);
 	}
 }

@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.enums.BatchJobStatus;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,47 +39,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum AssetOrderBy implements EnumAsString {
-	RELEVANCY_DESC("RELEVANCY_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC"),
-	VIEWS_DESC("VIEWS_DESC"),
-	RATINGS_DESC("RATINGS_DESC"),
-	VOTES_DESC("VOTES_DESC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	START_DATE_ASC("START_DATE_ASC"),
-	LIKES_DESC("LIKES_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
 
-	private String value;
-
-	AssetOrderBy(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BulkFilter.Tokenizer.class)
+public class BulkFilter extends PersistedFilter {
+	
+	public interface Tokenizer extends PersistedFilter.Tokenizer {
+		String statusEqual();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * dynamicOrderBy - order by Meta
+	 */
+	private BatchJobStatus statusEqual;
+
+	// statusEqual:
+	public BatchJobStatus getStatusEqual(){
+		return this.statusEqual;
+	}
+	public void setStatusEqual(BatchJobStatus statusEqual){
+		this.statusEqual = statusEqual;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void statusEqual(String multirequestToken){
+		setToken("statusEqual", multirequestToken);
 	}
 
-	public static AssetOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over AssetOrderBy defined values and compare the inner value with the given one:
-		for(AssetOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetOrderBy.values().length > 0 ? AssetOrderBy.values()[0]: null;
-   }
+
+	public BulkFilter() {
+		super();
+	}
+
+	public BulkFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		statusEqual = BatchJobStatus.get(GsonParser.parseString(jsonObject.get("statusEqual")));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBulkFilter");
+		kparams.add("statusEqual", this.statusEqual);
+		return kparams;
+	}
+
 }
+

@@ -63,10 +63,8 @@ public abstract class Asset extends ObjectBase {
 		RequestBuilder.MapTokenizer<MultilingualStringValueArray.Tokenizer> tags();
 		String startDate();
 		String endDate();
-		String enableCdvr();
-		String enableCatchUp();
-		String enableStartOver();
-		String enableTrickPlay();
+		String createDate();
+		String updateDate();
 		String externalId();
 	}
 
@@ -126,23 +124,15 @@ public abstract class Asset extends ObjectBase {
 	 */
 	private Long endDate;
 	/**
-	 * Enable cDVR
+	 * Specifies when was the Asset was created. Date and time represented as epoch.
 	 */
-	private Boolean enableCdvr;
+	private Long createDate;
 	/**
-	 * Enable catch-up
+	 * Specifies when was the Asset last updated. Date and time represented as epoch.
 	 */
-	private Boolean enableCatchUp;
+	private Long updateDate;
 	/**
-	 * Enable start over
-	 */
-	private Boolean enableStartOver;
-	/**
-	 * Enable trick-play
-	 */
-	private Boolean enableTrickPlay;
-	/**
-	 * External identifier for the media file
+	 * External identifier for the asset
 	 */
 	private String externalId;
 
@@ -206,18 +196,10 @@ public abstract class Asset extends ObjectBase {
 	public List<MediaImage> getImages(){
 		return this.images;
 	}
-	public void setImages(List<MediaImage> images){
-		this.images = images;
-	}
-
 	// mediaFiles:
 	public List<MediaFile> getMediaFiles(){
 		return this.mediaFiles;
 	}
-	public void setMediaFiles(List<MediaFile> mediaFiles){
-		this.mediaFiles = mediaFiles;
-	}
-
 	// metas:
 	public Map<String, Value> getMetas(){
 		return this.metas;
@@ -258,54 +240,14 @@ public abstract class Asset extends ObjectBase {
 		setToken("endDate", multirequestToken);
 	}
 
-	// enableCdvr:
-	public Boolean getEnableCdvr(){
-		return this.enableCdvr;
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
 	}
-	public void setEnableCdvr(Boolean enableCdvr){
-		this.enableCdvr = enableCdvr;
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
 	}
-
-	public void enableCdvr(String multirequestToken){
-		setToken("enableCdvr", multirequestToken);
-	}
-
-	// enableCatchUp:
-	public Boolean getEnableCatchUp(){
-		return this.enableCatchUp;
-	}
-	public void setEnableCatchUp(Boolean enableCatchUp){
-		this.enableCatchUp = enableCatchUp;
-	}
-
-	public void enableCatchUp(String multirequestToken){
-		setToken("enableCatchUp", multirequestToken);
-	}
-
-	// enableStartOver:
-	public Boolean getEnableStartOver(){
-		return this.enableStartOver;
-	}
-	public void setEnableStartOver(Boolean enableStartOver){
-		this.enableStartOver = enableStartOver;
-	}
-
-	public void enableStartOver(String multirequestToken){
-		setToken("enableStartOver", multirequestToken);
-	}
-
-	// enableTrickPlay:
-	public Boolean getEnableTrickPlay(){
-		return this.enableTrickPlay;
-	}
-	public void setEnableTrickPlay(Boolean enableTrickPlay){
-		this.enableTrickPlay = enableTrickPlay;
-	}
-
-	public void enableTrickPlay(String multirequestToken){
-		setToken("enableTrickPlay", multirequestToken);
-	}
-
 	// externalId:
 	public String getExternalId(){
 		return this.externalId;
@@ -341,10 +283,8 @@ public abstract class Asset extends ObjectBase {
 		tags = GsonParser.parseMap(jsonObject.getAsJsonObject("tags"), MultilingualStringValueArray.class);
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
-		enableCdvr = GsonParser.parseBoolean(jsonObject.get("enableCdvr"));
-		enableCatchUp = GsonParser.parseBoolean(jsonObject.get("enableCatchUp"));
-		enableStartOver = GsonParser.parseBoolean(jsonObject.get("enableStartOver"));
-		enableTrickPlay = GsonParser.parseBoolean(jsonObject.get("enableTrickPlay"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 
 	}
@@ -357,16 +297,10 @@ public abstract class Asset extends ObjectBase {
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("description", this.description);
 		kparams.add("multilingualDescription", this.multilingualDescription);
-		kparams.add("images", this.images);
-		kparams.add("mediaFiles", this.mediaFiles);
 		kparams.add("metas", this.metas);
 		kparams.add("tags", this.tags);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
-		kparams.add("enableCdvr", this.enableCdvr);
-		kparams.add("enableCatchUp", this.enableCatchUp);
-		kparams.add("enableStartOver", this.enableStartOver);
-		kparams.add("enableTrickPlay", this.enableTrickPlay);
 		kparams.add("externalId", this.externalId);
 		return kparams;
 	}

@@ -33,22 +33,24 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum AssetOrderBy implements EnumAsString {
-	RELEVANCY_DESC("RELEVANCY_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC"),
-	VIEWS_DESC("VIEWS_DESC"),
-	RATINGS_DESC("RATINGS_DESC"),
-	VOTES_DESC("VOTES_DESC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	START_DATE_ASC("START_DATE_ASC"),
-	LIKES_DESC("LIKES_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
+public enum BatchJobStatus implements EnumAsString {
+	PENDING("PENDING"),
+	QUEUED("QUEUED"),
+	PROCESSING("PROCESSING"),
+	PROCESSED("PROCESSED"),
+	MOVEFILE("MOVEFILE"),
+	FINISHED("FINISHED"),
+	FAILED("FAILED"),
+	ABORTED("ABORTED"),
+	ALMOST_DONE("ALMOST_DONE"),
+	RETRY("RETRY"),
+	FATAL("FATAL"),
+	DONT_PROCESS("DONT_PROCESS"),
+	FINISHED_PARTIALLY("FINISHED_PARTIALLY");
 
 	private String value;
 
-	AssetOrderBy(String value) {
+	BatchJobStatus(String value) {
 		this.value = value;
 	}
 
@@ -61,19 +63,19 @@ public enum AssetOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static AssetOrderBy get(String value) {
+	public static BatchJobStatus get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over AssetOrderBy defined values and compare the inner value with the given one:
-		for(AssetOrderBy item: values()) {
+		// goes over BatchJobStatus defined values and compare the inner value with the given one:
+		for(BatchJobStatus item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetOrderBy.values().length > 0 ? AssetOrderBy.values()[0]: null;
+		return BatchJobStatus.values().length > 0 ? BatchJobStatus.values()[0]: null;
    }
 }

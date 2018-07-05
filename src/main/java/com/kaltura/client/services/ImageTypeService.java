@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
+import com.kaltura.client.types.ImageType;
+import com.kaltura.client.types.ImageTypeFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,29 +39,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class MetaService {
+public class ImageTypeService {
 	
-	public static class AddMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, AddMetaBuilder> {
+	public static class AddImageTypeBuilder extends RequestBuilder<ImageType, ImageType.Tokenizer, AddImageTypeBuilder> {
 		
-		public AddMetaBuilder(Meta meta) {
-			super(Meta.class, "meta", "add");
-			params.add("meta", meta);
+		public AddImageTypeBuilder(ImageType imageType) {
+			super(ImageType.class, "imagetype", "add");
+			params.add("imageType", imageType);
 		}
 	}
 
 	/**
-	 * Add a new meta
+	 * Add a new image type
 	 * 
-	 * @param meta Meta Object
+	 * @param imageType Image type object
 	 */
-    public static AddMetaBuilder add(Meta meta)  {
-		return new AddMetaBuilder(meta);
+    public static AddImageTypeBuilder add(ImageType imageType)  {
+		return new AddImageTypeBuilder(imageType);
 	}
 	
-	public static class DeleteMetaBuilder extends RequestBuilder<Boolean, String, DeleteMetaBuilder> {
+	public static class DeleteImageTypeBuilder extends RequestBuilder<Boolean, String, DeleteImageTypeBuilder> {
 		
-		public DeleteMetaBuilder(long id) {
-			super(Boolean.class, "meta", "delete");
+		public DeleteImageTypeBuilder(long id) {
+			super(Boolean.class, "imagetype", "delete");
 			params.add("id", id);
 		}
 		
@@ -71,41 +71,41 @@ public class MetaService {
 	}
 
 	/**
-	 * Delete an existing meta
+	 * Delete an existing image type
 	 * 
-	 * @param id Meta Identifier
+	 * @param id Image type ID
 	 */
-    public static DeleteMetaBuilder delete(long id)  {
-		return new DeleteMetaBuilder(id);
+    public static DeleteImageTypeBuilder delete(long id)  {
+		return new DeleteImageTypeBuilder(id);
 	}
 	
-	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
+	public static class ListImageTypeBuilder extends ListResponseRequestBuilder<ImageType, ImageType.Tokenizer, ListImageTypeBuilder> {
 		
-		public ListMetaBuilder(MetaFilter filter) {
-			super(Meta.class, "meta", "list");
+		public ListImageTypeBuilder(ImageTypeFilter filter) {
+			super(ImageType.class, "imagetype", "list");
 			params.add("filter", filter);
 		}
 	}
 
-	public static ListMetaBuilder list()  {
+	public static ListImageTypeBuilder list()  {
 		return list(null);
 	}
 
 	/**
-	 * Return a list of metas for the account with optional filter
+	 * Get the list of image types for the partner
 	 * 
-	 * @param filter Meta filter
+	 * @param filter Filter
 	 */
-    public static ListMetaBuilder list(MetaFilter filter)  {
-		return new ListMetaBuilder(filter);
+    public static ListImageTypeBuilder list(ImageTypeFilter filter)  {
+		return new ListImageTypeBuilder(filter);
 	}
 	
-	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
+	public static class UpdateImageTypeBuilder extends RequestBuilder<ImageType, ImageType.Tokenizer, UpdateImageTypeBuilder> {
 		
-		public UpdateMetaBuilder(long id, Meta meta) {
-			super(Meta.class, "meta", "update");
+		public UpdateImageTypeBuilder(long id, ImageType imageType) {
+			super(ImageType.class, "imagetype", "update");
 			params.add("id", id);
-			params.add("meta", meta);
+			params.add("imageType", imageType);
 		}
 		
 		public void id(String multirequestToken) {
@@ -114,12 +114,12 @@ public class MetaService {
 	}
 
 	/**
-	 * Update an existing meta
+	 * Update an existing image type
 	 * 
-	 * @param id Meta identifier
-	 * @param meta Meta
+	 * @param id Image type ID
+	 * @param imageType Image type object
 	 */
-    public static UpdateMetaBuilder update(long id, Meta meta)  {
-		return new UpdateMetaBuilder(id, meta);
+    public static UpdateImageTypeBuilder update(long id, ImageType imageType)  {
+		return new UpdateImageTypeBuilder(id, imageType);
 	}
 }

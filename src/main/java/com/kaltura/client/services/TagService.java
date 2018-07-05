@@ -27,8 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
+import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.Tag;
+import com.kaltura.client.types.TagFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,29 +40,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class MetaService {
+public class TagService {
 	
-	public static class AddMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, AddMetaBuilder> {
+	public static class AddTagBuilder extends RequestBuilder<Tag, Tag.Tokenizer, AddTagBuilder> {
 		
-		public AddMetaBuilder(Meta meta) {
-			super(Meta.class, "meta", "add");
-			params.add("meta", meta);
+		public AddTagBuilder(Tag tag) {
+			super(Tag.class, "tag", "add");
+			params.add("tag", tag);
 		}
 	}
 
 	/**
-	 * Add a new meta
+	 * Add a new tag
 	 * 
-	 * @param meta Meta Object
+	 * @param tag Tag Object
 	 */
-    public static AddMetaBuilder add(Meta meta)  {
-		return new AddMetaBuilder(meta);
+    public static AddTagBuilder add(Tag tag)  {
+		return new AddTagBuilder(tag);
 	}
 	
-	public static class DeleteMetaBuilder extends RequestBuilder<Boolean, String, DeleteMetaBuilder> {
+	public static class DeleteTagBuilder extends RequestBuilder<Boolean, String, DeleteTagBuilder> {
 		
-		public DeleteMetaBuilder(long id) {
-			super(Boolean.class, "meta", "delete");
+		public DeleteTagBuilder(long id) {
+			super(Boolean.class, "tag", "delete");
 			params.add("id", id);
 		}
 		
@@ -71,41 +72,47 @@ public class MetaService {
 	}
 
 	/**
-	 * Delete an existing meta
+	 * Delete an existing tag
 	 * 
-	 * @param id Meta Identifier
+	 * @param id Tag Identifier
 	 */
-    public static DeleteMetaBuilder delete(long id)  {
-		return new DeleteMetaBuilder(id);
+    public static DeleteTagBuilder delete(long id)  {
+		return new DeleteTagBuilder(id);
 	}
 	
-	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
+	public static class ListTagBuilder extends ListResponseRequestBuilder<Tag, Tag.Tokenizer, ListTagBuilder> {
 		
-		public ListMetaBuilder(MetaFilter filter) {
-			super(Meta.class, "meta", "list");
+		public ListTagBuilder(TagFilter filter, FilterPager pager) {
+			super(Tag.class, "tag", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
-	public static ListMetaBuilder list()  {
+	public static ListTagBuilder list()  {
 		return list(null);
 	}
 
+	public static ListTagBuilder list(TagFilter filter)  {
+		return list(filter, null);
+	}
+
 	/**
-	 * Return a list of metas for the account with optional filter
+	 * Get the list of tags for the partner
 	 * 
-	 * @param filter Meta filter
+	 * @param filter Filter
+	 * @param pager Page size and index
 	 */
-    public static ListMetaBuilder list(MetaFilter filter)  {
-		return new ListMetaBuilder(filter);
+    public static ListTagBuilder list(TagFilter filter, FilterPager pager)  {
+		return new ListTagBuilder(filter, pager);
 	}
 	
-	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
+	public static class UpdateTagBuilder extends RequestBuilder<Tag, Tag.Tokenizer, UpdateTagBuilder> {
 		
-		public UpdateMetaBuilder(long id, Meta meta) {
-			super(Meta.class, "meta", "update");
+		public UpdateTagBuilder(long id, Tag tag) {
+			super(Tag.class, "tag", "update");
 			params.add("id", id);
-			params.add("meta", meta);
+			params.add("tag", tag);
 		}
 		
 		public void id(String multirequestToken) {
@@ -114,12 +121,12 @@ public class MetaService {
 	}
 
 	/**
-	 * Update an existing meta
+	 * Update an existing tag
 	 * 
-	 * @param id Meta identifier
-	 * @param meta Meta
+	 * @param id Tag Identifier
+	 * @param tag Tag Object
 	 */
-    public static UpdateMetaBuilder update(long id, Meta meta)  {
-		return new UpdateMetaBuilder(id, meta);
+    public static UpdateTagBuilder update(long id, Tag tag)  {
+		return new UpdateTagBuilder(id, tag);
 	}
 }

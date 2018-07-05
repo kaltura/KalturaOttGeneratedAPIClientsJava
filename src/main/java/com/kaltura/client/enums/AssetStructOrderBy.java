@@ -33,22 +33,19 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum AssetOrderBy implements EnumAsString {
-	RELEVANCY_DESC("RELEVANCY_DESC"),
+public enum AssetStructOrderBy implements EnumAsString {
 	NAME_ASC("NAME_ASC"),
 	NAME_DESC("NAME_DESC"),
-	VIEWS_DESC("VIEWS_DESC"),
-	RATINGS_DESC("RATINGS_DESC"),
-	VOTES_DESC("VOTES_DESC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	START_DATE_ASC("START_DATE_ASC"),
-	LIKES_DESC("LIKES_DESC"),
+	SYSTEM_NAME_ASC("SYSTEM_NAME_ASC"),
+	SYSTEM_NAME_DESC("SYSTEM_NAME_DESC"),
 	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
+	CREATE_DATE_DESC("CREATE_DATE_DESC"),
+	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
 	private String value;
 
-	AssetOrderBy(String value) {
+	AssetStructOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -61,19 +58,19 @@ public enum AssetOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static AssetOrderBy get(String value) {
+	public static AssetStructOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over AssetOrderBy defined values and compare the inner value with the given one:
-		for(AssetOrderBy item: values()) {
+		// goes over AssetStructOrderBy defined values and compare the inner value with the given one:
+		for(AssetStructOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetOrderBy.values().length > 0 ? AssetOrderBy.values()[0]: null;
+		return AssetStructOrderBy.values().length > 0 ? AssetStructOrderBy.values()[0]: null;
    }
 }

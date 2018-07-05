@@ -27,9 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Meta;
-import com.kaltura.client.types.MetaFilter;
+import com.kaltura.client.types.ContentResource;
+import com.kaltura.client.types.Image;
+import com.kaltura.client.types.ImageFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -39,29 +41,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class MetaService {
+public class ImageService {
 	
-	public static class AddMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, AddMetaBuilder> {
+	public static class AddImageBuilder extends RequestBuilder<Image, Image.Tokenizer, AddImageBuilder> {
 		
-		public AddMetaBuilder(Meta meta) {
-			super(Meta.class, "meta", "add");
-			params.add("meta", meta);
+		public AddImageBuilder(Image image) {
+			super(Image.class, "image", "add");
+			params.add("image", image);
 		}
 	}
 
 	/**
-	 * Add a new meta
+	 * Add a new image
 	 * 
-	 * @param meta Meta Object
+	 * @param image Image
 	 */
-    public static AddMetaBuilder add(Meta meta)  {
-		return new AddMetaBuilder(meta);
+    public static AddImageBuilder add(Image image)  {
+		return new AddImageBuilder(image);
 	}
 	
-	public static class DeleteMetaBuilder extends RequestBuilder<Boolean, String, DeleteMetaBuilder> {
+	public static class DeleteImageBuilder extends RequestBuilder<Boolean, String, DeleteImageBuilder> {
 		
-		public DeleteMetaBuilder(long id) {
-			super(Boolean.class, "meta", "delete");
+		public DeleteImageBuilder(long id) {
+			super(Boolean.class, "image", "delete");
 			params.add("id", id);
 		}
 		
@@ -71,41 +73,41 @@ public class MetaService {
 	}
 
 	/**
-	 * Delete an existing meta
+	 * Delete an existing image
 	 * 
-	 * @param id Meta Identifier
+	 * @param id Image ID
 	 */
-    public static DeleteMetaBuilder delete(long id)  {
-		return new DeleteMetaBuilder(id);
+    public static DeleteImageBuilder delete(long id)  {
+		return new DeleteImageBuilder(id);
 	}
 	
-	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
+	public static class ListImageBuilder extends ListResponseRequestBuilder<Image, Image.Tokenizer, ListImageBuilder> {
 		
-		public ListMetaBuilder(MetaFilter filter) {
-			super(Meta.class, "meta", "list");
+		public ListImageBuilder(ImageFilter filter) {
+			super(Image.class, "image", "list");
 			params.add("filter", filter);
 		}
 	}
 
-	public static ListMetaBuilder list()  {
+	public static ListImageBuilder list()  {
 		return list(null);
 	}
 
 	/**
-	 * Return a list of metas for the account with optional filter
+	 * Get the list of images by different filtering
 	 * 
-	 * @param filter Meta filter
+	 * @param filter Filter
 	 */
-    public static ListMetaBuilder list(MetaFilter filter)  {
-		return new ListMetaBuilder(filter);
+    public static ListImageBuilder list(ImageFilter filter)  {
+		return new ListImageBuilder(filter);
 	}
 	
-	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
+	public static class SetContentImageBuilder extends NullRequestBuilder {
 		
-		public UpdateMetaBuilder(long id, Meta meta) {
-			super(Meta.class, "meta", "update");
+		public SetContentImageBuilder(long id, ContentResource content) {
+			super("image", "setContent");
 			params.add("id", id);
-			params.add("meta", meta);
+			params.add("content", content);
 		}
 		
 		public void id(String multirequestToken) {
@@ -114,12 +116,12 @@ public class MetaService {
 	}
 
 	/**
-	 * Update an existing meta
+	 * Sets the content of an existing image
 	 * 
-	 * @param id Meta identifier
-	 * @param meta Meta
+	 * @param id Image ID
+	 * @param content Content of the image to set
 	 */
-    public static UpdateMetaBuilder update(long id, Meta meta)  {
-		return new UpdateMetaBuilder(id, meta);
+    public static SetContentImageBuilder setContent(long id, ContentResource content)  {
+		return new SetContentImageBuilder(id, content);
 	}
 }
