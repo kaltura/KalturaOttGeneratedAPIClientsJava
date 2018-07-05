@@ -5,6 +5,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.types.*;
+import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -12,54 +13,42 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Optional;
+
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.enums.KsqlKey.NAME;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
-import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
-import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
-import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
-import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelFilterTests extends BaseTest {
 
     private MediaAsset asset1, asset2, asset3;
-    private ProgramAsset program;
-    private String masterUserKs;
+    private ProgramAsset program1;
     private Channel channel;
 
 
     @BeforeClass
     private void asset_list_channelFilter_before_class() {
         // ingest movie
-        VodData movieData = new VodData()
-                .mediaType(MediaType.MOVIE);
-        asset1 = insertVod(movieData);
+        asset1 = getAssets(1, Optional.of(MediaType.MOVIE)).get(0);
 
         // ingest series
-        VodData seriesData = new VodData()
-                .mediaType(MediaType.SERIES)
-                .isVirtual(true);
-        asset2 = insertVod(seriesData);
+        asset2 = getVirtualAssets(1, Optional.of(MediaType.SERIES)).get(0);
 
         // ingest episode
-        VodData episodeData = new VodData()
-                .mediaType(MediaType.EPISODE);
-        asset3 = insertVod(episodeData);
+        asset3 = getAssets(1, Optional.of(MediaType.EPISODE)).get(0);
 
         // ingest epg
-        EpgData epgData = new EpgData(getSharedEpgChannelName())
-                .episodesNum(1);
-        program = insertEpg(epgData).get(0);
+        program1 = getPrograms(1).get(0);
 
         // add assets to channel query
         String query = new KsqlBuilder()
                 .openOr()
-                    .equal(NAME.getValue(), program.getName())
                     .equal(NAME.getValue(), asset1.getName())
                     .equal(NAME.getValue(), asset2.getName())
                     .equal(NAME.getValue(), asset3.getName())
+                    .equal(NAME.getValue(), program1.getName())
                 .closeOr()
                 .toString();
 
@@ -72,16 +61,12 @@ public class ChannelFilterTests extends BaseTest {
 
         channel = executor.executeSync(ChannelService.add(channel)
                 .setKs(getOperatorKs())).results;
-
-        // create household
-        Household household = createHousehold();
-        masterUserKs = getHouseholdMasterUserKs(household);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - vod - channelFilter - idEqual")
+    @Description("asset/action/list - channelFilter - idEqual")
     @Test
-    private void list_vod_assets_with_channelFilter_by_channelId() {
+    private void list_assets_with_channelFilter_by_channelId() {
         // set channelFilter
         ChannelFilter filter = new ChannelFilter();
         filter.setIdEqual(Math.toIntExact(channel.getId()));
@@ -93,18 +78,18 @@ public class ChannelFilterTests extends BaseTest {
         // assert response
         assertThat(assetListResponse.getTotalCount()).isEqualTo(4);
         assertThat(assetListResponse.getObjects()).extracting("id")
-                .containsExactlyInAnyOrder(asset1.getId(), asset2.getId(), asset3.getId(), program.getId());
+                .containsExactlyInAnyOrder(asset1.getId(), asset2.getId(), asset3.getId(), program1.getId());
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("asset/action/list - vod - channelFilter - idEqual and KSql")
+    @Description("asset/action/list - channelFilter - idEqual and KSql")
     @Test
-    private void list_vod_assets_with_channelFilter_by_channelId_and_ksql() {
+    private void list_assets_with_channelFilter_by_channelId_and_ksql() {
         // build query
         String query =  new KsqlBuilder()
                 .openOr()
                     .equal(NAME.getValue(), asset1.getName())
-                    .equal(NAME.getValue(), program.getName())
+                    .equal(NAME.getValue(), program1.getName())
                 .closeOr()
                 .toString();
 
@@ -120,19 +105,31 @@ public class ChannelFilterTests extends BaseTest {
         // assert response
         assertThat(assetListResponse.getTotalCount()).isEqualTo(2);
         assertThat(assetListResponse.getObjects()).extracting("id")
-                .containsExactlyInAnyOrder(asset1.getId(), program.getId());
+                .containsExactlyInAnyOrder(asset1.getId(), program1.getId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list  - with invalid channelId")
+    @Test
+    private void list_vod_assets_with_channelFilter_by_channelId_and_ksql() {
+        // set channelFilter
+        int invalidChannelId = 1;
+        ChannelFilter filter = new ChannelFilter();
+        filter.setIdEqual(invalidChannelId);
+
+        // get list
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(filter)
+                .setKs(getAnonymousKs()));
+
+        // assert response
+        assertThat(assetListResponse.results).isNull();
+        assertThat(assetListResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4018).getCode());
     }
 
     @AfterClass
     private void asset_list_channelFilter_after_class() {
-        // delete ingests
-        deleteVod(asset1.getName());
-        deleteVod(asset2.getName());
-        deleteVod(asset3.getName());
-
         // delete channel
         executor.executeSync(ChannelService.delete(Math.toIntExact(channel.getId()))
                 .setKs(getOperatorKs()));
     }
-
 }

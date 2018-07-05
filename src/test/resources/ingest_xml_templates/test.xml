@@ -1,0 +1,30 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <IngestTvinciDataResponse xmlns="http://tempuri.org/">
+            <IngestTvinciDataResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <IngestStatus xmlns="" xmlns:a="http://schemas.datacontract.org/2004/07/ApiObjects.Response">
+                    <a:Args i:nil="true" xmlns:b="http://schemas.datacontract.org/2004/07/ApiObjects"/>
+                    <a:Code>0</a:Code>
+                    <a:Message>OK</a:Message>
+                </IngestStatus>
+                <status xmlns="">OK</status>
+                <description xmlns=""/>
+                <assetID xmlns="">18070413420791</assetID>
+                <tvmID xmlns="">636429</tvmID>
+                <AssetsStatus xmlns="" xmlns:a="http://schemas.datacontract.org/2004/07/ApiObjects">
+                    <a:IngestAssetStatus>
+                        <a:EntryID>entry_18070413420791</a:EntryID>
+                        <a:ExternalAssetId>18070413420791</a:ExternalAssetId>
+                        <a:InternalAssetId>636429</a:InternalAssetId>
+                        <a:Status xmlns:b="http://schemas.datacontract.org/2004/07/ApiObjects.Response">
+                            <b:Args i:nil="true"/>
+                            <b:Code>0</b:Code>
+                            <b:Message>OK</b:Message>
+                        </a:Status>
+                        <a:Warnings xmlns:b="http://schemas.datacontract.org/2004/07/ApiObjects.Response"/>
+                    </a:IngestAssetStatus>
+                </AssetsStatus>
+            </IngestTvinciDataResult>
+        </IngestTvinciDataResponse>
+    </s:Body>
+</s:Envelope>

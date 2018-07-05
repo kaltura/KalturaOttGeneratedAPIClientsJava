@@ -139,12 +139,16 @@ public class BaseUtils {
     }
 
     // Get concatenated string
-    public static String getConcatenatedString(String... args) {
-        List<String> assetIds = new ArrayList<>();
-        for (String arg : args) {
-            assetIds.add(arg);
+    public static String getConcatenatedString(String... strings) {
+        List<String> list = new ArrayList<>();
+        for (String arg : strings) {
+            list.add(arg);
         }
-        return String.join(",", assetIds);
+        return String.join(",", list);
+    }
+
+    public static String getConcatenatedString(List<String> strings) {
+        return String.join(",", strings);
     }
 
     public static String getFileContent(String filePath) {

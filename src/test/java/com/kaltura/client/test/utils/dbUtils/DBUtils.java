@@ -7,6 +7,7 @@ import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.types.MediaAsset;
 import com.kaltura.client.types.PricePlan;
+import com.kaltura.client.types.ProgramAsset;
 import com.kaltura.client.types.SearchAssetFilter;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
@@ -237,10 +238,11 @@ public class DBUtils extends BaseUtils {
                 .getJSONObject(0);
     }
 
-    public static List<MediaAsset> getAssets(int numOfAssets, boolean isVirtual, Optional<MediaType> mediaType) {
+    public static List<MediaAsset> getAssets(int numOfAssets, Optional<MediaType> mediaType) {
         JSONArray jsonArray;
-        if (isVirtual) {
-            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT, numOfAssets, partnerId + 2);
+        if (mediaType.isPresent()) {
+            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT_WITH_MEDIA_TYPE, numOfAssets, partnerId + 1,
+                    mediaType.get().getValue());
         } else {
             jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT, numOfAssets, partnerId + 1);
         }
@@ -257,5 +259,45 @@ public class DBUtils extends BaseUtils {
         SearchAssetFilter filter = new SearchAssetFilter();
         filter.setKSql(query);
         return (List<MediaAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+    }
+
+    public static List<MediaAsset> getVirtualAssets(int numOfAssets, Optional<MediaType> mediaType) {
+        JSONArray jsonArray;
+        if (mediaType.isPresent()) {
+            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT_WITH_MEDIA_TYPE, numOfAssets, partnerId + 2,
+                    mediaType.get().getValue());
+        } else {
+            jsonArray = getJsonArrayFromQueryResult(ASSETS_SELECT, numOfAssets, partnerId + 2);
+        }
+
+        KsqlBuilder builder = new KsqlBuilder();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            builder.equal(KsqlKey.NAME.getValue(), jsonArray.getJSONObject(i).getString("name"));
+        }
+
+        String query = new KsqlBuilder()
+                .or(builder.toString())
+                .toString();
+
+        SearchAssetFilter filter = new SearchAssetFilter();
+        filter.setKSql(query);
+        return (List<MediaAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+    }
+
+    public static List<ProgramAsset> getPrograms(int numOfPrograms) {
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PROGRAMS_SELECT, numOfPrograms, partnerId + 1);
+
+        KsqlBuilder builder = new KsqlBuilder();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            builder.equal(KsqlKey.NAME.getValue(), jsonArray.getJSONObject(i).getString("name"));
+        }
+
+        String query = new KsqlBuilder()
+                .or(builder.toString())
+                .toString();
+
+        SearchAssetFilter filter = new SearchAssetFilter();
+        filter.setKSql(query);
+        return (List<ProgramAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
     }
 }

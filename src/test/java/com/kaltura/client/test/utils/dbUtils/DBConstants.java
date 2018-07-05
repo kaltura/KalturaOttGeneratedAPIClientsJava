@@ -184,16 +184,23 @@ public class DBConstants {
 
     static final String USER_BY_ID_SELECT = "SELECT * from [Users].[dbo].[users] where group_id = ? and ID = ?";
 
+    static final String PROGRAMS_SELECT = "SELECT top (?) NAME " +
+            "FROM [TVinci].[dbo].[epg_channels_schedule] " +
+            "where status = 1 " +
+            "and is_active = 1 " +
+            "and group_id = ? " +
+            "order by id desc";
+
     static final String ASSETS_SELECT = "SELECT top (?) NAME FROM [TVinci].[dbo].[media] where group_id = ? and status = 1 and is_Active = 1 order by id desc";
 
     static final String ASSETS_SELECT_WITH_MEDIA_TYPE = "SELECT top (?) m.ID, m.NAME, m.MEDIA_TYPE_ID, mt.NAME " +
-            "FROM [TVinci].[dbo].[media] m" +
+            "FROM [TVinci].[dbo].[media] m " +
             "inner join [TVinci].[dbo].[media_types] mt " +
-            "on m.MEDIA_TYPE_ID = mt.ID" +
-            "where m.group_id = ?" +
-            "and m.status = 1" +
-            "and m.is_Active = 1" +
-            "and mt.NAME = ?" +
+            "on m.MEDIA_TYPE_ID = mt.ID " +
+            "where m.group_id = ? " +
+            "and m.status = 1 " +
+            "and m.is_Active = 1 " +
+            "and mt.NAME = ? " +
             "order by m.id desc";
 
 

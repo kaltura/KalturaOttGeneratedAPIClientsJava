@@ -13,7 +13,8 @@ public enum KsqlKey implements EnumAsString {
     EPG_CHANNEL_ID("epg_channel_id"),
     EPG_ID("epg_id"),
     MEDIA_ID("media_id"),
-    ENTITLED_ASSETS("entitled_assets");
+    ENTITLED_ASSETS("entitled_assets"),
+    ASSET_TYPE("asset_type");
 
     private String value;
 
