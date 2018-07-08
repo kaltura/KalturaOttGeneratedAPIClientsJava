@@ -4,6 +4,7 @@ import com.kaltura.client.enums.AssetCommentOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.services.AssetCommentService;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.AssetCommentUtils;
 import com.kaltura.client.types.AssetComment;
 import com.kaltura.client.types.AssetCommentFilter;
@@ -17,8 +18,8 @@ import org.testng.annotations.Test;
 import static com.kaltura.client.services.AssetCommentService.ListAssetCommentBuilder;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.HouseholdUtils.getHouseholdMasterUserKs;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssetCommentListTests extends BaseTest {
@@ -44,7 +45,7 @@ public class AssetCommentListTests extends BaseTest {
         String text = "A lot of text";
 
         VodData vodData = new VodData()
-                .mediaType(MOVIE_MEDIA_TYPE);
+                .mediaType(MediaType.MOVIE);
         Long assetId = insertVod(vodData).getId();
 
         // Initialize assetComment object

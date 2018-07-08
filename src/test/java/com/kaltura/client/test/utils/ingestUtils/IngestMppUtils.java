@@ -52,11 +52,11 @@ public class IngestMppUtils extends BaseIngestUtils {
     @Accessors(fluent = true)
     @Data
     public static class MppData {
-        private boolean isActive = true;
-        private boolean isRenewable = false;
-
+        @Setter(AccessLevel.NONE) private boolean isActive = true;
         @Setter(AccessLevel.NONE) private String mppCode;
         @Setter(AccessLevel.NONE) private String title;
+
+        private boolean isRenewable = false;
 
         private String description;
         private String startDate;

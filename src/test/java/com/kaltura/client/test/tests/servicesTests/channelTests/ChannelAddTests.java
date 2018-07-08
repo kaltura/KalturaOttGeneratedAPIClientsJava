@@ -4,6 +4,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.ChannelUtils;
@@ -21,9 +22,8 @@ import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import static com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelAddTests extends BaseTest {
@@ -65,13 +65,13 @@ public class ChannelAddTests extends BaseTest {
         // Ingest first asset
         VodData vodData = new VodData()
                 .name(asset1Name)
-                .mediaType(MOVIE_MEDIA_TYPE);
+                .mediaType(MediaType.MOVIE);
         MediaAsset movieAsset = insertVod(vodData);
 
         // Ingest second asset
         VodData vodData1 = new VodData()
                 .name(asset2Name)
-                .mediaType(EPISODE_MEDIA_TYPE);
+                .mediaType(MediaType.EPISODE);
         MediaAsset episodeAsset = insertVod(vodData1);
 
         filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";

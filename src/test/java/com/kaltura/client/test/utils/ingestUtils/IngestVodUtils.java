@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.response.Response;
@@ -34,16 +35,16 @@ import static org.awaitility.Awaitility.await;
 
 public class IngestVodUtils extends BaseIngestUtils {
 
-    private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.";
-    private static final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
-    private static final String ingestAssetIdPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus.InternalAssetId";
+    private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.";
+    private static final String ingestStatusMessagePath = ingestDataResultPath + "Status.Message";
+    private static final String ingestAssetIdPath = ingestDataResultPath + "InternalAssetId";
 
     @Accessors(fluent = true)
     @Data
     public static class VodData {
         @Setter(AccessLevel.NONE) private String coguid;
+        @Setter(AccessLevel.NONE) private boolean isActive = true;
 
-        private boolean isActive = true;
         private boolean isVirtual = false;
 
         private String name;
@@ -53,10 +54,10 @@ public class IngestVodUtils extends BaseIngestUtils {
         private String catalogEndDate;
         private String startDate;
         private String endDate;
-        private String mediaType;
         private String ppvWebName;
         private String ppvMobileName;
         private String geoBlockRule;
+        private MediaType mediaType;
 
         private Map<String, List<String>> tags;
         private Map<String, String> strings;
@@ -82,7 +83,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         if (vodData.catalogEndDate == null) { vodData.catalogEndDate = endDateValue; }
         if (vodData.startDate == null) { vodData.startDate = offsetDateValue; }
         if (vodData.endDate == null) { vodData.endDate = endDateValue; }
-        if (vodData.mediaType == null) { vodData.mediaType = MOVIE_MEDIA_TYPE; }
+        if (vodData.mediaType == null) { vodData.mediaType = MediaType.MOVIE; }
         if (vodData.ppvWebName == null) { vodData.ppvWebName = ppvModuleName; }
         if (vodData.ppvMobileName == null) { vodData.ppvMobileName = ppvModuleName; }
         if (vodData.tags == null) { vodData.tags = getDefaultTags(); }
@@ -205,7 +206,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // media type
-        media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType());
+        media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType().getValue());
 
         // geo block rule
         media.getElementsByTagName("geo_block_rule").item(0).setTextContent(vodData.geoBlockRule());

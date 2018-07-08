@@ -23,9 +23,17 @@ import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
 public class HouseholdUtils extends BaseUtils {
 
-    // create household
-    public static Household createHousehold(int numberOfUsersInHoushold, int numberOfDevicesInHousehold, boolean isPreparePG) {
+    // default household params
+    private static final int defaultNumOfUsers = 2;
+    private static final int defaultNumOfDevices = 1;
+    private static final boolean defaultIsPreparePG = true;
 
+    // create household with default params
+    public static Household createHousehold() {
+        return createHousehold(defaultNumOfUsers, defaultNumOfDevices, defaultIsPreparePG);
+    }
+
+    public static Household createHousehold(int numOfUsers, int numOfDevices, boolean isPreparePG) {
         // register master user
         RegisterOttUserBuilder registerOttUserBuilder = register(partnerId, generateOttUser(), defaultUserPassword);
         OTTUser masterUser = executor.executeSync(registerOttUserBuilder).results;
@@ -46,7 +54,7 @@ public class HouseholdUtils extends BaseUtils {
         household = executor.executeSync(addHouseholdBuilder).results;
 
         // add additional users to household
-        for (int i = 0; i < numberOfUsersInHoushold; i++) {
+        for (int i = 0; i < numOfUsers; i++) {
             // register additional user
             registerOttUserBuilder = register(partnerId, generateOttUser(), defaultUserPassword);
             OTTUser additionalUser = executor.executeSync(registerOttUserBuilder).results;
@@ -62,7 +70,7 @@ public class HouseholdUtils extends BaseUtils {
         }
 
         // add household devices
-        for (int i = 0; i < numberOfDevicesInHousehold; i++) {
+        for (int i = 0; i < numOfDevices; i++) {
             // create household device
             HouseholdDevice householdDevice = generateHouseholdDevice();
 

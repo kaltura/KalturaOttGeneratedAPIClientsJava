@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -63,6 +64,10 @@ public class BaseUtils {
         calendar.add(Calendar.MINUTE, offSetInMinutes);
 
         return calendar.getTimeInMillis() / 1000;
+    }
+
+    public static long getTimeInEpoch() {
+        return Instant.now().toEpochMilli();
     }
 
     // generate current data String in specified format
@@ -134,12 +139,16 @@ public class BaseUtils {
     }
 
     // Get concatenated string
-    public static String getConcatenatedString(String... args) {
-        List<String> assetIds = new ArrayList<>();
-        for (String arg : args) {
-            assetIds.add(arg);
+    public static String getConcatenatedString(String... strings) {
+        List<String> list = new ArrayList<>();
+        for (String arg : strings) {
+            list.add(arg);
         }
-        return String.join(",", assetIds);
+        return String.join(",", list);
+    }
+
+    public static String getConcatenatedString(List<String> strings) {
+        return String.join(",", strings);
     }
 
     public static String getFileContent(String filePath) {

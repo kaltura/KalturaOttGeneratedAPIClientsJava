@@ -4,6 +4,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.PurchaseUtils;
@@ -28,13 +29,11 @@ import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.Properties.MOVIE_MEDIA_TYPE_ID;
 import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
-import static com.kaltura.client.test.tests.enums.KsqlKeys.ENTITLED_ASSETS;
-import static com.kaltura.client.test.tests.enums.KsqlKeys.MEDIA_ID;
+import static com.kaltura.client.test.tests.enums.KsqlKey.ENTITLED_ASSETS;
+import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.EPISODE_MEDIA_TYPE;
-import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.MOVIE_MEDIA_TYPE;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
@@ -55,7 +54,7 @@ public class SearchAssetFilterTests extends BaseTest {
 
 
     @BeforeClass
-    private void asset_list_before_class() {
+    private void asset_list_searchAssetFilter_before_class() {
         // Get asset from shared asset method
         tagValue = getRandomValue(tagName + "_", 999999);
 
@@ -78,12 +77,12 @@ public class SearchAssetFilterTests extends BaseTest {
 
         // ingest asset 1
         VodData vodData1 = new VodData()
-                .mediaType(MOVIE_MEDIA_TYPE);
+                .mediaType(MediaType.MOVIE);
         asset = insertVod(vodData1);
 
         // ingest asset 2
         VodData vodData2 = new VodData()
-                .mediaType(MOVIE_MEDIA_TYPE)
+                .mediaType(MediaType.MOVIE)
                 .catalogStartDate(getTimeInDate(-100))
                 .tags(tagMap)
                 .strings(stringMetaMap1);
@@ -91,7 +90,7 @@ public class SearchAssetFilterTests extends BaseTest {
 
         // ingest asset 3
         VodData vodData3 = new VodData()
-                .mediaType(EPISODE_MEDIA_TYPE)
+                .mediaType(MediaType.EPISODE)
                 .catalogStartDate(getTimeInDate(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
@@ -109,7 +108,6 @@ public class SearchAssetFilterTests extends BaseTest {
         masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household);
 
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(asset.getId().intValue()), Optional.empty(), Optional.empty());
-
     }
 
     // Filter by KSQL

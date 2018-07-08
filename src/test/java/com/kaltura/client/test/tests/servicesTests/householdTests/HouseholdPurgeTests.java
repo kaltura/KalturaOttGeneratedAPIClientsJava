@@ -22,8 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HouseholdPurgeTests extends BaseTest {
 
-    private final int numberOfUsersInHousehold = 1;
-    private final int numberOfDevicesInHousehold = 1;
+    private final int numbOfUsers = 1;
+    private final int numbOfDevices = 1;
 
 
     @Severity(SeverityLevel.CRITICAL)
@@ -31,7 +31,7 @@ public class HouseholdPurgeTests extends BaseTest {
     @Test()
     private void purge_active_household() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numbOfUsers, numbOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // assert relevant statuses in db before purge
@@ -67,7 +67,7 @@ public class HouseholdPurgeTests extends BaseTest {
     @Test()
     private void purge_deleted_household() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numbOfUsers, numbOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // delete household before purge
@@ -106,7 +106,7 @@ public class HouseholdPurgeTests extends BaseTest {
     @Test()
     private void purge_after_delete_user() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numbOfUsers, numbOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
@@ -152,7 +152,7 @@ public class HouseholdPurgeTests extends BaseTest {
     @Test()
     private void purge_after_remove_user_from_household() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numbOfUsers, numbOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 
@@ -197,7 +197,7 @@ public class HouseholdPurgeTests extends BaseTest {
     @Test()
     private void purge_on_suspended_household() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numbOfUsers, numbOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // suspend household before purge
@@ -236,7 +236,7 @@ public class HouseholdPurgeTests extends BaseTest {
     @Test()
     private void purge_after_delete_user_and_household() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numbOfUsers, numbOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
         HouseholdUser user = HouseholdUtils.getRegularUsersList(household).get(0);
 

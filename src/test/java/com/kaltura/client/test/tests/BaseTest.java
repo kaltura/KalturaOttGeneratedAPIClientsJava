@@ -63,7 +63,8 @@ public class BaseTest {
     private static String administratorKs, operatorKs, managerKs, anonymousKs;
 
     // shared ingest users data
-    private static String ingestAssetUserUsername, ingestAssetUserPassword, ingestBusinessModuleUserUsername, ingestBusinessModuleUserPassword;
+    private static String ingestAssetUserUsername, ingestAssetUserPassword, ingestBusinessModuleUserUsername,
+            ingestBusinessModuleUserPassword, ingestVirtualAssetUserUsername, ingestVirtualAssetUserPassword;
 
     // shared VOD
     private static MediaAsset mediaAsset;
@@ -285,21 +286,21 @@ public class BaseTest {
     }
 
     public static String getIngestVirualAssetUserName() {
-        if (ingestAssetUserUsername == null) {
+        if (ingestVirtualAssetUserUsername == null) {
             String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
-            ingestAssetUserUsername = userInfo.split(":")[0];
-            ingestAssetUserPassword = userInfo.split(":")[1];
+            ingestVirtualAssetUserUsername = userInfo.split(":")[0];
+            ingestVirtualAssetUserPassword = userInfo.split(":")[1];
         }
-        return ingestAssetUserUsername;
+        return ingestVirtualAssetUserUsername;
     }
 
     public static String getIngestVirualAssetUserPassword() {
-        if (ingestAssetUserPassword == null) {
+        if (ingestVirtualAssetUserPassword == null) {
             String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
-            ingestAssetUserUsername = userInfo.split(":")[0];
-            ingestAssetUserPassword = userInfo.split(":")[1];
+            ingestVirtualAssetUserUsername = userInfo.split(":")[0];
+            ingestVirtualAssetUserPassword = userInfo.split(":")[1];
         }
-        return ingestAssetUserPassword;
+        return ingestVirtualAssetUserPassword;
     }
 
     // getters for shared params

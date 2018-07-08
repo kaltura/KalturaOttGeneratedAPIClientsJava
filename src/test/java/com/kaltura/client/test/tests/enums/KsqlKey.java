@@ -2,8 +2,9 @@ package com.kaltura.client.test.tests.enums;
 
 import com.kaltura.client.enums.EnumAsString;
 
-public enum KsqlKeys implements EnumAsString {
+public enum KsqlKey implements EnumAsString {
 
+    NAME("name"),
     START_DATE("start_date"),
     END_DATE("end_date"),
     GEO_BLOCK("geo_block"),
@@ -12,11 +13,12 @@ public enum KsqlKeys implements EnumAsString {
     EPG_CHANNEL_ID("epg_channel_id"),
     EPG_ID("epg_id"),
     MEDIA_ID("media_id"),
-    ENTITLED_ASSETS("entitled_assets");
+    ENTITLED_ASSETS("entitled_assets"),
+    ASSET_TYPE("asset_type");
 
     private String value;
 
-    KsqlKeys(String value) {
+    KsqlKey(String value) {
         this.value = value;
     }
 
@@ -29,18 +31,18 @@ public enum KsqlKeys implements EnumAsString {
         this.value = value;
     }
 
-    public static KsqlKeys get(String value) {
+    public static KsqlKey get(String value) {
         if(value == null) {
             return null;
         }
 
         // goes over Currency defined values and compare the inner value with the given one:
-        for(KsqlKeys item: values()) {
+        for(KsqlKey item: values()) {
             if(item.getValue().equals(value)) {
                 return item;
             }
         }
         // in case the requested value was not found in the enum values, we return the first item as default.
-        return Currency.values().length > 0 ? KsqlKeys.values()[0]: null;
+        return Currency.values().length > 0 ? KsqlKey.values()[0]: null;
     }
 }

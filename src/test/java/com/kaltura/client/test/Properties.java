@@ -96,4 +96,3 @@ public class Properties {
 // TODO: 3/12/2018 open conference page with all the documentation problems
 // TODO: 12/MAR/2018 decide if we need that autoskip logic for tests with known opened bugs:
 // https://dzone.com/articles/how-to-automatically-skip-tests-based-on-defects-s
-// TODO: 3/19/2018 update readme file with project structure and list of services
