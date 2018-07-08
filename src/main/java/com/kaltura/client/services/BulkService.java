@@ -69,10 +69,10 @@ public class BulkService {
 		return new ListBulkBuilder(filter, pager);
 	}
 	
-	public static class ServeLog BulkBuilder extends RequestBuilder<Bulk, Bulk.Tokenizer, ServeLog BulkBuilder> {
+	public static class ServeLogBulkBuilder extends RequestBuilder<Bulk, Bulk.Tokenizer, ServeLogBulkBuilder> {
 		
-		public ServeLog BulkBuilder(long id) {
-			super(Bulk.class, "bulk", "serveLog ");
+		public ServeLogBulkBuilder(long id) {
+			super(Bulk.class, "bulk", "serveLog");
 			params.add("id", id);
 		}
 		
@@ -86,7 +86,7 @@ public class BulkService {
 	 * 
 	 * @param id bulk action id
 	 */
-    public static ServeLog BulkBuilder serveLog (long id)  {
-		return new ServeLog BulkBuilder(id);
+    public static ServeLogBulkBuilder serveLog(long id)  {
+		return new ServeLogBulkBuilder(id);
 	}
 }
