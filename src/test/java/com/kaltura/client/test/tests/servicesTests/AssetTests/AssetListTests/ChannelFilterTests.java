@@ -30,16 +30,16 @@ public class ChannelFilterTests extends BaseTest {
 
     @BeforeClass
     private void asset_list_channelFilter_before_class() {
-        // ingest movie
+        // get movie
         asset1 = getAssets(1, Optional.of(MediaType.MOVIE)).get(0);
 
-        // ingest series
+        // get series
         asset2 = getVirtualAssets(1, Optional.of(MediaType.SERIES)).get(0);
 
-        // ingest episode
+        // get episode
         asset3 = getAssets(1, Optional.of(MediaType.EPISODE)).get(0);
 
-        // ingest epg
+        // get epg
         program1 = getPrograms(1).get(0);
 
         // add assets to channel query

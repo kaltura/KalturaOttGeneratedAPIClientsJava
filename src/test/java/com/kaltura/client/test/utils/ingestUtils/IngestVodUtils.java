@@ -206,7 +206,9 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // media type
-        media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType().getValue());
+        if (action.equals(INGEST_ACTION_INSERT)) {
+            media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType().getValue());
+        }
 
         // geo block rule
         media.getElementsByTagName("geo_block_rule").item(0).setTextContent(vodData.geoBlockRule());

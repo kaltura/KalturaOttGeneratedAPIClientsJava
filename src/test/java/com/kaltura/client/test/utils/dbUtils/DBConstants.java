@@ -125,12 +125,17 @@ public class DBConstants {
             "and s.group_id=? and s.is_active=1 and s.[status]=1 and s.[type]=0 and sc.is_active=1 and sc.[status]=1\n" +
             "order by s.create_date desc";
 
-    static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) SUBSCRIPTION_ID as " + SUB_ID +
-            ", SERVICE_ID as " + SERV_ID + "\n" +
-            "FROM [Pricing].[dbo].[subscriptions] s\n" +
-            "INNER JOIN [Pricing].[dbo].[subscriptions_services] ss\n" +
-            "ON s.ID = SS.SUBSCRIPTION_ID\n" +
-            "where s.group_id=?";
+    static final String SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT = "select TOP (1) " +
+            "SUBSCRIPTION_ID as " + SUB_ID + ", " +
+            "SERVICE_ID as " + SERV_ID + " " +
+            "FROM [Pricing].[dbo].[subscriptions] s " +
+            "INNER JOIN [Pricing].[dbo].[subscriptions_services] ss " +
+            "ON s.ID = SS.SUBSCRIPTION_ID " +
+            "where s.group_id = ? " +
+            "and s.IS_ACTIVE = 1 " +
+            "and s.status = 1 " +
+            "and ss.STATUS = 1 " +
+            "and ss.SERVICE_ID = ?";
 
     static final String COLLECTION_SELECT = "select top 1 * from [Pricing].[dbo].[collections]\n" +
             "where [status]=1 and is_active=1\n" +
@@ -202,6 +207,8 @@ public class DBConstants {
             "and m.is_Active = 1 " +
             "and mt.NAME = ? " +
             "order by m.id desc";
+
+    static final String MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where GROUP_ID = ? and name = ?";
 
 
     // STORED PROCEDURES:

@@ -43,7 +43,7 @@ import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
-    public static final boolean LOG_HEADERS = false;
+    public static final boolean LOG_HEADERS = true;
 
     public static Client client;
     public static Configuration config;

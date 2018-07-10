@@ -20,6 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kaltura.client.test.Properties.API_VERSION;
 import static com.kaltura.client.test.Properties.getProperty;
+import static com.kaltura.client.test.tests.BaseTest.config;
+import static io.restassured.RestAssured.given;
 
 public class BaseUtils {
 
@@ -180,5 +182,10 @@ public class BaseUtils {
         } else {
             Logger.getLogger(BaseUtils.class).error("Failed to delete the file: " + filePath);
         }
+    }
+
+    public static void clearCache() {
+        String url = config.getEndpoint() + "/clear_cache.aspx";
+        given().queryParam("action", "clear_all").get(url);
     }
 }

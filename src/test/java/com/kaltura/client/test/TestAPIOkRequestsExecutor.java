@@ -61,7 +61,7 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
 //        logger.debug("response body:\n" + responseElement.getResponse()); // was found in base class
 
         if (LOG_HEADERS) {
-            logger.debug("response headers:\n" + okhttpResponse.headers());
+            logger.debug("Session: " + okhttpResponse.headers().get("X-Kaltura-Session"));
         }
 
         if (responseElement.isSuccess()) {

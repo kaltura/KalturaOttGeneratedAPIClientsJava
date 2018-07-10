@@ -4,11 +4,9 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.PurchaseUtils;
-import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -26,14 +24,16 @@ import java.util.Optional;
 
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.AssetService.list;
-import static com.kaltura.client.test.Properties.MOVIE_MEDIA_TYPE_ID;
-import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.tests.enums.KsqlKey.ENTITLED_ASSETS;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
+import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
+import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
@@ -71,18 +71,18 @@ public class SearchAssetFilterTests extends BaseTest {
         HashMap<String, String> stringMetaMap2 = new HashMap<>();
         stringMetaMap2.put(metaName, metaValue2);
 
-        JSONArray ja = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray();
+        JSONArray ja = getLinearAssetIdAndEpgChannelNameJsonArray();
         String epgChannelName = ja.getJSONObject(0).getString("name");
         String epgChannelName2 = ja.getJSONObject(1).getString("name");
 
         // ingest asset 1
         VodData vodData1 = new VodData()
-                .mediaType(MediaType.MOVIE);
+                .mediaType(MOVIE);
         asset = insertVod(vodData1);
 
         // ingest asset 2
         VodData vodData2 = new VodData()
-                .mediaType(MediaType.MOVIE)
+                .mediaType(MOVIE)
                 .catalogStartDate(getTimeInDate(-100))
                 .tags(tagMap)
                 .strings(stringMetaMap1);
@@ -90,7 +90,7 @@ public class SearchAssetFilterTests extends BaseTest {
 
         // ingest asset 3
         VodData vodData3 = new VodData()
-                .mediaType(MediaType.EPISODE)
+                .mediaType(EPISODE)
                 .catalogStartDate(getTimeInDate(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
@@ -302,7 +302,7 @@ public class SearchAssetFilterTests extends BaseTest {
         String query = new KsqlBuilder()
                 .openAnd()
                 .equal(tagName, tagValue)
-                .equal("asset_type", getProperty(MOVIE_MEDIA_TYPE_ID))
+                .equal("asset_type", getMediaTypeId(MOVIE))
                 .closeAnd()
                 .toString();
         assetFilter = getSearchAssetFilter(query);
@@ -489,7 +489,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset2.getId()))
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
                 .closeOr()
-                .equal("asset_type", getProperty(MOVIE_MEDIA_TYPE_ID))
+                .equal("asset_type", getMediaTypeId(MOVIE))
                 .closeAnd()
                 .toString();
         DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
