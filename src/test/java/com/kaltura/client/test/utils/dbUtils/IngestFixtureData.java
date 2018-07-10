@@ -167,14 +167,15 @@ public class IngestFixtureData extends BaseUtils {
         return subscription;
     }
 
-    public static Channel getChannel(int id) {
+    public static DynamicChannel getChannel(int id) {
         Logger.getLogger(IngestFixtureData.class).debug("getChannel(): id = " + id);
 
         JSONArray jsonArray = getJsonArrayFromQueryResult(CHANNEL_SELECT, id);
         GetChannelBuilder getChannelBuilder = ChannelService.get(jsonArray.getJSONObject(0).getInt(ID));
-        Response<Channel> channelResponse = executor.executeSync(getChannelBuilder.setKs(getOperatorKs()));
+        Response<Channel> channelResponse = executor.executeSync(getChannelBuilder
+                .setKs(getOperatorKs()));
 
-        return channelResponse.results;
+        return (DynamicChannel) channelResponse.results;
     }
 
     public static String getAutomaticChannelExpression(int channelId) {

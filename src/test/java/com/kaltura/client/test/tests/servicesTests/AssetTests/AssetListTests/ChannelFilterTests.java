@@ -25,7 +25,7 @@ public class ChannelFilterTests extends BaseTest {
 
     private MediaAsset asset1, asset2, asset3;
     private ProgramAsset program1;
-    private Channel channel;
+    private DynamicChannel channel;
 
 
     @BeforeClass
@@ -53,13 +53,13 @@ public class ChannelFilterTests extends BaseTest {
                 .toString();
 
         // add channel
-        channel = new Channel();
+        channel = new DynamicChannel();
         channel.setName("channel_" + getTimeInEpoch());
         channel.description("Description of " + channel.getName());
         channel.setIsActive(true);
-        channel.setFilterExpression(query); // "Free='" + channel.getName() + "'"
+        channel.setKSql(query); // "Free='" + channel.getName() + "'"
 
-        channel = executor.executeSync(ChannelService.add(channel)
+        channel = (DynamicChannel) executor.executeSync(ChannelService.add(channel)
                 .setKs(getOperatorKs())).results;
     }
 

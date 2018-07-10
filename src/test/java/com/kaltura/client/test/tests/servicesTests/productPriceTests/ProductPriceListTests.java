@@ -42,7 +42,7 @@ public class ProductPriceListTests extends BaseTest {
     private Household household;
     private String classMasterUserKs;
     private String classMasterUserId;
-    private Channel sharedChannel;
+    private DynamicChannel sharedChannel;
     private Subscription subscriptionWithMultiCurrenciesAndDiscountPercentage;
 
     private Response<ListResponse<ProductPrice>> productPriceResponse;
@@ -73,7 +73,7 @@ public class ProductPriceListTests extends BaseTest {
         classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
         classMasterUserId = HouseholdUtils.getMasterUser(household).getUserId();
 
-        sharedChannel = new Channel();
+        sharedChannel = new DynamicChannel();
         sharedChannel.setName(BaseUtils.getRandomValue("Channel_", 999999));
         sharedChannel.setDescription("Description of " + sharedChannel.getName());
         sharedChannel.setIsActive(true);
@@ -212,7 +212,7 @@ public class ProductPriceListTests extends BaseTest {
         String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         // create mpp with supporting of 1 type only and having at least 1 media on its channel
-        sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
+        sharedChannel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         assertThat(channelResponse.results).isNotNull();
@@ -296,7 +296,7 @@ public class ProductPriceListTests extends BaseTest {
     @Test()
     public void productPriceSubscriptionWebHDFileTypeOnlyTest() {
         // create mpp with supporting of 1 type only and having at least 1 media on its channel
-        sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
+        sharedChannel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         assertThat(channelResponse.results).isNotNull();

@@ -34,7 +34,7 @@ public class BundleFilterTests extends BaseTest {
     private MediaAsset movie1, movie2;
     private MediaAsset series1, series2;
     private MediaAsset episode1, episode2;
-    private Channel channel1, channel2;
+    private DynamicChannel channel1, channel2;
     private Subscription subscription;
 
 
@@ -74,23 +74,23 @@ public class BundleFilterTests extends BaseTest {
                 .toString();
 
         // add channel1
-        channel1 = new Channel();
+        channel1 = new DynamicChannel();
         channel1.setName("channel_" + getTimeInEpoch());
         channel1.description("Description of " + channel1.getName());
         channel1.setIsActive(true);
-        channel1.setFilterExpression(channel1Query);
+        channel1.setKSql(channel1Query);
 
-        channel1 = executor.executeSync(add(channel1)
+        channel1 = (DynamicChannel) executor.executeSync(add(channel1)
                 .setKs(getOperatorKs())).results;
 
         // add channel2
-        channel2 = new Channel();
+        channel2 = new DynamicChannel();
         channel2.setName("channel_" + getTimeInEpoch());
         channel2.description("Description of " + channel2.getName());
         channel2.setIsActive(true);
-        channel2.setFilterExpression(channel2Query);
+        channel2.setKSql(channel2Query);
 
-        channel2 = executor.executeSync(add(channel2)
+        channel2 = (DynamicChannel) executor.executeSync(add(channel2)
                 .setKs(getOperatorKs())).results;
 
         // ingest subscription with 2 new channels
