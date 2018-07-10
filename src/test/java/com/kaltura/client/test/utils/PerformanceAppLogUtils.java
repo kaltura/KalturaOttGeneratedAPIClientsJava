@@ -172,7 +172,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
             if (timeOfCB > 0 || timeOfDB > 0 || timeOfES > 0 || timeOfRabbit > 0) {
                 out.println(method);
                 out.println("\"" + xKalturaSession + "\"");
-                out.println("Code: " + String.format("%.2f", codeTimePercentage) + "%");
+                out.println("Code: " + String.format("%.2f", codeTimePercentage) + "% (" + timeOfCode + ")");
                 writeIfValueMoreThanZero(out, "Couchbase: ", timeOfCB, totalTime);
                 writeIfValueMoreThanZero(out, "DB: ", timeOfDB, totalTime);
                 writeIfValueMoreThanZero(out, "Elastic: ", timeOfES, totalTime);

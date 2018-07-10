@@ -79,7 +79,7 @@ public class DBUtils extends BaseUtils {
         return jsonArray;
     }
 
-    private static SQLServerDataSource getDataSource() {
+    protected static SQLServerDataSource getDataSource() {
         SQLServerDataSource dataSource = new SQLServerDataSource();
         dataSource.setUser(getProperty(DB_USER));
         dataSource.setPassword(getProperty(DB_PASSWORD));
@@ -127,7 +127,7 @@ public class DBUtils extends BaseUtils {
         return jsonArray;
     }
 
-    private static PreparedStatement preparedStatementExecution(Connection conn, String query, Object... args) {
+    protected static PreparedStatement preparedStatementExecution(Connection conn, String query, Object... args) {
         PreparedStatement pstm = null;
         try {
             pstm = conn.prepareStatement(query);
