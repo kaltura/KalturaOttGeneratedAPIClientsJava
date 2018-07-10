@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.PlaybackContextType;
+import com.kaltura.client.enums.UrlType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -50,6 +51,7 @@ public class PlaybackContextOptions extends ObjectBase {
 		String streamerType();
 		String assetFileIds();
 		String context();
+		String urlType();
 	}
 
 	/**
@@ -68,6 +70,10 @@ public class PlaybackContextOptions extends ObjectBase {
 	 * Playback context type
 	 */
 	private PlaybackContextType context;
+	/**
+	 * Url type
+	 */
+	private UrlType urlType;
 
 	// mediaProtocol:
 	public String getMediaProtocol(){
@@ -117,6 +123,18 @@ public class PlaybackContextOptions extends ObjectBase {
 		setToken("context", multirequestToken);
 	}
 
+	// urlType:
+	public UrlType getUrlType(){
+		return this.urlType;
+	}
+	public void setUrlType(UrlType urlType){
+		this.urlType = urlType;
+	}
+
+	public void urlType(String multirequestToken){
+		setToken("urlType", multirequestToken);
+	}
+
 
 	public PlaybackContextOptions() {
 		super();
@@ -132,6 +150,7 @@ public class PlaybackContextOptions extends ObjectBase {
 		streamerType = GsonParser.parseString(jsonObject.get("streamerType"));
 		assetFileIds = GsonParser.parseString(jsonObject.get("assetFileIds"));
 		context = PlaybackContextType.get(GsonParser.parseString(jsonObject.get("context")));
+		urlType = UrlType.get(GsonParser.parseString(jsonObject.get("urlType")));
 
 	}
 
@@ -142,6 +161,7 @@ public class PlaybackContextOptions extends ObjectBase {
 		kparams.add("streamerType", this.streamerType);
 		kparams.add("assetFileIds", this.assetFileIds);
 		kparams.add("context", this.context);
+		kparams.add("urlType", this.urlType);
 		return kparams;
 	}
 

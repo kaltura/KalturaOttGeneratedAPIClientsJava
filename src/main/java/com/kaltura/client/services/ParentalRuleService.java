@@ -42,6 +42,44 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class ParentalRuleService {
 	
+	public static class AddParentalRuleBuilder extends RequestBuilder<ParentalRule, ParentalRule.Tokenizer, AddParentalRuleBuilder> {
+		
+		public AddParentalRuleBuilder(ParentalRule parentalRule) {
+			super(ParentalRule.class, "parentalrule", "add");
+			params.add("parentalRule", parentalRule);
+		}
+	}
+
+	/**
+	 * Add a new parentalRule
+	 * 
+	 * @param parentalRule parentalRule object
+	 */
+    public static AddParentalRuleBuilder add(ParentalRule parentalRule)  {
+		return new AddParentalRuleBuilder(parentalRule);
+	}
+	
+	public static class DeleteParentalRuleBuilder extends RequestBuilder<Boolean, String, DeleteParentalRuleBuilder> {
+		
+		public DeleteParentalRuleBuilder(long id) {
+			super(Boolean.class, "parentalrule", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete an existing parentalRule
+	 * 
+	 * @param id parentalRule identifier
+	 */
+    public static DeleteParentalRuleBuilder delete(long id)  {
+		return new DeleteParentalRuleBuilder(id);
+	}
+	
 	public static class DisableParentalRuleBuilder extends RequestBuilder<Boolean, String, DisableParentalRuleBuilder> {
 		
 		public DisableParentalRuleBuilder(long ruleId, EntityReferenceBy entityReference) {
@@ -119,6 +157,27 @@ public class ParentalRuleService {
 		return new EnableParentalRuleBuilder(ruleId, entityReference);
 	}
 	
+	public static class GetParentalRuleBuilder extends RequestBuilder<ParentalRule, ParentalRule.Tokenizer, GetParentalRuleBuilder> {
+		
+		public GetParentalRuleBuilder(long id) {
+			super(ParentalRule.class, "parentalrule", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get an existing parentalRule by identifier
+	 * 
+	 * @param id parentalRule identifier
+	 */
+    public static GetParentalRuleBuilder get(long id)  {
+		return new GetParentalRuleBuilder(id);
+	}
+	
 	public static class ListParentalRuleBuilder extends ListResponseRequestBuilder<ParentalRule, ParentalRule.Tokenizer, ListParentalRuleBuilder> {
 		
 		public ListParentalRuleBuilder(ParentalRuleFilter filter) {
@@ -136,5 +195,28 @@ public class ParentalRuleService {
 	 */
     public static ListParentalRuleBuilder list(ParentalRuleFilter filter)  {
 		return new ListParentalRuleBuilder(filter);
+	}
+	
+	public static class UpdateParentalRuleBuilder extends RequestBuilder<ParentalRule, ParentalRule.Tokenizer, UpdateParentalRuleBuilder> {
+		
+		public UpdateParentalRuleBuilder(long id, ParentalRule parentalRule) {
+			super(ParentalRule.class, "parentalrule", "update");
+			params.add("id", id);
+			params.add("parentalRule", parentalRule);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update an existing parentalRule
+	 * 
+	 * @param id parentalRule identifier
+	 * @param parentalRule parentalRule object
+	 */
+    public static UpdateParentalRuleBuilder update(long id, ParentalRule parentalRule)  {
+		return new UpdateParentalRuleBuilder(id, parentalRule);
 	}
 }

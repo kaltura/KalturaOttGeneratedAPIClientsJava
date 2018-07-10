@@ -49,6 +49,23 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class AssetService {
 	
+	public static class AddAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, AddAssetBuilder> {
+		
+		public AddAssetBuilder(Asset asset) {
+			super(Asset.class, "asset", "add");
+			params.add("asset", asset);
+		}
+	}
+
+	/**
+	 * Add a new asset
+	 * 
+	 * @param asset Asset object
+	 */
+    public static AddAssetBuilder add(Asset asset)  {
+		return new AddAssetBuilder(asset);
+	}
+	
 	public static class CountAssetBuilder extends RequestBuilder<AssetCount, AssetCount.Tokenizer, CountAssetBuilder> {
 		
 		public CountAssetBuilder(SearchAssetFilter filter) {
@@ -69,6 +86,33 @@ public class AssetService {
 	 */
     public static CountAssetBuilder count(SearchAssetFilter filter)  {
 		return new CountAssetBuilder(filter);
+	}
+	
+	public static class DeleteAssetBuilder extends RequestBuilder<Boolean, String, DeleteAssetBuilder> {
+		
+		public DeleteAssetBuilder(long id, AssetReferenceType assetReferenceType) {
+			super(Boolean.class, "asset", "delete");
+			params.add("id", id);
+			params.add("assetReferenceType", assetReferenceType);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void assetReferenceType(String multirequestToken) {
+			params.add("assetReferenceType", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete an existing asset
+	 * 
+	 * @param id Asset Identifier
+	 * @param assetReferenceType Type of asset
+	 */
+    public static DeleteAssetBuilder delete(long id, AssetReferenceType assetReferenceType)  {
+		return new DeleteAssetBuilder(id, assetReferenceType);
 	}
 	
 	public static class GetAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, GetAssetBuilder> {
@@ -182,5 +226,61 @@ public class AssetService {
 	 */
     public static ListAssetBuilder list(AssetFilter filter, FilterPager pager)  {
 		return new ListAssetBuilder(filter, pager);
+	}
+	
+	public static class RemoveMetasAndTagsAssetBuilder extends RequestBuilder<Boolean, String, RemoveMetasAndTagsAssetBuilder> {
+		
+		public RemoveMetasAndTagsAssetBuilder(long id, AssetReferenceType assetReferenceType, String idIn) {
+			super(Boolean.class, "asset", "removeMetasAndTags");
+			params.add("id", id);
+			params.add("assetReferenceType", assetReferenceType);
+			params.add("idIn", idIn);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+		
+		public void assetReferenceType(String multirequestToken) {
+			params.add("assetReferenceType", multirequestToken);
+		}
+		
+		public void idIn(String multirequestToken) {
+			params.add("idIn", multirequestToken);
+		}
+	}
+
+	/**
+	 * remove metas and tags from asset
+	 * 
+	 * @param id Asset Identifier
+	 * @param assetReferenceType Type of asset
+	 * @param idIn comma separated ids of metas and tags
+	 */
+    public static RemoveMetasAndTagsAssetBuilder removeMetasAndTags(long id, AssetReferenceType assetReferenceType, String idIn)  {
+		return new RemoveMetasAndTagsAssetBuilder(id, assetReferenceType, idIn);
+	}
+	
+	public static class UpdateAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, UpdateAssetBuilder> {
+		
+		public UpdateAssetBuilder(long id, Asset asset) {
+			super(Asset.class, "asset", "update");
+			params.add("id", id);
+			params.add("asset", asset);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * update an existing asset
+	 * 
+	 * @param id Asset Identifier
+	 * @param asset Asset object
+	 */
+    public static UpdateAssetBuilder update(long id, Asset asset)  {
+		return new UpdateAssetBuilder(id, asset);
 	}
 }

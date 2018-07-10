@@ -51,6 +51,8 @@ public class Bookmark extends SlimAsset {
 		String positionOwner();
 		String finishedWatching();
 		BookmarkPlayerData.Tokenizer playerData();
+		String programId();
+		String isReportingMode();
 	}
 
 	/**
@@ -74,6 +76,14 @@ public class Bookmark extends SlimAsset {
 	 * Insert only player data
 	 */
 	private BookmarkPlayerData playerData;
+	/**
+	 * Program Id
+	 */
+	private Long programId;
+	/**
+	 * Indicates if the current request is in reporting mode (hit)
+	 */
+	private Boolean isReportingMode;
 
 	// userId:
 	public String getUserId(){
@@ -107,6 +117,30 @@ public class Bookmark extends SlimAsset {
 		this.playerData = playerData;
 	}
 
+	// programId:
+	public Long getProgramId(){
+		return this.programId;
+	}
+	public void setProgramId(Long programId){
+		this.programId = programId;
+	}
+
+	public void programId(String multirequestToken){
+		setToken("programId", multirequestToken);
+	}
+
+	// isReportingMode:
+	public Boolean getIsReportingMode(){
+		return this.isReportingMode;
+	}
+	public void setIsReportingMode(Boolean isReportingMode){
+		this.isReportingMode = isReportingMode;
+	}
+
+	public void isReportingMode(String multirequestToken){
+		setToken("isReportingMode", multirequestToken);
+	}
+
 
 	public Bookmark() {
 		super();
@@ -123,6 +157,8 @@ public class Bookmark extends SlimAsset {
 		positionOwner = PositionOwner.get(GsonParser.parseString(jsonObject.get("positionOwner")));
 		finishedWatching = GsonParser.parseBoolean(jsonObject.get("finishedWatching"));
 		playerData = GsonParser.parseObject(jsonObject.getAsJsonObject("playerData"), BookmarkPlayerData.class);
+		programId = GsonParser.parseLong(jsonObject.get("programId"));
+		isReportingMode = GsonParser.parseBoolean(jsonObject.get("isReportingMode"));
 
 	}
 
@@ -131,6 +167,8 @@ public class Bookmark extends SlimAsset {
 		kparams.add("objectType", "KalturaBookmark");
 		kparams.add("position", this.position);
 		kparams.add("playerData", this.playerData);
+		kparams.add("programId", this.programId);
+		kparams.add("isReportingMode", this.isReportingMode);
 		return kparams;
 	}
 

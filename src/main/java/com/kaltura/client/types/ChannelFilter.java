@@ -66,7 +66,9 @@ public class ChannelFilter extends AssetFilter {
 	  user_interests - only valid value is &amp;quot;true&amp;quot;. When enabled,
 	  only assets that the user defined as his interests (by tags and metas) will
 	  return.              epg_channel_id – the channel identifier of the EPG
-	  program.              entitled_assets - valid values: &amp;quot;free&amp;quot;,
+	  program. *****Deprecated, please use linear_media_id instead*****             
+	  linear_media_id – the linear media identifier of the EPG program.             
+	  entitled_assets - valid values: &amp;quot;free&amp;quot;,
 	  &amp;quot;entitled&amp;quot;, &amp;quot;not_entitled&amp;quot;,
 	  &amp;quot;both&amp;quot;. free - gets only free to watch assets. entitled - only
 	  those that the user is implicitly entitled to watch.              asset_type -
