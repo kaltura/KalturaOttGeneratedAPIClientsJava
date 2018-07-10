@@ -379,9 +379,10 @@ public class BaseTest {
         return mobileMediaFile;
     }
 
-    public static MediaFile getMediaFileByType(MediaAsset asset, String type) {
+    public static MediaFile getMediaFileByType(MediaAsset asset, String fileType) {
         MediaFile result;
-        if (type.equals(asset.getMediaFiles().get(0).getType())) {
+        int fileTypeId = asset.getMediaFiles().get(0).getTypeId();
+        if (fileType.equals(DBUtils.getMediaFileTypeName(fileTypeId))) {
             result = mediaAsset.getMediaFiles().get(0);
         } else {
             result = mediaAsset.getMediaFiles().get(1);
