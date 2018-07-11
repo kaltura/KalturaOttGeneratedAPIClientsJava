@@ -28,9 +28,6 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.Channel;
-import com.kaltura.client.types.ChannelsFilter;
-import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -51,8 +48,7 @@ public class ChannelService {
 	}
 
 	/**
-	 * Insert new channel for partner. Supports KalturaDynamicChannel or
-	  KalturaManualChannel
+	 * Insert new channel for partner. Currently supports only KSQL channel
 	 * 
 	 * @param channel KSQL channel Object
 	 */
@@ -94,7 +90,7 @@ public class ChannelService {
 	}
 
 	/**
-	 * Returns channel
+	 * Returns channel info
 	 * 
 	 * @param id Channel Identifier
 	 */
@@ -102,53 +98,26 @@ public class ChannelService {
 		return new GetChannelBuilder(id);
 	}
 	
-	public static class ListChannelBuilder extends ListResponseRequestBuilder<Channel, Channel.Tokenizer, ListChannelBuilder> {
-		
-		public ListChannelBuilder(ChannelsFilter filter, FilterPager pager) {
-			super(Channel.class, "channel", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
-
-	public static ListChannelBuilder list()  {
-		return list(null);
-	}
-
-	public static ListChannelBuilder list(ChannelsFilter filter)  {
-		return list(filter, null);
-	}
-
-	/**
-	 * Get the list of tags for the partner
-	 * 
-	 * @param filter Filter
-	 * @param pager Page size and index
-	 */
-    public static ListChannelBuilder list(ChannelsFilter filter, FilterPager pager)  {
-		return new ListChannelBuilder(filter, pager);
-	}
-	
 	public static class UpdateChannelBuilder extends RequestBuilder<Channel, Channel.Tokenizer, UpdateChannelBuilder> {
 		
-		public UpdateChannelBuilder(int id, Channel channel) {
+		public UpdateChannelBuilder(int channelId, Channel channel) {
 			super(Channel.class, "channel", "update");
-			params.add("id", id);
+			params.add("channelId", channelId);
 			params.add("channel", channel);
 		}
 		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
+		public void channelId(String multirequestToken) {
+			params.add("channelId", multirequestToken);
 		}
 	}
 
 	/**
-	 * Update channel details. Supports KalturaDynamicChannel or KalturaManualChannel
+	 * Update channel details. Currently supports only KSQL channel
 	 * 
-	 * @param id Channel identifier
+	 * @param channelId Channel identifier
 	 * @param channel KSQL channel Object
 	 */
-    public static UpdateChannelBuilder update(int id, Channel channel)  {
-		return new UpdateChannelBuilder(id, channel);
+    public static UpdateChannelBuilder update(int channelId, Channel channel)  {
+		return new UpdateChannelBuilder(channelId, channel);
 	}
 }

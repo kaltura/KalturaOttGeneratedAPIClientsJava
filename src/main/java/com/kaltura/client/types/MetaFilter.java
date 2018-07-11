@@ -29,7 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.MetaDataType;
+import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.enums.MetaFieldName;
+import com.kaltura.client.enums.MetaType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -48,75 +50,92 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class MetaFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		String assetStructIdEqual();
-		String dataTypeEqual();
-		String multipleValueEqual();
+		String fieldNameEqual();
+		String fieldNameNotEqual();
+		String typeEqual();
+		String assetTypeEqual();
+		String featuresIn();
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * Meta system field name to filter by
 	 */
-	private String idIn;
+	private MetaFieldName fieldNameEqual;
 	/**
-	 * Filter Metas that are contained in a specific asset struct
+	 * Meta system field name to filter by
 	 */
-	private Long assetStructIdEqual;
+	private MetaFieldName fieldNameNotEqual;
 	/**
-	 * Meta data type to filter by
+	 * Meta type to filter by
 	 */
-	private MetaDataType dataTypeEqual;
+	private MetaType typeEqual;
 	/**
-	 * Filter metas by multipleValueEqual value
+	 * Asset type to filter by
 	 */
-	private Boolean multipleValueEqual;
+	private AssetType assetTypeEqual;
+	/**
+	 * Features
+	 */
+	private String featuresIn;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// fieldNameEqual:
+	public MetaFieldName getFieldNameEqual(){
+		return this.fieldNameEqual;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// assetStructIdEqual:
-	public Long getAssetStructIdEqual(){
-		return this.assetStructIdEqual;
-	}
-	public void setAssetStructIdEqual(Long assetStructIdEqual){
-		this.assetStructIdEqual = assetStructIdEqual;
+	public void setFieldNameEqual(MetaFieldName fieldNameEqual){
+		this.fieldNameEqual = fieldNameEqual;
 	}
 
-	public void assetStructIdEqual(String multirequestToken){
-		setToken("assetStructIdEqual", multirequestToken);
+	public void fieldNameEqual(String multirequestToken){
+		setToken("fieldNameEqual", multirequestToken);
 	}
 
-	// dataTypeEqual:
-	public MetaDataType getDataTypeEqual(){
-		return this.dataTypeEqual;
+	// fieldNameNotEqual:
+	public MetaFieldName getFieldNameNotEqual(){
+		return this.fieldNameNotEqual;
 	}
-	public void setDataTypeEqual(MetaDataType dataTypeEqual){
-		this.dataTypeEqual = dataTypeEqual;
-	}
-
-	public void dataTypeEqual(String multirequestToken){
-		setToken("dataTypeEqual", multirequestToken);
+	public void setFieldNameNotEqual(MetaFieldName fieldNameNotEqual){
+		this.fieldNameNotEqual = fieldNameNotEqual;
 	}
 
-	// multipleValueEqual:
-	public Boolean getMultipleValueEqual(){
-		return this.multipleValueEqual;
-	}
-	public void setMultipleValueEqual(Boolean multipleValueEqual){
-		this.multipleValueEqual = multipleValueEqual;
+	public void fieldNameNotEqual(String multirequestToken){
+		setToken("fieldNameNotEqual", multirequestToken);
 	}
 
-	public void multipleValueEqual(String multirequestToken){
-		setToken("multipleValueEqual", multirequestToken);
+	// typeEqual:
+	public MetaType getTypeEqual(){
+		return this.typeEqual;
+	}
+	public void setTypeEqual(MetaType typeEqual){
+		this.typeEqual = typeEqual;
+	}
+
+	public void typeEqual(String multirequestToken){
+		setToken("typeEqual", multirequestToken);
+	}
+
+	// assetTypeEqual:
+	public AssetType getAssetTypeEqual(){
+		return this.assetTypeEqual;
+	}
+	public void setAssetTypeEqual(AssetType assetTypeEqual){
+		this.assetTypeEqual = assetTypeEqual;
+	}
+
+	public void assetTypeEqual(String multirequestToken){
+		setToken("assetTypeEqual", multirequestToken);
+	}
+
+	// featuresIn:
+	public String getFeaturesIn(){
+		return this.featuresIn;
+	}
+	public void setFeaturesIn(String featuresIn){
+		this.featuresIn = featuresIn;
+	}
+
+	public void featuresIn(String multirequestToken){
+		setToken("featuresIn", multirequestToken);
 	}
 
 
@@ -130,20 +149,22 @@ public class MetaFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		assetStructIdEqual = GsonParser.parseLong(jsonObject.get("assetStructIdEqual"));
-		dataTypeEqual = MetaDataType.get(GsonParser.parseString(jsonObject.get("dataTypeEqual")));
-		multipleValueEqual = GsonParser.parseBoolean(jsonObject.get("multipleValueEqual"));
+		fieldNameEqual = MetaFieldName.get(GsonParser.parseString(jsonObject.get("fieldNameEqual")));
+		fieldNameNotEqual = MetaFieldName.get(GsonParser.parseString(jsonObject.get("fieldNameNotEqual")));
+		typeEqual = MetaType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
+		assetTypeEqual = AssetType.get(GsonParser.parseString(jsonObject.get("assetTypeEqual")));
+		featuresIn = GsonParser.parseString(jsonObject.get("featuresIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaMetaFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("assetStructIdEqual", this.assetStructIdEqual);
-		kparams.add("dataTypeEqual", this.dataTypeEqual);
-		kparams.add("multipleValueEqual", this.multipleValueEqual);
+		kparams.add("fieldNameEqual", this.fieldNameEqual);
+		kparams.add("fieldNameNotEqual", this.fieldNameNotEqual);
+		kparams.add("typeEqual", this.typeEqual);
+		kparams.add("assetTypeEqual", this.assetTypeEqual);
+		kparams.add("featuresIn", this.featuresIn);
 		return kparams;
 	}
 
