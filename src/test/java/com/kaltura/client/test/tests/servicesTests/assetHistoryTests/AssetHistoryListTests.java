@@ -32,6 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AssetHistoryListTests extends BaseTest {
     private final int position1 = 10;
     private final int position2 = 20;
+    private final int numOfUsers = 1;
+    private final int numOfDevices = 2;
+
 
     private MediaAsset movie;
     private int movieFileId;
@@ -64,18 +67,20 @@ public class AssetHistoryListTests extends BaseTest {
     @Test
     private void vodAssetHistory() {
         // create household
-        Household household = createHousehold();
-        String udid = getDevicesList(household).get(0).getUdid();
-        String userKs = getHouseholdMasterUserKs(household, udid);
+        Household household = createHousehold(numOfUsers, numOfDevices, true);
+        String udid1 = getDevicesList(household).get(0).getUdid();
+        String udid2 = getDevicesList(household).get(1).getUdid();
+        String masterUserKs = getHouseholdMasterUserKs(household, udid1);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(movie2.getId()), movie2FileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        addBookmarkBuilder = add(bookmark).setKs(userKs);
+        masterUserKs = getHouseholdMasterUserKs(household, udid2);
+        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         // assetHistory/action/list - both assets should returned
@@ -83,7 +88,7 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryFilter.setStatusEqual(WatchStatus.ALL);
 
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(list(assetHistoryFilter)
-                .setKs(userKs));
+                .setKs(masterUserKs));
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(2);
 
@@ -116,30 +121,35 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(2);
 
         // cleanup - delete household
-        executor.executeSync(HouseholdService.delete().setKs(userKs));
+        executor.executeSync(HouseholdService.delete().setKs(masterUserKs));
     }
 
     @Description("assetHistory/action/list - filtered by movie asset id")
     @Test
     private void vodAssetHistoryFilteredByAssetId() {
         // create household
-        Household household = createHousehold();
-        String udid = getDevicesList(household).get(0).getUdid();
-        String userKs = getHouseholdMasterUserKs(household, udid);
+        int numOfDevices = 3;
+        Household household = createHousehold(numOfUsers, numOfDevices, true);
+        String udid1 = getDevicesList(household).get(0).getUdid();
+        String udid2 = getDevicesList(household).get(1).getUdid();
+        String udid3 = getDevicesList(household).get(2).getUdid();
+        String masterUserKs = getHouseholdMasterUserKs(household, udid1);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark Second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(movie2.getId()), movie2FileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        addBookmarkBuilder = add(bookmark).setKs(userKs);
+        masterUserKs = getHouseholdMasterUserKs(household, udid2);
+        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark third asset
         bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(episode.getId()), episodeFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        addBookmarkBuilder = add(bookmark).setKs(userKs);
+        masterUserKs = getHouseholdMasterUserKs(household, udid3);
+        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         //assetHistory/action/list - filter by asset 2 id
@@ -148,7 +158,7 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryFilter.setStatusEqual(WatchStatus.ALL);
 
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(list(assetHistoryFilter)
-                .setKs(userKs));
+                .setKs(masterUserKs));
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(movie2.getId());
@@ -158,31 +168,33 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryFilter.setAssetIdIn(concatenatedString);
 
         List<AssetHistory> assetHistoryList = executor.executeSync(list(assetHistoryFilter)
-                .setKs(userKs)).results.getObjects();
+                .setKs(masterUserKs)).results.getObjects();
 
         assertThat(assetHistoryList).extracting("assetId")
                 .containsExactlyInAnyOrder(movie2.getId(), episode.getId());
 
         // cleanup - delete household
-        executor.executeSync(HouseholdService.delete().setKs(userKs));
+        executor.executeSync(HouseholdService.delete().setKs(masterUserKs));
     }
 
     @Description("assetHistory/action/list - filtered by movie type id")
     @Test
     private void vodAssetHistoryFilteredByAssetType() {
         // create household
-        Household household = createHousehold();
-        String udid = getDevicesList(household).get(0).getUdid();
-        String userKs = getHouseholdMasterUserKs(household, udid);
+        Household household = createHousehold(numOfUsers, numOfDevices, true);
+        String udid1 = getDevicesList(household).get(0).getUdid();
+        String udid2 = getDevicesList(household).get(1).getUdid();
+        String masterUserKs = getHouseholdMasterUserKs(household, udid1);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark Second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(episode.getId()), episodeFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        addBookmarkBuilder = add(bookmark).setKs(userKs);
+        masterUserKs = getHouseholdMasterUserKs(household, udid2);
+        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         //assetHistory/action/list - filter by in progress assets only
@@ -191,31 +203,33 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryFilter.setTypeIn(String.valueOf(getMediaTypeId(MediaType.MOVIE)));
 
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(list(assetHistoryFilter)
-                .setKs(userKs));
+                .setKs(masterUserKs));
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(movie.getId());
 
         // cleanup - delete household
-        executor.executeSync(HouseholdService.delete().setKs(userKs));
+        executor.executeSync(HouseholdService.delete().setKs(masterUserKs));
     }
 
     @Description("assetHistory/action/list - filtered by assets progress")
     @Test
     private void vodAssetHistoryFilteredByAssetProgress() {
         // create household
-        Household household = createHousehold();
-        String udid = getDevicesList(household).get(0).getUdid();
-        String userKs = getHouseholdMasterUserKs(household, udid);
+        Household household = createHousehold(numOfUsers, numOfDevices, true);
+        String udid1 = getDevicesList(household).get(0).getUdid();
+        String udid2 = getDevicesList(household).get(1).getUdid();
+        String masterUserKs = getHouseholdMasterUserKs(household, udid1);
 
         // Bookmark first asset
         Bookmark bookmark = BookmarkUtils.addBookmark(position1, String.valueOf(movie.getId()), movieFileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(userKs);
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         // Bookmark Second asset
         bookmark = BookmarkUtils.addBookmark(position2, String.valueOf(episode.getId()), episodeFileId, AssetType.MEDIA, BookmarkActionType.FINISH);
-        addBookmarkBuilder = add(bookmark).setKs(userKs);
+        masterUserKs = getHouseholdMasterUserKs(household, udid2);
+        addBookmarkBuilder = add(bookmark).setKs(masterUserKs);
         executor.executeSync(addBookmarkBuilder);
 
         //assetHistory/action/list - filter by in progress assets only
@@ -223,7 +237,7 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryFilter.setStatusEqual(WatchStatus.PROGRESS);
 
         Response<ListResponse<AssetHistory>> assetHistoryListResponse = executor.executeSync(list(assetHistoryFilter)
-                .setKs(userKs));
+                .setKs(masterUserKs));
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(movie.getId());
@@ -232,13 +246,13 @@ public class AssetHistoryListTests extends BaseTest {
         assetHistoryFilter.setStatusEqual(WatchStatus.DONE);
 
         assetHistoryListResponse = executor.executeSync(list(assetHistoryFilter)
-                .setKs(userKs));
+                .setKs(masterUserKs));
 
         assertThat(assetHistoryListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetHistoryListResponse.results.getObjects().get(0).getAssetId()).isEqualTo(episode.getId());
 
         // cleanup - delete household
-        executor.executeSync(HouseholdService.delete().setKs(userKs));
+        executor.executeSync(HouseholdService.delete().setKs(masterUserKs));
     }
     //todo - Currently EPG program not returned in response (Ticket was opened to Omer - BEO-4594]
 }
