@@ -181,14 +181,6 @@ public class Collection extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// multilingualName:
 	public List<TranslationToken> getMultilingualName(){
 		return this.multilingualName;
@@ -201,14 +193,6 @@ public class Collection extends ObjectBase {
 	public String getDescription(){
 		return this.description;
 	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
-
 	// multilingualDescription:
 	public List<TranslationToken> getMultilingualDescription(){
 		return this.multilingualDescription;
@@ -301,9 +285,7 @@ public class Collection extends ObjectBase {
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
 		kparams.add("discountModule", this.discountModule);
-		kparams.add("name", this.name);
 		kparams.add("multilingualName", this.multilingualName);
-		kparams.add("description", this.description);
 		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("usageModule", this.usageModule);
 		kparams.add("couponsGroups", this.couponsGroups);

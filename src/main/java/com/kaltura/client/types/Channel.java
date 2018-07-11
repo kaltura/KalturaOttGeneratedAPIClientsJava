@@ -102,14 +102,6 @@ public class Channel extends BaseChannel {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// multilingualName:
 	public List<TranslationToken> getMultilingualName(){
 		return this.multilingualName;
@@ -134,14 +126,6 @@ public class Channel extends BaseChannel {
 	public String getDescription(){
 		return this.description;
 	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
-
 	// multilingualDescription:
 	public List<TranslationToken> getMultilingualDescription(){
 		return this.multilingualDescription;
@@ -204,10 +188,8 @@ public class Channel extends BaseChannel {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaChannel");
-		kparams.add("name", this.name);
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("systemName", this.systemName);
-		kparams.add("description", this.description);
 		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("isActive", this.isActive);
 		kparams.add("orderBy", this.orderBy);

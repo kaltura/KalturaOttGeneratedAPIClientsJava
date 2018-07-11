@@ -48,7 +48,7 @@ public class RecordingFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String statusIn();
-		String filterExpression();
+		String kSql();
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class RecordingFilter extends Filter {
 	/**
 	 * KSQL expression
 	 */
-	private String filterExpression;
+	private String kSql;
 
 	// statusIn:
 	public String getStatusIn(){
@@ -72,16 +72,16 @@ public class RecordingFilter extends Filter {
 		setToken("statusIn", multirequestToken);
 	}
 
-	// filterExpression:
-	public String getFilterExpression(){
-		return this.filterExpression;
+	// kSql:
+	public String getKSql(){
+		return this.kSql;
 	}
-	public void setFilterExpression(String filterExpression){
-		this.filterExpression = filterExpression;
+	public void setKSql(String kSql){
+		this.kSql = kSql;
 	}
 
-	public void filterExpression(String multirequestToken){
-		setToken("filterExpression", multirequestToken);
+	public void kSql(String multirequestToken){
+		setToken("kSql", multirequestToken);
 	}
 
 
@@ -96,7 +96,7 @@ public class RecordingFilter extends Filter {
 
 		// set members values:
 		statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
-		filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
+		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
 	}
 
@@ -104,7 +104,7 @@ public class RecordingFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRecordingFilter");
 		kparams.add("statusIn", this.statusIn);
-		kparams.add("filterExpression", this.filterExpression);
+		kparams.add("kSql", this.kSql);
 		return kparams;
 	}
 
