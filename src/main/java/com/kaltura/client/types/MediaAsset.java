@@ -51,11 +51,7 @@ public class MediaAsset extends Asset {
 		String catchUpBuffer();
 		String trickPlayBuffer();
 		String enableRecordingPlaybackNonEntitledChannel();
-		String typeDescription();
 		String entryId();
-		String deviceRule();
-		String geoBlockRule();
-		String watchPermissionRule();
 	}
 
 	/**
@@ -75,25 +71,9 @@ public class MediaAsset extends Asset {
 	 */
 	private Boolean enableRecordingPlaybackNonEntitledChannel;
 	/**
-	 * Asset type description
-	 */
-	private String typeDescription;
-	/**
 	 * Entry Identifier
 	 */
 	private String entryId;
-	/**
-	 * Device rule
-	 */
-	private String deviceRule;
-	/**
-	 * Geo block rule
-	 */
-	private String geoBlockRule;
-	/**
-	 * Watch permission rule
-	 */
-	private String watchPermissionRule;
 
 	// externalIds:
 	public String getExternalIds(){
@@ -135,18 +115,6 @@ public class MediaAsset extends Asset {
 	public Boolean getEnableRecordingPlaybackNonEntitledChannel(){
 		return this.enableRecordingPlaybackNonEntitledChannel;
 	}
-	// typeDescription:
-	public String getTypeDescription(){
-		return this.typeDescription;
-	}
-	public void setTypeDescription(String typeDescription){
-		this.typeDescription = typeDescription;
-	}
-
-	public void typeDescription(String multirequestToken){
-		setToken("typeDescription", multirequestToken);
-	}
-
 	// entryId:
 	public String getEntryId(){
 		return this.entryId;
@@ -157,42 +125,6 @@ public class MediaAsset extends Asset {
 
 	public void entryId(String multirequestToken){
 		setToken("entryId", multirequestToken);
-	}
-
-	// deviceRule:
-	public String getDeviceRule(){
-		return this.deviceRule;
-	}
-	public void setDeviceRule(String deviceRule){
-		this.deviceRule = deviceRule;
-	}
-
-	public void deviceRule(String multirequestToken){
-		setToken("deviceRule", multirequestToken);
-	}
-
-	// geoBlockRule:
-	public String getGeoBlockRule(){
-		return this.geoBlockRule;
-	}
-	public void setGeoBlockRule(String geoBlockRule){
-		this.geoBlockRule = geoBlockRule;
-	}
-
-	public void geoBlockRule(String multirequestToken){
-		setToken("geoBlockRule", multirequestToken);
-	}
-
-	// watchPermissionRule:
-	public String getWatchPermissionRule(){
-		return this.watchPermissionRule;
-	}
-	public void setWatchPermissionRule(String watchPermissionRule){
-		this.watchPermissionRule = watchPermissionRule;
-	}
-
-	public void watchPermissionRule(String multirequestToken){
-		setToken("watchPermissionRule", multirequestToken);
 	}
 
 
@@ -210,11 +142,7 @@ public class MediaAsset extends Asset {
 		catchUpBuffer = GsonParser.parseLong(jsonObject.get("catchUpBuffer"));
 		trickPlayBuffer = GsonParser.parseLong(jsonObject.get("trickPlayBuffer"));
 		enableRecordingPlaybackNonEntitledChannel = GsonParser.parseBoolean(jsonObject.get("enableRecordingPlaybackNonEntitledChannel"));
-		typeDescription = GsonParser.parseString(jsonObject.get("typeDescription"));
 		entryId = GsonParser.parseString(jsonObject.get("entryId"));
-		deviceRule = GsonParser.parseString(jsonObject.get("deviceRule"));
-		geoBlockRule = GsonParser.parseString(jsonObject.get("geoBlockRule"));
-		watchPermissionRule = GsonParser.parseString(jsonObject.get("watchPermissionRule"));
 
 	}
 
@@ -224,11 +152,7 @@ public class MediaAsset extends Asset {
 		kparams.add("externalIds", this.externalIds);
 		kparams.add("catchUpBuffer", this.catchUpBuffer);
 		kparams.add("trickPlayBuffer", this.trickPlayBuffer);
-		kparams.add("typeDescription", this.typeDescription);
 		kparams.add("entryId", this.entryId);
-		kparams.add("deviceRule", this.deviceRule);
-		kparams.add("geoBlockRule", this.geoBlockRule);
-		kparams.add("watchPermissionRule", this.watchPermissionRule);
 		return kparams;
 	}
 
