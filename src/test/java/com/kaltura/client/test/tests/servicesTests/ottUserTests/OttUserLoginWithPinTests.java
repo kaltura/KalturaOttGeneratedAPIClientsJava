@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.ottUserTests;
 
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.UserLoginPin;
@@ -32,7 +31,6 @@ public class OttUserLoginWithPinTests extends BaseTest {
     private Response<UserLoginPin> userLoginPinResponse;
 
     private final String SECRET = "secret";
-    private APIException apiException;
 
     @BeforeClass
     private void ottUser_login_tests_setup() {

@@ -36,7 +36,8 @@ package com.kaltura.client.enums;
 public enum PartnerConfigurationType implements EnumAsString {
 	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
 	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter");
+	OSSADAPTER("OSSAdapter"),
+	CONCURRENCY("Concurrency");
 
 	private String value;
 

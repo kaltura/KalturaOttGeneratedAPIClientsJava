@@ -54,8 +54,7 @@ public enum WatchStatus implements EnumAsString {
 	}
 
 	public static WatchStatus get(String value) {
-		if(value == null)
-		{
+		if(value == null) {
 			return null;
 		}
 		

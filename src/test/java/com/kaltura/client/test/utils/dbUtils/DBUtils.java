@@ -1,14 +1,13 @@
 package com.kaltura.client.test.utils.dbUtils;
 
 import com.kaltura.client.Logger;
+import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.test.tests.enums.KsqlKey;
 import com.kaltura.client.test.tests.enums.MediaType;
+import com.kaltura.client.test.tests.enums.PremiumService;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
-import com.kaltura.client.types.MediaAsset;
-import com.kaltura.client.types.PricePlan;
-import com.kaltura.client.types.ProgramAsset;
-import com.kaltura.client.types.SearchAssetFilter;
+import com.kaltura.client.types.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.json.JSONArray;
@@ -80,7 +79,7 @@ public class DBUtils extends BaseUtils {
         return jsonArray;
     }
 
-    private static SQLServerDataSource getDataSource() {
+    protected static SQLServerDataSource getDataSource() {
         SQLServerDataSource dataSource = new SQLServerDataSource();
         dataSource.setUser(getProperty(DB_USER));
         dataSource.setPassword(getProperty(DB_PASSWORD));
@@ -128,7 +127,7 @@ public class DBUtils extends BaseUtils {
         return jsonArray;
     }
 
-    private static PreparedStatement preparedStatementExecution(Connection conn, String query, Object... args) {
+    protected static PreparedStatement preparedStatementExecution(Connection conn, String query, Object... args) {
         PreparedStatement pstm = null;
         try {
             pstm = conn.prepareStatement(query);
@@ -212,10 +211,16 @@ public class DBUtils extends BaseUtils {
                 .getInt("id");
     }
 
-    public static int getSubscriptionWithPremiumService() {
-        return getJsonArrayFromQueryResult(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT, partnerId)
+    public static Subscription getSubscriptionWithPremiumService(PremiumService premiumService) {
+        int subscriptionId = getJsonArrayFromQueryResult(SUBSCRIPTION_WITH_PREMIUM_SERVICE_SELECT, partnerId, premiumService.getValue())
                 .getJSONObject(0)
                 .getInt(SUB_ID);
+
+        SubscriptionFilter filter = new SubscriptionFilter();
+        filter.setSubscriptionIdIn(String.valueOf(subscriptionId));
+
+        return executor.executeSync(SubscriptionService.list(filter)
+                .setKs(getOperatorKs())).results.getObjects().get(0);
     }
 
     public static PricePlan loadPPWithWaiver() {
@@ -251,14 +256,14 @@ public class DBUtils extends BaseUtils {
         for (int i = 0; i < jsonArray.length(); i++) {
             builder.equal(KsqlKey.NAME.getValue(), jsonArray.getJSONObject(i).getString("name"));
         }
-        
+
         String query = new KsqlBuilder()
                 .or(builder.toString())
                 .toString();
-        
+
         SearchAssetFilter filter = new SearchAssetFilter();
         filter.setKSql(query);
-        return (List<MediaAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+        return (List<MediaAsset>) (List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
     }
 
     public static List<MediaAsset> getVirtualAssets(int numOfAssets, Optional<MediaType> mediaType) {
@@ -281,7 +286,7 @@ public class DBUtils extends BaseUtils {
 
         SearchAssetFilter filter = new SearchAssetFilter();
         filter.setKSql(query);
-        return (List<MediaAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+        return (List<MediaAsset>) (List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
     }
 
     public static List<ProgramAsset> getPrograms(int numOfPrograms) {
@@ -298,6 +303,24 @@ public class DBUtils extends BaseUtils {
 
         SearchAssetFilter filter = new SearchAssetFilter();
         filter.setKSql(query);
-        return (List<ProgramAsset>)(List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+        return (List<ProgramAsset>) (List<?>) executor.executeSync(list(filter).setKs(getOperatorKs())).results.getObjects();
+    }
+
+    public static int getMediaTypeId(MediaType mediaType) {
+        return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT, partnerId + 1, mediaType.getValue())
+                .getJSONObject(0)
+                .getInt("id");
+    }
+
+    public static int getVirtualMediaTypeId(MediaType mediaType) {
+        return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT, partnerId + 2, mediaType.getValue())
+                .getJSONObject(0)
+                .getInt("id");
+    }
+
+    public static int getMediaFileTypeName(int mediaFileId) {
+        return getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_ID_SELECT, partnerId + 1, mediaFileId)
+                .getJSONObject(0)
+                .getInt("name");
     }
 }

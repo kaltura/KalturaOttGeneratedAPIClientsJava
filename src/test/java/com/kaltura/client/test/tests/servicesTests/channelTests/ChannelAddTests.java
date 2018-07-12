@@ -1,6 +1,6 @@
 package com.kaltura.client.test.tests.servicesTests.channelTests;
 
-import com.kaltura.client.enums.AssetOrderBy;
+import com.kaltura.client.enums.ChannelOrderBy;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.test.tests.BaseTest;
@@ -28,11 +28,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelAddTests extends BaseTest {
 
-    private Channel channel;
+    private DynamicChannel channel;
     private String channelName;
     private String description;
     private Boolean isActive = true;
-    private String filterExpression;
+    private String ksqlExpression;
     private IntegerValue integerValue = new IntegerValue();
     private List<IntegerValue> assetTypes = new ArrayList<>();
 
@@ -46,8 +46,10 @@ public class ChannelAddTests extends BaseTest {
     @Description("channel/action/add - with all asset types")
     @Test
     private void addChannel() {
-        filterExpression = "name ~ 'movie'";
-        channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+        ksqlExpression = "name ~ 'movie'";
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
@@ -74,8 +76,10 @@ public class ChannelAddTests extends BaseTest {
                 .mediaType(MediaType.EPISODE);
         MediaAsset episodeAsset = insertVod(vodData1);
 
-        filterExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
-        channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.NAME_DESC, null, null);
+        ksqlExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.NAME_DESC);
+        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
@@ -106,7 +110,9 @@ public class ChannelAddTests extends BaseTest {
     private void addChannelWithInvalidAssetType() {
         integerValue.setValue(666);
         assetTypes.add(integerValue);
-        channel = ChannelUtils.addChannel(channelName, description, isActive, null, AssetOrderBy.LIKES_DESC, assetTypes, null);
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, null, channelOrder, assetTypes);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
@@ -120,7 +126,9 @@ public class ChannelAddTests extends BaseTest {
     @Description("channel/action/add - mandatory channel name not provided")
     @Test
     private void addChannelWithNoName() {
-        channel = ChannelUtils.addChannel(null, description, isActive, null, AssetOrderBy.LIKES_DESC, null, null);
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+        channel = ChannelUtils.addDynamicChannel(null, description, isActive, null, channelOrder, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
@@ -134,8 +142,10 @@ public class ChannelAddTests extends BaseTest {
     @Description("channel/action/add - syntax error in filter expression")
     @Test
     private void addChannelWithSyntaxErrorInFilterExpression() {
-        filterExpression = "name = 'syntax error";
-        channel = ChannelUtils.addChannel(channelName, description, isActive, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+        ksqlExpression = "name = 'syntax error";
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         //channel/action/add
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());

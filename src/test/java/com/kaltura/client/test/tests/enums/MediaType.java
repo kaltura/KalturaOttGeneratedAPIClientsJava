@@ -3,7 +3,6 @@ package com.kaltura.client.test.tests.enums;
 import com.kaltura.client.enums.EnumAsString;
 
 public enum MediaType implements EnumAsString {
-
     MOVIE("Movie"),
     SERIES("Series"),
     EPISODE("Episode"),

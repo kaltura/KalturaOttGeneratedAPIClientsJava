@@ -43,7 +43,7 @@ import static org.awaitility.Awaitility.setDefaultTimeout;
 
 public class BaseTest {
 
-    public static final boolean LOG_HEADERS = false;
+    public static final boolean LOG_HEADERS = true;
 
     public static Client client;
     public static Configuration config;
@@ -379,9 +379,10 @@ public class BaseTest {
         return mobileMediaFile;
     }
 
-    public static MediaFile getMediaFileByType(MediaAsset asset, String type) {
+    public static MediaFile getMediaFileByType(MediaAsset asset, String fileType) {
         MediaFile result;
-        if (type.equals(asset.getMediaFiles().get(0).getType())) {
+        int fileTypeId = asset.getMediaFiles().get(0).getTypeId();
+        if (fileType.equals(DBUtils.getMediaFileTypeName(fileTypeId))) {
             result = mediaAsset.getMediaFiles().get(0);
         } else {
             result = mediaAsset.getMediaFiles().get(1);
@@ -409,8 +410,8 @@ public class BaseTest {
                 PricePlan pricePlan = insertPp(ppData);
 
                 // it should have at least 1 VOD
-                Channel channel = loadDefaultChannel();
-                channel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
+                DynamicChannel channel = loadDefaultChannel();
+                channel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
                 AddChannelBuilder addChannelBuilder = ChannelService.add(channel);
                 Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
                 if (channelResponse.results != null && channelResponse.results.getName() != null) {
@@ -433,10 +434,10 @@ public class BaseTest {
         Verify.verify(listResponse.results.getObjects().get(0).getChannels().size() > 0);
         int channelId = listResponse.results.getObjects().get(0).getChannels().get(0).getId().intValue();
 
-        Channel channel = IngestFixtureData.getChannel(channelId);
+        DynamicChannel channel = IngestFixtureData.getChannel(channelId);
         String[] parameters;
         String tag = null, name = null;
-        if (null == channel.getFilterExpression()) {
+        if (null == channel.getKSql()) {
             // automatic channel
             String automaticChannelExpression = IngestFixtureData.getAutomaticChannelExpression(channelId);
             parameters = automaticChannelExpression.split(":");
@@ -444,7 +445,7 @@ public class BaseTest {
             tag = parameters[0];
         } else {
             // KSQL channel
-            parameters = channel.getFilterExpression().split("=");
+            parameters = channel.getKSql().split("=");
             Verify.verify(parameters.length == 2);
             if ("name".equals(parameters[0].toLowerCase())) {
                 // ingest VOD with mentioned name
@@ -474,8 +475,8 @@ public class BaseTest {
         }
     }
 
-    private static Channel loadDefaultChannel() {
-        Channel channel = new Channel();
+    private static DynamicChannel loadDefaultChannel() {
+        DynamicChannel channel = new DynamicChannel();
         channel.setName(BaseUtils.getRandomValue("Channel_", 999999));
         channel.setDescription("Description of " + channel.getName());
         channel.setIsActive(true);

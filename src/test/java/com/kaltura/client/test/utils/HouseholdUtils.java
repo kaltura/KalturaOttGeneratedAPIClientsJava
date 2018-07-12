@@ -24,7 +24,7 @@ import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 public class HouseholdUtils extends BaseUtils {
 
     // default household params
-    private static final int defaultNumOfUsers = 2;
+    private static final int defaultNumOfUsers = 1;
     private static final int defaultNumOfDevices = 1;
     private static final boolean defaultIsPreparePG = true;
 

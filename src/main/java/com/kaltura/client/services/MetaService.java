@@ -41,6 +41,44 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class MetaService {
 	
+	public static class AddMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, AddMetaBuilder> {
+		
+		public AddMetaBuilder(Meta meta) {
+			super(Meta.class, "meta", "add");
+			params.add("meta", meta);
+		}
+	}
+
+	/**
+	 * Add a new meta
+	 * 
+	 * @param meta Meta Object
+	 */
+    public static AddMetaBuilder add(Meta meta)  {
+		return new AddMetaBuilder(meta);
+	}
+	
+	public static class DeleteMetaBuilder extends RequestBuilder<Boolean, String, DeleteMetaBuilder> {
+		
+		public DeleteMetaBuilder(long id) {
+			super(Boolean.class, "meta", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete an existing meta
+	 * 
+	 * @param id Meta Identifier
+	 */
+    public static DeleteMetaBuilder delete(long id)  {
+		return new DeleteMetaBuilder(id);
+	}
+	
 	public static class ListMetaBuilder extends ListResponseRequestBuilder<Meta, Meta.Tokenizer, ListMetaBuilder> {
 		
 		public ListMetaBuilder(MetaFilter filter) {
@@ -54,7 +92,7 @@ public class MetaService {
 	}
 
 	/**
-	 * Get the list of meta mappings for the partner
+	 * Return a list of metas for the account with optional filter
 	 * 
 	 * @param filter Meta filter
 	 */
@@ -64,7 +102,7 @@ public class MetaService {
 	
 	public static class UpdateMetaBuilder extends RequestBuilder<Meta, Meta.Tokenizer, UpdateMetaBuilder> {
 		
-		public UpdateMetaBuilder(String id, Meta meta) {
+		public UpdateMetaBuilder(long id, Meta meta) {
 			super(Meta.class, "meta", "update");
 			params.add("id", id);
 			params.add("meta", meta);
@@ -76,12 +114,12 @@ public class MetaService {
 	}
 
 	/**
-	 * Update meta&amp;#39;s user interest
+	 * Update an existing meta
 	 * 
 	 * @param id Meta identifier
 	 * @param meta Meta
 	 */
-    public static UpdateMetaBuilder update(String id, Meta meta)  {
+    public static UpdateMetaBuilder update(long id, Meta meta)  {
 		return new UpdateMetaBuilder(id, meta);
 	}
 }

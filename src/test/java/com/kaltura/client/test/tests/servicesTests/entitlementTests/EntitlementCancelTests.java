@@ -43,7 +43,7 @@ public class EntitlementCancelTests extends BaseTest {
     private HouseholdUser testSharedMasterUser;
     private BookmarkPlayerData playerData;
     private Bookmark bookmark;
-    private Channel sharedChannel;
+    private DynamicChannel sharedChannel;
 
     private final int numberOfUsersInHousehold = 2;
     private final int numberOfDevicesInHousehold = 1;
@@ -66,7 +66,7 @@ public class EntitlementCancelTests extends BaseTest {
         bookmark.setPosition(0);
         bookmark.setType(AssetType.MEDIA);
 
-        sharedChannel = new Channel();
+        sharedChannel = new DynamicChannel();
         sharedChannel.setName(BaseUtils.getRandomValue("Channel_", 999999));
         sharedChannel.setDescription("Description of " + sharedChannel.getName());
         sharedChannel.setIsActive(true);
@@ -129,7 +129,7 @@ public class EntitlementCancelTests extends BaseTest {
     @Test
     public void cancelPlayedSubscription() {
         // create mpp having at least 1 media on its channel
-        sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
+        sharedChannel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
         AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
         assertThat(channelResponse.results).isNotNull();

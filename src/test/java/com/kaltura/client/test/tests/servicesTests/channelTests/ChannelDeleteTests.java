@@ -1,10 +1,11 @@
 package com.kaltura.client.test.tests.servicesTests.channelTests;
 
-import com.kaltura.client.enums.AssetOrderBy;
+import com.kaltura.client.enums.ChannelOrderBy;
 import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.ChannelUtils;
 import com.kaltura.client.types.Channel;
+import com.kaltura.client.types.ChannelOrder;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
@@ -28,7 +29,9 @@ public class ChannelDeleteTests extends BaseTest {
     @Description("channel/action/delete")
     @Test
     private void DeleteChannel() {
-        channel = ChannelUtils.addChannel(channelName, description, true, filterExpression, AssetOrderBy.LIKES_DESC, null, null);
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+        channel = ChannelUtils.addDynamicChannel(channelName, description, true, filterExpression, channelOrder, null);
 
         // channel/action/add
         ChannelService.AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());

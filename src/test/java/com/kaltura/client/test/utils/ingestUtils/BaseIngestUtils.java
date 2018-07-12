@@ -97,7 +97,6 @@ public class BaseIngestUtils {
         tf.setOutputProperty(OutputKeys.INDENT, "yes");
         Writer out = new StringWriter();
         tf.transform(new DOMSource(doc), new StreamResult(out));
-        System.out.println(out.toString());
     }
 
     static String uncommentCdataSection(String docAsString) {

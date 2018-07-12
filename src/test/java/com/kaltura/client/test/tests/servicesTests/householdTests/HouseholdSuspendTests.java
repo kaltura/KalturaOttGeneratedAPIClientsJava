@@ -3,6 +3,7 @@ package com.kaltura.client.test.tests.servicesTests.householdTests;
 import com.kaltura.client.enums.*;
 import com.kaltura.client.services.*;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.PremiumService;
 import com.kaltura.client.test.utils.*;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
@@ -459,7 +460,6 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test(groups = "slow_after", dependsOnGroups = {"slow_before"}, priority = 3)
     private void suspend_with_renew_subscription_role_after_wait() {
         // get productprice list for asset in subscription - after renew
-
         Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId()), Optional.empty(), false).get(0);
         ProductPriceFilter assetFilter = new ProductPriceFilter();
         assetFilter.setFileIdIn(String.valueOf(asset.getMediaFiles().get(0).getId()));
@@ -532,11 +532,14 @@ public class HouseholdSuspendTests extends BaseTest {
                 .setKs(getOperatorKs())
                 .setUserId(Integer.valueOf(masterUser.getUserId()));
         Response<Boolean> booleanResponse = executor.executeSync(suspendHouseholdBuilder);
+
         assertThat(booleanResponse.results).isTrue();
 
         // purchase subscription with premium service
-        int subscriptionId = DBUtils.getSubscriptionWithPremiumService();
-        Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, subscriptionId, Optional.empty());
+        Subscription subscription = DBUtils.getSubscriptionWithPremiumService(PremiumService.NPVR);
+        Response<Transaction> transactionResponse = PurchaseUtils
+                .purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
+
         assertThat(transactionResponse.results).isNull();
         assertThat(transactionResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(7013).getCode());
 
@@ -544,6 +547,7 @@ public class HouseholdSuspendTests extends BaseTest {
         Integer mediaFileId = asset.getMediaFiles().get(0).getId();
         transactionResponse = PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(asset.getId())),
                 Optional.of(mediaFileId), Optional.empty());
+
         assertThat(transactionResponse.error).isNull();
         assertThat(transactionResponse.results.getState()).isEqualTo("OK");
 

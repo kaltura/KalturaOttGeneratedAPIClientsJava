@@ -5,7 +5,6 @@ import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.SocialActionType;
-import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.SocialActionService;
 import com.kaltura.client.types.*;
@@ -16,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.kaltura.client.services.AssetService.GetAssetBuilder;
-import static com.kaltura.client.services.AssetService.ListAssetBuilder;
+import static com.kaltura.client.services.AssetService.*;
 import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.SocialActionService.AddSocialActionBuilder;
@@ -63,10 +61,8 @@ public class AssetUtils extends BaseUtils {
     }
 
     public static List<Integer> getAssetFileIds(String assetId) {
-        AssetReferenceType assetReferenceType = AssetReferenceType.get(AssetReferenceType.MEDIA.getValue());
-
-        GetAssetBuilder getAssetBuilder = AssetService.get(assetId, assetReferenceType);
-        getAssetBuilder.setKs(getSharedMasterUserKs());
+        GetAssetBuilder getAssetBuilder = get(assetId, AssetReferenceType.MEDIA)
+                .setKs(getSharedMasterUserKs());
         Response<Asset> assetResponse = executor.executeSync(getAssetBuilder);
 
         List<MediaFile> mediaFiles = assetResponse.results.getMediaFiles();
@@ -82,7 +78,7 @@ public class AssetUtils extends BaseUtils {
         filterPager.setPageSize(20);
         filterPager.setPageIndex(1);
 
-        ListAssetBuilder listAssetBuilder = AssetService.list(assetFilter, filterPager)
+        ListAssetBuilder listAssetBuilder = list(assetFilter, filterPager)
                 .setKs(getSharedMasterUserKs());
         Response<ListResponse<Asset>> assetResponse = executor.executeSync(listAssetBuilder);
 

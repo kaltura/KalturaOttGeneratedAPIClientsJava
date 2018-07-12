@@ -25,21 +25,21 @@ public class ChannelFilterTests extends BaseTest {
 
     private MediaAsset asset1, asset2, asset3;
     private ProgramAsset program1;
-    private Channel channel;
+    private DynamicChannel channel;
 
 
     @BeforeClass
     private void asset_list_channelFilter_before_class() {
-        // ingest movie
+        // get movie
         asset1 = getAssets(1, Optional.of(MediaType.MOVIE)).get(0);
 
-        // ingest series
+        // get series
         asset2 = getVirtualAssets(1, Optional.of(MediaType.SERIES)).get(0);
 
-        // ingest episode
+        // get episode
         asset3 = getAssets(1, Optional.of(MediaType.EPISODE)).get(0);
 
-        // ingest epg
+        // get epg
         program1 = getPrograms(1).get(0);
 
         // add assets to channel query
@@ -53,13 +53,13 @@ public class ChannelFilterTests extends BaseTest {
                 .toString();
 
         // add channel
-        channel = new Channel();
+        channel = new DynamicChannel();
         channel.setName("channel_" + getTimeInEpoch());
         channel.description("Description of " + channel.getName());
         channel.setIsActive(true);
-        channel.setFilterExpression(query); // "Free='" + channel.getName() + "'"
+        channel.setKSql(query); // "Free='" + channel.getName() + "'"
 
-        channel = executor.executeSync(ChannelService.add(channel)
+        channel = (DynamicChannel) executor.executeSync(ChannelService.add(channel)
                 .setKs(getOperatorKs())).results;
     }
 

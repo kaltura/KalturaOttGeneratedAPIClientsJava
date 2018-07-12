@@ -1,7 +1,6 @@
 package com.kaltura.client.test.utils;
 
 public class KsqlBuilder {
-    private String query;
     private StringBuilder sb;
 
     public KsqlBuilder() {
