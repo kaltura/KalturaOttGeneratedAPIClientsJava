@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ChannelOrder;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -48,10 +47,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Channel.Tokenizer.class)
-public class Channel extends ObjectBase {
+public class Channel extends BaseChannel {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
+	public interface Tokenizer extends BaseChannel.Tokenizer {
 		String name();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String systemName();
@@ -63,10 +61,6 @@ public class Channel extends ObjectBase {
 		String updateDate();
 	}
 
-	/**
-	 * Unique identifier for the channel
-	 */
-	private Long id;
 	/**
 	 * Channel name
 	 */
@@ -104,22 +98,10 @@ public class Channel extends ObjectBase {
 	 */
 	private Long updateDate;
 
-	// id:
-	public Long getId(){
-		return this.id;
-	}
 	// name:
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// multilingualName:
 	public List<TranslationToken> getMultilingualName(){
 		return this.multilingualName;
@@ -144,14 +126,6 @@ public class Channel extends ObjectBase {
 	public String getDescription(){
 		return this.description;
 	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
-
 	// multilingualDescription:
 	public List<TranslationToken> getMultilingualDescription(){
 		return this.multilingualDescription;
@@ -199,7 +173,6 @@ public class Channel extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		systemName = GsonParser.parseString(jsonObject.get("systemName"));
@@ -215,10 +188,8 @@ public class Channel extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaChannel");
-		kparams.add("name", this.name);
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("systemName", this.systemName);
-		kparams.add("description", this.description);
 		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("isActive", this.isActive);
 		kparams.add("orderBy", this.orderBy);

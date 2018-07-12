@@ -323,14 +323,6 @@ public class Subscription extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// multilingualName:
 	public List<TranslationToken> getMultilingualName(){
 		return this.multilingualName;
@@ -343,14 +335,6 @@ public class Subscription extends ObjectBase {
 	public String getDescription(){
 		return this.description;
 	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
-
 	// multilingualDescription:
 	public List<TranslationToken> getMultilingualDescription(){
 		return this.multilingualDescription;
@@ -601,9 +585,7 @@ public class Subscription extends ObjectBase {
 		kparams.add("isInfiniteRenewal", this.isInfiniteRenewal);
 		kparams.add("price", this.price);
 		kparams.add("discountModule", this.discountModule);
-		kparams.add("name", this.name);
 		kparams.add("multilingualName", this.multilingualName);
-		kparams.add("description", this.description);
 		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("mediaId", this.mediaId);
 		kparams.add("prorityInOrder", this.prorityInOrder);
