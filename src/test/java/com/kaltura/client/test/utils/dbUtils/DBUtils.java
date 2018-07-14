@@ -318,9 +318,9 @@ public class DBUtils extends BaseUtils {
                 .getInt("id");
     }
 
-    public static int getMediaFileTypeName(int mediaFileId) {
+    public static String getMediaFileTypeName(int mediaFileId) {
         return getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_ID_SELECT, partnerId + 1, mediaFileId)
                 .getJSONObject(0)
-                .getInt("name");
+                .getString("name");
     }
 }

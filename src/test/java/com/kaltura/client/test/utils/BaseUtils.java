@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
+import com.kaltura.client.types.TranslationToken;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -187,5 +188,16 @@ public class BaseUtils {
     public static void clearCache() {
         String url = config.getEndpoint() + "/clear_cache.aspx";
         given().queryParam("action", "clear_all").get(url);
+    }
+
+    public static List<TranslationToken> setTranslationToken(String value) {
+        TranslationToken translationToken = new TranslationToken();
+        translationToken.setLanguage("eng");
+        translationToken.setValue(value);
+
+        List<TranslationToken> translationTokens = new ArrayList<>();
+        translationTokens.add(translationToken);
+
+        return translationTokens;
     }
 }

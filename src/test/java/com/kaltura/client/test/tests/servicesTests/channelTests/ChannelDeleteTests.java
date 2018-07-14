@@ -23,7 +23,7 @@ public class ChannelDeleteTests extends BaseTest {
 
     private final String channelName = "Channel_12345";
     private final String description = "description of channel";
-    private final String filterExpression = "name ~ 'movie'";
+    private final String ksqlExpression = "name ~ 'movie'";
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("channel/action/delete")
@@ -31,7 +31,7 @@ public class ChannelDeleteTests extends BaseTest {
     private void DeleteChannel() {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
-        channel = ChannelUtils.addDynamicChannel(channelName, description, true, filterExpression, channelOrder, null);
+        channel = ChannelUtils.addDynamicChannel(channelName, description, true, ksqlExpression, channelOrder, null);
 
         // channel/action/add
         ChannelService.AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());

@@ -12,6 +12,7 @@ import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.json.JSONArray;
+
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getJsonArrayFromQueryResult;
@@ -78,7 +79,7 @@ public class IngestFixtureData extends BaseUtils {
 
         Subscription subscription = new Subscription();
         subscription.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
-        subscription.setName(jsonArray.getJSONObject(0).getString(NAME));
+        subscription.setMultilingualName(setTranslationToken(jsonArray.getJSONObject(0).getString(NAME)));
         subscription.setPricePlanIds(String.valueOf(jsonArray.getJSONObject(0).getLong(PRICE_PLAN_ID)));
         subscription.setIsRenewable(false);
         subscription.setDependencyType(SubscriptionDependencyType.BASE);
@@ -94,7 +95,7 @@ public class IngestFixtureData extends BaseUtils {
                 getSharedCommonDiscount().toParams().get("id"), pricePlan.getPriceDetailsId(), pricePlan.getId());
         Collection collection = new Collection();
         collection.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
-        collection.setName(jsonArray.getJSONObject(0).getString(NAME));
+        collection.setMultilingualName(setTranslationToken(jsonArray.getJSONObject(0).getString(NAME)));
         // TODO: add more data in case it needed
         return collection;
     }
@@ -158,7 +159,7 @@ public class IngestFixtureData extends BaseUtils {
         JSONArray jsonArray = getJsonArrayFromQueryResult(SUBSCRIPTION_5_MIN_RENEW_SELECT, partnerId);
         Subscription subscription = new Subscription();
         subscription.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)).trim());
-        subscription.setName(jsonArray.getJSONObject(0).getString(NAME));
+        subscription.setMultilingualName(setTranslationToken(jsonArray.getJSONObject(0).getString(NAME)));
         subscription.setPricePlanIds(String.valueOf(jsonArray.getJSONObject(0).getLong(PRICE_PLAN_ID)));
         subscription.setIsRenewable(false);
         subscription.setDependencyType(SubscriptionDependencyType.BASE);

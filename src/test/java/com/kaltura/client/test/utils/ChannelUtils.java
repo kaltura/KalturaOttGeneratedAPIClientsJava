@@ -10,8 +10,8 @@ public class ChannelUtils extends BaseUtils {
     public static DynamicChannel addDynamicChannel(String name, @Nullable String description, @Nullable Boolean isActive, @Nullable String ksqlExpression,
                                             @Nullable ChannelOrder channelOrder, @Nullable List<IntegerValue> assetTypes) {
         DynamicChannel channel = new DynamicChannel();
-        channel.setName(name);
-        channel.setDescription(description);
+        channel.setMultilingualName(setTranslationToken(name));
+        channel.setMultilingualDescription(setTranslationToken(description));
         channel.setIsActive(isActive);
         channel.setAssetTypes(assetTypes);
         channel.setKSql(ksqlExpression);
