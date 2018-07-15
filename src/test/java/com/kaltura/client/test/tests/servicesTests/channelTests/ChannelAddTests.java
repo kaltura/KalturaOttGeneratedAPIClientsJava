@@ -85,7 +85,7 @@ public class ChannelAddTests extends BaseTest {
         AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
         Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
 
-        assertThat(channelResponse.results.getName()).isEqualTo(channelName);
+        assertThat(channelResponse.results.getMultilingualName().get(0).getValue()).isEqualTo(channelName);
 
         int channelId = Math.toIntExact(channelResponse.results.getId());
 

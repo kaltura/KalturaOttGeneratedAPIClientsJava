@@ -9,7 +9,6 @@ import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
 import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
 import com.kaltura.client.services.TransactionHistoryService.ListTransactionHistoryBuilder;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
@@ -29,7 +28,7 @@ import java.util.Optional;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.*;
-import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,8 +73,8 @@ public class ProductPriceListTests extends BaseTest {
         classMasterUserId = HouseholdUtils.getMasterUser(household).getUserId();
 
         sharedChannel = new DynamicChannel();
-        sharedChannel.setName(BaseUtils.getRandomValue("Channel_", 999999));
-        sharedChannel.setDescription("Description of " + sharedChannel.getName());
+        sharedChannel.setMultilingualName(setTranslationToken(getRandomValue("Channel_", 999999)));
+        sharedChannel.setMultilingualDescription(setTranslationToken("Description of " + sharedChannel.getName()));
         sharedChannel.setIsActive(true);
         sharedChannel.setAssetTypes(null);
 

@@ -75,8 +75,9 @@ public class BundleFilterTests extends BaseTest {
 
         // add channel1
         channel1 = new DynamicChannel();
-        channel1.setName("channel_" + getTimeInEpoch());
-        channel1.description("Description of " + channel1.getName());
+        channel1.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
+        channel1.setMultilingualDescription(setTranslationToken("Description of " + channel1.getName()));
+        channel1.setSystemName(channel1.getMultilingualName().get(0).getValue());
         channel1.setIsActive(true);
         channel1.setKSql(channel1Query);
 
@@ -85,8 +86,9 @@ public class BundleFilterTests extends BaseTest {
 
         // add channel2
         channel2 = new DynamicChannel();
-        channel2.setName("channel_" + getTimeInEpoch());
-        channel2.description("Description of " + channel2.getName());
+        channel2.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
+        channel2.setMultilingualDescription(setTranslationToken("Description of " + channel2.getName()));
+        channel2.setSystemName(channel2.getMultilingualName().get(0).getValue());
         channel2.setIsActive(true);
         channel2.setKSql(channel2Query);
 
@@ -95,8 +97,8 @@ public class BundleFilterTests extends BaseTest {
 
         // ingest subscription with 2 new channels
         MppData mppData = new MppData()
-                .channel1(channel1.getName())
-                .channel2(channel2.getName());
+                .channel1(channel1.getMultilingualName().get(0).getValue())
+                .channel2(channel2.getMultilingualName().get(0).getValue());
         subscription = insertMpp(mppData);
     }
 

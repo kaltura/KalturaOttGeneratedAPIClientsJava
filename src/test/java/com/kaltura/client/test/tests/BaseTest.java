@@ -10,7 +10,6 @@ import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.PerformanceAppLogUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
@@ -20,12 +19,17 @@ import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
+import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
+import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
+import static com.kaltura.client.test.utils.BaseUtils.setTranslationToken;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
@@ -380,14 +384,14 @@ public class BaseTest {
     }
 
     public static MediaFile getMediaFileByType(MediaAsset asset, String fileType) {
-        MediaFile result;
+        MediaFile mediaFile;
         int fileTypeId = asset.getMediaFiles().get(0).getTypeId();
         if (fileType.equals(DBUtils.getMediaFileTypeName(fileTypeId))) {
-            result = mediaAsset.getMediaFiles().get(0);
+            mediaFile = mediaAsset.getMediaFiles().get(0);
         } else {
-            result = mediaAsset.getMediaFiles().get(1);
+            mediaFile = mediaAsset.getMediaFiles().get(1);
         }
-        return result;
+        return mediaFile;
     }
 
     public static Subscription get5MinRenewableSubscription() {
@@ -477,8 +481,8 @@ public class BaseTest {
 
     private static DynamicChannel loadDefaultChannel() {
         DynamicChannel channel = new DynamicChannel();
-        channel.setName(BaseUtils.getRandomValue("Channel_", 999999));
-        channel.setDescription("Description of " + channel.getName());
+        channel.setMultilingualName(setTranslationToken(getRandomValue("Channel_", 999999)));
+        channel.setMultilingualDescription(setTranslationToken("Description of " + channel.getName()));
         channel.setIsActive(true);
         channel.setAssetTypes(null);
         return channel;

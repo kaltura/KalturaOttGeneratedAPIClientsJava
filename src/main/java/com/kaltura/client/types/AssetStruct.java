@@ -126,14 +126,6 @@ public class AssetStruct extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// multilingualName:
 	public List<TranslationToken> getMultilingualName(){
 		return this.multilingualName;
@@ -276,7 +268,6 @@ public class AssetStruct extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetStruct");
-		kparams.add("name", this.name);
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("systemName", this.systemName);
 		kparams.add("isProtected", this.isProtected);
