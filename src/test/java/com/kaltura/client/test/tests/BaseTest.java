@@ -402,6 +402,7 @@ public class BaseTest {
                     getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true).size() == 0) {
                 ingestVODIntoSubscription(fiveMinRenewableSubscription);
             }
+
             if (fiveMinRenewableSubscription == null) {
                 PpData ppData = new PpData()
                         .fullLifeCycle(FIVE_MINUTES_PERIOD)

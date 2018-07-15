@@ -69,6 +69,7 @@ public class EntitlementCancelTests extends BaseTest {
         sharedChannel = new DynamicChannel();
         sharedChannel.setMultilingualName(setTranslationToken(getRandomValue("Channel_", 999999)));
         sharedChannel.setMultilingualDescription(setTranslationToken("Description of " + sharedChannel.getName()));
+        sharedChannel.setSystemName(sharedChannel.getMultilingualName().get(0).getValue());
         sharedChannel.setIsActive(true);
         sharedChannel.setAssetTypes(null);
     }
