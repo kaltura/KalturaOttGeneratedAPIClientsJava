@@ -77,6 +77,7 @@ public class BundleFilterTests extends BaseTest {
         channel1 = new DynamicChannel();
         channel1.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
         channel1.setMultilingualDescription(setTranslationToken("Description of " + channel1.getName()));
+        channel1.setSystemName(channel1.getMultilingualName().get(0).getValue());
         channel1.setIsActive(true);
         channel1.setKSql(channel1Query);
 
@@ -87,6 +88,7 @@ public class BundleFilterTests extends BaseTest {
         channel2 = new DynamicChannel();
         channel2.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
         channel2.setMultilingualDescription(setTranslationToken("Description of " + channel2.getName()));
+        channel2.setSystemName(channel2.getMultilingualName().get(0).getValue());
         channel2.setIsActive(true);
         channel2.setKSql(channel2Query);
 

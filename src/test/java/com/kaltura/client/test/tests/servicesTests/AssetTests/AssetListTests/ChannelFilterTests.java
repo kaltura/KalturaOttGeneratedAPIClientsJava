@@ -56,6 +56,7 @@ public class ChannelFilterTests extends BaseTest {
         channel = new DynamicChannel();
         channel.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
         channel.setMultilingualDescription(setTranslationToken("Description of " + channel.getName()));
+        channel.setSystemName(channel.getMultilingualName().get(0).getValue());
         channel.setIsActive(true);
         channel.setKSql(query); // "Free='" + channel.getName() + "'"
 
