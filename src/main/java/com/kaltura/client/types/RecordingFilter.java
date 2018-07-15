@@ -48,6 +48,7 @@ public class RecordingFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String statusIn();
+		String externalRecordingIdIn();
 		String kSql();
 	}
 
@@ -55,6 +56,10 @@ public class RecordingFilter extends Filter {
 	 * Recording Statuses
 	 */
 	private String statusIn;
+	/**
+	 * Comma separated external identifiers
+	 */
+	private String externalRecordingIdIn;
 	/**
 	 * KSQL expression
 	 */
@@ -70,6 +75,18 @@ public class RecordingFilter extends Filter {
 
 	public void statusIn(String multirequestToken){
 		setToken("statusIn", multirequestToken);
+	}
+
+	// externalRecordingIdIn:
+	public String getExternalRecordingIdIn(){
+		return this.externalRecordingIdIn;
+	}
+	public void setExternalRecordingIdIn(String externalRecordingIdIn){
+		this.externalRecordingIdIn = externalRecordingIdIn;
+	}
+
+	public void externalRecordingIdIn(String multirequestToken){
+		setToken("externalRecordingIdIn", multirequestToken);
 	}
 
 	// kSql:
@@ -96,6 +113,7 @@ public class RecordingFilter extends Filter {
 
 		// set members values:
 		statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
+		externalRecordingIdIn = GsonParser.parseString(jsonObject.get("externalRecordingIdIn"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
 	}
@@ -104,6 +122,7 @@ public class RecordingFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRecordingFilter");
 		kparams.add("statusIn", this.statusIn);
+		kparams.add("externalRecordingIdIn", this.externalRecordingIdIn);
 		kparams.add("kSql", this.kSql);
 		return kparams;
 	}

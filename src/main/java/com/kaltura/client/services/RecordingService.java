@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.enums.RecordingStatus;
-import com.kaltura.client.enums.RecordingType;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Recording;
 import com.kaltura.client.types.RecordingFilter;
@@ -152,69 +150,6 @@ public class RecordingService {
 	 */
     public static ListRecordingBuilder list(RecordingFilter filter, FilterPager pager)  {
 		return new ListRecordingBuilder(filter, pager);
-	}
-	
-	public static class NotifyRecordingBuilder extends RequestBuilder<Boolean, String, NotifyRecordingBuilder> {
-		
-		public NotifyRecordingBuilder(String externalDomainRecordingId, RecordingStatus recordingStatus, int domainId, String externalEpgId, RecordingType recordingType, boolean isProtected) {
-			super(Boolean.class, "recording", "notify");
-			params.add("externalDomainRecordingId", externalDomainRecordingId);
-			params.add("recordingStatus", recordingStatus);
-			params.add("domainId", domainId);
-			params.add("externalEpgId", externalEpgId);
-			params.add("recordingType", recordingType);
-			params.add("isProtected", isProtected);
-		}
-		
-		public void externalDomainRecordingId(String multirequestToken) {
-			params.add("externalDomainRecordingId", multirequestToken);
-		}
-		
-		public void recordingStatus(String multirequestToken) {
-			params.add("recordingStatus", multirequestToken);
-		}
-		
-		public void domainId(String multirequestToken) {
-			params.add("domainId", multirequestToken);
-		}
-		
-		public void externalEpgId(String multirequestToken) {
-			params.add("externalEpgId", multirequestToken);
-		}
-		
-		public void recordingType(String multirequestToken) {
-			params.add("recordingType", multirequestToken);
-		}
-		
-		public void isProtected(String multirequestToken) {
-			params.add("isProtected", multirequestToken);
-		}
-	}
-
-	public static NotifyRecordingBuilder notify_(String externalDomainRecordingId, RecordingStatus recordingStatus, int domainId)  {
-		return notify_(externalDomainRecordingId, recordingStatus, domainId, null);
-	}
-
-	public static NotifyRecordingBuilder notify_(String externalDomainRecordingId, RecordingStatus recordingStatus, int domainId, String externalEpgId)  {
-		return notify_(externalDomainRecordingId, recordingStatus, domainId, externalEpgId, null);
-	}
-
-	public static NotifyRecordingBuilder notify_(String externalDomainRecordingId, RecordingStatus recordingStatus, int domainId, String externalEpgId, RecordingType recordingType)  {
-		return notify_(externalDomainRecordingId, recordingStatus, domainId, externalEpgId, recordingType, false);
-	}
-
-	/**
-	 * Notify on an external recording
-	 * 
-	 * @param externalDomainRecordingId External domain recording identifier
-	 * @param recordingStatus Recording status: scheduled/recording/recorded/canceled/failed/deleted
-	 * @param domainId Houshehold identifier
-	 * @param externalEpgId Epg external identifier
-	 * @param recordingType Recording Type: single/season/series
-	 * @param isProtected is the recording protected by the user
-	 */
-    public static NotifyRecordingBuilder notify_(String externalDomainRecordingId, RecordingStatus recordingStatus, int domainId, String externalEpgId, RecordingType recordingType, boolean isProtected)  {
-		return new NotifyRecordingBuilder(externalDomainRecordingId, recordingStatus, domainId, externalEpgId, recordingType, isProtected);
 	}
 	
 	public static class ProtectRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, ProtectRecordingBuilder> {

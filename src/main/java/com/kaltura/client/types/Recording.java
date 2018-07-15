@@ -121,6 +121,14 @@ public class Recording extends ObjectBase {
 	public RecordingType getType(){
 		return this.type;
 	}
+	public void setType(RecordingType type){
+		this.type = type;
+	}
+
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
+
 	// viewableUntilDate:
 	public Long getViewableUntilDate(){
 		return this.viewableUntilDate;
@@ -129,6 +137,14 @@ public class Recording extends ObjectBase {
 	public Boolean getIsProtected(){
 		return this.isProtected;
 	}
+	public void setIsProtected(Boolean isProtected){
+		this.isProtected = isProtected;
+	}
+
+	public void isProtected(String multirequestToken){
+		setToken("isProtected", multirequestToken);
+	}
+
 	// externalId:
 	public String getExternalId(){
 		return this.externalId;
@@ -176,6 +192,8 @@ public class Recording extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRecording");
 		kparams.add("assetId", this.assetId);
+		kparams.add("type", this.type);
+		kparams.add("isProtected", this.isProtected);
 		kparams.add("externalId", this.externalId);
 		return kparams;
 	}
