@@ -201,7 +201,7 @@ public class DBUtils extends BaseUtils {
 
     // Get epg channel name and linear asset id json array
     public static JSONArray getLinearAssetIdAndEpgChannelNameJsonArray() {
-        return getJsonArrayFromQueryResult(ASSET_ID_SELECT, partnerId + 1);
+        return getJsonArrayFromQueryResult(LINEAR_ASSET_ID_AND_EPG_CHANNEL_NAME_SELECT, partnerId + 1);
     }
 
     // Get un active asset from DB (status = 2)

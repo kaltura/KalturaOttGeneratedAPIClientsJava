@@ -181,7 +181,16 @@ public class DBConstants {
             "from [TVinci].[dbo].[permissions_permission_items]\n" +
             "where permission_id=? and permission_item_id=? and is_active=1 and [status]=1 and group_id=?";
 
-    static final String ASSET_ID_SELECT = "SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=? and status=1 and DATALENGTH(media_id) > 0";
+    static final String LINEAR_ASSET_ID_AND_EPG_CHANNEL_NAME_SELECT = "SELECT ec.ID, ec.NAME, m.ID as 'media_id' " +
+            "FROM [TVinci].[dbo].[media] m " +
+            "inner join [TVinci].[dbo].[epg_channels] ec on m.EPG_IDENTIFIER = ec.ID " +
+            "where m.GROUP_ID = ? " +
+            "and MEDIA_TYPE_ID = 427 " +
+            "and m.IS_ACTIVE = 1 " +
+            "and m.STATUS = 1 " +
+            "and EPG_IDENTIFIER != ''";
+
+    //"SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=? and status=1 and DATALENGTH(media_id) > 0";
 
     static final String UNACTIVE_ASSET_ID_SELECT = "SELECT top 1 [id] FROM [TVinci].[dbo].[media] where group_id = ? and status = 2";
 

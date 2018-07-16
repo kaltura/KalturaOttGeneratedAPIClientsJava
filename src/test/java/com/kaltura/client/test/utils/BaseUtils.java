@@ -60,7 +60,6 @@ public class BaseUtils {
 
     // Get epoch time in seconds according to off set parameter provided (in minutes)
     public static long getTimeInEpoch(int offSetInMinutes) {
-        //DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date dNow = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dNow);

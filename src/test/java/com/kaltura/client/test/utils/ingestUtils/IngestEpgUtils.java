@@ -48,7 +48,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
     @Data
     public static class EpgData {
         @Setter(AccessLevel.NONE) private String coguid;
-        @NonNull private String epgChannelName;
+        @Setter(AccessLevel.NONE) @NonNull private String epgChannelName;
 
         private boolean isCridUnique4AllPrograms = true;
 
