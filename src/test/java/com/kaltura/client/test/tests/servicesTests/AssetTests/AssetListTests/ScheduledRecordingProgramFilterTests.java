@@ -18,15 +18,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.RecordingService.add;
-import static com.kaltura.client.test.utils.BaseUtils.getCalendarWithOffset;
-import static com.kaltura.client.test.utils.BaseUtils.getConcatenatedString;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
+import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getSubscriptionWithPremiumService;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
@@ -65,11 +62,11 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
 
         // ingest epg's
         EpgData epgData1 = new EpgData(linearAssetJsonObject1.getString("name"))
-                .startDate(getTimeInEpoch(10));
+                .startDate(getEpochInLocalTime(5));
         programAssets1 = insertEpg(epgData1);
 
         EpgData epgData2 = new EpgData(linearAssetJsonObject2.getString("name"))
-                .startDate(getCalendarWithOffset(120));
+                .startDate(getEpochInLocalTime(360));
         programAssets2 = insertEpg(epgData2);
 
         // add recordings 1
@@ -120,10 +117,8 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
                 String.valueOf(linearAssetJsonObject2.getInt("id")));
 
         ScheduledRecordingProgramFilter filter = new ScheduledRecordingProgramFilter();
-//        filter.setChannelsIn(channelsIn);
-        filter.setStartDateGreaterThanOrNull(getCalendarWithOffset(60).getTimeInMillis() / 1000);
-//        filter.setEndDateLessThanOrNull(getCalendarWithOffset(600).getTimeInMillis() / 1000);
-//        filter.setRecordingTypeEqual(ScheduledRecordingAssetType.SINGLE);
+        filter.setChannelsIn(channelsIn);
+        filter.setStartDateGreaterThanOrNull(getEpochInUtcTime(180));
 
         // get list
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(AssetService.list(filter)
@@ -134,10 +129,7 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(programAssets2.get(0).getId());
         assertThat(assetListResponse.results.getObjects().get(0).getName()).isEqualTo(programAssets2.get(0).getName());
     }
-
-
-
-
+    
     @AfterClass
     private void asset_list_scheduledRecordingProgramFilter_after_class() {
         // cleanup

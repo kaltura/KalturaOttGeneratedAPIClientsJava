@@ -28,7 +28,7 @@ public class AppTokenGetTests extends BaseTest {
     @BeforeClass
     private void get_tests_before_class() {
         sessionUserId = getSharedUser().getUserId();
-        expiryDate = BaseUtils.getTimeInEpoch(offSetInMinutes);
+        expiryDate = BaseUtils.getEpochInLocalTime(offSetInMinutes);
     }
 
     @Description("AppToken/action/get")

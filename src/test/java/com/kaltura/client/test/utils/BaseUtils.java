@@ -15,7 +15,6 @@ import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -59,17 +58,31 @@ public class BaseUtils {
     }
 
     // Get epoch time in seconds according to off set parameter provided (in minutes)
-    public static long getTimeInEpoch(int offSetInMinutes) {
-        Date dNow = new Date();
+    public static long getEpochInLocalTime(int offSetInMinutes) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dNow);
         calendar.add(Calendar.MINUTE, offSetInMinutes);
 
         return calendar.getTimeInMillis() / 1000;
     }
 
-    public static long getTimeInEpoch() {
-        return Instant.now().toEpochMilli();
+    public static long getEpochInUtcTime(int offSetInMinutes) {
+        Calendar calendar = Calendar.getInstance();
+        int timeZoneOffset = TimeZone.getDefault().getRawOffset() / 60000;
+        calendar.add(Calendar.MINUTE, offSetInMinutes + timeZoneOffset);
+
+        return calendar.getTimeInMillis() / 1000;
+    }
+
+    public static long getEpochInLocalTime() {
+        return Calendar.getInstance().getTimeInMillis() / 1000;
+    }
+
+    public static Date getDateFromEpoch(long epoch) {
+        return new Date(epoch * 1000);
+    }
+
+    public static long getEpochFromDate(Date date) {
+        return date.getTime() / 1000;
     }
 
     // generate current data String in specified format

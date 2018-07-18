@@ -7,6 +7,7 @@ import com.kaltura.client.services.HouseholdService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.AssetUtils;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -22,7 +23,7 @@ import static com.kaltura.client.services.BookmarkService.add;
 import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.BaseUtils.getConcatenatedString;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.BookmarkUtils.addBookmark;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getAssets;
@@ -129,7 +130,7 @@ public class AssetHistoryListTests extends BaseTest {
 
         // Verify that flag is set to false (user hasn't finish watching the asset)
         assertThat(assetHistoryObject1.getFinishedWatching()).isFalse();
-        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(getTimeInEpoch(0));
+        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(BaseUtils.getEpochInLocalTime(0));
 
         // Assertions for second object returned
         assertThat(assetHistoryObject2.getAssetId()).isEqualTo(movie.getId());
@@ -176,7 +177,7 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryObject1.getPosition()).isEqualTo(position2);
         assertThat(assetHistoryObject1.getAssetId()).isEqualTo(movie.getId());
         assertThat(assetHistoryObject1.getFinishedWatching()).isFalse();
-        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(getTimeInEpoch(0));
+        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(BaseUtils.getEpochInLocalTime(0));
 
         // cleanup - delete household
         executor.executeSync(HouseholdService.delete().setKs(masterUserKs));
