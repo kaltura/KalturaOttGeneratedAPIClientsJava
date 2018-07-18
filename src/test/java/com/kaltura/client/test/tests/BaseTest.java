@@ -385,8 +385,7 @@ public class BaseTest {
 
     public static MediaFile getMediaFileByType(MediaAsset asset, String fileType) {
         MediaFile mediaFile;
-        int fileTypeId = asset.getMediaFiles().get(0).getTypeId();
-        if (fileType.equals(DBUtils.getMediaFileTypeName(fileTypeId))) {
+        if (fileType.equals(asset.getMediaFiles().get(0).getType())) {
             mediaFile = mediaAsset.getMediaFiles().get(0);
         } else {
             mediaFile = mediaAsset.getMediaFiles().get(1);
