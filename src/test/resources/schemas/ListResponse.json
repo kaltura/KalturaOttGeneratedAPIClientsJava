@@ -53,6 +53,9 @@
               },
               {
                 "$ref": "PricePlan.json#/definitions/PricePlan"
+              },
+              {
+                "$ref": "DynamicChannel.json#/definitions/DynamicChannel"
               }
             ]
           }
@@ -78,7 +81,8 @@
             "KalturaSubscriptionListResponse",
             "KalturaPaymentGatewayProfileListResponse",
             "KalturaPriceDetailsListResponse",
-            "KalturaPricePlanListResponse"
+            "KalturaPricePlanListResponse",
+            "KalturaDynamicChannelListResponse"
           ]
         }
       },

@@ -1,0 +1,149 @@
+{
+  "$id": "DynamicChannel",
+  "type": "object",
+  "definitions": {
+    "DynamicChannel": {
+      "type": "object",
+      "properties": {
+        "executionTime": {
+          "type": "number",
+          "minimum": 0
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "objectType": {
+              "type": "string",
+              "minLength": 0
+            },
+            "createDate": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": {
+              "type": "string",
+              "minLength": 0
+            },
+            "multilingualDescription": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "objectType": {
+                    "type": "string",
+                    "minLength": 0
+                  },
+                  "language": {
+                    "type": "string",
+                    "minLength": 0
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 0
+                  }
+                },
+                "required": [
+                  "objectType",
+                  "language",
+                  "value"
+                ]
+              }
+            },
+            "id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "isActive": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 0
+            },
+            "multilingualName": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "objectType": {
+                    "type": "string",
+                    "minLength": 0
+                  },
+                  "language": {
+                    "type": "string",
+                    "minLength": 0
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 0
+                  }
+                },
+                "required": [
+                  "objectType",
+                  "language",
+                  "value"
+                ]
+              }
+            },
+            "orderBy": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string",
+                  "minLength": 0
+                },
+                "orderBy": {
+                  "type": "string",
+                  "minLength": 0
+                }
+              },
+              "required": [
+                "objectType",
+                "orderBy"
+              ]
+            },
+            "systemName": {
+              "type": "string",
+              "minLength": 0
+            },
+            "updateDate": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "assetTypes": {
+              "type": "array"
+            },
+            "kSql": {
+              "type": "string",
+              "minLength": 0
+            }
+          },
+          "required": [
+            "objectType",
+            "createDate",
+            "description",
+            "multilingualDescription",
+            "id",
+            "isActive",
+            "name",
+            "multilingualName",
+            "orderBy",
+            "systemName",
+            "updateDate",
+            "assetTypes",
+            "kSql"
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "result": {
+      "ref": "#/definitions/DynamicChannel"
+    },
+    "executionTime": {
+      "type": "number",
+      "minimum": 0
+    }
+  }
+}

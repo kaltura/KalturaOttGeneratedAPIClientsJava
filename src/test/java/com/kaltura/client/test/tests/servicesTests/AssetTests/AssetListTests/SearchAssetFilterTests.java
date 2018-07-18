@@ -44,8 +44,8 @@ public class SearchAssetFilterTests extends BaseTest {
     private final String tagName = "Genre";
     private final String metaName = "synopsis";
     private final String metaName2 = "Short title";
-    private final String metaValue1 = "A" + getRandomValue("_", 999999);
-    private final String metaValue2 = "B" + getRandomValue("_", 999999);
+    private final String metaValue1 = "A" + getRandomValue("_");
+    private final String metaValue2 = "B" + getRandomValue("_");
 
     private MediaAsset asset, asset2, asset3;
     private ProgramAsset program, program2;
@@ -56,7 +56,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @BeforeClass
     private void asset_list_searchAssetFilter_before_class() {
         // Get asset from shared asset method
-        tagValue = getRandomValue(tagName + "_", 999999);
+        tagValue = getRandomValue(tagName + "_");
 
         ArrayList<String> list = new ArrayList<>();
         list.add(tagValue);

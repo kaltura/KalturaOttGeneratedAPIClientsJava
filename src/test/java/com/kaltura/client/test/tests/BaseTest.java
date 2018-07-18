@@ -123,6 +123,7 @@ public class BaseTest {
 
         // set client
         client = new Client(config);
+//        client.setLanguage("*");
 
         // set default awaitility timeout
         setDefaultTimeout(Long.parseLong(getProperty(DEFAULT_TIMEOUT_IN_SEC)), TimeUnit.SECONDS);
@@ -481,7 +482,7 @@ public class BaseTest {
 
     private static DynamicChannel loadDefaultChannel() {
         DynamicChannel channel = new DynamicChannel();
-        channel.setMultilingualName(setTranslationToken(getRandomValue("Channel_", 999999)));
+        channel.setMultilingualName(setTranslationToken(getRandomValue("Channel_")));
         channel.setMultilingualDescription(setTranslationToken("Description of " + channel.getName()));
         channel.setIsActive(true);
         channel.setAssetTypes(null);

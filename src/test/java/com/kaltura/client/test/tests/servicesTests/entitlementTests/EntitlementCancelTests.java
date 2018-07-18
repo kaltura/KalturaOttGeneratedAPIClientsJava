@@ -6,7 +6,6 @@ import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import com.kaltura.client.services.ChannelService;
-import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.services.EntitlementService;
 import com.kaltura.client.services.LicensedUrlService;
 import com.kaltura.client.services.LicensedUrlService.GetLicensedUrlBuilder;
@@ -27,6 +26,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.services.EntitlementService.*;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.Properties.WEB_FILE_TYPE;
@@ -67,7 +67,7 @@ public class EntitlementCancelTests extends BaseTest {
         bookmark.setType(AssetType.MEDIA);
 
         sharedChannel = new DynamicChannel();
-        sharedChannel.setMultilingualName(setTranslationToken(getRandomValue("Channel_", 999999)));
+        sharedChannel.setMultilingualName(setTranslationToken(getRandomValue("Channel_")));
         sharedChannel.setMultilingualDescription(setTranslationToken("Description of " + sharedChannel.getName()));
         sharedChannel.setSystemName(sharedChannel.getMultilingualName().get(0).getValue());
         sharedChannel.setIsActive(true);
@@ -131,9 +131,13 @@ public class EntitlementCancelTests extends BaseTest {
     public void cancelPlayedSubscription() {
         // create mpp having at least 1 media on its channel
         sharedChannel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
-        AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
+
+        Response<Channel> channelResponse = executor.executeSync(add(sharedChannel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
+
         assertThat(channelResponse.results).isNotNull();
+
         Channel channel = channelResponse.results;
         assertThat(channel.getName()).isNotNull();
         PricePlan pricePlan = DBUtils.loadPPWithWaiver();

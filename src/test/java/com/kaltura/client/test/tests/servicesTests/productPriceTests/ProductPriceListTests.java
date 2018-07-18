@@ -3,7 +3,6 @@ package com.kaltura.client.test.tests.servicesTests.productPriceTests;
 import com.kaltura.client.enums.*;
 import com.kaltura.client.services.*;
 import com.kaltura.client.services.AssetService.ListAssetBuilder;
-import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
 import com.kaltura.client.services.EntitlementService.ListEntitlementBuilder;
 import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
@@ -25,6 +24,7 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
+import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.*;
@@ -73,10 +73,11 @@ public class ProductPriceListTests extends BaseTest {
         classMasterUserId = HouseholdUtils.getMasterUser(household).getUserId();
 
         sharedChannel = new DynamicChannel();
-        sharedChannel.setMultilingualName(setTranslationToken(getRandomValue("Channel_", 999999)));
+        sharedChannel.setMultilingualName(setTranslationToken(getRandomValue("Channel_")));
         sharedChannel.setMultilingualDescription(setTranslationToken("Description of " + sharedChannel.getName()));
         sharedChannel.setIsActive(true);
         sharedChannel.setAssetTypes(null);
+        sharedChannel.setSystemName(sharedChannel.getMultilingualName().get(0).getValue() + "_" + getEpochInLocalTime());
 
         MppData mppData = new MppData()
                 .isRenewable(true)
@@ -207,14 +208,17 @@ public class ProductPriceListTests extends BaseTest {
         int numberOfUsers = 1;
         int numberOfDevices = 1;
         Household household = HouseholdUtils.createHousehold(numberOfUsers, numberOfDevices, true);
-        //HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
         String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         // create mpp with supporting of 1 type only and having at least 1 media on its channel
         sharedChannel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
-        AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
+
+        Response<Channel> channelResponse = executor.executeSync(add(sharedChannel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
+
         assertThat(channelResponse.results).isNotNull();
+
         Channel channel = channelResponse.results;
         assertThat(channel.getName()).isNotNull();
 
@@ -296,9 +300,13 @@ public class ProductPriceListTests extends BaseTest {
     public void productPriceSubscriptionWebHDFileTypeOnlyTest() {
         // create mpp with supporting of 1 type only and having at least 1 media on its channel
         sharedChannel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
-        AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
+
+        Response<Channel> channelResponse = executor.executeSync(add(sharedChannel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
+
         assertThat(channelResponse.results).isNotNull();
+
         Channel channel = channelResponse.results;
         assertThat(channel.getName()).isNotNull();
 

@@ -88,7 +88,7 @@ public class IngestMppUtils extends BaseIngestUtils {
         final String currencyOfDiscount = "GBP";
         final int percentageOfDiscount = 100;
 
-        mppData.mppCode = getRandomValue("MPP_", 9999999999L);
+        mppData.mppCode = getRandomValue("MPP_");
         mppData.title = mppData.mppCode;
 
         if (mppData.description == null) { mppData.description = "Description of " + mppData.mppCode; }

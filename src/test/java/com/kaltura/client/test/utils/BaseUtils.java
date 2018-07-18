@@ -96,6 +96,12 @@ public class BaseUtils {
         return prefix + randomLongValue;
     }
 
+    public static String getRandomValue(String prefix) {
+        long max = 9999999999L;
+        long randomLongValue = ThreadLocalRandom.current().nextLong(max);
+        return prefix + randomLongValue;
+    }
+
     // generate random string
     public static String getRandomString() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
