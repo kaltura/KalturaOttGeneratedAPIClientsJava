@@ -4,6 +4,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.PurchaseUtils;
@@ -30,8 +31,8 @@ import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.AssetUtils.*;
+import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
@@ -83,7 +84,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 2
         VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
-                .catalogStartDate(getTimeInDate(-100))
+                .catalogStartDate(getLocalTimeFormatted(-100))
                 .tags(tagMap)
                 .strings(stringMetaMap1);
         asset2 = insertVod(vodData2);
@@ -91,7 +92,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 3
         VodData vodData3 = new VodData()
                 .mediaType(EPISODE)
-                .catalogStartDate(getTimeInDate(-10))
+                .catalogStartDate(getLocalTimeFormatted(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
         asset3 = insertVod(vodData3);
