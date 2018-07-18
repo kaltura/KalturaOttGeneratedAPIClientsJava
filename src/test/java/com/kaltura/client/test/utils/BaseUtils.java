@@ -38,6 +38,11 @@ public class BaseUtils {
         return dateFormat.format(cal.getTime());
     }
 
+    // generate current data String in specified format
+    public static String getCurrentDateInFormat(String pattern) {
+        return getOffsetDateInFormat(0, pattern);
+    }
+
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
     public static String getTimeFormatted(int offSetInMinutes, TimeZone timeZone) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -62,7 +67,11 @@ public class BaseUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, offSetInMinutes);
 
-        return calendar.getTimeInMillis() / 1000;
+        return calendar.toInstant().getEpochSecond();
+    }
+
+    public static long getEpochInLocalTime() {
+        return Calendar.getInstance().toInstant().getEpochSecond();
     }
 
     public static long getEpochInUtcTime(int offSetInMinutes) {
@@ -70,11 +79,7 @@ public class BaseUtils {
         int timeZoneOffset = TimeZone.getDefault().getRawOffset() / 60000;
         calendar.add(Calendar.MINUTE, offSetInMinutes + timeZoneOffset);
 
-        return calendar.getTimeInMillis() / 1000;
-    }
-
-    public static long getEpochInLocalTime() {
-        return Calendar.getInstance().getTimeInMillis() / 1000;
+        return calendar.toInstant().getEpochSecond();
     }
 
     public static Date getDateFromEpoch(long epoch) {
@@ -83,11 +88,6 @@ public class BaseUtils {
 
     public static long getEpochFromDate(Date date) {
         return date.getTime() / 1000;
-    }
-
-    // generate current data String in specified format
-    public static String getCurrentDateInFormat(String pattern) {
-        return getOffsetDateInFormat(0, pattern);
     }
 
     // generate string containing prefix and random long suffix
