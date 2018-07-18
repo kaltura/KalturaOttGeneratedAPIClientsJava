@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.enums.KsqlKey.NAME;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -54,7 +54,7 @@ public class ChannelFilterTests extends BaseTest {
 
         // add channel
         channel = new DynamicChannel();
-        channel.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
+        channel.setMultilingualName(setTranslationToken("channel_" + getEpochInLocalTime()));
         channel.setMultilingualDescription(setTranslationToken("Description of " + channel.getName()));
         channel.setSystemName(channel.getMultilingualName().get(0).getValue());
         channel.setIsActive(true);

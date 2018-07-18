@@ -5,12 +5,14 @@ import lombok.Data;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.auth.StaticUserAuthenticator;
 import org.apache.commons.vfs2.impl.DefaultFileSystemConfigBuilder;
+
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
+
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.Properties.API_VERSION;
 import static com.kaltura.client.test.Properties.getProperty;
@@ -60,7 +62,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
     public static void createPerformanceCodeReport() {
         try {
             List<String> appRemoteFileNames = getRemoteAppLogFileNames();
-            for (String fileName: appRemoteFileNames) {
+            for (String fileName : appRemoteFileNames) {
                 copyRemoteFile2LocalMachine(fileName);
             }
 
@@ -68,15 +70,15 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
             Map<String, SlowRatio> methodsAndSlowRatioData = new HashMap<>();
             SlowRatio slowRatio;
-            for (String method: methodsAndKalturaSessions.keySet()) {
+            for (String method : methodsAndKalturaSessions.keySet()) {
                 methodsAndSlowRatioData.put(method, new SlowRatio());
                 //Logger.getLogger(PerformanceAppLogUtils.class).debug("Method: [" + method + "]");
-                for (String xKalturaSession: methodsAndKalturaSessions.get(method)) {
+                for (String xKalturaSession : methodsAndKalturaSessions.get(method)) {
                     slowRatio = methodsAndSlowRatioData.get(method);
                     slowRatio.totalCount++;
                     methodsAndSlowRatioData.put(method, slowRatio);
                     //Logger.getLogger(PerformanceAppLogUtils.class).debug("xKalturaSession: [" + xKalturaSession + "]");
-                    for (String appFileName: appRemoteFileNames) {
+                    for (String appFileName : appRemoteFileNames) {
                         isKalturaSessionFoundInAppLogFile = false;
                         timeOfCode = 0.0;
                         timeOfCB = 0.0;
@@ -89,7 +91,9 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
                         if (isKalturaSessionFoundInAppLogFile) {
                             double percentageCodeTime2TotalTime = timeOfCode / totalTime * 100;
-                            if (percentageCodeTime2TotalTime > maxAllowedPercentage) {
+                            // include in report only relevant cases
+                            if (percentageCodeTime2TotalTime > maxAllowedPercentage &&
+                                    totalTime > Double.parseDouble(getProperty(MAX_ALLOWED_EXECUTION_TIME_IN_SEC))) {
                                 slowRatio = methodsAndSlowRatioData.get(method);
                                 slowRatio.slowCount++;
                                 methodsAndSlowRatioData.put(method, slowRatio);
@@ -129,10 +133,10 @@ public class PerformanceAppLogUtils extends BaseUtils {
     }
 
     private static void addReportDataIntoSummaryFile(String fromFile, String toFile) {
-        try(BufferedReader br = Files.newBufferedReader(Paths.get(fromFile));
-            FileWriter fw = new FileWriter(toFile, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw)) {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(fromFile));
+             FileWriter fw = new FileWriter(toFile, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
             Stream<String> lines = br.lines();
             lines.forEach(out::println);
             lines.close();
@@ -142,13 +146,13 @@ public class PerformanceAppLogUtils extends BaseUtils {
     }
 
     private static void createSummaryFile(Map<String, SlowRatio> methodsAndSlowRatioData, String summaryTemporaryFileName) {
-        try(FileWriter fw = new FileWriter(summaryTemporaryFileName, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw)) {
+        try (FileWriter fw = new FileWriter(summaryTemporaryFileName, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
             out.println("Report of slow methods on " + getCurrentDateInFormat("dd/MM/yyyy HH:mm"));
             out.println("Max allowed percentage: " + getProperty(MAX_ALLOWED_PERCENTAGE));
             out.println();
-            for (String method: methodsAndSlowRatioData.keySet()) {
+            for (String method : methodsAndSlowRatioData.keySet()) {
                 if (methodsAndSlowRatioData.get(method).slowCount > 0) {
                     out.println(method + " was slow " + String.format("%.2f", methodsAndSlowRatioData.get(method).slowCount *
                             1.0 / methodsAndSlowRatioData.get(method).totalCount * 100) + "% of executions");
@@ -164,10 +168,10 @@ public class PerformanceAppLogUtils extends BaseUtils {
     }
 
     private static void writeReport2File(String method, String xKalturaSession, double codeTimePercentage) {
-        try(FileWriter fw = new FileWriter(getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
+        try (FileWriter fw = new FileWriter(getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
                 getProperty(CODE_PERFORMANCE_REPORT_FILE), true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw)) {
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
             // we want to see only data where code time is less than 100%
             if (timeOfCB > 0 || timeOfDB > 0 || timeOfES > 0 || timeOfRabbit > 0) {
                 out.println(method);
@@ -302,8 +306,8 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
         String[] nonRelated2CodeStringsArray = new String[nonRelated2CodeStringsList.size()];
         String executionTimeString;
-        try(BufferedReader br = new BufferedReader(new FileReader(path2File))) {
-            for(String line; (line = br.readLine()) != null; ) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path2File))) {
+            for (String line; (line = br.readLine()) != null; ) {
                 if (line.contains(kalturaSession)) {
                     isKalturaSessionFoundInAppLogFile = true;
                     // this is a usual position of time in the whole string
@@ -346,7 +350,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
      * method removes from local computer copied on it from remote machine app log files
      */
     public static void removeCopiedAppLogFiles() {
-        for (String file: appLogLocalFileNames) {
+        for (String file : appLogLocalFileNames) {
             deleteFile(file);
         }
     }

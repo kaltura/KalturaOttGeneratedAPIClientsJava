@@ -8,13 +8,14 @@ import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
 import com.kaltura.client.services.TransactionService;
 import com.kaltura.client.services.TransactionService.PurchaseTransactionBuilder;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
@@ -65,7 +66,7 @@ public class TransactionPurchaseTests extends BaseTest {
         Response<Transaction> purchaseTransaction = executor.executeSync(purchaseTransactionBuilder);
         Transaction purchasePpv = purchaseTransaction.results;
         assertThat(purchasePpv).isNotNull();
-        assertThat(purchasePpv.getCreatedAt()).isCloseTo((int)getTimeInEpoch(0), within(15));
+        assertThat(purchasePpv.getCreatedAt()).isCloseTo((int)BaseUtils.getEpochInLocalTime(0), within(15));
         assertThat(purchasePpv.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(purchasePpv.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(purchasePpv.getFailReasonCode()).isEqualTo(0);
@@ -100,7 +101,7 @@ public class TransactionPurchaseTests extends BaseTest {
         Response<Transaction> purchaseTransaction = executor.executeSync(purchaseTransactionBuilder);
         Transaction purchasePpv = purchaseTransaction.results;
         assertThat(purchasePpv).isNotNull();
-        assertThat(purchasePpv.getCreatedAt()).isCloseTo((int)getTimeInEpoch(0), within(15));
+        assertThat(purchasePpv.getCreatedAt()).isCloseTo((int)BaseUtils.getEpochInLocalTime(0), within(15));
         assertThat(purchasePpv.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(purchasePpv.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(purchasePpv.getFailReasonCode()).isEqualTo(0);

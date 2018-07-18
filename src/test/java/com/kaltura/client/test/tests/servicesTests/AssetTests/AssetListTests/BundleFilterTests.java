@@ -23,7 +23,7 @@ import static com.kaltura.client.test.Properties.DEFAULT_COLLECTION;
 import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.enums.KsqlKey.NAME;
 import static com.kaltura.client.test.tests.enums.MediaType.*;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.MppData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.insertMpp;
@@ -75,7 +75,7 @@ public class BundleFilterTests extends BaseTest {
 
         // add channel1
         channel1 = new DynamicChannel();
-        channel1.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
+        channel1.setMultilingualName(setTranslationToken("channel_" + getEpochInLocalTime()));
         channel1.setMultilingualDescription(setTranslationToken("Description of " + channel1.getName()));
         channel1.setSystemName(channel1.getMultilingualName().get(0).getValue());
         channel1.setIsActive(true);
@@ -86,7 +86,7 @@ public class BundleFilterTests extends BaseTest {
 
         // add channel2
         channel2 = new DynamicChannel();
-        channel2.setMultilingualName(setTranslationToken("channel_" + getTimeInEpoch()));
+        channel2.setMultilingualName(setTranslationToken("channel_" + getEpochInLocalTime()));
         channel2.setMultilingualDescription(setTranslationToken("Description of " + channel2.getName()));
         channel2.setSystemName(channel2.getMultilingualName().get(0).getValue());
         channel2.setIsActive(true);
