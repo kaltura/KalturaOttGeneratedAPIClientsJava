@@ -129,6 +129,28 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(programAssets2.get(0).getId());
         assertThat(assetListResponse.results.getObjects().get(0).getName()).isEqualTo(programAssets2.get(0).getName());
     }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list - scheduledRecordingProgramFilter - setEndDateLessThanOrNull")
+    @Test(enabled = false)
+    private void list_assets_with_channelFilter_by_setEndDateLessThanOrNull() {
+        // set scheduledRecordingProgramFilter
+        String channelsIn = getConcatenatedString(String.valueOf(linearAssetJsonObject1.getInt("id")),
+                String.valueOf(linearAssetJsonObject2.getInt("id")));
+
+        ScheduledRecordingProgramFilter filter = new ScheduledRecordingProgramFilter();
+        filter.setChannelsIn(channelsIn);
+        filter.setEndDateLessThanOrNull(getEpochInUtcTime(60));
+
+        // get list
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(AssetService.list(filter)
+                .setKs(masterUserKs));
+
+        // assert response
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(programAssets1.get(0).getId());
+        assertThat(assetListResponse.results.getObjects().get(0).getName()).isEqualTo(programAssets1.get(0).getName());
+    }
     
     @AfterClass
     private void asset_list_scheduledRecordingProgramFilter_after_class() {
