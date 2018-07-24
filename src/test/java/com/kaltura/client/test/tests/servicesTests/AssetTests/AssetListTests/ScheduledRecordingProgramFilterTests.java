@@ -53,6 +53,7 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
         JSONArray jsonArray = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray();
         linearAssetJsonObject1 = jsonArray.getJSONObject(0);
         linearAssetJsonObject2 = jsonArray.getJSONObject(1);
+
         linearAssetId1 = linearAssetJsonObject1.getInt("media_id");
         linearAssetId2 = linearAssetJsonObject2.getInt("media_id");
 
@@ -65,8 +66,11 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
                 .startDate(getEpochInLocalTime(5));
         programAssets1 = insertEpg(epgData1);
 
+//        String seriesId = String.valueOf(getEpochInLocalTime());
         EpgData epgData2 = new EpgData(linearAssetJsonObject2.getString("name"))
                 .startDate(getEpochInLocalTime(360));
+//                .seriesId(seriesId)
+//                .seasonsNum(3);
         programAssets2 = insertEpg(epgData2);
 
         // add recordings 1
@@ -82,6 +86,18 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
 
         recordingResponse = executor.executeSync(add(recording2).setKs(masterUserKs));
         assertThat(recordingResponse.results.getStatus()).isEqualTo(RecordingStatus.SCHEDULED);
+
+//        // add series recording
+//        SeriesRecording seriesRecording = new SeriesRecording();
+//        seriesRecording.setChannelId(linearAssetJsonObject2.getLong("id"));
+//        seriesRecording.setSeasonNumber(1);
+//        seriesRecording.setType(RecordingType.SERIES);
+//        seriesRecording.setEpgId();
+//
+//        Response<SeriesRecording> seriesRecordingResponse = executor.executeSync(SeriesRecordingService.add(seriesRecording)
+//                .setKs(masterUserKs));
+////        assertThat(seriesRecordingResponse.results.getStatus()).isEqualTo(RecordingStatus.SCHEDULED);
+
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -132,7 +148,7 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - scheduledRecordingProgramFilter - setEndDateLessThanOrNull")
-    @Test(enabled = false)
+    @Test(enabled = true)
     private void list_assets_with_channelFilter_by_setEndDateLessThanOrNull() {
         // set scheduledRecordingProgramFilter
         String channelsIn = getConcatenatedString(String.valueOf(linearAssetJsonObject1.getInt("id")),
@@ -150,6 +166,28 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(programAssets1.get(0).getId());
         assertThat(assetListResponse.results.getObjects().get(0).getName()).isEqualTo(programAssets1.get(0).getName());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list - scheduledRecordingProgramFilter - setRecordingTypeEqual")
+    @Test(enabled = false)
+    private void list_assets_with_channelFilter_by_setRecordingTypeEqual() {
+//        // set scheduledRecordingProgramFilter
+//        String channelsIn = getConcatenatedString(String.valueOf(linearAssetJsonObject1.getInt("id")),
+//                String.valueOf(linearAssetJsonObject2.getInt("id")));
+//
+//        ScheduledRecordingProgramFilter filter = new ScheduledRecordingProgramFilter();
+//        filter.setChannelsIn(channelsIn);
+//        filter.setRecordingTypeEqual(ScheduledRecordingAssetType.SERIES);
+//
+//        // get list
+//        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(AssetService.list(filter)
+//                .setKs(masterUserKs));
+//
+//        // assert response
+//        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+//        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(programAssets1.get(0).getId());
+//        assertThat(assetListResponse.results.getObjects().get(0).getName()).isEqualTo(programAssets1.get(0).getName());
     }
     
     @AfterClass
