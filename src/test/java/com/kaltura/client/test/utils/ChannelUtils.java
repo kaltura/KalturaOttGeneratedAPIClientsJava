@@ -16,7 +16,7 @@ public class ChannelUtils extends BaseUtils {
         channel.setAssetTypes(assetTypes);
         channel.setKSql(ksqlExpression);
         channel.setOrderBy(channelOrder);
-        channel.setSystemName(channel.getMultilingualName().get(0).getValue());
+        channel.setSystemName(channel.getMultilingualName().get(0).getValue() + "_" + getEpochInLocalTime());
 
         return channel;
     }

@@ -34,7 +34,8 @@ public class ChannelDeleteTests extends BaseTest {
 
         // channel/action/add
         Response<Channel> channelResponse = executor.executeSync(add(channel)
-                .setKs(getManagerKs()));
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         channelId = Math.toIntExact(channelResponse.results.getId());
 
@@ -45,9 +46,9 @@ public class ChannelDeleteTests extends BaseTest {
         assertThat(deleteResponse.results.booleanValue()).isTrue();
 
         // channel/action/get - verify channel wasn't found
-        GetChannelBuilder getChannelBuilder = get(channelId).setKs(getManagerKs());
-        Response<Channel> getResponse = executor.executeSync(getChannelBuilder);
+        Response<Channel> getResponse = executor.executeSync(get(channelId)
+                .setKs(getManagerKs()));
 
-        assertThat(getResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500007).getCode());
+        assertThat(getResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4064).getCode());
     }
 }

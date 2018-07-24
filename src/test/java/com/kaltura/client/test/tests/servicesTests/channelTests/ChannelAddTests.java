@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.channelTests;
 
 import com.kaltura.client.enums.ChannelOrderBy;
 import com.kaltura.client.services.AssetService;
-import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.AssetUtils;
@@ -19,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
-import static com.kaltura.client.services.ChannelService.AddChannelBuilder;
-import static com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
+import static com.kaltura.client.services.ChannelService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
@@ -51,9 +49,10 @@ public class ChannelAddTests extends BaseTest {
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
-        //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         assertThat(channelResponse.results.getName()).isEqualTo(channelName);
     }
@@ -81,9 +80,10 @@ public class ChannelAddTests extends BaseTest {
         channelOrder.setOrderBy(ChannelOrderBy.NAME_DESC);
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
-        //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         assertThat(channelResponse.results.getMultilingualName().get(0).getValue()).isEqualTo(channelName);
 
@@ -101,7 +101,7 @@ public class ChannelAddTests extends BaseTest {
         assertThat(listResponse.results.getObjects().get(0).getId()).isEqualTo(movieAsset.getId());
 
         // Cleanup - channel/action/delete
-        DeleteChannelBuilder deleteChannelBuilder = ChannelService.delete(channelId).setKs(getManagerKs());
+        DeleteChannelBuilder deleteChannelBuilder = delete(channelId).setKs(getManagerKs());
         executor.executeSync(deleteChannelBuilder);
     }
 
@@ -114,10 +114,10 @@ public class ChannelAddTests extends BaseTest {
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, null, channelOrder, assetTypes);
 
-        //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
-                .setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         // KalturaAPIException","code":"4020","message":"KSQL Channel media type 666 does not belong to group"
         assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4020).getCode());
@@ -131,9 +131,9 @@ public class ChannelAddTests extends BaseTest {
         channel = ChannelUtils.addDynamicChannel(null, description, isActive, null, channelOrder, null);
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
-                .setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         // KalturaAPIException","code":"5005","message":"KSQL Channel must have a name"
         assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(5005).getCode());
@@ -148,8 +148,9 @@ public class ChannelAddTests extends BaseTest {
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         // KalturaAPIException","code":"4004","message":"Invalid expression structure"
         assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4004).getCode());

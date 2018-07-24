@@ -205,7 +205,7 @@ public class DBConstants {
             "and group_id = ? " +
             "order by id desc";
 
-    static final String ASSETS_SELECT = "SELECT top (?) NAME FROM [TVinci].[dbo].[media] where group_id = ? and status = 1 and is_Active = 1 order by id desc";
+    static final String ASSETS_SELECT = "SELECT top (?) ID, NAME FROM [TVinci].[dbo].[media] where group_id = ? and status = 1 and is_Active = 1 order by id desc";
 
     static final String ASSETS_SELECT_WITH_MEDIA_TYPE = "SELECT top (?) m.ID, m.NAME, m.MEDIA_TYPE_ID, mt.NAME " +
             "FROM [TVinci].[dbo].[media] m " +

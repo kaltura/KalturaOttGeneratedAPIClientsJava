@@ -61,7 +61,9 @@ public class ChannelFilterTests extends BaseTest {
         channel.setKSql(query); // "Free='" + channel.getName() + "'"
 
         channel = (DynamicChannel) executor.executeSync(ChannelService.add(channel)
-                .setKs(getOperatorKs())).results;
+                .setKs(getOperatorKs())
+                .setLanguage("*"))
+                .results;
     }
 
     @Severity(SeverityLevel.CRITICAL)

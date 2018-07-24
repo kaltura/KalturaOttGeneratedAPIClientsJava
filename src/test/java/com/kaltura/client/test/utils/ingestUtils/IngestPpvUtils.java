@@ -52,7 +52,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
         String currencyOfDiscount = "ILS";
         int percentageOfDiscount = 50;
 
-        ppvData.ppvCode = getRandomValue("PPV_", MAX_RANDOM_VALUE);
+        ppvData.ppvCode = getRandomValue("PPV_");
 
         if (ppvData.description == null) { ppvData.description = ppvData.ppvCode; }
         if (ppvData.discount == null) { ppvData.discount = IngestFixtureData.getDiscount(currencyOfDiscount, percentageOfDiscount); }

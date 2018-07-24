@@ -33,7 +33,6 @@ import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
@@ -46,8 +45,8 @@ public class SearchAssetFilterTests extends BaseTest {
     private final String tagName = "Genre";
     private final String metaName = "synopsis";
     private final String metaName2 = "Short title";
-    private final String metaValue1 = "A" + getRandomValue("_", 999999);
-    private final String metaValue2 = "B" + getRandomValue("_", 999999);
+    private final String metaValue1 = "A" + getRandomValue("_");
+    private final String metaValue2 = "B" + getRandomValue("_");
 
     private MediaAsset asset, asset2, asset3;
     private ProgramAsset program, program2;
@@ -60,7 +59,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @BeforeClass
     private void asset_list_searchAssetFilter_before_class() {
         // Get asset from shared asset method
-        tagValue = getRandomValue(tagName + "_", 999999);
+        tagValue = getRandomValue(tagName + "_");
 
         ArrayList<String> list = new ArrayList<>();
         list.add(tagValue);
@@ -87,7 +86,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 2
         VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
-                .catalogStartDate(getTimeInDate(-100))
+                .catalogStartDate(getLocalTimeFormatted(-100))
                 .tags(tagMap)
                 .strings(stringMetaMap1)
                 .geoBlockRule(geoBlockRule);
@@ -97,7 +96,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 3
         VodData vodData3 = new VodData()
                 .mediaType(EPISODE)
-                .catalogStartDate(getTimeInDate(-10))
+                .catalogStartDate(getLocalTimeFormatted(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
         asset3 = insertVod(vodData3);

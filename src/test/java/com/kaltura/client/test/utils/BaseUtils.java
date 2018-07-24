@@ -38,11 +38,16 @@ public class BaseUtils {
         return dateFormat.format(cal.getTime());
     }
 
+    // generate current data String in specified format
+    public static String getCurrentDateInFormat(String pattern) {
+        return getOffsetDateInFormat(0, pattern);
+    }
+
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getTimeInDate(int offSetInMinutes, String timeZone) {
-        TimeZone theTimeZone = TimeZone.getTimeZone(timeZone);
+    public static String getTimeFormatted(int offSetInMinutes, TimeZone timeZone) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        dateFormat.setTimeZone(theTimeZone);
+        dateFormat.setTimeZone(timeZone);
+
         Date dNow = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dNow);
@@ -53,8 +58,8 @@ public class BaseUtils {
     }
 
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getTimeInDate(int offSetInMinutes) {
-        return getTimeInDate(offSetInMinutes,"israel");
+    public static String getLocalTimeFormatted(int offSetInMinutes) {
+        return getTimeFormatted(offSetInMinutes, TimeZone.getDefault());
     }
 
     // Get epoch time in seconds according to off set parameter provided (in minutes)
@@ -62,7 +67,11 @@ public class BaseUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, offSetInMinutes);
 
-        return calendar.getTimeInMillis() / 1000;
+        return calendar.toInstant().getEpochSecond();
+    }
+
+    public static long getEpochInLocalTime() {
+        return Calendar.getInstance().toInstant().getEpochSecond();
     }
 
     public static long getEpochInUtcTime(int offSetInMinutes) {
@@ -70,11 +79,7 @@ public class BaseUtils {
         int timeZoneOffset = TimeZone.getDefault().getRawOffset() / 60000;
         calendar.add(Calendar.MINUTE, offSetInMinutes + timeZoneOffset);
 
-        return calendar.getTimeInMillis() / 1000;
-    }
-
-    public static long getEpochInLocalTime() {
-        return Calendar.getInstance().getTimeInMillis() / 1000;
+        return calendar.toInstant().getEpochSecond();
     }
 
     public static Date getDateFromEpoch(long epoch) {
@@ -85,14 +90,15 @@ public class BaseUtils {
         return date.getTime() / 1000;
     }
 
-    // generate current data String in specified format
-    public static String getCurrentDateInFormat(String pattern) {
-        return getOffsetDateInFormat(0, pattern);
-    }
-
     // generate string containing prefix and random long suffix
     public static String getRandomValue(String prefix, long maxValue) {
         long randomLongValue = ThreadLocalRandom.current().nextLong(maxValue);
+        return prefix + randomLongValue;
+    }
+
+    public static String getRandomValue(String prefix) {
+        long max = 9999999999L;
+        long randomLongValue = ThreadLocalRandom.current().nextLong(max);
         return prefix + randomLongValue;
     }
 
