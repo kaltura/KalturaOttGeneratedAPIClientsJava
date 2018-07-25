@@ -62,6 +62,10 @@ public class BaseUtils {
         return getTimeFormatted(offSetInMinutes, TimeZone.getDefault());
     }
 
+    public static String getUtcTimeFormatted(int offSetInMinutes) {
+        return getTimeFormatted(offSetInMinutes, TimeZone.getTimeZone("UTC"));
+    }
+
     // Get epoch time in seconds according to off set parameter provided (in minutes)
     public static long getEpochInLocalTime(int offSetInMinutes) {
         Calendar calendar = Calendar.getInstance();
