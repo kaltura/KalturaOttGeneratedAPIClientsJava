@@ -86,7 +86,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 2
         VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
-                .catalogStartDate(getLocalTimeFormatted(-100))
+                .catalogStartDate(getUtcTimeFormatted(-100))
                 .tags(tagMap)
                 .strings(stringMetaMap1)
                 .geoBlockRule(geoBlockRule);
@@ -96,7 +96,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 3
         VodData vodData3 = new VodData()
                 .mediaType(EPISODE)
-                .catalogStartDate(getLocalTimeFormatted(-10))
+                .catalogStartDate(getUtcTimeFormatted(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
         asset3 = insertVod(vodData3);
@@ -109,7 +109,7 @@ public class SearchAssetFilterTests extends BaseTest {
         EpgData epgData2 = new EpgData(epgChannelName2).episodesNum(1);
         program2 = insertEpg(epgData2).get(0);
 
-        Household household = HouseholdUtils.createHousehold(1, 1, true);
+        Household household = HouseholdUtils.createHousehold();
         masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household);
 
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(asset.getId().intValue()), Optional.empty(), Optional.empty());
@@ -390,6 +390,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
                 .closeOr()
                 .toString();
+
         assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());
 
         ListAssetBuilder listAssetBuilder = list(assetFilter)

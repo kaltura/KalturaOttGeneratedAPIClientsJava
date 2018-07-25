@@ -20,6 +20,7 @@ import java.util.Optional;
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.ChannelService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +48,7 @@ public class ChannelAddTests extends BaseTest {
         ksqlExpression = "name ~ 'movie'";
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         // channel/action/add
@@ -123,20 +125,25 @@ public class ChannelAddTests extends BaseTest {
         assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4020).getCode());
     }
 
-    @Description("channel/action/add - mandatory channel name not provided")
+    @Description("channel/action/add - mandatory channel multilingualName not provided")
     @Test
-    private void addChannelWithNoName() {
+    private void addChannelWithoutMultilingualName() {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
-        channel = ChannelUtils.addDynamicChannel(null, description, isActive, null, channelOrder, null);
+        ksqlExpression = "name ~ 'movie'";
+
+        DynamicChannel channel = new DynamicChannel();
+        channel.setIsActive(true);
+        channel.setOrderBy(channelOrder);
+        channel.setSystemName("systemName " + getEpochInLocalTime());
 
         //channel/action/add
         Response<Channel> channelResponse = executor.executeSync(add(channel)
                 .setKs(getManagerKs())
                 .setLanguage("*"));
 
-        // KalturaAPIException","code":"5005","message":"KSQL Channel must have a name"
-        assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(5005).getCode());
+        // KalturaAPIException","code":"50027","message":"Argument [name] cannot be empty"
+        assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(50027).getCode());
     }
 
     @Description("channel/action/add - syntax error in filter expression")
