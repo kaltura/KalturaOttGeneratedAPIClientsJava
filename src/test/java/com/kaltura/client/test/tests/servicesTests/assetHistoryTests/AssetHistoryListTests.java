@@ -15,18 +15,16 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.kaltura.client.services.AssetHistoryService.list;
 import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import static com.kaltura.client.services.BookmarkService.add;
 import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
+import static com.kaltura.client.test.utils.AssetUtils.getAssets;
 import static com.kaltura.client.test.utils.BaseUtils.getConcatenatedString;
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.BookmarkUtils.addBookmark;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
-import static com.kaltura.client.test.utils.dbUtils.DBUtils.getAssets;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,7 +46,7 @@ public class AssetHistoryListTests extends BaseTest {
 
     @BeforeClass
     private void list_tests_before_class() {
-        List<MediaAsset> movies = getAssets(2, Optional.of(MOVIE));
+        List<MediaAsset> movies = getAssets(2, MOVIE);
 
         // get first movie asset
         movie = movies.get(0);
@@ -59,7 +57,7 @@ public class AssetHistoryListTests extends BaseTest {
         movie2FileId = AssetUtils.getAssetFileIds(String.valueOf(movie2.getId())).get(0);
 
         // Ingest episode asset
-        episode = getAssets(1, Optional.of(EPISODE)).get(0);
+        episode = getAssets(1, EPISODE).get(0);
         episodeFileId = AssetUtils.getAssetFileIds(String.valueOf(episode.getId())).get(0);
     }
 
