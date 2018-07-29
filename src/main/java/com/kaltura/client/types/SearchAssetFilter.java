@@ -46,7 +46,6 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
 		String kSql();
 		String typeIn();
-		String idIn();
 	}
 
 	/**
@@ -85,11 +84,6 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	  all types should be included.
 	 */
 	private String typeIn;
-	/**
-	 * Comma separated list of EPG channel ids to search within. *****Deprecated,
-	  please use linear_media_id inside kSql instead*****
-	 */
-	private String idIn;
 
 	// kSql:
 	public String getKSql(){
@@ -115,18 +109,6 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		setToken("typeIn", multirequestToken);
 	}
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
-	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
 
 	public SearchAssetFilter() {
 		super();
@@ -140,7 +122,6 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		// set members values:
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
@@ -149,7 +130,6 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		kparams.add("objectType", "KalturaSearchAssetFilter");
 		kparams.add("kSql", this.kSql);
 		kparams.add("typeIn", this.typeIn);
-		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 
