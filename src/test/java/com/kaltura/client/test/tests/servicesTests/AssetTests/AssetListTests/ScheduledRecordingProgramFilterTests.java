@@ -5,7 +5,6 @@ import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.PremiumService;
 import com.kaltura.client.test.utils.HouseholdUtils;
-import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -25,6 +24,8 @@ import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.RecordingService.add;
 import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.HouseholdUtils.createHousehold;
+import static com.kaltura.client.test.utils.PurchaseUtils.purchasePpv;
+import static com.kaltura.client.test.utils.PurchaseUtils.purchaseSubscription;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getSubscriptionWithPremiumService;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
@@ -47,7 +48,7 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
 
         // purchase subscription with npvr premium service
         Subscription subscription = getSubscriptionWithPremiumService(PremiumService.NPVR);
-        PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
+        purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());
 
         // get linearAsset and epg channelId
         JSONArray jsonArray = DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray();
@@ -58,8 +59,8 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
         linearAssetId2 = linearAssetJsonObject2.getInt("media_id");
 
         // purchase linearAsset
-        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(linearAssetId1), Optional.empty(), Optional.empty());
-        PurchaseUtils.purchasePpv(masterUserKs, Optional.of(linearAssetId2), Optional.empty(), Optional.empty());
+        purchasePpv(masterUserKs, Optional.of(linearAssetId1), Optional.empty(), Optional.empty());
+        purchasePpv(masterUserKs, Optional.of(linearAssetId2), Optional.empty(), Optional.empty());
 
         // ingest epg's
         EpgData epgData1 = new EpgData(linearAssetJsonObject1.getString("name"))
