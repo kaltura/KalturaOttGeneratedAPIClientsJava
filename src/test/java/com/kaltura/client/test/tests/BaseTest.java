@@ -61,6 +61,7 @@ public class BaseTest {
 
     // shared common params
     public static int partnerId;
+//    public static int opcPartnerId;
     public static String defaultUserPassword;
 
     // shared ks's
@@ -130,6 +131,7 @@ public class BaseTest {
 
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
+//        opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
     }
 
@@ -312,8 +314,7 @@ public class BaseTest {
     public static String getAdministratorKs() {
         if (administratorKs == null) {
             String[] userInfo = DBUtils.getUserData("Administrator").split(":");
-            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null, null));
+            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1]));
             administratorKs = loginResponse.results.getLoginSession().getKs();
         }
         return administratorKs;
@@ -322,8 +323,7 @@ public class BaseTest {
     public static String getOperatorKs() {
         if (operatorKs == null) {
             String[] userInfo = DBUtils.getUserData("Operator").split(":");
-            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null, null));
+            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1]));
             operatorKs = loginResponse.results.getLoginSession().getKs();
         }
         return operatorKs;
@@ -332,8 +332,7 @@ public class BaseTest {
     public static String getManagerKs() {
         if (managerKs == null) {
             String[] userInfo = DBUtils.getUserData("Manager").split(":");
-            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null, null));
+            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1]));
             managerKs = loginResponse.results.getLoginSession().getKs();
         }
         return managerKs;

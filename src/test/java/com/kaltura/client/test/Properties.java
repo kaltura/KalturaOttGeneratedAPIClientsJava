@@ -19,6 +19,7 @@ public class Properties {
 
     // Request properties
     public static final String PARTNER_ID = "partner_id";
+//    public static final String OPC_PARTNER_ID = "opc_partner_id";
     public static final String DEFAULT_TIMEOUT_IN_SEC = "default_timeout_in_sec";
 
     // global users
@@ -70,6 +71,9 @@ public class Properties {
 
     // product codes
     public static final String DEFAULT_PRODUCT_CODE = "default_product_code";
+
+    // payment gateway external id
+    public static final String PAYMENT_GATEWAY_EXTERNAL_ID = "payment_gateway_external_id";
 
     // processing apps logs from remote connection
     public static final String PHOENIX_SERVER_DOMAIN_NAME = "phoenix_server_domain_name";

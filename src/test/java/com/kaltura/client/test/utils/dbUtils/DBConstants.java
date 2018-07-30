@@ -198,14 +198,19 @@ public class DBConstants {
 
     static final String USER_BY_ID_SELECT = "SELECT * from [Users].[dbo].[users] where group_id = ? and ID = ?";
 
-    static final String PROGRAMS_SELECT = "SELECT top (?) NAME " +
+    static final String PROGRAMS_SELECT = "SELECT top (?) ID, NAME " +
             "FROM [TVinci].[dbo].[epg_channels_schedule] " +
             "where status = 1 " +
             "and is_active = 1 " +
             "and group_id = ? " +
             "order by id desc";
 
-    static final String ASSETS_SELECT = "SELECT top (?) ID, NAME FROM [TVinci].[dbo].[media] where group_id = ? and status = 1 and is_Active = 1 order by id desc";
+    static final String ASSETS_SELECT = "SELECT top (?) ID, NAME " +
+            "FROM [TVinci].[dbo].[media] " +
+            "where group_id = ? " +
+            "and status = 1 " +
+            "and is_Active = 1 " +
+            "order by id desc";
 
     static final String ASSETS_SELECT_WITH_MEDIA_TYPE = "SELECT top (?) m.ID, m.NAME, m.MEDIA_TYPE_ID, mt.NAME " +
             "FROM [TVinci].[dbo].[media] m " +
@@ -217,9 +222,11 @@ public class DBConstants {
             "and mt.NAME = ? " +
             "order by m.id desc";
 
-    static final String MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where GROUP_ID = ? and name = ?";
+    static final String MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where (GROUP_ID = ? OR GROUP_ID = ?) and name = ?";
+    static final String OPC_MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where GROUP_ID = ? and name = ?";
 
-    static final String  MEDIA_FILE_TYPE_ID_SELECT = "SELECT [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and ID = ?";
+
+    static final String MEDIA_FILE_TYPE_ID_SELECT = "SELECT [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and ID = ?";
 
 
     // STORED PROCEDURES:
@@ -232,6 +239,4 @@ public class DBConstants {
     static final String SP_DELETE_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionItem(?)}";
     static final String SP_DELETE_PERMISSION_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionPermissionItem(?)}";
     static final String SP_DELETE_ROLE_AND_ITS_PERMISSIONS = "{call TVinci.dbo.__482V0__Delete_RolePermission(?, ?)}";
-
-
 }

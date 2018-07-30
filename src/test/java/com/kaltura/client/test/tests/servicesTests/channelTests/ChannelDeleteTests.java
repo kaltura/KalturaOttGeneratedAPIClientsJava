@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import static com.kaltura.client.services.ChannelService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelDeleteTests extends BaseTest {
@@ -20,14 +21,14 @@ public class ChannelDeleteTests extends BaseTest {
     private Channel channel;
     private int channelId;
 
-    private final String channelName = "Channel_12345";
-    private final String description = "description of channel";
-    private final String ksqlExpression = "name ~ 'movie'";
-
     @Severity(SeverityLevel.CRITICAL)
     @Description("channel/action/delete")
     @Test
     private void DeleteChannel() {
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
+        String ksqlExpression = "name ~ 'movie'";
+
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
         channel = ChannelUtils.addDynamicChannel(channelName, description, true, ksqlExpression, channelOrder, null);
@@ -40,8 +41,8 @@ public class ChannelDeleteTests extends BaseTest {
         channelId = Math.toIntExact(channelResponse.results.getId());
 
         // channel/action/delete
-        DeleteChannelBuilder deleteChannelBuilder = delete(channelId).setKs(getManagerKs());
-        Response<Boolean> deleteResponse = executor.executeSync(deleteChannelBuilder);
+        Response<Boolean> deleteResponse = executor.executeSync(delete(channelId)
+                .setKs(getManagerKs()));
 
         assertThat(deleteResponse.results.booleanValue()).isTrue();
 
