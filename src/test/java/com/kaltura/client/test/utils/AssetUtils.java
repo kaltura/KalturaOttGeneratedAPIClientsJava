@@ -32,11 +32,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AssetUtils extends BaseUtils {
 
     // TODO: 6/21/2018 Use Optional instead of nullable
-    public static SearchAssetFilter getSearchAssetFilter(@Nullable String ksql, @Nullable String idIn, @Nullable String typeIn,
+    public static SearchAssetFilter getSearchAssetFilter(@Nullable String ksql, @Nullable String typeIn,
                                                          @Nullable DynamicOrderBy dynamicOrderBy, List<AssetGroupBy> groupBy, String name, String orderBy) {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         searchAssetFilter.setKSql(ksql);
-        searchAssetFilter.setIdIn(idIn);
         searchAssetFilter.setTypeIn(typeIn);
         searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
         searchAssetFilter.setGroupBy(groupBy);
@@ -76,7 +75,7 @@ public class AssetUtils extends BaseUtils {
     }
 
     public static List<Asset> getAssetsByType(String typeIn) {
-        AssetFilter assetFilter = getSearchAssetFilter(null, null, typeIn, null, null, null, null);
+        AssetFilter assetFilter = getSearchAssetFilter(null, typeIn, null, null, null, null);
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageSize(20);
