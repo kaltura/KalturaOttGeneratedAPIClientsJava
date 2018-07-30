@@ -24,7 +24,7 @@ import java.util.Optional;
 import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
-import static com.kaltura.client.test.utils.dbUtils.DBUtils.getOpcMediaTypeId;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,16 +32,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ChannelAddTests extends BaseTest {
 
     private DynamicChannel channel;
-    private String channelName;
-    private String description;
+//    private String channelName;
+//    private String description;
     private Boolean isActive = true;
     private IntegerValue integerValue = new IntegerValue();
 
 
     @BeforeClass
     private void channel_addTests_before_class() {
-        channelName = "Channel_" + getEpochInLocalTime();
-        description = "description of " + channelName;
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -52,6 +52,8 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         // channel/action/add
@@ -72,7 +74,7 @@ public class ChannelAddTests extends BaseTest {
     private void addChannelWithAssetType() {
         String ksqlExpression = "name ~ 'movie'";
 
-        int mediaTypeId = getOpcMediaTypeId(MediaType.MOVIE);
+        int mediaTypeId = getMediaTypeId(MediaType.MOVIE);
         integerValue.setValue(mediaTypeId);
         List<IntegerValue> assetTypes = new ArrayList<>();
         assetTypes.add(integerValue);
@@ -80,6 +82,8 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
 
         // channel/action/add
@@ -96,11 +100,11 @@ public class ChannelAddTests extends BaseTest {
 
     @Severity(SeverityLevel.MINOR)
     @Description("channel/action/add - with not supported opc partner id")
-    @Test
+    @Test(enabled = false) // no validation in channel/action/add for account 203
     private void addDynamicChannelWithNotSupportedOpcPartnerId() {
         String ksqlExpression = "name ~ 'movie'";
 
-        int mediaTypeId = getOpcMediaTypeId(MediaType.MOVIE);
+        int mediaTypeId = getMediaTypeId(MediaType.MOVIE);
         integerValue.setValue(mediaTypeId);
         List<IntegerValue> assetTypes = new ArrayList<>();
         assetTypes.add(integerValue);
@@ -108,6 +112,8 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
 
         // channel/action/add
@@ -140,6 +146,9 @@ public class ChannelAddTests extends BaseTest {
         String ksqlExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.NAME_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         // channel/action/add
@@ -168,7 +177,7 @@ public class ChannelAddTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("channel/action/add - with invalid asset type - error 4028")
-    @Test
+    @Test(enabled = false) // no validation in channel/action/add for account 203
     private void addChannelWithInvalidAssetType() {
         String ksqlExpression = "name ~ 'movie'";
 
@@ -179,6 +188,9 @@ public class ChannelAddTests extends BaseTest {
 
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
 
         // channel/action/add
@@ -221,6 +233,9 @@ public class ChannelAddTests extends BaseTest {
 
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         //channel/action/add

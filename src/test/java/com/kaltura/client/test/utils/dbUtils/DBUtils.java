@@ -249,20 +249,6 @@ public class DBUtils extends BaseUtils {
                 .getInt("id");
     }
 
-    public static int getOpcMediaTypeId(MediaType mediaType) {
-        return getJsonArrayFromQueryResult(OPC_MEDIA_TYPE_ID_SELECT,
-                partnerId,
-                mediaType.getValue())
-                .getJSONObject(0)
-                .getInt("id");
-    }
-
-//    public static int getVirtualMediaTypeId(MediaType mediaType) {
-//        return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT, partnerId + 2, mediaType.getValue())
-//                .getJSONObject(0)
-//                .getInt("id");
-//    }
-
     public static String getMediaFileTypeName(int mediaFileId) {
         return getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_ID_SELECT, partnerId + 1, mediaFileId)
                 .getJSONObject(0)

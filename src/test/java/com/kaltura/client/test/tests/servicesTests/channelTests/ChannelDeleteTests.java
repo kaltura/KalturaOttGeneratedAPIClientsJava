@@ -50,6 +50,6 @@ public class ChannelDeleteTests extends BaseTest {
         Response<Channel> getResponse = executor.executeSync(get(channelId)
                 .setKs(getManagerKs()));
 
-        assertThat(getResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4064).getCode());
+        assertThat(getResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(500007).getCode());
     }
 }
