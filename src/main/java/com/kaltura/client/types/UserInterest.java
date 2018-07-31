@@ -66,6 +66,14 @@ public class UserInterest extends ObjectBase {
 	public String getId(){
 		return this.id;
 	}
+	public void setId(String id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
 	// topic:
 	public UserInterestTopic getTopic(){
 		return this.topic;
@@ -93,6 +101,7 @@ public class UserInterest extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaUserInterest");
+		kparams.add("id", this.id);
 		kparams.add("topic", this.topic);
 		return kparams;
 	}

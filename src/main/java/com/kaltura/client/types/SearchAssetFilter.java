@@ -46,6 +46,7 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
 		String kSql();
 		String typeIn();
+		String idIn();
 	}
 
 	/**
@@ -61,29 +62,28 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	  user_interests - only valid value is &amp;quot;true&amp;quot;. When enabled,
 	  only assets that the user defined as his interests (by tags and metas) will
 	  return.              epg_channel_id – the channel identifier of the EPG
-	  program. *****Deprecated, please use linear_media_id instead*****             
-	  linear_media_id – the linear media identifier of the EPG program.             
-	  entitled_assets - valid values: &amp;quot;free&amp;quot;,
+	  program.              entitled_assets - valid values: &amp;quot;free&amp;quot;,
 	  &amp;quot;entitled&amp;quot;, &amp;quot;both&amp;quot;. free - gets only free to
 	  watch assets. entitled - only those that the user is implicitly entitled to
-	  watch.              asset_type - valid values: &amp;quot;media&amp;quot;,
-	  &amp;quot;epg&amp;quot;, &amp;quot;recording&amp;quot; or any number that
-	  represents media type in group.              Comparison operators: for numerical
-	  fields =, &amp;gt;, &amp;gt;=, &amp;lt;, &amp;lt;=, : (in).               For
-	  alpha-numerical fields =, != (not), ~ (like), !~, ^ (any word starts with), ^=
-	  (phrase starts with), + (exists), !+ (not exists).              Logical
-	  conjunction: and, or.               Search values are limited to 20 characters
-	  each.              (maximum length of entire filter is 2048 characters)
+	  watch.              Comparison operators: for numerical fields =, &amp;gt;,
+	  &amp;gt;=, &amp;lt;, &amp;lt;=, : (in).               For alpha-numerical fields
+	  =, != (not), ~ (like), !~, ^ (any word starts with), ^= (phrase starts with), +
+	  (exists), !+ (not exists).              Logical conjunction: and, or.           
+	     Search values are limited to 20 characters each.              (maximum length
+	  of entire filter is 2048 characters)
 	 */
 	private String kSql;
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Comma separated list of asset types to search within.               Possible
+	  values: 0 – EPG linear programs entries; 1 - Recordings; Any media type ID
+	  (according to media type IDs defined dynamically in the system).              If
+	  omitted – all types should be included.
 	 */
 	private String typeIn;
+	/**
+	 * Comma separated list of EPG channel ids to search within.
+	 */
+	private String idIn;
 
 	// kSql:
 	public String getKSql(){
@@ -109,6 +109,18 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		setToken("typeIn", multirequestToken);
 	}
 
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
+	}
+
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
+	}
+
 
 	public SearchAssetFilter() {
 		super();
@@ -122,6 +134,7 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		// set members values:
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
@@ -130,6 +143,7 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 		kparams.add("objectType", "KalturaSearchAssetFilter");
 		kparams.add("kSql", this.kSql);
 		kparams.add("typeIn", this.typeIn);
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 

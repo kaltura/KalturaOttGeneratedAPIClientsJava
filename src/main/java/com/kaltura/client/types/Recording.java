@@ -62,7 +62,8 @@ public class Recording extends ObjectBase {
 	 */
 	private Long id;
 	/**
-	 * Recording state: scheduled/recording/recorded/canceled/failed/deleted
+	 * Recording state:
+	  scheduled/recording/recorded/canceled/failed/does_not_exists/deleted
 	 */
 	private RecordingStatus status;
 	/**
@@ -116,14 +117,6 @@ public class Recording extends ObjectBase {
 	public RecordingType getType(){
 		return this.type;
 	}
-	public void setType(RecordingType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
 	// viewableUntilDate:
 	public Long getViewableUntilDate(){
 		return this.viewableUntilDate;
@@ -132,14 +125,6 @@ public class Recording extends ObjectBase {
 	public Boolean getIsProtected(){
 		return this.isProtected;
 	}
-	public void setIsProtected(Boolean isProtected){
-		this.isProtected = isProtected;
-	}
-
-	public void isProtected(String multirequestToken){
-		setToken("isProtected", multirequestToken);
-	}
-
 	// createDate:
 	public Long getCreateDate(){
 		return this.createDate;
@@ -174,8 +159,6 @@ public class Recording extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRecording");
 		kparams.add("assetId", this.assetId);
-		kparams.add("type", this.type);
-		kparams.add("isProtected", this.isProtected);
 		return kparams;
 	}
 

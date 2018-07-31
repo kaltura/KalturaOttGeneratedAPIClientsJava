@@ -48,8 +48,7 @@ public class RecordingFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String statusIn();
-		String externalRecordingIdIn();
-		String kSql();
+		String filterExpression();
 	}
 
 	/**
@@ -57,13 +56,9 @@ public class RecordingFilter extends Filter {
 	 */
 	private String statusIn;
 	/**
-	 * Comma separated external identifiers
-	 */
-	private String externalRecordingIdIn;
-	/**
 	 * KSQL expression
 	 */
-	private String kSql;
+	private String filterExpression;
 
 	// statusIn:
 	public String getStatusIn(){
@@ -77,28 +72,16 @@ public class RecordingFilter extends Filter {
 		setToken("statusIn", multirequestToken);
 	}
 
-	// externalRecordingIdIn:
-	public String getExternalRecordingIdIn(){
-		return this.externalRecordingIdIn;
+	// filterExpression:
+	public String getFilterExpression(){
+		return this.filterExpression;
 	}
-	public void setExternalRecordingIdIn(String externalRecordingIdIn){
-		this.externalRecordingIdIn = externalRecordingIdIn;
-	}
-
-	public void externalRecordingIdIn(String multirequestToken){
-		setToken("externalRecordingIdIn", multirequestToken);
+	public void setFilterExpression(String filterExpression){
+		this.filterExpression = filterExpression;
 	}
 
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
-
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
+	public void filterExpression(String multirequestToken){
+		setToken("filterExpression", multirequestToken);
 	}
 
 
@@ -113,8 +96,7 @@ public class RecordingFilter extends Filter {
 
 		// set members values:
 		statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
-		externalRecordingIdIn = GsonParser.parseString(jsonObject.get("externalRecordingIdIn"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
 
 	}
 
@@ -122,8 +104,7 @@ public class RecordingFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaRecordingFilter");
 		kparams.add("statusIn", this.statusIn);
-		kparams.add("externalRecordingIdIn", this.externalRecordingIdIn);
-		kparams.add("kSql", this.kSql);
+		kparams.add("filterExpression", this.filterExpression);
 		return kparams;
 	}
 

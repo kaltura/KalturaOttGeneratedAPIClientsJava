@@ -47,7 +47,6 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 		String kSql();
 		String idEqual();
 		String typeIn();
-		String excludeWatched();
 	}
 
 	/**
@@ -63,9 +62,7 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 	  user_interests - only valid value is &amp;quot;true&amp;quot;. When enabled,
 	  only assets that the user defined as his interests (by tags and metas) will
 	  return.              epg_channel_id – the channel identifier of the EPG
-	  program. *****Deprecated, please use linear_media_id instead*****             
-	  linear_media_id – the linear media identifier of the EPG program.             
-	  entitled_assets - valid values: &amp;quot;free&amp;quot;,
+	  program.              entitled_assets - valid values: &amp;quot;free&amp;quot;,
 	  &amp;quot;entitled&amp;quot;, &amp;quot;both&amp;quot;. free - gets only free to
 	  watch assets. entitled - only those that the user is implicitly entitled to
 	  watch.              Comparison operators: for numerical fields =, &amp;gt;,
@@ -81,16 +78,11 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 	 */
 	private Integer idEqual;
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values:
-	  any media type ID (according to media type IDs defined dynamically in the
-	  system).              If omitted –   same type as the provided asset.
+	 * Comma separated list of asset types to search within.               Possible
+	  values: any media type ID (according to media type IDs defined dynamically in
+	  the system).              If omitted –   same type as the provided asset.
 	 */
 	private String typeIn;
-	/**
-	 * Exclude watched asset.
-	 */
-	private Boolean excludeWatched;
 
 	// kSql:
 	public String getKSql(){
@@ -128,18 +120,6 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 		setToken("typeIn", multirequestToken);
 	}
 
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
-	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
-	}
-
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
-	}
-
 
 	public RelatedFilter() {
 		super();
@@ -154,7 +134,6 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
 		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
 
 	}
 
@@ -164,7 +143,6 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 		kparams.add("kSql", this.kSql);
 		kparams.add("idEqual", this.idEqual);
 		kparams.add("typeIn", this.typeIn);
-		kparams.add("excludeWatched", this.excludeWatched);
 		return kparams;
 	}
 

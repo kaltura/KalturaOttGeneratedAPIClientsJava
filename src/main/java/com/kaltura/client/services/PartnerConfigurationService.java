@@ -28,8 +28,6 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.PartnerConfiguration;
-import com.kaltura.client.types.PartnerConfigurationFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -40,23 +38,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PartnerConfigurationService {
-	
-	public static class ListPartnerConfigurationBuilder extends ListResponseRequestBuilder<PartnerConfiguration, PartnerConfiguration.Tokenizer, ListPartnerConfigurationBuilder> {
-		
-		public ListPartnerConfigurationBuilder(PartnerConfigurationFilter filter) {
-			super(PartnerConfiguration.class, "partnerconfiguration", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	/**
-	 * Get the list of PartnerConfiguration
-	 * 
-	 * @param filter filter by PartnerConfiguration type
-	 */
-    public static ListPartnerConfigurationBuilder list(PartnerConfigurationFilter filter)  {
-		return new ListPartnerConfigurationBuilder(filter);
-	}
 	
 	public static class UpdatePartnerConfigurationBuilder extends RequestBuilder<Boolean, String, UpdatePartnerConfigurationBuilder> {
 		

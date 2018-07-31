@@ -29,7 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ChannelOrder;
+import com.kaltura.client.enums.AssetOrderBy;
+import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -51,16 +52,13 @@ public class Channel extends BaseChannel {
 	
 	public interface Tokenizer extends BaseChannel.Tokenizer {
 		String name();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
-		String oldName();
-		String systemName();
 		String description();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualDescription();
-		String oldDescription();
+		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
+		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> assetTypes();
+		String filterExpression();
 		String isActive();
-		ChannelOrder.Tokenizer orderBy();
-		String createDate();
-		String updateDate();
+		String order();
+		AssetGroupBy.Tokenizer groupBy();
 	}
 
 	/**
@@ -68,104 +66,84 @@ public class Channel extends BaseChannel {
 	 */
 	private String name;
 	/**
-	 * Channel name
-	 */
-	private List<TranslationToken> multilingualName;
-	/**
-	 * Channel name
-	 */
-	private String oldName;
-	/**
-	 * Channel system name
-	 */
-	private String systemName;
-	/**
 	 * Cannel description
 	 */
 	private String description;
 	/**
-	 * Cannel description
+	 * Channel images
 	 */
-	private List<TranslationToken> multilingualDescription;
+	private List<MediaImage> images;
 	/**
-	 * Cannel description
+	 * Asset types in the channel.              -26 is EPG
 	 */
-	private String oldDescription;
+	private List<IntegerValue> assetTypes;
+	/**
+	 * Filter expression
+	 */
+	private String filterExpression;
 	/**
 	 * active status
 	 */
 	private Boolean isActive;
 	/**
-	 * Channel order by
+	 * Channel order
 	 */
-	private ChannelOrder orderBy;
+	private AssetOrderBy order;
 	/**
-	 * Specifies when was the Channel was created. Date and time represented as epoch.
+	 * Channel group by
 	 */
-	private Long createDate;
-	/**
-	 * Specifies when was the Channel last updated. Date and time represented as epoch.
-	 */
-	private Long updateDate;
+	private AssetGroupBy groupBy;
 
 	// name:
 	public String getName(){
 		return this.name;
 	}
-	// multilingualName:
-	public List<TranslationToken> getMultilingualName(){
-		return this.multilingualName;
-	}
-	public void setMultilingualName(List<TranslationToken> multilingualName){
-		this.multilingualName = multilingualName;
+	public void setName(String name){
+		this.name = name;
 	}
 
-	// oldName:
-	public String getOldName(){
-		return this.oldName;
-	}
-	public void setOldName(String oldName){
-		this.oldName = oldName;
-	}
-
-	public void oldName(String multirequestToken){
-		setToken("oldName", multirequestToken);
-	}
-
-	// systemName:
-	public String getSystemName(){
-		return this.systemName;
-	}
-	public void setSystemName(String systemName){
-		this.systemName = systemName;
-	}
-
-	public void systemName(String multirequestToken){
-		setToken("systemName", multirequestToken);
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
 	// description:
 	public String getDescription(){
 		return this.description;
 	}
-	// multilingualDescription:
-	public List<TranslationToken> getMultilingualDescription(){
-		return this.multilingualDescription;
-	}
-	public void setMultilingualDescription(List<TranslationToken> multilingualDescription){
-		this.multilingualDescription = multilingualDescription;
+	public void setDescription(String description){
+		this.description = description;
 	}
 
-	// oldDescription:
-	public String getOldDescription(){
-		return this.oldDescription;
-	}
-	public void setOldDescription(String oldDescription){
-		this.oldDescription = oldDescription;
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
 	}
 
-	public void oldDescription(String multirequestToken){
-		setToken("oldDescription", multirequestToken);
+	// images:
+	public List<MediaImage> getImages(){
+		return this.images;
+	}
+	public void setImages(List<MediaImage> images){
+		this.images = images;
+	}
+
+	// assetTypes:
+	public List<IntegerValue> getAssetTypes(){
+		return this.assetTypes;
+	}
+	public void setAssetTypes(List<IntegerValue> assetTypes){
+		this.assetTypes = assetTypes;
+	}
+
+	// filterExpression:
+	public String getFilterExpression(){
+		return this.filterExpression;
+	}
+	public void setFilterExpression(String filterExpression){
+		this.filterExpression = filterExpression;
+	}
+
+	public void filterExpression(String multirequestToken){
+		setToken("filterExpression", multirequestToken);
 	}
 
 	// isActive:
@@ -180,22 +158,26 @@ public class Channel extends BaseChannel {
 		setToken("isActive", multirequestToken);
 	}
 
-	// orderBy:
-	public ChannelOrder getOrderBy(){
-		return this.orderBy;
+	// order:
+	public AssetOrderBy getOrder(){
+		return this.order;
 	}
-	public void setOrderBy(ChannelOrder orderBy){
-		this.orderBy = orderBy;
+	public void setOrder(AssetOrderBy order){
+		this.order = order;
 	}
 
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
+	public void order(String multirequestToken){
+		setToken("order", multirequestToken);
 	}
-	// updateDate:
-	public Long getUpdateDate(){
-		return this.updateDate;
+
+	// groupBy:
+	public AssetGroupBy getGroupBy(){
+		return this.groupBy;
 	}
+	public void setGroupBy(AssetGroupBy groupBy){
+		this.groupBy = groupBy;
+	}
+
 
 	public Channel() {
 		super();
@@ -208,29 +190,27 @@ public class Channel extends BaseChannel {
 
 		// set members values:
 		name = GsonParser.parseString(jsonObject.get("name"));
-		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
-		oldName = GsonParser.parseString(jsonObject.get("oldName"));
-		systemName = GsonParser.parseString(jsonObject.get("systemName"));
 		description = GsonParser.parseString(jsonObject.get("description"));
-		multilingualDescription = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualDescription"), TranslationToken.class);
-		oldDescription = GsonParser.parseString(jsonObject.get("oldDescription"));
+		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
+		assetTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("assetTypes"), IntegerValue.class);
+		filterExpression = GsonParser.parseString(jsonObject.get("filterExpression"));
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
-		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), ChannelOrder.class);
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		order = AssetOrderBy.get(GsonParser.parseString(jsonObject.get("order")));
+		groupBy = GsonParser.parseObject(jsonObject.getAsJsonObject("groupBy"), AssetGroupBy.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaChannel");
-		kparams.add("multilingualName", this.multilingualName);
-		kparams.add("oldName", this.oldName);
-		kparams.add("systemName", this.systemName);
-		kparams.add("multilingualDescription", this.multilingualDescription);
-		kparams.add("oldDescription", this.oldDescription);
+		kparams.add("name", this.name);
+		kparams.add("description", this.description);
+		kparams.add("images", this.images);
+		kparams.add("assetTypes", this.assetTypes);
+		kparams.add("filterExpression", this.filterExpression);
 		kparams.add("isActive", this.isActive);
-		kparams.add("orderBy", this.orderBy);
+		kparams.add("order", this.order);
+		kparams.add("groupBy", this.groupBy);
 		return kparams;
 	}
 
