@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.kaltura.client.services.AssetService.list;
+import static com.kaltura.client.test.tests.enums.KsqlKey.EPG_ID;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.utils.AssetUtils.getAssets;
 import static com.kaltura.client.test.utils.AssetUtils.getPrograms;
@@ -49,7 +50,7 @@ public class ChannelFilterTests extends BaseTest {
                     .equal(MEDIA_ID.getValue(), String.valueOf(asset1.getId()))
                     .equal(MEDIA_ID.getValue(), String.valueOf(asset2.getId()))
                     .equal(MEDIA_ID.getValue(), String.valueOf(asset3.getId()))
-                    .equal(MEDIA_ID.getValue(), String.valueOf(program1.getId()))
+                    .equal(EPG_ID.getValue(), String.valueOf(program1.getId()))
                 .closeOr()
                 .toString();
 
@@ -93,7 +94,7 @@ public class ChannelFilterTests extends BaseTest {
         String query =  new KsqlBuilder()
                 .openOr()
                     .equal(MEDIA_ID.getValue(), String.valueOf(asset1.getId()))
-                    .equal(MEDIA_ID.getValue(), String.valueOf(program1.getId()))
+                    .equal(EPG_ID.getValue(), String.valueOf(program1.getId()))
                 .closeOr()
                 .toString();
 

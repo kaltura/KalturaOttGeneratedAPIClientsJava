@@ -1,0 +1,448 @@
+{
+  "$id": "LiveAsset",
+  "type": "object",
+  "properties": {
+    "executionTime": {
+      "type": "number"
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string"
+        },
+        "createDate": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "integer"
+        },
+        "externalId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "string"
+              },
+              "isDefault": {
+                "type": "boolean"
+              },
+              "ratio": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "version": {
+                "type": "integer"
+              },
+              "width": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "mediaFiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string"
+              },
+              "altCdnCode": {
+                "type": "string"
+              },
+              "assetId": {
+                "type": "integer"
+              },
+              "cdnCode": {
+                "type": "string"
+              },
+              "duration": {
+                "type": "integer"
+              },
+              "externalId": {
+                "type": "string"
+              },
+              "fileSize": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "type": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "metas": {
+          "type": "object",
+          "properties": {
+            "synopsis": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "Short title": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "Runtime": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "Catchup logo URL": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "App Link": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "meta_name": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "groupBy_id": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "External program ID": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "Release year1": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "integer"
+                }
+              }
+            },
+            "Catchup allowed": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "testing": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "integer"
+        },
+        "tags": {
+          "type": "object",
+          "properties": {
+            "Free": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "objectType": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Genre": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "objectType": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Parental Rating": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "objectType": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Director": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "objectType": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Country": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "objectType": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Series name": {
+              "type": "object",
+              "properties": {
+                "objectType": {
+                  "type": "string"
+                },
+                "objects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "objectType": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "Genre",
+            "Parental Rating",
+            "Director",
+            "Country",
+            "Series name"
+          ]
+        },
+        "type": {
+          "type": "integer"
+        },
+        "updateDate": {
+          "type": "integer"
+        },
+        "entryId": {
+          "type": "string"
+        },
+        "externalIds": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean"
+        },
+        "typeDescription": {
+          "type": "string"
+        },
+        "enableCatchUp": {
+          "type": "boolean"
+        },
+        "enableCdvr": {
+          "type": "boolean"
+        },
+        "enableRecordingPlaybackNonEntitledChannel": {
+          "type": "boolean"
+        },
+        "enableStartOver": {
+          "type": "boolean"
+        },
+        "catchUpBuffer": {
+          "type": "integer"
+        },
+        "trickPlayBuffer": {
+          "type": "integer"
+        },
+        "enableTrickPlay": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "objectType",
+        "createDate",
+        "description",
+        "endDate",
+        "externalId",
+        "id",
+        "images",
+        "mediaFiles",
+        "metas",
+        "name",
+        "startDate",
+        "tags",
+        "type",
+        "updateDate",
+        "entryId",
+        "externalIds",
+        "status",
+        "typeDescription",
+        "enableCatchUp",
+        "enableCdvr",
+        "enableRecordingPlaybackNonEntitledChannel",
+        "enableStartOver",
+        "catchUpBuffer",
+        "trickPlayBuffer",
+        "enableTrickPlay"
+      ]
+    }
+  },
+  "required": [
+    "executionTime",
+    "result"
+  ]
+}
