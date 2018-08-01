@@ -4,6 +4,7 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.services.HouseholdDeviceService;
 import com.kaltura.client.services.HouseholdPaymentGatewayService;
 import com.kaltura.client.services.HouseholdService;
+import com.kaltura.client.test.Properties;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -18,6 +19,7 @@ import static com.kaltura.client.services.HouseholdService.AddHouseholdBuilder;
 import static com.kaltura.client.services.HouseholdUserService.*;
 import static com.kaltura.client.services.HouseholdUserService.list;
 import static com.kaltura.client.services.OttUserService.*;
+import static com.kaltura.client.test.Properties.PAYMENT_GATEWAY_EXTERNAL_ID;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.OttUserUtils.generateOttUser;
 
@@ -84,7 +86,7 @@ public class HouseholdUtils extends BaseUtils {
             // TODO: there should be added logic with getting and using default PG currently it all hardcoded
             //HouseholdPaymentGateway/action/setChargeId
             SetChargeIDHouseholdPaymentGatewayBuilder setChargeIDHouseholdPaymentGatewayBuilder = HouseholdPaymentGatewayService
-                    .setChargeID("0110151474255957105", "1234")
+                    .setChargeID(Properties.getProperty(PAYMENT_GATEWAY_EXTERNAL_ID), "1234")
                     .setKs(getOperatorKs())
                     .setUserId(Integer.valueOf(masterUser.getId()));
             executor.executeSync(setChargeIDHouseholdPaymentGatewayBuilder);

@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.LOG_HEADERS;
 import static com.kaltura.client.test.tests.BaseTest.client;
-import static com.kaltura.client.test.tests.BaseTest.objectType2JsonValidationSchemaFile4Lists;
+//import static com.kaltura.client.test.tests.BaseTest.objectType2JsonValidationSchemaFile4Lists;
 import static com.kaltura.client.utils.ErrorElement.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;

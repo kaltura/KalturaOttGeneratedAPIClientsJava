@@ -29,11 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -43,84 +40,49 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Tag.Tokenizer.class)
-public class Tag extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ExternalRecording.Tokenizer.class)
+public class ExternalRecording extends Recording {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String type();
-		String tag();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualTag();
+	public interface Tokenizer extends Recording.Tokenizer {
+		String externalId();
 	}
 
 	/**
-	 * Tag id
+	 * External identifier for the recording
 	 */
-	private Long id;
-	/**
-	 * Tag Type
-	 */
-	private Integer type;
-	/**
-	 * Tag
-	 */
-	private String tag;
-	/**
-	 * Tag
-	 */
-	private List<TranslationToken> multilingualTag;
+	private String externalId;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// externalId:
+	public String getExternalId(){
+		return this.externalId;
 	}
-	// type:
-	public Integer getType(){
-		return this.type;
-	}
-	public void setType(Integer type){
-		this.type = type;
+	public void setExternalId(String externalId){
+		this.externalId = externalId;
 	}
 
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
-	// tag:
-	public String getTag(){
-		return this.tag;
-	}
-	// multilingualTag:
-	public List<TranslationToken> getMultilingualTag(){
-		return this.multilingualTag;
-	}
-	public void setMultilingualTag(List<TranslationToken> multilingualTag){
-		this.multilingualTag = multilingualTag;
+	public void externalId(String multirequestToken){
+		setToken("externalId", multirequestToken);
 	}
 
 
-	public Tag() {
+	public ExternalRecording() {
 		super();
 	}
 
-	public Tag(JsonObject jsonObject) throws APIException {
+	public ExternalRecording(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		type = GsonParser.parseInt(jsonObject.get("type"));
-		tag = GsonParser.parseString(jsonObject.get("tag"));
-		multilingualTag = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualTag"), TranslationToken.class);
+		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaTag");
-		kparams.add("type", this.type);
-		kparams.add("multilingualTag", this.multilingualTag);
+		kparams.add("objectType", "KalturaExternalRecording");
+		kparams.add("externalId", this.externalId);
 		return kparams;
 	}
 

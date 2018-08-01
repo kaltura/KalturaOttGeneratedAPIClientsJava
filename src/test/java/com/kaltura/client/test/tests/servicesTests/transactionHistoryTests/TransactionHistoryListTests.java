@@ -27,26 +27,28 @@ import static org.assertj.core.api.Assertions.within;
 
 public class TransactionHistoryListTests extends BaseTest{
 
+    private static final String PPV_MODULE_ID_KEY = "ppvModuleId";
+    private static final String PRICE_AMOUNT = "price";
+    private static final String PRICE_CURRENCY = "currency";
+
+    //Epoch for transactionHistory filter (86400 sec = 24 hours)
+    private static final int yesterdayInEpoch =  (int)((System.currentTimeMillis()/1000)-86400);
+    private static final int tomorrowInEpoch =  (int)((System.currentTimeMillis()/1000)+86400);
+
     private ListTransactionHistoryBuilder listTransactionHistoryBuilder;
     private EntitlementFilter entitlementFilter;
     private TransactionHistoryFilter transactionHistoryFilter;
+
     private Response<ListResponse<Entitlement>> listEntitlementServiceResponsePpv;
     private Response<ListResponse<Entitlement>> listEntitlementServiceResponseSubscription;
     private Response<ListResponse<BillingTransaction>> listBillingTransactionResponse;
     private Response<Transaction> transactionResponseSubscription;
     private Response<Transaction> transactionResponseCollection;
     private Response<Transaction> transactionResponsePpv;
-    private int numberOfDevicesInHousehold = 2;
-    private int numberOfUsersInHousehold = 2;
+
     private String masterUserKs;
     private String userKs;
     private String methodName;
-    public static final String PPV_MODULE_ID_KEY = "ppvModuleId";
-    public static final String PRICE_AMOUNT = "price";
-    public static final String PRICE_CURRENCY = "currency";
-    //Epoch for transactionHistory filter (86400 sec = 24 hours)
-    public static final int yesterdayInEpoch =  (int)((System.currentTimeMillis()/1000)-86400);
-    public static final int tomorrowInEpoch =  (int)((System.currentTimeMillis()/1000)+86400);
 
 
     @BeforeClass
@@ -62,6 +64,8 @@ public class TransactionHistoryListTests extends BaseTest{
         //End date before tomorrow
         transactionHistoryFilter.setEndDateLessThanOrEqual(tomorrowInEpoch);
 
+        int numberOfUsersInHousehold = 2;
+        int numberOfDevicesInHousehold = 2;
         Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold,true);
         //Login with master to first device
         masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
@@ -231,7 +235,7 @@ public class TransactionHistoryListTests extends BaseTest{
 
                 case COLLECTION:
                     assertThat(billingTransaction.getRecieptCode()).isEqualTo(transactionResponseCollection.results.getId());
-                    assertThat(billingTransaction.getPurchasedItemName()).isEqualTo(getSharedCommonCollection().getName());
+                    assertThat(billingTransaction.getPurchasedItemName()).isEqualTo(getSharedCommonCollection().getMultilingualName().get(0).getValue());
                     assertThat(billingTransaction.getPurchasedItemCode()).isEqualTo(getSharedCommonCollection().getId());
                     assertThat(billingTransaction.getItemType()).isEqualTo(BillingItemsType.COLLECTION);
                     assertThat(billingTransaction.getPrice().getAmount().toString()).isEqualTo(PurchaseUtils.purchaseCollectionDetailsMap.get(PRICE_AMOUNT));

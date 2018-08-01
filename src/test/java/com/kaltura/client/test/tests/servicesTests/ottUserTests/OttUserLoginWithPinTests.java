@@ -104,7 +104,7 @@ public class OttUserLoginWithPinTests extends BaseTest {
                 .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
                 .until(() -> {
                     long expire = userLoginPinResponse.results.getExpirationTime() + 120;
-                    long now = BaseUtils.getTimeInEpoch(0);
+                    long now = BaseUtils.getEpochInLocalTime(0);
                     return now > expire;
                 });
 

@@ -181,7 +181,16 @@ public class DBConstants {
             "from [TVinci].[dbo].[permissions_permission_items]\n" +
             "where permission_id=? and permission_item_id=? and is_active=1 and [status]=1 and group_id=?";
 
-    static final String ASSET_ID_SELECT = "SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=? and status=1 and DATALENGTH(media_id) > 0";
+    static final String LINEAR_ASSET_ID_AND_EPG_CHANNEL_NAME_SELECT = "SELECT ec.ID, ec.NAME, m.ID as 'media_id' " +
+            "FROM [TVinci].[dbo].[media] m " +
+            "inner join [TVinci].[dbo].[epg_channels] ec on m.EPG_IDENTIFIER = ec.ID " +
+            "where m.GROUP_ID = ? " +
+            "and MEDIA_TYPE_ID = 427 " +
+            "and m.IS_ACTIVE = 1 " +
+            "and m.STATUS = 1 " +
+            "and EPG_IDENTIFIER != ''";
+
+    //"SELECT [media_id],[name] FROM [TVinci].[dbo].[epg_channels] WHERE group_id=? and status=1 and DATALENGTH(media_id) > 0";
 
     static final String UNACTIVE_ASSET_ID_SELECT = "SELECT top 1 [id] FROM [TVinci].[dbo].[media] where group_id = ? and status = 2";
 
@@ -189,14 +198,19 @@ public class DBConstants {
 
     static final String USER_BY_ID_SELECT = "SELECT * from [Users].[dbo].[users] where group_id = ? and ID = ?";
 
-    static final String PROGRAMS_SELECT = "SELECT top (?) NAME " +
+    static final String PROGRAMS_SELECT = "SELECT top (?) ID, NAME " +
             "FROM [TVinci].[dbo].[epg_channels_schedule] " +
             "where status = 1 " +
             "and is_active = 1 " +
             "and group_id = ? " +
             "order by id desc";
 
-    static final String ASSETS_SELECT = "SELECT top (?) NAME FROM [TVinci].[dbo].[media] where group_id = ? and status = 1 and is_Active = 1 order by id desc";
+    static final String ASSETS_SELECT = "SELECT top (?) ID, NAME " +
+            "FROM [TVinci].[dbo].[media] " +
+            "where group_id = ? " +
+            "and status = 1 " +
+            "and is_Active = 1 " +
+            "order by id desc";
 
     static final String ASSETS_SELECT_WITH_MEDIA_TYPE = "SELECT top (?) m.ID, m.NAME, m.MEDIA_TYPE_ID, mt.NAME " +
             "FROM [TVinci].[dbo].[media] m " +
@@ -208,9 +222,11 @@ public class DBConstants {
             "and mt.NAME = ? " +
             "order by m.id desc";
 
-    static final String MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where GROUP_ID = ? and name = ?";
+    static final String MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where (GROUP_ID = ? OR GROUP_ID = ?) and name = ?";
+    static final String OPC_MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where GROUP_ID = ? and name = ?";
 
-    static final String  MEDIA_FILE_TYPE_ID_SELECT = "SELECT [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and ID = ?";
+
+    static final String MEDIA_FILE_TYPE_ID_SELECT = "SELECT [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and ID = ?";
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";
@@ -222,6 +238,4 @@ public class DBConstants {
     static final String SP_DELETE_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionItem(?)}";
     static final String SP_DELETE_PERMISSION_PERMISSION_ITEM = "{call TVinci.dbo.__482V0__Delete_PermissionPermissionItem(?)}";
     static final String SP_DELETE_ROLE_AND_ITS_PERMISSIONS = "{call TVinci.dbo.__482V0__Delete_RolePermission(?, ?)}";
-
-
 }

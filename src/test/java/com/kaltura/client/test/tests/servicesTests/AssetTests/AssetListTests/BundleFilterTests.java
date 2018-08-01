@@ -15,15 +15,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.test.Properties.DEFAULT_COLLECTION;
 import static com.kaltura.client.test.Properties.getProperty;
-import static com.kaltura.client.test.tests.enums.KsqlKey.NAME;
+import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.tests.enums.MediaType.*;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
+import static com.kaltura.client.test.utils.AssetUtils.getAssets;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.MppData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.insertMpp;
@@ -41,62 +41,68 @@ public class BundleFilterTests extends BaseTest {
     @BeforeClass
     private void asset_list_bundleFilter_before_class() {
         // get movie
-        List<MediaAsset> medias = getAssets(2, Optional.of(MOVIE));
+        List<MediaAsset> medias = getAssets(2, MOVIE);
         movie1 = medias.get(0);
         movie2 = medias.get(1);
 
         // get series
-        List<MediaAsset> series = getVirtualAssets(2, Optional.of(SERIES));
+        List<MediaAsset> series = getAssets(2, SERIES);
         series1 = series.get(0);
         series2 = series.get(1);
 
         // get episode
-        List<MediaAsset> episodes = getAssets(2, Optional.of(EPISODE));
+        List<MediaAsset> episodes = getAssets(2, EPISODE);
         episode1 = episodes.get(0);
         episode2 = episodes.get(1);
 
         // add assets to channel query 1
         String channel1Query = new KsqlBuilder()
                 .openOr()
-                .equal(NAME.getValue(), movie1.getName())
-                .equal(NAME.getValue(), series1.getName())
-                .equal(NAME.getValue(), episode1.getName())
+                .equal(MEDIA_ID.getValue(), String.valueOf(movie1.getId()))
+                .equal(MEDIA_ID.getValue(), String.valueOf(series1.getId()))
+                .equal(MEDIA_ID.getValue(), String.valueOf(episode1.getId()))
                 .closeOr()
                 .toString();
 
         // add assets to channel query 2
         String channel2Query = new KsqlBuilder()
                 .openOr()
-                .equal(NAME.getValue(), movie2.getName())
-                .equal(NAME.getValue(), series2.getName())
-                .equal(NAME.getValue(), episode2.getName())
+                .equal(MEDIA_ID.getValue(), String.valueOf(movie2.getId()))
+                .equal(MEDIA_ID.getValue(), String.valueOf(series2.getId()))
+                .equal(MEDIA_ID.getValue(), String.valueOf(episode2.getId()))
                 .closeOr()
                 .toString();
 
         // add channel1
         channel1 = new DynamicChannel();
-        channel1.setName("channel_" + getTimeInEpoch());
-        channel1.description("Description of " + channel1.getName());
+        channel1.setMultilingualName(setTranslationToken("channel_" + getEpochInLocalTime()));
+        channel1.setMultilingualDescription(setTranslationToken("Description of " + channel1.getName()));
+        channel1.setSystemName(channel1.getMultilingualName().get(0).getValue() + getRandomValue(""));
         channel1.setIsActive(true);
         channel1.setKSql(channel1Query);
 
         channel1 = (DynamicChannel) executor.executeSync(add(channel1)
-                .setKs(getOperatorKs())).results;
+                .setKs(getOperatorKs())
+                .setLanguage("*"))
+                .results;
 
         // add channel2
         channel2 = new DynamicChannel();
-        channel2.setName("channel_" + getTimeInEpoch());
-        channel2.description("Description of " + channel2.getName());
+        channel2.setMultilingualName(setTranslationToken("channel_" + getEpochInLocalTime()));
+        channel2.setMultilingualDescription(setTranslationToken("Description of " + channel2.getName()));
+        channel2.setSystemName(channel2.getMultilingualName().get(0).getValue() + getRandomValue(""));
         channel2.setIsActive(true);
         channel2.setKSql(channel2Query);
 
         channel2 = (DynamicChannel) executor.executeSync(add(channel2)
-                .setKs(getOperatorKs())).results;
+                .setKs(getOperatorKs())
+                .setLanguage("*"))
+                .results;
 
         // ingest subscription with 2 new channels
         MppData mppData = new MppData()
-                .channel1(channel1.getName())
-                .channel2(channel2.getName());
+                .channel1(channel1.getMultilingualName().get(0).getValue())
+                .channel2(channel2.getMultilingualName().get(0).getValue());
         subscription = insertMpp(mppData);
     }
 
@@ -130,7 +136,7 @@ public class BundleFilterTests extends BaseTest {
     private void list_assets_with_bundleFilter_subscription_by_idEqual_and_typeIn() {
         // adding "MOVIE", "SERIES" and "LINEAR" to string types (excluding "EPISODE")
         String types = getConcatenatedString(String.valueOf(getMediaTypeId(MOVIE)),
-                String.valueOf(getVirtualMediaTypeId(SERIES)),
+                String.valueOf(getMediaTypeId(SERIES)),
                 String.valueOf(getMediaTypeId(LINEAR)));
 
         // set bundleFilter

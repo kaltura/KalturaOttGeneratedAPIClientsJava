@@ -31,7 +31,7 @@ import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.KsqlKey.END_DATE;
 import static com.kaltura.client.test.tests.enums.KsqlKey.EPG_CHANNEL_ID;
 import static com.kaltura.client.test.tests.enums.KsqlKey.START_DATE;
-import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
+import static com.kaltura.client.test.utils.BaseUtils.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +48,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
     @Data
     public static class EpgData {
         @Setter(AccessLevel.NONE) private String coguid;
-        @NonNull private String epgChannelName;
+        @Setter(AccessLevel.NONE) @NonNull private String epgChannelName;
 
         private boolean isCridUnique4AllPrograms = true;
 
@@ -61,7 +61,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         private int seasonsNum;
         private int programDuration;
 
-        private Calendar startDate;
+        private Long startDate;
         private DurationPeriod programDurationPeriod;
     }
 
@@ -78,7 +78,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         if (epgData.seriesId == null) { epgData.seriesId = epgData.coguid; }
         if (epgData.episodesNum == 0) { epgData.episodesNum = DEFAULT_PROGRAMMES_COUNT; }
         if (epgData.seasonsNum == 0) { epgData.seasonsNum = DEFAULT_SEASONS_COUNT; }
-        if (epgData.startDate == null) { epgData.startDate = Calendar.getInstance(); }
+        if (epgData.startDate == null) { epgData.startDate = getEpochInLocalTime(); }
         if (epgData.programDuration == 0) { epgData.programDuration = DEFAULT_PROGRAM_DURATION; }
         if (epgData.programDurationPeriod == null) { epgData.programDurationPeriod = DurationPeriod.MINUTES; }
         if (epgData.thumb == null) { epgData.thumb = DEFAULT_THUMB; }
@@ -89,7 +89,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         executeIngestEpgRequest(reqBody);
 
         // TODO: create method getting epoch value from String and pattern
-        String firstProgramStartDateEpoch = String.valueOf(epgData.startDate.getTime().getTime() / 1000);
+        String firstProgramStartDateEpoch = String.valueOf(epgData.startDate);
         SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
 
@@ -166,14 +166,14 @@ public class IngestEpgUtils extends BaseIngestUtils {
         while (seasonNum <= epgData.seasonsNum) {
             int episodeNum = 1;
             while (episodeNum <= epgData.episodesNum) {
-                Date endDate = loadEndDate(epgData.startDate.getTime(), epgData.programDuration, epgData.programDurationPeriod);
-                String startDateFormatted = df.format(epgData.startDate.getTime());
-                String endDateFormatted = df.format(endDate.getTime());
+                Date endDate = loadEndDate(epgData.startDate, epgData.programDuration, epgData.programDurationPeriod);
+                String startDateFormatted = df.format(getDateFromEpoch(epgData.startDate));
+                String endDateFormatted = df.format(endDate);
 
                 Element programmeNode = getProgrammeNode(doc, episodeNum, seasonNum, startDateFormatted, endDateFormatted, epgData);
                 epgChannels.appendChild(programmeNode);
 
-                epgData.startDate.setTime(endDate);
+                epgData.startDate(getEpochFromDate(endDate));
                 episodeNum++;
             }
             seasonNum++;
@@ -278,9 +278,9 @@ public class IngestEpgUtils extends BaseIngestUtils {
         return tags;
     }
 
-    private static Date loadEndDate(Date startDate, int durationValue, DurationPeriod durationPeriod) {
+    private static Date loadEndDate(long startDate, int durationValue, DurationPeriod durationPeriod) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(startDate);
+        calendar.setTimeInMillis(startDate * 1000);
         switch (durationPeriod) {
             case DAYS:
                 calendar.add(Calendar.DATE, durationValue);

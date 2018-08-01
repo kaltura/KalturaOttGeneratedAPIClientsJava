@@ -39,7 +39,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = anonymousLogin(partnerId, udid1);
         Response<LoginSession> loginSessionResponse = executor.executeSync(anonymousLoginOttUserBuilder);
         anonymousKs = loginSessionResponse.results.getKs();
-        expiryDate = BaseUtils.getTimeInEpoch(1);
+        expiryDate = BaseUtils.getEpochInLocalTime(1);
     }
 
     @Description("appToken/action/startSession - SHA1")

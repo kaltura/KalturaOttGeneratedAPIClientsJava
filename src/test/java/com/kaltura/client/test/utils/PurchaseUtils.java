@@ -3,8 +3,6 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.ProductPriceOrderBy;
 import com.kaltura.client.enums.TransactionType;
-import com.kaltura.client.services.AssetService;
-import com.kaltura.client.services.AssetService.GetAssetBuilder;
 import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
 import com.kaltura.client.services.TransactionService;
@@ -16,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.test.tests.BaseTest.executor;
 
 public class PurchaseUtils {
@@ -34,8 +33,8 @@ public class PurchaseUtils {
         if (fileId.isPresent()) {
             internalFileId = fileId.get();
         } else {
-            GetAssetBuilder getAssetBuilder = AssetService.get(String.valueOf(mediaId.get()), AssetReferenceType.MEDIA).setKs(ks);
-            assetResponse = executor.executeSync(getAssetBuilder);
+            assetResponse = executor.executeSync(get(String.valueOf(mediaId.get()), AssetReferenceType.MEDIA)
+                    .setKs(ks));
             internalFileId = assetResponse.results.getMediaFiles().get(0).getId();
         }
 

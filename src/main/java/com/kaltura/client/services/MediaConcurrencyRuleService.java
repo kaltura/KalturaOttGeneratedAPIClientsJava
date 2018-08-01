@@ -25,7 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.MediaConcurrencyRule;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,40 +36,20 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE");
 
-	private String value;
-
-	RuleConditionType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static RuleConditionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
+public class MediaConcurrencyRuleService {
+	
+	public static class ListMediaConcurrencyRuleBuilder extends ListResponseRequestBuilder<MediaConcurrencyRule, MediaConcurrencyRule.Tokenizer, ListMediaConcurrencyRuleBuilder> {
 		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public ListMediaConcurrencyRuleBuilder() {
+			super(MediaConcurrencyRule.class, "mediaconcurrencyrule", "list");
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
-   }
+	}
+
+	/**
+	 * Get the list of meta mappings for the partner
+	 */
+    public static ListMediaConcurrencyRuleBuilder list()  {
+		return new ListMediaConcurrencyRuleBuilder();
+	}
 }

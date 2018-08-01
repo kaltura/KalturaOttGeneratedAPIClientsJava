@@ -11,6 +11,9 @@ import com.kaltura.client.test.utils.ChannelUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -18,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kaltura.client.services.AssetService.ListAssetBuilder;
-import static com.kaltura.client.services.ChannelService.AddChannelBuilder;
-import static com.kaltura.client.services.ChannelService.DeleteChannelBuilder;
+import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,35 +32,99 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ChannelAddTests extends BaseTest {
 
     private DynamicChannel channel;
-    private String channelName;
-    private String description;
+//    private String channelName;
+//    private String description;
     private Boolean isActive = true;
-    private String ksqlExpression;
     private IntegerValue integerValue = new IntegerValue();
-    private List<IntegerValue> assetTypes = new ArrayList<>();
 
 
     @BeforeClass
     private void channel_addTests_before_class() {
-        channelName = "Channel_12345";
-        description = "description of channel";
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("channel/action/add - with all asset types")
     @Test
     private void addChannel() {
-        ksqlExpression = "name ~ 'movie'";
+        String ksqlExpression = "name ~ 'movie'";
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
-        //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         assertThat(channelResponse.results.getName()).isEqualTo(channelName);
+
+        // cleanup - delete channel
+        executor.executeSync(ChannelService.delete(Math.toIntExact(channelResponse.results.getId()))
+                .setKs(getManagerKs()));
     }
 
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("channel/action/add - with specific asset type")
+    @Test
+    private void addChannelWithAssetType() {
+        String ksqlExpression = "name ~ 'movie'";
+
+        int mediaTypeId = getMediaTypeId(MediaType.MOVIE);
+        integerValue.setValue(mediaTypeId);
+        List<IntegerValue> assetTypes = new ArrayList<>();
+        assetTypes.add(integerValue);
+
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
+        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
+
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
+
+        assertThat(channelResponse.results.getName()).isEqualTo(channelName);
+
+        // cleanup - delete channel
+        executor.executeSync(ChannelService.delete(Math.toIntExact(channelResponse.results.getId()))
+                .setKs(getManagerKs()));
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Description("channel/action/add - with not supported opc partner id")
+    @Test(enabled = false) // no validation in channel/action/add for account 203
+    private void addDynamicChannelWithNotSupportedOpcPartnerId() {
+        String ksqlExpression = "name ~ 'movie'";
+
+        int mediaTypeId = getMediaTypeId(MediaType.MOVIE);
+        integerValue.setValue(mediaTypeId);
+        List<IntegerValue> assetTypes = new ArrayList<>();
+        assetTypes.add(integerValue);
+
+        ChannelOrder channelOrder = new ChannelOrder();
+        channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
+        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
+
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
+
+        assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4074).getCode());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
     @Description("channel/action/add - order by NAME_DESC")
     @Test
     private void checkOrderOfAssetsInChannel() {
@@ -76,82 +143,113 @@ public class ChannelAddTests extends BaseTest {
                 .mediaType(MediaType.EPISODE);
         MediaAsset episodeAsset = insertVod(vodData1);
 
-        ksqlExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
+        String ksqlExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.NAME_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
-        //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
-        assertThat(channelResponse.results.getName()).isEqualTo(channelName);
-
+        assertThat(channelResponse.results.getMultilingualName().get(0).getValue()).isEqualTo(channelName);
         int channelId = Math.toIntExact(channelResponse.results.getId());
 
+
+        // asset/action/list
         ChannelFilter channelFilter = AssetUtils.getChannelFilter(channelId, Optional.empty(), Optional.empty(), Optional.empty());
 
-        //asset/action/list
-        ListAssetBuilder listAssetBuilder = AssetService.list(channelFilter)
-                .setKs(getManagerKs());
-        Response<ListResponse<Asset>> listResponse = executor.executeSync(listAssetBuilder);
+        Response<ListResponse<Asset>> listResponse = executor.executeSync(AssetService.list(channelFilter)
+                .setKs(getManagerKs()));
 
         assertThat(listResponse.results.getTotalCount()).isEqualTo(2);
         // Verify movie asset id returned first (because order is by name_desc)
         assertThat(listResponse.results.getObjects().get(0).getId()).isEqualTo(movieAsset.getId());
 
-        // Cleanup - channel/action/delete
-        DeleteChannelBuilder deleteChannelBuilder = ChannelService.delete(channelId).setKs(getManagerKs());
-        executor.executeSync(deleteChannelBuilder);
+        // cleanup - delete channel
+        executor.executeSync(ChannelService.delete(channelId)
+                .setKs(getManagerKs()));
     }
 
-    @Description("channel/action/add - with invalid asset type")
-    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Description("channel/action/add - with invalid asset type - error 4028")
+    @Test(enabled = false) // no validation in channel/action/add for account 203
     private void addChannelWithInvalidAssetType() {
-        integerValue.setValue(666);
+        String ksqlExpression = "name ~ 'movie'";
+
+        int invalidAssetType = 1;
+        integerValue.setValue(invalidAssetType);
+        List<IntegerValue> assetTypes = new ArrayList<>();
         assetTypes.add(integerValue);
+
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
-        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, null, channelOrder, assetTypes);
 
-        //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
-                .setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
+        channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
 
-        // KalturaAPIException","code":"4020","message":"KSQL Channel media type 666 does not belong to group"
-        assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4020).getCode());
+        // channel/action/add
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
+
+        // KalturaAPIException","code":"4028"
+        assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4028).getCode());
     }
 
-    @Description("channel/action/add - mandatory channel name not provided")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("channel/action/add - mandatory channel multilingualName not provided")
     @Test
-    private void addChannelWithNoName() {
+    private void addChannelWithoutMultilingualName() {
+        String ksqlExpression = "name ~ 'movie'";
+
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
-        channel = ChannelUtils.addDynamicChannel(null, description, isActive, null, channelOrder, null);
+
+        DynamicChannel channel = new DynamicChannel();
+        channel.setIsActive(true);
+        channel.setOrderBy(channelOrder);
+        channel.setSystemName("systemName " + getEpochInLocalTime());
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel)
-                .setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
-        // KalturaAPIException","code":"5005","message":"KSQL Channel must have a name"
-        assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(5005).getCode());
+        // KalturaAPIException","code":"50027","message":"Argument [name] cannot be empty"
+        assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(50027).getCode());
     }
 
+    @Severity(SeverityLevel.NORMAL)
     @Description("channel/action/add - syntax error in filter expression")
     @Test
     private void addChannelWithSyntaxErrorInFilterExpression() {
-        ksqlExpression = "name = 'syntax error";
+        String ksqlExpression = "name = 'syntax error";
+
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
+
+        String channelName = "Channel_" + getEpochInLocalTime();
+        String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
         //channel/action/add
-        AddChannelBuilder addChannelBuilder = ChannelService.add(channel).setKs(getManagerKs());
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder);
+        Response<Channel> channelResponse = executor.executeSync(add(channel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
 
         // KalturaAPIException","code":"4004","message":"Invalid expression structure"
         assertThat(channelResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(4004).getCode());
     }
+
+    @AfterClass
+    private void channel_addTests_after_class() {
+
+    }
+
 }

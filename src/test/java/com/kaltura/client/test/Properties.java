@@ -19,6 +19,7 @@ public class Properties {
 
     // Request properties
     public static final String PARTNER_ID = "partner_id";
+//    public static final String OPC_PARTNER_ID = "opc_partner_id";
     public static final String DEFAULT_TIMEOUT_IN_SEC = "default_timeout_in_sec";
 
     // global users
@@ -71,6 +72,9 @@ public class Properties {
     // product codes
     public static final String DEFAULT_PRODUCT_CODE = "default_product_code";
 
+    // payment gateway external id
+    public static final String PAYMENT_GATEWAY_EXTERNAL_ID = "payment_gateway_external_id";
+
     // processing apps logs from remote connection
     public static final String PHOENIX_SERVER_DOMAIN_NAME = "phoenix_server_domain_name";
     public static final String PHOENIX_SERVER_USER_NAME = "phoenix_server_user_name";
@@ -83,6 +87,7 @@ public class Properties {
     public static final String SHOULD_REGRESSION_LOGS_BE_SAVED = "should_regression_logs_be_saved";
     public static final String MAX_ALLOWED_PERCENTAGE = "max_allowed_percentage";
     public static final String CODE_PERFORMANCE_REPORT_FILE = "code_performance_report_file";
+    public static final String MAX_ALLOWED_EXECUTION_TIME_IN_SEC = "max_allowed_execution_time_in_sec";
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {

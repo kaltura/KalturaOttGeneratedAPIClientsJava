@@ -6,12 +6,10 @@ import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import com.kaltura.client.services.ChannelService;
-import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.services.EntitlementService;
 import com.kaltura.client.services.LicensedUrlService;
 import com.kaltura.client.services.LicensedUrlService.GetLicensedUrlBuilder;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
@@ -28,10 +26,12 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.services.EntitlementService.*;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.test.Properties.WEB_FILE_TYPE;
 import static com.kaltura.client.test.Properties.getProperty;
+import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,8 +67,9 @@ public class EntitlementCancelTests extends BaseTest {
         bookmark.setType(AssetType.MEDIA);
 
         sharedChannel = new DynamicChannel();
-        sharedChannel.setName(BaseUtils.getRandomValue("Channel_", 999999));
-        sharedChannel.setDescription("Description of " + sharedChannel.getName());
+        sharedChannel.setMultilingualName(setTranslationToken(getRandomValue("Channel_")));
+        sharedChannel.setMultilingualDescription(setTranslationToken("Description of " + sharedChannel.getName()));
+        sharedChannel.setSystemName(sharedChannel.getMultilingualName().get(0).getValue());
         sharedChannel.setIsActive(true);
         sharedChannel.setAssetTypes(null);
     }
@@ -121,7 +122,7 @@ public class EntitlementCancelTests extends BaseTest {
         CancelEntitlementBuilder cancelEntitlementBuilder = cancel(invalidSubscriptionId, TransactionType.SUBSCRIPTION);
         Response<Boolean> booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(userKs));
         assertThat(booleanResponse.results).isNull();
-        assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(3000).getCode());
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3000).getCode());
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -130,9 +131,13 @@ public class EntitlementCancelTests extends BaseTest {
     public void cancelPlayedSubscription() {
         // create mpp having at least 1 media on its channel
         sharedChannel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
-        AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
+
+        Response<Channel> channelResponse = executor.executeSync(add(sharedChannel)
+                .setKs(getManagerKs())
+                .setLanguage("*"));
+
         assertThat(channelResponse.results).isNotNull();
+
         Channel channel = channelResponse.results;
         assertThat(channel.getName()).isNotNull();
         PricePlan pricePlan = DBUtils.loadPPWithWaiver();
@@ -175,7 +180,7 @@ public class EntitlementCancelTests extends BaseTest {
                 TransactionType.SUBSCRIPTION);
         booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(masterKs));
         assertThat(booleanResponse.results).isNull();
-        assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(3005).getCode());
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3005).getCode());
 
         // delete household for cleanup
         executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
@@ -233,7 +238,7 @@ public class EntitlementCancelTests extends BaseTest {
                 TransactionType.SUBSCRIPTION);
         Response<Boolean> booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(masterKs));
         assertThat(booleanResponse.results).isNull();
-        assertThat(booleanResponse.error.getCode()).isEqualTo(BaseUtils.getAPIExceptionFromList(3001).getCode());
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3001).getCode());
 
         // delete household for cleanup
         //executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));

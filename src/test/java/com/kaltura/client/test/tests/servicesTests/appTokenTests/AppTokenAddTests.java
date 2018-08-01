@@ -90,7 +90,7 @@ public class AppTokenAddTests extends BaseTest {
         // setup for test
         add_tests_before_class();
         // prepare token with expiration after 1 minute
-        Long expiryDate = BaseUtils.getTimeInEpoch(1);
+        Long expiryDate = BaseUtils.getEpochInLocalTime(1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
 
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
@@ -137,7 +137,7 @@ public class AppTokenAddTests extends BaseTest {
                 .setKs(getSharedMasterUserKs());
         Response<AppToken> addAppTokenResponse = executor.executeSync(addAppTokenBuilder);
 
-        assertThat(addAppTokenResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(BaseUtils.getTimeInEpoch(0)));
+        assertThat(addAppTokenResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(BaseUtils.getEpochInLocalTime(0)));
     }
 
     @Description("appToken/action/add - with no specific user id")

@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.types.APIException;
+import com.kaltura.client.types.TranslationToken;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -14,7 +15,6 @@ import java.io.*;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -38,11 +38,16 @@ public class BaseUtils {
         return dateFormat.format(cal.getTime());
     }
 
+    // generate current data String in specified format
+    public static String getCurrentDateInFormat(String pattern) {
+        return getOffsetDateInFormat(0, pattern);
+    }
+
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getTimeInDate(int offSetInMinutes, String timeZone) {
-        TimeZone theTimeZone = TimeZone.getTimeZone(timeZone);
+    public static String getTimeFormatted(int offSetInMinutes, TimeZone timeZone) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        dateFormat.setTimeZone(theTimeZone);
+        dateFormat.setTimeZone(timeZone);
+
         Date dNow = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dNow);
@@ -53,33 +58,51 @@ public class BaseUtils {
     }
 
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getTimeInDate(int offSetInMinutes) {
-        return getTimeInDate(offSetInMinutes,"israel");
+    public static String getLocalTimeFormatted(int offSetInMinutes) {
+        return getTimeFormatted(offSetInMinutes, TimeZone.getDefault());
+    }
+
+    public static String getUtcTimeFormatted(int offSetInMinutes) {
+        return getTimeFormatted(offSetInMinutes, TimeZone.getTimeZone("UTC"));
     }
 
     // Get epoch time in seconds according to off set parameter provided (in minutes)
-    public static long getTimeInEpoch(int offSetInMinutes) {
-        //DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date dNow = new Date();
+    public static long getEpochInLocalTime(int offSetInMinutes) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dNow);
         calendar.add(Calendar.MINUTE, offSetInMinutes);
 
-        return calendar.getTimeInMillis() / 1000;
+        return calendar.toInstant().getEpochSecond();
     }
 
-    public static long getTimeInEpoch() {
-        return Instant.now().toEpochMilli();
+    public static long getEpochInLocalTime() {
+        return Calendar.getInstance().toInstant().getEpochSecond();
     }
 
-    // generate current data String in specified format
-    public static String getCurrentDateInFormat(String pattern) {
-        return getOffsetDateInFormat(0, pattern);
+    public static long getEpochInUtcTime(int offSetInMinutes) {
+        Calendar calendar = Calendar.getInstance();
+        int timeZoneOffset = TimeZone.getDefault().getRawOffset() / 60000;
+        calendar.add(Calendar.MINUTE, offSetInMinutes + timeZoneOffset);
+
+        return calendar.toInstant().getEpochSecond();
+    }
+
+    public static Date getDateFromEpoch(long epoch) {
+        return new Date(epoch * 1000);
+    }
+
+    public static long getEpochFromDate(Date date) {
+        return date.getTime() / 1000;
     }
 
     // generate string containing prefix and random long suffix
     public static String getRandomValue(String prefix, long maxValue) {
         long randomLongValue = ThreadLocalRandom.current().nextLong(maxValue);
+        return prefix + randomLongValue;
+    }
+
+    public static String getRandomValue(String prefix) {
+        long max = 9999999999L;
+        long randomLongValue = ThreadLocalRandom.current().nextLong(max);
         return prefix + randomLongValue;
     }
 
@@ -187,5 +210,16 @@ public class BaseUtils {
     public static void clearCache() {
         String url = config.getEndpoint() + "/clear_cache.aspx";
         given().queryParam("action", "clear_all").get(url);
+    }
+
+    public static List<TranslationToken> setTranslationToken(String value) {
+        TranslationToken translationToken = new TranslationToken();
+        translationToken.setLanguage("eng");
+        translationToken.setValue(value);
+
+        List<TranslationToken> translationTokens = new ArrayList<>();
+        translationTokens.add(translationToken);
+
+        return translationTokens;
     }
 }

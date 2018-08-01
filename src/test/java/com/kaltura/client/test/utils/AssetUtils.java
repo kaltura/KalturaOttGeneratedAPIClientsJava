@@ -5,8 +5,10 @@ import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.BookmarkActionType;
 import com.kaltura.client.enums.SocialActionType;
+import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.SocialActionService;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -22,17 +24,18 @@ import static com.kaltura.client.services.SocialActionService.AddSocialActionBui
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.tests.BaseTest.executor;
 import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
+import static com.kaltura.client.test.tests.enums.KsqlKey.ASSET_TYPE;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AssetUtils extends BaseUtils {
 
     // TODO: 6/21/2018 Use Optional instead of nullable
-    public static SearchAssetFilter getSearchAssetFilter(@Nullable String ksql, @Nullable String idIn, @Nullable String typeIn,
+    public static SearchAssetFilter getSearchAssetFilter(@Nullable String ksql, @Nullable String typeIn,
                                                          @Nullable DynamicOrderBy dynamicOrderBy, List<AssetGroupBy> groupBy, String name, String orderBy) {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         searchAssetFilter.setKSql(ksql);
-        searchAssetFilter.setIdIn(idIn);
         searchAssetFilter.setTypeIn(typeIn);
         searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
         searchAssetFilter.setGroupBy(groupBy);
@@ -72,7 +75,7 @@ public class AssetUtils extends BaseUtils {
     }
 
     public static List<Asset> getAssetsByType(String typeIn) {
-        AssetFilter assetFilter = getSearchAssetFilter(null, null, typeIn, null, null, null, null);
+        AssetFilter assetFilter = getSearchAssetFilter(null, typeIn, null, null, null, null);
 
         FilterPager filterPager = new FilterPager();
         filterPager.setPageSize(20);
@@ -156,6 +159,31 @@ public class AssetUtils extends BaseUtils {
                 executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
             }
         }
+    }
+
+    public static List<MediaAsset> getAssets(int numOfAssets, MediaType mediaType) {
+        SearchAssetFilter filter = new SearchAssetFilter();
+        String query = new KsqlBuilder().equal(ASSET_TYPE.getValue(), getMediaTypeId(mediaType)).toString();
+        filter.setKSql(query);
+
+        FilterPager pager = new FilterPager();
+        pager.setPageIndex(1);
+        pager.setPageSize(numOfAssets);
+
+        return (List<MediaAsset>) (List<?>) executor.executeSync(AssetService.list(filter, pager)
+                .setKs(getOperatorKs())).results.getObjects();
+    }
+
+    public static List<ProgramAsset> getPrograms(int numOfAssets) {
+        SearchAssetFilter filter = new SearchAssetFilter();
+        filter.setTypeIn("0");
+
+        FilterPager pager = new FilterPager();
+        pager.setPageIndex(1);
+        pager.setPageSize(numOfAssets);
+
+        return (List<ProgramAsset>) (List<?>) executor.executeSync(AssetService.list(filter, pager)
+                .setKs(getOperatorKs())).results.getObjects();
     }
 
     public static String getCoguid(Asset asset) {

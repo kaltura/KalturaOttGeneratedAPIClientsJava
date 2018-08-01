@@ -29,11 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,85 +39,72 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * IP range condition
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Tag.Tokenizer.class)
-public class Tag extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IpRangeCondition.Tokenizer.class)
+public class IpRangeCondition extends Condition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String type();
-		String tag();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualTag();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String fromIP();
+		String toIP();
 	}
 
 	/**
-	 * Tag id
+	 * From IP address range
 	 */
-	private Long id;
+	private String fromIP;
 	/**
-	 * Tag Type
+	 * TO IP address range
 	 */
-	private Integer type;
-	/**
-	 * Tag
-	 */
-	private String tag;
-	/**
-	 * Tag
-	 */
-	private List<TranslationToken> multilingualTag;
+	private String toIP;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// fromIP:
+	public String getFromIP(){
+		return this.fromIP;
 	}
-	// type:
-	public Integer getType(){
-		return this.type;
-	}
-	public void setType(Integer type){
-		this.type = type;
+	public void setFromIP(String fromIP){
+		this.fromIP = fromIP;
 	}
 
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
+	public void fromIP(String multirequestToken){
+		setToken("fromIP", multirequestToken);
 	}
 
-	// tag:
-	public String getTag(){
-		return this.tag;
+	// toIP:
+	public String getToIP(){
+		return this.toIP;
 	}
-	// multilingualTag:
-	public List<TranslationToken> getMultilingualTag(){
-		return this.multilingualTag;
+	public void setToIP(String toIP){
+		this.toIP = toIP;
 	}
-	public void setMultilingualTag(List<TranslationToken> multilingualTag){
-		this.multilingualTag = multilingualTag;
+
+	public void toIP(String multirequestToken){
+		setToken("toIP", multirequestToken);
 	}
 
 
-	public Tag() {
+	public IpRangeCondition() {
 		super();
 	}
 
-	public Tag(JsonObject jsonObject) throws APIException {
+	public IpRangeCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		type = GsonParser.parseInt(jsonObject.get("type"));
-		tag = GsonParser.parseString(jsonObject.get("tag"));
-		multilingualTag = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualTag"), TranslationToken.class);
+		fromIP = GsonParser.parseString(jsonObject.get("fromIP"));
+		toIP = GsonParser.parseString(jsonObject.get("toIP"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaTag");
-		kparams.add("type", this.type);
-		kparams.add("multilingualTag", this.multilingualTag);
+		kparams.add("objectType", "KalturaIpRangeCondition");
+		kparams.add("fromIP", this.fromIP);
+		kparams.add("toIP", this.toIP);
 		return kparams;
 	}
 

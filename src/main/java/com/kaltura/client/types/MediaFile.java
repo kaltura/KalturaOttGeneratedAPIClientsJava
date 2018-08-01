@@ -49,6 +49,7 @@ public class MediaFile extends AssetFile {
 	public interface Tokenizer extends AssetFile.Tokenizer {
 		String assetId();
 		String id();
+		String type();
 		String typeId();
 		String duration();
 		String externalId();
@@ -76,6 +77,10 @@ public class MediaFile extends AssetFile {
 	 * File unique identifier
 	 */
 	private Integer id;
+	/**
+	 * Deprecated - Device types as defined in the system
+	 */
+	private String type;
 	/**
 	 * Device types identifier as defined in the system
 	 */
@@ -160,6 +165,10 @@ public class MediaFile extends AssetFile {
 	// id:
 	public Integer getId(){
 		return this.id;
+	}
+	// type:
+	public String getType(){
+		return this.type;
 	}
 	// typeId:
 	public Integer getTypeId(){
@@ -378,6 +387,7 @@ public class MediaFile extends AssetFile {
 		// set members values:
 		assetId = GsonParser.parseInt(jsonObject.get("assetId"));
 		id = GsonParser.parseInt(jsonObject.get("id"));
+		type = GsonParser.parseString(jsonObject.get("type"));
 		typeId = GsonParser.parseInt(jsonObject.get("typeId"));
 		duration = GsonParser.parseLong(jsonObject.get("duration"));
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));

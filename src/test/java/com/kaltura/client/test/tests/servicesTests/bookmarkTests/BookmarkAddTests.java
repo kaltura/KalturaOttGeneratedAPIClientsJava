@@ -1,11 +1,15 @@
 package com.kaltura.client.test.tests.servicesTests.bookmarkTests;
 
-import com.kaltura.client.enums.*;
-import com.kaltura.client.services.BookmarkService;
+import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.enums.BookmarkActionType;
+import com.kaltura.client.enums.BookmarkOrderBy;
+import com.kaltura.client.enums.PositionOwner;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AssetUtils;
 import com.kaltura.client.test.utils.BookmarkUtils;
-import com.kaltura.client.types.*;
+import com.kaltura.client.types.Bookmark;
+import com.kaltura.client.types.BookmarkFilter;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import org.testng.annotations.BeforeClass;
@@ -15,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.kaltura.client.services.BookmarkService.*;
-import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
+import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +28,6 @@ public class BookmarkAddTests extends BaseTest {
 
     private long assetId;
     private int fileId;
-    private int position;
     private List<String> assetList;
     private Bookmark bookmark;
     private BookmarkFilter bookmarkFilter;
@@ -44,18 +47,18 @@ public class BookmarkAddTests extends BaseTest {
     @Description("bookmark/action/add - first play")
     @Test
     private void firstPlayback() {
-        position = 0;
+        int position = 0;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
 
         // Invoke bookmark/action/add request
-        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark).setKs(getSharedMasterUserKs());
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
 
         Bookmark bookmark1 = bookmarkListResponse.results.getObjects().get(0);
@@ -64,7 +67,7 @@ public class BookmarkAddTests extends BaseTest {
         assertThat(bookmark1.getId()).isEqualTo(String.valueOf(assetId));
 
         // Match content of asset position
-        assertThat(bookmark1.getPosition()).isEqualTo(this.position);
+        assertThat(bookmark1.getPosition()).isEqualTo(position);
 
         // verify finishedWatching = false
         assertThat(bookmark1.getFinishedWatching()).isFalse();
@@ -82,40 +85,40 @@ public class BookmarkAddTests extends BaseTest {
     @Description("bookmark/action/add - pause")
     @Test
     private void pausePlayback() {
-        position = 30;
+        int position = 30;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.PAUSE);
 
         // Invoke bookmark/action/add request
-        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark).setKs(getSharedMasterUserKs());
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter).setKs(getSharedMasterUserKs());
-        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(list(bookmarkFilter)
+                .setKs(getSharedMasterUserKs()));
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
         // Match content of asset position
-        assertThat(bookmark.getPosition()).isEqualTo(this.position);
+        assertThat(bookmark.getPosition()).isEqualTo(position);
     }
 
     @Description("bookmark/action/add - 95% watching == finish watching")
     @Test
     private void watchingNinetyFive() {
-        position = 999;
+        int position = 999;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.PLAY);
 
         // Invoke bookmark/action/add request
-        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark).setKs(getSharedMasterUserKs());
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
         Bookmark bookmark3 = bookmarkListResponse.results.getObjects().get(0);
 
@@ -126,14 +129,14 @@ public class BookmarkAddTests extends BaseTest {
     @Description("bookmark/action/add - back to start - position:0")
     @Test
     private void backToStart() {
-        position = 0;
+        int position = 0;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.STOP);
 
-        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark).setKs(getSharedMasterUserKs());
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
 
-        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
@@ -144,18 +147,18 @@ public class BookmarkAddTests extends BaseTest {
     @Description("bookmark/action/add - finish watching")
     @Test
     private void finishWatching() {
-        position = 60;
+        int position = 60;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FINISH);
 
         // Invoke bookmark/action/add request
-        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark).setKs(getSharedMasterUserKs());
-        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
+        Response<Boolean> booleanResponse = executor.executeSync(add(bookmark)
+                .setKs(getSharedMasterUserKs()));
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        ListBookmarkBuilder listBookmarkBuilder = BookmarkService.list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
@@ -167,7 +170,7 @@ public class BookmarkAddTests extends BaseTest {
     @Test
     private void emptyAssetId() {
         bookmark = BookmarkUtils.addBookmark(0, null, fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
-        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark).setKs(getSharedMasterUserKs());
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
 
         assertThat(booleanResponse.results).isNull();

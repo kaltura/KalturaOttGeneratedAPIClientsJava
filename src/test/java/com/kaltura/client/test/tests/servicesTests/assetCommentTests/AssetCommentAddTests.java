@@ -62,7 +62,7 @@ public class AssetCommentAddTests extends BaseTest {
         assertThat(assetCommentResponse.results.getText()).isEqualTo(text);
         assertThat(assetCommentResponse.results.getSubHeader()).isEqualTo(subHeader);
         assertThat(assetCommentResponse.results.getHeader()).isEqualTo(header);
-        assertThat(assetCommentResponse.results.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getTimeInEpoch(0));
+        assertThat(assetCommentResponse.results.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getEpochInLocalTime(0));
 
 
         //Initialize assetCommentFilter object
@@ -83,7 +83,7 @@ public class AssetCommentAddTests extends BaseTest {
         assertThat(assetCommentObjectResponse.getHeader()).isEqualTo(assetCommentResponse.results.getHeader());
         assertThat(assetCommentObjectResponse.getText()).isEqualTo(assetCommentResponse.results.getText());
         assertThat(assetCommentObjectResponse.getWriter()).isEqualTo(assetCommentResponse.results.getWriter());
-        assertThat(assetCommentObjectResponse.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getTimeInEpoch(0));
+        assertThat(assetCommentObjectResponse.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getEpochInLocalTime(0));
     }
 
 

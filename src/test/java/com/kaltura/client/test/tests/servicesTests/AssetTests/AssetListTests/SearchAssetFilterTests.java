@@ -4,6 +4,7 @@ import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.KsqlKey;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.PurchaseUtils;
@@ -31,7 +32,6 @@ import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.AssetUtils.*;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInDate;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getLinearAssetIdAndEpgChannelNameJsonArray;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
@@ -44,8 +44,8 @@ public class SearchAssetFilterTests extends BaseTest {
     private final String tagName = "Genre";
     private final String metaName = "synopsis";
     private final String metaName2 = "Short title";
-    private final String metaValue1 = "A" + getRandomValue("_", 999999);
-    private final String metaValue2 = "B" + getRandomValue("_", 999999);
+    private final String metaValue1 = "A" + getRandomValue("_");
+    private final String metaValue2 = "B" + getRandomValue("_");
 
     private MediaAsset asset, asset2, asset3;
     private ProgramAsset program, program2;
@@ -56,7 +56,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @BeforeClass
     private void asset_list_searchAssetFilter_before_class() {
         // Get asset from shared asset method
-        tagValue = getRandomValue(tagName + "_", 999999);
+        tagValue = getRandomValue(tagName + "_");
 
         ArrayList<String> list = new ArrayList<>();
         list.add(tagValue);
@@ -83,7 +83,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 2
         VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
-                .catalogStartDate(getTimeInDate(-100))
+                .catalogStartDate(getUtcTimeFormatted(-100))
                 .tags(tagMap)
                 .strings(stringMetaMap1);
         asset2 = insertVod(vodData2);
@@ -91,7 +91,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 3
         VodData vodData3 = new VodData()
                 .mediaType(EPISODE)
-                .catalogStartDate(getTimeInDate(-10))
+                .catalogStartDate(getUtcTimeFormatted(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
         asset3 = insertVod(vodData3);
@@ -104,7 +104,7 @@ public class SearchAssetFilterTests extends BaseTest {
         EpgData epgData2 = new EpgData(epgChannelName2).episodesNum(1);
         program2 = insertEpg(epgData2).get(0);
 
-        Household household = HouseholdUtils.createHousehold(1, 1, true);
+        Household household = HouseholdUtils.createHousehold();
         masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household);
 
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(asset.getId().intValue()), Optional.empty(), Optional.empty());
@@ -330,7 +330,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
                 .closeOr()
                 .toString();
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.VIEWS_DESC.getValue());
+        assetFilter = getSearchAssetFilter(query, null, null, null, null, AssetOrderBy.VIEWS_DESC.getValue());
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -361,7 +361,8 @@ public class SearchAssetFilterTests extends BaseTest {
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
                 .closeOr()
                 .toString();
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.NAME_ASC.getValue());
+
+        assetFilter = getSearchAssetFilter(query,null, null, null, null, AssetOrderBy.NAME_ASC.getValue());
 
         ListAssetBuilder listAssetBuilder = list(assetFilter)
                 .setKs(getSharedMasterUserKs());
@@ -371,7 +372,7 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
         assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset3.getId());
 
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.NAME_DESC.getValue());
+        assetFilter = getSearchAssetFilter(query,null, null, null, null, AssetOrderBy.NAME_DESC.getValue());
 
         listAssetBuilder = list(assetFilter).setKs(getSharedMasterUserKs());
         assetListResponse = executor.executeSync(listAssetBuilder);
@@ -396,7 +397,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
                 .closeOr()
                 .toString();
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.LIKES_DESC.getValue());
+        assetFilter = getSearchAssetFilter(query,null, null, null, null, AssetOrderBy.LIKES_DESC.getValue());
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -422,7 +423,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
                 .closeOr()
                 .toString();
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.VOTES_DESC.getValue());
+        assetFilter = getSearchAssetFilter(query, null, null, null, null, AssetOrderBy.VOTES_DESC.getValue());
 
         ListAssetBuilder listAssetBuilder = list(assetFilter)
                 .setKs(getSharedMasterUserKs());
@@ -434,7 +435,7 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
 
         // Order by Ratings (highest to lowest)
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.RATINGS_DESC.getValue());
+        assetFilter = getSearchAssetFilter(query, null, null, null, null, AssetOrderBy.RATINGS_DESC.getValue());
 
         listAssetBuilder = list(assetFilter).setKs(getSharedMasterUserKs());
         assetListResponse = executor.executeSync(listAssetBuilder);
@@ -456,7 +457,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset3.getId()))
                 .closeOr()
                 .toString();
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.START_DATE_DESC.getValue());
+        assetFilter = getSearchAssetFilter(query, null, null, null, null, AssetOrderBy.START_DATE_DESC.getValue());
 
         ListAssetBuilder listAssetBuilder = list(assetFilter)
                 .setKs(getSharedMasterUserKs());
@@ -467,7 +468,7 @@ public class SearchAssetFilterTests extends BaseTest {
         assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());
         assertThat(assetListResponse.results.getObjects().get(2).getId()).isEqualTo(asset.getId());
 
-        assetFilter = getSearchAssetFilter(query, null, null, null, null, null, AssetOrderBy.START_DATE_ASC.getValue());
+        assetFilter = getSearchAssetFilter(query, null, null, null, null, AssetOrderBy.START_DATE_ASC.getValue());
 
         listAssetBuilder = list(assetFilter).setKs(getSharedMasterUserKs());
         assetListResponse = executor.executeSync(listAssetBuilder);
@@ -495,7 +496,7 @@ public class SearchAssetFilterTests extends BaseTest {
         DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
         dynamicOrderBy.setName(metaName);
         dynamicOrderBy.setOrderBy(MetaTagOrderBy.META_ASC);
-        assetFilter = getSearchAssetFilter(query, null, null, dynamicOrderBy, null, null, null);
+        assetFilter = getSearchAssetFilter(query, null, dynamicOrderBy, null, null, null);
 
         ListAssetBuilder listAssetBuilder = list(assetFilter)
                 .setKs(getSharedMasterUserKs());
@@ -515,7 +516,7 @@ public class SearchAssetFilterTests extends BaseTest {
     @Test
     private void listEpgProgramByName() {
         String query = new KsqlBuilder().equal("name", program.getName()).toString();
-        assetFilter = getSearchAssetFilter(query, null, "0", null, null, null, null);
+        assetFilter = getSearchAssetFilter(query, "0", null, null, null, null);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
@@ -546,12 +547,15 @@ public class SearchAssetFilterTests extends BaseTest {
     @Test
     private void listEpgProgramsFilteredByEpgChannel() {
         String query = new KsqlBuilder()
+                .openAnd()
                 .openOr()
                 .equal("name", program.getName())
                 .equal("name", program2.getName())
                 .closeOr()
+                .equal(KsqlKey.EPG_CHANNEL_ID.getValue(), program2.getEpgChannelId().toString())
+                .closeAnd()
                 .toString();
-        assetFilter = getSearchAssetFilter(query, program2.getEpgChannelId().toString(), "0", null, null, null, null);
+        assetFilter = getSearchAssetFilter(query, "0", null, null, null, null);
 
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));

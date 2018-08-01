@@ -13,12 +13,14 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Optional;
-
 import static com.kaltura.client.services.AssetService.list;
-import static com.kaltura.client.test.tests.enums.KsqlKey.NAME;
-import static com.kaltura.client.test.utils.BaseUtils.getTimeInEpoch;
-import static com.kaltura.client.test.utils.dbUtils.DBUtils.*;
+import static com.kaltura.client.test.tests.enums.KsqlKey.EPG_ID;
+import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
+import static com.kaltura.client.test.utils.AssetUtils.getAssets;
+import static com.kaltura.client.test.utils.AssetUtils.getPrograms;
+import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.setTranslationToken;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelFilterTests extends BaseTest {
@@ -31,13 +33,13 @@ public class ChannelFilterTests extends BaseTest {
     @BeforeClass
     private void asset_list_channelFilter_before_class() {
         // get movie
-        asset1 = getAssets(1, Optional.of(MediaType.MOVIE)).get(0);
+        asset1 = getAssets(1, MediaType.MOVIE).get(0);
 
         // get series
-        asset2 = getVirtualAssets(1, Optional.of(MediaType.SERIES)).get(0);
+        asset2 = getAssets(1, MediaType.SERIES).get(0);
 
         // get episode
-        asset3 = getAssets(1, Optional.of(MediaType.EPISODE)).get(0);
+        asset3 = getAssets(1, MediaType.EPISODE).get(0);
 
         // get epg
         program1 = getPrograms(1).get(0);
@@ -45,22 +47,25 @@ public class ChannelFilterTests extends BaseTest {
         // add assets to channel query
         String query = new KsqlBuilder()
                 .openOr()
-                    .equal(NAME.getValue(), asset1.getName())
-                    .equal(NAME.getValue(), asset2.getName())
-                    .equal(NAME.getValue(), asset3.getName())
-                    .equal(NAME.getValue(), program1.getName())
+                    .equal(MEDIA_ID.getValue(), String.valueOf(asset1.getId()))
+                    .equal(MEDIA_ID.getValue(), String.valueOf(asset2.getId()))
+                    .equal(MEDIA_ID.getValue(), String.valueOf(asset3.getId()))
+                    .equal(EPG_ID.getValue(), String.valueOf(program1.getId()))
                 .closeOr()
                 .toString();
 
         // add channel
         channel = new DynamicChannel();
-        channel.setName("channel_" + getTimeInEpoch());
-        channel.description("Description of " + channel.getName());
+        channel.setMultilingualName(setTranslationToken("channel_" + getEpochInLocalTime()));
+        channel.setMultilingualDescription(setTranslationToken("Description of " + channel.getName()));
+        channel.setSystemName(channel.getMultilingualName().get(0).getValue());
         channel.setIsActive(true);
         channel.setKSql(query); // "Free='" + channel.getName() + "'"
 
         channel = (DynamicChannel) executor.executeSync(ChannelService.add(channel)
-                .setKs(getOperatorKs())).results;
+                .setKs(getOperatorKs())
+                .setLanguage("*"))
+                .results;
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -88,8 +93,8 @@ public class ChannelFilterTests extends BaseTest {
         // build query
         String query =  new KsqlBuilder()
                 .openOr()
-                    .equal(NAME.getValue(), asset1.getName())
-                    .equal(NAME.getValue(), program1.getName())
+                    .equal(MEDIA_ID.getValue(), String.valueOf(asset1.getId()))
+                    .equal(EPG_ID.getValue(), String.valueOf(program1.getId()))
                 .closeOr()
                 .toString();
 

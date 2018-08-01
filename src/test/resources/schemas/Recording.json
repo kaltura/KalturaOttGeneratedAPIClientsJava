@@ -1,0 +1,66 @@
+{
+  "$id": "Recording",
+  "definitions": {
+    "Recording": {
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "createDate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isProtected": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 0
+        },
+        "type": {
+          "type": "string",
+          "minLength": 0
+        },
+        "updateDate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "objectType": {
+          "type": "string",
+          "enum": [
+            "KalturaRecording"
+          ]
+        }
+      },
+      "required": [
+        "objectType",
+        "assetId",
+        "createDate",
+        "id",
+        "isProtected",
+        "status",
+        "type",
+        "updateDate"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/Recording"
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result",
+    "executionTime"
+  ]
+}

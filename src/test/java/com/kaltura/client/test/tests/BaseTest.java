@@ -1,10 +1,6 @@
 package com.kaltura.client.test.tests;
 
 import com.google.common.base.Verify;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
@@ -14,29 +10,26 @@ import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.PerformanceAppLogUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
-import org.json.JSONObject;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
-import java.io.*;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
+import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
+import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
+import static com.kaltura.client.test.utils.BaseUtils.setTranslationToken;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.OttUserUtils.getOttUserById;
 import static com.kaltura.client.test.utils.SubscriptionUtils.getAssetsListBySubscription;
@@ -59,7 +52,6 @@ public class BaseTest {
     public static Client client;
     public static Configuration config;
     public static TestAPIOkRequestsExecutor executor = TestAPIOkRequestsExecutor.getExecutor();
-    public static Map<String, String> objectType2JsonValidationSchemaFile4Lists = new HashMap<>();
     private static Response<LoginResponse> loginResponse;
 
 
@@ -69,6 +61,7 @@ public class BaseTest {
 
     // shared common params
     public static int partnerId;
+//    public static int opcPartnerId;
     public static String defaultUserPassword;
 
     // shared ks's
@@ -131,12 +124,14 @@ public class BaseTest {
 
         // set client
         client = new Client(config);
+//        client.setLanguage("*");
 
         // set default awaitility timeout
         setDefaultTimeout(Long.parseLong(getProperty(DEFAULT_TIMEOUT_IN_SEC)), TimeUnit.SECONDS);
 
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
+//        opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
     }
 
@@ -319,8 +314,7 @@ public class BaseTest {
     public static String getAdministratorKs() {
         if (administratorKs == null) {
             String[] userInfo = DBUtils.getUserData("Administrator").split(":");
-            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null, null));
+            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1]));
             administratorKs = loginResponse.results.getLoginSession().getKs();
         }
         return administratorKs;
@@ -329,8 +323,7 @@ public class BaseTest {
     public static String getOperatorKs() {
         if (operatorKs == null) {
             String[] userInfo = DBUtils.getUserData("Operator").split(":");
-            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null, null));
+            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1]));
             operatorKs = loginResponse.results.getLoginSession().getKs();
         }
         return operatorKs;
@@ -339,8 +332,7 @@ public class BaseTest {
     public static String getManagerKs() {
         if (managerKs == null) {
             String[] userInfo = DBUtils.getUserData("Manager").split(":");
-            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1],
-                    null, null));
+            loginResponse = executor.executeSync(login(partnerId, userInfo[0], userInfo[1]));
             managerKs = loginResponse.results.getLoginSession().getKs();
         }
         return managerKs;
@@ -392,14 +384,13 @@ public class BaseTest {
     }
 
     public static MediaFile getMediaFileByType(MediaAsset asset, String fileType) {
-        MediaFile result;
-        int fileTypeId = asset.getMediaFiles().get(0).getTypeId();
-        if (fileType.equals(DBUtils.getMediaFileTypeName(fileTypeId))) {
-            result = mediaAsset.getMediaFiles().get(0);
+        MediaFile mediaFile;
+        if (fileType.equals(asset.getMediaFiles().get(0).getType())) {
+            mediaFile = mediaAsset.getMediaFiles().get(0);
         } else {
-            result = mediaAsset.getMediaFiles().get(1);
+            mediaFile = mediaAsset.getMediaFiles().get(1);
         }
-        return result;
+        return mediaFile;
     }
 
     public static Subscription get5MinRenewableSubscription() {
@@ -410,6 +401,7 @@ public class BaseTest {
                     getAssetsListBySubscription(Integer.valueOf(fiveMinRenewableSubscription.getId()), Optional.empty(), true).size() == 0) {
                 ingestVODIntoSubscription(fiveMinRenewableSubscription);
             }
+
             if (fiveMinRenewableSubscription == null) {
                 PpData ppData = new PpData()
                         .fullLifeCycle(FIVE_MINUTES_PERIOD)
@@ -489,8 +481,8 @@ public class BaseTest {
 
     private static DynamicChannel loadDefaultChannel() {
         DynamicChannel channel = new DynamicChannel();
-        channel.setName(BaseUtils.getRandomValue("Channel_", 999999));
-        channel.setDescription("Description of " + channel.getName());
+        channel.setMultilingualName(setTranslationToken(getRandomValue("Channel_")));
+        channel.setMultilingualDescription(setTranslationToken("Description of " + channel.getName()));
         channel.setIsActive(true);
         channel.setAssetTypes(null);
         return channel;
@@ -580,74 +572,5 @@ public class BaseTest {
                     getProperty(CODE_PERFORMANCE_REPORT_FILE);
             deleteFile(codePerformanceReportFileName);
         }
-        /* TODO: COMPLETE PART OF MAX TASK RELATED JSON VALIDATION
-        // it was found that json validation schema having more than 10 $ref objects can't validate referenced objects properly
-        // to handle it instead of one common OLDListResponse.json schema we created ListResponse1.json, ListResponse2.json etc
-        // based on object type from response we have to find from Map what of json validation file is correct
-        // below is logic that allow to prepare data for finding proper json validation schema file
-        objectType2JsonValidationSchemaFile4Lists = collectDataAboutJsonValidationSchemasForLists();*/
     }
-
-    /* TODO: COMPLETE PART OF MAX TASK RELATED JSON VALIDATION
-    private Map<String, String> collectDataAboutJsonValidationSchemasForLists() {
-        Map<String, String> result = new HashMap<>();
-        String folder = "src/test/resources/schemas/";
-        List<String> listSchemasFileNames = loadListSchemasFileNames(folder);
-        for (String fileName: listSchemasFileNames) {
-            result.putAll(loadSupportedObjectTypesIn(fileName, folder));
-        }
-
-        return result;
-    }
-
-    // to fill map by values "objectType": "jsonSchemaFileName"
-    private Map<String, String> loadSupportedObjectTypesIn(String jsonSchemaFileName, String folder) {
-        Map<String, String> result = new HashMap<>();
-        File file = new File(folder + jsonSchemaFileName);
-        String path = file.getAbsolutePath();
-        try {
-            // read schema validation file content
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
-            StringBuilder stringBuilder = new StringBuilder();
-            try(BufferedReader br = Files.newBufferedReader(Paths.get(path))) {
-                Stream<String> lines = br.lines();
-                lines.forEach(stringBuilder::append);
-                lines.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            JSONObject jsonObject = new JSONObject(stringBuilder.toString());
-            JsonParser jsonParser = new JsonParser();
-            // get object type enums
-            JsonArray objectTypes = jsonParser.parse(jsonObject.toString())
-                    .getAsJsonObject().get("properties")
-                    .getAsJsonObject().get("result")
-                    .getAsJsonObject().get("properties")
-                    .getAsJsonObject().get("objectType")
-                    .getAsJsonObject().getAsJsonArray("enum");
-            for (JsonElement objectType: objectTypes) {
-                result.put(objectType.getAsString(), jsonSchemaFileName);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    private List<String> loadListSchemasFileNames(String folder) {
-        List<String> result = new ArrayList<>();
-        File dir = new File(folder);
-        File [] files = dir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.startsWith("ListResponse");
-            }
-        });
-
-        for (File jsonSchemaFile: files) {
-            result.add(jsonSchemaFile.getName());
-        }
-        return result;
-    }*/
 }

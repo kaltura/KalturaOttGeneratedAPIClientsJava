@@ -56,7 +56,7 @@ public class IngestPpUtils extends BaseIngestUtils {
         final int defaultPercentageOfDiscount = 100;
         DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount);
 
-        ppData.ppCode = getRandomValue("AUTOPricePlan_", MAX_RANDOM_VALUE);
+        ppData.ppCode = getRandomValue("AUTOPricePlan_");
 
         if (ppData.fullLifeCycle == null) {
             ppData.fullLifeCycle = FIVE_MINUTES_PERIOD;
