@@ -15,6 +15,7 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -61,7 +62,8 @@ public class HouseholdSuspendTests extends BaseTest {
         fiveMinRenewSubscriptionSlowTest = get5MinRenewableSubscription();
 
         // set asset
-        asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty(), false).get(0);
+        List<Asset> assets = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(subscription.getId()), Optional.empty(), false);
+        asset = AssetUtils.getAssetByPurchaeStatus(assets, PurchaseStatus.FOR_PURCHASE);
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -121,6 +123,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         UserRole role = new UserRole();
+//        role.setPermissionNames("");
         role.setExcludedPermissionNames(Permissions.LOGIN.name());
         role.setName(Permissions.LOGIN.name());
 
@@ -163,6 +166,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         UserRole role = new UserRole();
+//        role.setPermissionNames("");
         role.setExcludedPermissionNames(Permissions.PURCHASE_SUBSCRIPTION.name());
         role.setName(Permissions.PURCHASE_SUBSCRIPTION.name());
 
@@ -218,6 +222,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         UserRole role = new UserRole();
+//        role.setPermissionNames("");
         role.setExcludedPermissionNames(Permissions.CANCEL_SUBSCRIPTION.name());
         role.setName(Permissions.CANCEL_SUBSCRIPTION.name());
 
@@ -265,6 +270,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         UserRole role = new UserRole();
+//        role.setPermissionNames("");
         role.setExcludedPermissionNames(Permissions.PLAYBACK_SUBSCRIPTION.name());
         role.setName(Permissions.PLAYBACK_SUBSCRIPTION.name());
 
@@ -317,6 +323,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         UserRole role = new UserRole();
+//        role.setPermissionNames("");
         role.setExcludedPermissionNames(Permissions.PURCHASE_PPV.name());
         role.setName(Permissions.PURCHASE_PPV.name());
 
@@ -367,6 +374,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         UserRole role = new UserRole();
+//        role.setPermissionNames("");
         role.setExcludedPermissionNames(Permissions.PLAYBACK_PPV.name());
         role.setName(Permissions.PLAYBACK_PPV.name());
 
@@ -428,6 +436,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         roleSlowTest = new UserRole();
+        roleSlowTest.setPermissionNames("");
         roleSlowTest.setExcludedPermissionNames(Permissions.RENEW_SUBSCRIPTION.name());
         roleSlowTest.setName(Permissions.RENEW_SUBSCRIPTION.name());
 
@@ -520,6 +529,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
         // create role
         UserRole role = new UserRole();
+//        role.setPermissionNames("");
         role.setExcludedPermissionNames(Permissions.PURCHASE_SERVICE.name());
         role.setName(Permissions.PURCHASE_SERVICE.name());
 
