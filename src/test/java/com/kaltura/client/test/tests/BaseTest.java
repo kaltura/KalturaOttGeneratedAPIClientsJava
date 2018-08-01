@@ -1,6 +1,10 @@
 package com.kaltura.client.test.tests;
 
 import com.google.common.base.Verify;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
@@ -17,12 +21,19 @@ import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
+import org.json.JSONObject;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+
+import java.io.*;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
@@ -48,6 +59,7 @@ public class BaseTest {
     public static Client client;
     public static Configuration config;
     public static TestAPIOkRequestsExecutor executor = TestAPIOkRequestsExecutor.getExecutor();
+    public static Map<String, String> objectType2JsonValidationSchemaFile4Lists = new HashMap<>();
     private static Response<LoginResponse> loginResponse;
 
 
@@ -379,9 +391,10 @@ public class BaseTest {
         return mobileMediaFile;
     }
 
-    public static MediaFile getMediaFileByType(MediaAsset asset, String type) {
+    public static MediaFile getMediaFileByType(MediaAsset asset, String fileType) {
         MediaFile result;
-        if (type.equals(asset.getMediaFiles().get(0).getType())) {
+        int fileTypeId = asset.getMediaFiles().get(0).getTypeId();
+        if (fileType.equals(DBUtils.getMediaFileTypeName(fileTypeId))) {
             result = mediaAsset.getMediaFiles().get(0);
         } else {
             result = mediaAsset.getMediaFiles().get(1);
@@ -567,5 +580,74 @@ public class BaseTest {
                     getProperty(CODE_PERFORMANCE_REPORT_FILE);
             deleteFile(codePerformanceReportFileName);
         }
+        /* TODO: COMPLETE PART OF MAX TASK RELATED JSON VALIDATION
+        // it was found that json validation schema having more than 10 $ref objects can't validate referenced objects properly
+        // to handle it instead of one common OLDListResponse.json schema we created ListResponse1.json, ListResponse2.json etc
+        // based on object type from response we have to find from Map what of json validation file is correct
+        // below is logic that allow to prepare data for finding proper json validation schema file
+        objectType2JsonValidationSchemaFile4Lists = collectDataAboutJsonValidationSchemasForLists();*/
     }
+
+    /* TODO: COMPLETE PART OF MAX TASK RELATED JSON VALIDATION
+    private Map<String, String> collectDataAboutJsonValidationSchemasForLists() {
+        Map<String, String> result = new HashMap<>();
+        String folder = "src/test/resources/schemas/";
+        List<String> listSchemasFileNames = loadListSchemasFileNames(folder);
+        for (String fileName: listSchemasFileNames) {
+            result.putAll(loadSupportedObjectTypesIn(fileName, folder));
+        }
+
+        return result;
+    }
+
+    // to fill map by values "objectType": "jsonSchemaFileName"
+    private Map<String, String> loadSupportedObjectTypesIn(String jsonSchemaFileName, String folder) {
+        Map<String, String> result = new HashMap<>();
+        File file = new File(folder + jsonSchemaFileName);
+        String path = file.getAbsolutePath();
+        try {
+            // read schema validation file content
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+            StringBuilder stringBuilder = new StringBuilder();
+            try(BufferedReader br = Files.newBufferedReader(Paths.get(path))) {
+                Stream<String> lines = br.lines();
+                lines.forEach(stringBuilder::append);
+                lines.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+            JsonParser jsonParser = new JsonParser();
+            // get object type enums
+            JsonArray objectTypes = jsonParser.parse(jsonObject.toString())
+                    .getAsJsonObject().get("properties")
+                    .getAsJsonObject().get("result")
+                    .getAsJsonObject().get("properties")
+                    .getAsJsonObject().get("objectType")
+                    .getAsJsonObject().getAsJsonArray("enum");
+            for (JsonElement objectType: objectTypes) {
+                result.put(objectType.getAsString(), jsonSchemaFileName);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    private List<String> loadListSchemasFileNames(String folder) {
+        List<String> result = new ArrayList<>();
+        File dir = new File(folder);
+        File [] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.startsWith("ListResponse");
+            }
+        });
+
+        for (File jsonSchemaFile: files) {
+            result.add(jsonSchemaFile.getName());
+        }
+        return result;
+    }*/
 }

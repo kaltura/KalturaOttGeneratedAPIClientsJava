@@ -210,6 +210,7 @@ public class DBConstants {
 
     static final String MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where GROUP_ID = ? and name = ?";
 
+    static final String  MEDIA_FILE_TYPE_ID_SELECT = "SELECT [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and ID = ?";
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";

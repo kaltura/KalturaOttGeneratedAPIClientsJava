@@ -1,6 +1,8 @@
 package com.kaltura.client.test;
 
 import com.google.common.primitives.Ints;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
@@ -11,6 +13,7 @@ import com.kaltura.client.utils.request.RequestElement;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 import com.kaltura.client.utils.response.base.ResponseElement;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.LOG_HEADERS;
 import static com.kaltura.client.test.tests.BaseTest.client;
+import static com.kaltura.client.test.tests.BaseTest.objectType2JsonValidationSchemaFile4Lists;
 import static com.kaltura.client.utils.ErrorElement.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
@@ -79,9 +83,20 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                             listResponse.results.getTotalCount() > MAX_OBJECTS_AT_LIST_RESPONSE) {
                         return responseElement;
                     }
+                    /* TODO: COMPLETE PART OF MAX TASK RELATED JSON VALIDATION
+                    //choose proper json validation schema by object type from response
+                    String objectType = getObjectType(responseElement.getResponse());
+                    if (StringUtils.isNotEmpty(objectType)) {
+                        s2 = objectType2JsonValidationSchemaFile4Lists.get(objectType);
+                        s3 = "";
+                    } else {
+                        logger.error("objectType in list wasn't recognized");
+                        return responseElement;
+                    }*/
                 }
 
                 String schema = s1 + s2 + s3;
+                // TODO: COMPLETE PART OF MAX TASK RELATED JSON VALIDATION Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(schema + " schema");
                 Logger.getLogger(TestAPIOkRequestsExecutor.class).debug(s2 + " schema");
                     /*SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                     Date date = new Date();
@@ -99,6 +114,15 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
         }
         return responseElement;
     }
+
+    /* TODO: COMPLETE PART OF MAX TASK RELATED JSON VALIDATION
+    private String getObjectType(String response) {
+        JsonParser jsonParser = new JsonParser();
+        JsonElement objectType = jsonParser.parse(response)
+                .getAsJsonObject().get("result")
+                .getAsJsonObject().get("objectType");
+        return objectType.getAsString();
+    }*/
 
     private void write2LogFile(String serviceMethod, String kalturaSession) {
         try(FileWriter fw = new FileWriter(getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
