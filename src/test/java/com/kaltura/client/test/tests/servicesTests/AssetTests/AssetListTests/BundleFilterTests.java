@@ -167,7 +167,9 @@ public class BundleFilterTests extends BaseTest {
 
         // get full list
         List<Asset> assets = executor.executeSync(list(filter)
-                .setKs(getAnonymousKs())).results.getObjects();
+                .setKs(getAnonymousKs()))
+                .results
+                .getObjects();
 
         Asset movie = null;
         for (Asset asset : assets) {
@@ -178,7 +180,7 @@ public class BundleFilterTests extends BaseTest {
         }
 
         if (movie == null){
-            fail("missing movie asset in channel related to the provided collection");
+            fail("Please add movie asset into the channel related to the provided collection");
         }
 
         // get movies list

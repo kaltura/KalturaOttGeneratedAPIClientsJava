@@ -9,6 +9,8 @@ import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.AppToken;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -36,10 +38,10 @@ public class AppTokenAddTests extends BaseTest {
         appToken = AppTokenUtils.addAppToken(sessionUserId, AppTokenHashType.SHA1, null, null);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("appToken/action/add")
     @Test
     private void addAppToken() {
-
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
                 .setKs(getOperatorKs());
         Response<AppToken> appTokenResponse = executor.executeSync(addAppTokenBuilder);
@@ -56,6 +58,7 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(appTokenResponse.results.getSessionUserId()).isEqualTo(String.valueOf(sessionUserId));
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("appToken/action/add - without hash type")
     @Test
     private void addAppTokenWithDefaultHashType() {
@@ -70,6 +73,7 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(appTokenResponse.results.getHashType()).isEqualTo(AppTokenHashType.SHA256);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("appToken/action/add - with privileges")
     @Test
     private void addAppTokenWithPrivileges() {
@@ -83,8 +87,8 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(appTokenResponse.results.getSessionPrivileges()).isEqualTo(sessionPrivileges);
     }
 
-    // priority needed, because at parralel execution both test threads launch setup method of this class and this cause to Error 1 at login with operator user.
     @Description("appToken/action/add - with expiry date")
+    // priority needed, because at parralel execution both test threads launch setup method of this class and this cause to Error 1 at login with operator user.
     @Test(groups = "slow_before", priority = 1)
     private void addAppTokenWithExpiryDate_before() {
         // setup for test
@@ -123,6 +127,7 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(apiException.getCode()).isEqualTo(getAPIExceptionFromList(500055).getCode());
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("appToken/action/add - with no expiry date (return default expiry date -" +
             "According to app_token_max_expiry_seconds key value in group_203 CB document")
     @Test
@@ -140,6 +145,7 @@ public class AppTokenAddTests extends BaseTest {
         assertThat(addAppTokenResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(BaseUtils.getEpochInLocalTime(0)));
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("appToken/action/add - with no specific user id")
     @Test
     private void addAppTokenWithoutSpecificUserId() {

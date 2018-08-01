@@ -29,8 +29,8 @@ import static org.awaitility.Awaitility.await;
 
 public class HouseholdSuspendTests extends BaseTest {
 
-    private final int numberOfUsersInHousehold = 2;
-    private final int numberOfDevicesInHousehold = 1;
+    private final int numOfUsers = 2;
+    private final int numOfDevices = 1;
 
     private Subscription subscription;
     private Asset asset;
@@ -69,7 +69,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // suspend household
@@ -94,7 +94,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend_with_masterUser_ks() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
@@ -116,7 +116,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend_with_login_role() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // create role
@@ -154,7 +154,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend_with_purchase_subscription_role() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
@@ -209,7 +209,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend_with_cancel_subscription_role() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
@@ -256,7 +256,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend_with_playback_subscription_role() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
@@ -308,7 +308,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend_with_purchase_ppv_role() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
@@ -358,7 +358,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test
     private void suspend_with_playback_ppv_role() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs
@@ -419,7 +419,7 @@ public class HouseholdSuspendTests extends BaseTest {
         household_suspendTests_beforeClass();
 
         // set household
-        householdSlowTest = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        householdSlowTest = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(householdSlowTest);
 
         // set masterUserKs
@@ -511,7 +511,7 @@ public class HouseholdSuspendTests extends BaseTest {
     @Test(enabled = true)
     private void suspend_with_purchase_service_role() {
         // set household
-        Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
+        Household household = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(household);
 
         // set masterUserKs

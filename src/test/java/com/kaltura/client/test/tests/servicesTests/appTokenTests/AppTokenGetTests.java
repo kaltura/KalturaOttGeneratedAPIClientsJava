@@ -8,6 +8,8 @@ import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.AppToken;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -31,6 +33,7 @@ public class AppTokenGetTests extends BaseTest {
         expiryDate = BaseUtils.getEpochInLocalTime(offSetInMinutes);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("AppToken/action/get")
     @Test
     private void getAppToken() {
@@ -54,6 +57,7 @@ public class AppTokenGetTests extends BaseTest {
         assertThat(getAppTokenResponse.results.getSessionUserId()).isEqualTo(sessionUserId);
     }
 
+    @Severity(SeverityLevel.MINOR)
     @Description("AppToken/action/get")
     @Test
     // TODO: 5/3/2018 use underscore in test method names and edit the description
