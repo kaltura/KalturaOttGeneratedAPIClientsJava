@@ -11,6 +11,8 @@ import com.kaltura.client.types.SessionInfo;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -42,6 +44,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         expiryDate = BaseUtils.getEpochInLocalTime(1);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("appToken/action/startSession - SHA1")
     @Test
     private void startSessionSha1() {
@@ -85,6 +88,7 @@ public class AppTokenStartSessionTests extends BaseTest {
 
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Description("appToken/action/startSession - SHA256")
     @Test
     private void startSessionSha256() {
@@ -125,6 +129,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         // TODO - Add session/action/get request with ks received from startSession API
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Issue("BEO-4980")
     @Description("appToken/action/startSession - token id with default expiry date (according to the value in group_203 CB document")
     @Test(enabled = false)
