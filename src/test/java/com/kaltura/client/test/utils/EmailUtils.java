@@ -8,10 +8,10 @@ import java.util.Properties;
 
 public class EmailUtils extends BaseUtils {
 
-    private static final String username = "alonbasin.kaltura@gmail.com"; 
+    private static final String username = "ottbeqa@gmail.com";
     private static final String password = "ottbeqa2018";
 
-    public static boolean isEmailReceived(final String keyword, boolean isClean) {
+    public static boolean isEmailReceived(final String keyword, boolean deleteEmails) {
         boolean isReceived = false;
 
         // server setting
@@ -20,8 +20,8 @@ public class EmailUtils extends BaseUtils {
 
         Session session = Session.getDefaultInstance(props);
         Folder inbox = null;
-        Store store = null;
         Folder trash = null;
+        Store store = null;
 
         try {
             // connects to the message store
@@ -30,7 +30,7 @@ public class EmailUtils extends BaseUtils {
 
             // opens the inbox folder
             inbox = store.getFolder("INBOX");
-            inbox.open(Folder.READ_ONLY);
+            inbox.open(Folder.READ_WRITE);
 
             // creates a search criterion
             SearchTerm searchCondition = new SearchTerm() {
@@ -47,35 +47,36 @@ public class EmailUtils extends BaseUtils {
                 }
             };
 
+            // check if email found
             Message[] foundMessages = inbox.search(searchCondition);
-            System.out.println(foundMessages.length);
             if (foundMessages.length > 0) {
                 isReceived = true;
             }
 
-            Message message[] = inbox.getMessages();
-            System.out.println(message.length);
-//            for (Message aMessage : message) {
-//                System.out.println(aMessage.getSubject());
-//            }
+            // delete emails
+            if (deleteEmails) {
+                // delete inbox
+                Message inboxMessages[] = inbox.getMessages();
+                for (Message m : inboxMessages) {
+                    m.setFlag(Flags.Flag.DELETED, true);
+                }
 
+                // delete trash
+                trash = store.getFolder("[Gmail]/Trash");
+                trash.open(Folder.READ_WRITE);
+                Message trashMessages[] = trash.getMessages();
+                for (Message m : trashMessages) {
+                    m.setFlag(Flags.Flag.DELETED, true);
+                }
+            }
         } catch (MessagingException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (inbox != null) {
-                    inbox.close(true);
-                }
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (store != null) {
-                    store.close();
-                }
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
+                if (inbox != null) { inbox.close(true); }
+                if (trash != null) { trash.close(true); }
+                if (store != null) { store.close(); }
+            } catch (MessagingException e) { e.printStackTrace(); }
         }
         return isReceived;
     }

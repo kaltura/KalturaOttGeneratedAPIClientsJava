@@ -79,11 +79,14 @@ public class BaseUtils {
     }
 
     public static long getEpochInUtcTime(int offSetInMinutes) {
-        Calendar calendar = Calendar.getInstance();
-        int timeZoneOffset = TimeZone.getDefault().getRawOffset() / 60000;
-        calendar.add(Calendar.MINUTE, offSetInMinutes + timeZoneOffset);
+        long time = new Date().getTime() / 1000;
+        return time + (offSetInMinutes * 60);
 
-        return calendar.toInstant().getEpochSecond();
+//        Calendar calendar = Calendar.getInstance();
+//        int timeZoneOffset = TimeZone.getDefault().getRawOffset() / 60000;
+//        calendar.add(Calendar.MINUTE, offSetInMinutes + timeZoneOffset);
+//
+//        return calendar.toInstant().getEpochSecond();
     }
 
     public static Date getDateFromEpoch(long epoch) {

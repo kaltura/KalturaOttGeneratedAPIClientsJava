@@ -1,0 +1,88 @@
+{
+  "$id": "Announcement",
+  "type": "object",
+  "properties": {
+    "executionTime": {
+      "type": "number",
+      "minimum": 0
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "minLength": 0
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "imageUrl": {
+          "type": "string",
+          "minLength": 0
+        },
+        "includeMail": {
+          "type": "boolean"
+        },
+        "includeSms": {
+          "type": "boolean"
+        },
+        "mailSubject": {
+          "type": "string",
+          "minLength": 0
+        },
+        "mailTemplate": {
+          "type": "string",
+          "minLength": 0
+        },
+        "message": {
+          "type": "string",
+          "minLength": 0
+        },
+        "name": {
+          "type": "string",
+          "minLength": 0
+        },
+        "recipients": {
+          "type": "string",
+          "minLength": 0
+        },
+        "startTime": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "type": "string",
+          "minLength": 0
+        },
+        "timezone": {
+          "type": "string",
+          "minLength": 0
+        }
+      },
+      "required": [
+        "objectType",
+        "enabled",
+        "id",
+        "imageUrl",
+        "includeMail",
+        "includeSms",
+        "mailSubject",
+        "mailTemplate",
+        "message",
+        "name",
+        "recipients",
+        "startTime",
+        "status",
+        "timezone"
+      ]
+    }
+  },
+  "required": [
+    "executionTime",
+    "result"
+  ]
+}
