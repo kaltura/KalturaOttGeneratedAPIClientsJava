@@ -1,10 +1,7 @@
 package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
-import com.kaltura.client.enums.AssetReferenceType;
-import com.kaltura.client.enums.AssetType;
-import com.kaltura.client.enums.BookmarkActionType;
-import com.kaltura.client.enums.SocialActionType;
+import com.kaltura.client.enums.*;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.SocialActionService;
@@ -19,11 +16,13 @@ import java.util.stream.Collectors;
 
 import static com.kaltura.client.services.AssetService.*;
 import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
+import static com.kaltura.client.services.BookmarkService.add;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.SocialActionService.AddSocialActionBuilder;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.tests.BaseTest.executor;
 import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
+import static com.kaltura.client.test.tests.BaseTest.getSharedCommonSubscription;
 import static com.kaltura.client.test.tests.enums.KsqlKey.ASSET_TYPE;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,33 +88,30 @@ public class AssetUtils extends BaseUtils {
     }
 
     // TODO - need to make util more efficient (creating too many HH)
-    public static void addViewsToAsset(Long assetId, int numOfActions, AssetType assetType) {
-        if (numOfActions <= 0) {
-            Logger.getLogger("Value must be equal or greater than 0");
-        } else {
-            for (int i = 0; i < numOfActions; i++) {
-                int j = 1;
-                Household household = HouseholdUtils.createHousehold(j, j, false);
-                HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
+    public static void addViewToAsset(Asset asset, AssetType assetType) {
+        //Create HH with 1 user and 1 device
+        Household household = HouseholdUtils.createHousehold(1, 1, true);
+        HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
 
-                Bookmark bookmark = BookmarkUtils.addBookmark(
-                        0,
-                        String.valueOf(assetId),
-                        AssetUtils.getAssetFileIds(String.valueOf(assetId)).get(0),
-                        assetType,
-                        BookmarkActionType.FIRST_PLAY
-                );
+        // Login user
+        String ks = OttUserUtils.getKs(Integer.parseInt(householdUser.getUserId()));
 
-                AddBookmarkBuilder bookmarkBuilder = BookmarkService.add(bookmark)
-                        .setKs(getOperatorKs())
-                        .setUserId(Integer.valueOf(householdUser.getUserId()));
-                executor.executeSync(bookmarkBuilder);
+        // Purchase PPV (to allow bookmark
+        PurchaseUtils.purchasePpv(ks,Optional.of(Math.toIntExact(asset.getId())),Optional.empty(),Optional.empty());
+        PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
+        playbackContextOptions.setContext(PlaybackContextType.PLAYBACK);
 
-                // cleanup - delete household
-                executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getOperatorKs()));
-            }
-        }
+        //asset/action/getPlaybackContext
+        AssetService.getPlaybackContext(String.valueOf(asset.getId()),assetType, playbackContextOptions)
+                .setKs(ks);
+        Bookmark bookmark = BookmarkUtils.addBookmark(0, String.valueOf(asset.getId()), asset.getMediaFiles().get(0).getId(), assetType, BookmarkActionType.FIRST_PLAY);
+
+      //bookmark/action/add
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark)
+                .setKs(getSharedMasterUserKs());
+        executor.executeSync(addBookmarkBuilder);
     }
+
 
     public static void addLikesToAsset(Long assetId, int numOfActions, AssetType assetType) {
         if (numOfActions <= 0) {
