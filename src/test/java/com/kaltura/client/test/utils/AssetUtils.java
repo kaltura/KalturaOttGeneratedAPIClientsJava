@@ -4,6 +4,7 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.enums.*;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.BookmarkService;
+import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.services.SocialActionService;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.types.*;
@@ -26,6 +27,7 @@ import static com.kaltura.client.test.tests.BaseTest.getSharedCommonSubscription
 import static com.kaltura.client.test.tests.enums.KsqlKey.ASSET_TYPE;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 
 public class AssetUtils extends BaseUtils {
@@ -180,6 +182,29 @@ public class AssetUtils extends BaseUtils {
 
         return (List<ProgramAsset>) (List<?>) executor.executeSync(AssetService.list(filter, pager)
                 .setKs(getOperatorKs())).results.getObjects();
+    }
+
+    public static Asset getAssetByPurchaeStatus(List<Asset> assets, PurchaseStatus purchaseStatus) {
+        Asset asset = null;
+        ProductPriceFilter filter = new ProductPriceFilter();
+
+        for (Asset a : assets) {
+            filter.setFileIdIn(String.valueOf(a.getMediaFiles().get(0).getId()));
+            ProductPrice productPrice = executor.executeSync(ProductPriceService.list(filter)
+                    .setKs(getOperatorKs()))
+                    .results.getObjects().get(0);
+
+            if (productPrice.getPurchaseStatus().equals(purchaseStatus)) {
+                asset = a;
+                break;
+            }
+        }
+
+        if (asset == null) {
+            fail("No asset in the provided status in assets list");
+        }
+
+        return asset;
     }
 
     public static String getCoguid(Asset asset) {

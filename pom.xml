@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kaltura</groupId>
     <artifactId>KalturaOttApiClient</artifactId>
-    <version>5.0.1.43116-SNAPSHOT</version>
+    <version>5.0.1.17059-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <properties>
@@ -134,7 +134,14 @@
         </dependency>
 
         <!-- Dependencies for testing -->
-		<dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
 		    <groupId>junit</groupId>
 		    <artifactId>junit</artifactId>
 		    <version>4.12</version>
@@ -201,24 +208,28 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.9.5</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>25.0-jre</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>commons-dbutils</groupId>
             <artifactId>commons-dbutils</artifactId>
             <version>1.7</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-vfs2</artifactId>
             <version>2.2</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -227,13 +238,6 @@
             <version>1.18.0</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.0</version>
-        </dependency>
-
 
     </dependencies>
 

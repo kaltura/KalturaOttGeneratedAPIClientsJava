@@ -3,36 +3,34 @@ package com.kaltura.client.test.utils;
 
 import javax.mail.*;
 import javax.mail.search.SearchTerm;
+import java.io.IOException;
 import java.util.Properties;
 
 public class EmailUtils extends BaseUtils {
 
-    private static final String username = "alonbasin.kaltura@gmail.com";
-    private static final String password = "aloNisab2986!";
+    private static final String username = "alonbasin.kaltura@gmail.com"; 
+    private static final String password = "ottbeqa2018";
 
-
-    public static void searchEmail(final String keyword) {
-        Properties properties = new Properties();
+    public static boolean isEmailReceived(final String keyword, boolean isClean) {
+        boolean isReceived = false;
 
         // server setting
-        properties.put("mail.imap.host", "imap.gmail.com");
-        properties.put("mail.imap.port", "993");
+        Properties props = System.getProperties();
+        props.setProperty("mail.store.protocol", "imaps");
 
-        // SSL setting
-        properties.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.setProperty("mail.imap.socketFactory.fallback", "false");
-        properties.setProperty("mail.imap.socketFactory.port", "993");
-
-        Session session = Session.getDefaultInstance(properties);
+        Session session = Session.getDefaultInstance(props);
+        Folder inbox = null;
+        Store store = null;
+        Folder trash = null;
 
         try {
             // connects to the message store
-            Store store = session.getStore("imap");
-            store.connect(username, password);
+            store = session.getStore("imaps");
+            store.connect("imap.gmail.com", username, password);
 
             // opens the inbox folder
-            Folder folderInbox = store.getFolder("INBOX");
-            folderInbox.open(Folder.READ_ONLY);
+            inbox = store.getFolder("INBOX");
+            inbox.open(Folder.READ_ONLY);
 
             // creates a search criterion
             SearchTerm searchCondition = new SearchTerm() {
@@ -49,25 +47,131 @@ public class EmailUtils extends BaseUtils {
                 }
             };
 
-            // performs search through the folder
-            Message[] foundMessages = folderInbox.search(searchCondition);
-
-            for (int i = 0; i < foundMessages.length; i++) {
-                Message message = foundMessages[i];
-                String subject = message.getSubject();
-                System.out.println("Found message #" + i + ": " + subject);
+            Message[] foundMessages = inbox.search(searchCondition);
+            System.out.println(foundMessages.length);
+            if (foundMessages.length > 0) {
+                isReceived = true;
             }
 
-            // disconnect
-            folderInbox.close(false);
-            store.close();
-        } catch (NoSuchProviderException ex) {
-            System.out.println("No provider.");
-            ex.printStackTrace();
-        } catch (MessagingException ex) {
-            System.out.println("Could not connect to the message store.");
-            ex.printStackTrace();
+            Message message[] = inbox.getMessages();
+            System.out.println(message.length);
+//            for (Message aMessage : message) {
+//                System.out.println(aMessage.getSubject());
+//            }
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inbox != null) {
+                    inbox.close(true);
+                }
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (store != null) {
+                    store.close();
+                }
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
         }
+        return isReceived;
     }
 
+    public static void searchEmail(final String keyword) {
+        Properties properties = new Properties();
+
+//        props.setProperty("mail.imaps.host", "imap.gmail.com");
+//        props.setProperty("mail.imaps.user", username);
+//        props.setProperty("mail.imaps.password", password);
+//        props.setProperty("mail.imaps.port", "993");
+//        props.setProperty("mail.imaps.auth", "true");
+//        props.setProperty("mail.debug", "true");
+
+        // server setting
+        properties.put("mail.imap.host", "imap.gmail.com");
+        properties.put("mail.imap.port", "993");
+
+        // SSL setting
+        properties.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.setProperty("mail.imap.socketFactory.fallback", "false");
+        properties.setProperty("mail.imap.socketFactory.port", "993");
+        properties.setProperty("mail.store.protocol", "imaps");
+        properties.setProperty("mail.debug", "true");
+
+//        props.put("mail.smtp.host", "smtp.gmail.com");
+//        props.put("mail.smtp.socketFactory.port","465");
+//        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+//        props.put("mail.smtp.auth","true");
+//        props.put("mail.smtp.port","465");
+//        props.setProperty("mail.debug", "true");
+
+        Store store = null;
+        Folder inbox = null;
+        Folder trash = null;
+
+        try {
+            Session session = Session.getInstance(properties);
+            store = session.getStore("imaps");
+            store.connect("imap.gmail.com", username, password);
+            System.out.println("Connections is opened");
+
+            trash = store.getFolder("[Gmail]/Trash");
+            trash.open(Folder.READ_WRITE);
+
+            inbox = store.getFolder("INBOX");
+            inbox.open(Folder.READ_WRITE);
+
+            int messageCount = inbox.getMessageCount();
+            //log.info("Total Messages: " + messageCount);
+            Message[] messages = inbox.getMessages();
+            Message[] messages2Remove = new Message[1];
+
+            boolean isMessageFound = false;
+            for (int i = 0; i < messageCount; i++) {
+
+                if (messages[i].getContentType().toLowerCase().startsWith("text")) {
+                    if (messages[i].getContent().toString().contains(keyword)) {
+                        isMessageFound = true;
+                        messages2Remove[0] = messages[i];
+                        break;
+                    }
+                } else if (messages[i].getContentType().toLowerCase().startsWith("multipart")) {
+                    Multipart multipart = (Multipart) messages[i].getContent();
+                    for (int j = 0; j < multipart.getCount(); j++) {
+                        if (((Multipart) messages[i].getContent()).getBodyPart(j).getContent().toString().contains(keyword)) {
+                            isMessageFound = true;
+                            messages2Remove[0] = messages[i];
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inbox.close(true); // to close folder
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            try {
+                trash.close(true); // to close folder
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            try {
+                store.close(); // to close connection
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            //log.info("Connections is closed")
+        }
+    }
 }
