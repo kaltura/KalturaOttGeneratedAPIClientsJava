@@ -298,9 +298,9 @@ public class HouseholdSuspendTests extends BaseTest {
                 .setKs(masterUserKs);
         Response<PlaybackContext> playbackContextResponse = executor.executeSync(getPlaybackContextAssetBuilder);
 
-        assertThat(playbackContextResponse.results.getActions().get(0).getType()).isEqualTo(RuleActionType.BLOCK);
         assertThat(playbackContextResponse.results.getMessages().get(0).getMessage()).isEqualTo("Not entitled");
         assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
+        assertThat(playbackContextResponse.results.getActions().get(0).getType()).isEqualTo(RuleActionType.BLOCK);
 
         // cleanup - delete role
         executor.executeSync(UserRoleService.delete(role.getId()).setKs(getOperatorKs()));
@@ -403,9 +403,9 @@ public class HouseholdSuspendTests extends BaseTest {
                 .setKs(masterUserKs);
         Response<PlaybackContext> playbackContextResponse = executor.executeSync(getPlaybackContextAssetBuilder);
 
-        assertThat(playbackContextResponse.results.getActions().get(0).getType()).isEqualTo(RuleActionType.BLOCK);
         assertThat(playbackContextResponse.results.getMessages().get(0).getMessage()).isEqualTo("Not entitled");
         assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("NotEntitled");
+        assertThat(playbackContextResponse.results.getActions().get(0).getType()).isEqualTo(RuleActionType.BLOCK);
 
         // purchase subscription in order to verify suspend is specific to role
         Response<Transaction> transactionResponse = PurchaseUtils.purchaseSubscription(masterUserKs, Integer.parseInt(subscription.getId()), Optional.empty());

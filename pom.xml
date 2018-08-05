@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kaltura</groupId>
     <artifactId>KalturaOttApiClient</artifactId>
-    <version>5.0.1.43116-SNAPSHOT</version>
+    <version>4.9.10.22390-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <properties>
@@ -134,13 +134,20 @@
         </dependency>
 
         <!-- Dependencies for testing -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.1</version>
+            <scope>test</scope>
+        </dependency>
+
 		<dependency>
 		    <groupId>junit</groupId>
 		    <artifactId>junit</artifactId>
 		    <version>4.12</version>
 		    <scope>test</scope>
-		</dependency>		        
-		        
+		</dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -227,14 +234,6 @@
             <version>1.18.0</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.0</version>
-        </dependency>
-
-
     </dependencies>
 
     <build>
