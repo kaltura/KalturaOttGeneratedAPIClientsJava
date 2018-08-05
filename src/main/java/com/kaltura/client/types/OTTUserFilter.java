@@ -50,6 +50,7 @@ public class OTTUserFilter extends Filter {
 		String usernameEqual();
 		String externalIdEqual();
 		String idIn();
+		String roleIdsIn();
 	}
 
 	/**
@@ -64,6 +65,10 @@ public class OTTUserFilter extends Filter {
 	 * List of user identifiers separated by &amp;#39;,&amp;#39;
 	 */
 	private String idIn;
+	/**
+	 * Comma separated list of role Ids.
+	 */
+	private String roleIdsIn;
 
 	// usernameEqual:
 	public String getUsernameEqual(){
@@ -101,6 +106,18 @@ public class OTTUserFilter extends Filter {
 		setToken("idIn", multirequestToken);
 	}
 
+	// roleIdsIn:
+	public String getRoleIdsIn(){
+		return this.roleIdsIn;
+	}
+	public void setRoleIdsIn(String roleIdsIn){
+		this.roleIdsIn = roleIdsIn;
+	}
+
+	public void roleIdsIn(String multirequestToken){
+		setToken("roleIdsIn", multirequestToken);
+	}
+
 
 	public OTTUserFilter() {
 		super();
@@ -115,6 +132,7 @@ public class OTTUserFilter extends Filter {
 		usernameEqual = GsonParser.parseString(jsonObject.get("usernameEqual"));
 		externalIdEqual = GsonParser.parseString(jsonObject.get("externalIdEqual"));
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		roleIdsIn = GsonParser.parseString(jsonObject.get("roleIdsIn"));
 
 	}
 
@@ -124,6 +142,7 @@ public class OTTUserFilter extends Filter {
 		kparams.add("usernameEqual", this.usernameEqual);
 		kparams.add("externalIdEqual", this.externalIdEqual);
 		kparams.add("idIn", this.idIn);
+		kparams.add("roleIdsIn", this.roleIdsIn);
 		return kparams;
 	}
 

@@ -93,7 +93,8 @@ public class OttUserService {
 	}
 
 	/**
-	 * Edit user details.
+	 * Deprecate - use Register or Update actions instead by setting user.roleIds
+	  parameter
 	 * 
 	 * @param roleId The role identifier to add
 	 */
