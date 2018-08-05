@@ -3,11 +3,11 @@ package com.kaltura.client.test.tests.servicesTests.AssetTests.AssetListTests;
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
+import com.kaltura.client.enums.PlaybackContextType;
+import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.KsqlKey;
-import com.kaltura.client.test.utils.HouseholdUtils;
-import com.kaltura.client.test.utils.KsqlBuilder;
-import com.kaltura.client.test.utils.PurchaseUtils;
+import com.kaltura.client.test.utils.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -319,9 +319,25 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("asset/action/list - VOD - order by VIEWS")
     @Test
     private void orderVodAssetsByViews() {
-        addViewsToAsset(asset.getId(), 3, AssetType.MEDIA);
-        addViewsToAsset(asset2.getId(), 2, AssetType.MEDIA);
-        addViewsToAsset(asset3.getId(), 1, AssetType.MEDIA);
+
+        int numOfActionsAsset = 3;
+        int numOfActionsAsset2 = 2;
+        int numOfActionsAsset3 = 1;
+
+        // Add 3 views to asset
+        for (int i = 0; i < numOfActionsAsset; i++) {
+            addViewToAsset(asset, AssetType.MEDIA);
+        }
+
+        // Add 2 views to asset2
+        for (int i = 0; i < numOfActionsAsset2; i++) {
+            addViewToAsset(asset2, AssetType.MEDIA);
+        }
+
+        // Add 1 view to asset3
+        for (int i = 0; i < numOfActionsAsset3; i++) {
+            addViewToAsset(asset3, AssetType.MEDIA);
+        }
 
         String query = new KsqlBuilder()
                 .openOr()
