@@ -149,8 +149,9 @@ public class PerformanceAppLogUtils extends BaseUtils {
         try (FileWriter fw = new FileWriter(summaryTemporaryFileName, true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
-            out.println("Report of slow methods on " + getCurrentDateInFormat("dd/MM/yyyy HH:mm"));
+            out.println("Report of slow methods on " + getCurrentDateInFormat("dd/MM/yyyy HH:mm") + " (" + getProperty(API_VERSION) + ")");
             out.println("Max allowed percentage: " + getProperty(MAX_ALLOWED_PERCENTAGE));
+            out.println("Max allowed execution time in seconds: " + getProperty(MAX_ALLOWED_EXECUTION_TIME_IN_SEC));
             out.println();
             for (String method : methodsAndSlowRatioData.keySet()) {
                 if (methodsAndSlowRatioData.get(method).slowCount > 0) {
