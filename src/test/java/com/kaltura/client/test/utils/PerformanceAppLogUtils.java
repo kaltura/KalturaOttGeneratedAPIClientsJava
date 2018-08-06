@@ -155,7 +155,8 @@ public class PerformanceAppLogUtils extends BaseUtils {
             for (String method : methodsAndSlowRatioData.keySet()) {
                 if (methodsAndSlowRatioData.get(method).slowCount > 0) {
                     out.println(method + " was slow " + String.format("%.2f", methodsAndSlowRatioData.get(method).slowCount *
-                            1.0 / methodsAndSlowRatioData.get(method).totalCount * 100) + "% of executions");
+                            1.0 / methodsAndSlowRatioData.get(method).totalCount * 100) + "% of executions (" +
+                            methodsAndSlowRatioData.get(method).slowCount * 1.0 + "/" + methodsAndSlowRatioData.get(method).totalCount + ")");
                 }
             }
 
@@ -175,7 +176,8 @@ public class PerformanceAppLogUtils extends BaseUtils {
             // we want to see only data where code time is less than 100%
             if (timeOfCB > 0 || timeOfDB > 0 || timeOfES > 0 || timeOfRabbit > 0) {
                 out.println(method);
-                out.println("\"" + xKalturaSession + "\"");
+                out.println(xKalturaSession);
+                out.println("Execution Time: " + totalTime);
                 out.println("Code: " + String.format("%.2f", codeTimePercentage) + "% (" + timeOfCode + ")");
                 writeIfValueMoreThanZero(out, "Couchbase: ", timeOfCB, totalTime);
                 writeIfValueMoreThanZero(out, "DB: ", timeOfDB, totalTime);
@@ -246,6 +248,8 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
         if (fileObject.exists()) {
             fileNames.add(sourceFileName);
+        } else {
+            Logger.getLogger(PerformanceAppLogUtils.class).error("getRemoteAppLogFileNames(): file not found!");
         }
         int idx = 1;
         while (fileObject.exists()) {

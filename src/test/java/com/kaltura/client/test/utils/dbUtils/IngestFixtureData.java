@@ -2,8 +2,6 @@ package com.kaltura.client.test.utils.dbUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.SubscriptionDependencyType;
-import com.kaltura.client.services.ChannelService;
-import com.kaltura.client.services.ChannelService.GetChannelBuilder;
 import com.kaltura.client.services.PriceDetailsService;
 import com.kaltura.client.services.PriceDetailsService.ListPriceDetailsBuilder;
 import com.kaltura.client.services.PricePlanService;
@@ -168,23 +166,12 @@ public class IngestFixtureData extends BaseUtils {
         return subscription;
     }
 
-    public static DynamicChannel getChannel(int id) {
-        Logger.getLogger(IngestFixtureData.class).debug("getChannel(): id = " + id);
-
-        JSONArray jsonArray = getJsonArrayFromQueryResult(CHANNEL_SELECT, id);
-        GetChannelBuilder getChannelBuilder = ChannelService.get(jsonArray.getJSONObject(0).getInt(ID));
-        Response<Channel> channelResponse = executor.executeSync(getChannelBuilder
-                .setKs(getOperatorKs()));
-
-        return (DynamicChannel) channelResponse.results;
-    }
-
     public static String getAutomaticChannelExpression(int channelId) {
         Logger.getLogger(IngestFixtureData.class).debug("getAutomaticChannelExpression(): channelId = " + channelId);
 
         JSONArray jsonArray = getJsonArrayFromQueryResult(CHANNEL_EXPRESSION_SELECT, channelId);
 
-        return jsonArray.getJSONObject(0).getString(TAG_TYPE) + ":" +
+        return jsonArray.getJSONObject(0).getInt(TAG_NAME) + ":" +
                 jsonArray.getJSONObject(0).getString(TAG_VALUE);
     }
 }

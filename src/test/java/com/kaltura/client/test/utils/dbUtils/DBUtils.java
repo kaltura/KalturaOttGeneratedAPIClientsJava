@@ -10,12 +10,14 @@ import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -253,5 +255,19 @@ public class DBUtils extends BaseUtils {
         return getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_ID_SELECT, partnerId + 1, mediaFileId)
                 .getJSONObject(0)
                 .getString("name");
+    }
+
+    public static List<String> getAnnouncementResultMessageId(int announcementId) {
+        List<String> ids = null;
+
+        String s = getJsonArrayFromQueryResult(RESULT_MESSAGE_ID_SELECT, partnerId, announcementId)
+                .getJSONObject(0)
+                .getString("result_message_id");
+
+        if (StringUtils.isNotEmpty(s)) {
+            ids = Arrays.asList(s.split("\\s*,\\s*"));
+        }
+
+        return ids;
     }
 }

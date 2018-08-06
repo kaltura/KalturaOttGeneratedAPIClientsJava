@@ -1,10 +1,15 @@
 package com.kaltura.client.test.utils;
 
 
+import org.awaitility.core.ConditionTimeoutException;
+
 import javax.mail.*;
 import javax.mail.search.SearchTerm;
-import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.awaitility.Awaitility.await;
 
 public class EmailUtils extends BaseUtils {
 
@@ -12,7 +17,7 @@ public class EmailUtils extends BaseUtils {
     private static final String password = "ottbeqa2018";
 
     public static boolean isEmailReceived(final String keyword, boolean deleteEmails) {
-        boolean isReceived = false;
+        AtomicBoolean isReceived = new AtomicBoolean(false);
 
         // server setting
         Properties props = System.getProperties();
@@ -47,11 +52,19 @@ public class EmailUtils extends BaseUtils {
                 }
             };
 
-            // check if email found
-            Message[] foundMessages = inbox.search(searchCondition);
-            if (foundMessages.length > 0) {
-                isReceived = true;
-            }
+            // check if email found for 30 sec
+            Folder finalInbox = inbox;
+            await()
+                    .atMost(40, TimeUnit.SECONDS)
+                    .pollInterval(5, TimeUnit.SECONDS)
+                    .until(() -> {
+                        System.out.println("until " + getLocalTimeFormatted(0));
+                        Message[] foundMessages = finalInbox.search(searchCondition);
+                        if (foundMessages.length > 0) {
+                            isReceived.set(true);
+                        }
+                        return isReceived.get();
+                    });
 
             // delete emails
             if (deleteEmails) {
@@ -69,110 +82,25 @@ public class EmailUtils extends BaseUtils {
                     m.setFlag(Flags.Flag.DELETED, true);
                 }
             }
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if (e.getClass() != ConditionTimeoutException.class) {
+                e.printStackTrace();
+            }
         } finally {
             try {
-                if (inbox != null) { inbox.close(true); }
-                if (trash != null) { trash.close(true); }
-                if (store != null) { store.close(); }
-            } catch (MessagingException e) { e.printStackTrace(); }
-        }
-        return isReceived;
-    }
-
-    public static void searchEmail(final String keyword) {
-        Properties properties = new Properties();
-
-//        props.setProperty("mail.imaps.host", "imap.gmail.com");
-//        props.setProperty("mail.imaps.user", username);
-//        props.setProperty("mail.imaps.password", password);
-//        props.setProperty("mail.imaps.port", "993");
-//        props.setProperty("mail.imaps.auth", "true");
-//        props.setProperty("mail.debug", "true");
-
-        // server setting
-        properties.put("mail.imap.host", "imap.gmail.com");
-        properties.put("mail.imap.port", "993");
-
-        // SSL setting
-        properties.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.setProperty("mail.imap.socketFactory.fallback", "false");
-        properties.setProperty("mail.imap.socketFactory.port", "993");
-        properties.setProperty("mail.store.protocol", "imaps");
-        properties.setProperty("mail.debug", "true");
-
-//        props.put("mail.smtp.host", "smtp.gmail.com");
-//        props.put("mail.smtp.socketFactory.port","465");
-//        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-//        props.put("mail.smtp.auth","true");
-//        props.put("mail.smtp.port","465");
-//        props.setProperty("mail.debug", "true");
-
-        Store store = null;
-        Folder inbox = null;
-        Folder trash = null;
-
-        try {
-            Session session = Session.getInstance(properties);
-            store = session.getStore("imaps");
-            store.connect("imap.gmail.com", username, password);
-            System.out.println("Connections is opened");
-
-            trash = store.getFolder("[Gmail]/Trash");
-            trash.open(Folder.READ_WRITE);
-
-            inbox = store.getFolder("INBOX");
-            inbox.open(Folder.READ_WRITE);
-
-            int messageCount = inbox.getMessageCount();
-            //log.info("Total Messages: " + messageCount);
-            Message[] messages = inbox.getMessages();
-            Message[] messages2Remove = new Message[1];
-
-            boolean isMessageFound = false;
-            for (int i = 0; i < messageCount; i++) {
-
-                if (messages[i].getContentType().toLowerCase().startsWith("text")) {
-                    if (messages[i].getContent().toString().contains(keyword)) {
-                        isMessageFound = true;
-                        messages2Remove[0] = messages[i];
-                        break;
-                    }
-                } else if (messages[i].getContentType().toLowerCase().startsWith("multipart")) {
-                    Multipart multipart = (Multipart) messages[i].getContent();
-                    for (int j = 0; j < multipart.getCount(); j++) {
-                        if (((Multipart) messages[i].getContent()).getBodyPart(j).getContent().toString().contains(keyword)) {
-                            isMessageFound = true;
-                            messages2Remove[0] = messages[i];
-                            break;
-                        }
-                    }
+                if (inbox != null) {
+                    inbox.close(true);
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                inbox.close(true); // to close folder
+                if (trash != null) {
+                    trash.close(true);
+                }
+                if (store != null) {
+                    store.close();
+                }
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
-            try {
-                trash.close(true); // to close folder
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
-            try {
-                store.close(); // to close connection
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
-            //log.info("Connections is closed")
         }
+        return isReceived.get();
     }
 }
