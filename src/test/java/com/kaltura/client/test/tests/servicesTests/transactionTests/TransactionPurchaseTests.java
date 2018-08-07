@@ -15,7 +15,6 @@ import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
@@ -38,14 +37,11 @@ public class TransactionPurchaseTests extends BaseTest {
 //        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());
 //        userKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(1).getUdid());
 
-
         PaymentGatewayProfile paymentGatewayProfile = new PaymentGatewayProfile();
-        
-
     }
 
     @Test(enabled = false)
-    private void purchasePpvWithDefaultPG() {
+    public void purchasePpvWithDefaultPG() {
         ProductPriceFilter productPriceFilter = new ProductPriceFilter();
         productPriceFilter.setFileIdIn(getSharedWebMediaFile().getId().toString());
         ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(productPriceFilter).setKs(masterUserKs);
@@ -80,9 +76,9 @@ public class TransactionPurchaseTests extends BaseTest {
     }
 
     @Test (enabled = false)
-    private void purchaseSubscriptionWithDefaultPG() {
+    public void purchaseSubscriptionWithDefaultPG() {
         ProductPriceFilter productPriceFilter = new ProductPriceFilter();
-        productPriceFilter.setSubscriptionIdIn(getSharedCommonSubscription().getId().toString());
+        productPriceFilter.setSubscriptionIdIn(getSharedCommonSubscription().getId());
         ListProductPriceBuilder listProductPriceBuilder = ProductPriceService.list(productPriceFilter).setKs(masterUserKs);
         listResponse = executor.executeSync(listProductPriceBuilder);
         assertThat(listResponse.results).isNotNull();

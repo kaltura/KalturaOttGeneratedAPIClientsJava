@@ -92,7 +92,7 @@ Migrate features tests from ReadyAPI
 | system                       |        |
 | timeShiftedTvPartnerSettings |        |
 | topic                        |        |
-| transaction                  |        |
+| transaction                  | Alon - in progress |
 | transactionHistory           | Michael - in progress |
 | unifiedPayment               |        |
 | userAssetRule                |        |

@@ -75,6 +75,8 @@ public class AnnouncementAddTest extends BaseTest {
 //        assertThat(isEmailReceived(announcement.getMessage(), true)).isTrue();
     }
 
+
+
     // helper methods
     private static Callable<Boolean> isAnnouncementSent(ListAnnouncementBuilder listAnnouncementBuilder, int announcementId) {
         return () -> {
