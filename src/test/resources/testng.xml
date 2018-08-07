@@ -15,16 +15,16 @@
         </packages>
     </test>
 
-    <!--<test name="Slow Tests">-->
-        <!--<groups>-->
-            <!--<run>-->
-                <!--<include name="slow_before" />-->
-                <!--<include name="slow_after"/>-->
-            <!--</run>-->
-        <!--</groups>-->
-        <!--<packages>-->
-            <!--<package name="com.kaltura.client.test.tests.servicesTests.*"/>-->
-            <!--<package name="com.kaltura.client.test.tests.featuresTests.*"/>-->
-        <!--</packages>-->
-    <!--</test>-->
+    <test name="Slow Tests">
+        <groups>
+            <run>
+                <include name="slow_before" />
+                <include name="slow_after"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.kaltura.client.test.tests.servicesTests.*"/>
+            <package name="com.kaltura.client.test.tests.featuresTests.*"/>
+        </packages>
+    </test>
 </suite>
