@@ -4,7 +4,10 @@ package com.kaltura.client.test.utils;
 import org.awaitility.core.ConditionTimeoutException;
 
 import javax.mail.*;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.search.SearchTerm;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,7 +19,7 @@ public class EmailUtils extends BaseUtils {
     private static final String username = "ottbeqa@gmail.com";
     private static final String password = "ottbeqa2018";
 
-    public static boolean isEmailReceived(final String keyword, boolean deleteEmails) {
+    public static boolean isEmailReceived(SearchTerm term, boolean deleteEmails) {
         AtomicBoolean isReceived = new AtomicBoolean(false);
 
         // server setting
@@ -37,29 +40,14 @@ public class EmailUtils extends BaseUtils {
             inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_WRITE);
 
-            // creates a search criterion
-            SearchTerm searchCondition = new SearchTerm() {
-                @Override
-                public boolean match(Message message) {
-                    try {
-                        if (message.getSubject().contains(keyword)) {
-                            return true;
-                        }
-                    } catch (MessagingException ex) {
-                        ex.printStackTrace();
-                    }
-                    return false;
-                }
-            };
-
             // check if email found for 30 sec
             Folder finalInbox = inbox;
+
             await()
                     .atMost(40, TimeUnit.SECONDS)
                     .pollInterval(5, TimeUnit.SECONDS)
                     .until(() -> {
-                        System.out.println("until " + getLocalTimeFormatted(0));
-                        Message[] foundMessages = finalInbox.search(searchCondition);
+                        Message[] foundMessages = finalInbox.search(term);
                         if (foundMessages.length > 0) {
                             isReceived.set(true);
                         }
@@ -102,5 +90,106 @@ public class EmailUtils extends BaseUtils {
             }
         }
         return isReceived.get();
+    }
+
+    // custom search terms
+    public static class SentDateSearchTerm extends SearchTerm {
+        private Date afterDate;
+
+        public SentDateSearchTerm(Date afterDate) {
+            this.afterDate = afterDate;
+        }
+
+        @Override
+        public boolean match(Message message) {
+            try {
+                if (message.getSentDate().after(afterDate)) {
+                    return true;
+                }
+            } catch (MessagingException ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        }
+    }
+
+    public static class SubjectSearchTerm extends SearchTerm {
+        private String subject;
+
+        public SubjectSearchTerm(String subject) {
+            this.subject = subject;
+        }
+
+        @Override
+        public boolean match(Message message) {
+            try {
+                if (message.getSubject().contains(subject)) {
+                    return true;
+                }
+            } catch (MessagingException ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        }
+    }
+
+    public static class FromFieldSearchTerm extends SearchTerm {
+        private String fromEmail;
+
+        public FromFieldSearchTerm(String fromEmail) {
+            this.fromEmail = fromEmail;
+        }
+
+        @Override
+        public boolean match(Message message) {
+            try {
+                Address[] fromAddress = message.getFrom();
+                if (fromAddress != null && fromAddress.length > 0) {
+                    if (fromAddress[0].toString().contains(fromEmail)) {
+                        return true;
+                    }
+                }
+            } catch (MessagingException ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        }
+    }
+
+    public static class ContentSearchTerm extends SearchTerm {
+        private String content;
+
+        public ContentSearchTerm(String content) {
+            this.content = content;
+        }
+
+        @Override
+        public boolean match(Message message) {
+            try {
+                String contentType = message.getContentType().toLowerCase();
+
+                if (contentType.contains("text/plain") || contentType.contains("text/html")) {
+                    String messageContent = message.getContent().toString();
+                    if (messageContent.contains(content)) {
+                        return true;
+                    }
+                }
+
+                if (contentType.contains("multipart")) {
+                    Multipart multiPart = (Multipart) message.getContent();
+                    int numberOfParts = multiPart.getCount();
+                    for (int partCount = 0; partCount < numberOfParts; partCount++) {
+                        MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
+                        String messageContent = part.getContent().toString();
+                        if (messageContent.contains(content)) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (MessagingException | IOException ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        }
     }
 }
