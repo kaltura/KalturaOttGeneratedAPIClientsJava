@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.kaltura.client.test.Properties.API_BASE_URL;
 import static com.kaltura.client.test.Properties.API_VERSION;
 import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.tests.BaseTest.config;
@@ -25,7 +26,7 @@ import static io.restassured.RestAssured.given;
 
 public class BaseUtils {
 
-    private static final String API_SCHEMA_URL = "https://api-preprod.ott.kaltura.com/" + getProperty(API_VERSION) + "/clientlibs/KalturaClient.xml";
+    private static final String API_SCHEMA_URL = getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION) + "/clientlibs/KalturaClient.xml";
     private static List<APIException> exceptions;
 
     // to get e.g. yesterday date in specific date format need call the method so: getOffsetDateInFormat(-1, pattern);
