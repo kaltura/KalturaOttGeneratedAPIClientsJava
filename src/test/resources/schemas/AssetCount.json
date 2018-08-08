@@ -1,0 +1,75 @@
+{
+  "$id": "AssetCount",
+  "definitions": {
+    "AssetCount": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "minLength": 0
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "subs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string",
+                "minLength": 0
+              },
+              "field": {
+                "type": "string",
+                "minLength": 0
+              },
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "objectType": {
+                      "type": "string",
+                      "minLength": 0
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "subs": {
+                      "type": "array"
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "objectType",
+        "count",
+        "subs"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/AssetCount"
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result",
+    "executionTime"
+  ]
+}
