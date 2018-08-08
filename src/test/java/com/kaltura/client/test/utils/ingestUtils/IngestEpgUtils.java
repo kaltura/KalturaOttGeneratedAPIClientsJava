@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -63,6 +64,9 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         private Long startDate;
         private DurationPeriod programDurationPeriod;
+
+        private Map<String, String> metas;
+        private Map<String, String> tags;
     }
 
     public static List<ProgramAsset> insertEpg(EpgData epgData) {
@@ -236,6 +240,20 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // episode num meta
         programme.appendChild(generateMetasNode(doc, "episode_num", String.valueOf(episodeNum)));
+
+        // custom metas
+        if (epgData.metas != null) {
+            for (Map.Entry<String, String> entry : epgData.metas.entrySet()) {
+                programme.appendChild(generateMetasNode(doc, entry.getKey(), entry.getValue()));
+            }
+        }
+
+        // custom tags
+        if (epgData.tags != null) {
+            for (Map.Entry<String, String> entry : epgData.tags.entrySet()) {
+                programme.appendChild(generateTagsNode(doc, entry.getKey(), entry.getValue()));
+            }
+        }
 
         // TODO: 6/19/2018 add missing parameters according to needed tests
 
