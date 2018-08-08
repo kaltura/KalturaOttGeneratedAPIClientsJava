@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,79 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Permissions filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Permission.Tokenizer.class)
-public class Permission extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(PermissionFilter.Tokenizer.class)
+public class PermissionFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String friendlyName();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String currentUserPermissionsContains();
 	}
 
 	/**
-	 * Permission identifier
+	 * Indicates whether the results should be filtered by userId using the current
 	 */
-	private Long id;
-	/**
-	 * Permission name
-	 */
-	private String name;
-	/**
-	 * Permission friendly name
-	 */
-	private String friendlyName;
+	private Boolean currentUserPermissionsContains;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// currentUserPermissionsContains:
+	public Boolean getCurrentUserPermissionsContains(){
+		return this.currentUserPermissionsContains;
 	}
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
+	public void setCurrentUserPermissionsContains(Boolean currentUserPermissionsContains){
+		this.currentUserPermissionsContains = currentUserPermissionsContains;
 	}
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// friendlyName:
-	public String getFriendlyName(){
-		return this.friendlyName;
-	}
-	public void setFriendlyName(String friendlyName){
-		this.friendlyName = friendlyName;
-	}
-
-	public void friendlyName(String multirequestToken){
-		setToken("friendlyName", multirequestToken);
+	public void currentUserPermissionsContains(String multirequestToken){
+		setToken("currentUserPermissionsContains", multirequestToken);
 	}
 
 
-	public Permission() {
+	public PermissionFilter() {
 		super();
 	}
 
-	public Permission(JsonObject jsonObject) throws APIException {
+	public PermissionFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		friendlyName = GsonParser.parseString(jsonObject.get("friendlyName"));
+		currentUserPermissionsContains = GsonParser.parseBoolean(jsonObject.get("currentUserPermissionsContains"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPermission");
-		kparams.add("name", this.name);
-		kparams.add("friendlyName", this.friendlyName);
+		kparams.add("objectType", "KalturaPermissionFilter");
+		kparams.add("currentUserPermissionsContains", this.currentUserPermissionsContains);
 		return kparams;
 	}
 

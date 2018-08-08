@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,53 +33,37 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum PermissionOrderBy implements EnumAsString {
+	NONE("NONE");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
-	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	private String value;
+
+	PermissionOrderBy(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Permission identifier
-	 */
-	private String group;
-
-	// group:
-	public String getGroup(){
-		return this.group;
-	}
-	public void setGroup(String group){
-		this.group = group;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public void group(String multirequestToken){
-		setToken("group", multirequestToken);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-
-	public GroupPermission() {
-		super();
-	}
-
-	public GroupPermission(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
-		kparams.add("group", this.group);
-		return kparams;
-	}
-
+	public static PermissionOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over PermissionOrderBy defined values and compare the inner value with the given one:
+		for(PermissionOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return PermissionOrderBy.values().length > 0 ? PermissionOrderBy.values()[0]: null;
+   }
 }
-

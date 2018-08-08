@@ -25,12 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.Permission;
+import com.kaltura.client.types.PermissionFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,52 +39,41 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+public class PermissionService {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public static class GetCurrentPermissionsPermissionBuilder extends RequestBuilder<String, String, GetCurrentPermissionsPermissionBuilder> {
+		
+		public GetCurrentPermissionsPermissionBuilder() {
+			super(String.class, "permission", "getCurrentPermissions");
+		}
 	}
 
 	/**
-	 * Permission identifier
+	 * Returns permission names as comma separated string
 	 */
-	private String group;
-
-	// group:
-	public String getGroup(){
-		return this.group;
+    public static GetCurrentPermissionsPermissionBuilder getCurrentPermissions()  {
+		return new GetCurrentPermissionsPermissionBuilder();
 	}
-	public void setGroup(String group){
-		this.group = group;
-	}
-
-	public void group(String multirequestToken){
-		setToken("group", multirequestToken);
+	
+	public static class ListPermissionBuilder extends ListResponseRequestBuilder<Permission, Permission.Tokenizer, ListPermissionBuilder> {
+		
+		public ListPermissionBuilder(PermissionFilter filter) {
+			super(Permission.class, "permission", "list");
+			params.add("filter", filter);
+		}
 	}
 
-
-	public GroupPermission() {
-		super();
+	public static ListPermissionBuilder list()  {
+		return list(null);
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
-
+	/**
+	 * Retrieving permissions by identifiers, if filter is empty, returns all partner
+	  permissions
+	 * 
+	 * @param filter Filter for permissions
+	 */
+    public static ListPermissionBuilder list(PermissionFilter filter)  {
+		return new ListPermissionBuilder(filter);
 	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
-		kparams.add("group", this.group);
-		return kparams;
-	}
-
 }
-
