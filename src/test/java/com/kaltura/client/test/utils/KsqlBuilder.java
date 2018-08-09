@@ -33,6 +33,11 @@ public class KsqlBuilder {
         return this;
     }
 
+    public KsqlBuilder greaterOrEqual(String key, long value) {
+        sb.append(key).append(">=").append("'").append(String.valueOf(value)).append("' ");
+        return this;
+    }
+
     public KsqlBuilder lessOrEqual(String key, int value) {
         sb.append(key).append("<=").append("'").append(String.valueOf(value)).append("' ");
         return this;

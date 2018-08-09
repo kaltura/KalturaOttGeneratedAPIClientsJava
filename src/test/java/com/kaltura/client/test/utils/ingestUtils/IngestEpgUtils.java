@@ -19,19 +19,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.*;
-import static com.kaltura.client.test.tests.enums.KsqlKey.END_DATE;
-import static com.kaltura.client.test.tests.enums.KsqlKey.EPG_CHANNEL_ID;
-import static com.kaltura.client.test.tests.enums.KsqlKey.START_DATE;
+import static com.kaltura.client.test.tests.enums.KsqlKey.*;
 import static com.kaltura.client.test.utils.BaseUtils.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
@@ -75,6 +70,8 @@ public class IngestEpgUtils extends BaseIngestUtils {
         final int DEFAULT_PROGRAMMES_COUNT = 2;
         final int DEFAULT_PROGRAM_DURATION = 30;
 
+        df.setTimeZone(TimeZone.getDefault());
+
         // TODO: complete one-by-one needed fields to cover util ingest_epg from old project
         epgData.coguid = getCurrentDateInFormat(coguidDatePattern);
 
@@ -82,27 +79,28 @@ public class IngestEpgUtils extends BaseIngestUtils {
         if (epgData.seriesId == null) { epgData.seriesId = epgData.coguid; }
         if (epgData.episodesNum == 0) { epgData.episodesNum = DEFAULT_PROGRAMMES_COUNT; }
         if (epgData.seasonsNum == 0) { epgData.seasonsNum = DEFAULT_SEASONS_COUNT; }
-        if (epgData.startDate == null) { epgData.startDate = getEpochInLocalTime(); }
+        if (epgData.startDate == null) { epgData.startDate = getEpochInUtcTime(0); }
         if (epgData.programDuration == 0) { epgData.programDuration = DEFAULT_PROGRAM_DURATION; }
         if (epgData.programDurationPeriod == null) { epgData.programDurationPeriod = DurationPeriod.MINUTES; }
         if (epgData.thumb == null) { epgData.thumb = DEFAULT_THUMB; }
         if (epgData.programNamePrefix == null) { epgData.programNamePrefix = "Program"; }
+
+        long firstProgramStartDateEpoch = epgData.startDate;
 
         epgChannelId = IngestFixtureData.getEpgChannelId(epgData.epgChannelName);
         String reqBody = buildIngestEpgXml(epgData);
         executeIngestEpgRequest(reqBody);
 
         // TODO: create method getting epoch value from String and pattern
-        String firstProgramStartDateEpoch = String.valueOf(epgData.startDate);
         SearchAssetFilter assetFilter = new SearchAssetFilter();
         assetFilter.setOrderBy(AssetOrderBy.START_DATE_ASC.getValue());
 
         String query = new KsqlBuilder()
                 .openAnd()
                 .equal(EPG_CHANNEL_ID.getValue(), epgChannelId)
-                .greaterOrEqual(START_DATE.getValue(), Integer.valueOf(firstProgramStartDateEpoch))
+                .greaterOrEqual(START_DATE.getValue(), firstProgramStartDateEpoch)
                 .equal("Series_ID", epgData.seriesId)
-                .greaterOrEqual(END_DATE.getValue(), Integer.valueOf(firstProgramStartDateEpoch))
+                .greaterOrEqual(END_DATE.getValue(), firstProgramStartDateEpoch)
                 .closeAnd()
                 .toString();
         assetFilter.setKSql(query);

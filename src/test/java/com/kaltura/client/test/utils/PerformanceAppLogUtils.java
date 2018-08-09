@@ -7,15 +7,12 @@ import org.apache.commons.vfs2.auth.StaticUserAuthenticator;
 import org.apache.commons.vfs2.impl.DefaultFileSystemConfigBuilder;
 
 import java.io.*;
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
 import static com.kaltura.client.test.Properties.*;
-import static com.kaltura.client.test.Properties.API_VERSION;
-import static com.kaltura.client.test.Properties.getProperty;
 
 public class PerformanceAppLogUtils extends BaseUtils {
 
@@ -339,8 +336,6 @@ public class PerformanceAppLogUtils extends BaseUtils {
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
