@@ -25,7 +25,7 @@ public class DBConstants {
     static final String SERV_ID = "serv_id";
     static final String SUBSCRIPTION_ONLY = "subscription_only";
     static final String SUB_ID = "sub_id";
-    static final String TAG_TYPE = "tag_type";
+    static final String TAG_NAME = "tag_name";
     static final String TAG_VALUE = "tag_value";
     static final String USERNAME = "username";
     static final String VIEW_LIFE_CYCLE_MINUTES = "view_life_cycle_min";
@@ -223,10 +223,10 @@ public class DBConstants {
             "order by m.id desc";
 
     static final String MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where (GROUP_ID = ? OR GROUP_ID = ?) and name = ?";
-    static final String OPC_MEDIA_TYPE_ID_SELECT = "SELECT [ID] ,[NAME] FROM [TVinci].[dbo].[media_types] where GROUP_ID = ? and name = ?";
-
 
     static final String MEDIA_FILE_TYPE_ID_SELECT = "SELECT [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and ID = ?";
+
+    static final String RESULT_MESSAGE_ID_SELECT = "SELECT result_message_id FROM [MessageBox].[dbo].[message_announcements] WHERE group_id = ? AND ID = ?";
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";

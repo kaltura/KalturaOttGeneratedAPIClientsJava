@@ -5,8 +5,6 @@ import com.kaltura.client.enums.BundleType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
-import com.kaltura.client.test.tests.enums.ChannelType;
-import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
@@ -54,21 +52,6 @@ public class SubscriptionUtils extends BaseUtils {
             assets.removeAll(assetsToRemove);
         }
         return assets;
-    }
-
-    public static Channel loadAutomaticOrKsqlChannel(String subscriptionId) {
-        List<BaseChannel> channels = getChannelsListBySubscription(subscriptionId);
-        String channelType;
-        Channel result;
-        for (BaseChannel channel: channels) {
-            result = IngestFixtureData.getChannel(channel.getId().intValue());
-            channelType = result.toParams().get("channel_type").toString();
-            if (ChannelType.AUTOMATIC_CHANNEL_TYPE.getValue().equals(channelType) ||
-                    ChannelType.KSQL_CHANNEL_TYPE.getValue().equals(channelType)) {
-                return result;
-            }
-        }
-        return null;
     }
 
     public static List<BaseChannel> getChannelsListBySubscription(String subscriptionId) {

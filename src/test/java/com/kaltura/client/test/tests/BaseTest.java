@@ -1,14 +1,10 @@
 package com.kaltura.client.test.tests;
 
-import com.google.common.base.Verify;
 import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
-import com.kaltura.client.services.ChannelService;
 import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.services.OttUserService;
-import com.kaltura.client.services.SubscriptionService;
-import com.kaltura.client.services.SubscriptionService.ListSubscriptionBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.PerformanceAppLogUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
@@ -24,7 +20,11 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.common.base.Verify.verify;
+import static com.kaltura.client.services.ChannelService.add;
+import static com.kaltura.client.services.ChannelService.get;
 import static com.kaltura.client.services.OttUserService.login;
+import static com.kaltura.client.services.SubscriptionService.list;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
 import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
@@ -416,7 +416,7 @@ public class BaseTest {
                 // it should have at least 1 VOD
                 DynamicChannel channel = loadDefaultChannel();
                 channel.setKSql("name='" + getSharedMediaAsset().getName() + "'");
-                AddChannelBuilder addChannelBuilder = ChannelService.add(channel);
+                AddChannelBuilder addChannelBuilder = add(channel);
                 Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
                 if (channelResponse.results != null && channelResponse.results.getName() != null) {
                     MppData mppData = new MppData()
@@ -433,24 +433,31 @@ public class BaseTest {
         // getting channel
         SubscriptionFilter filter = new SubscriptionFilter();
         filter.setSubscriptionIdIn(subscription.getId());
-        ListSubscriptionBuilder listSubscriptionBuilder = SubscriptionService.list(filter);
-        Response<ListResponse<Subscription>> listResponse = executor.executeSync(listSubscriptionBuilder.setKs(getOperatorKs()));
-        Verify.verify(listResponse.results.getObjects().get(0).getChannels().size() > 0);
+        Response<ListResponse<Subscription>> listResponse = executor.executeSync(list(filter)
+                .setKs(getOperatorKs()));
+
+        verify(listResponse.results.getObjects().get(0).getChannels().size() > 0);
         int channelId = listResponse.results.getObjects().get(0).getChannels().get(0).getId().intValue();
 
-        DynamicChannel channel = IngestFixtureData.getChannel(channelId);
+        // get channel
+        DynamicChannel channel = (DynamicChannel) executor.executeSync(get(channelId)
+                .setKs(getOperatorKs()))
+                .results;
+
         String[] parameters;
-        String tag = null, name = null;
-        if (null == channel.getKSql()) {
+        String tag = null;
+        String name = null;
+
+        if (channel.getKSql() == null || channel.getKSql().equals("")) {
             // automatic channel
             String automaticChannelExpression = IngestFixtureData.getAutomaticChannelExpression(channelId);
             parameters = automaticChannelExpression.split(":");
-            Verify.verify(parameters.length == 2);
+            verify(parameters.length == 2);
             tag = parameters[0];
         } else {
             // KSQL channel
             parameters = channel.getKSql().split("=");
-            Verify.verify(parameters.length == 2);
+            verify(parameters.length == 2);
             if ("name".equals(parameters[0].toLowerCase())) {
                 // ingest VOD with mentioned name
                 name = parameters[0];

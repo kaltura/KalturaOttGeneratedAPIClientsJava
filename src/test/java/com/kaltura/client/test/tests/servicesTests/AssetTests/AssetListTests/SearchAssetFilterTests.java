@@ -3,11 +3,11 @@ package com.kaltura.client.test.tests.servicesTests.AssetTests.AssetListTests;
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
+import com.kaltura.client.enums.PlaybackContextType;
+import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.KsqlKey;
-import com.kaltura.client.test.utils.HouseholdUtils;
-import com.kaltura.client.test.utils.KsqlBuilder;
-import com.kaltura.client.test.utils.PurchaseUtils;
+import com.kaltura.client.test.utils.*;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -26,7 +26,9 @@ import java.util.Optional;
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
+
 import static com.kaltura.client.test.tests.enums.KsqlKey.ENTITLED_ASSETS;
+import static com.kaltura.client.test.tests.enums.KsqlKey.GEO_BLOCK;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
@@ -51,6 +53,8 @@ public class SearchAssetFilterTests extends BaseTest {
     private ProgramAsset program, program2;
     private String tagValue, masterUserKs;
     private AssetFilter assetFilter;
+    private String geoBlockRule = "Philippines Only";
+
 
 
     @BeforeClass
@@ -85,7 +89,9 @@ public class SearchAssetFilterTests extends BaseTest {
                 .mediaType(MOVIE)
                 .catalogStartDate(getUtcTimeFormatted(-100))
                 .tags(tagMap)
-                .strings(stringMetaMap1);
+                .strings(stringMetaMap1)
+                .geoBlockRule(geoBlockRule);
+
         asset2 = insertVod(vodData2);
 
         // ingest asset 3
@@ -113,7 +119,31 @@ public class SearchAssetFilterTests extends BaseTest {
     // Filter by KSQL
     // *********************
 
-    // TODO: 27/06/2018  - Add test that filter by Geo block after Alon will refactor the ingest util
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list - VOD - filter by geo blocked assets." +
+            "The filter return only asset that are not blocked for playback because of geo restriction")
+    @Test
+    private void listVodAssetsByGeoBlock() {
+        String query = new KsqlBuilder()
+                .openAnd()
+                .openOr()
+                .equal(MEDIA_ID.getValue(), Math.toIntExact(asset.getId()))
+                .equal(MEDIA_ID.getValue(), Math.toIntExact(asset2.getId()))
+                .closeOr()
+                .equal(GEO_BLOCK.getValue(), "true")
+                .closeAnd()
+                .toString();
+
+        assetFilter = getSearchAssetFilter(query);
+
+        Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
+                .setKs(masterUserKs));
+
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        // Only asset 1 returned (asset 2 has geo block rule)
+        assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
+    }
+
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD - filter by entitled asset")
@@ -319,9 +349,25 @@ public class SearchAssetFilterTests extends BaseTest {
     @Description("asset/action/list - VOD - order by VIEWS")
     @Test
     private void orderVodAssetsByViews() {
-        addViewsToAsset(asset.getId(), 3, AssetType.MEDIA);
-        addViewsToAsset(asset2.getId(), 2, AssetType.MEDIA);
-        addViewsToAsset(asset3.getId(), 1, AssetType.MEDIA);
+
+        int numOfActionsAsset = 3;
+        int numOfActionsAsset2 = 2;
+        int numOfActionsAsset3 = 1;
+
+        // Add 3 views to asset
+        for (int i = 0; i < numOfActionsAsset; i++) {
+            addViewToAsset(asset, AssetType.MEDIA);
+        }
+
+        // Add 2 views to asset2
+        for (int i = 0; i < numOfActionsAsset2; i++) {
+            addViewToAsset(asset2, AssetType.MEDIA);
+        }
+
+        // Add 1 view to asset3
+        for (int i = 0; i < numOfActionsAsset3; i++) {
+            addViewToAsset(asset3, AssetType.MEDIA);
+        }
 
         String query = new KsqlBuilder()
                 .openOr()

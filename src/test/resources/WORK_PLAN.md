@@ -9,7 +9,7 @@ Migrate features tests from ReadyAPI
 
 | Service                      | Status |
 |------------------------------|--------|
-| announcement                 |        |
+| announcement                 | Alon - in progress |
 | appToken                     |  Done  |
 | asset                        |  Shmulik - in progress  |
 | assetComment                 |  Done  |
@@ -92,7 +92,7 @@ Migrate features tests from ReadyAPI
 | system                       |        |
 | timeShiftedTvPartnerSettings |        |
 | topic                        |        |
-| transaction                  |        |
+| transaction                  | Alon - in progress |
 | transactionHistory           | Michael - in progress |
 | unifiedPayment               |        |
 | userAssetRule                |        |
