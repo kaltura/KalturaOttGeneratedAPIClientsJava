@@ -374,10 +374,11 @@ public class OttUserService {
 	
 	public static class ResetPasswordOttUserBuilder extends RequestBuilder<Boolean, String, ResetPasswordOttUserBuilder> {
 		
-		public ResetPasswordOttUserBuilder(int partnerId, String username) {
+		public ResetPasswordOttUserBuilder(int partnerId, String username, String templateName) {
 			super(Boolean.class, "ottuser", "resetPassword");
 			params.add("partnerId", partnerId);
 			params.add("username", username);
+			params.add("templateName", templateName);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -387,6 +388,14 @@ public class OttUserService {
 		public void username(String multirequestToken) {
 			params.add("username", multirequestToken);
 		}
+		
+		public void templateName(String multirequestToken) {
+			params.add("templateName", multirequestToken);
+		}
+	}
+
+	public static ResetPasswordOttUserBuilder resetPassword(int partnerId, String username)  {
+		return resetPassword(partnerId, username, null);
 	}
 
 	/**
@@ -394,9 +403,10 @@ public class OttUserService {
 	 * 
 	 * @param partnerId Partner Identifier
 	 * @param username user name
+	 * @param templateName Template name for reset password
 	 */
-    public static ResetPasswordOttUserBuilder resetPassword(int partnerId, String username)  {
-		return new ResetPasswordOttUserBuilder(partnerId, username);
+    public static ResetPasswordOttUserBuilder resetPassword(int partnerId, String username, String templateName)  {
+		return new ResetPasswordOttUserBuilder(partnerId, username, templateName);
 	}
 	
 	public static class SetInitialPasswordOttUserBuilder extends RequestBuilder<OTTUser, OTTUser.Tokenizer, SetInitialPasswordOttUserBuilder> {
