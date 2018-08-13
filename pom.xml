@@ -276,7 +276,7 @@
                     <properties>
                         <property>
                             <name>usedefaultlisteners</name>
-                            <value>false</value>
+                            <value>true</value>
                         </property>
                     </properties>
                     <suiteXmlFiles>
