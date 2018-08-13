@@ -4,8 +4,6 @@ import com.kaltura.client.enums.PurchaseStatus;
 import com.kaltura.client.enums.TransactionAdapterStatus;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.services.HouseholdService;
-import com.kaltura.client.services.ProductPriceService.ListProductPriceBuilder;
-import com.kaltura.client.services.TransactionService.PurchaseTransactionBuilder;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
@@ -22,18 +20,16 @@ import static org.assertj.core.api.Assertions.within;
 
 public class TransactionPurchaseTests extends BaseTest {
 
-    private final int numOfUsers = 2;
-    private final int numOfDevices = 2;
-
-    private Household household;
     private String masterUserKs;
     private String userKs;
 
-
-    @BeforeClass (enabled = true)
+    @BeforeClass ()
     public void transaction_purchas_before_class(){
         // Prepare household with users and devices
-        household =  createHousehold(numOfUsers, numOfDevices, true);
+        int numOfUsers = 2;
+        int numOfDevices = 2;
+
+        Household household = createHousehold(numOfUsers, numOfDevices, true);
 
         String masterUserUdid = getDevicesList(household).get(0).getUdid();
         masterUserKs = getHouseholdMasterUserKs(household, masterUserUdid);
@@ -42,19 +38,20 @@ public class TransactionPurchaseTests extends BaseTest {
         userKs = getHouseholdUserKs(household, userUdid);
     }
 
-    @Test(enabled = true)
+    @Test()
     public void purchasePpvWithDefaultPG() {
         // set product price filter
         ProductPriceFilter productPriceFilter = new ProductPriceFilter();
         productPriceFilter.setFileIdIn(getSharedWebMediaFile().getId().toString());
 
-        // product price list
-        Response<ListResponse<ProductPrice>> listResponse = executor.executeSync(list(productPriceFilter)
+        // productPrice list
+        Response<ListResponse<ProductPrice>> productPriceResponse = executor.executeSync(list(productPriceFilter)
                 .setKs(masterUserKs));
-        assertThat(listResponse.results).isNotNull();
+        assertThat(productPriceResponse.results).isNotNull();
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
 
         // get ppv
-        PpvPrice productPricePpv = (PpvPrice) listResponse.results.getObjects().get(0);
+        PpvPrice productPricePpv = (PpvPrice) productPriceResponse.results.getObjects().get(0);
         assertThat(productPricePpv.getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
         assertThat(productPricePpv.getFileId()).isEqualTo(getSharedWebMediaFile().getId());
 
@@ -78,55 +75,96 @@ public class TransactionPurchaseTests extends BaseTest {
         assertThat(purchasePpvTransaction.getFailReasonCode()).isEqualTo(0);
         assertThat(purchasePpvTransaction.getRelatedObjects()).isNull();
 
-        // assert product price list
-        listResponse = executor.executeSync(list(productPriceFilter)
-                .setKs(masterUserKs));
+        // assert productPrice list with regular userKs
+        productPriceResponse = executor.executeSync(list(productPriceFilter)
+                .setKs(userKs));
+        assertThat(productPriceResponse.results).isNotNull();
 
-        assertThat(listResponse.results).isNotNull();
-        productPricePpv = (PpvPrice) listResponse.results.getObjects().get(0);
-
+        productPricePpv = (PpvPrice) productPriceResponse.results.getObjects().get(0);
         assertThat(productPricePpv.getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
         assertThat(productPricePpv.getFileId()).isEqualTo(getSharedWebMediaFile().getId());
     }
 
-    @Test (enabled = false)
+    @Test ()
     public void purchaseSubscriptionWithDefaultPG() {
+        // set product price filter
         ProductPriceFilter productPriceFilter = new ProductPriceFilter();
         productPriceFilter.setSubscriptionIdIn(getSharedCommonSubscription().getId());
-        ListProductPriceBuilder listProductPriceBuilder = list(productPriceFilter).setKs(masterUserKs);
-        Response<ListResponse<ProductPrice>> listResponse = executor.executeSync(listProductPriceBuilder);
-        assertThat(listResponse.results).isNotNull();
-        PpvPrice productPricePpv = (PpvPrice) listResponse.results.getObjects().get(0);
-        assertThat(productPricePpv.getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
-        assertThat(productPricePpv.getFileId()).isEqualTo(getSharedWebMediaFile().getId());
 
+        // productPrice list
+        Response<ListResponse<ProductPrice>> productPriceResponse = executor.executeSync(list(productPriceFilter)
+                .setKs(masterUserKs));
+        assertThat(productPriceResponse.results).isNotNull();
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+
+        // purchase subscription
         Purchase purchase = new Purchase();
-        purchase.setProductType(TransactionType.PPV);
-        purchase.setProductId(Integer.valueOf(productPricePpv.getPpvModuleId()));
-        purchase.setContentId(getSharedWebMediaFile().getId());
-        purchase.setCurrency(productPricePpv.getPrice().getCurrency());
-        purchase.setPrice(productPricePpv.getPrice().getAmount());
+        purchase.setProductType(TransactionType.SUBSCRIPTION);
+        purchase.setContentId(0);
+        purchase.setCurrency(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency());
+        purchase.setProductId(Integer.valueOf(getSharedCommonSubscription().getId()));
+        purchase.setPrice(productPriceResponse.results.getObjects().get(0).getPrice().getAmount());
 
-        PurchaseTransactionBuilder purchaseTransactionBuilder = purchase(purchase).setKs(masterUserKs);
-        Response<Transaction> purchaseTransaction = executor.executeSync(purchaseTransactionBuilder);
-        Transaction purchasePpv = purchaseTransaction.results;
-        assertThat(purchasePpv).isNotNull();
-        assertThat(purchasePpv.getCreatedAt()).isCloseTo((int) getEpochInLocalTime(0), within(15));
-        assertThat(purchasePpv.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
-        assertThat(purchasePpv.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
-        assertThat(purchasePpv.getFailReasonCode()).isEqualTo(0);
-        assertThat(purchasePpv.getRelatedObjects()).isNull();
+        Transaction subscriptionTransaction = executor.executeSync(purchase(purchase)
+                .setKs(masterUserKs))
+                .results;
 
-        listResponse = executor.executeSync(listProductPriceBuilder);
-        assertThat(listResponse.results).isNotNull();
-        productPricePpv = (PpvPrice) listResponse.results.getObjects().get(0);
-        assertThat(productPricePpv.getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
-        assertThat(productPricePpv.getFileId()).isEqualTo(getSharedWebMediaFile().getId());
+        // assert transaction
+        assertThat(subscriptionTransaction).isNotNull();
+        assertThat(subscriptionTransaction.getCreatedAt()).isCloseTo((int) getEpochInLocalTime(0), within(120));
+        assertThat(subscriptionTransaction.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
+        assertThat(subscriptionTransaction.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
+        assertThat(subscriptionTransaction.getFailReasonCode()).isEqualTo(0);
+        assertThat(subscriptionTransaction.getRelatedObjects()).isNull();
+
+        // assert productPrice list with regular userKs
+        productPriceResponse = executor.executeSync(list(productPriceFilter)
+                .setKs(userKs));
+        assertThat(productPriceResponse.results).isNotNull();
+
+        SubscriptionPrice subscriptionPrice  = (SubscriptionPrice) productPriceResponse.results.getObjects().get(0);
+        assertThat(subscriptionPrice.getPurchaseStatus()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED);
     }
 
-    @Test (enabled = false)
+    @Test ()
     public void purchaseCollectionWithDefaultPG() {
+        // set product price filter
+        ProductPriceFilter productPriceFilter = new ProductPriceFilter();
+        productPriceFilter.setCollectionIdIn(getSharedCommonCollection().getId());
 
+        // productPrice list
+        Response<ListResponse<ProductPrice>> productPriceResponse = executor.executeSync(list(productPriceFilter)
+                .setKs(masterUserKs));
+        assertThat(productPriceResponse.results).isNotNull();
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+
+        // purchase collection
+        Purchase purchase = new Purchase();
+        purchase.setCurrency(productPriceResponse.results.getObjects().get(0).getPrice().getCurrency());
+        purchase.setPrice(productPriceResponse.results.getObjects().get(0).getPrice().getAmount());
+        purchase.setContentId(0);
+        purchase.setProductId(Integer.valueOf(getSharedCommonCollection().getId()));
+        purchase.setProductType(TransactionType.COLLECTION);
+
+        Transaction collectionTransaction = executor.executeSync(purchase(purchase)
+                .setKs(masterUserKs))
+                .results;
+
+        // assert transaction
+        assertThat(collectionTransaction).isNotNull();
+        assertThat(collectionTransaction.getCreatedAt()).isCloseTo((int) getEpochInLocalTime(0), within(120));
+        assertThat(collectionTransaction.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
+        assertThat(collectionTransaction.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
+        assertThat(collectionTransaction.getFailReasonCode()).isEqualTo(0);
+        assertThat(collectionTransaction.getRelatedObjects()).isNull();
+
+        // assert productPrice list with regular userKs
+        productPriceResponse = executor.executeSync(list(productPriceFilter)
+                .setKs(userKs));
+        assertThat(productPriceResponse.results).isNotNull();
+
+        CollectionPrice collectionPrice  = (CollectionPrice) productPriceResponse.results.getObjects().get(0);
+        assertThat(collectionPrice.getPurchaseStatus()).isEqualTo(PurchaseStatus.COLLECTION_PURCHASED);
     }
 
     @AfterClass
