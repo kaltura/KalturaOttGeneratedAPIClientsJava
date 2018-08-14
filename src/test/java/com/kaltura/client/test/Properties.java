@@ -43,6 +43,9 @@ public class Properties {
     // maximum objects at list response for validating JSON schema
     public static final int MAX_OBJECTS_AT_LIST_RESPONSE = 20;
 
+    // paymentGateway adapter url
+    public static final String PAYMENT_GATEWAY_ADAPTER_URL = "http://172.31.6.89:90/PGAdapter/Service.svc";
+
     // price plans
     // INGEST doesn't allow create PP with multi-currencies
     // TODO: should we document it as requirement? price plan having few locales (EUR + few others) with different prices

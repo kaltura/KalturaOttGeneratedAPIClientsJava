@@ -15,7 +15,7 @@
         "pendingRetries": {"type": "integer","minimum": 0},
         "sharedSecret": {"type": "string","minLength": 0},
         "renewIntervalMinutes": {"type": "integer","minimum": 0},
-        "renewStartMinutes": {"type": "integer","minimum": 0},
+        "renewStartMinutes": {"type": "integer"},
         "externalVerification": {"type": "boolean"},
         "id": {"type": "integer","minimum": 0},
         "name": {"type": "string","minLength": 0},
@@ -24,7 +24,7 @@
         "objectType": {"type": "string","minLength": 0}
       },
       "required": ["isActive", "adapterUrl", "transactUrl", "statusUrl","renewUrl","paymentGatewaySettings","externalIdentifier","pendingInterval","pendingRetries","sharedSecret",
-        "renewIntervalMinutes","renewStartMinutes","externalVerification","id","name","isDefault","paymentMethods","objectType"]
+        "renewIntervalMinutes","renewStartMinutes","externalVerification","id","name","isDefault","objectType"]
     }
   },
   "type": "object",

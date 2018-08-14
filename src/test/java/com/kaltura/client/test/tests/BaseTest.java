@@ -12,6 +12,7 @@ import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -61,7 +62,6 @@ public class BaseTest {
 
     // shared common params
     public static int partnerId;
-//    public static int opcPartnerId;
     public static String defaultUserPassword;
 
     // shared ks's
@@ -124,20 +124,38 @@ public class BaseTest {
 
         // set client
         client = new Client(config);
-//        client.setLanguage("*");
 
         // set default awaitility timeout
         setDefaultTimeout(Long.parseLong(getProperty(DEFAULT_TIMEOUT_IN_SEC)), TimeUnit.SECONDS);
 
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
-//        opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
+
+        // set performance report
+        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
+            // Before execution of regression we have to delete log file created during previous regression execution
+            // to not affect results of current check
+            String regressionLogsFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
+                    getProperty(REGRESSION_LOGS_LOCAL_FILE);
+            deleteFile(regressionLogsFileName);
+
+            // Before execution of regression we have to delete report file created during previous regression execution
+            // to not affect results of current check
+            String codePerformanceReportFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
+                    getProperty(CODE_PERFORMANCE_REPORT_FILE);
+            deleteFile(codePerformanceReportFileName);
+        }
     }
 
     @BeforeMethod
     public void baseTest_beforeMethod(Method method) {
-        Logger.getLogger(BaseTest.class).debug("Class: " + getClass().getSimpleName() + ", Test: " + method.getName());
+        Logger.getLogger(BaseTest.class).debug("Start test >>> Class: " + getClass().getSimpleName() + ", Test: " + method.getName());
+    }
+
+    @AfterMethod
+    public void baseTest_afterMethod(Method method) {
+        Logger.getLogger(BaseTest.class).debug("End test >>> Class: " + getClass().getSimpleName() + ", Test: " + method.getName());
     }
 
     /**
@@ -553,7 +571,6 @@ public class BaseTest {
         }
     }
 
-    // as we have only 1 suite it helps do cleaning after regression execution
     @AfterSuite
     public void tearDownSuite() {
         if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
@@ -561,23 +578,8 @@ public class BaseTest {
             PerformanceAppLogUtils.createPerformanceCodeReport();
             PerformanceAppLogUtils.removeCopiedAppLogFiles();
         }
+
+        // TODO: 8/14/2018 cleanup: delete generated shared resources and data!
     }
 
-    // as we have only 1 suite it helps process fixture etc before regression execution
-    @BeforeSuite
-    public void setupSuite() {
-        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
-            // Before execution of regression we have to delete log file created during previous regression execution
-            // to not affect results of current check
-            String regressionLogsFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
-                    getProperty(REGRESSION_LOGS_LOCAL_FILE);
-            deleteFile(regressionLogsFileName);
-
-            // Before execution of regression we have to delete report file created during previous regression execution
-            // to not affect results of current check
-            String codePerformanceReportFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
-                    getProperty(CODE_PERFORMANCE_REPORT_FILE);
-            deleteFile(codePerformanceReportFileName);
-        }
-    }
 }
