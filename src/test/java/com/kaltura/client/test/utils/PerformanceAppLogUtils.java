@@ -29,9 +29,9 @@ public class PerformanceAppLogUtils extends BaseUtils {
     private static final String domain = getProperty(PHOENIX_SERVER_DOMAIN_NAME);
     private static final String userName = getProperty(PHOENIX_SERVER_USER_NAME);
     private static final String password = getProperty(PHOENIX_SERVER_PASSWORD);
+    private static final String remoteSourceFileDir = getProperty(PHOENIX_SERVER_LOGS_DIRECTORY) + getProperty(API_VERSION) + "\\";
     private static final UserAuthenticator auth = new StaticUserAuthenticator(domain, userName, password);
     private static final FileSystemOptions options = new FileSystemOptions();
-    private static final String remoteSourceFileDir = getProperty(PHOENIX_SERVER_LOGS_DIRECTORY) + getProperty(API_VERSION) + "\\";
 
     private static final String COUCHBASE_LOG_DATA = "\"e\":\"cb\"";
     private static final String DB_LOG_DATA = "\"e\":\"db\"";
@@ -55,14 +55,20 @@ public class PerformanceAppLogUtils extends BaseUtils {
     private static double timeOfRabbit;
     private static double totalTime;
     private static boolean isKalturaSessionFoundInAppLogFile;
+    private static int countOfCB;
+    private static int countOfDB;
+    private static int countOfES;
+    private static int countOfRabbit;
 
     public static void createPerformanceCodeReport() {
         try {
+            // copy log files to local machine
             List<String> appRemoteFileNames = getRemoteAppLogFileNames();
             for (String fileName : appRemoteFileNames) {
                 copyRemoteFile2LocalMachine(fileName);
             }
 
+            // aggregeted last regression results
             Map<String, List<String>> methodsAndKalturaSessions = loadMethodsAndSessionsFromTestFile();
 
             Map<String, SlowRatio> methodsAndSlowRatioData = new HashMap<>();
@@ -84,10 +90,16 @@ public class PerformanceAppLogUtils extends BaseUtils {
                         timeOfRabbit = 0.0;
                         totalTime = 0.0;
 
+                        countOfCB = 0;
+                        countOfDB = 0;
+                        countOfES = 0;
+                        countOfRabbit = 0;
+
                         calcTimeExecution(appFileName, xKalturaSession);
 
                         if (isKalturaSessionFoundInAppLogFile) {
                             double percentageCodeTime2TotalTime = timeOfCode / totalTime * 100;
+
                             // include in report only relevant cases
                             if (percentageCodeTime2TotalTime > maxAllowedPercentage &&
                                     totalTime > Double.parseDouble(getProperty(MAX_ALLOWED_EXECUTION_TIME_IN_SEC))) {
@@ -177,10 +189,10 @@ public class PerformanceAppLogUtils extends BaseUtils {
                 out.println(xKalturaSession);
                 out.println("Execution Time: " + totalTime);
                 out.println("Code: " + String.format("%.2f", codeTimePercentage) + "% (" + timeOfCode + ")");
-                writeIfValueMoreThanZero(out, "Couchbase: ", timeOfCB, totalTime);
-                writeIfValueMoreThanZero(out, "DB: ", timeOfDB, totalTime);
-                writeIfValueMoreThanZero(out, "Elastic: ", timeOfES, totalTime);
-                writeIfValueMoreThanZero(out, "Rabbit: ", timeOfRabbit, totalTime);
+                writeIfValueMoreThanZero(out, "Couchbase: ", timeOfCB, totalTime, countOfCB);
+                writeIfValueMoreThanZero(out, "DB: ", timeOfDB, totalTime, countOfDB);
+                writeIfValueMoreThanZero(out, "Elastic: ", timeOfES, totalTime, countOfES);
+                writeIfValueMoreThanZero(out, "Rabbit: ", timeOfRabbit, totalTime, countOfRabbit);
                 out.println();
             }
         } catch (IOException e) {
@@ -188,9 +200,9 @@ public class PerformanceAppLogUtils extends BaseUtils {
         }
     }
 
-    private static void writeIfValueMoreThanZero(PrintWriter out, String title, double timeOfEvent, double totalTime) {
+    private static void writeIfValueMoreThanZero(PrintWriter out, String title, double timeOfEvent, double totalTime, int countOfEvent) {
         if (timeOfEvent > 0) {
-            out.println(title + " " + String.format("%.2f", timeOfEvent / totalTime * 100) + "% (" + timeOfEvent + ")");
+            out.println(title + " " + String.format("%.2f", timeOfEvent / totalTime * 100) + "% (" + timeOfEvent + ") [" + countOfEvent + " query(-ies)]");
         }
     }
 
@@ -232,7 +244,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
         Logger.getLogger(PerformanceAppLogUtils.class).debug("copyRemoteFile2LocalMachine(): completed");
     }
 
-    private static List<String> getRemoteAppLogFileNames() throws IOException {
+    public static List<String> getRemoteAppLogFileNames() throws IOException {
         Logger.getLogger(PerformanceAppLogUtils.class).debug("getRemoteAppLogFileNames(): started");
         List<String> fileNames = new ArrayList<>();
         String sourceFileName = getProperty(PHOENIX_SERVER_LOG_FILE_NAME_PREFIX) + getProperty(API_VERSION) +
@@ -325,15 +337,19 @@ public class PerformanceAppLogUtils extends BaseUtils {
                     }
                     if (line.contains(COUCHBASE_LOG_DATA)) {
                         timeOfCB = timeOfCB + Double.valueOf(executionTimeString);
+                        countOfCB++;
                     }
                     if (line.contains(DB_LOG_DATA)) {
                         timeOfDB = timeOfDB + Double.valueOf(executionTimeString);
+                        countOfDB++;
                     }
                     if (line.contains(ELASTIC_SEARCH_LOG_DATA)) {
                         timeOfES = timeOfES + Double.valueOf(executionTimeString);
+                        countOfES++;
                     }
                     if (line.contains(RABBIT_LOG_DATA)) {
                         timeOfRabbit = timeOfRabbit + Double.valueOf(executionTimeString);
+                        countOfRabbit++;
                     }
                 }
             }

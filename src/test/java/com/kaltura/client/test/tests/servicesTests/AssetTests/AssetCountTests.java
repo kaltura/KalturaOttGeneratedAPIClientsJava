@@ -34,41 +34,59 @@ public class AssetCountTests extends BaseTest {
     private ProgramAsset program, program2;
     private MediaAsset asset, asset2;
 
-    private final String metaName = "synopsis";
-    private final String metaValue1 = metaName + getRandomValue("_");
+    private final String metaName1 = "synopsis";
+    private final String metaValue1 = metaName1 + getRandomValue("_");
+
+    private final String metaName2 = "runtime";
+    private final String metaValue2 = metaName2 + getRandomValue("_");
+    private final String metaValue3 = metaName2 + getRandomValue("_");
+
     private final String tagName = "Studio";
     private final String tagValue = tagName +  getRandomValue("_");
+
     private final String epgMetaName = "Country";
     private final String epgMetaValue = epgMetaName + getRandomValue("_");
+    private final String epgTagName = "Director";
+    private final String epgTagValue = epgTagName + getRandomValue("_");
 
     @BeforeClass
     private void asset_count_before_class() {
 
-        HashMap<String, String> stringMetaMap1 = new HashMap<>();
-        stringMetaMap1.put(metaName, metaValue1);
-        stringMetaMap1.put(tagName,tagValue);
+        HashMap<String, String> stringMetaMap = new HashMap<>();
+        stringMetaMap.put(metaName1, metaValue1);
+        stringMetaMap.put(metaName2,metaValue2);
+        stringMetaMap.put(tagName,tagValue);
 
         // ingest asset 1
         IngestVodUtils.VodData vodData1 = new IngestVodUtils.VodData()
                 .mediaType(MOVIE)
-                .strings(stringMetaMap1);
+                .strings(stringMetaMap);
         asset = insertVod(vodData1);
+
+        HashMap<String, String> stringMetaMap2 = new HashMap<>();
+        stringMetaMap2.put(metaName1, metaValue1);
+        stringMetaMap2.put(metaName2,metaValue3);
+        stringMetaMap2.put(tagName,tagValue);
 
         // ingest asset 2
         IngestVodUtils.VodData vodData2 = new IngestVodUtils.VodData()
                 .mediaType(MOVIE)
-                .strings(stringMetaMap1);
+                .strings(stringMetaMap2);
 
         asset2 = insertVod(vodData2);
 
-        HashMap<String, String> metas = new HashMap<>();
-        metas.put(epgMetaName, epgMetaValue);
+        HashMap<String, String> epgMetas = new HashMap<>();
+        epgMetas.put(epgMetaName, epgMetaValue);
+
+        HashMap<String,String> epgTags = new HashMap<>();
+        epgTags.put(epgTagName,epgTagValue);
         
         // ingest epg programs
         EpgData epgData = new EpgData(getSharedEpgChannelName());
         epgData.seasonsNum(1);
         epgData.episodesNum(2);
-        epgData.metas(metas);
+        epgData.metas(epgMetas);
+        epgData.tags(epgTags);
 
         List<ProgramAsset> programsList = IngestEpgUtils.insertEpg(epgData);
         program = programsList.get(0);
@@ -76,7 +94,7 @@ public class AssetCountTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Ingest 2 VOD assets with the same meta (synopsis) value and pass the meta name in the count request")
+    @Description("2 VOD assets with the same meta (synopsis) value and pass the meta name in the count request")
     @Test
     private void groupByVodMeta() {
         String query = new KsqlBuilder()
@@ -92,7 +110,7 @@ public class AssetCountTests extends BaseTest {
 
         ArrayList<AssetGroupBy> arrayList = new ArrayList<>();
         AssetMetaOrTagGroupBy assetMetaOrTagGroupBy = new AssetMetaOrTagGroupBy();
-        assetMetaOrTagGroupBy.setValue(metaName);
+        assetMetaOrTagGroupBy.setValue(metaName1);
         arrayList.add(assetMetaOrTagGroupBy);
 
         searchAssetFilter.setGroupBy(arrayList);
@@ -102,11 +120,10 @@ public class AssetCountTests extends BaseTest {
         // asset/action/count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
-
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Ingest 2 VOD assets with the same tag (Genre) value and pass the tag name in the count request")
+    @Description("2 VOD assets with the same tag (Genre) value and pass the tag name in the count request")
     @Test
     private void groupByVodTag() {
         String query = new KsqlBuilder()
@@ -132,11 +149,43 @@ public class AssetCountTests extends BaseTest {
         // asset/action/count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
-
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Description("")
+    @Description("2 VOD assets with different meta (Runtime) value and pass the meta name in the count request")
+    @Test
+    private void groupByVodMetaWithDifferentValues() {
+        String query = new KsqlBuilder()
+                .openOr()
+                .equal(MEDIA_ID.getValue(), Math.toIntExact(asset.getId()))
+                .equal(MEDIA_ID.getValue(), Math.toIntExact(asset2.getId()))
+                .closeOr()
+                .toString();
+
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        searchAssetFilter.setKSql(query);
+        searchAssetFilter.setTypeIn(String.valueOf(DBUtils.getMediaTypeId(MediaType.MOVIE)));
+
+        ArrayList<AssetGroupBy> arrayList = new ArrayList<>();
+        AssetMetaOrTagGroupBy assetMetaOrTagGroupBy = new AssetMetaOrTagGroupBy();
+        assetMetaOrTagGroupBy.setValue(metaName2);
+        arrayList.add(assetMetaOrTagGroupBy);
+
+        searchAssetFilter.setGroupBy(arrayList);
+        AssetService.CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
+                .setKs(BaseTest.getAnonymousKs());
+
+        // asset/action/count
+        Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
+        assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
+        assertThat(assetCountResponse.results.getSubs().get(0).getObjects().get(0).getCount()).isEqualTo(1);
+        assertThat(assetCountResponse.results.getSubs().get(0).getObjects().get(0).getValue()).isEqualTo(metaValue3);
+        assertThat(assetCountResponse.results.getSubs().get(0).getObjects().get(1).getCount()).isEqualTo(1);
+        assertThat(assetCountResponse.results.getSubs().get(0).getObjects().get(1).getValue()).isEqualTo(metaValue2);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("2 EPG programs with the same meta (Country) value and pass the meta name in the count request")
     @Test
     private void groupByEPGMeta() {
         String query = new KsqlBuilder()
@@ -153,6 +202,35 @@ public class AssetCountTests extends BaseTest {
         ArrayList<AssetGroupBy> arrayList = new ArrayList<>();
         AssetMetaOrTagGroupBy assetMetaOrTagGroupBy = new AssetMetaOrTagGroupBy();
         assetMetaOrTagGroupBy.setValue(epgMetaName);
+        arrayList.add(assetMetaOrTagGroupBy);
+
+        searchAssetFilter.setGroupBy(arrayList);
+        CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
+                .setKs(BaseTest.getAnonymousKs());
+
+        // asset/action/count
+        Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
+        assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
+    }
+
+    // TODO
+    @Description("2 EPG programs with the same tag (Director) value and pass the tag name in the count request")
+    @Test
+    private void groupByEPGTag() {
+        String query = new KsqlBuilder()
+                .openOr()
+                .equal(EPG_ID.getValue(), String.valueOf(program.getId()))
+                .equal(EPG_ID.getValue(),String.valueOf(program2.getId()))
+                .closeOr()
+                .toString();
+
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        searchAssetFilter.setKSql(query);
+        searchAssetFilter.setTypeIn("0");
+
+        ArrayList<AssetGroupBy> arrayList = new ArrayList<>();
+        AssetMetaOrTagGroupBy assetMetaOrTagGroupBy = new AssetMetaOrTagGroupBy();
+        assetMetaOrTagGroupBy.setValue(epgTagName);
         arrayList.add(assetMetaOrTagGroupBy);
 
         searchAssetFilter.setGroupBy(arrayList);
