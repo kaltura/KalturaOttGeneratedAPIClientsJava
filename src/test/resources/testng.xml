@@ -15,7 +15,7 @@
         <!--</packages>-->
 
         <classes>
-        <class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserGetTests"/>
+        <class name="com.kaltura.client.test.tests.servicesTests.entitlementTests.EntitlementGrantTests"/>
         </classes>
     </test>
 
