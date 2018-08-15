@@ -1,4 +1,4 @@
-package com.kaltura.client.test.tests.servicesTests.transactionTests;
+package com.kaltura.client.test.tests.servicesTests.transactionTests.transactionPurchaseTests;
 
 import com.kaltura.client.enums.PurchaseStatus;
 import com.kaltura.client.enums.TransactionAdapterStatus;
@@ -545,10 +545,14 @@ public class TransactionPurchaseTests extends BaseTest {
         executor.executeSync(delete().setKs(masterUserKs));
     }
 
-    // TODO: 8/14/2018 purchase free product
-    // TODO: 8/14/2018 purchase with coupon (also not valid coupon)
-    //  <error name="NotForPurchase" code="3025" description="The Content ID entered is not available for purchase."/>
-    //  <error name="FileToMediaMismatch" code="3028" description="The file and media don't match"/>
+    // TODO: 8/15/2018 complete below scenarios:
+    // ppv with expired file
+    // ppv with file off
+    // asset with future start date
+    // asset with off ppv
+    // asset with expired / off file
+    // <error name="NotForPurchase" code="3025" description="The Content ID entered is not available for purchase."/>
+    // <error name="FileToMediaMismatch" code="3028" description="The file and media don't match"/>
 
     @AfterClass
     public void transaction_purchase_after_class() {

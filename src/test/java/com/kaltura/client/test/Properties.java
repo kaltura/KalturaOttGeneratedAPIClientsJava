@@ -36,6 +36,9 @@ public class Properties {
     // collections
     public static final String DEFAULT_COLLECTION = "default_collection";
 
+    // discount code id
+    public static final String DISCOUNT_CODE_ID = "discount_code_id";
+
     // price codes values
     public static final String PRICE_CODE_AMOUNT = "price_code_amount"; // 4.99
     public static final String COMMON_PRICE_CODE_AMOUNT = "5"; // TODO: should we document it as requirement?

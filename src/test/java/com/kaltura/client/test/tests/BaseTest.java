@@ -4,7 +4,6 @@ import com.kaltura.client.Client;
 import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.ChannelService.AddChannelBuilder;
-import com.kaltura.client.services.OttUserService;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.PerformanceAppLogUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
@@ -24,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import static com.google.common.base.Verify.verify;
 import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.services.ChannelService.get;
+import static com.kaltura.client.services.OttUserService.anonymousLogin;
 import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.services.SubscriptionService.list;
 import static com.kaltura.client.test.Properties.*;
@@ -358,7 +358,7 @@ public class BaseTest {
 
     public static String getAnonymousKs() {
         if (anonymousKs == null) {
-            Response<LoginSession> loginSession = executor.executeSync(OttUserService.anonymousLogin(partnerId));
+            Response<LoginSession> loginSession = executor.executeSync(anonymousLogin(partnerId));
             anonymousKs = loginSession.results.getKs();
         }
         return anonymousKs;

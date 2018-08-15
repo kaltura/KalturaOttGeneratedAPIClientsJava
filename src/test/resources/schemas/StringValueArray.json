@@ -1,0 +1,33 @@
+{
+  "$id": "StringValueArray",
+  "definitions": {
+    "StringValueArray": {
+      "$id": "StringValueArray",
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "minLength": 0
+        },
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "StringValue.json"
+          }
+        }
+      },
+      "required": [
+        "objectType",
+        "objects"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/StringValueArray"
+    },
+    "executionTime": {"type": "number"}
+  },
+  "required": ["result", "executionTime"]
+}
