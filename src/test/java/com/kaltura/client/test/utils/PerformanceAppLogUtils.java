@@ -121,6 +121,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
     }
 
     private static void addSummary2Report(Map<String, SlowRatio> methodsAndSlowRatioData) throws IOException {
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("addSummary2Report started");
         if (methodsAndSlowRatioData.keySet().size() > 0) {
             String reportFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
                     getProperty(CODE_PERFORMANCE_REPORT_FILE);
@@ -139,9 +140,11 @@ public class PerformanceAppLogUtils extends BaseUtils {
             }
             Logger.getLogger(PerformanceAppLogUtils.class).debug("Report was successfully created: [" + reportFileName + "]");
         }
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("addSummary2Report completed");
     }
 
     private static void addReportDataIntoSummaryFile(String fromFile, String toFile) {
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("addReportDataIntoSummaryFile started");
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fromFile));
              FileWriter fw = new FileWriter(toFile, true);
              BufferedWriter bw = new BufferedWriter(fw);
@@ -151,10 +154,13 @@ public class PerformanceAppLogUtils extends BaseUtils {
             lines.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            Logger.getLogger(PerformanceAppLogUtils.class).debug("addReportDataIntoSummaryFile completed");
         }
     }
 
     private static void createSummaryFile(Map<String, SlowRatio> methodsAndSlowRatioData, String summaryTemporaryFileName) {
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("createSummaryFile started");
         try (FileWriter fw = new FileWriter(summaryTemporaryFileName, true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
@@ -175,6 +181,8 @@ public class PerformanceAppLogUtils extends BaseUtils {
             out.println();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            Logger.getLogger(PerformanceAppLogUtils.class).debug("createSummaryFile completed");
         }
     }
 
@@ -250,6 +258,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
         String sourceFileName = getProperty(PHOENIX_SERVER_LOG_FILE_NAME_PREFIX) + getProperty(API_VERSION) +
                 getProperty(PHOENIX_SERVER_LOG_FILE_EXTENSION);
         String remoteFilePath = remoteSourceFileDir + sourceFileName;
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("remoteFilePath: " + remoteFilePath);
 
         //domain, username, password
         DefaultFileSystemConfigBuilder.getInstance().setUserAuthenticator(options, auth);
@@ -279,6 +288,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
                 }
             }
         }
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("getRemoteAppLogFileNames(): completed");
         return fileNames;
     }
 
@@ -290,6 +300,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
      * @return map contains all methods and kaltura sessions related to regression
      */
     private static Map<String, List<String>> loadMethodsAndSessionsFromTestFile() {
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("loadMethodsAndSessionsFromTestFile(): started");
         Map<String, List<String>> result = new HashMap<>();
         String[] values;
         try {
@@ -311,6 +322,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            Logger.getLogger(PerformanceAppLogUtils.class).debug("loadMethodsAndSessionsFromTestFile(): completed");
             return result;
         }
     }
