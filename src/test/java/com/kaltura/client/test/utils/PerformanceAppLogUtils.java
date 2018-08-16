@@ -169,11 +169,13 @@ public class PerformanceAppLogUtils extends BaseUtils {
             out.println("Max allowed percentage: " + getProperty(MAX_ALLOWED_PERCENTAGE));
             out.println("Max allowed execution time in seconds: " + getProperty(MAX_ALLOWED_EXECUTION_TIME_IN_SEC));
             out.println();
+            out.println("Summary of slow methods are below:");
+            out.println();
             for (String method : methodsAndSlowRatioData.keySet()) {
                 if (methodsAndSlowRatioData.get(method).slowCount > 0) {
                     out.println(method + " was slow " + String.format("%.2f", methodsAndSlowRatioData.get(method).slowCount *
                             1.0 / methodsAndSlowRatioData.get(method).totalCount * 100) + "% of executions (" +
-                            methodsAndSlowRatioData.get(method).slowCount * 1.0 + "/" + methodsAndSlowRatioData.get(method).totalCount + ")");
+                            methodsAndSlowRatioData.get(method).slowCount + "/" + methodsAndSlowRatioData.get(method).totalCount + ")");
                 }
             }
 
@@ -196,8 +198,8 @@ public class PerformanceAppLogUtils extends BaseUtils {
             if (timeOfCB > 0 || timeOfDB > 0 || timeOfES > 0 || timeOfRabbit > 0) {
                 out.println(method);
                 out.println(xKalturaSession);
-                out.println("Execution Time: " + totalTime);
-                out.println("Code: " + String.format("%.2f", codeTimePercentage) + "% (" + timeOfCode + ")");
+                out.println("Execution Time: " + String.format("%.3f", totalTime));
+                out.println("Code: " + String.format("%.2f", codeTimePercentage) + "% (" + String.format("%.3f", timeOfCode) + ")");
                 writeIfValueMoreThanZero(out, "Couchbase: ", timeOfCB, totalTime, countOfCB);
                 writeIfValueMoreThanZero(out, "DB: ", timeOfDB, totalTime, countOfDB);
                 writeIfValueMoreThanZero(out, "Elastic: ", timeOfES, totalTime, countOfES);
@@ -211,7 +213,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
     private static void writeIfValueMoreThanZero(PrintWriter out, String title, double timeOfEvent, double totalTime, int countOfEvent) {
         if (timeOfEvent > 0) {
-            out.println(title + " " + String.format("%.2f", timeOfEvent / totalTime * 100) + "% (" + timeOfEvent + ") [" + countOfEvent + " query(-ies)]");
+            out.println(title + " " + String.format("%.2f", timeOfEvent / totalTime * 100) + "% (" + String.format("%.3f", timeOfEvent) + ") [" + countOfEvent + " queries]");
         }
     }
 
