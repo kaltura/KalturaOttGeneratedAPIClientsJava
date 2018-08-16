@@ -145,6 +145,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
 
     private static void addReportDataIntoSummaryFile(String fromFile, String toFile) {
         Logger.getLogger(PerformanceAppLogUtils.class).debug("addReportDataIntoSummaryFile started");
+        Logger.getLogger(PerformanceAppLogUtils.class).debug(Paths.get(fromFile));
         try (BufferedReader br = Files.newBufferedReader(Paths.get(fromFile));
              FileWriter fw = new FileWriter(toFile, true);
              BufferedWriter bw = new BufferedWriter(fw);
