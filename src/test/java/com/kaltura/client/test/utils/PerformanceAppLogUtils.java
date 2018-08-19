@@ -2,11 +2,14 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import lombok.Data;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.auth.StaticUserAuthenticator;
 import org.apache.commons.vfs2.impl.DefaultFileSystemConfigBuilder;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -29,7 +32,8 @@ public class PerformanceAppLogUtils extends BaseUtils {
     private static final String domain = getProperty(PHOENIX_SERVER_DOMAIN_NAME);
     private static final String userName = getProperty(PHOENIX_SERVER_USER_NAME);
     private static final String password = getProperty(PHOENIX_SERVER_PASSWORD);
-    private static final String remoteSourceFileDir = getProperty(PHOENIX_SERVER_LOGS_DIRECTORY) + getProperty(API_VERSION) + "\\";
+    private static final String remoteSourceFileDir = getProperty(PHOENIX_SERVER_LOGS_DIRECTORY) + getProperty(API_VERSION) + "/";
+    private static final String remoteSourceUrlFileDir = getProperty(PHOENIX_SERVER_LOGS_DIRECTORY_URL) + getProperty(API_VERSION) + "\\";
     private static final UserAuthenticator auth = new StaticUserAuthenticator(domain, userName, password);
     private static final FileSystemOptions options = new FileSystemOptions();
 
@@ -68,7 +72,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
                 copyRemoteFile2LocalMachine(fileName);
             }
 
-            // aggregeted last regression results
+            // aggregated last regression results
             Map<String, List<String>> methodsAndKalturaSessions = loadMethodsAndSessionsFromTestFile();
 
             Map<String, SlowRatio> methodsAndSlowRatioData = new HashMap<>();
@@ -228,7 +232,7 @@ public class PerformanceAppLogUtils extends BaseUtils {
                     getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) + "] was created == [" + isDirCreated + "]");
         }
 
-        String remoteFilePath = remoteSourceFileDir + remoteFileName;
+        String remoteFilePathUrl = remoteSourceUrlFileDir + remoteFileName;
         String localTargetFilePath = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) + "copied-" + remoteFileName;
         appLogLocalFileNames.add(localTargetFilePath);
 
@@ -238,20 +242,22 @@ public class PerformanceAppLogUtils extends BaseUtils {
             targetFile.delete();
         }
         targetFile.createNewFile();
-        FileObject destination = VFS.getManager().resolveFile(targetFile.getAbsolutePath());
+        //FileObject destination = VFS.getManager().resolveFile(targetFile.getAbsolutePath());
 
         //domain, username, password
-        DefaultFileSystemConfigBuilder.getInstance().setUserAuthenticator(options, auth);
+        //DefaultFileSystemConfigBuilder.getInstance().setUserAuthenticator(options, auth);
 
-        FileObject fileObject = VFS.getManager().resolveFile(remoteFilePath, options);
+        //FileObject fileObject = VFS.getManager().resolveFile(remoteFilePath, options);
 
         // copy file from remote to local folder
-        if (fileObject.exists()) {
-            destination.copyFrom(fileObject, Selectors.SELECT_SELF);
+//        if (fileObject.exists()) {
+//            destination.copyFrom(fileObject, Selectors.SELECT_SELF);
+//        }
+        if (isUrlExists(remoteFilePathUrl)) {
+            FileUtils.copyURLToFile(new URL(remoteFilePathUrl), targetFile);
         }
-        destination.close();
-        Logger.getLogger(PerformanceAppLogUtils.class).debug("File [" + remoteFilePath + "] was copied into [" + localTargetFilePath + "]");
-
+        //destination.close();
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("File [" + remoteFilePathUrl + "] was copied into [" + localTargetFilePath + "]");
         Logger.getLogger(PerformanceAppLogUtils.class).debug("copyRemoteFile2LocalMachine(): completed");
     }
 
@@ -260,39 +266,62 @@ public class PerformanceAppLogUtils extends BaseUtils {
         List<String> fileNames = new ArrayList<>();
         String sourceFileName = getProperty(PHOENIX_SERVER_LOG_FILE_NAME_PREFIX) + getProperty(API_VERSION) +
                 getProperty(PHOENIX_SERVER_LOG_FILE_EXTENSION);
-        String remoteFilePath = remoteSourceFileDir + sourceFileName;
-        Logger.getLogger(PerformanceAppLogUtils.class).debug("remoteFilePath: " + remoteFilePath);
+        String remoteFilePathUrl = remoteSourceUrlFileDir + sourceFileName;
+        Logger.getLogger(PerformanceAppLogUtils.class).debug("remoteFilePathUrl: " + remoteFilePathUrl);
 
-        //domain, username, password
-        DefaultFileSystemConfigBuilder.getInstance().setUserAuthenticator(options, auth);
+//        //domain, username, password
+//        DefaultFileSystemConfigBuilder.getInstance().setUserAuthenticator(options, auth);
+//
+//        FileObject fileObject = VFS.getManager().resolveFile(remoteFilePathUrl, options);
 
-        FileObject fileObject = VFS.getManager().resolveFile(remoteFilePath, options);
-
-        if (fileObject.exists()) {
+//        if (fileObject.exists()) {
+//            fileNames.add(sourceFileName);
+//        } else {
+//            Logger.getLogger(PerformanceAppLogUtils.class).error("getRemoteAppLogFileNames(): file not found!");
+//        }
+        if (isUrlExists(remoteFilePathUrl)) {
             fileNames.add(sourceFileName);
         } else {
             Logger.getLogger(PerformanceAppLogUtils.class).error("getRemoteAppLogFileNames(): file not found!");
         }
         int idx = 1;
-        while (fileObject.exists()) {
-            // all files related needed logs have the same name as value from sourceFileName and additionally they have suffix looks like ".1", ".2", etc
+        while (isUrlExists(remoteFilePathUrl)) {
+            // all files related needed logs have the same name as value from sourceFileName and additionally they have
+            // suffixes that looks like ".1", ".2", etc...
             String name = sourceFileName + "." + idx;
-            fileObject = VFS.getManager().resolveFile(remoteSourceFileDir + name, options);
+            //fileObject = VFS.getManager().resolveFile(remoteSourceFileDir + name, options);
             idx++;
             // sometimes file can be removed and it means we should one more time check names
-            if (fileObject.exists()) {
+            if (isUrlExists(remoteSourceUrlFileDir + name)) {
                 fileNames.add(name);
             } else {
+                // to handle case when next file has difference in suffixes bigger than 1
                 name = sourceFileName + "." + idx;
-                fileObject = VFS.getManager().resolveFile(remoteSourceFileDir + name, options);
                 idx++;
-                if (fileObject.exists()) {
+                if (isUrlExists(remoteSourceUrlFileDir + name)) {
                     fileNames.add(name);
                 }
             }
         }
         Logger.getLogger(PerformanceAppLogUtils.class).debug("getRemoteAppLogFileNames(): completed");
         return fileNames;
+    }
+
+    /*If the connection to a URL (made with HttpURLConnection) returns with HTTP status code 200 then the file exists.
+        Since we only care it exists or not there is no need to request the entire document.
+        We can just request the header using the HTTP HEAD request method to check if it exists.*/
+    private static boolean isUrlExists(String fileUrl) {
+        try {
+            HttpURLConnection.setFollowRedirects(false);
+            // note : you may also need HttpURLConnection.setInstanceFollowRedirects(false)
+            HttpURLConnection con = (HttpURLConnection) new URL(fileUrl).openConnection();
+            con.setRequestMethod("HEAD");
+            return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
