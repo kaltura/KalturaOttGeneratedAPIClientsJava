@@ -291,14 +291,16 @@ public class PerformanceAppLogUtils extends BaseUtils {
             String name = sourceFileName + "." + idx;
             //fileObject = VFS.getManager().resolveFile(remoteSourceFileDir + name, options);
             idx++;
+            remoteFilePathUrl = remoteSourceUrlFileDir + name;
             // sometimes file can be removed and it means we should one more time check names
-            if (isUrlExists(remoteSourceUrlFileDir + name)) {
+            if (isUrlExists(remoteFilePathUrl)) {
                 fileNames.add(name);
             } else {
                 // to handle case when next file has difference in suffixes bigger than 1
                 name = sourceFileName + "." + idx;
                 idx++;
-                if (isUrlExists(remoteSourceUrlFileDir + name)) {
+                remoteFilePathUrl = remoteSourceUrlFileDir + name;
+                if (isUrlExists(remoteFilePathUrl)) {
                     fileNames.add(name);
                 }
             }
