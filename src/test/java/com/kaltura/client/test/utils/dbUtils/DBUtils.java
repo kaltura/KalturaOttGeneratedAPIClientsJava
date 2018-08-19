@@ -5,6 +5,7 @@ import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.tests.enums.PremiumService;
 import com.kaltura.client.test.utils.BaseUtils;
+import com.kaltura.client.types.Ppv;
 import com.kaltura.client.types.PricePlan;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
@@ -230,6 +231,18 @@ public class DBUtils extends BaseUtils {
     public static PricePlan loadPPWithoutWaiver() {
         JSONArray jsonArray = getJsonArrayFromQueryResult(PRICE_PLAN_WITHOUT_WAVER_SELECT, partnerId);
         return loadFirstPricePlanFromJsonArray(jsonArray);
+    }
+
+    public static Ppv loadPPVByPPWithoutWaiver() {
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PPV_SELECT_BY_PRICE_PLAN_WITHOUT_WAIVER, partnerId);
+
+        Ppv ppv = new Ppv();
+        ppv.setId(String.valueOf(jsonArray.getJSONObject(0).getInt(ID)));
+        ppv.setName(jsonArray.getJSONObject(0).getString(NAME));
+        ppv.setIsSubscriptionOnly(jsonArray.getJSONObject(0).getInt(SUBSCRIPTION_ONLY) == 0);
+        // TODO: add more data in case it needed
+
+        return ppv;
     }
 
     public static JSONObject getHouseholdById(int householdId) {

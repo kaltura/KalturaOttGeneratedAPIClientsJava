@@ -14,6 +14,7 @@ import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.OttUserUtils;
 import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -22,10 +23,8 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.util.List;
 import java.util.Optional;
-
 import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.services.EntitlementService.*;
 import static com.kaltura.client.services.HouseholdService.delete;
@@ -33,6 +32,8 @@ import static com.kaltura.client.test.Properties.WEB_FILE_TYPE;
 import static com.kaltura.client.test.Properties.getProperty;
 import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestMppUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntitlementCancelTests extends BaseTest {
@@ -53,7 +54,7 @@ public class EntitlementCancelTests extends BaseTest {
         subscriptionId = Integer.valueOf(getSharedCommonSubscription().getId());
 
         // set household
-        testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, false);
+        testSharedHousehold = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
         testSharedMasterUser = HouseholdUtils.getMasterUser(testSharedHousehold);
 
         playerData = new BookmarkPlayerData();
@@ -192,46 +193,18 @@ public class EntitlementCancelTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("entitlement/action/cancel - cancel subscription in cancellation window - error 3001")
-    @Test(enabled = false) //TODO: as not completed
+    @Test
     public void cancelSubscriptionInCancellationWindow() {
-/*        // create mpp having at least 1 media on its channel
-        sharedChannel.setFilterExpression("name='" + getSharedMediaAsset().getName() + "'");
-        AddChannelBuilder addChannelBuilder = ChannelService.add(sharedChannel);
-        Response<Channel> channelResponse = executor.executeSync(addChannelBuilder.setKs(getManagerKs()));
-        sharedChannel.setId(channelResponse.results.getId());*/
+        // create MPP with enabled cancellation window
         PricePlan pricePlan = DBUtils.loadPPWithoutWaiver();
-
         MppData mppData = new MppData()
                 .pricePlanCode1(pricePlan.getName())
                 .isRenewable(true);
         Subscription subscription = insertMpp(mppData);
 
-        // set household
-        /*Household household = HouseholdUtils.createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
-        String masterKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesListFromHouseHold(household).get(0).getUdid());*/
+        // purchase ingested MPP using shared HH
         String masterKs = OttUserUtils.getKs(Integer.parseInt(testSharedMasterUser.getUserId()), null);
-
         PurchaseUtils.purchaseSubscription(masterKs, Integer.valueOf(subscription.getId()), Optional.empty());
-
-        /*// get CDN code for media
-        MediaFile mediaFile = getMediaFileByType(getSharedMediaAsset(), getProperty(WEB_FILE_TYPE));
-        String cdnCode = mediaFile.getUrl();
-
-        // check license for play
-        LicensedUrlMediaRequest licensedUrlRequest = new LicensedUrlMediaRequest();
-        licensedUrlRequest.setAssetId(String.valueOf(getSharedMediaAsset().getId()));
-        licensedUrlRequest.setContentId(mediaFile.getId());
-        licensedUrlRequest.setBaseUrl(cdnCode);
-        GetLicensedUrlBuilder licensedUrlBuilder = LicensedUrlService.get(licensedUrlRequest);
-        Response<LicensedUrl> urlResponse = executor.executeSync(licensedUrlBuilder.setKs(masterKs));
-        assertThat(urlResponse.results).isNotNull();
-        // play
-        playerData.setFileId(mediaFile.getId().longValue());
-        bookmark.setPlayerData(playerData);
-        bookmark.setId(String.valueOf(getSharedMediaAsset().getId()));
-        AddBookmarkBuilder addBookmarkBuilder = BookmarkService.add(bookmark);
-        Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder.setKs(masterKs));
-        assertThat(booleanResponse.results.booleanValue()).isTrue();*/
 
         // try cancel
         CancelEntitlementBuilder cancelEntitlementBuilder = cancel(Integer.valueOf(subscription.getId()),
@@ -240,14 +213,36 @@ public class EntitlementCancelTests extends BaseTest {
         assertThat(booleanResponse.results).isNull();
         assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3001).getCode());
 
-        // delete household for cleanup
-        //executor.executeSync(delete(Math.toIntExact(household.getId())).setKs(getAdministratorKs()));
-
         //delete subscription
         deleteMpp(subscription.getName());
+    }
 
-        // delete channel
-        //executor.executeSync(ChannelService.delete(Math.toIntExact(sharedChannel.getId())).setKs(getManagerKs()));
+    // TODO: 5/22/2018 add cancel ppv test with dynamic data
+    @Severity(SeverityLevel.NORMAL)
+    @Description("entitlement/action/cancel - cancel ppv in cancellation window - error 3001")
+    @Test
+    public void cancelPpvInCancellationWindow() {
+        // ingest VOD having PPV with price plan without waiver
+        Ppv ppv = DBUtils.loadPPVByPPWithoutWaiver();
+        IngestVodUtils.VodData vodData = new IngestVodUtils.VodData()
+                .ppvWebName(ppv.getName())
+                .ppvMobileName(ppv.getName());
+        MediaAsset mediaAsset = insertVod(vodData);
+
+        String masterKs = OttUserUtils.getKs(Integer.parseInt(testSharedMasterUser.getUserId()), null);
+        // purchase ppv
+        Integer mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
+        Response<Transaction> transactionResponse = PurchaseUtils.purchasePpv(masterKs, Optional.of(Math.toIntExact(mediaAsset.getId())),
+                Optional.of(mediaFileId), Optional.empty());
+
+        // try cancel
+        CancelEntitlementBuilder cancelEntitlementBuilder = cancel(mediaFileId, TransactionType.PPV);
+        Response<Boolean> booleanResponse = executor.executeSync(cancelEntitlementBuilder.setKs(masterKs));
+        assertThat(booleanResponse.results).isNull();
+        assertThat(booleanResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(3001).getCode());
+
+        //delete Vod
+        deleteVod(mediaAsset.getName());
     }
 
     @AfterClass
@@ -255,5 +250,4 @@ public class EntitlementCancelTests extends BaseTest {
         // delete shared household for cleanup
         executor.executeSync(delete(Math.toIntExact(testSharedHousehold.getId())).setKs(getAdministratorKs()));
     }
-    // TODO: 5/22/2018 add cancel ppv test with dynamic data
 }
