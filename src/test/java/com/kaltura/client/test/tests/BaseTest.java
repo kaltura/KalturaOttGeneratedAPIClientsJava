@@ -62,6 +62,7 @@ public class BaseTest {
     // shared common params
     public static int partnerId;
 //    public static int opcPartnerId;
+    public static boolean isOprGroup;
     public static String defaultUserPassword;
 
     // shared ks's
@@ -131,8 +132,10 @@ public class BaseTest {
 
         // set shared common params
         partnerId = Integer.parseInt(getProperty(PARTNER_ID));
+        isOprGroup = "true".equals(getProperty(IS_OPC_GROUP));
 //        opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
+
     }
 
     @BeforeMethod
@@ -276,7 +279,9 @@ public class BaseTest {
 
     public static String getIngestAssetUserName() {
         if (ingestAssetUserUsername == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 1);
+            String userInfo = isOprGroup
+                    ? IngestFixtureData.getIngestItemUserData(partnerId)
+                    : IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -285,7 +290,9 @@ public class BaseTest {
 
     public static String getIngestAssetUserPassword() {
         if (ingestAssetUserPassword == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 1);
+            String userInfo = isOprGroup
+                    ? IngestFixtureData.getIngestItemUserData(partnerId)
+                    : IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
             ingestAssetUserPassword = userInfo.split(":")[1];
         }
@@ -294,7 +301,9 @@ public class BaseTest {
 
     public static String getIngestVirualAssetUserName() {
         if (ingestVirtualAssetUserUsername == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
+            String userInfo = isOprGroup
+                    ? IngestFixtureData.getIngestItemUserData(partnerId)
+                    : IngestFixtureData.getIngestItemUserData(partnerId + 2);
             ingestVirtualAssetUserUsername = userInfo.split(":")[0];
             ingestVirtualAssetUserPassword = userInfo.split(":")[1];
         }
@@ -303,7 +312,9 @@ public class BaseTest {
 
     public static String getIngestVirualAssetUserPassword() {
         if (ingestVirtualAssetUserPassword == null) {
-            String userInfo = IngestFixtureData.getIngestItemUserData(partnerId + 2);
+            String userInfo = isOprGroup
+                    ? IngestFixtureData.getIngestItemUserData(partnerId)
+                    : IngestFixtureData.getIngestItemUserData(partnerId + 2);
             ingestVirtualAssetUserUsername = userInfo.split(":")[0];
             ingestVirtualAssetUserPassword = userInfo.split(":")[1];
         }
@@ -349,7 +360,7 @@ public class BaseTest {
     public static MediaAsset getSharedMediaAsset() {
         if (mediaAsset == null) {
             VodData vodData = new VodData();
-            mediaAsset = insertVod(vodData);
+            mediaAsset = insertVod(vodData, true);
         }
         return mediaAsset;
     }
@@ -469,7 +480,7 @@ public class BaseTest {
         if (name != null) {
             // ingest VOD by name
             VodData vodData = new VodData();
-            MediaAsset mediaAsset = insertVod(vodData);
+            MediaAsset mediaAsset = insertVod(vodData, true);
 
             vodData.name(name);
             updateVod(mediaAsset.getName(), vodData);
@@ -482,7 +493,7 @@ public class BaseTest {
             tags.put(tag, values);
 
             VodData vodData = new VodData().tags(tags);
-            insertVod(vodData);
+            insertVod(vodData, true);
         }
     }
 

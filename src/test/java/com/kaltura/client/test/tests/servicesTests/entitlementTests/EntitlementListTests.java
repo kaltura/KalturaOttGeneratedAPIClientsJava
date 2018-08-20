@@ -197,7 +197,7 @@ public class EntitlementListTests extends BaseTest {
                 Optional.of(getSharedWebMediaFile().getId()), Optional.empty());
 
         VodData vodData = new VodData();
-        MediaAsset mediaAsset = insertVod(vodData);
+        MediaAsset mediaAsset = insertVod(vodData, true);
 
         int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
         PurchaseUtils.purchasePpv(masterUserKs, Optional.of(Math.toIntExact(mediaAsset.getId())),

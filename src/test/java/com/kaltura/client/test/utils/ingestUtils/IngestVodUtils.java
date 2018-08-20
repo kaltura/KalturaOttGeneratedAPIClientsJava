@@ -67,7 +67,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
     /** IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid" **/
 
-    public static MediaAsset insertVod(VodData vodData) {
+    public static MediaAsset insertVod(VodData vodData, boolean areDefaultValuesRequired) {
         final String coguidDatePattern = "yyMMddHHmmssSS";
         final String datePattern = "dd/MM/yyyy hh:mm:ss";
         final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
@@ -76,20 +76,50 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
 
-        if (vodData.name == null) { vodData.name = vodData.coguid; }
-        if (vodData.description == null) { vodData.description = "description of " + vodData.coguid; }
-        if (vodData.thumbUrl == null) { vodData.thumbUrl = DEFAULT_THUMB; }
-        if (vodData.catalogStartDate == null) { vodData.catalogStartDate = offsetDateValue; }
-        if (vodData.catalogEndDate == null) { vodData.catalogEndDate = endDateValue; }
-        if (vodData.startDate == null) { vodData.startDate = offsetDateValue; }
-        if (vodData.endDate == null) { vodData.endDate = endDateValue; }
-        if (vodData.mediaType == null) { vodData.mediaType = MediaType.MOVIE; }
-        if (vodData.ppvWebName == null) { vodData.ppvWebName = ppvModuleName; }
-        if (vodData.ppvMobileName == null) { vodData.ppvMobileName = ppvModuleName; }
-        if (vodData.tags == null) { vodData.tags = getDefaultTags(); }
-        if (vodData.strings == null) { vodData.strings = getDefaultStrings(); }
-        if (vodData.dates == null) { vodData.dates = getDefaultDates(); }
-        if (vodData.numbers == null) { vodData.numbers = getDefaultNumbers(); }
+        if (areDefaultValuesRequired) {
+            if (vodData.name == null) {
+                vodData.name = vodData.coguid;
+            }
+            if (vodData.description == null) {
+                vodData.description = "description of " + vodData.coguid;
+            }
+            if (vodData.thumbUrl == null) {
+                vodData.thumbUrl = DEFAULT_THUMB;
+            }
+            if (vodData.catalogStartDate == null) {
+                vodData.catalogStartDate = offsetDateValue;
+            }
+            if (vodData.catalogEndDate == null) {
+                vodData.catalogEndDate = endDateValue;
+            }
+            if (vodData.startDate == null) {
+                vodData.startDate = offsetDateValue;
+            }
+            if (vodData.endDate == null) {
+                vodData.endDate = endDateValue;
+            }
+            if (vodData.mediaType == null) {
+                vodData.mediaType = MediaType.MOVIE;
+            }
+            if (vodData.ppvWebName == null) {
+                vodData.ppvWebName = ppvModuleName;
+            }
+            if (vodData.ppvMobileName == null) {
+                vodData.ppvMobileName = ppvModuleName;
+            }
+            if (vodData.tags == null) {
+                vodData.tags = getDefaultTags();
+            }
+            if (vodData.strings == null) {
+                vodData.strings = getDefaultStrings();
+            }
+            if (vodData.dates == null) {
+                vodData.dates = getDefaultDates();
+            }
+            if (vodData.numbers == null) {
+                vodData.numbers = getDefaultNumbers();
+            }
+        }
 
         String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_INSERT);
 
@@ -180,29 +210,45 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // name
-        Element nameElement = (Element) media.getElementsByTagName("name").item(0);
-        nameElement.getElementsByTagName("value").item(0).setTextContent(vodData.name());
+        if (vodData.name() != null) {
+            Element nameElement = (Element) media.getElementsByTagName("name").item(0);
+            nameElement.getElementsByTagName("value").item(0).setTextContent(vodData.name());
+        }
 
         // thumb
-        Element thumb = (Element) media.getElementsByTagName("thumb").item(0);
-        thumb.setAttribute("ingestUrl", vodData.thumbUrl());
+        if (vodData.thumbUrl() != null) {
+            Element thumb = (Element) media.getElementsByTagName("thumb").item(0);
+            thumb.setAttribute("ingestUrl", vodData.thumbUrl());
+        }
 
         // description
-        Element descriptionElement = (Element) media.getElementsByTagName("description").item(0);
-        descriptionElement.getElementsByTagName("value").item(0).setTextContent(vodData.description());
+        if (vodData.description() != null) {
+            Element descriptionElement = (Element) media.getElementsByTagName("description").item(0);
+            descriptionElement.getElementsByTagName("value").item(0).setTextContent(vodData.description());
+        }
 
         // dates
         Element datesElement = (Element) media.getElementsByTagName("dates").item(0);
-        datesElement.getElementsByTagName("catalog_start").item(0).setTextContent(vodData.catalogStartDate());
-        datesElement.getElementsByTagName("start").item(0).setTextContent(vodData.startDate());
-        datesElement.getElementsByTagName("catalog_end").item(0).setTextContent(vodData.catalogEndDate());
-        datesElement.getElementsByTagName("end").item(0).setTextContent(vodData.endDate());
+        if (vodData.catalogStartDate() != null) {
+            datesElement.getElementsByTagName("catalog_start").item(0).setTextContent(vodData.catalogStartDate());
+        }
+        if (vodData.startDate() != null) {
+            datesElement.getElementsByTagName("start").item(0).setTextContent(vodData.startDate());
+        }
+        if (vodData.catalogEndDate() != null) {
+            datesElement.getElementsByTagName("catalog_end").item(0).setTextContent(vodData.catalogEndDate());
+        }
+        if (vodData.endDate() != null) {
+            datesElement.getElementsByTagName("end").item(0).setTextContent(vodData.endDate());
+        }
 
         // pic_ratios
         Element picRatios = (Element) media.getElementsByTagName("pic_ratios").item(0);
         for (Node n : asList(picRatios.getElementsByTagName("ratio"))) {
-            Element e = (Element) n;
-            e.setAttribute("thumb", vodData.thumbUrl());
+            if (vodData.thumbUrl() != null) {
+                Element e = (Element) n;
+                e.setAttribute("thumb", vodData.thumbUrl());
+            }
         }
 
         // media type
@@ -211,7 +257,9 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // geo block rule
-        media.getElementsByTagName("geo_block_rule").item(0).setTextContent(vodData.geoBlockRule());
+        if (vodData.geoBlockRule() != null) {
+            media.getElementsByTagName("geo_block_rule").item(0).setTextContent(vodData.geoBlockRule());
+        }
 
         // strings
         if (vodData.strings() != null) {
@@ -271,15 +319,19 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // file types
-        Element file1 = (Element) media.getElementsByTagName("file").item(0);
-        file1.setAttribute("type", getProperty(WEB_FILE_TYPE));
-        file1.setAttribute("co_guid", "web_" + vodData.coguid());
-        file1.setAttribute("PPV_MODULE", vodData.ppvWebName());
+        if (vodData.ppvWebName() != null) {
+            Element file1 = (Element) media.getElementsByTagName("file").item(0);
+            file1.setAttribute("type", getProperty(WEB_FILE_TYPE));
+            file1.setAttribute("co_guid", "web_" + vodData.coguid());
+            file1.setAttribute("PPV_MODULE", vodData.ppvWebName());
+        }
 
-        Element file2 = (Element) media.getElementsByTagName("file").item(1);
-        file2.setAttribute("type", getProperty(MOBILE_FILE_TYPE));
-        file2.setAttribute("co_guid", "ipad_" + vodData.coguid());
-        file2.setAttribute("PPV_MODULE", vodData.ppvMobileName());
+        if (vodData.ppvMobileName() != null) {
+            Element file2 = (Element) media.getElementsByTagName("file").item(1);
+            file2.setAttribute("type", getProperty(MOBILE_FILE_TYPE));
+            file2.setAttribute("co_guid", "ipad_" + vodData.coguid());
+            file2.setAttribute("PPV_MODULE", vodData.ppvMobileName());
+        }
 
         // uncomment cdata
         String docAsString = docToString(doc);

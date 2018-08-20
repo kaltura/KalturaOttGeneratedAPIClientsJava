@@ -61,7 +61,7 @@ public class AssetCountTests extends BaseTest {
         IngestVodUtils.VodData vodData1 = new IngestVodUtils.VodData()
                 .mediaType(MOVIE)
                 .strings(stringMetaMap);
-        asset = insertVod(vodData1);
+        asset = insertVod(vodData1, true);
 
         HashMap<String, String> stringMetaMap2 = new HashMap<>();
         stringMetaMap2.put(metaName1, metaValue1);
@@ -73,7 +73,7 @@ public class AssetCountTests extends BaseTest {
                 .mediaType(MOVIE)
                 .strings(stringMetaMap2);
 
-        asset2 = insertVod(vodData2);
+        asset2 = insertVod(vodData2, true);
 
         HashMap<String, String> epgMetas = new HashMap<>();
         epgMetas.put(epgMetaName, epgMetaValue);

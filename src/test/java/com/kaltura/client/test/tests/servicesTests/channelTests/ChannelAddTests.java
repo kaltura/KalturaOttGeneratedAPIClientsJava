@@ -135,13 +135,13 @@ public class ChannelAddTests extends BaseTest {
         VodData vodData = new VodData()
                 .name(asset1Name)
                 .mediaType(MediaType.MOVIE);
-        MediaAsset movieAsset = insertVod(vodData);
+        MediaAsset movieAsset = insertVod(vodData, true);
 
         // Ingest second asset
         VodData vodData1 = new VodData()
                 .name(asset2Name)
                 .mediaType(MediaType.EPISODE);
-        MediaAsset episodeAsset = insertVod(vodData1);
+        MediaAsset episodeAsset = insertVod(vodData1, true);
 
         String ksqlExpression = "(or name = '" + movieAsset.getName() + "' name = '" + episodeAsset.getName() + "')";
         ChannelOrder channelOrder = new ChannelOrder();

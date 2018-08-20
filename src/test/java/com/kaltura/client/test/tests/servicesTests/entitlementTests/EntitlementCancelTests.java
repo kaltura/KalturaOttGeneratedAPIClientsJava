@@ -227,7 +227,7 @@ public class EntitlementCancelTests extends BaseTest {
         IngestVodUtils.VodData vodData = new IngestVodUtils.VodData()
                 .ppvWebName(ppv.getName())
                 .ppvMobileName(ppv.getName());
-        MediaAsset mediaAsset = insertVod(vodData);
+        MediaAsset mediaAsset = insertVod(vodData, true);
 
         String masterKs = OttUserUtils.getKs(Integer.parseInt(testSharedMasterUser.getUserId()), null);
         // purchase ppv

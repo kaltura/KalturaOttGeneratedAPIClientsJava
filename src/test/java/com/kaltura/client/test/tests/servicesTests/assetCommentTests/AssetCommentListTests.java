@@ -46,7 +46,7 @@ public class AssetCommentListTests extends BaseTest {
 
         VodData vodData = new VodData()
                 .mediaType(MediaType.MOVIE);
-        Long assetId = insertVod(vodData).getId();
+        Long assetId = insertVod(vodData, true).getId();
 
         // Initialize assetComment object
         AssetComment assetComment = AssetCommentUtils.assetComment(Math.toIntExact(assetId), AssetType.MEDIA, writer, text, createDate, subHeader, header);

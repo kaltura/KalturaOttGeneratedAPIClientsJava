@@ -616,7 +616,7 @@ public class ProductPriceListTests extends BaseTest {
         VodData vodData = new VodData()
                 .ppvWebName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS)
                 .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_DISCOUNT_PERCENTS);
-        MediaAsset mediaAsset = insertVod(vodData);
+        MediaAsset mediaAsset = insertVod(vodData, true);
 
         int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
         int assetWithMultiCurrencyId = Math.toIntExact(mediaAsset.getId());
@@ -676,7 +676,7 @@ public class ProductPriceListTests extends BaseTest {
         VodData vodData = new VodData()
                 .ppvWebName(PPV_WITH_MULTI_CURRENCIES_AND_FIXED_DISCOUNT)
                 .ppvMobileName(PPV_WITH_MULTI_CURRENCIES_AND_FIXED_DISCOUNT);
-        MediaAsset mediaAsset = insertVod(vodData);
+        MediaAsset mediaAsset = insertVod(vodData, true);
 
         int mediaFileId = mediaAsset.getMediaFiles().get(0).getId();
         int assetWithMultiCurrencyId = Math.toIntExact(mediaAsset.getId());
@@ -733,7 +733,7 @@ public class ProductPriceListTests extends BaseTest {
 
         VodData vodData = new VodData()
                 .ppvMobileName(ppvMobileModule);
-        MediaAsset mediaAssetWith2Ppv1Expired = insertVod(vodData);
+        MediaAsset mediaAssetWith2Ppv1Expired = insertVod(vodData, true);
 
         ProductPriceFilter ppFilter = new ProductPriceFilter();
         ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));
@@ -750,7 +750,7 @@ public class ProductPriceListTests extends BaseTest {
         ppvMobileModule = getSharedCommonPpv().getName() + ppvWithExpiredDate;
         VodData vodData1 = new VodData()
                 .ppvMobileName(ppvMobileModule);
-        mediaAssetWith2Ppv1Expired = insertVod(vodData1);
+        mediaAssetWith2Ppv1Expired = insertVod(vodData1, true);
 
         ppFilter = new ProductPriceFilter();
         ppFilter.setFileIdIn(String.valueOf(mediaAssetWith2Ppv1Expired.getMediaFiles().get(1).getId()));

@@ -3,8 +3,6 @@ package com.kaltura.client.test.tests.servicesTests.AssetTests.AssetListTests;
 import com.kaltura.client.enums.AssetOrderBy;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
-import com.kaltura.client.enums.PlaybackContextType;
-import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.KsqlKey;
 import com.kaltura.client.test.utils.*;
@@ -82,7 +80,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 1
         VodData vodData1 = new VodData()
                 .mediaType(MOVIE);
-        asset = insertVod(vodData1);
+        asset = insertVod(vodData1, true);
 
         // ingest asset 2
         VodData vodData2 = new VodData()
@@ -92,7 +90,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .strings(stringMetaMap1)
                 .geoBlockRule(geoBlockRule);
 
-        asset2 = insertVod(vodData2);
+        asset2 = insertVod(vodData2, true);
 
         // ingest asset 3
         VodData vodData3 = new VodData()
@@ -100,7 +98,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .catalogStartDate(getUtcTimeFormatted(-10))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
-        asset3 = insertVod(vodData3);
+        asset3 = insertVod(vodData3, true);
 
         // ingest epg 1
         EpgData epgData1 = new EpgData(epgChannelName).episodesNum(1);
