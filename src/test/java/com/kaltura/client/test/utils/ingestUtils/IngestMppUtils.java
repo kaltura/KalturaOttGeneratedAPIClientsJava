@@ -3,6 +3,8 @@ package com.kaltura.client.test.utils.ingestUtils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
+import com.kaltura.client.types.CouponsGroup;
+import com.kaltura.client.types.ProductCode;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
 import io.restassured.response.Response;
@@ -13,11 +15,15 @@ import lombok.experimental.Accessors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.utils.BaseUtils.getFormattedTime;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
+import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class IngestMppUtils extends BaseIngestUtils {
@@ -69,8 +75,9 @@ public class IngestMppUtils extends BaseIngestUtils {
         private String channel2;
         private String fileType1;
         private String fileType2;
-        private String couponGroup;
-        private String productCodes;
+
+        private List<CouponsGroup> couponGroups;
+        private List<ProductCode> productCodes;
 
         private Integer gracePeriodMinute;
     }
@@ -98,8 +105,8 @@ public class IngestMppUtils extends BaseIngestUtils {
         if (mppData.gracePeriodMinute == null) { mppData.gracePeriodMinute = DEFAULT_GRACE_PERIOD; }
         if (mppData.pricePlanCode1 == null) { mppData.pricePlanCode1 = getProperty(DEFAULT_USAGE_MODULE_4_INGEST_MPP); }
         if (mppData.channel1 == null) { mppData.channel1 = getProperty(DEFAULT_CHANNEL); }
-        if (mppData.couponGroup == null) { mppData.couponGroup = DEFAULT_COUPON_GROUP; }
-        if (mppData.productCodes == null) { mppData.productCodes = DEFAULT_PRODUCT_CODES; }
+//        if (mppData.couponGroup == null) { mppData.couponGroup = DEFAULT_COUPON_GROUP; }
+//        if (mppData.productCodes == null) { mppData.productCodes = DEFAULT_PRODUCT_CODES; }
 
         String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_INSERT);
         Response resp = executeIngestMppRequest(reqBody);
@@ -230,12 +237,74 @@ public class IngestMppUtils extends BaseIngestUtils {
         mpp.getElementsByTagName("file_type").item(1).setTextContent(mppData.fileType2);
 
         // subscription coupon group
-        mpp.getElementsByTagName("subscription_coupon_group").item(0).setTextContent(mppData.couponGroup);
+        if (mppData.couponGroups != null && mppData.couponGroups.size() > 0) {
+            Element subscriptionCouponGroup = (Element) mpp.getElementsByTagName("subscription_coupon_group").item(0);
+
+            for (CouponsGroup cg : mppData.couponGroups) {
+                subscriptionCouponGroup.appendChild(addCouponsGroup(doc, cg));
+            }
+        }
 
         // product codes
-        mpp.getElementsByTagName("product_codes").item(0).setTextContent(mppData.productCodes);
+        if (mppData.productCodes != null && mppData.productCodes.size() > 0) {
+            Element productCodes = (Element) mpp.getElementsByTagName("product_codes").item(0);
+
+            for (ProductCode pc : mppData.productCodes) {
+                productCodes.appendChild(addProductCode(doc, pc));
+            }
+        }
 
         // uncomment cdata
         return uncommentCdataSection(docToString(doc));
+    }
+
+    private static Element addCouponsGroup(Document doc, CouponsGroup cg) {
+        // coupon_group_id node
+        Element couponsGroup = doc.createElement("coupon_group_id");
+
+        // start_date node
+        if (cg.getStartDate() != null) {
+            Element startDate = doc.createElement("start_date");
+            startDate.setTextContent(getFormattedTime(cg.getStartDate(), getTimeZone("UTC")));
+            couponsGroup.appendChild(startDate);
+        }
+
+        // end_date node
+        if (cg.getEndDate() != null) {
+            Element endDate = doc.createElement("end_date");
+            endDate.setTextContent(getFormattedTime(cg.getEndDate(), getTimeZone("UTC")));
+            couponsGroup.appendChild(endDate);
+        }
+
+        // code node
+        if (cg.getName() != null) {
+            Element code = doc.createElement("code");
+            code.setTextContent(cg.getName());
+            couponsGroup.appendChild(code);
+        }
+
+        // TODO: 8/16/2018 add relevant CouponsGroup fields in case needed
+        return couponsGroup;
+    }
+
+    private static Element addProductCode(Document doc, ProductCode pc) {
+        // product_code node
+        Element productCode = doc.createElement("product_code");
+
+        // code node
+        if (pc.getCode() != null) {
+            Element code = doc.createElement("code");
+            code.setTextContent(pc.getCode());
+            productCode.appendChild(code);
+        }
+
+        // verification_payment_gateway node
+        if (pc.getInappProvider() != null) {
+            Element verificationPaymentGateway = doc.createElement("verification_payment_gateway");
+            verificationPaymentGateway.setTextContent(pc.getInappProvider());
+            productCode.appendChild(verificationPaymentGateway);
+        }
+
+        return productCode;
     }
 }

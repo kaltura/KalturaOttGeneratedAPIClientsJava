@@ -13,6 +13,8 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Calendar;
+
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedUser;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +32,7 @@ public class AppTokenGetTests extends BaseTest {
     @BeforeClass
     private void get_tests_before_class() {
         sessionUserId = getSharedUser().getUserId();
-        expiryDate = BaseUtils.getEpochInLocalTime(offSetInMinutes);
+        expiryDate = BaseUtils.getEpoch(Calendar.MINUTE, offSetInMinutes);
     }
 
     @Severity(SeverityLevel.CRITICAL)

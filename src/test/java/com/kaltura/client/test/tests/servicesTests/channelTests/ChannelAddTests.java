@@ -23,7 +23,7 @@ import java.util.Optional;
 
 import static com.kaltura.client.services.ChannelService.add;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
+import static com.kaltura.client.test.utils.BaseUtils.getEpoch;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
@@ -40,7 +40,7 @@ public class ChannelAddTests extends BaseTest {
 
     @BeforeClass
     private void channel_addTests_before_class() {
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
     }
 
@@ -52,7 +52,7 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
@@ -82,7 +82,7 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
 
@@ -112,7 +112,7 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
 
@@ -147,7 +147,7 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.NAME_DESC);
 
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 
@@ -189,7 +189,7 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, assetTypes);
 
@@ -214,7 +214,7 @@ public class ChannelAddTests extends BaseTest {
         DynamicChannel channel = new DynamicChannel();
         channel.setIsActive(true);
         channel.setOrderBy(channelOrder);
-        channel.setSystemName("systemName " + getEpochInLocalTime());
+        channel.setSystemName("systemName " + getEpoch());
 
         //channel/action/add
         Response<Channel> channelResponse = executor.executeSync(add(channel)
@@ -234,7 +234,7 @@ public class ChannelAddTests extends BaseTest {
         ChannelOrder channelOrder = new ChannelOrder();
         channelOrder.setOrderBy(ChannelOrderBy.LIKES_DESC);
 
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
         channel = ChannelUtils.addDynamicChannel(channelName, description, isActive, ksqlExpression, channelOrder, null);
 

@@ -24,7 +24,6 @@ import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.ProductPriceService.list;
 import static com.kaltura.client.services.TransactionService.purchase;
 import static com.kaltura.client.test.Properties.PAYMENT_GATEWAY_ADAPTER_URL;
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestPpvUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
@@ -84,7 +83,7 @@ public class TransactionPurchaseTests extends BaseTest {
 
         // assert transaction
         assertThat(purchasePpvTransaction).isNotNull();
-        assertThat(purchasePpvTransaction.getCreatedAt()).isCloseTo((int) getEpochInLocalTime(), within(120));
+        assertThat(purchasePpvTransaction.getCreatedAt()).isCloseTo((int) getEpoch(), within(120));
         assertThat(purchasePpvTransaction.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(purchasePpvTransaction.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(purchasePpvTransaction.getFailReasonCode()).isEqualTo(0);
@@ -128,7 +127,7 @@ public class TransactionPurchaseTests extends BaseTest {
 
         // assert transaction
         assertThat(subscriptionTransaction).isNotNull();
-        assertThat(subscriptionTransaction.getCreatedAt()).isCloseTo((int) getEpochInLocalTime(0), within(120));
+        assertThat(subscriptionTransaction.getCreatedAt()).isCloseTo((int) getEpoch(), within(120));
         assertThat(subscriptionTransaction.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(subscriptionTransaction.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(subscriptionTransaction.getFailReasonCode()).isEqualTo(0);
@@ -171,7 +170,7 @@ public class TransactionPurchaseTests extends BaseTest {
 
         // assert transaction
         assertThat(collectionTransaction).isNotNull();
-        assertThat(collectionTransaction.getCreatedAt()).isCloseTo((int) getEpochInLocalTime(0), within(120));
+        assertThat(collectionTransaction.getCreatedAt()).isCloseTo((int) getEpoch(), within(120));
         assertThat(collectionTransaction.getPaymentGatewayResponseId()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(collectionTransaction.getState()).isEqualTo(TransactionAdapterStatus.OK.getValue());
         assertThat(collectionTransaction.getFailReasonCode()).isEqualTo(0);
@@ -238,7 +237,7 @@ public class TransactionPurchaseTests extends BaseTest {
         String externalIdentifier = df.format(new Date());
 
         PaymentGatewayProfile pg = new PaymentGatewayProfile();
-        pg.setName("paymentGateway_" + getEpochInLocalTime());
+        pg.setName("paymentGateway_" + getEpoch());
         pg.setIsActive(1);
         pg.setIsDefault(false);
         pg.setRenewStartMinutes(-5);

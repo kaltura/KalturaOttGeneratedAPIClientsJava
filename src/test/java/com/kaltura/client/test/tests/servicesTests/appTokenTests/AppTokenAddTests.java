@@ -4,7 +4,6 @@ import com.kaltura.client.enums.AppTokenHashType;
 import com.kaltura.client.services.AppTokenService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.AppTokenUtils;
-import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.AppToken;
 import com.kaltura.client.utils.response.base.Response;
@@ -14,12 +13,14 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.AppTokenService.AddAppTokenBuilder;
 import static com.kaltura.client.services.AppTokenService.GetAppTokenBuilder;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.BaseUtils.getEpoch;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
@@ -94,7 +95,7 @@ public class AppTokenAddTests extends BaseTest {
         // setup for test
         add_tests_before_class();
         // prepare token with expiration after 1 minute
-        Long expiryDate = BaseUtils.getEpochInLocalTime(1);
+        Long expiryDate = getEpoch(Calendar.MINUTE, 1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
 
         AddAppTokenBuilder addAppTokenBuilder = AppTokenService.add(appToken)
@@ -142,7 +143,7 @@ public class AppTokenAddTests extends BaseTest {
                 .setKs(getSharedMasterUserKs());
         Response<AppToken> addAppTokenResponse = executor.executeSync(addAppTokenBuilder);
 
-        assertThat(addAppTokenResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(BaseUtils.getEpochInLocalTime(0)));
+        assertThat(addAppTokenResponse.results.getExpiry()).isGreaterThan(Math.toIntExact(getEpoch()));
     }
 
     @Severity(SeverityLevel.CRITICAL)

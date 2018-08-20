@@ -16,6 +16,8 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Calendar;
+
 import static com.kaltura.client.services.AppTokenService.StartSessionAppTokenBuilder;
 import static com.kaltura.client.services.OttUserService.AnonymousLoginOttUserBuilder;
 import static com.kaltura.client.services.OttUserService.anonymousLogin;
@@ -41,7 +43,7 @@ public class AppTokenStartSessionTests extends BaseTest {
         AnonymousLoginOttUserBuilder anonymousLoginOttUserBuilder = anonymousLogin(partnerId, udid1);
         Response<LoginSession> loginSessionResponse = executor.executeSync(anonymousLoginOttUserBuilder);
         anonymousKs = loginSessionResponse.results.getKs();
-        expiryDate = BaseUtils.getEpochInLocalTime(1);
+        expiryDate = BaseUtils.getEpoch(Calendar.MINUTE, 1);
     }
 
     @Severity(SeverityLevel.CRITICAL)
