@@ -5,7 +5,9 @@ import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.KsqlKey;
-import com.kaltura.client.test.utils.*;
+import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.KsqlBuilder;
+import com.kaltura.client.test.utils.PurchaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -16,18 +18,12 @@ import org.json.JSONArray;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
-
-import static com.kaltura.client.test.tests.enums.KsqlKey.ENTITLED_ASSETS;
-import static com.kaltura.client.test.tests.enums.KsqlKey.GEO_BLOCK;
-import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
+import static com.kaltura.client.test.tests.enums.KsqlKey.*;
 import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.AssetUtils.*;
@@ -37,6 +33,7 @@ import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
+import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SearchAssetFilterTests extends BaseTest {
@@ -85,7 +82,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 2
         VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
-                .catalogStartDate(getUtcTimeFormatted(-100))
+                .catalogStartDate(getFormattedTime(Calendar.MINUTE,-100, getTimeZone("UTC")))
                 .tags(tagMap)
                 .strings(stringMetaMap1)
                 .geoBlockRule(geoBlockRule);
@@ -95,7 +92,7 @@ public class SearchAssetFilterTests extends BaseTest {
         // ingest asset 3
         VodData vodData3 = new VodData()
                 .mediaType(EPISODE)
-                .catalogStartDate(getUtcTimeFormatted(-10))
+                .catalogStartDate(getFormattedTime(Calendar.MINUTE,-10, getTimeZone("UTC")))
                 .tags(tagMap)
                 .strings(stringMetaMap2);
         asset3 = insertVod(vodData3, true);

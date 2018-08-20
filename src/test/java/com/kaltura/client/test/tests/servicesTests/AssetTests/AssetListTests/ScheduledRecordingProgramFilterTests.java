@@ -17,6 +17,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,12 +65,12 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
 
         // ingest epg's
         EpgData epgData1 = new EpgData(linearAssetJsonObject1.getString("name"))
-                .startDate(getEpochInLocalTime(5));
+                .startDate(getEpoch(Calendar.MINUTE, 5));
         programAssets1 = insertEpg(epgData1);
 
 //        String seriesId = String.valueOf(getEpochInLocalTime());
         EpgData epgData2 = new EpgData(linearAssetJsonObject2.getString("name"))
-                .startDate(getEpochInLocalTime(360));
+                .startDate(getEpoch(Calendar.HOUR, 6));
 //                .seriesId(seriesId)
 //                .seasonsNum(3);
         programAssets2 = insertEpg(epgData2);
@@ -135,7 +136,7 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
 
         ScheduledRecordingProgramFilter filter = new ScheduledRecordingProgramFilter();
         filter.setChannelsIn(channelsIn);
-        filter.setStartDateGreaterThanOrNull(getEpochInUtcTime(180));
+        filter.setStartDateGreaterThanOrNull(getEpoch(Calendar.HOUR, 3));
 
         // get list
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(AssetService.list(filter)
@@ -157,7 +158,7 @@ public class ScheduledRecordingProgramFilterTests extends BaseTest {
 
         ScheduledRecordingProgramFilter filter = new ScheduledRecordingProgramFilter();
         filter.setChannelsIn(channelsIn);
-        filter.setEndDateLessThanOrNull(getEpochInUtcTime(60));
+        filter.setEndDateLessThanOrNull(getEpoch(Calendar.HOUR, 1));
 
         // get list
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(AssetService.list(filter)

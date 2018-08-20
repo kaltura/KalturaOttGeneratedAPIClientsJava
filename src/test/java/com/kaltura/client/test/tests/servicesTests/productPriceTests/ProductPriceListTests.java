@@ -77,7 +77,7 @@ public class ProductPriceListTests extends BaseTest {
         sharedChannel.setMultilingualDescription(setTranslationToken("Description of " + sharedChannel.getName()));
         sharedChannel.setIsActive(true);
         sharedChannel.setAssetTypes(null);
-        sharedChannel.setSystemName(sharedChannel.getMultilingualName().get(0).getValue() + "_" + getEpochInLocalTime());
+        sharedChannel.setSystemName(sharedChannel.getMultilingualName().get(0).getValue() + "_" + getEpoch());
 
         MppData mppData = new MppData()
                 .isRenewable(true)

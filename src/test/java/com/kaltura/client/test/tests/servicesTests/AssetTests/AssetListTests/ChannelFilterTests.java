@@ -18,7 +18,7 @@ import static com.kaltura.client.test.tests.enums.KsqlKey.EPG_ID;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.utils.AssetUtils.getAssets;
 import static com.kaltura.client.test.utils.AssetUtils.getPrograms;
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
+import static com.kaltura.client.test.utils.BaseUtils.getEpoch;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getAPIExceptionFromList;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.setTranslationToken;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,7 +56,7 @@ public class ChannelFilterTests extends BaseTest {
 
         // add channel
         channel = new DynamicChannel();
-        channel.setMultilingualName(setTranslationToken("channel_" + getEpochInLocalTime()));
+        channel.setMultilingualName(setTranslationToken("channel_" + getEpoch()));
         channel.setMultilingualDescription(setTranslationToken("Description of " + channel.getName()));
         channel.setSystemName(channel.getMultilingualName().get(0).getValue());
         channel.setIsActive(true);

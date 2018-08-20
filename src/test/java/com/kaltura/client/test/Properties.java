@@ -37,12 +37,18 @@ public class Properties {
     // collections
     public static final String DEFAULT_COLLECTION = "default_collection";
 
+    // discount code id
+    public static final String DISCOUNT_CODE_ID = "discount_code_id";
+
     // price codes values
     public static final String PRICE_CODE_AMOUNT = "price_code_amount"; // 4.99
     public static final String COMMON_PRICE_CODE_AMOUNT = "5"; // TODO: should we document it as requirement?
 
     // maximum objects at list response for validating JSON schema
     public static final int MAX_OBJECTS_AT_LIST_RESPONSE = 20;
+
+    // paymentGateway adapter url
+    public static final String PAYMENT_GATEWAY_ADAPTER_URL = "http://172.31.6.89:90/PGAdapter/Service.svc";
 
     // price plans
     // INGEST doesn't allow create PP with multi-currencies

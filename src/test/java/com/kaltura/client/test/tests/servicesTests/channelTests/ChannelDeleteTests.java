@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 
 import static com.kaltura.client.services.ChannelService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
+import static com.kaltura.client.test.utils.BaseUtils.getEpoch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChannelDeleteTests extends BaseTest {
@@ -25,7 +25,7 @@ public class ChannelDeleteTests extends BaseTest {
     @Description("channel/action/delete")
     @Test
     private void DeleteChannel() {
-        String channelName = "Channel_" + getEpochInLocalTime();
+        String channelName = "Channel_" + getEpoch();
         String description = "description of " + channelName;
         String ksqlExpression = "name ~ 'movie'";
 

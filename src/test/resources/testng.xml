@@ -13,10 +13,12 @@
             <package name="com.kaltura.client.test.tests.servicesTests.*"/>
             <package name="com.kaltura.client.test.tests.featuresTests.*"/>
         </packages>
-        <!--<classes>
-                <class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserGetTests"/>
-            </classes>-->
+
+        <!--<classes>-->
+            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserGetTests"/>-->
+        <!--</classes>-->
     </test>
+    
     <test name="Slow Tests">
         <groups>
             <run>

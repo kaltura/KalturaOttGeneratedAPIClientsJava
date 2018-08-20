@@ -12,13 +12,14 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.AnnouncementService.*;
 import static com.kaltura.client.services.OttUserService.login;
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInUtcTime;
+import static com.kaltura.client.test.utils.BaseUtils.getEpoch;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getAnnouncementResultMessageId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -35,7 +36,7 @@ public class AnnouncementAddTest extends BaseTest {
     @Test(enabled = true)
     private void addAnnouncement() {
         // set announcement
-        long epoch = getEpochInUtcTime(1);
+        long epoch = getEpoch(Calendar.MINUTE, 1);
         Announcement announcement = new Announcement();
         announcement.setName("Announcement_" + epoch);
         announcement.setMailSubject(announcement.getName());

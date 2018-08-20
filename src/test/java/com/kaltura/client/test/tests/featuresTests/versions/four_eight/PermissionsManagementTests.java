@@ -7,12 +7,13 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
 import static com.kaltura.client.test.utils.BaseUtils.getFileContent;
-import static com.kaltura.client.test.utils.BaseUtils.getEpochInLocalTime;
 import static com.kaltura.client.test.utils.PermissionManagementUtils.executeCommandsInColsole;
 import static com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -98,7 +99,7 @@ public class PermissionsManagementTests {
     @Test(groups = {"Permission management"}, description = "execute console util to export data from DB into file")
     public void export() {
         // prepare data inserting them in DB using stored procedures
-        String suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0));
+        String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix);
@@ -168,7 +169,7 @@ public class PermissionsManagementTests {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = {"Permission management"}, description = "execute console util to import data into DB from valid file")
     public void importFromFile() {
-        String suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0));
+        String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5);
@@ -207,14 +208,14 @@ public class PermissionsManagementTests {
         deleteFile(path2Log);
 
         // insert data in DB
-        String suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0)) + "inserted";
+        String suffix = String.valueOf(BaseUtils.getEpoch()) + "inserted";
         PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix);
         int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
 
         // generate import file data
-        suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0));
+        suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5);
@@ -235,7 +236,7 @@ public class PermissionsManagementTests {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = {"Permission management"}, description = "execute console util to delete data from DB")
     public void deleteFromDB() {
-        String suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0));
+        String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5);
@@ -289,7 +290,7 @@ public class PermissionsManagementTests {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = {"Permission management"}, description = "execute console util to import already existed data into DB from valid file")
     public void importAlreadyExistedFromFile() {
-        String suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0));
+        String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5);
@@ -328,7 +329,7 @@ public class PermissionsManagementTests {
     @Test(groups = {"Permission management"}, description = "execute console util to try delete data in DB using file with invalid tags")
     public void runningDeleteUsingFileWithInvalidTags() {
         // insert role in DB
-        String suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0));
+        String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionsManagementDBUtils.insertRole("MaxTest" + suffix);
         int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
 
@@ -349,7 +350,7 @@ public class PermissionsManagementTests {
     @Test(groups = {"Permission management"}, description = "execute console util to delete data in 1 related table of DB")
     public void deleteOnlyFromOneTable() {
         // insert role in DB
-        String suffix = String.valueOf(BaseUtils.getEpochInLocalTime(0));
+        String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionsManagementDBUtils.insertRole("MaxTest" + suffix);
         int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
 

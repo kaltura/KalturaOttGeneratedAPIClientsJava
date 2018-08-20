@@ -79,7 +79,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
         if (epgData.seriesId == null) { epgData.seriesId = epgData.coguid; }
         if (epgData.episodesNum == 0) { epgData.episodesNum = DEFAULT_PROGRAMMES_COUNT; }
         if (epgData.seasonsNum == 0) { epgData.seasonsNum = DEFAULT_SEASONS_COUNT; }
-        if (epgData.startDate == null) { epgData.startDate = getEpochInUtcTime(0); }
+        if (epgData.startDate == null) { epgData.startDate = getEpoch(); }
         if (epgData.programDuration == 0) { epgData.programDuration = DEFAULT_PROGRAM_DURATION; }
         if (epgData.programDurationPeriod == null) { epgData.programDurationPeriod = DurationPeriod.MINUTES; }
         if (epgData.thumb == null) { epgData.thumb = DEFAULT_THUMB; }

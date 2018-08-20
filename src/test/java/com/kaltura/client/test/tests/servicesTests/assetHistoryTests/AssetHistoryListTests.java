@@ -128,7 +128,7 @@ public class AssetHistoryListTests extends BaseTest {
 
         // Verify that flag is set to false (user hasn't finish watching the asset)
         assertThat(assetHistoryObject1.getFinishedWatching()).isFalse();
-        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(BaseUtils.getEpochInLocalTime(0));
+        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(BaseUtils.getEpoch());
 
         // Assertions for second object returned
         assertThat(assetHistoryObject2.getAssetId()).isEqualTo(movie.getId());
@@ -175,7 +175,7 @@ public class AssetHistoryListTests extends BaseTest {
         assertThat(assetHistoryObject1.getPosition()).isEqualTo(position2);
         assertThat(assetHistoryObject1.getAssetId()).isEqualTo(movie.getId());
         assertThat(assetHistoryObject1.getFinishedWatching()).isFalse();
-        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(BaseUtils.getEpochInLocalTime(0));
+        assertThat(assetHistoryObject1.getWatchedDate()).isLessThanOrEqualTo(BaseUtils.getEpoch());
 
         // cleanup - delete household
         executor.executeSync(HouseholdService.delete().setKs(masterUserKs));

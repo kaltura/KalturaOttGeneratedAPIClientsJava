@@ -18,9 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.kaltura.client.test.Properties.API_BASE_URL;
-import static com.kaltura.client.test.Properties.API_VERSION;
-import static com.kaltura.client.test.Properties.getProperty;
+import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.config;
 import static io.restassured.RestAssured.given;
 
@@ -45,49 +43,65 @@ public class BaseUtils {
     }
 
     // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getTimeFormatted(int offSetInMinutes, TimeZone timeZone) {
+//    public static String getTimeFormatted(int offSetInMinutes, TimeZone timeZone) {
+//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//        dateFormat.setTimeZone(timeZone);
+//
+//        Date dNow = new Date();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(dNow);
+//        calendar.add(Calendar.MINUTE, offSetInMinutes);
+//        dNow = calendar.getTime();
+//
+//        return dateFormat.format(dNow);
+//    }
+//
+//    // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
+//    public static String getLocalTimeFormatted(int offSetInMinutes) {
+//        return getTimeFormatted(offSetInMinutes, TimeZone.getDefault());
+//    }
+//
+//    public static String getUtcTimeFormatted(int offSetInMinutes) {
+//        return getTimeFormatted(offSetInMinutes, TimeZone.getTimeZone("UTC"));
+//    }
+
+    // Get epoch time in seconds according to off set parameter provided (in minutes)
+//    public static long getEpochInLocalTime(int offSetInMinutes) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.MINUTE, offSetInMinutes);
+//
+//        return calendar.toInstant().getEpochSecond();
+//    }
+
+    public static String getFormattedTime(int calendarType, int amount, TimeZone timeZone) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         dateFormat.setTimeZone(timeZone);
 
-        Date dNow = new Date();
+        Date d = new Date();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dNow);
-        calendar.add(Calendar.MINUTE, offSetInMinutes);
-        dNow = calendar.getTime();
+        calendar.setTime(d);
+        calendar.add(calendarType, amount);
+        d = calendar.getTime();
 
-        return dateFormat.format(dNow);
+        return dateFormat.format(d);
     }
 
-    // Get Date time according to offset parameter provided (with the pattern: dd/MM/yyyy HH:mm:ss)
-    public static String getLocalTimeFormatted(int offSetInMinutes) {
-        return getTimeFormatted(offSetInMinutes, TimeZone.getDefault());
+    public static String getFormattedTime(long epoch, TimeZone timeZone) {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        dateFormat.setTimeZone(timeZone);
+
+        return dateFormat.format(getDateFromEpoch(epoch));
     }
 
-    public static String getUtcTimeFormatted(int offSetInMinutes) {
-        return getTimeFormatted(offSetInMinutes, TimeZone.getTimeZone("UTC"));
-    }
-
-    // Get epoch time in seconds according to off set parameter provided (in minutes)
-    public static long getEpochInLocalTime(int offSetInMinutes) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, offSetInMinutes);
-
-        return calendar.toInstant().getEpochSecond();
-    }
-
-    public static long getEpochInLocalTime() {
+    public static long getEpoch() {
         return Calendar.getInstance().toInstant().getEpochSecond();
     }
 
-    public static long getEpochInUtcTime(int offSetInMinutes) {
-        long time = new Date().getTime() / 1000;
-        return time + (offSetInMinutes * 60);
+    public static long getEpoch(int calendarType, int amount) {
+        Calendar c = Calendar.getInstance();
+        c.add(calendarType, amount);
 
-//        Calendar calendar = Calendar.getInstance();
-//        int timeZoneOffset = TimeZone.getDefault().getRawOffset() / 60000;
-//        calendar.add(Calendar.MINUTE, offSetInMinutes + timeZoneOffset);
-//
-//        return calendar.toInstant().getEpochSecond();
+        return c.toInstant().getEpochSecond();
     }
 
     public static Date getDateFromEpoch(long epoch) {
