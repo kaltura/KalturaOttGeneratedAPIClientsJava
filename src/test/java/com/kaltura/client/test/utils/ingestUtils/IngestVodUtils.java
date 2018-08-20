@@ -41,6 +41,22 @@ public class IngestVodUtils extends BaseIngestUtils {
 
     @Accessors(fluent = true)
     @Data
+    public static class VODFile {
+        private String assetDuration;
+        private String quality;
+        private String handling_type;
+        private String cdn_name;
+        private String cdn_code;
+        private String alt_cdn_code;
+        private String billing_type;
+        private String product_code;
+        private String type;
+        private String coguid;
+        private String ppvModule;
+    }
+
+    @Accessors(fluent = true)
+    @Data
     public static class VodData {
         @Setter(AccessLevel.NONE) private String coguid;
         @Setter(AccessLevel.NONE) private boolean isActive = true;
@@ -63,6 +79,8 @@ public class IngestVodUtils extends BaseIngestUtils {
         private Map<String, String> strings;
         private Map<String, String> dates;
         private Map<String, Integer> numbers;
+
+        private List<VODFile> assetFiles;
     }
 
     /** IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid" **/
@@ -72,7 +90,6 @@ public class IngestVodUtils extends BaseIngestUtils {
         final String datePattern = "dd/MM/yyyy hh:mm:ss";
         final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
         final String endDateValue = "14/10/2099 17:00:00";
-        final String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
 
         vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
 
@@ -100,12 +117,6 @@ public class IngestVodUtils extends BaseIngestUtils {
             }
             if (vodData.mediaType == null) {
                 vodData.mediaType = MediaType.MOVIE;
-            }
-            if (vodData.ppvWebName == null) {
-                vodData.ppvWebName = ppvModuleName;
-            }
-            if (vodData.ppvMobileName == null) {
-                vodData.ppvMobileName = ppvModuleName;
             }
             if (vodData.tags == null) {
                 vodData.tags = getDefaultTags();
@@ -318,25 +329,60 @@ public class IngestVodUtils extends BaseIngestUtils {
             }
         }
 
-        // file types
-        if (vodData.ppvWebName() != null) {
-            Element file1 = (Element) media.getElementsByTagName("file").item(0);
-            file1.setAttribute("type", getProperty(WEB_FILE_TYPE));
-            file1.setAttribute("co_guid", "web_" + vodData.coguid());
-            file1.setAttribute("PPV_MODULE", vodData.ppvWebName());
-        }
+        // files
+        if (vodData.assetFiles != null && vodData.assetFiles.size() > 0) {
+            Element files = (Element) media.getElementsByTagName("files").item(0);
 
-        if (vodData.ppvMobileName() != null) {
-            Element file2 = (Element) media.getElementsByTagName("file").item(1);
-            file2.setAttribute("type", getProperty(MOBILE_FILE_TYPE));
-            file2.setAttribute("co_guid", "ipad_" + vodData.coguid());
-            file2.setAttribute("PPV_MODULE", vodData.ppvMobileName());
+            for (VODFile vodFile : vodData.assetFiles) {
+                files.appendChild(addFile(doc, vodFile));
+            }
         }
 
         // uncomment cdata
         String docAsString = docToString(doc);
 
         return uncommentCdataSection(docAsString);
+    }
+
+    private static Element addFile(Document doc, VODFile vodFile) {
+        // file node
+        Element file = doc.createElement("file");
+
+        if (vodFile.assetDuration != null) {
+            file.setAttribute("assetDuration", vodFile.assetDuration);
+        }
+        if (vodFile.quality != null) {
+            file.setAttribute("quality", vodFile.quality);
+        }
+        if (vodFile.handling_type != null) {
+            file.setAttribute("handling_type", vodFile.handling_type);
+        }
+        if (vodFile.cdn_name != null) {
+            file.setAttribute("cdn_name", vodFile.cdn_name);
+        }
+        if (vodFile.cdn_code != null) {
+            file.setAttribute("cdn_code", vodFile.cdn_code);
+        }
+        if (vodFile.alt_cdn_code != null) {
+            file.setAttribute("alt_cdn_code", vodFile.alt_cdn_code);
+        }
+        if (vodFile.billing_type != null) {
+            file.setAttribute("billing_type", vodFile.billing_type);
+        }
+        if (vodFile.product_code != null) {
+            file.setAttribute("product_code", vodFile.product_code);
+        }
+        if (vodFile.coguid != null) {
+            file.setAttribute("co_guid", vodFile.coguid);
+        }
+        if (vodFile.type != null) {
+            file.setAttribute("type", vodFile.type);
+        }
+        if (vodFile.ppvModule != null) {
+            file.setAttribute("PPV_MODULE", vodFile.ppvModule);
+        }
+
+        return file;
     }
 
     private static Element generateAndAppendMetaNode(Document doc, Element rootElement, String name) {

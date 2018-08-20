@@ -43,24 +43,7 @@
                                     <dates/>
                                     <metas/>
                                 </structure>
-                                <files>
-                                    <file assetDuration="1000"
-                                          quality="HIGH"
-                                          handling_type="CLIP"
-                                          cdn_name="Default CDN"
-                                          cdn_code="http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m"
-                                          alt_cdn_code="http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m"
-                                          billing_type="Tvinci"
-                                          product_code="productExampleCode"/>
-                                    <file assetDuration="1000"
-                                          quality="HIGH"
-                                          handling_type="CLIP"
-                                          cdn_name="Default CDN"
-                                          cdn_code="http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8"
-                                          alt_cdn_code="http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/applehttp/tags/ipadnew,ipad/protocol/http/f/a.m3u8"
-                                          billing_type="Tvinci"
-                                          product_code="productExampleCode"/>
-                                </files>
+                                <files/>
                             </media>
                         </export>
                     </feed>

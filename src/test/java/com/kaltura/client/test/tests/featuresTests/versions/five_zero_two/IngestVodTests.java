@@ -36,12 +36,14 @@ public class IngestVodTests extends BaseTest {
     private HashMap<String, Integer> numberMetaMap = new HashMap<>();
     private HashMap<String, String> datesMetaMap = new HashMap<>();
     private HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
+    private List<IngestVodUtils.VODFile> assetFiles = new ArrayList<>();
 
     @BeforeClass
     public void setUp() {
         String prefix = "Movie_";
-        name =  prefix + "Name_" + getCurrentDateInFormat("yyMMddHHmmssSS");
-        description = prefix + "Description_" + getCurrentDateInFormat("yyMMddHHmmssSS");
+        String localCoguid = getCurrentDateInFormat("yyMMddHHmmssSS");
+        name =  prefix + "Name_" + localCoguid;
+        description = prefix + "Description_" + localCoguid;
 
         stringMetaMap.put(textFieldName, textFieldName + "value1");
         numberMetaMap.put(numberFieldName, 1234);
@@ -50,6 +52,33 @@ public class IngestVodTests extends BaseTest {
         actors.add("Jack Nicholson");
         actors.add("Natalie Portman");
         tagsMetaMap.put(tagFieldName, actors);
+
+        IngestVodUtils.VODFile file1 = new IngestVodUtils.VODFile()
+                .assetDuration("1000")
+                .quality("HIGH")
+                .handling_type("CLIP")
+                .cdn_name("Default CDN")
+                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .billing_type("Tvinci")
+                .product_code("productExampleCode")
+                .type("Test130301")
+                .coguid("Test130301_" + localCoguid)
+                .ppvModule("Shai_Regression_PPV");
+        IngestVodUtils.VODFile file2 = new IngestVodUtils.VODFile()
+                .assetDuration("1000")
+                .quality("HIGH")
+                .handling_type("CLIP")
+                .cdn_name("Default CDN")
+                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .billing_type("Tvinci")
+                .product_code("productExampleCode")
+                .type("new file type1")
+                .coguid("new file type1_" + localCoguid)
+                .ppvModule("Subscription_only_PPV");
+        assetFiles.add(file1);
+        assetFiles.add(file2);
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -65,8 +94,7 @@ public class IngestVodTests extends BaseTest {
                 .numbers(numberMetaMap)
                 .dates(datesMetaMap)
                 .tags(tagsMetaMap)
-                /*.ppvWebName(null)
-                .ppvMobileName(null)*/;
+                .assetFiles(assetFiles);
 
         MediaAsset asset = insertVod(vodData1, false);
 
