@@ -15,10 +15,10 @@
         </packages>
 
         <!--<classes>-->
-        <!--<class name="com.kaltura.client.test.tests.servicesTests.entitlementTests.EntitlementGrantTests"/>-->
+            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserGetTests"/>-->
         <!--</classes>-->
     </test>
-
+    
     <test name="Slow Tests">
         <groups>
             <run>

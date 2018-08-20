@@ -98,6 +98,11 @@ public class DBConstants {
     static final String PRICE_PLAN_WITHOUT_WAVER_SELECT = "SELECT TOP 1 * FROM [Pricing].[dbo].[usage_modules]\n" +
             "WHERE group_id=? AND WAIVER=0 AND IS_ACTIVE=1 AND [STATUS]=1 AND EXT_DISCOUNT_ID IS NOT NULL AND INTERNAL_DISCOUNT_ID IS NOT NULL";
 
+    static final String PPV_SELECT_BY_PRICE_PLAN_WITHOUT_WAIVER = "select top 1 * from [Pricing].[dbo].[ppv_modules] as ppvm\n" +
+            "join [Pricing].[dbo].[usage_modules] um on um.id=ppvm.usage_module_code\n" +
+            "where um.WAIVER=0 and um.group_id=? and ppvm.[status]=1 and ppvm.is_active=1 and \n" +
+            "um.[status]=1 and um.is_active=1";
+
     static final String PRICE_PLAN_5_MIN_RENEW_SELECT = "select top 1 * from [Pricing].[dbo].[usage_modules]\n" +
             "where [status]=1 and is_active=1\n" +
             "and view_life_cycle_min = 5\n" +
