@@ -101,7 +101,8 @@ public class IngestMppUtils extends BaseIngestUtils {
         if (mppData.description == null) { mppData.description = "Description of " + mppData.mppCode; }
         if (mppData.startDate == null) { mppData.startDate = DEFAULT_START_DATE; }
         if (mppData.endDate == null) { mppData.endDate = DEFAULT_END_DATE; }
-        if (mppData.internalDiscount == null) { mppData.internalDiscount = IngestFixtureData.getDiscount(currencyOfDiscount, percentageOfDiscount); }
+        if (mppData.internalDiscount == null) { mppData.internalDiscount = IngestFixtureData
+                .getDiscountByPercentAndCurrency(currencyOfDiscount, percentageOfDiscount); }
         if (mppData.gracePeriodMinute == null) { mppData.gracePeriodMinute = DEFAULT_GRACE_PERIOD; }
         if (mppData.pricePlanCode1 == null) { mppData.pricePlanCode1 = getProperty(DEFAULT_USAGE_MODULE_4_INGEST_MPP); }
         if (mppData.channel1 == null) { mppData.channel1 = getProperty(DEFAULT_CHANNEL); }

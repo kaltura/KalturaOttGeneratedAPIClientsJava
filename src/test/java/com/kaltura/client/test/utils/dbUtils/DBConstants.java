@@ -72,6 +72,11 @@ public class DBConstants {
             "and price=?\n" + // price amount
             "and discount_percent=?";  // percent amount
 
+    static final String DISCOUNT_BY_ID = "select CODE\n" +
+            "from [Pricing].[dbo].[discount_codes]\n" +
+            "where GROUP_ID = ? \n" +
+            "and id = ?";
+
     static final String EPG_CHANNEL_ID_SELECT = "SELECT [ID] FROM [TVinci].[dbo].[epg_channels] WHERE [GROUP_ID] = ? AND [NAME] = ?";
 
     static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +

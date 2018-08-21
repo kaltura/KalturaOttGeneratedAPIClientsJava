@@ -178,7 +178,7 @@ public class BaseTest {
                         .maxViews(0)
                         .price(COMMON_PRICE_CODE_AMOUNT)
                         .currency(EUR.getValue())
-                        .discount(IngestFixtureData.getDiscount(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue()))
+                        .discount(IngestFixtureData.getDiscountByPercentAndCurrency(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue()))
                         .isRenewable(true)
                         .recurringPeriods(0);
 
@@ -220,7 +220,7 @@ public class BaseTest {
             if (sharedCommonSubscription == null) {
                 MppData mppData = new MppData()
                         .pricePlanCode1(getSharedCommonPricePlan().getName())
-                        .internalDiscount(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue));
+                        .internalDiscount(IngestFixtureData.getDiscountByPercentAndCurrency(EUR.getValue(), (int) defaultDiscountPercentValue));
                 sharedCommonSubscription = insertMpp(mppData);
             }
 
@@ -266,7 +266,7 @@ public class BaseTest {
             sharedCommonPpv = IngestFixtureData.loadSharedCommonPpv(getSharedCommonPricePlan());
             if (sharedCommonPpv == null) {
                 PpvData ppvData = new PpvData()
-                        .discount(IngestFixtureData.getDiscount(EUR.getValue(), (int) discountPercentValue))
+                        .discountCode(IngestFixtureData.getDiscountByPercentAndCurrency(EUR.getValue(), (int) discountPercentValue))
                         .usageModule(getSharedCommonPricePlan().getName());
                 sharedCommonPpv = insertPpv(ppvData);
             }

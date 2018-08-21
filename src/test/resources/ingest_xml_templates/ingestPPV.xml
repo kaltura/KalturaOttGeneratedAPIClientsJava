@@ -19,7 +19,9 @@
                             </price_code>
                             <usage_module/>
                             <discount/>
-                            <coupon_group/>
+                            <coupon_group>
+                                <code/>
+                            </coupon_group>
                             <subscription_only/>
                             <first_device_limitation/>
                             <product_code/>

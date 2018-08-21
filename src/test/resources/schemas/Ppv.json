@@ -176,7 +176,6 @@
         "name",
         "price",
         "fileTypes",
-        "discountModule",
         "descriptions",
         "productCode",
         "isSubscriptionOnly",

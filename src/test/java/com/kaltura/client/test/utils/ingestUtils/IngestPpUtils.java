@@ -54,7 +54,7 @@ public class IngestPpUtils extends BaseIngestUtils {
         final int DEFAULT_RECURRING_PERIODS = 1;
 
         final int defaultPercentageOfDiscount = 100;
-        DiscountModule discountModule = IngestFixtureData.getDiscount(defaultPercentageOfDiscount);
+        DiscountModule discountModule = IngestFixtureData.getDiscountByPercent(defaultPercentageOfDiscount);
 
         ppData.ppCode = getRandomValue("AUTOPricePlan_");
 

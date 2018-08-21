@@ -82,10 +82,10 @@ public class Properties {
     public static final String PAYMENT_GATEWAY_EXTERNAL_ID = "payment_gateway_external_id";
 
     // processing apps logs from remote connection
-    public static final String PHOENIX_SERVER_DOMAIN_NAME = "phoenix_server_domain_name";
-    public static final String PHOENIX_SERVER_USER_NAME = "phoenix_server_user_name";
-    public static final String PHOENIX_SERVER_PASSWORD = "phoenix_server_password";
-    public static final String PHOENIX_SERVER_LOGS_DIRECTORY = "phoenix_server_logs_directory";
+//    public static final String PHOENIX_SERVER_DOMAIN_NAME = "phoenix_server_domain_name";
+//    public static final String PHOENIX_SERVER_USER_NAME = "phoenix_server_user_name";
+//    public static final String PHOENIX_SERVER_PASSWORD = "phoenix_server_password";
+//    public static final String PHOENIX_SERVER_LOGS_DIRECTORY = "phoenix_server_logs_directory";
     public static final String PHOENIX_SERVER_LOGS_DIRECTORY_URL = "phoenix_server_logs_directory_url";
     public static final String PHOENIX_SERVER_LOG_FILE_NAME_PREFIX = "phoenix_server_logs_file_name_prefix";
     public static final String PHOENIX_SERVER_LOG_FILE_EXTENSION = "phoenix_server_logs_file_extension";
