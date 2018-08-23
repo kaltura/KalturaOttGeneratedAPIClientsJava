@@ -289,7 +289,7 @@ public class TransactionPurchaseTests extends BaseTest {
         executor.executeSync(PaymentGatewayProfileService.delete(pg.getId()).setKs(getOperatorKs()));
     }
 
-    /*@Severity(SeverityLevel.NORMAL)
+    @Severity(SeverityLevel.NORMAL)
     @Description("transaction/action/purchase - ppv configured to 'Subscription Only' - error 3023")
     @Test()
     public void purchaseSubscriptionOnlyPpv() {
@@ -300,7 +300,7 @@ public class TransactionPurchaseTests extends BaseTest {
         VodData vodData = new VodData()
                 .ppvWebName(ppv.getName())
                 .ppvMobileName(ppv.getName());
-        MediaAsset mediaAsset = insertVod(vodData);
+        MediaAsset mediaAsset = insertVod(vodData, true);
 
         // purchase ppv
         Purchase purchase = new Purchase();
@@ -320,7 +320,7 @@ public class TransactionPurchaseTests extends BaseTest {
         //cleanup - delete ppv
         deletePpv(ppv.getName());
         deleteVod(mediaAsset.getName());
-    }*/
+    }
 
     @Severity(SeverityLevel.NORMAL)
     @Description("transaction/action/purchase - subscription with invalid price - error 6000")

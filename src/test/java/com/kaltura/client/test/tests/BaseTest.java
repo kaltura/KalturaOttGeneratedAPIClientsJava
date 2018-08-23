@@ -318,7 +318,7 @@ public class BaseTest {
         return ingestAssetUserPassword;
     }
 
-    public static String getIngestVirualAssetUserName() {
+    public static String getIngestVirtualAssetUserName() {
         if (ingestVirtualAssetUserUsername == null) {
             String userInfo = isOprGroup
                     ? IngestFixtureData.getIngestItemUserData(partnerId)

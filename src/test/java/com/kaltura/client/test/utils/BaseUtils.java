@@ -87,7 +87,11 @@ public class BaseUtils {
     }
 
     public static String getFormattedTime(long epoch, TimeZone timeZone) {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return getFormattedDate(epoch, timeZone, "dd/MM/yyyy HH:mm:ss");
+    }
+
+    public static String getFormattedDate(long epoch, TimeZone timeZone, String format) {
+        DateFormat dateFormat = new SimpleDateFormat(format);
         dateFormat.setTimeZone(timeZone);
 
         return dateFormat.format(getDateFromEpoch(epoch));
@@ -128,6 +132,15 @@ public class BaseUtils {
         long max = 9999999999L;
         long randomLongValue = ThreadLocalRandom.current().nextLong(max);
         return String.valueOf(randomLongValue);
+    }
+
+    public static double getRandomDoubleValue() {
+        double max = 9999999.1;
+        return ThreadLocalRandom.current().nextDouble(max);
+    }
+
+    public static boolean getRandomBooleanValue() {
+        return ThreadLocalRandom.current().nextBoolean();
     }
 
     // generate random string

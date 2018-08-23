@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import static com.google.common.base.Verify.verify;
 import static com.kaltura.client.services.AssetService.GetAssetBuilder;
 import static com.kaltura.client.services.AssetService.get;
-import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
 import static com.kaltura.client.test.utils.BaseUtils.getOffsetDateInFormat;
@@ -35,9 +34,15 @@ import static org.awaitility.Awaitility.await;
 
 public class IngestVodUtils extends BaseIngestUtils {
 
-    private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.AssetsStatus.IngestAssetStatus.";
-    private static final String ingestStatusMessagePath = ingestDataResultPath + "Status.Message";
-    private static final String ingestAssetIdPath = ingestDataResultPath + "InternalAssetId";
+    private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.";
+    public static final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
+    public static final String ingestStatusPath = ingestDataResultPath + "status";
+    private static final String ingestAssetStatusPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus[0].";
+    public static final String ingestAssetStatusMessagePath = ingestAssetStatusPath + "Status.Message";
+    public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
+    private static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
+
+    static boolean areDefaultValuesRequired;
 
     @Accessors(fluent = true)
     @Data
@@ -78,7 +83,8 @@ public class IngestVodUtils extends BaseIngestUtils {
         private Map<String, List<String>> tags;
         private Map<String, String> strings;
         private Map<String, String> dates;
-        private Map<String, Integer> numbers;
+        private Map<String, Double> numbers;
+        private Map<String, Boolean> booleans;
 
         private List<VODFile> assetFiles;
     }
@@ -86,10 +92,12 @@ public class IngestVodUtils extends BaseIngestUtils {
     /** IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid" **/
 
     public static MediaAsset insertVod(VodData vodData, boolean areDefaultValuesRequired) {
+        IngestVodUtils.areDefaultValuesRequired = areDefaultValuesRequired;
         final String coguidDatePattern = "yyMMddHHmmssSS";
         final String datePattern = "dd/MM/yyyy hh:mm:ss";
         final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
         final String endDateValue = "14/10/2099 17:00:00";
+        final String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
 
         vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
 
@@ -130,11 +138,20 @@ public class IngestVodUtils extends BaseIngestUtils {
             if (vodData.numbers == null) {
                 vodData.numbers = getDefaultNumbers();
             }
+            if (vodData.ppvWebName == null) {
+                vodData.ppvWebName = ppvModuleName;
+            }
+            if (vodData.ppvMobileName == null) {
+                vodData.ppvMobileName = ppvModuleName;
+            }
+            if (vodData.assetFiles == null) {
+                vodData.assetFiles = getDefaultAssetFiles(vodData.coguid, vodData.ppvWebName, vodData.ppvMobileName);
+            }
         }
 
         String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_INSERT);
 
-        Response resp = executeIngestVodRequest(reqBody);
+        Response resp = getResponseBodyFromIngestVod(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
 
         GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
@@ -152,7 +169,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         vodData.coguid = coguid;
         String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_UPDATE);
 
-        Response resp = executeIngestVodRequest(reqBody);
+        Response resp = getResponseBodyFromIngestVod(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
 
         GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
@@ -172,11 +189,11 @@ public class IngestVodUtils extends BaseIngestUtils {
         String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_DELETE);
 
         Response resp = executeIngestVodRequest(reqBody);
-        assertThat(from(resp.asString()).getInt(ingestAssetIdPath)).isEqualTo(0);
+        // on delete it returns media id
+        // assertThat(from(resp.asString()).getInt(ingestAssetIdPath)).isEqualTo(0);
     }
 
-    // private methods
-    private static Response executeIngestVodRequest(String reqBody) {
+    public static Response getResponseBodyFromIngestVod(String reqBody) {
         Response resp = given()
                 .header(contentTypeXml)
                 .header(soapActionIngestTvinciData)
@@ -187,8 +204,15 @@ public class IngestVodUtils extends BaseIngestUtils {
         Logger.getLogger(IngestVodUtils.class).debug(reqBody + "\n");
         Logger.getLogger(IngestVodUtils.class).debug(resp.asString());
 
+        return resp;
+    }
+
+    // private methods
+    private static Response executeIngestVodRequest(String reqBody) {
+        Response resp = getResponseBodyFromIngestVod(reqBody);
+
         assertThat(resp).isNotNull();
-        assertThat(from(resp.asString()).getString(ingestStatusMessagePath)).isEqualTo("OK");
+        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("OK");
 
         return resp;
     }
@@ -198,7 +222,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         // user and password
         if (vodData.isVirtual()) {
-            doc.getElementsByTagName("userName").item(0).setTextContent(getIngestVirualAssetUserName());
+            doc.getElementsByTagName("userName").item(0).setTextContent(getIngestVirtualAssetUserName());
             doc.getElementsByTagName("passWord").item(0).setTextContent(getIngestVirualAssetUserPassword());
         } else {
             doc.getElementsByTagName("userName").item(0).setTextContent(getIngestAssetUserName());
@@ -263,7 +287,8 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // media type
-        if (action.equals(INGEST_ACTION_INSERT)) {
+        // it is required for update tests too
+        if (action.equals(INGEST_ACTION_INSERT) || action.equals(INGEST_ACTION_UPDATE)) {
             media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType().getValue());
         }
 
@@ -287,10 +312,20 @@ public class IngestVodUtils extends BaseIngestUtils {
             }
         }
 
+        // booleans
+        if (vodData.booleans() != null) {
+            Element booleansElement = (Element) media.getElementsByTagName("booleans").item(0);
+            for (Map.Entry<String, Boolean> entry : vodData.booleans().entrySet()) {
+                // meta node
+                Element meta = generateAndAppendMetaNode(doc, booleansElement, entry.getKey());
+                meta.setTextContent(String.valueOf(entry.getValue()));
+            }
+        }
+
         // doubles
         if (vodData.numbers() != null) {
             Element doublesElement = (Element) media.getElementsByTagName("doubles").item(0);
-            for (Map.Entry<String, Integer> entry : vodData.numbers().entrySet()) {
+            for (Map.Entry<String, Double> entry : vodData.numbers().entrySet()) {
                 // meta node
                 Element meta = generateAndAppendMetaNode(doc, doublesElement, entry.getKey());
                 meta.setTextContent(String.valueOf(entry.getValue()));
@@ -433,9 +468,9 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     // TODO: these values should be get in another way than now
-    private static Map<String, Integer> getDefaultNumbers() {
-        Map<String, Integer> doubles = new HashMap<>();
-        doubles.put("Release year", 1900);
+    private static Map<String, Double> getDefaultNumbers() {
+        Map<String, Double> doubles = new HashMap<>();
+        doubles.put("Release year", 1900d);
 
         return doubles;
     }
@@ -446,5 +481,39 @@ public class IngestVodUtils extends BaseIngestUtils {
         dates.put("Life cycle start date", "23/03/2017 12:34:56");
 
         return dates;
+    }
+
+    // TODO: these values should be get in another way than now
+    private static List<VODFile> getDefaultAssetFiles(String coguid, String ppvModuleName1, String ppvModuleName2) {
+        List<VODFile> assetFiles = new ArrayList<>();
+
+        VODFile file1 = new VODFile()
+                .assetDuration("1000")
+                .quality("HIGH")
+                .handling_type("CLIP")
+                .cdn_name("Default CDN")
+                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .billing_type("Tvinci")
+                .product_code("productExampleCode")
+                .type("Web HD")
+                .coguid("web_" + coguid)
+                .ppvModule(ppvModuleName1);
+        IngestVodUtils.VODFile file2 = new IngestVodUtils.VODFile()
+                .assetDuration("1000")
+                .quality("HIGH")
+                .handling_type("CLIP")
+                .cdn_name("Default CDN")
+                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .billing_type("Tvinci")
+                .product_code("productExampleCode")
+                .type("Mobile_Devices_Main_HD")
+                .coguid("ipad_" + coguid)
+                .ppvModule(ppvModuleName2);
+        assetFiles.add(file1);
+        assetFiles.add(file2);
+
+        return assetFiles;
     }
 }
