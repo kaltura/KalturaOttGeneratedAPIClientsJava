@@ -27,7 +27,7 @@ public class PermissionsManagementTests {
     String mainFile = "PermissionsDeployment.exe";
     // that file generated automatically
     String path2Log = "C:\\log\\permissions\\permissions.log";
-    String path2Util = "C:\\123\\222\\";
+    String path2Util = "C:\\123\\PermissionsExport\\bin\\Debug\\";
 
     // these files are generated
     String dataFilePath = path2Util + "333\\" + "exp1.txt";
@@ -49,6 +49,8 @@ public class PermissionsManagementTests {
     public static final String EXPORT_KEY = "e=";
     public static final String IMPORT_KEY = "i=";
     public static final String DELETE_KEY = "d=";
+    public static final String EXPORT_JSON_KEY = "n=";
+    public static final String IMPORT_JSON_KEY = "l=";
 
     @Severity(SeverityLevel.MINOR)
     @Test(groups = {"Permission management"}, description = "execute console util without parameters")
@@ -60,6 +62,9 @@ public class PermissionsManagementTests {
         assertThat(consoleOutput).contains("Permissions deployment tool");
         assertThat(consoleOutput).contains("Shortcut: e");
         assertThat(consoleOutput).contains("Shortcut: i");
+        assertThat(consoleOutput).contains("Shortcut: d");
+        assertThat(consoleOutput).contains("Shortcut: n");
+        assertThat(consoleOutput).contains("Shortcut: l");
     }
 
     @Severity(SeverityLevel.MINOR)
@@ -365,5 +370,27 @@ public class PermissionsManagementTests {
         // check data deleted from DB
         int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(0);
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to export in JSON without mentioned file")
+    public void runningExportJsonWithoutFile() {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(EXPORT_JSON_KEY);
+        String consoleOutput = executeCommandsInColsole(commands);
+
+        assertThat(consoleOutput).contains("The system cannot find the file specified");
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"Permission management"}, description = "execute console util to import in JSON without mentioned file")
+    public void runningImportJsonWithoutFile() {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(IMPORT_JSON_KEY);
+        String consoleOutput = executeCommandsInColsole(commands);
+
+        assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
 }

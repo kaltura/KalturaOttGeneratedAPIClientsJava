@@ -1,5 +1,6 @@
 package com.kaltura.client.test.utils;
 
+import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
 import java.io.*;
 import java.util.List;
@@ -60,7 +61,13 @@ public class PermissionManagementUtils extends BaseUtils {
     }
 
     public static String executeCommandsInColsole(List<String> commands) {
+        Logger.getLogger(PermissionManagementUtils.class).debug("started executeCommandsInColsole");
         StringBuilder output = new StringBuilder();
+        StringBuilder input = new StringBuilder();
+        for(String command: commands){
+            input.append(command + " ");
+        }
+        Logger.getLogger(PermissionManagementUtils.class).debug("INPUT: " + input.toString());
 
         ProcessBuilder pb = new ProcessBuilder(commands);
         pb.redirectErrorStream(true);
@@ -77,6 +84,7 @@ public class PermissionManagementUtils extends BaseUtils {
             output.append(e.getMessage());
         }
 
+        Logger.getLogger(PermissionManagementUtils.class).debug("OUTPUT: " + output.toString());
         return output.toString();
     }
 
