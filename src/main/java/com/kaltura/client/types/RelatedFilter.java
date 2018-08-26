@@ -54,10 +54,9 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 	 */
 	private Integer idEqual;
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values:
-	  any media type ID (according to media type IDs defined dynamically in the
-	  system).              If omitted –   same type as the provided asset.
+	 * Comma separated list of asset types to search within.               Possible
+	  values: any media type ID (according to media type IDs defined dynamically in
+	  the system).              If omitted – same type as the provided asset.
 	 */
 	private String typeIn;
 	/**
