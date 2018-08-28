@@ -32,13 +32,13 @@ public class BaseIngestUtils {
     static final Header soapActionIngestKalturaEpg = new Header("SOAPAction", "http://tempuri.org/IService/IngestKalturaEpg");
 
     // actions
-    static final String INGEST_ACTION_INSERT = "insert";
+    public static final String INGEST_ACTION_INSERT = "insert";
     static final String INGEST_ACTION_UPDATE = "update";
     static final String INGEST_ACTION_DELETE = "delete";
 
     // wait configuration
-    static final int delayBetweenRetriesInSeconds = 5;
-    static final int maxTimeExpectingValidResponseInSeconds = 120;
+    public static final int delayBetweenRetriesInSeconds = 5;
+    public static final int maxTimeExpectingValidResponseInSeconds = 120;
 
     // life cycles periods
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";

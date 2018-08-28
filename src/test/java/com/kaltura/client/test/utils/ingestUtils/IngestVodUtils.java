@@ -40,7 +40,7 @@ public class IngestVodUtils extends BaseIngestUtils {
     private static final String ingestAssetStatusPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus[0].";
     public static final String ingestAssetStatusMessagePath = ingestAssetStatusPath + "Status.Message";
     public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
-    private static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
+    public static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
 
     static boolean areDefaultValuesRequired;
 
@@ -217,7 +217,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         return resp;
     }
 
-    private static String buildIngestVodXml(VodData vodData, String action) {
+    public static String buildIngestVodXml(VodData vodData, String action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
@@ -253,7 +253,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         // thumb
         if (vodData.thumbUrl() != null) {
             Element thumb = (Element) media.getElementsByTagName("thumb").item(0);
-            thumb.setAttribute("ingestUrl", vodData.thumbUrl());
+            thumb.setAttribute("url", vodData.thumbUrl());
         }
 
         // description

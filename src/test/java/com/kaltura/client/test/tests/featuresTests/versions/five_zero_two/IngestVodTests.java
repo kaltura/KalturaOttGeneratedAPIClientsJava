@@ -1,7 +1,7 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_two;
 
+import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import io.qameta.allure.Severity;
@@ -9,15 +9,17 @@ import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.utils.BaseUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOPCUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static io.restassured.path.xml.XmlPath.from;
 import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 /**
  *
@@ -25,125 +27,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class IngestVodTests extends BaseTest {
 
-    private static final String defaultThumbUrl =
-            "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
+    private MediaAsset movie;
+    private MediaAsset episode;
+    private MediaAsset series;
+    private int movieType;
+    private int episodeType;
+    private int seriesType;
 
-    // media types
-    private static final String EPISODE = "Episode";
-    private static final String MOVIE = "Movie";
-    private static final String SERIES = "Series";
-
-    // TODO: how to get these data from DB or request?
-    //MEDIA fields
-    private static final String mediaTextFieldName = "BoxOffice";
-    private static final String mediaDateFieldName = "ReleaseDate";
-    private static final String mediaNumberFieldName = "Runtime2";
-    private static final String mediaBooleanFieldName = "IsAgeLimited";
-    private static final String mediaTagFieldName = "Actors";
-
-    //Episode fields
-    private static final String episodeTextFieldName = "TwitterHashtag";
-    private static final String episodeDateFieldName = "Date";
-    private static final String episodeNumberFieldName = "CommonIpAddress";
-    private static final String episodeBooleanFieldName = "CyyNCAh";
-    private static final String episodeTagFieldName = "Studio";
-
-    //Series fields
-    private static final String seriesTextFieldName = "SeriesID";
-    private static final String seriesDateFieldName = "DateField";
-    private static final String seriesNumberFieldName = "ReleaseYear";
-    private static final String seriesBooleanFieldName = "IsWestern";
-    private static final String seriesTagFieldName = "Studio";
-
-    // fields & values
-    private HashMap<String, String> stringMetaMap = new HashMap<>();
-    private HashMap<String, Double> numberMetaMap = new HashMap<>();
-    private HashMap<String, Boolean> booleanHashMap = new HashMap<>();
-    private HashMap<String, String> datesMetaMap = new HashMap<>();
-    private HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
-    private List<IngestVodUtils.VODFile> assetFiles = new ArrayList<>();
-    private String name;
-    private String description;
-    private String textValue;
-    private String dateValue;
-    private double doubleValue;
-    private boolean booleanValue;
-    private List<String> tagValues;
-
-    private static final String INGEST_VOD_XML = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
-            "<soapenv:Header/>\n" +
-            "<soapenv:Body>\n" +
-            "<tem:IngestTvinciData>\n" +
-            "<tem:request>\n" +
-            "<userName>Test_API_27_03</userName>\n" +
-            "<passWord>Test_API_27_03</passWord>\n" +
-            "<data>\n" +
-            "<![CDATA[\n" +
-            "<feed>\n" +
-            "<export>\n" +
-            "<media action=\"insert\" co_guid=\"180822092522774\" entry_id=\"entry_180822092522774\" erase=\"false\" is_active=\"true\">\n" +
-            "<basic>\n" +
-            "<name>\n" +
-            "<value lang=\"eng\">Movie_Name_1808220925223281</value>\n" +
-            "</name>\n" +
-            "<thumb ingestUrl=\"http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png\"/>\n" +
-            "<description>\n" +
-            "<value lang=\"eng\">Movie_Description_1808220925223281</value>\n" +
-            "</description>\n" +
-            "<dates>\n" +
-            "<catalog_start/>\n" +
-            "<start/>\n" +
-            "<catalog_end/>\n" +
-            "<end/>\n" +
-            "</dates>\n" +
-            "<pic_ratios>\n" +
-            "<ratio ratio=\"4:3\" thumb=\"http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png\"/>\n" +
-            "<ratio ratio=\"16:9\" thumb=\"http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png\"/>\n" +
-            "</pic_ratios>\n" +
-            "<media_type>Movie</media_type>\n" +
-            "<rules>\n" +
-            "<geo_block_rule/>\n" +
-            "<watch_per_rule>Parent Allowed</watch_per_rule>\n" +
-            "<device_rule/>\n" +
-            "</rules>\n" +
-            "</basic>\n" +
-            "<structure>\n" +
-            "<strings>\n" +
-            "<meta ml_handling=\"unique\" name=\"BoxOffice\">\n" +
-            "<value lang=\"eng\">BoxOfficevalue</value>\n" +
-            "</meta>\n" +
-            "</strings>\n" +
-            "<booleans/>\n" +
-            "<doubles>\n" +
-            "<meta ml_handling=\"unique\" name=\"Runtime2\">123456</meta>\n" +
-            "</doubles>\n" +
-            "<dates>\n" +
-            "<meta ml_handling=\"unique\" name=\"ReleaseDate\">12/12/2012</meta>\n" +
-            "</dates>\n" +
-            "<metas>\n" +
-            "<meta ml_handling=\"unique\" name=\"Actors\">\n" +
-            "<container>\n" +
-            "<value lang=\"eng\">Jack Nicholson</value>\n" +
-            "</container>\n" +
-            "<container>\n" +
-            "<value lang=\"eng\">Natalie Portman</value>\n" +
-            "</container>\n" +
-            "</meta>\n" +
-            "</metas>\n" +
-            "</structure>\n" +
-            "<files>\n" +
-            "<file PPV_MODULE=\"Shai_Regression_PPV\" alt_cdn_code=\"http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" assetDuration=\"1000\" billing_type=\"Tvinci\" cdn_code=\"http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" cdn_name=\"Default CDN\" co_guid=\"Test130301_1180822092522328\" handling_type=\"CLIP\" product_code=\"productExampleCode\" quality=\"HIGH\" type=\"Test130301\"/>\n" +
-            "<file PPV_MODULE=\"Subscription_only_PPV\" alt_cdn_code=\"http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" assetDuration=\"1000\" billing_type=\"Tvinci\" cdn_code=\"http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" cdn_name=\"Default CDN\" co_guid=\"new file type1_1180822092522328\" handling_type=\"CLIP\" product_code=\"productExampleCode\" quality=\"HIGH\" type=\"new file type1\"/>\n" +
-            "</files>\n" +
-            "</media>\n" +
-            "</export>\n" +
-            "</feed>\n" +
-            "]]>\n" +
-            "</data>\n" +
-            "</tem:request>\n" +
-            "</tem:IngestTvinciData>\n" +
-            "</soapenv:Body>\n" +
-            "</soapenv:Envelope>";
+    private String ingestXml;
 
     @BeforeClass
     public void setUp() {
@@ -178,23 +69,47 @@ public class IngestVodTests extends BaseTest {
                 .ppvModule("Subscription_only_PPV");
         assetFiles.add(file1);
         assetFiles.add(file2);
+
+        VodData vodData;
+        generateDefaultValues4Insert(MOVIE);
+        vodData = getVodData(MOVIE);
+        movie = insertVod(vodData, true);
+        movieType = movie.getType();
+
+        generateDefaultValues4Insert(EPISODE);
+        vodData = getVodData(EPISODE);
+        episode = insertVod(vodData, true);
+        episodeType = episode.getType();
+
+        generateDefaultValues4Insert(SERIES);
+        vodData = getVodData(SERIES);
+        series = insertVod(vodData, true);
+        seriesType = series.getType();
+
+        generateDefaultValues4Insert(MOVIE);
+        vodData = getVodData(MOVIE);
+        ingestXml = buildIngestVodXml(vodData, INGEST_ACTION_INSERT);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "ingest VOD with filled base meta fields")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, priority =-1, description = "ingest VOD with filled base meta fields")
     public void insertVodMediaBaseFields() {
+        // that should be called in case running from testng.xml as a group
+        // priority set to -1 to guarantee that setUp will be executed before all other tests as part of that test case.
+        setUp();
+
         generateDefaultValues4Insert(MOVIE);
         VodData vodData = getVodData(MOVIE);
+        MediaAsset movie = insertVod(vodData, true);
 
-        MediaAsset asset = insertVod(vodData, true);
-        assertThat(asset.getName()).isEqualTo(name);
-        assertThat(asset.getDescription()).isEqualTo(description);
-        assertThat(((MultilingualStringValue)asset.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(textValue);
-        assertThat(((DoubleValue)asset.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(doubleValue);
-        assertThat(getFormattedDate(((LongValue)asset.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
-        assertThat(((BooleanValue)asset.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(booleanValue);
+        assertThat(movie.getName()).isEqualTo(name);
+        assertThat(movie.getDescription()).isEqualTo(description);
+        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(textValue);
+        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(doubleValue);
+        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
+        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(booleanValue);
 
-        Map<String, MultilingualStringValueArray> tags = asset.getTags();
+        Map<String, MultilingualStringValueArray> tags = movie.getTags();
         Map.Entry<String, MultilingualStringValueArray> entry = tags.entrySet().iterator().next();
         List<MultilingualStringValue> tagsValues = entry.getValue().getObjects();
         for (MultilingualStringValue tagValue: tagsValues) {
@@ -204,20 +119,20 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "ingest VOD with filled base meta fields")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with filled base meta fields")
     public void insertVodEpisodeBaseFields() {
         generateDefaultValues4Insert(EPISODE);
         VodData vodData = getVodData(EPISODE);
+        MediaAsset episode = insertVod(vodData, true);
 
-        MediaAsset asset = insertVod(vodData, true);
-        assertThat(asset.getName()).isEqualTo(name);
-        assertThat(asset.getDescription()).isEqualTo(description);
-        assertThat(((MultilingualStringValue)asset.getMetas().get(episodeTextFieldName)).getValue()).isEqualTo(textValue);
-        assertThat(((DoubleValue)asset.getMetas().get(episodeNumberFieldName)).getValue()).isEqualTo(doubleValue);
-        assertThat(getFormattedDate(((LongValue)asset.getMetas().get(episodeDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
-        assertThat(((BooleanValue)asset.getMetas().get(episodeBooleanFieldName)).getValue()).isEqualTo(booleanValue);
+        assertThat(episode.getName()).isEqualTo(name);
+        assertThat(episode.getDescription()).isEqualTo(description);
+        assertThat(((MultilingualStringValue)episode.getMetas().get(episodeTextFieldName)).getValue()).isEqualTo(textValue);
+        assertThat(((DoubleValue)episode.getMetas().get(episodeNumberFieldName)).getValue()).isEqualTo(doubleValue);
+        assertThat(getFormattedDate(((LongValue)episode.getMetas().get(episodeDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
+        assertThat(((BooleanValue)episode.getMetas().get(episodeBooleanFieldName)).getValue()).isEqualTo(booleanValue);
 
-        Map<String, MultilingualStringValueArray> tags = asset.getTags();
+        Map<String, MultilingualStringValueArray> tags = episode.getTags();
         Map.Entry<String, MultilingualStringValueArray> entry = tags.entrySet().iterator().next();
         List<MultilingualStringValue> tagsValues = entry.getValue().getObjects();
         for (MultilingualStringValue tagValue: tagsValues) {
@@ -227,20 +142,20 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "ingest VOD with filled base meta fields")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with filled base meta fields")
     public void insertVodSeriesBaseFields() {
         generateDefaultValues4Insert(SERIES);
         VodData vodData = getVodData(SERIES);
+        MediaAsset series = insertVod(vodData, true);
 
-        MediaAsset asset = insertVod(vodData, true);
-        assertThat(asset.getName()).isEqualTo(name);
-        assertThat(asset.getDescription()).isEqualTo(description);
-        assertThat(((StringValue)asset.getMetas().get(seriesTextFieldName)).getValue()).isEqualTo(textValue);
-        assertThat(((DoubleValue)asset.getMetas().get(seriesNumberFieldName)).getValue()).isEqualTo(doubleValue);
-        assertThat(getFormattedDate(((LongValue)asset.getMetas().get(seriesDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
-        assertThat(((BooleanValue)asset.getMetas().get(seriesBooleanFieldName)).getValue()).isEqualTo(booleanValue);
+        assertThat(series.getName()).isEqualTo(name);
+        assertThat(series.getDescription()).isEqualTo(description);
+        assertThat(((StringValue)series.getMetas().get(seriesTextFieldName)).getValue()).isEqualTo(textValue);
+        assertThat(((DoubleValue)series.getMetas().get(seriesNumberFieldName)).getValue()).isEqualTo(doubleValue);
+        assertThat(getFormattedDate(((LongValue)series.getMetas().get(seriesDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
+        assertThat(((BooleanValue)series.getMetas().get(seriesBooleanFieldName)).getValue()).isEqualTo(booleanValue);
 
-        Map<String, MultilingualStringValueArray> tags = asset.getTags();
+        Map<String, MultilingualStringValueArray> tags = series.getTags();
         Map.Entry<String, MultilingualStringValueArray> entry = tags.entrySet().iterator().next();
         List<MultilingualStringValue> tagsValues = entry.getValue().getObjects();
         for (MultilingualStringValue tagValue: tagsValues) {
@@ -250,25 +165,13 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "update VOD with filled base meta fields")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD with filled base meta fields")
     public void updateVodMediaBaseFields() {
-//        AssetFilter assetFilter = new AssetFilter();
-//        assetFilter.setOrderBy(AssetOrderBy.CREATE_DATE_DESC.getValue());
-//        FilterPager pager = new FilterPager();
-//        pager.setPageSize(1);
-//        pager.setPageIndex(1);
-//        /*Map<String, Object> params = new HashMap<>();
-//        params.put("orderBy", AssetOrderBy.CREATE_DATE_DESC);*/
-//        com.kaltura.client.utils.response.base.Response<ListResponse<Asset>> assetListResponse =
-//                executor.executeSync(list(assetFilter, pager)
-//                .setKs(getAnonymousKs()));
-//        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
+        String coguid = getCoguidOfActiveMediaAsset(movieType);
 
-        // TODO: get previous value
         generateDefaultValues4Update(true, MOVIE);
         IngestVodUtils.VodData vodData = getVodData(MOVIE);
 
-        String coguid = "180823143608237"; // TODO: update logic to get these data from
         MediaAsset asset = updateVod(coguid, vodData);
 
         assertThat(asset.getName()).isEqualTo(name);
@@ -287,14 +190,14 @@ public class IngestVodTests extends BaseTest {
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
     }
 
+
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "update VOD with filled base meta fields")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD episode with filled base meta fields")
     public void updateVodEpisodeBaseFields() {
-        // TODO: get previous value
         generateDefaultValues4Update(false, EPISODE);
         IngestVodUtils.VodData vodData = getVodData(EPISODE);
 
-        String coguid = "180823171226961"; // TODO: update logic to get these data from
+        String coguid = getCoguidOfActiveMediaAsset(episodeType);
         MediaAsset asset = updateVod(coguid, vodData);
 
         assertThat(asset.getName()).isEqualTo(name);
@@ -314,13 +217,12 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "update VOD with filled base meta fields")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD series with filled base meta fields")
     public void updateVodSeriesBaseFields() {
-        // TODO: get previous value
         generateDefaultValues4Update(true, SERIES);
         IngestVodUtils.VodData vodData = getVodData(SERIES);
 
-        String coguid = "180823181201121"; // TODO: update logic to get these data from
+        String coguid = getCoguidOfActiveMediaAsset(seriesType);
         MediaAsset asset = updateVod(coguid, vodData);
 
         assertThat(asset.getName()).isEqualTo(name);
@@ -340,87 +242,139 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "delete")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "delete")
     public void deleteMovie() {
-        String coguid = "180823171226961"; // TODO: update logic to get these data from
-        deleteVod(coguid);
-        // TODO: add logic to check delete
+        String coguid = getCoguidOfActiveMediaAsset(movieType);
+        checkVODDeletion(coguid);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "delete episode")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "delete episode")
     public void deleteEpisode() {
-        String coguid = "180823171226961"; // TODO: update logic to get these data from
-        deleteVod(coguid);
-        // TODO: add logic to check delete
+        String coguid = getCoguidOfActiveMediaAsset(episodeType);
+        checkVODDeletion(coguid);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "delete episode")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "delete series")
     public void deleteSeries() {
-        String coguid = "180823181201121"; // TODO: update logic to get these data from
-        deleteVod(coguid);
-        // TODO: add logic to check delete
+        String coguid = getCoguidOfActiveMediaAsset(seriesType);
+        checkVODDeletion(coguid);
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(description = "try insert without coguid")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert without coguid")
     public void tryInsertWithEmptyCoguid() {
         String invalidXml = INGEST_VOD_XML.replaceAll("co_guid=\"180822092522774\"", "co_guid=\"\"");
+        Response resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).contains("External identifier is missing");
+
+        invalidXml = INGEST_VOD_XML.replaceAll("co_guid=\"180822092522774\"", "");
+        resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).contains("External identifier is missing");
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try delete without coguid")
+    public void tryDeleteWithEmptyCoguid() {
+        String invalidXml = DELETE_VOD_XML.replaceAll("co_guid=\"180822092522774\"", "co_guid=\"\"");
+        Response resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).contains("External identifier is missing");
+
+        invalidXml = DELETE_VOD_XML.replaceAll("co_guid=\"180822092522774\"", "");
+        resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).contains("External identifier is missing");
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try delete with non-existed coguid")
+    public void tryDeleteWithNonexistedCoguid() {
+        String invalidXml = DELETE_VOD_XML.replaceAll("co_guid=\"180822092522774\"", "co_guid=\"123456\"");
+        Response resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("Media Id not exist");
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = {"ingest VOD for OPC", "opc", "OPC"}, description = "try update with empty erase")
+    public void tryUpdateWithEmptyErase() {
+        // TODO: check and if it work then add logic related null erase and positive test related update
+        String coguid = getCoguidOfActiveMediaAsset(movieType);
+        String invalidXml = UPDATE_VOD_XML
+                .replaceAll("erase=\"false\"", "erase=\"\"")
+                .replaceAll("co_guid=\"180822092522774\"", "co_guid=\"" + coguid + "\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).contains("External identifier is missing");
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(description = "try insert with invalid action")
-    public void tryInsertWithInvalidAction() {
-        // TODO: ask Shir why it returns 0 instead of tvmId
-        String invalidXml = INGEST_VOD_XML.replaceAll("action=\"insert\"", "action=\"linsert\"");
-        Response resp = getResponseBodyFromIngestVod(invalidXml);
-
-        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).doesNotContain("OK");
-    }
-
-    @Severity(SeverityLevel.MINOR)
-    @Test(description = "try insert with empty entry_id")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with empty entry_id")
     public void tryInsertWithEmptyEntryId() {
         String invalidXml = INGEST_VOD_XML.replaceAll("entry_id=\"entry_180822092522774\"", "entry_id=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
         assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("entry_id is missing");
+
+        invalidXml = INGEST_VOD_XML.replaceAll("entry_id=\"entry_180822092522774\"", "");
+        resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("entry_id is missing");
     }
 
-    /* TODO: check the usual logic
     @Severity(SeverityLevel.MINOR)
-    @Test(description = "try insert inactive item")
-    public void tryInsertinactiveItem() {
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert inactive item")
+    public void tryInsertInactiveItem() {
         String invalidXml = INGEST_VOD_XML.replaceAll("is_active=\"true\"", "is_active=\"false\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
-        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).doesNotContain("OK");
-    }*/
+        String id = from(resp.asString()).get(ingestAssetIdPath).toString();
+
+        SearchAssetFilter assetFilter = new SearchAssetFilter();
+        assetFilter.setKSql("media_id='" + id + "'");
+        com.kaltura.client.utils.response.base.Response<ListResponse<Asset>> assetListResponse =
+                executor.executeSync(list(assetFilter)
+                        .setKs(getAnonymousKs()));
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(0);
+    }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(description = "try insert with empty isActive parameter")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with empty isActive parameter")
     public void tryInsertEmptyIsActive() {
-        String invalidXml = INGEST_VOD_XML.replaceAll("is_active=\"true\"", "is_active=\"\"");
+        String invalidXml = ingestXml;//.replaceAll("is_active=\"true\"", "is_active=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("media.IsActive cannot be empty");
+
+        invalidXml = ingestXml.replaceAll("is_active=\"true\"", "");
+        resp = getResponseBodyFromIngestVod(invalidXml);
 
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("media.IsActive cannot be empty");
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(description = "try insert with empty name")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with empty name")
     public void tryInsertWithEmptyName() {
         String invalidXml = INGEST_VOD_XML.replaceAll(">Movie_Name_1808220925223281<", "><");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("media.basic.name.value.text cannot be empty");
+
+        invalidXml = INGEST_VOD_XML
+                .replaceAll("<name>", "")
+                .replaceAll("<value lang=\"eng\">Movie_Name_1808220925223281</value>", "")
+                .replaceAll("</name>", "");
+        resp = getResponseBodyFromIngestVod(invalidXml);
+
+        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("media.basic.name.value.text cannot be empty");
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(description = "try insert with invalid credentials")
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with invalid credentials")
     public void tryInsertWithInvalidCredentials() {
         String statusMessage = "Invalid credentials";
         String status = "ERROR";
@@ -440,117 +394,19 @@ public class IngestVodTests extends BaseTest {
         assertThat(from(resp.asString()).getString(ingestStatusPath)).isEqualTo(status);
     }
 
-    VodData getVodData(String mediaType) {
-        switch (mediaType) {
-            case "Movie":
-                return new VodData()
-                        .name(name)
-                        .description(description)
-                        .mediaType(MediaType.MOVIE)
-                        .thumbUrl(defaultThumbUrl)
-                        .strings(stringMetaMap)
-                        .booleans(booleanHashMap)
-                        .numbers(numberMetaMap)
-                        .dates(datesMetaMap)
-                        .tags(tagsMetaMap)
-                        .isVirtual(false)
-                        .assetFiles(assetFiles);
-            case "Episode":
-                return new VodData()
-                        .name(name)
-                        .description(description)
-                        .mediaType(MediaType.EPISODE)
-                        .thumbUrl(defaultThumbUrl)
-                        .strings(stringMetaMap)
-                        .booleans(booleanHashMap)
-                        .numbers(numberMetaMap)
-                        .dates(datesMetaMap)
-                        .tags(tagsMetaMap)
-                        .isVirtual(false)
-                        .assetFiles(assetFiles);
-            case "Series":
-            return new VodData()
-                    .name(name)
-                    .description(description)
-                    .mediaType(MediaType.SERIES)
-                    .thumbUrl(defaultThumbUrl)
-                    .strings(stringMetaMap)
-                    .booleans(booleanHashMap)
-                    .numbers(numberMetaMap)
-                    .dates(datesMetaMap)
-                    .tags(tagsMetaMap)
-                    .isVirtual(true)
-                    .assetFiles(assetFiles);
-            default:
-                return null;
-        }
-    }
+    void checkVODDeletion(String coguid) {
+        SearchAssetFilter assetFilter = new SearchAssetFilter();
+        assetFilter.setKSql("externalId='" + coguid + "'");
+        com.kaltura.client.utils.response.base.Response<ListResponse<Asset>> assetListResponse =
+                executor.executeSync(list(assetFilter)
+                        .setKs(getAnonymousKs()));
+        assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
 
-    void fillMediaMapsWithData() {
-        stringMetaMap.put(mediaTextFieldName, textValue);
-        numberMetaMap.put(mediaNumberFieldName, doubleValue);
-        datesMetaMap.put(mediaDateFieldName, dateValue);
-        booleanHashMap.put(mediaBooleanFieldName, booleanValue);
-        tagsMetaMap.put(mediaTagFieldName, tagValues);
-    }
-
-    void fillEpisodeMapsWithData() {
-        stringMetaMap.put(episodeTextFieldName, textValue);
-        numberMetaMap.put(episodeNumberFieldName, doubleValue);
-        datesMetaMap.put(episodeDateFieldName, dateValue);
-        booleanHashMap.put(episodeBooleanFieldName, booleanValue);
-        tagsMetaMap.put(episodeTagFieldName, tagValues);
-    }
-
-    void fillSeriesMapsWithData() {
-        stringMetaMap.put(seriesTextFieldName, textValue);
-        numberMetaMap.put(seriesNumberFieldName, doubleValue);
-        datesMetaMap.put(seriesDateFieldName, dateValue);
-        booleanHashMap.put(seriesBooleanFieldName, booleanValue);
-        tagsMetaMap.put(seriesTagFieldName, tagValues);
-    }
-
-    void generateDefaultValues4Update(boolean previousValue, String mediaType) {
-        textValue = "textValue" + getCurrentDateInFormat("MM/dd/yyyy") + "_updated";
-        dateValue = getOffsetDateInFormat(1,"MM/dd/yyyy");
-        // to round up 2 decimal places
-        doubleValue = Math.round(getRandomDoubleValue() * 100.0) / 100.0;
-        booleanValue = !previousValue;
-        tagValues = new ArrayList<>();
-        tagValues.add("Jack NicholsonUpd");
-        tagValues.add("Natalie PortmanUpd");
-        tagValues.add(textValue);
-
-        fillMapsWithData(mediaType);
-    }
-
-    void generateDefaultValues4Insert(String mediaType) {
-        textValue = "textValue" + getCurrentDateInFormat("MM/dd/yyyy");
-        dateValue = getCurrentDateInFormat("MM/dd/yyyy");
-        // to round up 2 decimal places
-        doubleValue = Math.round(getRandomDoubleValue() * 100.0) / 100.0;
-        booleanValue = getRandomBooleanValue();
-        tagValues = new ArrayList<>();
-        tagValues.add("Jack Nicholson");
-        tagValues.add("Natalie Portman");
-        tagValues.add(textValue);
-
-        fillMapsWithData(mediaType);
-    }
-
-    private void fillMapsWithData(String mediaType) {
-        switch (mediaType) {
-            case MOVIE:
-                fillMediaMapsWithData();
-                break;
-            case EPISODE:
-                fillEpisodeMapsWithData();
-                break;
-            case SERIES:
-                fillSeriesMapsWithData();
-                break;
-            default:
-                break;
-        }
+        deleteVod(coguid);
+        AssetService.ListAssetBuilder listAssetBuilder = list(assetFilter).setKs(getAnonymousKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() -> (executor.executeSync(listAssetBuilder).results.getTotalCount() == 0));
     }
 }

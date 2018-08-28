@@ -11,13 +11,11 @@ import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Verify.verify;
@@ -116,8 +114,10 @@ public class BaseTest {
     Shared Test Params - end
     ================================================================================*/
 
-    @BeforeSuite
-    public void baseTest_beforeSuite() {
+    @Parameters({"accountType"})
+    @BeforeSuite(alwaysRun=true)
+    public void baseTest_beforeSuite(@org.testng.annotations.Optional("opc") String accountType) {
+        Logger.getLogger(BaseTest.class).debug("Start baseTest_beforeSuite");
         // set configuration
         config  = new Configuration();
         config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
@@ -131,9 +131,14 @@ public class BaseTest {
         setDefaultTimeout(Long.parseLong(getProperty(DEFAULT_TIMEOUT_IN_SEC)), TimeUnit.SECONDS);
 
         // set shared common params
-        partnerId = Integer.parseInt(getProperty(PARTNER_ID));
-        isOprGroup = "true".equals(getProperty(IS_OPC_GROUP));
-//        opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
+        if ("opc".equals(accountType)) {
+            isOprGroup = true;
+            partnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
+        } else {
+            isOprGroup = false;
+            partnerId = Integer.parseInt(getProperty(PARTNER_ID));
+        }
+        //opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
 
         // set performance report
