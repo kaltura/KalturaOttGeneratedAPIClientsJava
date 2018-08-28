@@ -2,7 +2,6 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.tests.Sandbox;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
@@ -30,7 +29,7 @@ import static com.kaltura.client.test.Properties.*;
 
 public class PerformanceUtils extends BaseUtils {
 
-    private static final ILogger logger = Logger.getLogger(Sandbox.class);
+    private static final ILogger logger = Logger.getLogger(PerformanceUtils.class);
 
     private static final int maxAllowedPercentage = Integer.parseInt(getProperty(MAX_CODE_PERCENTAGE));
     private static final float maxAllowedTime = Float.parseFloat(getProperty(MAX_EXECUTION_TIME_IN_SEC));
