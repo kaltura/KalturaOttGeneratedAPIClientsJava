@@ -5,17 +5,20 @@ import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.PerformanceAppLogUtils;
+import com.kaltura.client.test.utils.PerformanceUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
+import org.apache.commons.io.FileUtils;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +31,6 @@ import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.services.SubscriptionService.list;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
-import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.setTranslationToken;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
@@ -133,18 +135,12 @@ public class BaseTest {
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
 
         // set performance report
-        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
-            // Before execution of regression we have to delete log file created during previous regression execution
-            // to not affect results of current check
-            String regressionLogsFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
-                    getProperty(REGRESSION_LOGS_LOCAL_FILE);
-            deleteFile(regressionLogsFileName);
-
-            // Before execution of regression we have to delete report file created during previous regression execution
-            // to not affect results of current check
-            String codePerformanceReportFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
-                    getProperty(CODE_PERFORMANCE_REPORT_FILE);
-            deleteFile(codePerformanceReportFileName);
+        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
+            try {
+                FileUtils.cleanDirectory(new File(getProperty(LOGS_DIR)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -573,10 +569,9 @@ public class BaseTest {
 
     @AfterSuite
     public void tearDownSuite() {
-        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
-            // processing of logs and creation of app performance code report
-            PerformanceAppLogUtils.createPerformanceCodeReport();
-            PerformanceAppLogUtils.removeCopiedAppLogFiles();
+        // generate performance report
+        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
+            PerformanceUtils.generatePerformanceReport();
         }
 
         // TODO: 8/14/2018 cleanup: delete generated shared resources and data!

@@ -81,20 +81,14 @@ public class Properties {
     // payment gateway external id
     public static final String PAYMENT_GATEWAY_EXTERNAL_ID = "payment_gateway_external_id";
 
-    // processing apps logs from remote connection
-//    public static final String PHOENIX_SERVER_DOMAIN_NAME = "phoenix_server_domain_name";
-//    public static final String PHOENIX_SERVER_USER_NAME = "phoenix_server_user_name";
-//    public static final String PHOENIX_SERVER_PASSWORD = "phoenix_server_password";
-//    public static final String PHOENIX_SERVER_LOGS_DIRECTORY = "phoenix_server_logs_directory";
-    public static final String PHOENIX_SERVER_LOGS_DIRECTORY_URL = "phoenix_server_logs_directory_url";
-    public static final String PHOENIX_SERVER_LOG_FILE_NAME_PREFIX = "phoenix_server_logs_file_name_prefix";
-    public static final String PHOENIX_SERVER_LOG_FILE_EXTENSION = "phoenix_server_logs_file_extension";
-    public static final String PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH = "phoenix_server_logs_local_folder_path";
-    public static final String REGRESSION_LOGS_LOCAL_FILE = "regression_logs_local_file";
-    public static final String SHOULD_REGRESSION_LOGS_BE_SAVED = "should_regression_logs_be_saved";
-    public static final String MAX_ALLOWED_PERCENTAGE = "max_allowed_percentage";
-    public static final String CODE_PERFORMANCE_REPORT_FILE = "code_performance_report_file";
-    public static final String MAX_ALLOWED_EXECUTION_TIME_IN_SEC = "max_allowed_execution_time_in_sec";
+    // performance report
+    public static final String LOGS_BASE_URL = "logs_base_url";
+    public static final String LOGS_DIR = "logs_dir";
+    public static final String REGRESSION_LOGS_FILE = "regression_logs_file";
+    public static final String PERFORMANCE_REPORT_FILE = "performance_report_file";
+    public static final String WRITE_REGRESSION_LOGS = "write_regression_logs";
+    public static final String MAX_CODE_PERCENTAGE = "max_code_percentage";
+    public static final String MAX_EXECUTION_TIME_IN_SEC = "max_execution_time_in_sec";
 
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {

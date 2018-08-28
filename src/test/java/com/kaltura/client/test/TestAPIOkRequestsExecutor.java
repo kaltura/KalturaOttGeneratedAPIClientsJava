@@ -1,8 +1,6 @@
 package com.kaltura.client.test;
 
 import com.google.common.primitives.Ints;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.kaltura.client.APIOkRequestsExecutor;
 import com.kaltura.client.ILogger;
 import com.kaltura.client.Logger;
@@ -13,19 +11,22 @@ import com.kaltura.client.utils.request.RequestElement;
 import com.kaltura.client.utils.response.base.ApiCompletion;
 import com.kaltura.client.utils.response.base.Response;
 import com.kaltura.client.utils.response.base.ResponseElement;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.io.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.LOG_HEADERS;
 import static com.kaltura.client.test.tests.BaseTest.client;
-//import static com.kaltura.client.test.tests.BaseTest.objectType2JsonValidationSchemaFile4Lists;
 import static com.kaltura.client.utils.ErrorElement.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+//import static com.kaltura.client.test.tests.BaseTest.objectType2JsonValidationSchemaFile4Lists;
 
 /**
  * @hide That class allows to validate json schemas of responses
@@ -105,10 +106,10 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
                     /*date = new Date();
                     System.out.println("AFTER VALIDATION: " + formatter.format(date));*/
 
-                if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
+                if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
                     String serviceMethod = action.getUrl().split("service")[1];
                     String kalturaSession = okhttpResponse.headers().get("X-Kaltura-Session");
-                    write2LogFile(serviceMethod, kalturaSession);
+                    writeLogs(serviceMethod, kalturaSession);
                 }
             }
         }
@@ -124,15 +125,22 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
         return objectType.getAsString();
     }*/
 
-    private void write2LogFile(String serviceMethod, String kalturaSession) {
-        try(FileWriter fw = new FileWriter(getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
-                getProperty(REGRESSION_LOGS_LOCAL_FILE), true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw)) {
-            out.println(serviceMethod + " " + kalturaSession);
+    private void writeLogs(String serviceMethod, String kalturaSession) {
+        File logFile = new File(getProperty(LOGS_DIR) + getProperty(REGRESSION_LOGS_FILE));
+
+        try {
+            FileUtils.writeStringToFile(logFile, serviceMethod + ":" + kalturaSession + "\n", Charset.forName("UTF-8"), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        try(FileWriter fw = new FileWriter(getProperty(LOGS_DIR) + getProperty(REGRESSION_LOGS_FILE), true);
+//            BufferedWriter bw = new BufferedWriter(fw);
+//            PrintWriter out = new PrintWriter(bw)) {
+//            out.println(serviceMethod + " " + kalturaSession);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public <T> Response<T> executeSync(RequestBuilder<T, ?, ?> requestBuilder) {
