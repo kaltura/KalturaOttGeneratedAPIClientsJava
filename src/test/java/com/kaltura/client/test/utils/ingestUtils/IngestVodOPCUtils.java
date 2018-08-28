@@ -11,6 +11,7 @@ import java.util.List;
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.BaseUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 
 public class IngestVodOPCUtils extends BaseIngestUtils {
 
@@ -110,7 +111,7 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
             "<![CDATA[\n" +
             "<feed>\n" +
             "<export>\n" +
-            "<media action=\"update\" co_guid=\"180822092522774\" entry_id=\"entry_180822092522774\" erase=\"false\" is_active=\"true\">\n" +
+            "<media action=\"update\" co_guid=\"180828080027358\" entry_id=\"entry_180828080027358\" erase=\"false\" is_active=\"true\">\n" +
             "<basic>\n" +
             "<name>\n" +
             "<value lang=\"eng\">Movie_Name_1808220925223281</value>\n" +
@@ -226,9 +227,13 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
     public static HashMap<String, Boolean> booleanHashMap = new HashMap<>();
     public static HashMap<String, String> datesMetaMap = new HashMap<>();
     public static HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
-    public static List<IngestVodUtils.VODFile> assetFiles = new ArrayList<>();
+    public static List<VODFile> movieAssetFiles = new ArrayList<>();
+    public static List<VODFile> episodeAssetFiles = new ArrayList<>();
+    public static List<VODFile> seriesAssetFiles = new ArrayList<>();
+    public static String tagValue1 = "Jack Nicholson";
+    public static String tagValue2 = "Natalie Portman";
 
-    public static IngestVodUtils.VodData getVodData(String mediaType) {
+    public static IngestVodUtils.VodData getVodData(String mediaType, List<VODFile> mediaAssetFiles) {
         switch (mediaType) {
             case "Movie":
                 return new IngestVodUtils.VodData()
@@ -242,7 +247,7 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
                         .dates(datesMetaMap)
                         .tags(tagsMetaMap)
                         .isVirtual(false)
-                        .assetFiles(assetFiles);
+                        .assetFiles(mediaAssetFiles);
             case "Episode":
                 return new IngestVodUtils.VodData()
                         .name(name)
@@ -255,7 +260,7 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
                         .dates(datesMetaMap)
                         .tags(tagsMetaMap)
                         .isVirtual(false)
-                        .assetFiles(assetFiles);
+                        .assetFiles(mediaAssetFiles);
             case "Series":
                 return new IngestVodUtils.VodData()
                         .name(name)
@@ -268,7 +273,7 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
                         .dates(datesMetaMap)
                         .tags(tagsMetaMap)
                         .isVirtual(true)
-                        .assetFiles(assetFiles);
+                        .assetFiles(mediaAssetFiles);
             default:
                 return null;
         }
@@ -305,8 +310,8 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
         doubleValue = Math.round(getRandomDoubleValue() * 100.0) / 100.0;
         booleanValue = !previousValue;
         tagValues = new ArrayList<>();
-        tagValues.add("Jack NicholsonUpd");
-        tagValues.add("Natalie PortmanUpd");
+        tagValues.add(tagValue1 + "Upd");
+        tagValues.add(tagValue2 + "Upd");
         tagValues.add(textValue);
 
         fillMapsWithData(mediaType);
@@ -319,8 +324,8 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
         doubleValue = Math.round(getRandomDoubleValue() * 100.0) / 100.0;
         booleanValue = getRandomBooleanValue();
         tagValues = new ArrayList<>();
-        tagValues.add("Jack Nicholson");
-        tagValues.add("Natalie Portman");
+        tagValues.add(tagValue1);
+        tagValues.add(tagValue2);
         tagValues.add(textValue);
 
         fillMapsWithData(mediaType);
@@ -364,5 +369,31 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
         //assertThat(assetListResponse.results.getObjects().size()).isEqualTo(1);
 
         return assetListResponse.results.getObjects().get(0).getExternalId();
+    }
+
+    public static VODFile loadFile(String fileType, String coguid, String ppvs) {
+        return new VODFile()
+                .assetDuration("1000")
+                .quality("HIGH")
+                .handling_type("CLIP")
+                .cdn_name("Default CDN")
+                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
+                .billing_type("Tvinci")
+                .product_code("productExampleCode")
+                .type(fileType)
+                .coguid(coguid)
+                .ppvModule(ppvs);
+    }
+
+    public static List<VODFile> loadAssetFiles(String fileType1, String fileType2, String coguid1,
+                                               String coguid2, String ppvs1, String ppvs2) {
+        List<VODFile> result = new ArrayList<>();
+        VODFile file1 = loadFile(fileType1, coguid1, ppvs1);
+        VODFile file2 = loadFile(fileType2, coguid2, ppvs2);
+        result.add(file1);
+        result.add(file2);
+
+        return result;
     }
 }

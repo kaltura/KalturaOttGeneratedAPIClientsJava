@@ -42,6 +42,8 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
     public static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
 
+    public static String ingestXmlRequest = "";
+
     static boolean areDefaultValuesRequired;
 
     @Accessors(fluent = true)
@@ -217,7 +219,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         return resp;
     }
 
-    public static String buildIngestVodXml(VodData vodData, String action) {
+    private static String buildIngestVodXml(VodData vodData, String action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
@@ -376,7 +378,9 @@ public class IngestVodUtils extends BaseIngestUtils {
         // uncomment cdata
         String docAsString = docToString(doc);
 
-        return uncommentCdataSection(docAsString);
+        ingestXmlRequest = uncommentCdataSection(docAsString);
+        //Logger.getLogger(IngestVodUtils.class).debug("ingestXmlRequest: " + ingestXmlRequest);
+        return ingestXmlRequest;
     }
 
     private static Element addFile(Document doc, VODFile vodFile) {
