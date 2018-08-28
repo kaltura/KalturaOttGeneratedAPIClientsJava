@@ -176,11 +176,11 @@ public class DBConstants {
 
     static final String COUNT_RECORDS_BY_NAME_IN_PERMISSION_ITEMS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[permission_items]\n" +
-            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
+            "where [NAME]=? and is_active=1 and [status]=1";
 
     static final String ID_BY_NAME_IN_PERMISSION_ITEMS_SELECT = "select " + ID + "\n" +
             "from [TVinci].[dbo].[permission_items]\n" +
-            "where [NAME]=? and is_active=1 and [status]=1 and group_id=?";
+            "where [NAME]=? and is_active=1 and [status]=1";
 
     static final String COUNT_RECORDS_IN_PERMISSIONS_PERMISSIONS_ITEMS_SELECT = "select count(*) as " + ROW_COUNT + "\n" +
             "from [TVinci].[dbo].[permissions_permission_items]\n" +

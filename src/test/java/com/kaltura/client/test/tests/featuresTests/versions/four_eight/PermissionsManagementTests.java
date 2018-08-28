@@ -3,6 +3,7 @@ package com.kaltura.client.test.tests.featuresTests.versions.four_eight;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.PermissionManagementUtils;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeClass;
@@ -22,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * Class to test functionality described in https://kaltura.atlassian.net/browse/BEO-4885
  */
+
+
 public class PermissionsManagementTests {
 
     String mainFile = "PermissionsDeployment.exe";
@@ -31,6 +34,7 @@ public class PermissionsManagementTests {
 
     // these files are generated
     String dataFilePath = path2Util + "333\\" + "exp1.txt";
+    String path2JsonFolder = path2Util + "333\\JSON\\";
     String generatedDataFilePath = path2Util + "333\\" + "import.txt";
 
     // these files added into project
@@ -68,6 +72,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
+    @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to export without mentioned file")
     public void runningExportWithoutFile() {
         List<String> commands = new ArrayList<>();
@@ -79,6 +84,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
+    @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to import without mentioned file")
     public void runningImportWithoutFile() {
         List<String> commands = new ArrayList<>();
@@ -90,6 +96,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
+    @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to delete without mentioned file")
     public void runningDeleteWithoutFile() {
         List<String> commands = new ArrayList<>();
@@ -197,9 +204,9 @@ public class PermissionsManagementTests {
         int idRolePermission = getCountSpecificRowsFromRolesPermissions(idRoleHavingName, idPermissionHavingName, 0);
         assertThat(idRolePermission).isEqualTo(1);
 
-        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(1);
-        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix);
 
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
@@ -229,13 +236,11 @@ public class PermissionsManagementTests {
         List<String> commands = new ArrayList<>();
         commands.add(path2Util + mainFile);
         commands.add(DELETE_KEY + path2EmptyFile);
-        executeCommandsInColsole(commands);
+        String outputInConsole = executeCommandsInColsole(commands);
 
         String fileContent = getFileContent(path2Log);
-        assertThat(fileContent).contains("!!NOT EXISTS IN SOURCE!! Table : role Id : " + idRoleHavingName + " Name : " + "MaxTest" + suffix);
-        assertThat(fileContent).contains("Asset_List_Max" + suffix);
-        assertThat(fileContent).contains("permissionItemObject" + suffix);
-        assertThat(fileContent).contains("parameter" + suffix);
+        assertThat(fileContent).contains("ex = System.Xml.XmlException: Root element is missing");
+        assertThat(outputInConsole).contains("ex = System.Xml.XmlException: Root element is missing");
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -264,9 +269,9 @@ public class PermissionsManagementTests {
         int idRolePermission = getCountSpecificRowsFromRolesPermissions(idRoleHavingName, idPermissionHavingName, 0);
         assertThat(idRolePermission).isEqualTo(1);
 
-        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(1);
-        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix);
 
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
@@ -288,7 +293,7 @@ public class PermissionsManagementTests {
         rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions("MaxTest" + suffix, 0);
         assertThat(rowsInPermissionsHavingName).isEqualTo(0);
 
-        rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(0);
     }
 
@@ -321,9 +326,9 @@ public class PermissionsManagementTests {
         int idRolePermission = getCountSpecificRowsFromRolesPermissions(idRoleHavingName, idPermissionHavingName, 0);
         assertThat(idRolePermission).isEqualTo(1);
 
-        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(1);
-        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix, 0);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix);
 
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
@@ -373,6 +378,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
+    @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to export in JSON without mentioned file")
     public void runningExportJsonWithoutFile() {
         List<String> commands = new ArrayList<>();
@@ -384,6 +390,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
+    @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to import in JSON without mentioned file")
     public void runningImportJsonWithoutFile() {
         List<String> commands = new ArrayList<>();
@@ -392,5 +399,17 @@ public class PermissionsManagementTests {
         String consoleOutput = executeCommandsInColsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"Permission management"}, description = "execute console util to export in JSON from DB")
+    public void runningExporttJson() {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util + mainFile);
+        commands.add(EXPORT_JSON_KEY + path2JsonFolder);
+        String consoleOutput = executeCommandsInColsole(commands);
+
+        //assertThat(consoleOutput).contains("The system cannot find the file specified");
+        // TODO: add assertions
     }
 }

@@ -1,11 +1,9 @@
 package com.kaltura.client.test.utils.dbUtils;
 
-import com.kaltura.client.Logger;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.json.JSONArray;
 import java.sql.*;
-import java.util.Arrays;
 
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 
@@ -150,18 +148,18 @@ public class PermissionsManagementDBUtils extends DBUtils {
     }
 
     public static int getIdRecordHavingRoleNameInPermissions(String name, int groupId) {
-        int count =-1;
+        int id =-1;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ID_BY_ROLE_NAME_IN_PERMISSIONS_SELECT),
                     name, groupId);
             if (!jsonArray.isNull(0)) {
-                count = jsonArray.getJSONObject(0).getInt(ROW_COUNT);
+                id = jsonArray.getJSONObject(0).getInt(ID);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return count;
+        return id;
     }
 
     public static int getCountSpecificRowsFromRolesPermissions(int roleId, int permissionId, int groupId) {
@@ -179,11 +177,11 @@ public class PermissionsManagementDBUtils extends DBUtils {
         return count;
     }
 
-    public static int getCountRowsHavingNameInPermissionItems(String name, int groupId) {
+    public static int getCountRowsHavingNameInPermissionItems(String name) {
         int count = 0;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(COUNT_RECORDS_BY_NAME_IN_PERMISSION_ITEMS_SELECT),
-                    name, groupId);
+                    name);
             if (!jsonArray.isNull(0)) {
                 count = jsonArray.getJSONObject(0).getInt(ROW_COUNT);
             }
@@ -194,19 +192,19 @@ public class PermissionsManagementDBUtils extends DBUtils {
         return count;
     }
 
-    public static int getIdRecordHavingNameInPermissionItems(String name, int groupId) {
-        int count =-1;
+    public static int getIdRecordHavingNameInPermissionItems(String name) {
+        int id =-1;
         try {
             JSONArray jsonArray = getJsonArrayFromQueryResult(String.format(ID_BY_NAME_IN_PERMISSION_ITEMS_SELECT),
-                    name, groupId);
+                    name);
             if (!jsonArray.isNull(0)) {
-                count = jsonArray.getJSONObject(0).getInt(ROW_COUNT);
+                id = jsonArray.getJSONObject(0).getInt(ID);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return count;
+        return id;
     }
 
     public static int getCountSpecificRowsFromPermissionsPermissionsItems(int permissionId, int permissionItemId, int groupId) {
