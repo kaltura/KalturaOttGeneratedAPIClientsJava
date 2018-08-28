@@ -14,14 +14,14 @@
             <!--<package name="com.kaltura.client.test.tests.featuresTests.*"/>-->
         <!--</packages>-->
 
-        <packages>
-            <package name="com.kaltura.client.test.tests.servicesTests.ottUserTests"/>
-            <package name="om.kaltura.client.test.tests.servicesTests.householdTests"/>
-        </packages>
+        <!--<packages>-->
+            <!--<package name="com.kaltura.client.test.tests.servicesTests.ottUserTests"/>-->
+            <!--<package name="om.kaltura.client.test.tests.servicesTests.householdTests"/>-->
+        <!--</packages>-->
 
-        <!--<classes>-->
-            <!--<class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserGetTests"/>-->
-        <!--</classes>-->
+        <classes>
+            <class name="com.kaltura.client.test.tests.servicesTests.ottUserTests.OttUserGetTests"/>
+        </classes>
     </test>
     
     <!--<test name="Slow Tests">-->
