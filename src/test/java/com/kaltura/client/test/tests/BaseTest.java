@@ -20,6 +20,7 @@ import org.testng.annotations.BeforeSuite;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -136,10 +137,13 @@ public class BaseTest {
 
         // set performance report
         if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
-            try {
-                FileUtils.cleanDirectory(new File(getProperty(LOGS_DIR)));
-            } catch (IOException e) {
-                e.printStackTrace();
+            File logsDir = new File(getProperty(LOGS_DIR));
+            if (Files.exists(logsDir.toPath())) {
+                try {
+                    FileUtils.cleanDirectory(new File(getProperty(LOGS_DIR)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
