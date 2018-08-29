@@ -5,6 +5,7 @@ import com.kaltura.client.Logger;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -80,6 +81,12 @@ public class PerformanceUtils extends BaseUtils {
             doc = Jsoup.connect(logsUrl).get();
         } catch (IOException e) {
             e.printStackTrace();
+            File file = getReportFile();
+            try {
+                FileUtils.writeStringToFile(file, ExceptionUtils.getStackTrace(e), Charset.defaultCharset(), true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
 
         List<URL> urls = new ArrayList<>();
@@ -149,6 +156,20 @@ public class PerformanceUtils extends BaseUtils {
                 .collect(Collectors.toList());
     }
 
+    private static File getReportFile() {
+        File file = new File(reportFilePath);
+
+        if (file.exists()) {
+            file.delete();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
+
     private static void writeReport(List<Session> sessions) {
         List<Session> slowSessions = getSlowSessions(sessions);
 
@@ -163,16 +184,7 @@ public class PerformanceUtils extends BaseUtils {
         ));
 
         // write data to file
-        File file = new File(reportFilePath);
-
-        if (file.exists()) {
-            file.delete();
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        File file = getReportFile();
 
         String reportSummary = "Performance Report - " + getCurrentDateInFormat("dd/MM/yyyy HH:mm") + " (" + getProperty(API_VERSION) + ")\n"
                 + "Max percentage: " + getProperty(MAX_CODE_PERCENTAGE) + "%\n"

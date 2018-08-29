@@ -19,7 +19,6 @@ import static com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
  * Class to test functionality described in https://kaltura.atlassian.net/browse/BEO-4885
  */
 public class PermissionsManagementTests {
