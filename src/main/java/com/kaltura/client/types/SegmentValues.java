@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.SegmentSource;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,54 +42,83 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Segmentation type which takes certain values of a tag/meta as segments
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(SegmentValues.Tokenizer.class)
+public class SegmentValues extends BaseSegmentValue {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends BaseSegmentValue.Tokenizer {
+		SegmentSource.Tokenizer source();
+		String threshold();
+		RequestBuilder.ListTokenizer<SegmentValue.Tokenizer> values();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Segment values source
 	 */
-	private String typeIn;
+	private SegmentSource source;
+	/**
+	 * Threshold - minimum score to be met for all values in general (can be overriden)
+	 */
+	private Integer threshold;
+	/**
+	 * List of segment values
+	 */
+	private List<SegmentValue> values;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// source:
+	public SegmentSource getSource(){
+		return this.source;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setSource(SegmentSource source){
+		this.source = source;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	// threshold:
+	public Integer getThreshold(){
+		return this.threshold;
+	}
+	public void setThreshold(Integer threshold){
+		this.threshold = threshold;
+	}
+
+	public void threshold(String multirequestToken){
+		setToken("threshold", multirequestToken);
+	}
+
+	// values:
+	public List<SegmentValue> getValues(){
+		return this.values;
+	}
+	public void setValues(List<SegmentValue> values){
+		this.values = values;
 	}
 
 
-	public SearchAssetFilter() {
+	public SegmentValues() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public SegmentValues(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		source = GsonParser.parseObject(jsonObject.getAsJsonObject("source"), SegmentSource.class);
+		threshold = GsonParser.parseInt(jsonObject.get("threshold"));
+		values = GsonParser.parseArray(jsonObject.getAsJsonArray("values"), SegmentValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaSegmentValues");
+		kparams.add("source", this.source);
+		kparams.add("threshold", this.threshold);
+		kparams.add("values", this.values);
 		return kparams;
 	}
 

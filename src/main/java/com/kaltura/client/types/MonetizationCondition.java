@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.MonetizationType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,54 +41,91 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Defines a singular monetization condition
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(MonetizationCondition.Tokenizer.class)
+public class MonetizationCondition extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String type();
+		String minimumPrice();
+		String multiplier();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Purchase type
 	 */
-	private String typeIn;
+	private MonetizationType type;
+	/**
+	 * Minimum price of purchase
+	 */
+	private Integer minimumPrice;
+	/**
+	 * Score multiplier
+	 */
+	private Integer multiplier;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// type:
+	public MonetizationType getType(){
+		return this.type;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setType(MonetizationType type){
+		this.type = type;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
+
+	// minimumPrice:
+	public Integer getMinimumPrice(){
+		return this.minimumPrice;
+	}
+	public void setMinimumPrice(Integer minimumPrice){
+		this.minimumPrice = minimumPrice;
+	}
+
+	public void minimumPrice(String multirequestToken){
+		setToken("minimumPrice", multirequestToken);
+	}
+
+	// multiplier:
+	public Integer getMultiplier(){
+		return this.multiplier;
+	}
+	public void setMultiplier(Integer multiplier){
+		this.multiplier = multiplier;
+	}
+
+	public void multiplier(String multirequestToken){
+		setToken("multiplier", multirequestToken);
 	}
 
 
-	public SearchAssetFilter() {
+	public MonetizationCondition() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public MonetizationCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
+		minimumPrice = GsonParser.parseInt(jsonObject.get("minimumPrice"));
+		multiplier = GsonParser.parseInt(jsonObject.get("multiplier"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaMonetizationCondition");
+		kparams.add("type", this.type);
+		kparams.add("minimumPrice", this.minimumPrice);
+		kparams.add("multiplier", this.multiplier);
 		return kparams;
 	}
 

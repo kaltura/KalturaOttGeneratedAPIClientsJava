@@ -25,12 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.Permission;
+import com.kaltura.client.types.PermissionFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,56 +39,41 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+public class PermissionService {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public static class GetCurrentPermissionsPermissionBuilder extends RequestBuilder<String, String, GetCurrentPermissionsPermissionBuilder> {
+		
+		public GetCurrentPermissionsPermissionBuilder() {
+			super(String.class, "permission", "getCurrentPermissions");
+		}
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Returns permission names as comma separated string
 	 */
-	private String typeIn;
-
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+    public static GetCurrentPermissionsPermissionBuilder getCurrentPermissions()  {
+		return new GetCurrentPermissionsPermissionBuilder();
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
-	}
-
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	
+	public static class ListPermissionBuilder extends ListResponseRequestBuilder<Permission, Permission.Tokenizer, ListPermissionBuilder> {
+		
+		public ListPermissionBuilder(PermissionFilter filter) {
+			super(Permission.class, "permission", "list");
+			params.add("filter", filter);
+		}
 	}
 
-
-	public SearchAssetFilter() {
-		super();
+	public static ListPermissionBuilder list()  {
+		return list(null);
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-
+	/**
+	 * Retrieving permissions by identifiers, if filter is empty, returns all partner
+	  permissions
+	 * 
+	 * @param filter Filter for permissions
+	 */
+    public static ListPermissionBuilder list(PermissionFilter filter)  {
+		return new ListPermissionBuilder(filter);
 	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
-		return kparams;
-	}
-
 }
-

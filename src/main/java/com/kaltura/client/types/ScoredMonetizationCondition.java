@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,54 +41,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Defines a condition which is essentially a combination of several
+  monetization-based actions, each has their own score multiplier
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(ScoredMonetizationCondition.Tokenizer.class)
+public class ScoredMonetizationCondition extends BaseSegmentCondition {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
+		String score();
+		RequestBuilder.ListTokenizer<MonetizationCondition.Tokenizer> actions();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * The minimum score to be met
 	 */
-	private String typeIn;
+	private Integer score;
+	/**
+	 * List of the actions that consist the condition
+	 */
+	private List<MonetizationCondition> actions;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// score:
+	public Integer getScore(){
+		return this.score;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setScore(Integer score){
+		this.score = score;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void score(String multirequestToken){
+		setToken("score", multirequestToken);
+	}
+
+	// actions:
+	public List<MonetizationCondition> getActions(){
+		return this.actions;
+	}
+	public void setActions(List<MonetizationCondition> actions){
+		this.actions = actions;
 	}
 
 
-	public SearchAssetFilter() {
+	public ScoredMonetizationCondition() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public ScoredMonetizationCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		score = GsonParser.parseInt(jsonObject.get("score"));
+		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), MonetizationCondition.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaScoredMonetizationCondition");
+		kparams.add("score", this.score);
+		kparams.add("actions", this.actions);
 		return kparams;
 	}
 

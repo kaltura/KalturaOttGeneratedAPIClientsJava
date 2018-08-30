@@ -39,54 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Permissions filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(PermissionFilter.Tokenizer.class)
+public class PermissionFilter extends Filter {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String currentUserPermissionsContains();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Indicates whether the results should be filtered by userId using the current
 	 */
-	private String typeIn;
+	private Boolean currentUserPermissionsContains;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// currentUserPermissionsContains:
+	public Boolean getCurrentUserPermissionsContains(){
+		return this.currentUserPermissionsContains;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
-	}
-
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void setCurrentUserPermissionsContains(Boolean currentUserPermissionsContains){
+		this.currentUserPermissionsContains = currentUserPermissionsContains;
 	}
 
+	public void currentUserPermissionsContains(String multirequestToken){
+		setToken("currentUserPermissionsContains", multirequestToken);
+	}
 
-	public SearchAssetFilter() {
+
+	public PermissionFilter() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public PermissionFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		currentUserPermissionsContains = GsonParser.parseBoolean(jsonObject.get("currentUserPermissionsContains"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaPermissionFilter");
+		kparams.add("currentUserPermissionsContains", this.currentUserPermissionsContains);
 		return kparams;
 	}
 

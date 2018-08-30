@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ContentAction;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,54 +41,91 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Segmentation condition regarding content actions
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(ContentActionCondition.Tokenizer.class)
+public class ContentActionCondition extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String action();
+		String length();
+		String multiplier();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * The relevant action to be examined
 	 */
-	private String typeIn;
+	private ContentAction action;
+	/**
+	 * Optional - if action required specific length to be considered
+	 */
+	private Integer length;
+	/**
+	 * Score multiplier - how much is a single action worth when considering the action
+	 */
+	private Integer multiplier;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// action:
+	public ContentAction getAction(){
+		return this.action;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setAction(ContentAction action){
+		this.action = action;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void action(String multirequestToken){
+		setToken("action", multirequestToken);
+	}
+
+	// length:
+	public Integer getLength(){
+		return this.length;
+	}
+	public void setLength(Integer length){
+		this.length = length;
+	}
+
+	public void length(String multirequestToken){
+		setToken("length", multirequestToken);
+	}
+
+	// multiplier:
+	public Integer getMultiplier(){
+		return this.multiplier;
+	}
+	public void setMultiplier(Integer multiplier){
+		this.multiplier = multiplier;
+	}
+
+	public void multiplier(String multirequestToken){
+		setToken("multiplier", multirequestToken);
 	}
 
 
-	public SearchAssetFilter() {
+	public ContentActionCondition() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public ContentActionCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		action = ContentAction.get(GsonParser.parseString(jsonObject.get("action")));
+		length = GsonParser.parseInt(jsonObject.get("length"));
+		multiplier = GsonParser.parseInt(jsonObject.get("multiplier"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaContentActionCondition");
+		kparams.add("action", this.action);
+		kparams.add("length", this.length);
+		kparams.add("multiplier", this.multiplier);
 		return kparams;
 	}
 

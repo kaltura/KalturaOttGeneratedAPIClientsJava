@@ -39,54 +39,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * User data condition for segmentation
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(UserDataCondition.Tokenizer.class)
+public class UserDataCondition extends BaseSegmentCondition {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
+		String field();
+		String value();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Field name
 	 */
-	private String typeIn;
+	private String field;
+	/**
+	 * Value
+	 */
+	private String value;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// field:
+	public String getField(){
+		return this.field;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setField(String field){
+		this.field = field;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void field(String multirequestToken){
+		setToken("field", multirequestToken);
+	}
+
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
 
-	public SearchAssetFilter() {
+	public UserDataCondition() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public UserDataCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		field = GsonParser.parseString(jsonObject.get("field"));
+		value = GsonParser.parseString(jsonObject.get("value"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaUserDataCondition");
+		kparams.add("field", this.field);
+		kparams.add("value", this.value);
 		return kparams;
 	}
 

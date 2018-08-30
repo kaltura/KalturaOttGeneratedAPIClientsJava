@@ -32,6 +32,8 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,63 +42,96 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Specific segment value
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Permission.Tokenizer.class)
-public class Permission extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SegmentValue.Tokenizer.class)
+public class SegmentValue extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
-		String friendlyName();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
+		String value();
+		String threshold();
 	}
 
 	/**
-	 * Permission identifier
+	 * Id of segment
 	 */
 	private Long id;
 	/**
-	 * Permission name
+	 * Name of segment
 	 */
 	private String name;
 	/**
-	 * Permission friendly name
+	 * Name of segment
 	 */
-	private String friendlyName;
+	private List<TranslationToken> multilingualName;
+	/**
+	 * The value of the segment
+	 */
+	private String value;
+	/**
+	 * Threshold - minimuim score to be met for this specific value
+	 */
+	private Integer threshold;
 
 	// id:
 	public Long getId(){
 		return this.id;
 	}
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
 	// name:
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
+	// multilingualName:
+	public List<TranslationToken> getMultilingualName(){
+		return this.multilingualName;
+	}
+	public void setMultilingualName(List<TranslationToken> multilingualName){
+		this.multilingualName = multilingualName;
 	}
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
 	}
 
-	// friendlyName:
-	public String getFriendlyName(){
-		return this.friendlyName;
-	}
-	public void setFriendlyName(String friendlyName){
-		this.friendlyName = friendlyName;
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
-	public void friendlyName(String multirequestToken){
-		setToken("friendlyName", multirequestToken);
+	// threshold:
+	public Integer getThreshold(){
+		return this.threshold;
+	}
+	public void setThreshold(Integer threshold){
+		this.threshold = threshold;
+	}
+
+	public void threshold(String multirequestToken){
+		setToken("threshold", multirequestToken);
 	}
 
 
-	public Permission() {
+	public SegmentValue() {
 		super();
 	}
 
-	public Permission(JsonObject jsonObject) throws APIException {
+	public SegmentValue(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
@@ -104,15 +139,19 @@ public class Permission extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		friendlyName = GsonParser.parseString(jsonObject.get("friendlyName"));
+		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
+		value = GsonParser.parseString(jsonObject.get("value"));
+		threshold = GsonParser.parseInt(jsonObject.get("threshold"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPermission");
-		kparams.add("name", this.name);
-		kparams.add("friendlyName", this.friendlyName);
+		kparams.add("objectType", "KalturaSegmentValue");
+		kparams.add("id", this.id);
+		kparams.add("multilingualName", this.multilingualName);
+		kparams.add("value", this.value);
+		kparams.add("threshold", this.threshold);
 		return kparams;
 	}
 

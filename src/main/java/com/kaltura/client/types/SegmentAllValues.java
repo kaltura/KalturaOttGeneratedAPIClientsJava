@@ -39,54 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Segmentation type which takes all values of a tag/meta as segments
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(SegmentAllValues.Tokenizer.class)
+public class SegmentAllValues extends SegmentValues {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends SegmentValues.Tokenizer {
+		String nameFormat();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Segment names&amp;#39; format - they will be automatically generated
 	 */
-	private String typeIn;
+	private String nameFormat;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// nameFormat:
+	public String getNameFormat(){
+		return this.nameFormat;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
-	}
-
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void setNameFormat(String nameFormat){
+		this.nameFormat = nameFormat;
 	}
 
+	public void nameFormat(String multirequestToken){
+		setToken("nameFormat", multirequestToken);
+	}
 
-	public SearchAssetFilter() {
+
+	public SegmentAllValues() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public SegmentAllValues(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		nameFormat = GsonParser.parseString(jsonObject.get("nameFormat"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaSegmentAllValues");
+		kparams.add("nameFormat", this.nameFormat);
 		return kparams;
 	}
 

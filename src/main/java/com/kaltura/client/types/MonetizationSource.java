@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.MathemticalOperatorType;
+import com.kaltura.client.enums.MonetizationType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,54 +41,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Monetization based source (purchases etc.)
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(MonetizationSource.Tokenizer.class)
+public class MonetizationSource extends SegmentSource {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends SegmentSource.Tokenizer {
+		String type();
+		String operator();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Purchase type
 	 */
-	private String typeIn;
+	private MonetizationType type;
+	/**
+	 * Mathermtical operator to calculate
+	 */
+	private MathemticalOperatorType operator;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// type:
+	public MonetizationType getType(){
+		return this.type;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setType(MonetizationType type){
+		this.type = type;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
+
+	// operator:
+	public MathemticalOperatorType getOperator(){
+		return this.operator;
+	}
+	public void setOperator(MathemticalOperatorType operator){
+		this.operator = operator;
+	}
+
+	public void operator(String multirequestToken){
+		setToken("operator", multirequestToken);
 	}
 
 
-	public SearchAssetFilter() {
+	public MonetizationSource() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public MonetizationSource(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
+		operator = MathemticalOperatorType.get(GsonParser.parseString(jsonObject.get("operator")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaMonetizationSource");
+		kparams.add("type", this.type);
+		kparams.add("operator", this.operator);
 		return kparams;
 	}
 

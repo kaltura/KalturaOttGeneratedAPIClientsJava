@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,57 +33,38 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum ContentFieldType implements EnumAsString {
+	META("meta"),
+	TAG("tag");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
-	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	private String value;
+
+	ContentFieldType(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
-	 */
-	private String typeIn;
-
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
-	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-
-	public SearchAssetFilter() {
-		super();
-	}
-
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
-		return kparams;
-	}
-
+	public static ContentFieldType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over ContentFieldType defined values and compare the inner value with the given one:
+		for(ContentFieldType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return ContentFieldType.values().length > 0 ? ContentFieldType.values()[0]: null;
+   }
 }
-
