@@ -19,7 +19,6 @@ public class Properties {
 
     // Request properties
     public static final String PARTNER_ID = "partner_id";
-    public static final String IS_OPC_GROUP = "is_opc_group";
     public static final String OPC_PARTNER_ID = "opc_partner_id";
     public static final String DEFAULT_TIMEOUT_IN_SEC = "default_timeout_in_sec";
 
