@@ -8,16 +8,13 @@ import com.kaltura.client.types.MediaAsset;
 import io.restassured.response.Response;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Verify.verify;
@@ -25,8 +22,8 @@ import static com.kaltura.client.services.AssetService.GetAssetBuilder;
 import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
+import static com.kaltura.client.test.utils.BaseUtils.getEpoch;
 import static com.kaltura.client.test.utils.BaseUtils.getOffsetDateInFormat;
-import static com.kaltura.client.test.utils.XmlUtils.asList;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,32 +32,15 @@ import static org.awaitility.Awaitility.await;
 public class IngestVodUtils extends BaseIngestUtils {
 
     private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.";
+    private static final String ingestAssetStatusPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus[0].";
+
     public static final String ingestStatusMessagePath = ingestDataResultPath + "IngestStatus.Message";
     public static final String ingestStatusPath = ingestDataResultPath + "status";
-    private static final String ingestAssetStatusPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus[0].";
     public static final String ingestAssetStatusMessagePath = ingestAssetStatusPath + "Status.Message";
     public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
     public static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
 
     public static String ingestXmlRequest = "";
-
-    static boolean areDefaultValuesRequired;
-
-    @Accessors(fluent = true)
-    @Data
-    public static class VODFile {
-        private String assetDuration;
-        private String quality;
-        private String handling_type;
-        private String cdn_name;
-        private String cdn_code;
-        private String alt_cdn_code;
-        private String billing_type;
-        private String product_code;
-        private String type;
-        private String coguid;
-        private String ppvModule;
-    }
 
     @Accessors(fluent = true)
     @Data
@@ -72,6 +52,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         private String name;
         private String description;
+        private String lang;
         private String thumbUrl;
         private String catalogStartDate;
         private String catalogEndDate;
@@ -88,13 +69,46 @@ public class IngestVodUtils extends BaseIngestUtils {
         private Map<String, Double> numbers;
         private Map<String, Boolean> booleans;
 
-        private List<VODFile> assetFiles;
+        private List<String> thumbRatios;
+        private List<VodFile> assetFiles;
+    }
+
+    @Accessors(fluent = true)
+    @Getter
+    public static class VodFile {
+        private String quality;
+        private String handling_type;
+        private String cdn_name;
+        private String cdn_code;
+        private String alt_cdn_code;
+        private String billing_type;
+        private String product_code;
+
+        @Setter private String coguid;
+        @Setter private String assetDuration;
+        @Setter private String type;
+        @Setter private String ppvModule;
+
+        public VodFile(String type, String ppvModule) {
+            quality = "HIGH";
+            handling_type = "CLIP";
+            cdn_name = "Default CDN";
+            cdn_code = "http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m";
+            alt_cdn_code = "http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m";
+            billing_type = "Tvinci";
+            product_code = "productExampleCode";
+
+            assetDuration = "1000";
+            coguid = "file_" + getEpoch();
+            this.type = type;
+            this.ppvModule = ppvModule;
+        }
     }
 
     /** IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid" **/
 
-    public static MediaAsset insertVod(VodData vodData, boolean areDefaultValuesRequired) {
-        IngestVodUtils.areDefaultValuesRequired = areDefaultValuesRequired;
+    public static MediaAsset insertVod(VodData vodData, boolean useDefaultValues) {
+
         final String coguidDatePattern = "yyMMddHHmmssSS";
         final String datePattern = "dd/MM/yyyy hh:mm:ss";
         final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
@@ -103,12 +117,15 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
 
-        if (areDefaultValuesRequired) {
+        if (useDefaultValues) {
             if (vodData.name == null) {
                 vodData.name = vodData.coguid;
             }
             if (vodData.description == null) {
                 vodData.description = "description of " + vodData.coguid;
+            }
+            if (vodData.lang == null) {
+                vodData.lang = "eng";
             }
             if (vodData.thumbUrl == null) {
                 vodData.thumbUrl = DEFAULT_THUMB;
@@ -147,7 +164,10 @@ public class IngestVodUtils extends BaseIngestUtils {
                 vodData.ppvMobileName = ppvModuleName;
             }
             if (vodData.assetFiles == null) {
-                vodData.assetFiles = getDefaultAssetFiles(vodData.coguid, vodData.ppvWebName, vodData.ppvMobileName);
+                vodData.assetFiles = getDefaultAssetFiles(vodData.ppvWebName, vodData.ppvMobileName);
+            }
+            if (vodData.thumbRatios == null) {
+                vodData.thumbRatios = Arrays.asList("4:3", "16:9");
             }
         }
 
@@ -249,7 +269,10 @@ public class IngestVodUtils extends BaseIngestUtils {
         // name
         if (vodData.name() != null) {
             Element nameElement = (Element) media.getElementsByTagName("name").item(0);
-            nameElement.getElementsByTagName("value").item(0).setTextContent(vodData.name());
+            Element value = doc.createElement("value");
+            value.setAttribute("lang", vodData.lang != null ? vodData.lang : "eng");
+            value.setTextContent(vodData.name);
+            nameElement.appendChild(value);
         }
 
         // thumb
@@ -261,7 +284,10 @@ public class IngestVodUtils extends BaseIngestUtils {
         // description
         if (vodData.description() != null) {
             Element descriptionElement = (Element) media.getElementsByTagName("description").item(0);
-            descriptionElement.getElementsByTagName("value").item(0).setTextContent(vodData.description());
+            Element value = doc.createElement("value");
+            value.setAttribute("lang", vodData.lang != null ? vodData.lang : "eng");
+            value.setTextContent(vodData.description);
+            descriptionElement.appendChild(value);
         }
 
         // dates
@@ -280,17 +306,18 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // pic_ratios
-        Element picRatios = (Element) media.getElementsByTagName("pic_ratios").item(0);
-        for (Node n : asList(picRatios.getElementsByTagName("ratio"))) {
-            if (vodData.thumbUrl() != null) {
-                Element e = (Element) n;
-                e.setAttribute("thumb", vodData.thumbUrl());
-            }
+        if (vodData.thumbRatios() != null && vodData.thumbRatios().size() > 0) {
+            Element picRatios = (Element) media.getElementsByTagName("pic_ratios").item(0);
+            vodData.thumbRatios().forEach(s -> {
+                Element ratio = doc.createElement("ratio");
+                ratio.setAttribute("ratio", s);
+                ratio.setAttribute("thumb", vodData.thumbUrl() != null ? vodData.thumbUrl() : BaseIngestUtils.DEFAULT_THUMB);
+                picRatios.appendChild(ratio);
+            });
         }
 
         // media type
-        // it is required for update tests too
-        if (action.equals(INGEST_ACTION_INSERT) || action.equals(INGEST_ACTION_UPDATE)) {
+        if (vodData.mediaType() != null) {
             media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType().getValue());
         }
 
@@ -370,7 +397,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         if (vodData.assetFiles != null && vodData.assetFiles.size() > 0) {
             Element files = (Element) media.getElementsByTagName("files").item(0);
 
-            for (VODFile vodFile : vodData.assetFiles) {
+            for (VodFile vodFile : vodData.assetFiles) {
                 files.appendChild(addFile(doc, vodFile));
             }
         }
@@ -383,7 +410,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         return ingestXmlRequest;
     }
 
-    private static Element addFile(Document doc, VODFile vodFile) {
+    private static Element addFile(Document doc, VodFile vodFile) {
         // file node
         Element file = doc.createElement("file");
 
@@ -488,33 +515,12 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     // TODO: these values should be get in another way than now
-    private static List<VODFile> getDefaultAssetFiles(String coguid, String ppvModuleName1, String ppvModuleName2) {
-        List<VODFile> assetFiles = new ArrayList<>();
+    private static List<VodFile> getDefaultAssetFiles(String ppvModuleName1, String ppvModuleName2) {
+        List<VodFile> assetFiles = new ArrayList<>();
 
-        VODFile file1 = new VODFile()
-                .assetDuration("1000")
-                .quality("HIGH")
-                .handling_type("CLIP")
-                .cdn_name("Default CDN")
-                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
-                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
-                .billing_type("Tvinci")
-                .product_code("productExampleCode")
-                .type("Web HD")
-                .coguid("web_" + coguid)
-                .ppvModule(ppvModuleName1);
-        IngestVodUtils.VODFile file2 = new IngestVodUtils.VODFile()
-                .assetDuration("1000")
-                .quality("HIGH")
-                .handling_type("CLIP")
-                .cdn_name("Default CDN")
-                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
-                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
-                .billing_type("Tvinci")
-                .product_code("productExampleCode")
-                .type("Mobile_Devices_Main_HD")
-                .coguid("ipad_" + coguid)
-                .ppvModule(ppvModuleName2);
+        VodFile file1 = new VodFile("Web HD", ppvModuleName1);
+        VodFile file2 = new VodFile("Mobile_Devices_Main_HD", ppvModuleName2);
+
         assetFiles.add(file1);
         assetFiles.add(file2);
 

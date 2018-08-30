@@ -1,6 +1,5 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_two;
 
-import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.ProductPriceService;
@@ -8,7 +7,6 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
-import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
@@ -16,15 +14,17 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.kaltura.client.enums.AssetType.MEDIA;
 import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodOPCUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOPCUtils.delayBetweenRetriesInSeconds;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOPCUtils.maxTimeExpectingValidResponseInSeconds;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static io.restassured.path.xml.XmlPath.from;
 import static java.util.TimeZone.getTimeZone;
@@ -60,7 +60,7 @@ public class IngestVodTests extends BaseTest {
         name = prefix + "Name_" + localCoguid;
         description = prefix + "Description_" + localCoguid;
 
-        movieAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_1" + localCoguid,
+        movieAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_1" + localCoguid,
                 "new file type1_1" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
 
         VodData vodData;
@@ -75,14 +75,14 @@ public class IngestVodTests extends BaseTest {
         ingestDeleteXml = DELETE_VOD_XML.replaceAll("180822092522774", movie.getExternalId());
         ingestUpdateXml = UPDATE_VOD_XML.replaceAll("180828080027358", movie.getExternalId());
 
-        episodeAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_2" + localCoguid,
+        episodeAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_2" + localCoguid,
                 "new file type1_2" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
         generateDefaultValues4Insert(EPISODE);
         vodData = getVodData(EPISODE, episodeAssetFiles);
         episode = insertVod(vodData, true);
         episodeType = episode.getType();
 
-//        seriesAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_3" + localCoguid,
+//        seriesAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_3" + localCoguid,
 //                "new file type1_3" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
 //        generateDefaultValues4Insert(SERIES);
 //        vodData = getVodData(SERIES, seriesAssetFiles);
@@ -102,7 +102,7 @@ public class IngestVodTests extends BaseTest {
         }
 
         generateDefaultValues4Insert(MOVIE);
-        List<VODFile> movieAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_11" + localCoguid,
+        List<VodFile> movieAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_11" + localCoguid,
                 "new file type1_11" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
         VodData vodData = getVodData(MOVIE, movieAssetFiles);
         MediaAsset movie = insertVod(vodData, true);
@@ -133,7 +133,7 @@ public class IngestVodTests extends BaseTest {
     @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with filled base meta fields")
     public void insertVodEpisodeBaseFields() {
         generateDefaultValues4Insert(EPISODE);
-        List<VODFile> episodeAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_21" + localCoguid,
+        List<VodFile> episodeAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_21" + localCoguid,
                 "new file type1_21" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
         VodData vodData = getVodData(EPISODE, episodeAssetFiles);
         MediaAsset episode = insertVod(vodData, true);
@@ -160,7 +160,7 @@ public class IngestVodTests extends BaseTest {
     @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with filled base meta fields")
     public void insertVodSeriesBaseFields() {
         generateDefaultValues4Insert(SERIES);
-        List<VODFile> seriesAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_31" + localCoguid,
+        List<VodFile> seriesAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_31" + localCoguid,
                 "new file type1_31" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
         VodData vodData = getVodData(SERIES, seriesAssetFiles);
         MediaAsset series = insertVod(vodData, true);
@@ -527,7 +527,7 @@ public class IngestVodTests extends BaseTest {
     @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with different Ppv")
     public void insertUpdateVodMediaPpv() {
         generateDefaultValues4Insert(MOVIE);
-        List<VODFile> movieAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_11" + localCoguid,
+        List<VodFile> movieAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_11" + localCoguid,
                 "new file type1_11" + localCoguid,"Shai_Regression_PPV;Subscription_only_PPV", "Subscription_only_PPV");
         VodData vodData = getVodData(MOVIE, movieAssetFiles);
         MediaAsset movie = insertVod(vodData, true);
@@ -593,14 +593,14 @@ public class IngestVodTests extends BaseTest {
     }
 
     // to check that ingested file data are corresponding to getAsset file data
-    private void checkFiles(List<VODFile> ingestAssetFiles, String assetId) {
+    private void checkFiles(List<VodFile> ingestAssetFiles, String assetId) {
         boolean isFileWasFound = false;
 
         AssetService.GetAssetBuilder assetBuilder = AssetService.get(assetId, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
         com.kaltura.client.utils.response.base.Response<Asset> assetGetResponse = executor.executeSync(assetBuilder);
         List<MediaFile> getMediaFiles = assetGetResponse.results.getMediaFiles();
 
-        for (VODFile ingestFile: ingestAssetFiles) {
+        for (VodFile ingestFile: ingestAssetFiles) {
             for (MediaFile getFile: getMediaFiles) {
                 if (getFile.getType().equals(ingestFile.type())) {
                     isFileWasFound = true;
@@ -657,4 +657,77 @@ public class IngestVodTests extends BaseTest {
         resp = getResponseBodyFromIngestVod(ingestXml);
         assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageMediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
     }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD images")
+    public void updateImages() {
+        // insert vod
+        generateDefaultValues4Insert(MOVIE);
+        VodData vodData = getVodData(MOVIE, movieAssetFiles);
+        MediaAsset mediaAsset = insertVod(vodData, true);
+
+        // update vod images
+        List<String> ratios = Arrays.asList("1:1", "2:1", "2:3");
+        String fakeImageUrl = "https://picsum.photos/200/300/?random";
+
+        VodData updateVodData = new VodData()
+                .thumbUrl(fakeImageUrl)
+                .thumbRatios(ratios);
+        mediaAsset = updateVod(mediaAsset.getExternalId(), updateVodData);
+
+        // assert update
+        List<MediaImage> images = mediaAsset.getImages();
+
+        assertThat(images.size()).isEqualTo(6);
+
+//        images.forEach(image -> assertThat(image.getUrl()).isEqualTo(fakeImageUrl));
+//        assertThat(images).extracting("ratio").containsExactlyInAnyOrderElementsOf(ratios);
+
+        // cleanup
+        deleteVod(movie.getExternalId());
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD files")
+    public void updateFiles() {
+        List<VodFile> files = new ArrayList<>();
+
+        // insert vod
+        // TODO: 8/30/2018 remove hardcoded values
+        long e = getEpoch();
+        VodFile file1 = new VodFile("Test130301", "Shai_Regression_PPV").coguid("file_1" + e);
+        VodFile file2 = new VodFile("new file type1", "Subscription_only_PPV").coguid("file_2" + e);
+
+        files.add(file1);
+        files.add(file2);
+
+        generateDefaultValues4Insert(MOVIE);
+        VodData vodData = getVodData(MOVIE, files);
+
+        MediaAsset mediaAsset = insertVod(vodData, true);
+        mediaAsset.getMediaFiles().forEach(file -> assertThat(file.getDuration()).isEqualTo(1000));
+
+        // update vod images
+        e = getEpoch();
+        String r = getRandomValue();
+
+        String coguid1 = "file_1" + e + "_" + r;
+        String coguid2 = "file_2" + e + "_" + r;
+
+        file1.coguid(coguid1).assetDuration("5");
+        file2.coguid(coguid2).assetDuration("5");
+
+        VodData updateVodData = new VodData()
+                .assetFiles(files);
+        List<MediaFile> mediaFiles = updateVod(mediaAsset.getExternalId(), updateVodData).getMediaFiles();
+
+        assertThat(mediaFiles.size()).isEqualTo(4);
+
+//        mediaFiles.forEach(file -> assertThat(file.getDuration()).isEqualTo(5));
+//        assertThat(images).extracting("ratio").containsExactlyInAnyOrderElementsOf(ratios);
+
+        // cleanup
+        deleteVod(movie.getExternalId());
+    }
+
 }

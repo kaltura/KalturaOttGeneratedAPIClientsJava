@@ -55,7 +55,7 @@
               },
               "url": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 0
               },
               "version": {
                 "type": "integer",
@@ -63,7 +63,7 @@
               },
               "id": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 0
               },
               "isDefault": {
                 "type": "boolean"

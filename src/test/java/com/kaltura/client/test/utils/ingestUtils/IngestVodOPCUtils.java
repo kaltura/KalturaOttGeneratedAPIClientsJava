@@ -159,13 +159,13 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
     public static HashMap<String, Boolean> booleanHashMap = new HashMap<>();
     public static HashMap<String, String> datesMetaMap = new HashMap<>();
     public static HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
-    public static List<VODFile> movieAssetFiles = new ArrayList<>();
-    public static List<VODFile> episodeAssetFiles = new ArrayList<>();
-    public static List<VODFile> seriesAssetFiles = new ArrayList<>();
+    public static List<VodFile> movieAssetFiles = new ArrayList<>();
+    public static List<VodFile> episodeAssetFiles = new ArrayList<>();
+    public static List<VodFile> seriesAssetFiles = new ArrayList<>();
     public static String tagValue1 = "Jack Nicholson";
     public static String tagValue2 = "Natalie Portman";
 
-    public static IngestVodUtils.VodData getVodData(String mediaType, List<VODFile> mediaAssetFiles) {
+    public static IngestVodUtils.VodData getVodData(String mediaType, List<VodFile> mediaAssetFiles) {
         switch (mediaType) {
             case "Movie":
                 return new IngestVodUtils.VodData()
@@ -303,26 +303,13 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
         return assetListResponse.results.getObjects().get(0).getExternalId();
     }
 
-    public static VODFile loadFile(String fileType, String coguid, String ppvs) {
-        return new VODFile()
-                .assetDuration("1000")
-                .quality("HIGH")
-                .handling_type("CLIP")
-                .cdn_name("Default CDN")
-                .cdn_code("http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
-                .alt_cdn_code("http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m")
-                .billing_type("Tvinci")
-                .product_code("productExampleCode")
-                .type(fileType)
-                .coguid(coguid)
-                .ppvModule(ppvs);
-    }
+    public static List<VodFile> getAssetFiles(String fileType1, String fileType2, String coguid1,
+                                              String coguid2, String ppvs1, String ppvs2) {
+        List<VodFile> result = new ArrayList<>();
 
-    public static List<VODFile> loadAssetFiles(String fileType1, String fileType2, String coguid1,
-                                               String coguid2, String ppvs1, String ppvs2) {
-        List<VODFile> result = new ArrayList<>();
-        VODFile file1 = loadFile(fileType1, coguid1, ppvs1);
-        VODFile file2 = loadFile(fileType2, coguid2, ppvs2);
+        VodFile file1 = new VodFile(fileType1, ppvs1).coguid(coguid1);
+        VodFile file2 = new VodFile(fileType2, ppvs2).coguid(coguid2);
+
         result.add(file1);
         result.add(file2);
 
