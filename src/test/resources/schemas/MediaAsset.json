@@ -34,7 +34,7 @@
         },
         "description": {
           "type": "string",
-          "minLength": 1
+          "minLength": 0
         },
         "images": {
           "type": "array",

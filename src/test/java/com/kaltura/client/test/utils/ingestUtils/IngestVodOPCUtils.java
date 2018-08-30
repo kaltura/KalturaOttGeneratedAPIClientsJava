@@ -25,80 +25,12 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
 
     static final String defaultThumbUrl = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
 
-    public static final String INGEST_VOD_XML = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
-            "<soapenv:Header/>\n" +
-            "<soapenv:Body>\n" +
-            "<tem:IngestTvinciData>\n" +
-            "<tem:request>\n" +
-            "<userName>Test_API_27_03</userName>\n" +
-            "<passWord>Test_API_27_03</passWord>\n" +
-            "<data>\n" +
-            "<![CDATA[\n" +
-            "<feed>\n" +
-            "<export>\n" +
-            "<media action=\"insert\" co_guid=\"180822092522774\" entry_id=\"entry_180822092522774\" erase=\"false\" is_active=\"true\">\n" +
-            "<basic>\n" +
-            "<name>\n" +
-            "<value lang=\"eng\">Movie_Name_1808220925223281</value>\n" +
-            "</name>\n" +
-            "<thumb ingestUrl=\"http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png\"/>\n" +
-            "<description>\n" +
-            "<value lang=\"eng\">Movie_Description_1808220925223281</value>\n" +
-            "</description>\n" +
-            "<dates>\n" +
-            "<catalog_start/>\n" +
-            "<start/>\n" +
-            "<catalog_end/>\n" +
-            "<end/>\n" +
-            "</dates>\n" +
-            "<pic_ratios>\n" +
-            "<ratio ratio=\"4:3\" thumb=\"http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png\"/>\n" +
-            "<ratio ratio=\"16:9\" thumb=\"http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png\"/>\n" +
-            "</pic_ratios>\n" +
-            "<media_type>Movie</media_type>\n" +
-            "<rules>\n" +
-            "<geo_block_rule/>\n" +
-            "<watch_per_rule>Parent Allowed</watch_per_rule>\n" +
-            "<device_rule/>\n" +
-            "</rules>\n" +
-            "</basic>\n" +
-            "<structure>\n" +
-            "<strings>\n" +
-            "<meta ml_handling=\"unique\" name=\"BoxOffice\">\n" +
-            "<value lang=\"eng\">BoxOfficevalue</value>\n" +
-            "</meta>\n" +
-            "</strings>\n" +
-            "<booleans/>\n" +
-            "<doubles>\n" +
-            "<meta ml_handling=\"unique\" name=\"Runtime2\">123456</meta>\n" +
-            "</doubles>\n" +
-            "<dates>\n" +
-            "<meta ml_handling=\"unique\" name=\"ReleaseDate\">12/12/2012</meta>\n" +
-            "</dates>\n" +
-            "<metas>\n" +
-            "<meta ml_handling=\"unique\" name=\"Actors\">\n" +
-            "<container>\n" +
-            "<value lang=\"eng\">Jack Nicholson</value>\n" +
-            "</container>\n" +
-            "<container>\n" +
-            "<value lang=\"eng\">Natalie Portman</value>\n" +
-            "</container>\n" +
-            "</meta>\n" +
-            "</metas>\n" +
-            "</structure>\n" +
-            "<files>\n" +
-            "<file PPV_MODULE=\"Shai_Regression_PPV\" alt_cdn_code=\"http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" assetDuration=\"1000\" billing_type=\"Tvinci\" cdn_code=\"http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" cdn_name=\"Default CDN\" co_guid=\"Test130301_1180822092522328\" handling_type=\"CLIP\" product_code=\"productExampleCode\" quality=\"HIGH\" type=\"Test130301\"/>\n" +
-            "<file PPV_MODULE=\"Subscription_only_PPV\" alt_cdn_code=\"http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" assetDuration=\"1000\" billing_type=\"Tvinci\" cdn_code=\"http://cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m\" cdn_name=\"Default CDN\" co_guid=\"new file type1_1180822092522328\" handling_type=\"CLIP\" product_code=\"productExampleCode\" quality=\"HIGH\" type=\"new file type1\"/>\n" +
-            "</files>\n" +
-            "</media>\n" +
-            "</export>\n" +
-            "</feed>\n" +
-            "]]>\n" +
-            "</data>\n" +
-            "</tem:request>\n" +
-            "</tem:IngestTvinciData>\n" +
-            "</soapenv:Body>\n" +
-            "</soapenv:Envelope>";
+    public static final String FILE_TYPE_1 = "Test130301";
+    public static final String FILE_TYPE_2 = "new file type1";
+    public static final String EMPTY_FILE_1_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_1 + "\"/>\n";
+    public static final String EMPTY_FILE_2_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_2 + "\"/>\n";
+    public static final String EMPTY_IMAGE_TAG = "<ratio ratio=\"\" thumb=\"\"/>\n";
+    public static final String EMPTY_THUMB_TAG = "<thumb ingestUrl=\"\"/>\n";
 
     public static final String UPDATE_VOD_XML = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
             "<soapenv:Header/>\n" +

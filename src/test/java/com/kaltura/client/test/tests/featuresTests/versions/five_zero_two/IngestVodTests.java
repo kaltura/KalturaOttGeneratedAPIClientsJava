@@ -82,12 +82,12 @@ public class IngestVodTests extends BaseTest {
         episode = insertVod(vodData, true);
         episodeType = episode.getType();
 
-        seriesAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_3" + localCoguid,
-                "new file type1_3" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
-        generateDefaultValues4Insert(SERIES);
-        vodData = getVodData(SERIES, seriesAssetFiles);
-        series = insertVod(vodData, true);
-        seriesType = series.getType();
+//        seriesAssetFiles = loadAssetFiles("Test130301","new file type1", "Test130301_3" + localCoguid,
+//                "new file type1_3" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
+//        generateDefaultValues4Insert(SERIES);
+//        vodData = getVodData(SERIES, seriesAssetFiles);
+//        series = insertVod(vodData, true);
+//        seriesType = series.getType();
 
         wasNOTSetupExecuted = false;
     }
@@ -183,7 +183,6 @@ public class IngestVodTests extends BaseTest {
         checkFiles(seriesAssetFiles, series.getId().toString());
     }
 
-    @Issue("BEO-5516")
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD with filled base meta fields")
     public void updateVodMediaBaseFields() {
@@ -227,9 +226,22 @@ public class IngestVodTests extends BaseTest {
         AssetService.GetAssetBuilder assetBuilder = AssetService.get(String.valueOf(movie.getId()), AssetReferenceType.MEDIA)
                 .setKs(getAnonymousKs());
         com.kaltura.client.utils.response.base.Response<Asset> assetGetResponse = executor.executeSync(assetBuilder);
-        assertThat(assetGetResponse.results.getId()).isEqualTo(movie.getId());
-        assertThat(assetGetResponse.results.getDescription()).isEqualTo(null);
-        assertThat(assetGetResponse.results.getMetas().get(mediaNumberFieldName)).isEqualTo(null);
+        MediaAsset asset2 = (MediaAsset)assetGetResponse.results;
+        assertThat(asset2.getId()).isEqualTo(movie.getId());
+        assertThat(asset2.getName()).isEqualTo(name);
+        assertThat(asset2.getDescription()).isEqualTo("");
+        assertThat(((MultilingualStringValue)asset2.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(textValue);
+        assertThat(asset2.getMetas().get(mediaNumberFieldName)).isEqualTo(null);
+        assertThat(getFormattedDate(((LongValue)asset2.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
+        assertThat(((BooleanValue)asset2.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(booleanValue);
+
+        tags = asset2.getTags();
+        entry = tags.entrySet().iterator().next();
+        tagsValues = entry.getValue().getObjects();
+        for (MultilingualStringValue tagValue: tagsValues) {
+            assertThat(tagValues).contains(tagValue.getValue());
+        }
+        assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
     }
 
 
@@ -345,24 +357,6 @@ public class IngestVodTests extends BaseTest {
         assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("Media Id not exist");
     }
 
-    @Issue("BEO-5516")
-    @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc", "OPC"}, description = "try update with empty erase")
-    public void tryUpdateWithEmptyErase() {
-        String invalidXml = ingestUpdateXml
-                .replaceAll("erase=\"false\"", "erase=\"\"");
-        Response resp = getResponseBodyFromIngestVod(invalidXml);
-
-        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).contains("is missing");
-
-        // NO REASON TO CHECK AS DEFAULT VALUE IS FALSE and it allows to ingest
-        /*String invalidXml = ingestUpdateXml
-                .replaceAll("erase=\"false\"", "");
-        Response resp = getResponseBodyFromIngestVod(invalidXml);
-
-        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).contains("is missing");*/
-    }
-
     @Severity(SeverityLevel.MINOR)
     @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with empty entry_id")
     public void tryInsertWithEmptyEntryId() {
@@ -440,7 +434,6 @@ public class IngestVodTests extends BaseTest {
         assertThat(from(resp.asString()).getString(ingestStatusPath)).isEqualTo(status);
     }
 
-    @Issue("BEO-5520")
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with invalid meta or tag field")
     public void tryInsertWithInvalidMetaOrTagField() {
@@ -468,7 +461,6 @@ public class IngestVodTests extends BaseTest {
         validateInvalidMovieField(invalidXml, updatedField, "meta");
     }
 
-    @Issue("BEO-5521")
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = {"ingest VOD for OPC", "opc"}, description = "insert multilingual fields")
     public void ingestMultiLingualFields() {
@@ -526,6 +518,8 @@ public class IngestVodTests extends BaseTest {
         // check tag value
         isTagValueFound = isTagValueFound(tagValue1, asset);
         assertThat(isTagValueFound).isEqualTo(true);
+
+        // TODO: update multilingual fields
     }
 
 
@@ -623,4 +617,44 @@ public class IngestVodTests extends BaseTest {
 
     // TODO: try empty files
     // TODO: try empty images
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with emtpy images and files fields")
+    public void insertVodMediaBaseEmptyImagesAndFields() {
+        String suffix = "123";
+        String ingestXmlWithEmptyFiles = ingestInsertXml
+                .replaceAll("co_guid=\"" + coguid4NegativeTests + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "\"");
+        String ingestXmlBeforeTransformations = ingestXmlWithEmptyFiles;
+        // check empty files
+        int positionBeginFiles = ingestXmlWithEmptyFiles.indexOf("<files>");
+        int positionEndFiles = ingestXmlWithEmptyFiles.indexOf("</files>");
+        String files = ingestXmlWithEmptyFiles.substring(positionBeginFiles, positionEndFiles + "</files>".length());
+        String emptyFiles = "<files>" + EMPTY_FILE_1_TAG + EMPTY_FILE_2_TAG + "</files>";
+        String ingestXml = ingestXmlWithEmptyFiles.replace(files, emptyFiles);
+
+        Response resp = getResponseBodyFromIngestVod(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUnique");
+
+        // check empty images
+        ingestXml = ingestXmlBeforeTransformations
+                .replaceAll("co_guid=\"" + coguid4NegativeTests + suffix + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "1\"");
+        int positionBeginImages = ingestXml.indexOf("<pic_ratios>");
+        int positionEndImages = ingestXml.indexOf("</pic_ratios>");
+        String images = ingestXml.substring(positionBeginImages, positionEndImages + "</pic_ratios>".length());
+        String emptyImages = "<pic_ratios>" + EMPTY_IMAGE_TAG + "</pic_ratios>";
+        ingestXml = ingestXml.replace(images, emptyImages);
+
+        resp = getResponseBodyFromIngestVod(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
+
+        // checkEmptyThumb
+        ingestXml = ingestXmlBeforeTransformations
+                .replaceAll("co_guid=\"" + coguid4NegativeTests + suffix + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "2\"");
+        int positionBeginThumb = ingestXml.indexOf("<thumb");
+        int positionEndThumb = ingestXml.indexOf("/>", positionBeginThumb);
+        String thumb = ingestXml.substring(positionBeginThumb, positionEndThumb + "/>".length());
+        ingestXml = ingestXml.replace(thumb, EMPTY_THUMB_TAG);
+
+        resp = getResponseBodyFromIngestVod(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageMediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
+    }
 }
