@@ -6,10 +6,12 @@ import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
 import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.apache.commons.io.FileUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,7 +115,7 @@ public class PermissionsManagementTests {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
-                "parameter" + suffix);
+                "parameter" + suffix, false);
 
         // export from DB
         List<String> commands = new ArrayList<>();
@@ -183,7 +185,7 @@ public class PermissionsManagementTests {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
-                "parameter" + suffix, 1, 2, 3, 4, 5);
+                "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
         List<String> commands = new ArrayList<>();
@@ -222,14 +224,14 @@ public class PermissionsManagementTests {
         String suffix = String.valueOf(BaseUtils.getEpoch()) + "inserted";
         PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
-                "parameter" + suffix);
+                "parameter" + suffix, false);
         int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
 
         // generate import file data
         suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
-                "parameter" + suffix, 1, 2, 3, 4, 5);
+                "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // try to import into DB
         List<String> commands = new ArrayList<>();
@@ -248,7 +250,7 @@ public class PermissionsManagementTests {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
-                "parameter" + suffix, 1, 2, 3, 4, 5);
+                "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
         List<String> commands = new ArrayList<>();
@@ -302,7 +304,7 @@ public class PermissionsManagementTests {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
                 "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
-                "parameter" + suffix, 1, 2, 3, 4, 5);
+                "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
         List<String> commands = new ArrayList<>();
@@ -400,15 +402,44 @@ public class PermissionsManagementTests {
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
 
+    /*
+
+        // export from DB
+        // checks that created file contains inserted data
+        String fileContent = getFileContent(dataFilePath);
+        assertThat(fileContent).contains("MaxTest" + suffix);
+        assertThat(fileContent).contains("Asset_List_Max" + suffix);
+        assertThat(fileContent).contains("permissionItemObject" + suffix);
+        assertThat(fileContent).contains("parameter" + suffix);*/
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = {"Permission management"}, description = "execute console util to export in JSON from DB")
-    public void runningExporttJson() {
+    public void runningExportJson() throws IOException {
+        // clean folder with logs
+        FileUtils.cleanDirectory(new File(path2JsonFolder));
+
+        // prepare data inserting them in DB using stored procedures
+        String suffix = String.valueOf(BaseUtils.getEpoch());
+        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
+                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+                "parameter" + suffix, true);
+
+        // command
         List<String> commands = new ArrayList<>();
         commands.add(path2Util + mainFile);
         commands.add(EXPORT_JSON_KEY + path2JsonFolder);
         String consoleOutput = executeCommandsInColsole(commands);
 
+        String fileContent = getFileContent(generatedDataFilePath);
+        System.out.println("FILE: " + fileContent);
+
+
+
         //assertThat(consoleOutput).contains("The system cannot find the file specified");
         // TODO: add assertions
+
+//        List<String> commands = new ArrayList<>();
+//        commands.add(path2Util + mainFile);
+//        commands.add(IMPORT_JSON_KEY + path2JsonFolder);
+//        String consoleOutput = executeCommandsInColsole(commands);
     }
 }
