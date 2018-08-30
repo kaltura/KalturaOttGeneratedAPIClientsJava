@@ -133,14 +133,6 @@ public class TestAPIOkRequestsExecutor extends APIOkRequestsExecutor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        try(FileWriter fw = new FileWriter(getProperty(LOGS_DIR) + getProperty(REGRESSION_LOGS_FILE), true);
-//            BufferedWriter bw = new BufferedWriter(fw);
-//            PrintWriter out = new PrintWriter(bw)) {
-//            out.println(serviceMethod + " " + kalturaSession);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public <T> Response<T> executeSync(RequestBuilder<T, ?, ?> requestBuilder) {
