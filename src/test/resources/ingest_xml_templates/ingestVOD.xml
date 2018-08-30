@@ -12,23 +12,16 @@
                         <export>
                             <media erase="false">
                                 <basic>
-                                    <name>
-                                        <value lang="eng"/>
-                                    </name>
+                                    <name/>
                                     <thumb/>
-                                    <description>
-                                        <value lang="eng"/>
-                                    </description>
+                                    <description/>
                                     <dates>
                                         <catalog_start/>
                                         <start/>
                                         <catalog_end/>
                                         <end/>
                                     </dates>
-                                    <pic_ratios>
-                                        <ratio ratio="4:3"/>
-                                        <ratio ratio="16:9"/>
-                                    </pic_ratios>
+                                    <pic_ratios/>
                                     <media_type/>
                                     <rules>
                                         <geo_block_rule/>
