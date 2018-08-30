@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.SegmentSource;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,54 +42,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Segmentation type that takes different ranges as segments
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(SegmentRanges.Tokenizer.class)
+public class SegmentRanges extends BaseSegmentValue {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends BaseSegmentValue.Tokenizer {
+		SegmentSource.Tokenizer source();
+		RequestBuilder.ListTokenizer<SegmentRange.Tokenizer> ranges();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Range source
 	 */
-	private String typeIn;
+	private SegmentSource source;
+	/**
+	 * List of ranges for segmentation
+	 */
+	private List<SegmentRange> ranges;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// source:
+	public SegmentSource getSource(){
+		return this.source;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
+	public void setSource(SegmentSource source){
+		this.source = source;
 	}
 
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	// ranges:
+	public List<SegmentRange> getRanges(){
+		return this.ranges;
+	}
+	public void setRanges(List<SegmentRange> ranges){
+		this.ranges = ranges;
 	}
 
 
-	public SearchAssetFilter() {
+	public SegmentRanges() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public SegmentRanges(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		source = GsonParser.parseObject(jsonObject.getAsJsonObject("source"), SegmentSource.class);
+		ranges = GsonParser.parseArray(jsonObject.getAsJsonArray("ranges"), SegmentRange.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaSegmentRanges");
+		kparams.add("source", this.source);
+		kparams.add("ranges", this.ranges);
 		return kparams;
 	}
 

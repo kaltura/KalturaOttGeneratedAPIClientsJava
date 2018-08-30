@@ -5,7 +5,7 @@ import com.kaltura.client.Configuration;
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
-import com.kaltura.client.test.utils.PerformanceAppLogUtils;
+import com.kaltura.client.test.utils.PerformanceUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
@@ -16,6 +16,12 @@ import org.testng.annotations.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Optional;
+import org.apache.commons.io.FileUtils;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Verify.verify;
@@ -26,7 +32,6 @@ import static com.kaltura.client.services.OttUserService.login;
 import static com.kaltura.client.services.SubscriptionService.list;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
-import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static com.kaltura.client.test.utils.BaseUtils.setTranslationToken;
 import static com.kaltura.client.test.utils.HouseholdUtils.*;
@@ -142,18 +147,15 @@ public class BaseTest {
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
 
         // set performance report
-        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
-            // Before execution of regression we have to delete log file created during previous regression execution
-            // to not affect results of current check
-            String regressionLogsFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
-                    getProperty(REGRESSION_LOGS_LOCAL_FILE);
-            deleteFile(regressionLogsFileName);
-
-            // Before execution of regression we have to delete report file created during previous regression execution
-            // to not affect results of current check
-            String codePerformanceReportFileName = getProperty(PHOENIX_SERVER_LOGS_LOCAL_FOLDER_PATH) +
-                    getProperty(CODE_PERFORMANCE_REPORT_FILE);
-            deleteFile(codePerformanceReportFileName);
+        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
+            File logsDir = new File(getProperty(LOGS_DIR));
+            if (Files.exists(logsDir.toPath())) {
+                try {
+                    FileUtils.cleanDirectory(new File(getProperty(LOGS_DIR)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -187,7 +189,7 @@ public class BaseTest {
                         .maxViews(0)
                         .price(COMMON_PRICE_CODE_AMOUNT)
                         .currency(EUR.getValue())
-                        .discount(IngestFixtureData.getDiscount(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue()))
+                        .discount(IngestFixtureData.getDiscountByPercentAndCurrency(EUR.getValue(), getSharedCommonDiscount().getPercent().intValue()))
                         .isRenewable(true)
                         .recurringPeriods(0);
 
@@ -229,7 +231,7 @@ public class BaseTest {
             if (sharedCommonSubscription == null) {
                 MppData mppData = new MppData()
                         .pricePlanCode1(getSharedCommonPricePlan().getName())
-                        .internalDiscount(IngestFixtureData.getDiscount(EUR.getValue(), (int) defaultDiscountPercentValue));
+                        .internalDiscount(IngestFixtureData.getDiscountByPercentAndCurrency(EUR.getValue(), (int) defaultDiscountPercentValue));
                 sharedCommonSubscription = insertMpp(mppData);
             }
 
@@ -275,7 +277,7 @@ public class BaseTest {
             sharedCommonPpv = IngestFixtureData.loadSharedCommonPpv(getSharedCommonPricePlan());
             if (sharedCommonPpv == null) {
                 PpvData ppvData = new PpvData()
-                        .discount(IngestFixtureData.getDiscount(EUR.getValue(), (int) discountPercentValue))
+                        .discountCode(IngestFixtureData.getDiscountByPercentAndCurrency(EUR.getValue(), (int) discountPercentValue))
                         .usageModule(getSharedCommonPricePlan().getName());
                 sharedCommonPpv = insertPpv(ppvData);
             }
@@ -590,10 +592,9 @@ public class BaseTest {
 
     @AfterSuite
     public void tearDownSuite() {
-        if ("true".equals(getProperty(SHOULD_REGRESSION_LOGS_BE_SAVED))) {
-            // processing of logs and creation of app performance code report
-            PerformanceAppLogUtils.createPerformanceCodeReport();
-            PerformanceAppLogUtils.removeCopiedAppLogFiles();
+        // generate performance report
+        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
+            PerformanceUtils.generatePerformanceReport();
         }
 
         // TODO: 8/14/2018 cleanup: delete generated shared resources and data!

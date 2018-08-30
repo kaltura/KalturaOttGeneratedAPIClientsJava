@@ -545,6 +545,7 @@ public class TransactionPurchaseTests extends BaseTest {
     }
 
     // TODO: 8/15/2018 complete below scenarios:
+    // with discount
     // ppv with expired file
     // ppv with file off
     // asset with future start date
@@ -552,6 +553,7 @@ public class TransactionPurchaseTests extends BaseTest {
     // asset with expired / off file
     // <error name="NotForPurchase" code="3025" description="The Content ID entered is not available for purchase."/>
     // <error name="FileToMediaMismatch" code="3028" description="The file and media don't match"/>
+    // check mpp
 
     @AfterClass
     public void transaction_purchase_after_class() {

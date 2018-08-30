@@ -98,16 +98,21 @@ public class IngestFixtureData extends BaseUtils {
         return collection;
     }
 
-    public static String getDiscount(String currency, int percent) {
-        Logger.getLogger(IngestFixtureData.class).debug("getDiscount(): currency = " + currency + " percent = " + percent);
+    public static String getDiscountByPercentAndCurrency(String currency, int percent) {
+        Logger.getLogger(IngestFixtureData.class).debug("getDiscountByPercent(): currency = " + currency + " percent = " + percent);
 
         JSONArray jsonArray = getJsonArrayFromQueryResult(DISCOUNT_BY_PERCENT_AND_CURRENCY, currency, percent, partnerId);
 
         return jsonArray.getJSONObject(0).getString(CODE);
     }
 
-    public static DiscountModule getDiscount(int percent) {
-        Logger.getLogger(IngestFixtureData.class).debug("getDiscount(): percent = " + percent);
+    public static String getDiscountById(String id) {
+        JSONArray jsonArray = getJsonArrayFromQueryResult(DISCOUNT_BY_ID, partnerId, id);
+        return jsonArray.getJSONObject(0).getString(CODE);
+    }
+
+    public static DiscountModule getDiscountByPercent(int percent) {
+        Logger.getLogger(IngestFixtureData.class).debug("getDiscountByPercent(): percent = " + percent);
 
         JSONArray jsonArray = getJsonArrayFromQueryResult(DISCOUNT_BY_PERCENT,
                 percent, partnerId);

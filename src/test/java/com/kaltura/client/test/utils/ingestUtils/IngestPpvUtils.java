@@ -1,7 +1,7 @@
 package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
+import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.Ppv;
 import io.restassured.response.Response;
 import lombok.AccessLevel;
@@ -36,7 +36,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
         private boolean isFirstDeviceLimitation = false;
 
         private String description;
-        private String discount;
+        private String discountCode;
         private String currency;
         private String usageModule;
         private String productCode;
@@ -44,19 +44,17 @@ public class IngestPpvUtils extends BaseIngestUtils {
         private String secondFileType;
 
         private Double price;
+
+        private CouponsGroup couponGroup;
     }
 
     /** IMPORTANT: In order to update or delete existed ppv use ppv.getName() as "ppvCode" */
 
     public static Ppv insertPpv(PpvData ppvData) {
-        String currencyOfDiscount = "ILS";
-        int percentageOfDiscount = 50;
-
         ppvData.ppvCode = getRandomValue("PPV_");
 
         if (ppvData.description == null) { ppvData.description = ppvData.ppvCode; }
-        if (ppvData.discount == null) { ppvData.discount = IngestFixtureData.getDiscount(currencyOfDiscount, percentageOfDiscount); }
-        if (ppvData.price == null) { ppvData.price = Double.valueOf(getProperty(PRICE_CODE_AMOUNT)); }
+        if (ppvData.price == null) { ppvData.price = Double.valueOf(COMMON_PRICE_CODE_AMOUNT); }
         if (ppvData.currency == null) { ppvData.currency = EUR.getValue(); }
         if (ppvData.usageModule == null) { ppvData.usageModule = getProperty(DEFAULT_USAGE_MODULE_4_INGEST_PPV); }
         if (ppvData.productCode == null) { ppvData.productCode = getProperty(DEFAULT_PRODUCT_CODE); }
@@ -157,8 +155,10 @@ public class IngestPpvUtils extends BaseIngestUtils {
         // usage module
         ppv.getElementsByTagName("usage_module").item(0).setTextContent(ppvData.usageModule);
 
-        // discount
-        ppv.getElementsByTagName("discount").item(0).setTextContent(ppvData.discount);
+        // discount code
+        if (ppvData.discountCode != null) {
+            ppv.getElementsByTagName("discountCode").item(0).setTextContent(ppvData.discountCode);
+        }
 
         // subscription only
         ppv.getElementsByTagName("subscription_only").item(0).setTextContent(Boolean.toString(ppvData.isSubscriptionOnly));
@@ -172,6 +172,13 @@ public class IngestPpvUtils extends BaseIngestUtils {
         // file types
         ppv.getElementsByTagName("file_type").item(0).setTextContent(ppvData.firstFileType);
         ppv.getElementsByTagName("file_type").item(1).setTextContent(ppvData.secondFileType);
+
+
+        // coupon_group
+        if (ppvData.couponGroup != null) {
+            Element couponGroup = (Element) ppv.getElementsByTagName("coupon_group").item(0);
+            couponGroup.getElementsByTagName("code").item(0).setTextContent(ppvData.couponGroup.getName());
+        }
 
         // uncomment cdata
         return uncommentCdataSection(docToString(doc));

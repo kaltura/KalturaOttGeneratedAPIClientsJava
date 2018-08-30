@@ -1,0 +1,79 @@
+{
+  "$id": "DiscountDetails",
+  "definitions": {
+    "DiscountDetails": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "minLength": 0
+        },
+        "endDate": {
+          "type": "number",
+          "minimum": 0.0
+        },
+        "id": {
+          "type": "number",
+          "minimum": 0.0
+        },
+        "multiCurrencyDiscount": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string",
+                "minLength": 0
+              },
+              "amount": {
+                "type": "number",
+                "minimum": 0.0
+              },
+              "currency": {
+                "type": "string",
+                "minLength": 0
+              },
+              "currencySign": {
+                "type": "string",
+                "minLength": 0
+              },
+              "percentage": {
+                "type": "number",
+                "minimum": 0.0
+              }
+            }
+          }
+        },
+        "name": {
+          "type": "string",
+          "minLength": 0
+        },
+        "startDate": {
+          "type": "number",
+          "minimum": 0.0
+        }
+      },
+      "required": [
+        "objectType",
+        "endDate",
+        "id",
+        "multiCurrencyDiscount",
+        "name",
+        "startDate"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/DiscountDetails"
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result",
+    "executionTime"
+  ]
+}

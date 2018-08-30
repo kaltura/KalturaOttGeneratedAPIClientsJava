@@ -39,54 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * User dynamic data source
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchAssetFilter.Tokenizer.class)
-public class SearchAssetFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(UserDynamicDataSource.Tokenizer.class)
+public class UserDynamicDataSource extends SegmentSource {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String typeIn();
+	public interface Tokenizer extends SegmentSource.Tokenizer {
+		String field();
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  – EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted –
-	  all types should be included.
+	 * Field name
 	 */
-	private String typeIn;
+	private String field;
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// field:
+	public String getField(){
+		return this.field;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
-	}
-
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void setField(String field){
+		this.field = field;
 	}
 
+	public void field(String multirequestToken){
+		setToken("field", multirequestToken);
+	}
 
-	public SearchAssetFilter() {
+
+	public UserDynamicDataSource() {
 		super();
 	}
 
-	public SearchAssetFilter(JsonObject jsonObject) throws APIException {
+	public UserDynamicDataSource(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
+		field = GsonParser.parseString(jsonObject.get("field"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchAssetFilter");
-		kparams.add("typeIn", this.typeIn);
+		kparams.add("objectType", "KalturaUserDynamicDataSource");
+		kparams.add("field", this.field);
 		return kparams;
 	}
 

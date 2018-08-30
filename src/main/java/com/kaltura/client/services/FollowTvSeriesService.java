@@ -52,9 +52,8 @@ public class FollowTvSeriesService {
 	}
 
 	/**
-	 * (Deprecated - use personalList.add)              Add a user&amp;#39;s tv series
-	  follow.              Possible status codes: UserAlreadyFollowing = 8013,
-	  NotFound = 500007, InvalidAssetId = 4024
+	 * Add a user&amp;#39;s tv series follow.              Possible status codes:
+	  UserAlreadyFollowing = 8013, NotFound = 500007, InvalidAssetId = 4024
 	 * 
 	 * @param followTvSeries Follow series request parameters
 	 */
@@ -75,9 +74,9 @@ public class FollowTvSeriesService {
 	}
 
 	/**
-	 * (Deprecated - use personalList.delete)              Delete a user&amp;#39;s tv
-	  series follow.              Possible status codes: UserNotFollowing = 8012,
-	  NotFound = 500007, InvalidAssetId = 4024, AnnouncementNotFound = 8006
+	 * Delete a user&amp;#39;s tv series follow.              Possible status codes:
+	  UserNotFollowing = 8012, NotFound = 500007, InvalidAssetId = 4024,
+	  AnnouncementNotFound = 8006
 	 * 
 	 * @param assetId Asset identifier
 	 */
@@ -132,8 +131,7 @@ public class FollowTvSeriesService {
 	}
 
 	/**
-	 * (Deprecated - use personalList.list)              List user&amp;#39;s tv series
-	  follows.              Possible status codes:
+	 * List user&amp;#39;s tv series follows.              Possible status codes:
 	 * 
 	 * @param filter Follow TV series filter
 	 * @param pager pager
