@@ -116,6 +116,8 @@ public class IngestVodTests extends BaseTest {
 
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(0).getRatio() + "\"");
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(1).getRatio() + "\"");
+
+        // without cleanup as we have below tests that can delete ingested item
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -143,6 +145,8 @@ public class IngestVodTests extends BaseTest {
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
         checkFiles(episodeAssetFiles, episode.getId().toString());
+
+        // without cleanup as we have below tests that can delete ingested item
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -170,6 +174,7 @@ public class IngestVodTests extends BaseTest {
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
         checkFiles(seriesAssetFiles, series.getId().toString());
+        // without cleanup as we have below tests that can delete ingested item
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -319,7 +324,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try delete without coguid", priority =-1 )
+    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try delete without coguid", priority =-1)
     public void tryDeleteWithEmptyCoguid() {
         String invalidXml = ingestDeleteXml.replaceAll("co_guid=\"" + movie.getExternalId() + "\"", "co_guid=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
