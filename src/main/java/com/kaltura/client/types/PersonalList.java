@@ -88,7 +88,7 @@ public class PersonalList extends ObjectBase {
 	  (not), ~ (like), !~, ^ (any word starts with), ^= (phrase starts with), +
 	  (exists), !+ (not exists).              Logical conjunction: and, or.           
 	     Search values are limited to 20 characters each for the next operators: ~,
-	  !~, ^, ^=              (maximum length of entire filter is 2048 characters)
+	  !~, ^, ^=              (maximum length of entire filter is 4096 characters)
 	 */
 	private String ksql;
 	/**
