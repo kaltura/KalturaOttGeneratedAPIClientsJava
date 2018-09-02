@@ -119,7 +119,7 @@ public class BaseTest {
 
     @Parameters({"accountType"})
     @BeforeSuite(alwaysRun=true)
-    public void baseTest_beforeSuite(@org.testng.annotations.Optional("opc") String accountType) {
+    public void baseTest_beforeSuite(@org.testng.annotations.Optional("regular") String accountType) {
         Logger.getLogger(BaseTest.class).debug("Start baseTest_beforeSuite");
         // set configuration
         config  = new Configuration();
