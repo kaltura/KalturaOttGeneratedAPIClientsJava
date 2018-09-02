@@ -214,7 +214,9 @@ public class IngestVodTests extends BaseTest {
                 // to remove boolean meta from XML
                 .replaceAll("<doubles>", "")
                 .replaceAll("<meta ml_handling=\"unique\" name=\"" + mediaNumberFieldName + "\">" + doubleValue + "</meta>", "")
-                .replaceAll("</doubles>", "");
+                .replaceAll("</doubles>", "")
+                // to remove thumb
+                .replaceAll("<thumb url=\"" + DEFAULT_THUMB + "\"/>", "");
         Response resp = getResponseBodyFromIngestVod(updateRequest);
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("OK");
 
