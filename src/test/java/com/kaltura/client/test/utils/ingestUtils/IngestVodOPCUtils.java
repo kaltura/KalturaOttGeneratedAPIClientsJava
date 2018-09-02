@@ -8,6 +8,7 @@ import com.kaltura.client.utils.response.base.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.BaseUtils.*;
@@ -241,5 +242,34 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
         result.add(file2);
 
         return result;
+    }
+
+    public static boolean isTagValueFound(String value2Found, Asset asset) {
+        Map<String, MultilingualStringValueArray> tags = asset.getTags();
+        Map.Entry<String, MultilingualStringValueArray> entry = tags.entrySet().iterator().next();
+        List<MultilingualStringValue> tagsValues = entry.getValue().getObjects();
+        for (MultilingualStringValue tagValue: tagsValues) {
+            if (value2Found.equals(tagValue.getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String getIngestXmlWithoutFiles(String ingestXml) {
+        return getUpdatedIngestXml(ingestXml, "<files>", "</files>", "");
+    }
+
+    public static String getUpdatedIngestXml(String ingestXml, String openTag2Update, String closeTag2Update, String updateOnString) {
+        int positionBeginTag = ingestXml.indexOf(openTag2Update);
+        int positionEndTag;
+        if ("/>".equals(closeTag2Update)) {
+            positionEndTag = ingestXml.indexOf(closeTag2Update, positionBeginTag);
+        } else {
+            positionEndTag = ingestXml.indexOf(closeTag2Update);
+        }
+
+        String string2Delete = ingestXml.substring(positionBeginTag, positionEndTag + closeTag2Update.length());
+        return ingestXml.replace(string2Delete, updateOnString);
     }
 }
