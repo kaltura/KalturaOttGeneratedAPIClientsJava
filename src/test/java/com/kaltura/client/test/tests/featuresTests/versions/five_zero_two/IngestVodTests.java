@@ -8,6 +8,7 @@ import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
@@ -36,6 +37,8 @@ import static org.awaitility.Awaitility.await;
  *
  * Class to test functionality described in https://kaltura.atlassian.net/browse/BEO-5428
  */
+@Test(groups = { "ingest VOD for OPC" }) 
+// tag @Test allow to exclude class from testng using it's group name in form <exclude name="ingest VOD for OPC"/>  
 public class IngestVodTests extends BaseTest {
 
     private MediaAsset movie;
@@ -47,22 +50,19 @@ public class IngestVodTests extends BaseTest {
 
     private String localCoguid = "";
     private String ingestInsertXml;
-    private String ingestUpdateXml;
     private String ingestDeleteXml;
     private static final String suffix4Coguid = "123";
     private static String coguid4NegativeTests = "";
 
-    private boolean wasNOTSetupExecuted = true;
-
-    @BeforeClass
+    @BeforeClass(groups = {"opc"})
     public void setUp() {
         String prefix = "Movie_";
         localCoguid = getCurrentDateInFormat("yyMMddHHmmssSS");
         name = prefix + "Name_" + localCoguid;
         description = prefix + "Description_" + localCoguid;
 
-        movieAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_1" + localCoguid,
-                "new file type1_1" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
+        movieAssetFiles = getAssetFiles("Test130301", "new file type1", "Test130301_1" + localCoguid,
+                "new file type1_1" + localCoguid, "Shai_Regression_PPV", "Subscription_only_PPV");
 
         VodData vodData;
         generateDefaultValues4Insert(MOVIE);
@@ -74,34 +74,25 @@ public class IngestVodTests extends BaseTest {
         coguid4NegativeTests = movie.getExternalId() + suffix4Coguid;
         ingestInsertXml = ingestXmlRequest.replaceAll(movie.getExternalId(), coguid4NegativeTests);
         ingestDeleteXml = DELETE_VOD_XML.replaceAll("180822092522774", movie.getExternalId());
-        ingestUpdateXml = UPDATE_VOD_XML.replaceAll("180828080027358", movie.getExternalId());
 
-        episodeAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_2" + localCoguid,
-                "new file type1_2" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
+        episodeAssetFiles = getAssetFiles("Test130301", "new file type1", "Test130301_2" + localCoguid,
+                "new file type1_2" + localCoguid, "Shai_Regression_PPV", "Subscription_only_PPV");
         generateDefaultValues4Insert(EPISODE);
         vodData = getVodData(EPISODE, episodeAssetFiles);
         episode = insertVod(vodData, true);
         episodeType = episode.getType();
 
-//        seriesAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_3" + localCoguid,
-//                "new file type1_3" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
-//        generateDefaultValues4Insert(SERIES);
-//        vodData = getVodData(SERIES, seriesAssetFiles);
-//        series = insertVod(vodData, true);
-//        seriesType = series.getType();
-
-        wasNOTSetupExecuted = false;
+        seriesAssetFiles = getAssetFiles("Test130301", "new file type1", "Test130301_3" + localCoguid,
+                "new file type1_3" + localCoguid, "Shai_Regression_PPV", "Subscription_only_PPV");
+        generateDefaultValues4Insert(SERIES);
+        vodData = getVodData(SERIES, seriesAssetFiles);
+        series = insertVod(vodData, true);
+        seriesType = series.getType();
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, priority =-2, description = "ingest VOD with filled base meta fields")
+    @Test(groups = {"opc"}, priority =-2, description = "ingest VOD with filled base meta fields")
     public void insertVodMediaBaseFields() {
-        // that should be called in case running from testng.xml as a group
-        // priority set to -2 to guarantee that setUp will be executed before all other tests as part of that test case.
-        if (wasNOTSetupExecuted) {
-            setUp();
-        }
-
         generateDefaultValues4Insert(MOVIE);
         List<VodFile> movieAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_11" + localCoguid,
                 "new file type1_11" + localCoguid,"Shai_Regression_PPV", "Subscription_only_PPV");
@@ -128,10 +119,12 @@ public class IngestVodTests extends BaseTest {
 
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(0).getRatio() + "\"");
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(1).getRatio() + "\"");
+
+        // without cleanup as we have below tests that can delete ingested item
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with filled base meta fields")
+    @Test(groups = {"opc"}, description = "ingest VOD with filled base meta fields")
     public void insertVodEpisodeBaseFields() {
         generateDefaultValues4Insert(EPISODE);
         List<VodFile> episodeAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_21" + localCoguid,
@@ -155,10 +148,12 @@ public class IngestVodTests extends BaseTest {
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
         checkFiles(episodeAssetFiles, episode.getId().toString());
+
+        // without cleanup as we have below tests that can delete ingested item
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with filled base meta fields")
+    @Test(groups = {"opc"}, description = "ingest VOD with filled base meta fields")
     public void insertVodSeriesBaseFields() {
         generateDefaultValues4Insert(SERIES);
         List<VodFile> seriesAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_31" + localCoguid,
@@ -182,15 +177,15 @@ public class IngestVodTests extends BaseTest {
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
         checkFiles(seriesAssetFiles, series.getId().toString());
+        // without cleanup as we have below tests that can delete ingested item
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD with filled base meta fields")
+    @Test(groups = {"opc"}, description = "update VOD with filled base meta fields")
     public void updateVodMediaBaseFields() {
         String coguid = getCoguidOfActiveMediaAsset(movieType);
-        // TODO: asked Shir if I can update file and if yes what fields
         generateDefaultValues4Update(true, MOVIE);
-        IngestVodUtils.VodData vodData = getVodData(MOVIE, movieAssetFiles);
+        IngestVodUtils.VodData vodData = getVodData(MOVIE, new ArrayList<>());
 
         MediaAsset asset = updateVod(coguid, vodData);
         String updateRequest = ingestXmlRequest;
@@ -247,7 +242,7 @@ public class IngestVodTests extends BaseTest {
 
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD episode with filled base meta fields")
+    @Test(groups = {"opc"}, description = "update VOD episode with filled base meta fields")
     public void updateVodEpisodeBaseFields() {
         generateDefaultValues4Update(false, EPISODE);
         IngestVodUtils.VodData vodData = getVodData(EPISODE, episodeAssetFiles);
@@ -272,7 +267,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD series with filled base meta fields")
+    @Test(groups = {"opc"}, description = "update VOD series with filled base meta fields")
     public void updateVodSeriesBaseFields() {
         generateDefaultValues4Update(true, SERIES);
         IngestVodUtils.VodData vodData = getVodData(SERIES, seriesAssetFiles);
@@ -297,28 +292,28 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "delete")
+    @Test(groups = {"opc"}, description = "delete")
     public void deleteMovie() {
         String coguid = getCoguidOfActiveMediaAsset(movieType);
         checkVODDeletion(coguid);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "delete episode")
+    @Test(groups = {"opc"}, description = "delete episode")
     public void deleteEpisode() {
         String coguid = getCoguidOfActiveMediaAsset(episodeType);
         checkVODDeletion(coguid);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "delete series")
+    @Test(groups = {"opc"}, description = "delete series")
     public void deleteSeries() {
         String coguid = getCoguidOfActiveMediaAsset(seriesType);
         checkVODDeletion(coguid);
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert without coguid")
+    @Test(groups = {"opc"}, description = "try insert without coguid")
     public void tryInsertWithEmptyCoguid() {
         String invalidXml = ingestInsertXml.replaceAll("co_guid=\"" + coguid4NegativeTests + "\"", "co_guid=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
@@ -332,7 +327,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try delete without coguid", priority =-1 )
+    @Test(groups = {"opc"}, description = "try delete without coguid", priority =-1)
     public void tryDeleteWithEmptyCoguid() {
         String invalidXml = ingestDeleteXml.replaceAll("co_guid=\"" + movie.getExternalId() + "\"", "co_guid=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
@@ -346,7 +341,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try delete with non-existed coguid")
+    @Test(groups = {"opc"}, description = "try delete with non-existed coguid")
     public void tryDeleteWithNonexistedCoguid() {
         int positionCoguidTag = ingestDeleteXml.indexOf("co_guid=\"");
         int positionBeginOfCoguid = ingestDeleteXml.indexOf("\"", positionCoguidTag + 1);
@@ -359,7 +354,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with empty entry_id")
+    @Test(groups = {"opc"}, description = "try insert with empty entry_id")
     public void tryInsertWithEmptyEntryId() {
         String invalidXml = ingestInsertXml.replaceAll("entry_id=\"entry_" + coguid4NegativeTests + "\"", "entry_id=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
@@ -373,7 +368,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert inactive item")
+    @Test(groups = {"opc"}, description = "try insert inactive item")
     public void tryInsertInactiveItem() {
         String invalidXml = ingestInsertXml.replaceAll("is_active=\"true\"", "is_active=\"false\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
@@ -389,7 +384,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with empty isActive parameter")
+    @Test(groups = {"opc"}, description = "try insert with empty isActive parameter")
     public void tryInsertEmptyIsActive() {
         String invalidXml = ingestInsertXml.replaceAll("is_active=\"true\"", "is_active=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
@@ -398,7 +393,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with empty name", priority =-1)
+    @Test(groups = {"opc"}, description = "try insert with empty name", priority =-1)
     public void tryInsertWithEmptyName() {
         String invalidXml = ingestInsertXml.replaceAll(">" + movie.getName() + "<", "><");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
@@ -415,7 +410,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with invalid credentials")
+    @Test(groups = {"opc"}, description = "try insert with invalid credentials")
     public void tryInsertWithInvalidCredentials() {
         String statusMessage = "Invalid credentials";
         String status = "ERROR";
@@ -436,7 +431,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "try insert with invalid meta or tag field")
+    @Test(groups = {"opc"}, description = "try insert with invalid meta or tag field")
     public void tryInsertWithInvalidMetaOrTagField() {
         String suffix = "UPDATE654987321";
         String ingestXml = ingestInsertXml.replaceAll(localCoguid, localCoguid + suffix);
@@ -463,7 +458,7 @@ public class IngestVodTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "insert multilingual fields")
+    @Test(groups = {"opc"}, description = "insert multilingual fields")
     public void ingestMultiLingualFields() {
         // ingested Movie for checking multilanguage
         final String JAP = "jap";
@@ -519,13 +514,46 @@ public class IngestVodTests extends BaseTest {
         // check tag value
         isTagValueFound = isTagValueFound(tagValue1, asset);
         assertThat(isTagValueFound).isEqualTo(true);
-
         // TODO: update multilingual fields
     }
 
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = {"opc"}, description = "ingest VOD with emtpy images and files fields")
+    public void insertVodMediaBaseEmptyImagesAndFields() {
+        String suffix = "123";
+        String ingestXmlWithEmptyFiles = ingestInsertXml
+                .replaceAll("co_guid=\"" + coguid4NegativeTests + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "\"");
+        String ingestXmlBeforeTransformations = ingestXmlWithEmptyFiles;
+        // check empty files
+        String emptyFiles = "<files>" + EMPTY_FILE_1_TAG + EMPTY_FILE_2_TAG + "</files>";
+        String ingestXml = getUpdatedIngestXml(ingestXmlWithEmptyFiles, "<files>", "</files>", emptyFiles);
+
+        Response resp = getResponseBodyFromIngestVod(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUnique");
+
+        /* TODO: Shir said that current logic should allow to ingest without any errors - that can be checked after Alon complete image update
+        // check empty images
+        ingestXml = ingestXmlBeforeTransformations
+                .replaceAll("co_guid=\"" + coguid4NegativeTests + suffix + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "1\"");
+        ingestXml = getIngestXmlWithoutFiles(ingestXml);
+        String emptyImages = "<pic_ratios>" + EMPTY_IMAGE_TAG + "</pic_ratios>";
+        ingestXml = getUpdatedIngestXml(ingestXml, "<pic_ratios>", "</pic_ratios>", emptyImages);
+
+        resp = getResponseBodyFromIngestVod(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
+
+        // checkEmptyThumb
+        ingestXml = ingestXmlBeforeTransformations
+                .replaceAll("co_guid=\"" + coguid4NegativeTests + suffix + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "2\"");
+        ingestXml = getIngestXmlWithoutFiles(ingestXml);
+        ingestXml = getUpdatedIngestXml(ingestXml, "<thumb", "/>", EMPTY_THUMB_TAG);
+
+        resp = getResponseBodyFromIngestVod(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageMediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");*/
+    }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with different Ppv")
+    @Test(groups = {"opc"}, description = "ingest VOD with different Ppv")
     public void insertUpdateVodMediaPpv() {
         generateDefaultValues4Insert(MOVIE);
         List<VodFile> movieAssetFiles = getAssetFiles("Test130301","new file type1", "Test130301_11" + localCoguid,
@@ -555,19 +583,83 @@ public class IngestVodTests extends BaseTest {
         assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(fileId1);
         assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getPpvDescriptions().get(0).getValue()).isEqualTo(fileId1);
         // TODO: complete
-
     }
 
-    boolean isTagValueFound(String value2Found, Asset asset) {
-        Map<String, MultilingualStringValueArray> tags = asset.getTags();
-        Map.Entry<String, MultilingualStringValueArray> entry = tags.entrySet().iterator().next();
-        List<MultilingualStringValue> tagsValues = entry.getValue().getObjects();
-        for (MultilingualStringValue tagValue: tagsValues) {
-            if (value2Found.equals(tagValue.getValue())) {
-                return true;
-            }
-        }
-        return false;
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"opc"}, description = "update VOD images")
+    public void updateImages() {
+        // insert vod
+        generateDefaultValues4Insert(MOVIE);
+        VodData vodData = getVodData(MOVIE, movieAssetFiles);
+        MediaAsset mediaAsset = insertVod(vodData, true);
+
+        // update vod images
+        List<String> ratios = Arrays.asList("1:1", "2:1", "2:3");
+        String fakeImageUrl = "https://picsum.photos/200/300/?random";
+
+        VodData updateVodData = new VodData()
+                .thumbUrl(fakeImageUrl)
+                .thumbRatios(ratios);
+        mediaAsset = updateVod(mediaAsset.getExternalId(), updateVodData);
+
+        // assert update
+        List<MediaImage> images = mediaAsset.getImages();
+
+        assertThat(images.size()).isEqualTo(6);
+
+//        images.forEach(image -> assertThat(image.getUrl()).isEqualTo(fakeImageUrl));
+//        assertThat(images).extracting("ratio").containsExactlyInAnyOrderElementsOf(ratios);
+
+        // cleanup
+        deleteVod(mediaAsset.getExternalId());
+    }
+
+    @Issue("BEO-5536")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = {"opc"}, description = "update VOD files")
+    public void updateFiles() {
+        List<VodFile> files = new ArrayList<>();
+
+        // insert vod
+        // TODO: 8/30/2018 remove hardcoded values
+        long e = getEpoch();
+        VodFile file1 = new VodFile("Test130301", "Shai_Regression_PPV").coguid("file_1" + e);
+        VodFile file2 = new VodFile("new file type1", "Subscription_only_PPV").coguid("file_2" + e);
+
+        files.add(file1);
+        files.add(file2);
+
+        generateDefaultValues4Insert(MOVIE);
+        VodData vodData = getVodData(MOVIE, files);
+
+        MediaAsset mediaAsset = insertVod(vodData, true);
+
+        MediaFileFilter filter = new MediaFileFilter();
+        filter.setAssetIdEqual(mediaAsset.getId());
+        executor.executeSync(MediaFileService.list(filter).setKs(getOperatorKs()));
+//        mediaAsset.getMediaFiles().forEach(file -> assertThat(file.getDuration()).isEqualTo(1000));
+//
+//        // update vod images
+//        e = getEpoch();
+//        String r = getRandomValue();
+//
+//        String coguid1 = "file_1" + e + "_" + r;
+//        String coguid2 = "file_2" + e + "_" + r;
+//
+//        file1.coguid(coguid1).assetDuration("5");
+//        file2.coguid(coguid2).assetDuration("5");
+//
+//        VodData updateVodData = new VodData()
+//                .assetFiles(files);
+//        List<MediaFile> mediaFiles = updateVod(mediaAsset.getExternalId(), updateVodData).getMediaFiles();
+//
+//        assertThat(mediaFiles.size()).isEqualTo(4);
+
+//        mediaFiles.forEach(file -> assertThat(file.getDuration()).isEqualTo(5));
+//        assertThat(images).extracting("ratio").containsExactlyInAnyOrderElementsOf(ratios);
+
+        // cleanup
+        deleteVod(mediaAsset.getExternalId());
     }
 
     void validateInvalidMovieField(String ingestXml, String fieldName, String fieldType) {
@@ -615,124 +707,4 @@ public class IngestVodTests extends BaseTest {
         }
         assertThat(isFileWasFound).isEqualTo(true);
     }
-
-    // TODO: try empty files
-    // TODO: try empty images
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "ingest VOD with emtpy images and files fields")
-    public void insertVodMediaBaseEmptyImagesAndFields() {
-        String suffix = "123";
-        String ingestXmlWithEmptyFiles = ingestInsertXml
-                .replaceAll("co_guid=\"" + coguid4NegativeTests + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "\"");
-        String ingestXmlBeforeTransformations = ingestXmlWithEmptyFiles;
-        // check empty files
-        int positionBeginFiles = ingestXmlWithEmptyFiles.indexOf("<files>");
-        int positionEndFiles = ingestXmlWithEmptyFiles.indexOf("</files>");
-        String files = ingestXmlWithEmptyFiles.substring(positionBeginFiles, positionEndFiles + "</files>".length());
-        String emptyFiles = "<files>" + EMPTY_FILE_1_TAG + EMPTY_FILE_2_TAG + "</files>";
-        String ingestXml = ingestXmlWithEmptyFiles.replace(files, emptyFiles);
-
-        Response resp = getResponseBodyFromIngestVod(ingestXml);
-        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUnique");
-
-        // check empty images
-        ingestXml = ingestXmlBeforeTransformations
-                .replaceAll("co_guid=\"" + coguid4NegativeTests + suffix + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "1\"");
-        int positionBeginImages = ingestXml.indexOf("<pic_ratios>");
-        int positionEndImages = ingestXml.indexOf("</pic_ratios>");
-        String images = ingestXml.substring(positionBeginImages, positionEndImages + "</pic_ratios>".length());
-        String emptyImages = "<pic_ratios>" + EMPTY_IMAGE_TAG + "</pic_ratios>";
-        ingestXml = ingestXml.replace(images, emptyImages);
-
-        resp = getResponseBodyFromIngestVod(ingestXml);
-        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
-
-        // checkEmptyThumb
-        ingestXml = ingestXmlBeforeTransformations
-                .replaceAll("co_guid=\"" + coguid4NegativeTests + suffix + "\"", "co_guid=\"" + coguid4NegativeTests + suffix + "2\"");
-        int positionBeginThumb = ingestXml.indexOf("<thumb");
-        int positionEndThumb = ingestXml.indexOf("/>", positionBeginThumb);
-        String thumb = ingestXml.substring(positionBeginThumb, positionEndThumb + "/>".length());
-        ingestXml = ingestXml.replace(thumb, EMPTY_THUMB_TAG);
-
-        resp = getResponseBodyFromIngestVod(ingestXml);
-        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageMediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
-    }
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD images")
-    public void updateImages() {
-        // insert vod
-        generateDefaultValues4Insert(MOVIE);
-        VodData vodData = getVodData(MOVIE, movieAssetFiles);
-        MediaAsset mediaAsset = insertVod(vodData, true);
-
-        // update vod images
-        List<String> ratios = Arrays.asList("1:1", "2:1", "2:3");
-        String fakeImageUrl = "https://picsum.photos/200/300/?random";
-
-        VodData updateVodData = new VodData()
-                .thumbUrl(fakeImageUrl)
-                .thumbRatios(ratios);
-        mediaAsset = updateVod(mediaAsset.getExternalId(), updateVodData);
-
-        // assert update
-        List<MediaImage> images = mediaAsset.getImages();
-
-        assertThat(images.size()).isEqualTo(6);
-
-//        images.forEach(image -> assertThat(image.getUrl()).isEqualTo(fakeImageUrl));
-//        assertThat(images).extracting("ratio").containsExactlyInAnyOrderElementsOf(ratios);
-
-        // cleanup
-        deleteVod(movie.getExternalId());
-    }
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"ingest VOD for OPC", "opc"}, description = "update VOD files")
-    public void updateFiles() {
-        List<VodFile> files = new ArrayList<>();
-
-        // insert vod
-        // TODO: 8/30/2018 remove hardcoded values
-        long e = getEpoch();
-        VodFile file1 = new VodFile("Test130301", "Shai_Regression_PPV").coguid("file_1" + e);
-        VodFile file2 = new VodFile("new file type1", "Subscription_only_PPV").coguid("file_2" + e);
-
-        files.add(file1);
-        files.add(file2);
-
-        generateDefaultValues4Insert(MOVIE);
-        VodData vodData = getVodData(MOVIE, files);
-
-        MediaAsset mediaAsset = insertVod(vodData, true);
-
-        MediaFileFilter filter = new MediaFileFilter();
-        filter.setAssetIdEqual(mediaAsset.getId());
-        executor.executeSync(MediaFileService.list(filter).setKs(getOperatorKs()));
-//        mediaAsset.getMediaFiles().forEach(file -> assertThat(file.getDuration()).isEqualTo(1000));
-//
-//        // update vod images
-//        e = getEpoch();
-//        String r = getRandomValue();
-//
-//        String coguid1 = "file_1" + e + "_" + r;
-//        String coguid2 = "file_2" + e + "_" + r;
-//
-//        file1.coguid(coguid1).assetDuration("5");
-//        file2.coguid(coguid2).assetDuration("5");
-//
-//        VodData updateVodData = new VodData()
-//                .assetFiles(files);
-//        List<MediaFile> mediaFiles = updateVod(mediaAsset.getExternalId(), updateVodData).getMediaFiles();
-//
-//        assertThat(mediaFiles.size()).isEqualTo(4);
-
-//        mediaFiles.forEach(file -> assertThat(file.getDuration()).isEqualTo(5));
-//        assertThat(images).extracting("ratio").containsExactlyInAnyOrderElementsOf(ratios);
-
-        // cleanup
-        deleteVod(movie.getExternalId());
-    }
-
 }

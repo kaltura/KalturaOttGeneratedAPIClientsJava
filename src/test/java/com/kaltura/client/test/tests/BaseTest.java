@@ -19,9 +19,7 @@ import java.util.Optional;
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
-import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Verify.verify;
@@ -66,7 +64,7 @@ public class BaseTest {
     // shared common params
     public static int partnerId;
 //    public static int opcPartnerId;
-    public static boolean isOprGroup;
+    public static boolean isOpcGroup;
     public static String defaultUserPassword;
 
     // shared ks's
@@ -137,10 +135,10 @@ public class BaseTest {
 
         // set shared common params
         if ("opc".equals(accountType)) {
-            isOprGroup = true;
+            isOpcGroup = true;
             partnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
         } else {
-            isOprGroup = false;
+            isOpcGroup = false;
             partnerId = Integer.parseInt(getProperty(PARTNER_ID));
         }
         //opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
@@ -305,7 +303,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserName() {
         if (ingestAssetUserUsername == null) {
-            String userInfo = isOprGroup
+            String userInfo = isOpcGroup
                     ? IngestFixtureData.getIngestItemUserData(partnerId)
                     : IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
@@ -316,7 +314,7 @@ public class BaseTest {
 
     public static String getIngestAssetUserPassword() {
         if (ingestAssetUserPassword == null) {
-            String userInfo = isOprGroup
+            String userInfo = isOpcGroup
                     ? IngestFixtureData.getIngestItemUserData(partnerId)
                     : IngestFixtureData.getIngestItemUserData(partnerId + 1);
             ingestAssetUserUsername = userInfo.split(":")[0];
@@ -327,7 +325,7 @@ public class BaseTest {
 
     public static String getIngestVirtualAssetUserName() {
         if (ingestVirtualAssetUserUsername == null) {
-            String userInfo = isOprGroup
+            String userInfo = isOpcGroup
                     ? IngestFixtureData.getIngestItemUserData(partnerId)
                     : IngestFixtureData.getIngestItemUserData(partnerId + 2);
             ingestVirtualAssetUserUsername = userInfo.split(":")[0];
@@ -338,7 +336,7 @@ public class BaseTest {
 
     public static String getIngestVirualAssetUserPassword() {
         if (ingestVirtualAssetUserPassword == null) {
-            String userInfo = isOprGroup
+            String userInfo = isOpcGroup
                     ? IngestFixtureData.getIngestItemUserData(partnerId)
                     : IngestFixtureData.getIngestItemUserData(partnerId + 2);
             ingestVirtualAssetUserUsername = userInfo.split(":")[0];

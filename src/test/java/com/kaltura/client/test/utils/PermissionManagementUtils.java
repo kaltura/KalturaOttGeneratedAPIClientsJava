@@ -89,7 +89,7 @@ public class PermissionManagementUtils extends BaseUtils {
     }
 
     public static void insertDataInAllTables(String path2ResultFile, String role, String usersGroup, String permissionItemName,
-                                    String service, String action, String permissionItemObject, String parameter) {
+                                             String service, String action, String permissionItemObject, String parameter, boolean isJson) {
         long roleId = PermissionsManagementDBUtils.insertRole(role);
         long permissionId = PermissionsManagementDBUtils.insertPermission(role, 2, usersGroup);
         long permissionRoleId = PermissionsManagementDBUtils.insertPermissionRole(roleId, permissionId, 0);
@@ -98,26 +98,67 @@ public class PermissionManagementUtils extends BaseUtils {
         long permissionPermissionItemId = PermissionsManagementDBUtils.insertPermissionPermissionItem(permissionId, permissionItemId, 0);
 
         generateFileWithInsertedIntoDBData(path2ResultFile, role, usersGroup, permissionItemName, service, action,
-                permissionItemObject, parameter, roleId, permissionId, permissionRoleId, permissionItemId, permissionPermissionItemId);
+                permissionItemObject, parameter, roleId, permissionId, permissionRoleId, permissionItemId, permissionPermissionItemId, isJson);
     }
 
     public static void generateFileWithInsertedIntoDBData(String path2ResultFile, String role, String usersGroup, String permissionItemName,
-        String service, String action, String permissionItemObject, String parameter, long roleId, long permissionId,
-        long permissionRoleId, long permissionItemId, long permissionPermissionItemId) {
+                                                          String service, String action, String permissionItemObject, String parameter, long roleId, long permissionId,
+                                                          long permissionRoleId, long permissionItemId, long permissionPermissionItemId, boolean isJson) {
         try {
             File file = new File(path2ResultFile);
             PrintWriter writer = new PrintWriter(file);
-            printOpenTag(writer);
-            printRole(writer, roleId, role);
-            printRolePermission(writer, permissionRoleId, roleId, permissionId, 0, role, role);
-            printPermission(writer, permissionId, role, 2, usersGroup);
-            printPermissionItem(writer, permissionItemId, permissionItemName, 1, service, action, permissionItemObject, parameter);
-            printPermissionPermissionItem(writer, permissionPermissionItemId, permissionId, permissionItemId, 0, permissionItemName, role);
-            printCloseTag(writer);
+            if (isJson) {
+                printRolesFormat(writer, role);
+                // to separate
+                printRolesFormat(writer, ";");
+                printPermissionsFormat(writer, role, usersGroup);
+                // to separate
+                printRolesFormat(writer, ";");
+                printServiceFormat(writer, role, permissionItemName, service, action);
+            } else {
+                // XML
+                printOpenTag(writer);
+                printRole(writer, roleId, role);
+                printRolePermission(writer, permissionRoleId, roleId, permissionId, 0, role, role);
+                printPermission(writer, permissionId, role, 2, usersGroup);
+                printPermissionItem(writer, permissionItemId, permissionItemName, 1, service, action, permissionItemObject, parameter);
+                printPermissionPermissionItem(writer, permissionPermissionItemId, permissionId, permissionItemId, 0, permissionItemName, role);
+                printCloseTag(writer);
+            }
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void printServiceFormat(PrintWriter writer, String role, String permissionItemName, String service, String action) {
+        writer.println("{");
+        writer.println("\"permissions\": [");
+        writer.println("\"" + role + "\"");
+        writer.println("],");
+        writer.println("\"excluded_permissions\": [],");
+        writer.println("\"name\": \"" + permissionItemName + "\",");
+        writer.println("\"service\": \"" + service + "\",");
+        writer.println("\"action\": \"" + action + "\",");
+        writer.println("\"type\": \"Action\"");
+        writer.println("}");
+    }
+
+    private static void printPermissionsFormat(PrintWriter writer, String role, String usersGroup) {
+        writer.println("{");
+        writer.println("\"name\": \"" + role + "\",");
+        writer.println("\"users_group\": \"" + usersGroup + "\"");
+        writer.println("}");
+    }
+
+    private static void printRolesFormat(PrintWriter writer, String role) {
+        writer.println("{");
+        writer.println("\"permissions\": [");
+        writer.println("\"" + role + "\"");
+        writer.println("],");
+        writer.println("\"excluded_permissions\": [],");
+        writer.println("\"name\": \"" + role + "\"");
+        writer.println("}");
     }
 
     public static void generateFileWithInvalidTagForRole(String path2ResultFile, String roleName, int roleId) {
