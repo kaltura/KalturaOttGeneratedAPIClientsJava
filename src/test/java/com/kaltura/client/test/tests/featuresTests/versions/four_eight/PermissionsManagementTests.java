@@ -23,9 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Class to test functionality described in https://kaltura.atlassian.net/browse/BEO-4885
+ * started in 4_8 and completed in 5_0_3
  */
-
-
 public class PermissionsManagementTests {
 
     String mainFile = "PermissionsDeployment.exe";
@@ -183,8 +182,10 @@ public class PermissionsManagementTests {
     @Test(groups = {"Permission management"}, description = "execute console util to import data into DB from valid file")
     public void importFromFile() {
         String suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
-                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
+        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
@@ -194,20 +195,20 @@ public class PermissionsManagementTests {
         executeCommandsInColsole(commands);
 
         // check data in DB
-        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(1);
-        int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
 
-        int rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        int rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions(roleName, 0);
         assertThat(rowsInPermissionsHavingName).isEqualTo(1);
-        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
 
         int idRolePermission = getCountSpecificRowsFromRolesPermissions(idRoleHavingName, idPermissionHavingName, 0);
         assertThat(idRolePermission).isEqualTo(1);
 
-        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
+        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems(permissionItemName);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(1);
-        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
 
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
@@ -222,15 +223,19 @@ public class PermissionsManagementTests {
 
         // insert data in DB
         String suffix = String.valueOf(BaseUtils.getEpoch()) + "inserted";
-        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
-                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
+        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, false);
-        int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
 
         // generate import file data
         suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
-                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+        roleName = "MaxTest" + suffix;
+        permissionItemName = "Asset_List_Max" + suffix;
+        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // try to import into DB
@@ -248,8 +253,10 @@ public class PermissionsManagementTests {
     @Test(groups = {"Permission management"}, description = "execute console util to delete data from DB")
     public void deleteFromDB() {
         String suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
-                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
+        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
@@ -259,20 +266,20 @@ public class PermissionsManagementTests {
         executeCommandsInColsole(commands);
 
         // check data in DB
-        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(1);
-        int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
 
-        int rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        int rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions(roleName, 0);
         assertThat(rowsInPermissionsHavingName).isEqualTo(1);
-        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
 
         int idRolePermission = getCountSpecificRowsFromRolesPermissions(idRoleHavingName, idPermissionHavingName, 0);
         assertThat(idRolePermission).isEqualTo(1);
 
-        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
+        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems(permissionItemName);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(1);
-        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
 
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
@@ -288,13 +295,13 @@ public class PermissionsManagementTests {
         executeCommandsInColsole(commands);
 
         // DB should be empty
-        rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(0);
 
-        rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions(roleName, 0);
         assertThat(rowsInPermissionsHavingName).isEqualTo(0);
 
-        rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
+        rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems(permissionItemName + suffix);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(0);
     }
 
@@ -302,8 +309,10 @@ public class PermissionsManagementTests {
     @Test(groups = {"Permission management"}, description = "execute console util to import already existed data into DB from valid file")
     public void importAlreadyExistedFromFile() {
         String suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, "MaxTest" + suffix, "partner*",
-                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
+        PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
@@ -316,20 +325,20 @@ public class PermissionsManagementTests {
         executeCommandsInColsole(commands);
 
         // check data in DB
-        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(1);
-        int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
 
-        int rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        int rowsInPermissionsHavingName = getCountRowsHavingRoleNameInPermissions(roleName, 0);
         assertThat(rowsInPermissionsHavingName).isEqualTo(1);
-        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions("MaxTest" + suffix, 0);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
 
         int idRolePermission = getCountSpecificRowsFromRolesPermissions(idRoleHavingName, idPermissionHavingName, 0);
         assertThat(idRolePermission).isEqualTo(1);
 
-        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems("Asset_List_Max" + suffix);
+        int rowsInPermissionItemsHavingName = getCountRowsHavingNameInPermissionItems(permissionItemName);
         assertThat(rowsInPermissionItemsHavingName).isEqualTo(1);
-        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems("Asset_List_Max" + suffix);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
 
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
@@ -341,10 +350,11 @@ public class PermissionsManagementTests {
     public void runningDeleteUsingFileWithInvalidTags() {
         // insert role in DB
         String suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionsManagementDBUtils.insertRole("MaxTest" + suffix);
+        String roleName = "MaxTest" + suffix;
+        PermissionsManagementDBUtils.insertRole(roleName);
         int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
 
-        PermissionManagementUtils.generateFileWithInvalidTagForRole(generatedDataFilePath, "MaxTest" + suffix, idRoleHavingName);
+        PermissionManagementUtils.generateFileWithInvalidTagForRole(generatedDataFilePath, roleName, idRoleHavingName);
 
         // try delete
         List<String> commands = new ArrayList<>();
@@ -353,7 +363,7 @@ public class PermissionsManagementTests {
         executeCommandsInColsole(commands);
 
         // check data still in DB
-        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(1);
     }
 
@@ -362,10 +372,11 @@ public class PermissionsManagementTests {
     public void deleteOnlyFromOneTable() {
         // insert role in DB
         String suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionsManagementDBUtils.insertRole("MaxTest" + suffix);
-        int idRoleHavingName = getIdRecordHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        String roleName = "MaxTest" + suffix;
+        PermissionsManagementDBUtils.insertRole(roleName);
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
 
-        PermissionManagementUtils.generateFileForRole(generatedDataFilePath, "MaxTest" + suffix, idRoleHavingName);
+        PermissionManagementUtils.generateFileForRole(generatedDataFilePath, roleName, idRoleHavingName);
 
         // delete
         List<String> commands = new ArrayList<>();
@@ -374,7 +385,7 @@ public class PermissionsManagementTests {
         executeCommandsInColsole(commands);
 
         // check data deleted from DB
-        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles("MaxTest" + suffix, 0);
+        int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
         assertThat(rowsInRolesHavingName).isEqualTo(0);
     }
 
@@ -419,8 +430,10 @@ public class PermissionsManagementTests {
 
         // prepare data inserting them in DB using stored procedures
         String suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
-                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
+        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, true);
 
         // command
