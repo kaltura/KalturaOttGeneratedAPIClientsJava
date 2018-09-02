@@ -18,6 +18,7 @@ import java.util.List;
 import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
 import static com.kaltura.client.test.utils.BaseUtils.getFileContent;
 import static com.kaltura.client.test.utils.PermissionManagementUtils.executeCommandsInColsole;
+import static com.kaltura.client.test.utils.PermissionManagementUtils.getConsoleCommand;
 import static com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,6 +37,10 @@ public class PermissionsManagementTests {
     String dataFilePath = path2Util + "333\\" + "exp1.txt";
     String path2JsonFolder = path2Util + "333\\JSON\\";
     String generatedDataFilePath = path2Util + "333\\" + "import.txt";
+    String path2JsonRoles = path2JsonFolder + "roles.json";
+    String path2JsonPermissions = path2JsonFolder + "permissions.json";
+    String path2JsonMethods = path2JsonFolder + "permission_items\\controllers\\";
+    String fullPath2Util = path2Util + mainFile;
 
     // these files added into project
     String importOnly4TablesFilePath;
@@ -59,8 +64,7 @@ public class PermissionsManagementTests {
     @Severity(SeverityLevel.MINOR)
     @Test(groups = {"Permission management"}, description = "execute console util without parameters")
     public void runningWithoutParameters() {
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
+        List<String> commands = getConsoleCommand(fullPath2Util, "");
         String consoleOutput = executeCommandsInColsole(commands);
 
         assertThat(consoleOutput).contains("Permissions deployment tool");
@@ -75,9 +79,7 @@ public class PermissionsManagementTests {
     @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to export without mentioned file")
     public void runningExportWithoutFile() {
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(EXPORT_KEY);
+        List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
@@ -87,9 +89,7 @@ public class PermissionsManagementTests {
     @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to import without mentioned file")
     public void runningImportWithoutFile() {
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(IMPORT_KEY);
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
@@ -99,9 +99,7 @@ public class PermissionsManagementTests {
     @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to delete without mentioned file")
     public void runningDeleteWithoutFile() {
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(DELETE_KEY);
+        List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
@@ -112,22 +110,30 @@ public class PermissionsManagementTests {
     public void export() {
         // prepare data inserting them in DB using stored procedures
         String suffix = String.valueOf(BaseUtils.getEpoch());
-        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, "MaxTest" + suffix, "partner*",
-                "Asset_List_Max" + suffix, "asset", "list", "permissionItemObject" + suffix,
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
+        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, false);
 
         // export from DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(EXPORT_KEY + dataFilePath);
+        List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_KEY + dataFilePath);
         executeCommandsInColsole(commands);
 
         // checks that created file contains inserted data
         String fileContent = getFileContent(dataFilePath);
-        assertThat(fileContent).contains("MaxTest" + suffix);
-        assertThat(fileContent).contains("Asset_List_Max" + suffix);
+        assertThat(fileContent).contains(roleName);
+        assertThat(fileContent).contains(permissionItemName);
         assertThat(fileContent).contains("permissionItemObject" + suffix);
         assertThat(fileContent).contains("parameter" + suffix);
+
+        // cleaning
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
+        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
+        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
+        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
     }
 
     @Severity(SeverityLevel.MINOR)
@@ -137,9 +143,7 @@ public class PermissionsManagementTests {
         deleteFile(path2Log);
 
         // try to import into DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(IMPORT_KEY + importOnly4TablesFilePath);
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + importOnly4TablesFilePath);
         executeCommandsInColsole(commands);
 
         String fileContent = getFileContent(path2Log);
@@ -153,9 +157,7 @@ public class PermissionsManagementTests {
         deleteFile(path2Log);
 
         // try to import into DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(IMPORT_KEY + path2EmptyFile);
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + path2EmptyFile);
         executeCommandsInColsole(commands);
 
         String fileContent = getFileContent(path2Log);
@@ -169,9 +171,7 @@ public class PermissionsManagementTests {
         deleteFile(path2Log);
 
         // try to import into DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(DELETE_KEY + path2EmptyFile);
+        List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + path2EmptyFile);
         executeCommandsInColsole(commands);
 
         String fileContent = getFileContent(path2Log);
@@ -189,9 +189,7 @@ public class PermissionsManagementTests {
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(IMPORT_KEY + generatedDataFilePath);
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + generatedDataFilePath);
         executeCommandsInColsole(commands);
 
         // check data in DB
@@ -213,11 +211,17 @@ public class PermissionsManagementTests {
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
         assertThat(rowsInPermissionsPermissions).isEqualTo(1);
+
+        // cleaning
+        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = {"Permission management"}, description = "execute console util to check items from DB not mentioned in import file should be mentioned in log")
     public void runningImportToCheckLogHasItemsFromDBNotMentionedInFile() {
+        // TODO: update test
         // remove log file
         deleteFile(path2Log);
 
@@ -239,14 +243,19 @@ public class PermissionsManagementTests {
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // try to import into DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(DELETE_KEY + path2EmptyFile);
+        List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + path2EmptyFile);
         String outputInConsole = executeCommandsInColsole(commands);
 
         String fileContent = getFileContent(path2Log);
         assertThat(fileContent).contains("ex = System.Xml.XmlException: Root element is missing");
         assertThat(outputInConsole).contains("ex = System.Xml.XmlException: Root element is missing");
+
+        // cleaning
+//        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+//        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
+//        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+//        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
+//        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -260,9 +269,7 @@ public class PermissionsManagementTests {
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(IMPORT_KEY + generatedDataFilePath);
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + generatedDataFilePath);
         executeCommandsInColsole(commands);
 
         // check data in DB
@@ -289,9 +296,7 @@ public class PermissionsManagementTests {
         deleteFile(path2Log);
 
         // delete from DB
-        commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(DELETE_KEY + generatedDataFilePath);
+        commands = getConsoleCommand(fullPath2Util, DELETE_KEY + generatedDataFilePath);
         executeCommandsInColsole(commands);
 
         // DB should be empty
@@ -316,9 +321,7 @@ public class PermissionsManagementTests {
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
         // import into DB
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(IMPORT_KEY + generatedDataFilePath);
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + generatedDataFilePath);
         executeCommandsInColsole(commands);
 
         // retry import
@@ -343,6 +346,11 @@ public class PermissionsManagementTests {
         int rowsInPermissionsPermissions = getCountSpecificRowsFromPermissionsPermissionsItems(idPermissionHavingName,
                 idPermissionItemHavingName, 0);
         assertThat(rowsInPermissionsPermissions).isEqualTo(1);
+
+        // cleaning
+        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -357,9 +365,7 @@ public class PermissionsManagementTests {
         PermissionManagementUtils.generateFileWithInvalidTagForRole(generatedDataFilePath, roleName, idRoleHavingName);
 
         // try delete
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(DELETE_KEY + generatedDataFilePath);
+        List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + generatedDataFilePath);
         executeCommandsInColsole(commands);
 
         // check data still in DB
@@ -379,9 +385,7 @@ public class PermissionsManagementTests {
         PermissionManagementUtils.generateFileForRole(generatedDataFilePath, roleName, idRoleHavingName);
 
         // delete
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(DELETE_KEY + generatedDataFilePath);
+        List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + generatedDataFilePath);
         executeCommandsInColsole(commands);
 
         // check data deleted from DB
@@ -393,9 +397,7 @@ public class PermissionsManagementTests {
     @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to export in JSON without mentioned file")
     public void runningExportJsonWithoutFile() {
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(EXPORT_JSON_KEY);
+        List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
@@ -405,26 +407,15 @@ public class PermissionsManagementTests {
     @Issue("BEO-5504")
     @Test(groups = {"Permission management"}, description = "execute console util to import in JSON without mentioned file")
     public void runningImportJsonWithoutFile() {
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(IMPORT_JSON_KEY);
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_JSON_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
 
-    /*
-
-        // export from DB
-        // checks that created file contains inserted data
-        String fileContent = getFileContent(dataFilePath);
-        assertThat(fileContent).contains("MaxTest" + suffix);
-        assertThat(fileContent).contains("Asset_List_Max" + suffix);
-        assertThat(fileContent).contains("permissionItemObject" + suffix);
-        assertThat(fileContent).contains("parameter" + suffix);*/
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = {"Permission management"}, description = "execute console util to export in JSON from DB")
-    public void runningExportJson() throws IOException {
+    public void exportJson() throws IOException {
         // clean folder with logs
         FileUtils.cleanDirectory(new File(path2JsonFolder));
 
@@ -432,27 +423,44 @@ public class PermissionsManagementTests {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         String roleName = "MaxTest" + suffix;
         String permissionItemName = "Asset_List_Max" + suffix;
+        String serviceName = "asset";
         PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
-                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
+                permissionItemName, serviceName, "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, true);
-
         // command
-        List<String> commands = new ArrayList<>();
-        commands.add(path2Util + mainFile);
-        commands.add(EXPORT_JSON_KEY + path2JsonFolder);
+        List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY + path2JsonFolder);
         String consoleOutput = executeCommandsInColsole(commands);
 
-        String fileContent = getFileContent(generatedDataFilePath);
-        System.out.println("FILE: " + fileContent);
+        String importFileContent = getFileContent(generatedDataFilePath);
+        assertThat(importFileContent).contains(roleName);
+        assertThat(importFileContent).contains(permissionItemName);
+        checkActionResult(serviceName, importFileContent);
 
+        // cleaning
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
+        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
+        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
+        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
+    }
 
-
-        //assertThat(consoleOutput).contains("The system cannot find the file specified");
-        // TODO: add assertions
-
-//        List<String> commands = new ArrayList<>();
-//        commands.add(path2Util + mainFile);
-//        commands.add(IMPORT_JSON_KEY + path2JsonFolder);
-//        String consoleOutput = executeCommandsInColsole(commands);
+    void checkActionResult(String serviceName, String importFileContent) {
+        // data prepared so that they splitted by symbol ";"
+        String[] results = importFileContent.split(";");
+        String contentOfJsonFile = getFileContent(path2JsonRoles)
+                .replaceAll(" ", "");
+                //.replaceAll("\\t", "");
+        assertThat(contentOfJsonFile).contains(results[0]
+                .replaceAll(" ", ""));
+        contentOfJsonFile = getFileContent(path2JsonPermissions)
+                .replaceAll(" ", "");
+                //.replaceAll("\\t", "");
+        assertThat(contentOfJsonFile).contains(results[1]
+                .replaceAll(" ", ""));
+        contentOfJsonFile = getFileContent(path2JsonMethods + serviceName + ".json")
+                .replaceAll(" ", "");
+                //.replaceAll("\\t", "");
+        assertThat(contentOfJsonFile).contains(results[2].replaceAll(" ", ""));
     }
 }
