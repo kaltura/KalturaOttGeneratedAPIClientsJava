@@ -106,7 +106,6 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     /** IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid" **/
-
     public static MediaAsset insertVod(VodData vodData, boolean useDefaultValues) {
 
         final String coguidDatePattern = "yyMMddHHmmssSS";

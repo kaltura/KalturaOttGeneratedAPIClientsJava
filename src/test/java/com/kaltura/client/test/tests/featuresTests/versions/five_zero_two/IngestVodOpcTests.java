@@ -95,7 +95,7 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(priority =-2, description = "ingest VOD with filled base meta fields")
+    @Test(description = "ingest VOD with filled base meta fields")
     public void insertVodMediaBaseFields() {
         generateDefaultValues4Insert(MOVIE);
         List<VodFile> movieAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
@@ -317,7 +317,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Test(description = "try insert without coguid")
-    public void tryInsertWithEmptyCoguid() {
+    public void insertWithEmptyCoguid() {
         String invalidXml = ingestInsertXml.replaceAll("co_guid=\"" + coguid4NegativeTests + "\"", "co_guid=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
@@ -331,7 +331,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Test(description = "try delete without coguid", priority =-1)
-    public void tryDeleteWithEmptyCoguid() {
+    public void deleteWithEmptyCoguid() {
         String invalidXml = ingestDeleteXml.replaceAll("co_guid=\"" + movie.getExternalId() + "\"", "co_guid=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
@@ -345,7 +345,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Test(description = "try delete with non-existed coguid")
-    public void tryDeleteWithNonexistedCoguid() {
+    public void deleteWithNonExistedCoguid() {
         int positionCoguidTag = ingestDeleteXml.indexOf("co_guid=\"");
         int positionBeginOfCoguid = ingestDeleteXml.indexOf("\"", positionCoguidTag + 1);
         int positionEndOfCoguid = ingestDeleteXml.indexOf("\"", positionBeginOfCoguid + 1);
@@ -358,7 +358,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.MINOR)
     @Test(description = "try insert with empty entry_id")
-    public void tryInsertWithEmptyEntryId() {
+    public void insertWithEmptyEntryId() {
         String invalidXml = ingestInsertXml.replaceAll("entry_id=\"entry_" + coguid4NegativeTests + "\"", "entry_id=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
@@ -372,7 +372,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.MINOR)
     @Test(description = "try insert inactive item")
-    public void tryInsertInactiveItem() {
+    public void insertInactiveItem() {
         String invalidXml = ingestInsertXml.replaceAll("is_active=\"true\"", "is_active=\"false\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
@@ -388,7 +388,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.MINOR)
     @Test(description = "try insert with empty isActive parameter")
-    public void tryInsertEmptyIsActive() {
+    public void insertEmptyIsActive() {
         String invalidXml = ingestInsertXml.replaceAll("is_active=\"true\"", "is_active=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
@@ -397,7 +397,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.MINOR)
     @Test(description = "try insert with empty name", priority =-1)
-    public void tryInsertWithEmptyName() {
+    public void insertWithEmptyName() {
         String invalidXml = ingestInsertXml.replaceAll(">" + movie.getName() + "<", "><");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
 
@@ -462,7 +462,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Test(description = "insert multilingual fields")
-    public void ingestMultiLingualFields() {
+    public void insertMultiLingualFields() {
         // ingested Movie for checking multilanguage
         final String JAP = "jap";
         final String ENG = "eng";
@@ -557,7 +557,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "ingest VOD with different Ppv")
-    public void insertUpdateVodMediaPpv() {
+    public void updateVodMediaPpv() {
         generateDefaultValues4Insert(MOVIE);
         List<VodFile> movieAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
         VodData vodData = getVodData(MOVIE, movieAssetFiles);
@@ -568,7 +568,7 @@ public class IngestVodOpcTests extends BaseTest {
         assertThat(movie.getDescription()).isEqualTo(description);
         checkFiles(movieAssetFiles, movie.getId().toString());
 
-        Household household = HouseholdUtils.createHousehold(1, 1, true);
+        Household household = HouseholdUtils.createHousehold();
         String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
         AssetService.GetAssetBuilder assetBuilder = AssetService.get(movie.getId().toString(), AssetReferenceType.MEDIA).setKs(classMasterUserKs);
         com.kaltura.client.utils.response.base.Response<Asset> assetGetResponse = executor.executeSync(assetBuilder);
@@ -627,7 +627,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @Issue("BEO-5536")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "update VOD files", enabled = false)
+    @Test(description = "update VOD files")
     public void updateFiles() {
         // insert vod
         List<VodFile> files = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
