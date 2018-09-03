@@ -11,15 +11,15 @@ import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
+import org.apache.commons.io.FileUtils;
 import org.testng.annotations.*;
 
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.Optional;
-import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
+import java.util.*;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Verify.verify;
@@ -121,6 +121,7 @@ public class BaseTest {
     @BeforeSuite(alwaysRun=true)
     public void baseTest_beforeSuite(@org.testng.annotations.Optional("opc") String accountType) {
         Logger.getLogger(BaseTest.class).debug("Start baseTest_beforeSuite");
+
         // set configuration
         config  = new Configuration();
         config.setEndpoint(getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION));
@@ -141,7 +142,7 @@ public class BaseTest {
             isOpcGroup = false;
             partnerId = Integer.parseInt(getProperty(PARTNER_ID));
         }
-        //opcPartnerId = Integer.parseInt(getProperty(OPC_PARTNER_ID));
+
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
 
         // set performance report

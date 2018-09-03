@@ -231,9 +231,14 @@ public class IngestVodOPCUtils extends BaseIngestUtils {
         return assetListResponse.results.getObjects().get(0).getExternalId();
     }
 
-    public static List<VodFile> getAssetFiles(String fileType1, String fileType2, String coguid1,
-                                              String coguid2, String ppvs1, String ppvs2) {
+    public static List<VodFile> get2AssetFiles(String fileType1, String fileType2, String ppvs1, String ppvs2) {
         List<VodFile> result = new ArrayList<>();
+
+        long e = getEpoch();
+        String r = getRandomValue();
+
+        String coguid1 = "file_1_" + e + "_" + r;
+        String coguid2 = "file_2_" + e + "_" + r;
 
         VodFile file1 = new VodFile(fileType1, ppvs1).coguid(coguid1);
         VodFile file2 = new VodFile(fileType2, ppvs2).coguid(coguid2);
