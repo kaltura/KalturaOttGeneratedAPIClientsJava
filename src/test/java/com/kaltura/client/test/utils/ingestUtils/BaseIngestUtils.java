@@ -44,7 +44,7 @@ public class BaseIngestUtils {
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";
 
     // data
-    static final String DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
+    public static final String DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
 
     /*
     // PG adapter data

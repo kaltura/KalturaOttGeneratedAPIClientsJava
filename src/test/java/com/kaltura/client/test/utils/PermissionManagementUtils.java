@@ -3,6 +3,7 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionManagementUtils extends BaseUtils {
@@ -110,10 +111,10 @@ public class PermissionManagementUtils extends BaseUtils {
             if (isJson) {
                 printRolesFormat(writer, role);
                 // to separate
-                printRolesFormat(writer, ";");
+                writer.println(";");
                 printPermissionsFormat(writer, role, usersGroup);
                 // to separate
-                printRolesFormat(writer, ";");
+                writer.println(";");
                 printServiceFormat(writer, role, permissionItemName, service, action);
             } else {
                 // XML
@@ -197,6 +198,13 @@ public class PermissionManagementUtils extends BaseUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<String> getConsoleCommand(String path2Util, String parameters) {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util);
+        commands.add(parameters);
+        return commands;
     }
 }
 
