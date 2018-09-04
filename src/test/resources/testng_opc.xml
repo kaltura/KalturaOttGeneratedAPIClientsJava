@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Regression_Opc" parallel="tests" thread-count="1" configfailurepolicy="continue">
+<suite name="Regression_OPC" parallel="tests" thread-count="1" configfailurepolicy="continue">
     <parameter name="accountType" value="opc"/>
     <test name="OPC Tests">
         <groups>

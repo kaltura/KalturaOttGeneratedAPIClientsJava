@@ -17,9 +17,9 @@ import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.utils.BaseUtils.*;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodOPCUtils.*;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodOPCUtils.delayBetweenRetriesInSeconds;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodOPCUtils.maxTimeExpectingValidResponseInSeconds;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.delayBetweenRetriesInSeconds;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.maxTimeExpectingValidResponseInSeconds;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.assertj.core.api.Assertions.assertThat;

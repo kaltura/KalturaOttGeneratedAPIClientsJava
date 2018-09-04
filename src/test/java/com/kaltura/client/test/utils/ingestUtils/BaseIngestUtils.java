@@ -58,7 +58,7 @@ public class BaseIngestUtils {
     public static final String PG_DEFAULT_PG_SETTINGS = "{}";
     */
 
-    static Document getDocument(String uri) {
+    public static Document getDocument(String uri) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
         Document doc = null;

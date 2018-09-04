@@ -12,7 +12,11 @@ import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
 import org.apache.commons.io.FileUtils;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
+import org.testng.xml.XmlSuite;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +59,7 @@ public class BaseTest {
     public static Configuration config;
     public static TestAPIOkRequestsExecutor executor = TestAPIOkRequestsExecutor.getExecutor();
     private static Response<LoginResponse> loginResponse;
-
+    private static int numOfSuites = getNumOfSuites();
 
     /*================================================================================
     Shared Test Params - used as a helper common params across tests
@@ -118,9 +122,10 @@ public class BaseTest {
     ================================================================================*/
 
     @Parameters({"accountType"})
-    @BeforeSuite(alwaysRun=true)
-    public void baseTest_beforeSuite(@org.testng.annotations.Optional("opc") String accountType) {
-        Logger.getLogger(BaseTest.class).debug("Start baseTest_beforeSuite");
+    @BeforeSuite(alwaysRun = true)
+    public void baseTest_beforeSuite(@org.testng.annotations.Optional("opc") String accountType, ITestContext testContext) {
+        XmlSuite suite = testContext.getCurrentXmlTest().getSuite();
+        Logger.getLogger(BaseTest.class).debug("Start suite >>> Suite: " + suite.getName());
 
         // set configuration
         config  = new Configuration();
@@ -146,7 +151,7 @@ public class BaseTest {
         defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
 
         // set performance report
-        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
+        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS)) && numOfSuites == getNumOfSuites()) {
             File logsDir = new File(getProperty(LOGS_DIR));
             if (Files.exists(logsDir.toPath())) {
                 try {
@@ -156,6 +161,9 @@ public class BaseTest {
                 }
             }
         }
+
+        // decrement numOfSuites in order to generate the performance report after all suites finish
+        numOfSuites--;
     }
 
     @BeforeMethod
@@ -589,14 +597,23 @@ public class BaseTest {
         }
     }
 
-    @AfterSuite
-    public void tearDownSuite() {
+    @AfterSuite(alwaysRun = true)
+    public void baseTest_afterSuite(ITestContext testContext) {
+        XmlSuite suite = testContext.getCurrentXmlTest().getSuite();
+        Logger.getLogger(BaseTest.class).debug("End suite >>> Suite: " + suite.getName());
+
         // generate performance report
-        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS))) {
+        if ("true".equals(getProperty(WRITE_REGRESSION_LOGS)) && numOfSuites == 0) {
             PerformanceUtils.generatePerformanceReport();
         }
 
         // TODO: 8/14/2018 cleanup: delete generated shared resources and data!
+    }
+
+    private static int getNumOfSuites() {
+        Document doc = getDocument("src/test/resources/testng.xml");
+        NodeList suites = doc.getElementsByTagName("suite-file");
+        return suites.getLength();
     }
 
 }

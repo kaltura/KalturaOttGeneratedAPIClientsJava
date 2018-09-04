@@ -14,7 +14,7 @@ import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.utils.BaseUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 
-public class IngestVodOPCUtils extends BaseIngestUtils {
+public class IngestVodOpcUtils extends BaseIngestUtils {
 
     public static String name;
     public static String description;
