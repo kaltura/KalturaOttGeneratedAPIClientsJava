@@ -55,7 +55,6 @@ public class AssetStructMeta extends ObjectBase {
 		String defaultIngestValue();
 		String createDate();
 		String updateDate();
-		String isInherited();
 	}
 
 	/**
@@ -88,10 +87,6 @@ public class AssetStructMeta extends ObjectBase {
 	  as epoch.
 	 */
 	private Long updateDate;
-	/**
-	 * Is inherited
-	 */
-	private Boolean isInherited;
 
 	// assetStructId:
 	public Long getAssetStructId(){
@@ -145,18 +140,6 @@ public class AssetStructMeta extends ObjectBase {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	// isInherited:
-	public Boolean getIsInherited(){
-		return this.isInherited;
-	}
-	public void setIsInherited(Boolean isInherited){
-		this.isInherited = isInherited;
-	}
-
-	public void isInherited(String multirequestToken){
-		setToken("isInherited", multirequestToken);
-	}
-
 
 	public AssetStructMeta() {
 		super();
@@ -175,7 +158,6 @@ public class AssetStructMeta extends ObjectBase {
 		defaultIngestValue = GsonParser.parseString(jsonObject.get("defaultIngestValue"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-		isInherited = GsonParser.parseBoolean(jsonObject.get("isInherited"));
 
 	}
 
@@ -185,7 +167,6 @@ public class AssetStructMeta extends ObjectBase {
 		kparams.add("ingestReferencePath", this.ingestReferencePath);
 		kparams.add("protectFromIngest", this.protectFromIngest);
 		kparams.add("defaultIngestValue", this.defaultIngestValue);
-		kparams.add("isInherited", this.isInherited);
 		return kparams;
 	}
 
