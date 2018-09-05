@@ -9,12 +9,9 @@ import io.qameta.allure.SeverityLevel;
 import org.apache.commons.io.FileUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
 import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
 import static com.kaltura.client.test.utils.BaseUtils.getFileContent;
 import static com.kaltura.client.test.utils.PermissionManagementUtils.executeCommandsInColsole;
@@ -26,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Class to test functionality described in https://kaltura.atlassian.net/browse/BEO-4885
  * started in 4_8 and completed in 5_0_3
  */
+@Test(groups = {"Permission management"})
 public class PermissionsManagementTests {
 
     String mainFile = "PermissionsDeployment.exe";
@@ -62,7 +60,7 @@ public class PermissionsManagementTests {
     public static final String IMPORT_JSON_KEY = "l=";
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"Permission management"}, description = "execute console util without parameters")
+    @Test(description = "execute console util without parameters")
     public void runningWithoutParameters() {
         List<String> commands = getConsoleCommand(fullPath2Util, "");
         String consoleOutput = executeCommandsInColsole(commands);
@@ -77,7 +75,7 @@ public class PermissionsManagementTests {
 
     @Severity(SeverityLevel.MINOR)
     @Issue("BEO-5504")
-    @Test(groups = {"Permission management"}, description = "execute console util to export without mentioned file")
+    @Test(description = "execute console util to export without mentioned file")
     public void runningExportWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
@@ -87,7 +85,7 @@ public class PermissionsManagementTests {
 
     @Severity(SeverityLevel.MINOR)
     @Issue("BEO-5504")
-    @Test(groups = {"Permission management"}, description = "execute console util to import without mentioned file")
+    @Test(description = "execute console util to import without mentioned file")
     public void runningImportWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
@@ -97,7 +95,7 @@ public class PermissionsManagementTests {
 
     @Severity(SeverityLevel.MINOR)
     @Issue("BEO-5504")
-    @Test(groups = {"Permission management"}, description = "execute console util to delete without mentioned file")
+    @Test(description = "execute console util to delete without mentioned file")
     public void runningDeleteWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
@@ -106,7 +104,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to export data from DB into file")
+    @Test(description = "execute console util to export data from DB into file")
     public void export() {
         // prepare data inserting them in DB using stored procedures
         String suffix = String.valueOf(BaseUtils.getEpoch());
@@ -137,7 +135,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"Permission management"}, description = "execute console util to import data into DB from file having only 4 tables instead of 5")
+    @Test(description = "execute console util to import data into DB from file having only 4 tables instead of 5")
     public void runningImportFromFileNotHavingAllTables() {
         // remove log file
         deleteFile(path2Log);
@@ -151,7 +149,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"Permission management"}, description = "execute console util to try import data into DB from empty file")
+    @Test(description = "execute console util to try import data into DB from empty file")
     public void runningImportFromEmptyFile() {
         // remove log file
         deleteFile(path2Log);
@@ -165,7 +163,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(groups = {"Permission management"}, description = "execute console util to try delete data from DB using empty file")
+    @Test(description = "execute console util to try delete data from DB using empty file")
     public void runningDeleteUsingEmptyFile() {
         // remove log file
         deleteFile(path2Log);
@@ -179,7 +177,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to import data into DB from valid file")
+    @Test(description = "execute console util to import data into DB from valid file")
     public void importFromFile() {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         String roleName = "MaxTest" + suffix;
@@ -219,7 +217,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to check items from DB not mentioned in import file should be mentioned in log")
+    @Test(description = "execute console util to check items from DB not mentioned in import file should be mentioned in log")
     public void runningImportToCheckLogHasItemsFromDBNotMentionedInFile() {
         // TODO: update test
         // remove log file
@@ -259,7 +257,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to delete data from DB")
+    @Test(description = "execute console util to delete data from DB")
     public void deleteFromDB() {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         String roleName = "MaxTest" + suffix;
@@ -311,7 +309,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to import already existed data into DB from valid file")
+    @Test(description = "execute console util to import already existed data into DB from valid file")
     public void importAlreadyExistedFromFile() {
         String suffix = String.valueOf(BaseUtils.getEpoch());
         String roleName = "MaxTest" + suffix;
@@ -354,7 +352,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to try delete data in DB using file with invalid tags")
+    @Test(description = "execute console util to try delete data in DB using file with invalid tags")
     public void runningDeleteUsingFileWithInvalidTags() {
         // insert role in DB
         String suffix = String.valueOf(BaseUtils.getEpoch());
@@ -374,7 +372,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to delete data in 1 related table of DB")
+    @Test(description = "execute console util to delete data in 1 related table of DB")
     public void deleteOnlyFromOneTable() {
         // insert role in DB
         String suffix = String.valueOf(BaseUtils.getEpoch());
@@ -395,7 +393,7 @@ public class PermissionsManagementTests {
 
     @Severity(SeverityLevel.MINOR)
     @Issue("BEO-5504")
-    @Test(groups = {"Permission management"}, description = "execute console util to export in JSON without mentioned file")
+    @Test(description = "execute console util to export in JSON without mentioned file")
     public void runningExportJsonWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
@@ -405,7 +403,7 @@ public class PermissionsManagementTests {
 
     @Severity(SeverityLevel.MINOR)
     @Issue("BEO-5504")
-    @Test(groups = {"Permission management"}, description = "execute console util to import in JSON without mentioned file")
+    @Test(description = "execute console util to import in JSON without mentioned file")
     public void runningImportJsonWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_JSON_KEY);
         String consoleOutput = executeCommandsInColsole(commands);
@@ -414,7 +412,7 @@ public class PermissionsManagementTests {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"Permission management"}, description = "execute console util to export in JSON from DB")
+    @Test(description = "execute console util to export in JSON from DB")
     public void exportJson() throws IOException {
         // clean folder with logs
         FileUtils.cleanDirectory(new File(path2JsonFolder));

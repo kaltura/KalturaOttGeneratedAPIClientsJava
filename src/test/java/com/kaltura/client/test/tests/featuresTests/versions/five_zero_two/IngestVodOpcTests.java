@@ -234,11 +234,11 @@ public class IngestVodOpcTests extends BaseTest {
         Response resp = getResponseBodyFromIngestVod(updateRequest);
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("OK");
 
-        AssetService.GetAssetBuilder assetBuilder = AssetService.get(String.valueOf(movie.getId()), AssetReferenceType.MEDIA)
+        AssetService.GetAssetBuilder assetBuilder = AssetService.get(String.valueOf(asset.getId()), AssetReferenceType.MEDIA)
                 .setKs(getAnonymousKs());
         com.kaltura.client.utils.response.base.Response<Asset> assetGetResponse = executor.executeSync(assetBuilder);
         MediaAsset asset2 = (MediaAsset)assetGetResponse.results;
-        assertThat(asset2.getId()).isEqualTo(movie.getId());
+        assertThat(asset2.getId()).isEqualTo(asset.getId());
         assertThat(asset2.getName()).isEqualTo(name);
         assertThat(asset2.getDescription()).isEqualTo("");
         assertThat(((MultilingualStringValue)asset2.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(textValue);
@@ -254,7 +254,6 @@ public class IngestVodOpcTests extends BaseTest {
         }
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
     }
-
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "update VOD episode with filled base meta fields")
