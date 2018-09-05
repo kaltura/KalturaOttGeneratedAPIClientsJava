@@ -80,6 +80,8 @@ public class PerformanceUtils extends BaseUtils {
     }
 
     private static List<URL> getLogFilesUrls() {
+        logger.debug("start getLogFilesUrls()");
+
         Document doc = null;
         try {
             doc = Jsoup.connect(logsUrl).get();
@@ -104,10 +106,14 @@ public class PerformanceUtils extends BaseUtils {
             }
         });
 
+        logger.debug("end getLogFilesUrls()");
+
         return urls;
     }
 
     private static List<String> getLinesFromUrls(List<URL> urls) {
+        logger.debug("start getLinesFromUrls()");
+
         List<List<String>> data = new ArrayList<>();
 
         urls.forEach(url -> {
@@ -126,6 +132,9 @@ public class PerformanceUtils extends BaseUtils {
             }
         });
 
+
+        logger.debug("end getLinesFromUrls()");
+
         return data
                 .stream()
                 .flatMap(Collection::stream)
@@ -139,7 +148,6 @@ public class PerformanceUtils extends BaseUtils {
 
         List<Session> sessionList = new ArrayList<>();
         sessionStrings.forEach(s -> sessionList.add(getSession(lines, s)));
-
 
         logger.debug("end getSessions()");
         return sessionList;
