@@ -13,6 +13,7 @@ import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 import org.testng.xml.XmlSuite;
@@ -544,9 +545,9 @@ public class BaseTest {
     // shared household
     public static class SharedHousehold {
 
-        private static Household sharedHousehold;
-        private static HouseholdUser sharedMasterUser, sharedUser;
-        private static String sharedMasterUserKs, sharedUserKs;
+        @Shared private static Household sharedHousehold;
+        @Shared private static HouseholdUser sharedMasterUser, sharedUser;
+        @Shared private static String sharedMasterUserKs, sharedUserKs;
 
 
         public static Household getSharedHousehold() {
@@ -624,13 +625,17 @@ public class BaseTest {
     void resetSharedParams() {
         Logger.getLogger(BaseTest.class).debug("start resetSharedParams()");
 
-        for (Field field : BaseTest.class.getDeclaredFields()) {
+        // TODO: 9/5/2018 make dynamic in case more inner classes will be added
+        Field[] baseTestFields = BaseTest.class.getDeclaredFields();
+        Field[] sharedHouseholdFields = SharedHousehold.class.getDeclaredFields();
+        Field[] fields = ArrayUtils.addAll(baseTestFields, sharedHouseholdFields);
+
+        for (Field field : fields) {
             for (Annotation annotation : field.getDeclaredAnnotations()) {
                 if (annotation instanceof Shared) {
                     try {
                         field.setAccessible(true);
                         field.set(this, null);
-                        Logger.getLogger(BaseTest.class).debug("set " + field.getName() + " to null");
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
