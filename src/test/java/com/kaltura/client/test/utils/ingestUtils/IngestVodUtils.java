@@ -172,7 +172,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_INSERT);
 
-        Response resp = getResponseBodyFromIngestVod(reqBody);
+        Response resp = executeIngestVodRequest(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
 
         GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
@@ -190,7 +190,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         vodData.coguid = coguid;
         String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_UPDATE);
 
-        Response resp = getResponseBodyFromIngestVod(reqBody);
+        Response resp = executeIngestVodRequest(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
 
         GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
@@ -210,6 +210,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_DELETE);
 
         Response resp = executeIngestVodRequest(reqBody);
+
         // on delete it returns media id
         // assertThat(from(resp.asString()).getInt(ingestAssetIdPath)).isEqualTo(0);
     }
@@ -222,6 +223,8 @@ public class IngestVodUtils extends BaseIngestUtils {
                 .when()
                 .post(ingestUrl);
 
+        assertThat(resp).isNotNull();
+
         Logger.getLogger(IngestVodUtils.class).debug(reqBody + "\n");
         Logger.getLogger(IngestVodUtils.class).debug(resp.asString());
 
@@ -232,7 +235,7 @@ public class IngestVodUtils extends BaseIngestUtils {
     private static Response executeIngestVodRequest(String reqBody) {
         Response resp = getResponseBodyFromIngestVod(reqBody);
 
-        assertThat(resp).isNotNull();
+        assertThat(from(resp.asString()).getString(ingestStatusMessagePath)).isEqualTo("OK");
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("OK");
 
         return resp;

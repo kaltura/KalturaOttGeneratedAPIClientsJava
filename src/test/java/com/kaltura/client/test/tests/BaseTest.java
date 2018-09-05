@@ -6,12 +6,14 @@ import com.kaltura.client.Logger;
 import com.kaltura.client.services.ChannelService.AddChannelBuilder;
 import com.kaltura.client.test.TestAPIOkRequestsExecutor;
 import com.kaltura.client.test.utils.PerformanceUtils;
+import com.kaltura.client.test.utils.annotations.Shared;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.*;
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.utils.response.base.Response;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 import org.testng.xml.XmlSuite;
@@ -20,6 +22,8 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.*;
@@ -67,51 +71,49 @@ public class BaseTest {
 
     // shared common params
     public static int partnerId;
-//    public static int opcPartnerId;
     public static boolean isOpcGroup;
     public static String defaultUserPassword;
 
     // shared ks's
-    private static String administratorKs, operatorKs, managerKs, anonymousKs;
+    @Shared private static String administratorKs, operatorKs, managerKs, anonymousKs;
 
     // shared ingest users data
-    private static String ingestAssetUserUsername, ingestAssetUserPassword, ingestBusinessModuleUserUsername,
+    @Shared private static String ingestAssetUserUsername, ingestAssetUserPassword, ingestBusinessModuleUserUsername,
             ingestBusinessModuleUserPassword, ingestVirtualAssetUserUsername, ingestVirtualAssetUserPassword;
 
     // shared VOD
-    private static MediaAsset mediaAsset;
+    @Shared  private static MediaAsset mediaAsset;
 
     // shared channel name
-    private static String epgChannelName;
+    @Shared private static String epgChannelName;
 
     // shared EPG program
-    private static Asset epgProgram;
+    @Shared private static Asset epgProgram;
 
     // shared files
-    private static MediaFile webMediaFile;
-    private static MediaFile mobileMediaFile;
+    @Shared private static MediaFile webMediaFile;
+    @Shared private static MediaFile mobileMediaFile;
 
     // shared MPP
-    private static Subscription fiveMinRenewableSubscription;
+    @Shared private static Subscription fiveMinRenewableSubscription;
 
     // shared ingested PP
-    private static PricePlan sharedCommonPricePlan;
+    @Shared private static PricePlan sharedCommonPricePlan;
 
     // shared discount module for shared PP
-    private static DiscountModule sharedCommonDiscountModule;
+    @Shared private static DiscountModule sharedCommonDiscountModule;
 
     // shared ingested subscription
-    private static Subscription sharedCommonSubscription;
+    @Shared private static Subscription sharedCommonSubscription;
 
     // shared collection
-    private static Collection sharedCommonCollection;
+    @Shared private static Collection sharedCommonCollection;
 
     // shared ingested PPV
-    private static Ppv sharedCommonPpv;
+    @Shared private static Ppv sharedCommonPpv;
 
     // cycles map with values related view/full life cycles of price plans
-    public static Map<Integer, String> cycles = new HashMap<>();
-
+    private static Map<Integer, String> cycles = new HashMap<>();
     {
         // TODO: complete other values
         cycles.put(1440, "1 Day");
@@ -139,6 +141,9 @@ public class BaseTest {
         // set default awaitility timeout
         setDefaultTimeout(Long.parseLong(getProperty(DEFAULT_TIMEOUT_IN_SEC)), TimeUnit.SECONDS);
 
+        // set default users password
+        defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
+
         // set shared common params
         if ("opc".equals(accountType)) {
             isOpcGroup = true;
@@ -147,8 +152,6 @@ public class BaseTest {
             isOpcGroup = false;
             partnerId = Integer.parseInt(getProperty(PARTNER_ID));
         }
-
-        defaultUserPassword = getProperty(DEFAULT_USER_PASSWORD);
 
         // set performance report
         if ("true".equals(getProperty(WRITE_REGRESSION_LOGS)) && numOfSuites == getNumOfSuites()) {
@@ -542,9 +545,9 @@ public class BaseTest {
     // shared household
     public static class SharedHousehold {
 
-        private static Household sharedHousehold;
-        private static HouseholdUser sharedMasterUser, sharedUser;
-        private static String sharedMasterUserKs, sharedUserKs;
+        @Shared private static Household sharedHousehold;
+        @Shared private static HouseholdUser sharedMasterUser, sharedUser;
+        @Shared private static String sharedMasterUserKs, sharedUserKs;
 
 
         public static Household getSharedHousehold() {
@@ -602,6 +605,9 @@ public class BaseTest {
         XmlSuite suite = testContext.getCurrentXmlTest().getSuite();
         Logger.getLogger(BaseTest.class).debug("End suite >>> Suite: " + suite.getName());
 
+        // reset shared params
+        resetSharedParams();
+
         // generate performance report
         if ("true".equals(getProperty(WRITE_REGRESSION_LOGS)) && numOfSuites == 0) {
             PerformanceUtils.generatePerformanceReport();
@@ -616,4 +622,27 @@ public class BaseTest {
         return suites.getLength();
     }
 
+    void resetSharedParams() {
+        Logger.getLogger(BaseTest.class).debug("start resetSharedParams()");
+
+        // TODO: 9/5/2018 make dynamic in case more inner classes will be added
+        Field[] baseTestFields = BaseTest.class.getDeclaredFields();
+        Field[] sharedHouseholdFields = SharedHousehold.class.getDeclaredFields();
+        Field[] fields = ArrayUtils.addAll(baseTestFields, sharedHouseholdFields);
+
+        for (Field field : fields) {
+            for (Annotation annotation : field.getDeclaredAnnotations()) {
+                if (annotation instanceof Shared) {
+                    try {
+                        field.setAccessible(true);
+                        field.set(this, null);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        Logger.getLogger(BaseTest.class).debug("finish resetSharedParams()");
+    }
 }
