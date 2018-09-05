@@ -28,8 +28,6 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
     public static final String FILE_TYPE_2 = "new file type1";
     public static final String EMPTY_FILE_1_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_1 + "\"/>\n";
     public static final String EMPTY_FILE_2_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_2 + "\"/>\n";
-    public static final String EMPTY_IMAGE_TAG = "<ratio ratio=\"\" thumb=\"\"/>\n";
-    public static final String EMPTY_THUMB_TAG = "<thumb ingestUrl=\"\"/>\n";
 
     // TODO: remove it using util
     public static final String DELETE_VOD_XML = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n" +
