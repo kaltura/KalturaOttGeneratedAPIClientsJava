@@ -443,40 +443,58 @@ public class PermissionsManagementTests {
         PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
     }
 
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Test(description = "execute console util to import from JSON into DB")
-//    public void importJson() throws IOException {
-//        // clean folder with logs
-//        FileUtils.cleanDirectory(new File(path2JsonFolder));
-//
-//        // export command to get results
-//        List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY + path2JsonFolder);
-//        executeCommandsInColsole(commands);
-//
-//        // prepare data
-//        String suffix = String.valueOf(BaseUtils.getEpoch());
-//        String roleName = "MaxTest" + suffix;
-//        String permissionItemName = "Asset_List_Max" + suffix;
-//        String serviceName = "asset";
-//        fillFilesWithImportData(roleName, permissionItemName, serviceName);
-//
-//        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
-//                permissionItemName, serviceName, "list", "permissionItemObject" + suffix,
-//                "parameter" + suffix, true);
-//
-//        String importFileContent = getFileContent(generatedDataFilePath);
-//        assertThat(importFileContent).contains(roleName);
-//        assertThat(importFileContent).contains(permissionItemName);
-//        checkActionResult(serviceName, importFileContent);
-//
-//        // cleaning
-//        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
-//        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
-//        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
-//        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
-//        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
-//        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
-//    }
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "execute console util to import from JSON into DB")
+    public void importJson() throws IOException {
+        // clean folder with logs
+        FileUtils.cleanDirectory(new File(path2JsonFolder));
+
+        // export command to get results and not break
+        List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY + path2JsonFolder);
+        executeCommandsInColsole(commands);
+
+        // prepare data
+        String suffix = String.valueOf(BaseUtils.getEpoch());
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
+        String serviceName = "asset";
+        fillFilesWithImportData(roleName, permissionItemName, "partner*", serviceName, "list");
+
+        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
+                permissionItemName, serviceName, "list", "permissionItemObject" + suffix,
+                "parameter" + suffix, true);
+
+        String importFileContent = getFileContent(generatedDataFilePath);
+        assertThat(importFileContent).contains(roleName);
+        assertThat(importFileContent).contains(permissionItemName);
+        checkActionResult(serviceName, importFileContent);
+
+        // cleaning
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
+        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
+        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
+        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
+    }
+
+    private void fillFilesWithImportData(String roleName, String permissionItemName, String usersGroup, String serviceName, String actionName) {
+        fillRolesFile(roleName);
+        fillPermissionsFile(roleName, usersGroup);
+        fillServiceFile(roleName, permissionItemName, serviceName, actionName);
+    }
+
+    private void fillServiceFile(String roleName, String permissionItemName, String serviceName, String actionName) {
+        // TODO:
+    }
+
+    private void fillPermissionsFile(String roleName, String usersGroup) {
+        // TODO:
+    }
+
+    private void fillRolesFile(String roleName) {
+        // TODO:
+    }
 
     // method checks that all related files contain information related to service
     /**
