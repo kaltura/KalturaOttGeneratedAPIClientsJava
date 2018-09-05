@@ -622,17 +622,22 @@ public class BaseTest {
     }
 
     void resetSharedParams() {
-        for (Field field : this.getClass().getDeclaredFields()) {
+        Logger.getLogger(BaseTest.class).debug("start resetSharedParams()");
+
+        for (Field field : BaseTest.class.getDeclaredFields()) {
             for (Annotation annotation : field.getDeclaredAnnotations()) {
                 if (annotation instanceof Shared) {
                     try {
                         field.setAccessible(true);
                         field.set(this, null);
+                        Logger.getLogger(BaseTest.class).debug("set " + field.getName() + " to null");
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+
+        Logger.getLogger(BaseTest.class).debug("finish resetSharedParams()");
     }
 }

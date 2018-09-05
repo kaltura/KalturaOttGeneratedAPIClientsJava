@@ -139,6 +139,9 @@ public class PerformanceUtils extends BaseUtils {
 
         List<Session> sessionList = new ArrayList<>();
         sessionStrings.forEach(s -> sessionList.add(getSession(lines, s)));
+
+
+        logger.debug("end getSessions()");
         return sessionList;
     }
 
@@ -151,8 +154,6 @@ public class PerformanceUtils extends BaseUtils {
                 sessionData.add(jo);
             }
         });
-
-        logger.debug("end getSessions()");
 
         return new Session(sessionData);
     }

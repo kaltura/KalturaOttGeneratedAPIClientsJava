@@ -8,9 +8,19 @@
                 <include name="opc"/>
             </run>
         </groups>
-        <packages>
-            <package name="com.kaltura.client.test.tests.servicesTests.*"/>
-            <package name="com.kaltura.client.test.tests.featuresTests.*"/>
-        </packages>
+
+        <!--<packages>-->
+            <!--<package name="com.kaltura.client.test.tests.servicesTests.*"/>-->
+            <!--<package name="com.kaltura.client.test.tests.featuresTests.*"/>-->
+        <!--</packages>-->
+
+        <classes>
+            <class name="com.kaltura.client.test.tests.featuresTests.versions.five_zero_two.IngestVodOpcTests">
+                <methods>
+                    <include name="updateImages"/>
+                </methods>
+            </class>
+        </classes>
+
     </test>
 </suite>

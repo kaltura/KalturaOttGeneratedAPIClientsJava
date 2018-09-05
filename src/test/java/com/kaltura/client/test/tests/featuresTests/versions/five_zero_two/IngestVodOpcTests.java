@@ -4,6 +4,7 @@ import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.HouseholdUtils;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
@@ -41,17 +42,18 @@ import static org.awaitility.Awaitility.await;
 @Test(groups = { "opc", "ingest VOD for OPC" })
 // tag @Test allow to exclude class from testng using it's group name in form <exclude name="ingest VOD for OPC"/>  
 public class IngestVodOpcTests extends BaseTest {
-
     private MediaAsset movie;
-    private MediaAsset episode;
-    private MediaAsset series;
+//    private MediaAsset episode;
+//    private MediaAsset series;
+
     private int movieType;
     private int episodeType;
     private int seriesType;
 
-    private String localCoguid = "";
+    private String localCoguid;
     private String ingestInsertXml;
     private String ingestDeleteXml;
+
     private static final String suffix4Coguid = "123";
     private static String coguid4NegativeTests = "";
 
@@ -60,6 +62,7 @@ public class IngestVodOpcTests extends BaseTest {
 
     @BeforeClass()
     public void setUp() {
+        // get data for ingest 2 files
         fileTypeNames = DBUtils.getMediaFileTypeNames(2);
         ppvNames = DBUtils.getPpvNames(2);
 
@@ -81,17 +84,26 @@ public class IngestVodOpcTests extends BaseTest {
         ingestInsertXml = ingestXmlRequest.replaceAll(movie.getExternalId(), coguid4NegativeTests);
         ingestDeleteXml = DELETE_VOD_XML.replaceAll("180822092522774", movie.getExternalId());
 
-        episodeAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));;
-        generateDefaultValues4Insert(EPISODE);
-        vodData = getVodData(EPISODE, episodeAssetFiles);
-        episode = insertVod(vodData, true);
-        episodeType = episode.getType();
+//        episodeAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
+//        generateDefaultValues4Insert(EPISODE);
+//        vodData = getVodData(EPISODE, episodeAssetFiles);
+//        episode = insertVod(vodData, true);
+//        episodeType = episode.getType();
 
-        seriesAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));;
-        generateDefaultValues4Insert(SERIES);
-        vodData = getVodData(SERIES, seriesAssetFiles);
-        series = insertVod(vodData, true);
-        seriesType = series.getType();
+        episodeType = DBUtils.getMediaTypeId(MediaType.EPISODE);
+
+//        seriesAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
+//        generateDefaultValues4Insert(SERIES);
+//        vodData = getVodData(SERIES, seriesAssetFiles);
+//        series = insertVod(vodData, true);
+//        seriesType = series.getType();
+
+        seriesType = DBUtils.getMediaTypeId(MediaType.SERIES);
+    }
+
+    @Test
+    public void sandbox() {
+
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -295,7 +307,7 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "delete")
+    @Test(description = "delete movie")
     public void deleteMovie() {
         String coguid = getCoguidOfActiveMediaAsset(movieType);
         checkVodDeletion(coguid);
@@ -330,7 +342,7 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(description = "try delete without coguid", priority =-1)
+    @Test(description = "try delete without coguid")
     public void deleteWithEmptyCoguid() {
         String invalidXml = ingestDeleteXml.replaceAll("co_guid=\"" + movie.getExternalId() + "\"", "co_guid=\"\"");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
@@ -396,7 +408,7 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(description = "try insert with empty name", priority =-1)
+    @Test(description = "try insert with empty name")
     public void insertWithEmptyName() {
         String invalidXml = ingestInsertXml.replaceAll(">" + movie.getName() + "<", "><");
         Response resp = getResponseBodyFromIngestVod(invalidXml);
