@@ -41,7 +41,7 @@ public class PerformanceUtils extends BaseUtils {
 
 
     public static void generatePerformanceReport() {
-        logger.debug("start generate performance report...");
+        logger.debug("start generatePerformanceReport()");
 
         // get aggregate regression data sessions
         List<String> regressionSessions = getRegressionData().values()
@@ -55,10 +55,12 @@ public class PerformanceUtils extends BaseUtils {
         // write performance report
         writeReport(sessions);
 
-        logger.debug("finish generate performance report!");
+        logger.debug("finish generatePerformanceReport()");
     }
 
     private static Map<String, List<String>> getRegressionData() {
+        logger.debug("start getRegressionData()");
+
         File data = new File(getProperty(LOGS_DIR) + getProperty(REGRESSION_LOGS_FILE));
         List<String> lines = null;
         try {
@@ -66,6 +68,8 @@ public class PerformanceUtils extends BaseUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        logger.debug("end getRegressionData()");
 
         return lines
                 .stream()
@@ -129,6 +133,8 @@ public class PerformanceUtils extends BaseUtils {
     }
 
     private static List<Session> getSessions(List<String> sessionStrings) {
+        logger.debug("start getSessions()");
+
         List<String> lines = getLinesFromUrls(getLogFilesUrls());
 
         List<Session> sessionList = new ArrayList<>();
@@ -145,6 +151,8 @@ public class PerformanceUtils extends BaseUtils {
                 sessionData.add(jo);
             }
         });
+
+        logger.debug("end getSessions()");
 
         return new Session(sessionData);
     }
@@ -171,6 +179,8 @@ public class PerformanceUtils extends BaseUtils {
     }
 
     private static void writeReport(List<Session> sessions) {
+        logger.debug("start writeReport()");
+
         List<Session> slowSessions = getSlowSessions(sessions);
 
         Map<String, Long> slowActionsCount = slowSessions.stream().collect(Collectors.groupingBy(
@@ -190,7 +200,6 @@ public class PerformanceUtils extends BaseUtils {
                 + "Max percentage: " + getProperty(MAX_CODE_PERCENTAGE) + "%\n"
                 + "Max execution time: " + getProperty(MAX_EXECUTION_TIME_IN_SEC) + " sec\n\n"
                 + "Slow Actions Summary:\n\n";
-
         try {
             FileUtils.writeStringToFile(file, reportSummary, Charset.defaultCharset(), true);
 
@@ -220,6 +229,8 @@ public class PerformanceUtils extends BaseUtils {
                 e.printStackTrace();
             }
         });
+
+        logger.debug("end writeReport()");
     }
 
     @Getter

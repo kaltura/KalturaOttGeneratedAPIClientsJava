@@ -605,7 +605,7 @@ public class BaseTest {
         Logger.getLogger(BaseTest.class).debug("End suite >>> Suite: " + suite.getName());
 
         // reset shared params
-        getSharedParams().forEach(o -> o = null);
+        resetSharedParams();
 
         // generate performance report
         if ("true".equals(getProperty(WRITE_REGRESSION_LOGS)) && numOfSuites == 0) {
@@ -621,22 +621,18 @@ public class BaseTest {
         return suites.getLength();
     }
 
-    private List<Object> getSharedParams() {
-        List<Object> sharedParams = new ArrayList<>();
-
+    void resetSharedParams() {
         for (Field field : this.getClass().getDeclaredFields()) {
             for (Annotation annotation : field.getDeclaredAnnotations()) {
                 if (annotation instanceof Shared) {
                     try {
                         field.setAccessible(true);
-                        sharedParams.add(field.get(this));
+                        field.set(this, null);
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-        return sharedParams;
     }
-
 }
