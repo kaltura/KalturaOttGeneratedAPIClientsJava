@@ -169,7 +169,7 @@ public class PerformanceUtils extends BaseUtils {
         });
 
         if (sessionData.size() == 0) {
-            logger.debug("missing session from logs: " + session);
+//            logger.debug("missing session from logs: " + session);
             return null;
         }
 
@@ -226,10 +226,11 @@ public class PerformanceUtils extends BaseUtils {
                 long actionSlowCount = aLong;
                 long actionTotalCount = actionsCount.get(s);
                 double slowPercentage = (double) actionSlowCount / actionTotalCount * 100;
+                double averageTime = sessions.stream().filter(session -> session.getAction().equals(s)).mapToDouble(Session::getTotalTime).sum() / actionTotalCount;
 
                 try {
                     FileUtils.writeStringToFile(file, s + " - was slow " + String.format("%.0f", slowPercentage) +
-                                    "% of executions (" + actionSlowCount + "/" + actionTotalCount + ")\n",
+                                    "% of executions (" + actionSlowCount + "/" + actionTotalCount + ") " + "[average time: " + String.format("%.2f", averageTime) + " sec]\n",
                             Charset.defaultCharset(), true);
                 } catch (IOException e) {
                     e.printStackTrace();
