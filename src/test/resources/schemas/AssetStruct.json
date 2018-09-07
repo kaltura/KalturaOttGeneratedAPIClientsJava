@@ -1,0 +1,109 @@
+{
+  "$id": "AssetStruct",
+  "definitions": {
+    "AssetStruct": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "enum": ["KalturaAssetStruct"]
+        },
+        "connectedParentMetaId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "connectingMetaId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "createDate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "features": {
+          "type": "string",
+          "minLength": 0
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "isProtected": {
+          "type": "boolean"
+        },
+        "metaIds": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 0
+        },
+        "multilingualName": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string",
+                "enum": ["KalturaTranslationToken"]
+              },
+              "language": {
+                "type": "string",
+                "minLength": 3
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "objectType",
+              "language",
+              "value"
+            ]
+          }
+        },
+        "parentId": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pluralName": {
+          "type": "string",
+          "minLength": 0
+        },
+        "systemName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updateDate": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "connectedParentMetaId",
+        "connectingMetaId",
+        "createDate",
+        "features",
+        "isProtected",
+        "objectType",
+        "name",
+        "multilingualName",
+        "parentId",
+        "pluralName",
+        "systemName",
+        "updateDate"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "executionTime": {
+      "type": "number"
+    },
+    "result": {
+      "ref": "#/definitions/AssetStruct"
+    }
+  }
+}
