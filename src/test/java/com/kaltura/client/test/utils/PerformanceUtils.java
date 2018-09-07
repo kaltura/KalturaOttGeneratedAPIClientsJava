@@ -43,7 +43,7 @@ public class PerformanceUtils extends BaseUtils {
     public static void generatePerformanceReport() {
         logger.debug("start generatePerformanceReport()");
 
-        // get aggregate regression data sessions
+        // get aggregate regression sessions strings
         List<String> regressionSessions = getRegressionData().values()
                 .stream()
                 .flatMap(List::stream)
@@ -145,9 +145,14 @@ public class PerformanceUtils extends BaseUtils {
         logger.debug("start getSessions()");
 
         List<String> lines = getLinesFromUrls(getLogFilesUrls());
-
+       
         List<Session> sessionList = new ArrayList<>();
-        sessionStrings.forEach(s -> sessionList.add(getSession(lines, s)));
+        sessionStrings.forEach(s -> {
+            Session session = getSession(lines, s);
+            if (session != null) {
+                sessionList.add(session);
+            }
+        });
 
         logger.debug("end getSessions()");
         return sessionList;
@@ -162,6 +167,11 @@ public class PerformanceUtils extends BaseUtils {
                 sessionData.add(jo);
             }
         });
+
+        if (sessionData.size() == 0) {
+            logger.debug("missing session from logs: " + session);
+            return null;
+        }
 
         return new Session(sessionData);
     }
