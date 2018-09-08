@@ -59,6 +59,9 @@
               },
               {
                 "$ref": "DiscountDetails.json#/definitions/DiscountDetails"
+              },
+              {
+                "$ref": "AssetStructMeta.json#/definitions/AssetStructMeta"
               }
             ]
           }
@@ -86,7 +89,8 @@
             "KalturaPriceDetailsListResponse",
             "KalturaPricePlanListResponse",
             "KalturaDynamicChannelListResponse",
-            "KalturaDiscountDetailsListResponse"
+            "KalturaDiscountDetailsListResponse",
+            "KalturaAssetStructMetaListResponse"
           ]
         }
       },
