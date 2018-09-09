@@ -1,10 +1,14 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 
+import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.services.AssetService;
+import com.kaltura.client.services.AssetService.*;
 import com.kaltura.client.services.AssetStructMetaService;
 import com.kaltura.client.services.AssetStructMetaService.*;
 import com.kaltura.client.services.AssetStructService;
 import com.kaltura.client.services.AssetStructService.*;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import org.testng.annotations.AfterClass;
@@ -13,7 +17,15 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import static com.kaltura.client.test.utils.BaseUtils.getFormattedDate;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.tagsMetaMap;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.ingestXmlRequest;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
+import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -27,10 +39,10 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     public void setUp() {
     }
 
+    // added to play with methods that are going to be checked
     @Test
     public void sandbox() {
         String prefix = "MaxTest_assetStruct_";
-        // added to play with methods that are going to be checked
 
         // assetStructList
         AssetStructFilter filter = new AssetStructFilter();
@@ -92,6 +104,71 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         assertThat(deleteAssetStructResponse.results.booleanValue()).isEqualTo(true);
     }
 
+    @Test
+    public void sandboxRemoveMetasAndTags() {
+        generateDefaultValues4Insert(MOVIE);
+        IngestVodUtils.VodData vodData = getVodData(MOVIE, movieAssetFiles);
+        MediaAsset movie = insertVod(vodData, true);
+
+        assertThat(movie.getName()).isEqualTo(movie.getExternalId());
+        assertThat(movie.getDescription()).isEqualTo("description of " + movie.getExternalId());
+        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(textValue);
+        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(doubleValue);
+        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
+        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(booleanValue);
+
+        Map<String, MultilingualStringValueArray> tags = movie.getTags();
+        Map.Entry<String, MultilingualStringValueArray> entry = tags.entrySet().iterator().next();
+        List<MultilingualStringValue> tagsValues = entry.getValue().getObjects();
+        for (MultilingualStringValue tagValue: tagsValues) {
+            assertThat(tagValues).contains(tagValue.getValue());
+        }
+        assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
+
+        // TODO: update idIn with real values from DB to check metas and tags are really deleted
+        /*RemoveMetasAndTagsAssetBuilder removeMetasAndTagsAssetBuilder =
+                AssetService.removeMetasAndTags(movie.getId(), AssetReferenceType.MEDIA, "");
+        Response<Boolean> booleanResponse = executor.executeSync(removeMetasAndTagsAssetBuilder
+                .setKs(getOperatorKs()));
+        assertThat(booleanResponse.results).isEqualTo(true);
+
+        // check results
+        GetAssetBuilder getAssetBuilder = AssetService.get(movie.getId().toString(), AssetReferenceType.MEDIA);
+        Response<Asset> assetResponse = executor.executeSync(getAssetBuilder
+                .setKs(getOperatorKs()));
+        movie = (MediaAsset) assetResponse.results;
+
+        assertThat(movie.getName()).isEqualTo(movie.getExternalId());
+        assertThat(movie.getDescription()).isEqualTo("description of " + movie.getExternalId());
+        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(textValue);
+        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(doubleValue);
+        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateValue);
+        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(booleanValue);
+
+        tags = movie.getTags();
+        entry = tags.entrySet().iterator().next();
+        tagsValues = entry.getValue().getObjects();
+        for (MultilingualStringValue tagValue: tagsValues) {
+            assertThat(tagValues).contains(tagValue.getValue());
+        }
+        assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());*/
+
+        // cleanup
+        deleteVod(movie.getExternalId());
+    }
+
+    @Test
+    public void sandboxDelete() {
+        DeleteAssetStructBuilder deleteAssetStructBuilder = AssetStructService.delete(2381);
+        Response<Boolean> deleteAssetStructResponse = executor.executeSync(deleteAssetStructBuilder
+                .setKs(getOperatorKs()));
+        assertThat(deleteAssetStructResponse.results.booleanValue()).isEqualTo(true);
+    }
+
+    @AfterClass()
+    public void tearDown() {
+    }
+
     private AssetStructMeta getAssetStructMeta(String defaultIngestValue, String ingestReferencePath,
                                                boolean isProtectFromIngest, boolean isInherited) {
         AssetStructMeta assetStructMeta = new AssetStructMeta();
@@ -101,14 +178,6 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         // TODO: update library to have options update it
         //assetStructMeta.setIsInherited(isInherited);
         return assetStructMeta;
-    }
-
-    @Test
-    public void sandboxDelete() {
-        DeleteAssetStructBuilder deleteAssetStructBuilder = AssetStructService.delete(2381);
-        Response<Boolean> deleteAssetStructResponse = executor.executeSync(deleteAssetStructBuilder
-                .setKs(getOperatorKs()));
-        assertThat(deleteAssetStructResponse.results.booleanValue()).isEqualTo(true);
     }
 
     AssetStruct getAssetStruct(String prefix, String language) {
@@ -123,9 +192,5 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         assetStruct.setIsProtected(false);
         assetStruct.setMetaIds("");
         return assetStruct;
-    }
-
-    @AfterClass()
-    public void tearDown() {
     }
 }
