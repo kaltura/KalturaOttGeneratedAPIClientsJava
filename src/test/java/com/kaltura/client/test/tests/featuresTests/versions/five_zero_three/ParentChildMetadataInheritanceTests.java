@@ -39,13 +39,33 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
                 .setKs(getOperatorKs()));
         assertThat(assetStructListResponse.results.getTotalCount()).isGreaterThan(0);
         String metaIds = assetStructListResponse.results.getObjects().get(0).getMetaIds();
+        Long assetStructId = assetStructListResponse.results.getObjects().get(0).getId();
 
         AssetStructMetaFilter assetStructMetaFilter = new AssetStructMetaFilter();
-        assetStructMetaFilter.setAssetStructIdEqual(assetStructListResponse.results.getObjects().get(0).getId());
+        assetStructMetaFilter.setAssetStructIdEqual(assetStructId);
         ListAssetStructMetaBuilder listAssetStructMetaBuilder = AssetStructMetaService.list(assetStructMetaFilter);
         Response<ListResponse<AssetStructMeta>> listAssetMetaStructResponse = executor.executeSync(listAssetStructMetaBuilder
                 .setKs(getOperatorKs()));
         assertThat(listAssetMetaStructResponse.results.getTotalCount()).isGreaterThan(0);
+        Long metaId = listAssetMetaStructResponse.results.getObjects().get(0).getMetaId();
+
+        String defaultIngestValue = prefix + "_defaultIngestValue";
+        String ingestReferencePath = prefix + "ingestReferencePath";
+        boolean isProtectFromIngest = false;
+        boolean isInherited = true;
+        AssetStructMeta assetStructMeta = getAssetStructMeta(defaultIngestValue,
+                ingestReferencePath, isProtectFromIngest, isInherited);
+        UpdateAssetStructMetaBuilder updateAssetStructMetaBuilder =
+                new UpdateAssetStructMetaBuilder(assetStructId, metaId, assetStructMeta);
+        Response<AssetStructMeta> assetStructMetaResponse = executor.executeSync(updateAssetStructMetaBuilder
+                .setKs(getOperatorKs()));
+        assertThat(assetStructMetaResponse.results.getAssetStructId()).isEqualTo(assetStructId);
+        assertThat(assetStructMetaResponse.results.getMetaId()).isEqualTo(metaId);
+        assertThat(assetStructMetaResponse.results.getDefaultIngestValue()).isEqualToIgnoringCase(defaultIngestValue);
+        assertThat(assetStructMetaResponse.results.getIngestReferencePath()).isEqualToIgnoringCase(ingestReferencePath);
+        assertThat(assetStructMetaResponse.results.getProtectFromIngest()).isEqualTo(isProtectFromIngest);
+        //TODO: update library to have options compare it
+        //assertThat(assetStructMetaResponse.results.getInherited()).isEqualTo(isInherited);
 
         // assetStructAdd
         AssetStruct assetStruct = getAssetStruct(prefix, "eng");
@@ -70,6 +90,17 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         Response<Boolean> deleteAssetStructResponse = executor.executeSync(deleteAssetStructBuilder
                 .setKs(getOperatorKs()));
         assertThat(deleteAssetStructResponse.results.booleanValue()).isEqualTo(true);
+    }
+
+    private AssetStructMeta getAssetStructMeta(String defaultIngestValue, String ingestReferencePath,
+                                               boolean isProtectFromIngest, boolean isInherited) {
+        AssetStructMeta assetStructMeta = new AssetStructMeta();
+        assetStructMeta.setDefaultIngestValue(defaultIngestValue);
+        assetStructMeta.setIngestReferencePath(ingestReferencePath);
+        assetStructMeta.setProtectFromIngest(isProtectFromIngest);
+        // TODO: update library to have options update it
+        //assetStructMeta.setIsInherited(isInherited);
+        return assetStructMeta;
     }
 
     @Test

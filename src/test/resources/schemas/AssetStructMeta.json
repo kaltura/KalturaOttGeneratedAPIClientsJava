@@ -51,5 +51,14 @@
       ]
     }
   },
-  "$ref": "#/definitions/AssetStructMeta"
+  "type": "object",
+  "properties": {
+    "executionTime": {
+      "type": "number",
+      "minimum": 0
+    },
+    "result": {
+      "$ref": "#/definitions/AssetStructMeta"
+    }
+  }
 }

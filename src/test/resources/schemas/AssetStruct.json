@@ -100,7 +100,8 @@
   "type": "object",
   "properties": {
     "executionTime": {
-      "type": "number"
+      "type": "number",
+      "minimum": 0
     },
     "result": {
       "ref": "#/definitions/AssetStruct"
