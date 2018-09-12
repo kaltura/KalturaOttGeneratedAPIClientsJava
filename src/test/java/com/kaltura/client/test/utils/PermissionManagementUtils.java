@@ -2,11 +2,40 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionManagementUtils extends BaseUtils {
+
+    @Accessors(fluent = true)
+    @Data
+    public static class PermissionItem {
+        private List<String> permissions;
+        private List<String> excludedPermissions;
+        private String name;
+        private String service;
+        private String action;
+        private String type;
+    }
+
+    @Accessors(fluent = true)
+    @Data
+    public static class Permission {
+        private String name;
+        private String usersGroup;
+    }
+
+    @Accessors(fluent = true)
+    @Data
+    public static class Role {
+        private List<String> permissions;
+        private List<String> excludedPermissions;
+        private String name;
+    }
+
 
     public static void printPermissionPermissionItem(PrintWriter writer, long id, long permissionId, long permissionItemId,
                                                int isExcluded, String permissionItemName, String permissionName) {
