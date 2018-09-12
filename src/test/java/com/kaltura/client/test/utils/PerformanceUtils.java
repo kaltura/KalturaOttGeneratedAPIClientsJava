@@ -20,10 +20,7 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.kaltura.client.test.Properties.*;
@@ -76,7 +73,7 @@ public class PerformanceUtils extends BaseUtils {
                 .collect(Collectors.groupingBy(
                         s -> s.split(":")[0],
                         Collectors.mapping(s -> s.split(":")[1],
-                                Collectors.toList())));
+                        Collectors.toList())));
     }
 
     private static List<URL> getLogFilesUrls() {
@@ -200,17 +197,37 @@ public class PerformanceUtils extends BaseUtils {
     private static void writeReport(List<Session> sessions) {
         logger.debug("start writeReport()");
 
+        // get slow sessions
         List<Session> slowSessions = getSlowSessions(sessions);
 
-        Map<String, Long> slowActionsCount = slowSessions.stream().collect(Collectors.groupingBy(
+        // slow actions by count
+        Map<String, Long> slowActionsByCount = slowSessions.stream().collect(Collectors.groupingBy(
                 Session::getAction,
                 Collectors.counting()
         ));
 
-        Map<String, Long> actionsCount = sessions.stream().collect(Collectors.groupingBy(
+        // actions by count
+        Map<String, Long> actionsByCount = sessions.stream().collect(Collectors.groupingBy(
                 Session::getAction,
                 Collectors.counting()
         ));
+
+        // actions by average time
+        Map<String, Double> slowActionsByAverageTime = new HashMap<>();
+        slowActionsByCount.keySet().forEach(s -> {
+            long actionTotalCount = actionsByCount.get(s);
+
+            double averageTime = sessions.stream()
+                    .filter(session -> session.getAction().equals(s))
+                    .mapToDouble(Session::getTotalTime).sum() / actionTotalCount;
+
+            slowActionsByAverageTime.put(s, averageTime);
+        });
+
+        // sort actions by average time
+        List<Map.Entry<String, Double>> slowActionsAverageTimeSortedList = slowActionsByAverageTime.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .collect(Collectors.toList());
 
         // write data to file
         File file = getReportFile();
@@ -222,14 +239,14 @@ public class PerformanceUtils extends BaseUtils {
         try {
             FileUtils.writeStringToFile(file, reportSummary, Charset.defaultCharset(), true);
 
-            slowActionsCount.forEach((s, aLong) -> {
-                long actionSlowCount = aLong;
-                long actionTotalCount = actionsCount.get(s);
+            slowActionsAverageTimeSortedList.forEach(entry -> {
+                long actionSlowCount = slowActionsByCount.get(entry.getKey());
+                long actionTotalCount = actionsByCount.get(entry.getKey());
                 double slowPercentage = (double) actionSlowCount / actionTotalCount * 100;
-                double averageTime = sessions.stream().filter(session -> session.getAction().equals(s)).mapToDouble(Session::getTotalTime).sum() / actionTotalCount;
+                double averageTime = entry.getValue();
 
                 try {
-                    FileUtils.writeStringToFile(file, s + " - was slow " + String.format("%.0f", slowPercentage) +
+                    FileUtils.writeStringToFile(file, entry.getKey() + " - was slow " + String.format("%.0f", slowPercentage) +
                                     "% of executions (" + actionSlowCount + "/" + actionTotalCount + ") " + "[average time: " + String.format("%.2f", averageTime) + " sec]\n",
                             Charset.defaultCharset(), true);
                 } catch (IOException e) {

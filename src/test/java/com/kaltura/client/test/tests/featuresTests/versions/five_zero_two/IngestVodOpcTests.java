@@ -6,6 +6,7 @@ import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.HouseholdUtils;
+import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
@@ -129,8 +130,7 @@ public class IngestVodOpcTests extends BaseTest {
             assertThat(tagValues).contains(tagValue.getValue());
         }
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
-
-        checkFiles(movieAssetFiles, movie.getId().toString());
+        assertFiles(movieAssetFiles, movie.getId().toString());
 
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(0).getRatio() + "\"");
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(1).getRatio() + "\"");
@@ -161,7 +161,7 @@ public class IngestVodOpcTests extends BaseTest {
         }
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
-        checkFiles(episodeAssetFiles, episode.getId().toString());
+        assertFiles(episodeAssetFiles, episode.getId().toString());
 
         // without cleanup as we have below tests that can delete ingested item
     }
@@ -189,7 +189,7 @@ public class IngestVodOpcTests extends BaseTest {
         }
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
-        checkFiles(seriesAssetFiles, series.getId().toString());
+        assertFiles(seriesAssetFiles, series.getId().toString());
         // without cleanup as we have below tests that can delete ingested item
     }
 
@@ -309,21 +309,21 @@ public class IngestVodOpcTests extends BaseTest {
     @Test(description = "delete movie")
     public void deleteMovie() {
         String coguid = getCoguidOfActiveMediaAsset(movieType);
-        checkVodDeletion(coguid);
+        assertVodDeletion(coguid);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "delete episode")
     public void deleteEpisode() {
         String coguid = getCoguidOfActiveMediaAsset(episodeType);
-        checkVodDeletion(coguid);
+        assertVodDeletion(coguid);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "delete series")
     public void deleteSeries() {
         String coguid = getCoguidOfActiveMediaAsset(seriesType);
-        checkVodDeletion(coguid);
+        assertVodDeletion(coguid);
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -452,23 +452,23 @@ public class IngestVodOpcTests extends BaseTest {
 
         String updatedField = mediaNumberFieldName + suffix;
         String invalidXml = ingestXml.replaceAll(mediaNumberFieldName, updatedField);
-        validateInvalidMovieField(invalidXml, updatedField, "meta");
+        assertInvalidMovieField(invalidXml, updatedField, "meta");
 
         updatedField = mediaDateFieldName + suffix;
         invalidXml = ingestXml.replaceAll(mediaDateFieldName, updatedField);
-        validateInvalidMovieField(invalidXml, updatedField, "meta");
+        assertInvalidMovieField(invalidXml, updatedField, "meta");
 
         updatedField = mediaBooleanFieldName + suffix;
         invalidXml = ingestXml.replaceAll(mediaBooleanFieldName, updatedField);
-        validateInvalidMovieField(invalidXml, updatedField, "meta");
+        assertInvalidMovieField(invalidXml, updatedField, "meta");
 
         updatedField = mediaTagFieldName + suffix;
         invalidXml = ingestXml.replaceAll(mediaTagFieldName, updatedField);
-        validateInvalidMovieField(invalidXml, updatedField, "tag");
+        assertInvalidMovieField(invalidXml, updatedField, "tag");
 
         updatedField = mediaTextFieldName + suffix;
         invalidXml = ingestXml.replaceAll(mediaTextFieldName, updatedField);
-        validateInvalidMovieField(invalidXml, updatedField, "meta");
+        assertInvalidMovieField(invalidXml, updatedField, "meta");
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -577,7 +577,7 @@ public class IngestVodOpcTests extends BaseTest {
 
         assertThat(movie.getName()).isEqualTo(name);
         assertThat(movie.getDescription()).isEqualTo(description);
-        checkFiles(movieAssetFiles, movie.getId().toString());
+        assertFiles(movieAssetFiles, movie.getId().toString());
 
         Household household = HouseholdUtils.createHousehold();
         String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
@@ -671,22 +671,25 @@ public class IngestVodOpcTests extends BaseTest {
         deleteVod(mediaAsset.getExternalId());
     }
 
-    void validateInvalidMovieField(String ingestXml, String fieldName, String fieldType) {
+    void assertInvalidMovieField(String ingestXml, String fieldName, String fieldType) {
         Response resp = getResponseBodyFromIngestVod(ingestXml);
 
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath))
                 .isEqualTo(fieldType + ": " + fieldName + " does not exist for group");
     }
 
-    void checkVodDeletion(String coguid) {
+    void assertVodDeletion(String coguid) {
         SearchAssetFilter assetFilter = new SearchAssetFilter();
-        assetFilter.setKSql("externalId='" + coguid + "'");
-        com.kaltura.client.utils.response.base.Response<ListResponse<Asset>> assetListResponse =
-                executor.executeSync(list(assetFilter)
+//        "externalId='" + coguid + "'"
+        assetFilter.setKSql(new KsqlBuilder().equal("externalId", coguid).toString());
+
+        com.kaltura.client.utils.response.base.Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                         .setKs(getAnonymousKs()));
+
         assertThat(assetListResponse.results.getTotalCount()).isEqualTo(1);
 
         deleteVod(coguid);
+
         AssetService.ListAssetBuilder listAssetBuilder = list(assetFilter).setKs(getAnonymousKs());
         await()
                 .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
@@ -695,7 +698,7 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     // to check that ingested file data are corresponding to getAsset file data
-    private void checkFiles(List<VodFile> ingestAssetFiles, String assetId) {
+    private void assertFiles(List<VodFile> ingestAssetFiles, String assetId) {
         boolean isFileWasFound = false;
 
         AssetService.GetAssetBuilder assetBuilder = AssetService.get(assetId, AssetReferenceType.MEDIA).setKs(getAnonymousKs());

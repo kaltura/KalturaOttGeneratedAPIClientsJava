@@ -6,7 +6,6 @@ import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.response.Response;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,9 +20,7 @@ import static com.google.common.base.Verify.verify;
 import static com.kaltura.client.services.AssetService.GetAssetBuilder;
 import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.test.tests.BaseTest.*;
-import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
-import static com.kaltura.client.test.utils.BaseUtils.getEpoch;
-import static com.kaltura.client.test.utils.BaseUtils.getOffsetDateInFormat;
+import static com.kaltura.client.test.utils.BaseUtils.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,11 +42,10 @@ public class IngestVodUtils extends BaseIngestUtils {
     @Accessors(fluent = true)
     @Data
     public static class VodData {
-        @Setter(AccessLevel.NONE) private String coguid;
-        @Setter(AccessLevel.NONE) private boolean isActive = true;
-
         private boolean isVirtual = false;
+        private boolean isActive = true;
 
+        private String coguid;
         private String name;
         private String description;
         private String lang;
@@ -61,6 +57,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         private String ppvWebName;
         private String ppvMobileName;
         private String geoBlockRule;
+
         private MediaType mediaType;
 
         private Map<String, List<String>> tags;
@@ -114,7 +111,9 @@ public class IngestVodUtils extends BaseIngestUtils {
         final String endDateValue = "14/10/2099 17:00:00";
         final String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
 
-        vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
+        if (vodData.coguid == null) {
+            vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
+        }
 
         if (useDefaultValues) {
             if (vodData.name == null) {
