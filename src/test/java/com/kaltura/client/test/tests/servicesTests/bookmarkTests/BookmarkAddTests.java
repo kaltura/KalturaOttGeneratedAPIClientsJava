@@ -17,11 +17,13 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.BookmarkService.*;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 
 public class BookmarkAddTests extends BaseTest {
@@ -31,6 +33,8 @@ public class BookmarkAddTests extends BaseTest {
     private List<String> assetList;
     private Bookmark bookmark;
     private BookmarkFilter bookmarkFilter;
+    private int position;
+//    private String masterUserKs;
 
     @BeforeClass
     private void bookmark_addTests_before_class() {
@@ -42,12 +46,17 @@ public class BookmarkAddTests extends BaseTest {
 
         // Initialize bookmarkFilter object parameters
         bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_ASC, AssetType.MEDIA, assetList);
+
+//        Household household = HouseholdUtils.createHousehold(1,1,false);
+//        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
     }
 
     @Description("bookmark/action/add - first play")
-    @Test
-    private void firstPlayback() {
-        int position = 0;
+    @Test(groups = "slow_before")
+    private void firstPlayback_before_wait() {
+        bookmark_addTests_before_class();
+        position = 0;
+
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
 
         // Invoke bookmark/action/add request
@@ -56,10 +65,25 @@ public class BookmarkAddTests extends BaseTest {
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
+    }
+    @Description("bookmark/action/add - first play")
+    @Test(groups = "slow_after", dependsOnMethods = {"firstPlayback_before_wait"})
+    private void firstPlayback_after_wait() {
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 15;
+        int maxTimeExpectingValidResponseInSeconds = 75;
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
         ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() ->{
+                        return (executor.executeSync(listBookmarkBuilder).results.getTotalCount() != 0);
+                });
+
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+        assertThat(bookmarkListResponse.error).isNull();
 
         Bookmark bookmark1 = bookmarkListResponse.results.getObjects().get(0);
 
@@ -83,9 +107,9 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - pause")
-    @Test
-    private void pausePlayback() {
-        int position = 30;
+    @Test(groups = "slow_after", dependsOnMethods = {"firstPlayback_after_wait"}, alwaysRun=true)
+    private void pausePlayback_before_wait() {
+        position = 30;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.PAUSE);
 
         // Invoke bookmark/action/add request
@@ -94,10 +118,26 @@ public class BookmarkAddTests extends BaseTest {
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
+    }
+
+    @Description("bookmark/action/add - pause")
+    @Test(groups = "slow_after", dependsOnMethods = {"pausePlayback_before_wait"})
+    private void pausePlayback_after_wait() {
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 15;
+        int maxTimeExpectingValidResponseInSeconds = 75;
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
-        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(list(bookmarkFilter)
-                .setKs(getSharedMasterUserKs()));
+        ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() ->{
+                    return (executor.executeSync(listBookmarkBuilder).results.getObjects().get(0).getPosition() == position);
+                });
+
+        Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+        assertThat(bookmarkListResponse.error).isNull();
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
         // Match content of asset position
@@ -105,9 +145,9 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - 95% watching == finish watching")
-    @Test
-    private void watchingNinetyFive() {
-        int position = 999;
+    @Test(groups = "slow_after", dependsOnMethods = {"pausePlayback_after_wait"}, alwaysRun=true)
+    private void watchingNinetyFive_before_wait() {
+        position = 999;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.PLAY);
 
         // Invoke bookmark/action/add request
@@ -116,10 +156,26 @@ public class BookmarkAddTests extends BaseTest {
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
+    }
+
+    @Description("bookmark/action/add - 95% watching == finish watching")
+    @Test(groups = "slow_after", dependsOnMethods = {"watchingNinetyFive_before_wait"})
+    private void watchingNinetyFive_after_wait() {
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 15;
+        int maxTimeExpectingValidResponseInSeconds = 75;
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
         ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() ->{
+                    return (executor.executeSync(listBookmarkBuilder).results.getObjects().get(0).getPosition() == position);
+                });
+
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+        assertThat(bookmarkListResponse.error).isNull();
         Bookmark bookmark3 = bookmarkListResponse.results.getObjects().get(0);
 
         // Verify finishedWatching = true
@@ -127,17 +183,35 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - back to start - position:0")
-    @Test
-    private void backToStart() {
-        int position = 0;
+    @Test(groups = "slow_after", dependsOnMethods = {"watchingNinetyFive_after_wait"}, alwaysRun=true)
+    private void backToStart_before_wait() {
+        position = 0;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.STOP);
 
         AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(getSharedMasterUserKs());
         Response<Boolean> booleanResponse = executor.executeSync(addBookmarkBuilder);
         assertThat(booleanResponse.results.booleanValue()).isTrue();
+        assertThat(booleanResponse.error).isNull();
+    }
 
+    @Description("bookmark/action/add - back to start - position:0")
+    @Test(groups = "slow_after", dependsOnMethods = {"backToStart_before_wait"})
+    private void backToStart_after_wait() {
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 15;
+        int maxTimeExpectingValidResponseInSeconds = 75;
+
+        // Invoke bookmark/action/list to verify insertion of bookmark position
         ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() ->{
+                    return (executor.executeSync(listBookmarkBuilder).results.getObjects().get(0).getPosition() == position);
+                });
+
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+        assertThat(bookmarkListResponse.error).isNull();
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
         // Verify finishedWatching = false
@@ -145,9 +219,9 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - finish watching")
-    @Test
-    private void finishWatching() {
-        int position = 60;
+    @Test(groups = "slow_after", dependsOnMethods = {"backToStart_after_wait"}, alwaysRun=true)
+    private void finishWatching_before_wait() {
+        position = 60;
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FINISH);
 
         // Invoke bookmark/action/add request
@@ -156,14 +230,30 @@ public class BookmarkAddTests extends BaseTest {
 
         assertThat(booleanResponse.results.booleanValue()).isTrue();
         assertThat(booleanResponse.error).isNull();
+    }
+
+    @Description("bookmark/action/add - finish watching")
+    @Test(groups = "slow_after", dependsOnMethods = {"finishWatching_before_wait"})
+    private void finishWatching_after_wait() {
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 15;
+        int maxTimeExpectingValidResponseInSeconds = 75;
 
         // Invoke bookmark/action/list to verify insertion of bookmark position
         ListBookmarkBuilder listBookmarkBuilder = list(bookmarkFilter).setKs(getSharedMasterUserKs());
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() ->{
+                    return (executor.executeSync(listBookmarkBuilder).results.getObjects().get(0).getFinishedWatching().equals(true));
+                });
+
         Response<ListResponse<Bookmark>> bookmarkListResponse = executor.executeSync(listBookmarkBuilder);
+        assertThat(bookmarkListResponse.error).isNull();
         Bookmark bookmark = bookmarkListResponse.results.getObjects().get(0);
 
-        // Verify finishedWatching = true
-        assertThat(bookmark.getFinishedWatching()).isTrue();
+        // Verify postion = 0
+        assertThat(bookmark.getPosition()).isEqualTo(0);
     }
 
     @Description("bookmark/action/add - empty asset id")
