@@ -3,6 +3,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.test.tests.enums.MediaType;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.MediaAsset;
 import io.restassured.response.Response;
@@ -20,6 +21,7 @@ import static com.google.common.base.Verify.verify;
 import static com.kaltura.client.services.AssetService.GetAssetBuilder;
 import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.tests.enums.IngestAction.*;
 import static com.kaltura.client.test.utils.BaseUtils.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
@@ -109,7 +111,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         final String datePattern = "dd/MM/yyyy hh:mm:ss";
         final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
         final String endDateValue = "14/10/2099 17:00:00";
-        final String ppvModuleName = "Shai_Regression_PPV"; // TODO: update on any generated value
+        final String ppvModuleName = DBUtils.getPpvNames(1).get(0); // "Shai_Regression_PPV";
 
         if (vodData.coguid == null) {
             vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
@@ -169,9 +171,9 @@ public class IngestVodUtils extends BaseIngestUtils {
             }
         }
 
-        String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_INSERT);
+        String reqBody = buildIngestVodXml(vodData, INSERT.getValue());
 
-        Response resp = executeIngestVodRequest(reqBody);
+        Response resp = executeIngestVodRequestWithAssertion(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
 
         GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
@@ -187,9 +189,9 @@ public class IngestVodUtils extends BaseIngestUtils {
 
     public static MediaAsset updateVod(String coguid, VodData vodData) {
         vodData.coguid = coguid;
-        String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_UPDATE);
+        String reqBody = buildIngestVodXml(vodData, UPDATE.getValue());
 
-        Response resp = executeIngestVodRequest(reqBody);
+        Response resp = executeIngestVodRequestWithAssertion(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
 
         GetAssetBuilder getAssetBuilder = get(id, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
@@ -206,15 +208,15 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static void deleteVod(String coguid) {
         VodData vodData = new VodData();
         vodData.coguid = coguid;
-        String reqBody = buildIngestVodXml(vodData, INGEST_ACTION_DELETE);
+        String reqBody = buildIngestVodXml(vodData, DELETE.getValue());
 
-        Response resp = executeIngestVodRequest(reqBody);
+        Response resp = executeIngestVodRequestWithAssertion(reqBody);
 
         // on delete it returns media id
         // assertThat(from(resp.asString()).getInt(ingestAssetIdPath)).isEqualTo(0);
     }
 
-    public static Response getResponseBodyFromIngestVod(String reqBody) {
+    public static Response executeIngestVodRequest(String reqBody) {
         Response resp = given()
                 .header(contentTypeXml)
                 .header(soapActionIngestTvinciData)
@@ -231,8 +233,8 @@ public class IngestVodUtils extends BaseIngestUtils {
     }
 
     // private methods
-    private static Response executeIngestVodRequest(String reqBody) {
-        Response resp = getResponseBodyFromIngestVod(reqBody);
+    private static Response executeIngestVodRequestWithAssertion(String reqBody) {
+        Response resp = executeIngestVodRequest(reqBody);
 
         assertThat(from(resp.asString()).getString(ingestStatusMessagePath)).isEqualTo("OK");
         assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("OK");
@@ -240,7 +242,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         return resp;
     }
 
-    private static String buildIngestVodXml(VodData vodData, String action) {
+    public static String buildIngestVodXml(VodData vodData, String action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
@@ -263,7 +265,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         media.setAttribute("action", action);
         media.setAttribute("is_active", Boolean.toString(vodData.isActive()));
 
-        if (action.equals(INGEST_ACTION_DELETE)) {
+        if (action.equals(DELETE.getValue())) {
             return uncommentCdataSection(docToString(doc));
         }
 

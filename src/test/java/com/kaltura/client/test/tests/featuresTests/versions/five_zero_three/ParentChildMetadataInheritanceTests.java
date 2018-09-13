@@ -1,16 +1,18 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 
-import com.kaltura.client.enums.AssetReferenceType;
-import com.kaltura.client.services.AssetService;
-import com.kaltura.client.services.AssetService.*;
 import com.kaltura.client.services.AssetStructMetaService;
-import com.kaltura.client.services.AssetStructMetaService.*;
+import com.kaltura.client.services.AssetStructMetaService.ListAssetStructMetaBuilder;
+import com.kaltura.client.services.AssetStructMetaService.UpdateAssetStructMetaBuilder;
 import com.kaltura.client.services.AssetStructService;
-import com.kaltura.client.services.AssetStructService.*;
+import com.kaltura.client.services.AssetStructService.AddAssetStructBuilder;
+import com.kaltura.client.services.AssetStructService.DeleteAssetStructBuilder;
+import com.kaltura.client.services.AssetStructService.ListAssetStructBuilder;
+import com.kaltura.client.services.AssetStructService.UpdateAssetStructBuilder;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
+import io.qameta.allure.Link;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -19,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
+import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.BaseUtils.getFormattedDate;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.*;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.tagsMetaMap;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.ingestXmlRequest;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * Class to test functionality described in https://kaltura.atlassian.net/browse/BEO-5423
  */
-@Test(groups = { "opc", "Parent children metadata inheritance" })
+@Link(name = "Parent Child Metadata Inheritance", url = "BEO-5423")
+@Test(groups = { "opc", "Parent Child Metadata Inheritance" })
 public class ParentChildMetadataInheritanceTests extends BaseTest {
 
     @BeforeClass()
@@ -106,8 +109,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 
     @Test
     public void sandboxRemoveMetasAndTags() {
-        generateDefaultValues4Insert(MOVIE);
-        IngestVodUtils.VodData vodData = getVodData(MOVIE, movieAssetFiles);
+        IngestVodUtils.VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
         MediaAsset movie = insertVod(vodData, true);
 
         assertThat(movie.getName()).isEqualTo(movie.getExternalId());
