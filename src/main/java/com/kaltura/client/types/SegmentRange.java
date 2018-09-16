@@ -50,14 +50,25 @@ import java.util.List;
 public class SegmentRange extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String systematicName();
 		String name();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String gte();
 		String gt();
 		String lte();
 		String lt();
+		String equals();
 	}
 
+	/**
+	 * Id of segment
+	 */
+	private Long id;
+	/**
+	 * Systematic name of segment
+	 */
+	private String systematicName;
 	/**
 	 * Specific segment name
 	 */
@@ -82,6 +93,26 @@ public class SegmentRange extends ObjectBase {
 	 * Less than
 	 */
 	private Double lt;
+	/**
+	 * Equals
+	 */
+	private Double equals;
+
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	// systematicName:
+	public String getSystematicName(){
+		return this.systematicName;
+	}
+	public void setSystematicName(String systematicName){
+		this.systematicName = systematicName;
+	}
+
+	public void systematicName(String multirequestToken){
+		setToken("systematicName", multirequestToken);
+	}
 
 	// name:
 	public String getName(){
@@ -143,6 +174,18 @@ public class SegmentRange extends ObjectBase {
 		setToken("lt", multirequestToken);
 	}
 
+	// equals:
+	public Double getEquals(){
+		return this.equals;
+	}
+	public void setEquals(Double equals){
+		this.equals = equals;
+	}
+
+	public void equals(String multirequestToken){
+		setToken("equals", multirequestToken);
+	}
+
 
 	public SegmentRange() {
 		super();
@@ -154,23 +197,28 @@ public class SegmentRange extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		systematicName = GsonParser.parseString(jsonObject.get("systematicName"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		gte = GsonParser.parseDouble(jsonObject.get("gte"));
 		gt = GsonParser.parseDouble(jsonObject.get("gt"));
 		lte = GsonParser.parseDouble(jsonObject.get("lte"));
 		lt = GsonParser.parseDouble(jsonObject.get("lt"));
+		equals = GsonParser.parseDouble(jsonObject.get("equals"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentRange");
+		kparams.add("systematicName", this.systematicName);
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("gte", this.gte);
 		kparams.add("gt", this.gt);
 		kparams.add("lte", this.lte);
 		kparams.add("lt", this.lt);
+		kparams.add("equals", this.equals);
 		return kparams;
 	}
 

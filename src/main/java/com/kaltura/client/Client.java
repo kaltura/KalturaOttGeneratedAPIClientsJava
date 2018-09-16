@@ -44,7 +44,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:18-09-16");
-		this.setApiVersion("5.0.2.20444");
+		this.setApiVersion("5.0.2.42002");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	

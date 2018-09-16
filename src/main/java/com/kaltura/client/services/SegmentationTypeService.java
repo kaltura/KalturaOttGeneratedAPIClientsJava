@@ -72,9 +72,9 @@ public class SegmentationTypeService {
 	}
 
 	/**
-	 * ...
+	 * Delete a segmentation type from the system
 	 * 
-	 * @param id .
+	 * @param id Segmentation type id
 	 */
     public static DeleteSegmentationTypeBuilder delete(long id)  {
 		return new DeleteSegmentationTypeBuilder(id);
