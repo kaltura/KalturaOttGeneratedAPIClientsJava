@@ -66,10 +66,6 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
     public static HashMap<String, String> datesMetaMap = new HashMap<>();
     public static HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
 
-    public static List<VodFile> movieAssetFiles = new ArrayList<>();
-    public static List<VodFile> episodeAssetFiles = new ArrayList<>();
-    public static List<VodFile> seriesAssetFiles = new ArrayList<>();
-
     public static String tagValue1 = "Jack Nicholson";
     public static String tagValue2 = "Natalie Portman";
 

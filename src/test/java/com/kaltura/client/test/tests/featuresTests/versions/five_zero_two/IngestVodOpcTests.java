@@ -57,30 +57,30 @@ public class IngestVodOpcTests extends BaseTest {
     private static final String suffix4Coguid = "123";
     private static String coguid4NegativeTests = "";
 
-    private static List<String> fileTypeNames;
-    private static List<String> ppvNames;
+    private static List<VodFile> assetFiles;
 
     @BeforeClass()
     public void ingestVodOpcTests_beforeClass() {
         // get data for ingest 2 files
-        fileTypeNames = DBUtils.getMediaFileTypeNames(2);
-        ppvNames = DBUtils.getPpvNames(2);
+        List<String> fileTypeNames = DBUtils.getMediaFileTypeNames(2);
+        List<String> ppvNames = DBUtils.getPpvNames(2);
+        assetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
 
         String prefix = "Movie_";
         localCoguid = getCurrentDateInFormat("yyMMddHHmmssSS");
         name = prefix + "Name_" + localCoguid;
         description = prefix + "Description_" + localCoguid;
 
-        movieAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
 
-        VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
+        VodData vodData = getVodData(MOVIE, assetFiles, INSERT);
         movie = insertVod(vodData, true);
-        movieType = movie.getType();
 
         // generate ingest XMLs for negative cases
         coguid4NegativeTests = movie.getExternalId() + suffix4Coguid;
         ingestInsertXml = ingestXmlRequest.replaceAll(movie.getExternalId(), coguid4NegativeTests);
 
+        // get media types
+        movieType = DBUtils.getMediaTypeId(MOVIE);
         episodeType = DBUtils.getMediaTypeId(EPISODE);
         seriesType = DBUtils.getMediaTypeId(SERIES);
     }
@@ -94,8 +94,7 @@ public class IngestVodOpcTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "ingest VOD with filled base meta fields")
     public void insertVodMediaBaseFields() {
-        List<VodFile> movieAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
-        VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
+        VodData vodData = getVodData(MOVIE, assetFiles, INSERT);
         MediaAsset movie = insertVod(vodData, true);
         String ingestRequest = ingestXmlRequest;
 
@@ -113,7 +112,7 @@ public class IngestVodOpcTests extends BaseTest {
             assertThat(tagValues).contains(tagValue.getValue());
         }
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
-        assertFiles(movieAssetFiles, movie.getId().toString());
+        assertFiles(assetFiles, movie.getId().toString());
 
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(0).getRatio() + "\"");
         assertThat(ingestRequest).contains("ratio=\"" + movie.getImages().get(1).getRatio() + "\"");
@@ -124,8 +123,7 @@ public class IngestVodOpcTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "ingest VOD with filled base meta fields")
     public void insertVodEpisodeBaseFields() {
-        List<VodFile> episodeAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
-        VodData vodData = getVodData(EPISODE, episodeAssetFiles, INSERT);
+        VodData vodData = getVodData(EPISODE, assetFiles, INSERT);
         MediaAsset episode = insertVod(vodData, true);
 
         assertThat(episode.getName()).isEqualTo(name);
@@ -143,7 +141,7 @@ public class IngestVodOpcTests extends BaseTest {
         }
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
-        assertFiles(episodeAssetFiles, episode.getId().toString());
+        assertFiles(assetFiles, episode.getId().toString());
 
         // without cleanup as we have below tests that can delete ingested item
     }
@@ -151,8 +149,7 @@ public class IngestVodOpcTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "ingest VOD with filled base meta fields")
     public void insertVodSeriesBaseFields() {
-        List<VodFile> seriesAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
-        VodData vodData = getVodData(SERIES, seriesAssetFiles, INSERT);
+        VodData vodData = getVodData(SERIES, assetFiles, INSERT);
         MediaAsset series = insertVod(vodData, true);
 
         assertThat(series.getName()).isEqualTo(name);
@@ -170,7 +167,7 @@ public class IngestVodOpcTests extends BaseTest {
         }
         assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
 
-        assertFiles(seriesAssetFiles, series.getId().toString());
+        assertFiles(assetFiles, series.getId().toString());
         // without cleanup as we have below tests that can delete ingested item
     }
 
@@ -238,7 +235,7 @@ public class IngestVodOpcTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "update VOD episode with filled base meta fields")
     public void updateVodEpisodeBaseFields() {
-        VodData vodData = getVodData(EPISODE, episodeAssetFiles, UPDATE);
+        VodData vodData = getVodData(EPISODE, assetFiles, UPDATE);
 
         String coguid = getCoguidOfActiveMediaAsset(episodeType);
         MediaAsset asset = updateVod(coguid, vodData);
@@ -262,7 +259,7 @@ public class IngestVodOpcTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "update VOD series with filled base meta fields")
     public void updateVodSeriesBaseFields() {
-        VodData vodData = getVodData(SERIES, seriesAssetFiles, UPDATE);
+        VodData vodData = getVodData(SERIES, assetFiles, UPDATE);
 
         String coguid = getCoguidOfActiveMediaAsset(seriesType);
         MediaAsset asset = updateVod(coguid, vodData);
@@ -458,7 +455,7 @@ public class IngestVodOpcTests extends BaseTest {
         String suffix = "multilingual";
         name = "Name_" + localCoguid.substring(0, localCoguid.length() - 2); // to not update name automatically
         description = "Description_" + localCoguid.substring(0, localCoguid.length() - 2); // to not update description automatically
-        VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
+        VodData vodData = getVodData(MOVIE, assetFiles, INSERT);
         movie = insertVod(vodData, true);
         String nameData = "<value lang=\"eng\">" + movie.getName() + "</value>";
         String descriptionData = "<value lang=\"eng\">" + movie.getDescription() + "</value>";
@@ -546,15 +543,13 @@ public class IngestVodOpcTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "ingest VOD with different Ppv")
     public void updateVodMediaPpv() {
-//        generateDefaultValues4Insert(MOVIE);
-        List<VodFile> movieAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
-        VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
+        VodData vodData = getVodData(MOVIE, assetFiles, INSERT);
         MediaAsset movie = insertVod(vodData, true);
         String ingestRequest = ingestXmlRequest;
 
         assertThat(movie.getName()).isEqualTo(name);
         assertThat(movie.getDescription()).isEqualTo(description);
-        assertFiles(movieAssetFiles, movie.getId().toString());
+        assertFiles(assetFiles, movie.getId().toString());
 
         Household household = HouseholdUtils.createHousehold();
         String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
@@ -579,8 +574,7 @@ public class IngestVodOpcTests extends BaseTest {
     @Test(description = "update VOD images")
     public void updateImages() {
         // insert vod
-//        generateDefaultValues4Insert(MOVIE);
-        VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
+        VodData vodData = getVodData(MOVIE, assetFiles, INSERT);
         MediaAsset mediaAsset = insertVod(vodData, true);
 
         // get list of original images
@@ -618,6 +612,8 @@ public class IngestVodOpcTests extends BaseTest {
     @Test(description = "update VOD files")
     public void updateFiles() {
         // insert vod
+        List<String> fileTypeNames = DBUtils.getMediaFileTypeNames(2);
+        List<String> ppvNames = DBUtils.getPpvNames(2);
         List<VodFile> files = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
         VodData vodData = getVodData(MOVIE, files, INSERT);
         MediaAsset mediaAsset = insertVod(vodData, true);
