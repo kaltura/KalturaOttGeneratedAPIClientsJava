@@ -3,10 +3,8 @@ import com.kaltura.client.services.AssetService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.KsqlBuilder;
-
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -19,13 +17,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-import static com.kaltura.client.services.AssetService.*;
-import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.*;
+import static com.kaltura.client.services.AssetService.CountAssetBuilder;
 import static com.kaltura.client.test.tests.enums.KsqlKey.EPG_ID;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
+import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.EpgData;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -58,7 +56,7 @@ public class AssetCountTests extends BaseTest {
         stringMetaMap.put(tagName,tagValue);
 
         // ingest asset 1
-        IngestVodUtils.VodData vodData1 = new IngestVodUtils.VodData()
+        VodData vodData1 = new VodData()
                 .mediaType(MOVIE)
                 .strings(stringMetaMap);
         asset = insertVod(vodData1, true);
@@ -69,10 +67,9 @@ public class AssetCountTests extends BaseTest {
         stringMetaMap2.put(tagName,tagValue);
 
         // ingest asset 2
-        IngestVodUtils.VodData vodData2 = new IngestVodUtils.VodData()
+        VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
                 .strings(stringMetaMap2);
-
         asset2 = insertVod(vodData2, true);
 
         HashMap<String, String> epgMetas = new HashMap<>();

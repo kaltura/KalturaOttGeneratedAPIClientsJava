@@ -632,8 +632,7 @@ public class IngestVodOpcTests extends BaseTest {
         files.get(0).coguid(coguid1).assetDuration("5");
         files.get(1).coguid(coguid2).assetDuration("5");
 
-        VodData updateVodData = new VodData()
-                .assetFiles(files);
+        VodData updateVodData = new VodData().files(files);
         List<MediaFile> mediaFiles = updateVod(mediaAsset.getExternalId(), updateVodData).getMediaFiles();
 
         // assert update

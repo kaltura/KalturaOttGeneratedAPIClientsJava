@@ -89,7 +89,7 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
                 .numbers(numberMetaMap)
                 .dates(datesMetaMap)
                 .tags(tagsMetaMap)
-                .assetFiles(mediaAssetFiles);
+                .files(mediaAssetFiles);
 
         switch (mediaType) {
             case MOVIE:
