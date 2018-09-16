@@ -30,6 +30,7 @@ import static org.awaitility.Awaitility.await;
 
 public class IngestVodUtils extends BaseIngestUtils {
 
+    // response paths
     private static final String ingestDataResultPath = "Envelope.Body.IngestTvinciDataResponse.IngestTvinciDataResult.";
     private static final String ingestAssetStatusPath = ingestDataResultPath + "AssetsStatus.IngestAssetStatus[0].";
 
@@ -39,7 +40,14 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
     public static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
 
-    public static String ingestXmlRequest = "";
+    //
+    static final String coguidDatePattern = "yyMMddHHmmssSS";
+    static final String datePattern = "dd/MM/yyyy hh:mm:ss";
+    static final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
+    static final String endDateValue = "14/10/2099 17:00:00";
+    static final String ppvModuleName = DBUtils.getPpvNames(1).get(0);
+
+//    public static String ingestXmlRequest = "";
 
     @Accessors(fluent = true)
     @Data
@@ -69,7 +77,28 @@ public class IngestVodUtils extends BaseIngestUtils {
         private Map<String, Boolean> booleans;
 
         private List<String> thumbRatios;
-        private List<VodFile> assetFiles;
+        private List<VodFile> files;
+
+        private void setDefaultValues() {
+            coguid = getCurrentDateInFormat(coguidDatePattern) + "_" + getRandomLong();
+            name = coguid;
+            description = "description of " + coguid;
+            lang = "eng";
+            thumbUrl = DEFAULT_THUMB;
+            catalogStartDate = offsetDateValue;
+            catalogEndDate = endDateValue;
+            startDate = offsetDateValue;
+            endDate = endDateValue;
+            mediaType = MediaType.MOVIE;
+            tags = getDefaultTags();
+            strings = getDefaultStrings();
+            dates = getDefaultDates();
+            numbers = getDefaultNumbers();
+            ppvWebName = ppvModuleName;
+            ppvMobileName = ppvModuleName;
+            files = getDefaultAssetFiles(ppvWebName, ppvMobileName);
+            thumbRatios = Arrays.asList("4:3", "16:9");
+        }
     }
 
     @Accessors(fluent = true)
@@ -83,10 +112,14 @@ public class IngestVodUtils extends BaseIngestUtils {
         private String billing_type;
         private String product_code;
 
-        @Setter private String coguid;
-        @Setter private String assetDuration;
-        @Setter private String type;
-        @Setter private String ppvModule;
+        @Setter
+        private String coguid;
+        @Setter
+        private String assetDuration;
+        @Setter
+        private String type;
+        @Setter
+        private String ppvModule;
 
         public VodFile(String type, String ppvModule) {
             quality = "HIGH";
@@ -104,15 +137,10 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
     }
 
-    /** IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid" **/
+    /**
+     * IMPORTANT: In order to update or delete existing asset use asset.getName() as "coguid"
+     **/
     public static MediaAsset insertVod(VodData vodData, boolean useDefaultValues) {
-
-        final String coguidDatePattern = "yyMMddHHmmssSS";
-        final String datePattern = "dd/MM/yyyy hh:mm:ss";
-        final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
-        final String endDateValue = "14/10/2099 17:00:00";
-        final String ppvModuleName = DBUtils.getPpvNames(1).get(0); // "Shai_Regression_PPV";
-
         if (vodData.coguid == null) {
             vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
         }
@@ -163,8 +191,8 @@ public class IngestVodUtils extends BaseIngestUtils {
             if (vodData.ppvMobileName == null) {
                 vodData.ppvMobileName = ppvModuleName;
             }
-            if (vodData.assetFiles == null) {
-                vodData.assetFiles = getDefaultAssetFiles(vodData.ppvWebName, vodData.ppvMobileName);
+            if (vodData.files == null) {
+                vodData.files = getDefaultAssetFiles(vodData.ppvWebName, vodData.ppvMobileName);
             }
             if (vodData.thumbRatios == null) {
                 vodData.thumbRatios = Arrays.asList("4:3", "16:9");
@@ -254,9 +282,9 @@ public class IngestVodUtils extends BaseIngestUtils {
             doc.getElementsByTagName("passWord").item(0).setTextContent(getIngestAssetUserPassword());
         }
 
-//        // add CDATA section
-//        CDATASection cdata = doc.createCDATASection("");
-//        doc.getElementsByTagName("tem:request").item(0).appendChild(cdata);
+        // add CDATA section
+//          CDATASection cdata = doc.createCDATASection("");
+//          doc.getElementsByTagName("tem:request").item(0).appendChild(cdata);
 
         // media
         Element media = (Element) doc.getElementsByTagName("media").item(0);
@@ -397,20 +425,17 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // files
-        if (vodData.assetFiles != null && vodData.assetFiles.size() > 0) {
+        if (vodData.files != null && vodData.files.size() > 0) {
             Element files = (Element) media.getElementsByTagName("files").item(0);
 
-            for (VodFile vodFile : vodData.assetFiles) {
+            for (VodFile vodFile : vodData.files) {
                 files.appendChild(addFile(doc, vodFile));
             }
         }
 
         // uncomment cdata
         String docAsString = docToString(doc);
-
-        ingestXmlRequest = uncommentCdataSection(docAsString);
-        //Logger.getLogger(IngestVodUtils.class).debug("ingestXmlRequest: " + ingestXmlRequest);
-        return ingestXmlRequest;
+        return uncommentCdataSection(docAsString);
     }
 
     private static Element addFile(Document doc, VodFile vodFile) {
