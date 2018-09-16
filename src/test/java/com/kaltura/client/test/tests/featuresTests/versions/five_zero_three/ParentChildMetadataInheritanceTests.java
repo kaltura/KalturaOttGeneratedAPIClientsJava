@@ -109,7 +109,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 
     @Test
     public void sandboxRemoveMetasAndTags() {
-        IngestVodUtils.VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
+        IngestVodUtils.VodData vodData = getVodData(MOVIE, INSERT);
         MediaAsset movie = insertVod(vodData, true);
 
         assertThat(movie.getName()).isEqualTo(movie.getExternalId());

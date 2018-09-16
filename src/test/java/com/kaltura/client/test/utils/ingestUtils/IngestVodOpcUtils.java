@@ -66,14 +66,14 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
     public static HashMap<String, String> datesMetaMap = new HashMap<>();
     public static HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
 
-    public static List<VodFile> movieAssetFiles = new ArrayList<>();
-    public static List<VodFile> episodeAssetFiles = new ArrayList<>();
-    public static List<VodFile> seriesAssetFiles = new ArrayList<>();
+//    public static List<VodFile> movieAssetFiles = new ArrayList<>();
+//    public static List<VodFile> episodeAssetFiles = new ArrayList<>();
+//    public static List<VodFile> seriesAssetFiles = new ArrayList<>();
 
     public static String tagValue1 = "Jack Nicholson";
     public static String tagValue2 = "Natalie Portman";
 
-    public static VodData getVodData(MediaType mediaType, List<VodFile> mediaAssetFiles, IngestAction action) {
+    public static VodData getVodData(MediaType mediaType, IngestAction action) {
         if (action == INSERT) {
             generateDefaultValues4Insert(mediaType);
         } else if (action == UPDATE) {
@@ -81,6 +81,7 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
         }
 
         VodData data = new VodData()
+                .setDefaultValues()
                 .name(name)
                 .description(description)
                 .thumbUrl(DEFAULT_THUMB)
@@ -88,8 +89,7 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
                 .booleans(booleanHashMap)
                 .numbers(numberMetaMap)
                 .dates(datesMetaMap)
-                .tags(tagsMetaMap)
-                .files(mediaAssetFiles);
+                .tags(tagsMetaMap);
 
         switch (mediaType) {
             case MOVIE:

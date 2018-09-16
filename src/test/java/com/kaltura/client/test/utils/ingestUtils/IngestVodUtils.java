@@ -40,12 +40,11 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
     public static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
 
-    //
-    static final String coguidDatePattern = "yyMMddHHmmssSS";
-    static final String datePattern = "dd/MM/yyyy hh:mm:ss";
-    static final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
-    static final String endDateValue = "14/10/2099 17:00:00";
-    static final String ppvModuleName = DBUtils.getPpvNames(1).get(0);
+    private static final String datePattern = "dd/MM/yyyy hh:mm:ss";
+    private static final String endDateValue = "14/10/2099 17:00:00";
+    private static final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
+
+    private static final List<String> ppvNames = DBUtils.getPpvNames(2);
 
     public static String ingestXmlRequest = "";
 
@@ -79,8 +78,8 @@ public class IngestVodUtils extends BaseIngestUtils {
         private List<String> thumbRatios;
         private List<VodFile> files;
 
-        private void setDefaultValues() {
-            coguid = getCurrentDateInFormat(coguidDatePattern) + "_" + getRandomLong();
+        public VodData setDefaultValues() {
+            coguid = String.valueOf(getEpochInMillis());
             name = coguid;
             description = "description of " + coguid;
             lang = "eng";
@@ -94,10 +93,12 @@ public class IngestVodUtils extends BaseIngestUtils {
             strings = getDefaultStrings();
             dates = getDefaultDates();
             numbers = getDefaultNumbers();
-            ppvWebName = ppvModuleName;
-            ppvMobileName = ppvModuleName;
+            ppvWebName =  ppvNames.get(0);
+            ppvMobileName =  ppvNames.get(1);
             files = getDefaultAssetFiles(ppvWebName, ppvMobileName);
             thumbRatios = Arrays.asList("4:3", "16:9");
+
+            return this;
         }
     }
 
@@ -142,7 +143,7 @@ public class IngestVodUtils extends BaseIngestUtils {
      **/
     public static MediaAsset insertVod(VodData vodData, boolean useDefaultValues) {
         if (vodData.coguid == null) {
-            vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
+            vodData.coguid = String.valueOf(getEpochInMillis());
         }
 
         if (useDefaultValues) {
@@ -186,10 +187,10 @@ public class IngestVodUtils extends BaseIngestUtils {
                 vodData.numbers = getDefaultNumbers();
             }
             if (vodData.ppvWebName == null) {
-                vodData.ppvWebName = ppvModuleName;
+                vodData.ppvWebName =  ppvNames.get(0);
             }
             if (vodData.ppvMobileName == null) {
-                vodData.ppvMobileName = ppvModuleName;
+                vodData.ppvMobileName =  ppvNames.get(1);
             }
             if (vodData.files == null) {
                 vodData.files = getDefaultAssetFiles(vodData.ppvWebName, vodData.ppvMobileName);
@@ -435,7 +436,8 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         // uncomment cdata
         String docAsString = docToString(doc);
-        return uncommentCdataSection(docAsString);
+        ingestXmlRequest = uncommentCdataSection(docAsString);
+        return ingestXmlRequest = uncommentCdataSection(docAsString);
     }
 
     private static Element addFile(Document doc, VodFile vodFile) {
@@ -545,9 +547,10 @@ public class IngestVodUtils extends BaseIngestUtils {
     // TODO: these values should be get in another way than now
     private static List<VodFile> getDefaultAssetFiles(String ppvModuleName1, String ppvModuleName2) {
         List<VodFile> assetFiles = new ArrayList<>();
+        List<String> fileTypeNames = DBUtils.getMediaFileTypeNames(2);
 
-        VodFile file1 = new VodFile("Web HD", ppvModuleName1);
-        VodFile file2 = new VodFile("Mobile_Devices_Main_HD", ppvModuleName2);
+        VodFile file1 = new VodFile(fileTypeNames.get(0), ppvModuleName1);
+        VodFile file2 = new VodFile(fileTypeNames.get(1), ppvModuleName2);
 
         assetFiles.add(file1);
         assetFiles.add(file2);
