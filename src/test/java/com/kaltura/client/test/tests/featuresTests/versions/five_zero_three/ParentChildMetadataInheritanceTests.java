@@ -9,7 +9,7 @@ import com.kaltura.client.services.AssetStructService.DeleteAssetStructBuilder;
 import com.kaltura.client.services.AssetStructService.ListAssetStructBuilder;
 import com.kaltura.client.services.AssetStructService.UpdateAssetStructBuilder;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.dbUtils.DBUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Link;
@@ -25,7 +25,8 @@ import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.BaseUtils.getFormattedDate;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.*;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,14 +38,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Test(groups = { "opc", "Parent Child Metadata Inheritance" })
 public class ParentChildMetadataInheritanceTests extends BaseTest {
 
-    private static List<VodFile> assetFiles;
-
     @BeforeClass()
     public void setUp() {
-        // get data for ingest 2 files
-        List<String> fileTypeNames = DBUtils.getMediaFileTypeNames(2);
-        List<String> ppvNames = DBUtils.getPpvNames(2);
-        assetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
     }
 
     // added to play with methods that are going to be checked
@@ -114,7 +109,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 
     @Test
     public void sandboxRemoveMetasAndTags() {
-        VodData vodData = getVodData(MOVIE, assetFiles, INSERT);
+        IngestVodUtils.VodData vodData = getVodData(MOVIE, movieAssetFiles, INSERT);
         MediaAsset movie = insertVod(vodData, true);
 
         assertThat(movie.getName()).isEqualTo(movie.getExternalId());
