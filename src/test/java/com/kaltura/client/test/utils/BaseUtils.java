@@ -108,6 +108,10 @@ public class BaseUtils {
         return c.toInstant().getEpochSecond();
     }
 
+    public static long getEpochInMillis() {
+        return System.currentTimeMillis();
+    }
+
     public static Date getDateFromEpoch(long epoch) {
         return new Date(epoch * 1000);
     }
