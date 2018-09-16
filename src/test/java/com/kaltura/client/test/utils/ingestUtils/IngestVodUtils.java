@@ -40,14 +40,12 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
     public static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
 
-    //
-    static final String coguidDatePattern = "yyMMddHHmmssSS";
-    static final String datePattern = "dd/MM/yyyy hh:mm:ss";
-    static final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
-    static final String endDateValue = "14/10/2099 17:00:00";
-    static final String ppvModuleName = DBUtils.getPpvNames(1).get(0);
+    private static final String datePattern = "dd/MM/yyyy hh:mm:ss";
+    private static final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
+    private static final String endDateValue = "14/10/2099 17:00:00";
+    private static final String ppvModuleName = DBUtils.getPpvNames(1).get(0);
 
-//    public static String ingestXmlRequest = "";
+    public static String ingestXmlRequest = "";
 
     @Accessors(fluent = true)
     @Data
@@ -80,7 +78,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         private List<VodFile> files;
 
         private void setDefaultValues() {
-            coguid = getCurrentDateInFormat(coguidDatePattern) + "_" + getRandomLong();
+            coguid = String.valueOf(getEpochInMillis());
             name = coguid;
             description = "description of " + coguid;
             lang = "eng";
@@ -142,7 +140,7 @@ public class IngestVodUtils extends BaseIngestUtils {
      **/
     public static MediaAsset insertVod(VodData vodData, boolean useDefaultValues) {
         if (vodData.coguid == null) {
-            vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
+            vodData.coguid = String.valueOf(getEpochInMillis());
         }
 
         if (useDefaultValues) {
