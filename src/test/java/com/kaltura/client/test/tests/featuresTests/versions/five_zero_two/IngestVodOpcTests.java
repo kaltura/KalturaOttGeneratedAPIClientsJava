@@ -2,6 +2,8 @@ package com.kaltura.client.test.tests.featuresTests.versions.five_zero_two;
 
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.AssetService;
+import com.kaltura.client.services.PpvService;
+import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.test.tests.BaseTest;
 import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
@@ -12,7 +14,6 @@ import io.qameta.allure.Link;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -23,9 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.kaltura.client.services.AssetService.list;
-import static com.kaltura.client.test.tests.enums.IngestAction.DELETE;
-import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
-import static com.kaltura.client.test.tests.enums.IngestAction.UPDATE;
+import static com.kaltura.client.test.tests.enums.IngestAction.*;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.tests.enums.MediaType.*;
 import static com.kaltura.client.test.utils.BaseUtils.*;
@@ -46,49 +45,15 @@ import static org.awaitility.Awaitility.await;
 @Link(name = "OPC VOD Ingest", url = "BEO-5428")
 @Test(groups = { "opc", "OPC VOD Ingest" })
 public class IngestVodOpcTests extends BaseTest {
-//    private MediaAsset movie;
-
     private int movieType;
     private int episodeType;
     private int seriesType;
 
-//    private String localCoguid;
-//    private String ingestInsertXml;
-//
-//    private static final String suffix4Coguid = "123";
-//    private static String coguid4NegativeTests = "";
-//
-//    private static List<String> fileTypeNames;
-//    private static List<String> ppvNames;
-
     @BeforeClass()
     public void ingestVodOpcTests_beforeClass() {
-//        // get data for ingest 2 files
-//        fileTypeNames = DBUtils.getMediaFileTypeNames(2);
-//        ppvNames = DBUtils.getPpvNames(2);
-////        movieAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
-//
-//        String prefix = "Movie_";
-//        localCoguid = getCurrentDateInFormat("yyMMddHHmmssSS");
-//        name = prefix + "Name_" + localCoguid;
-//        description = prefix + "Description_" + localCoguid;
-//
-//        VodData vodData = getVodData(MOVIE, INSERT);
-//        movie = insertVod(vodData, true);
-//
-//        // generate ingest XMLs for negative cases
-//        coguid4NegativeTests = movie.getExternalId() + suffix4Coguid;
-//        ingestInsertXml = ingestXmlRequest.replaceAll(movie.getExternalId(), coguid4NegativeTests);
-//
         movieType = DBUtils.getMediaTypeId(MOVIE);
         episodeType = DBUtils.getMediaTypeId(EPISODE);
         seriesType = DBUtils.getMediaTypeId(SERIES);
-    }
-
-    @AfterClass
-    public void ingestVodOpcTests_afterClass() {
-        // cleanup
-//        deleteVod(movie.getExternalId());
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -107,7 +72,8 @@ public class IngestVodOpcTests extends BaseTest {
         assertFiles(vodData.files(), movie.getId().toString());
         assertThat(movie.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
 
-        // without cleanup as we have below tests that can delete ingested item
+        // cleanup
+        deleteVod(movie.getExternalId());
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -170,7 +136,8 @@ public class IngestVodOpcTests extends BaseTest {
         assertFiles(vodData.files(), episode.getId().toString());
         assertThat(episode.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
 
-        // without cleanup as we have below tests that can delete ingested item
+        // cleanup
+        deleteVod(episode.getExternalId());
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -189,7 +156,8 @@ public class IngestVodOpcTests extends BaseTest {
         assertFiles(vodData.files(), series.getId().toString());
         assertThat(series.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
 
-        // without cleanup as we have below tests that can delete ingested item
+        // cleanup
+        deleteVod(series.getExternalId());
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -389,31 +357,38 @@ public class IngestVodOpcTests extends BaseTest {
     @Test(description = "try insert with invalid meta or tag field")
     public void insertWithInvalidMetaOrTagField() {
         String suffix = "_" + getEpoch();
+        VodData vodData = getVodData(MOVIE, INSERT);
 
         String updatedField = mediaNumberFieldName + suffix;
-        VodData vodData = getVodData(MOVIE, INSERT).numbers(Map.of(updatedField, getRandomDouble()));
+        vodData.numbers(Map.of(updatedField, getRandomDouble()));
         assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.numbers(Map.of());
 
         updatedField = mediaBooleanFieldName + suffix;
-        vodData = getVodData(MOVIE, INSERT).booleans(Map.of(updatedField, getRandomBoolean()));
+        vodData.booleans(Map.of(updatedField, getRandomBoolean()));
         assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.booleans(Map.of());
 
         updatedField = mediaTagFieldName + suffix;
-        vodData = getVodData(MOVIE, INSERT).tags(Map.of(updatedField, List.of(String.valueOf(getEpochInMillis()))));
+        vodData.tags(Map.of(updatedField, List.of(String.valueOf(getEpochInMillis()))));
         assertInvalidMovieField(vodData, updatedField, "tag");
+        vodData.tags(Map.of());
 
         updatedField = mediaTextFieldName + suffix;
-        vodData = getVodData(MOVIE, INSERT).strings(Map.of(updatedField, getRandomString()));
+        vodData.strings(Map.of(updatedField, getRandomString()));
         assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.strings(Map.of());
 
         updatedField = mediaDateFieldName + suffix;
-        vodData = getVodData(MOVIE, INSERT).dates(Map.of(updatedField, BaseUtils.getCurrentDateInFormat("yyyyMMddHHmmss")));
+        vodData.dates(Map.of(updatedField, BaseUtils.getCurrentDateInFormat("yyyyMMddHHmmss")));
         assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.dates(Map.of());
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(description = "insert multilingual fields")
+    @Test(description = "insert multilingual fields", enabled = false)
     public void insertMultiLingualFields() {
+        // TODO: 9/17/2018 complete test
 //        // ingested Movie for checking multilanguage
 //        final String JAP = "jap";
 //        final String ENG = "eng";
@@ -476,7 +451,10 @@ public class IngestVodOpcTests extends BaseTest {
     @Test(description = "ingest VOD with empty images and thumb fields")
     public void insertVodMediaBaseEmptyImagesAndFields() {
         // empty images tag
-        VodData vodData = getVodData(MOVIE, INSERT).thumbRatios(List.of());
+        VodData vodData = getVodData(MOVIE, INSERT);
+        long epoch = getEpoch();
+        vodData.files().get(0).coguid(String.valueOf(epoch));
+        vodData.files().get(1).coguid(String.valueOf(epoch));
         String ingestXml = buildIngestVodXml(vodData, INSERT);
 
         Response resp = executeIngestVodRequest(ingestXml);
@@ -487,46 +465,48 @@ public class IngestVodOpcTests extends BaseTest {
         ingestXml = buildIngestVodXml(vodData1, INSERT);
 
         resp = executeIngestVodRequest(ingestXml);
-        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageMediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
-
-//        // empty file coguid
-//        getDefaultAssetFiles(DBUtils.getPpvNames(2))
-//        VodData vodData = getVodData(MOVIE, INSERT).files();
-//        contains("InvalidUrlForImageMediaFileExternalIdMustBeUniqueMediaFileExternalIdMustBeUnique");
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageInvalidUrlForImage");
     }
 
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Test(description = "ingest VOD with different Ppv")
-//    public void updateVodMediaPpv() {
-////        generateDefaultValues4Insert(MOVIE);
-////        List<VodFile> movieAssetFiles = get2AssetFiles(fileTypeNames.get(0), fileTypeNames.get(1), ppvNames.get(0), ppvNames.get(1));
-//        VodData vodData = getVodData(MOVIE, INSERT);
-//        MediaAsset movie = insertVod(vodData, true);
-//        String ingestRequest = ingestXmlRequest;
-//
-//        assertThat(movie.getName()).isEqualTo(name);
-//        assertThat(movie.getDescription()).isEqualTo(description);
-////        assertFiles(movieAssetFiles, movie.getId().toString());
-//
-//        Household household = HouseholdUtils.createHousehold();
-//        String classMasterUserKs = HouseholdUtils.getHouseholdUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
-//        AssetService.GetAssetBuilder assetBuilder = AssetService.get(movie.getId().toString(), AssetReferenceType.MEDIA).setKs(classMasterUserKs);
-//        com.kaltura.client.utils.response.base.Response<Asset> assetGetResponse = executor.executeSync(assetBuilder);
-//        List<MediaFile> getMediaFiles = assetGetResponse.results.getMediaFiles();
-//        int fileId1 = getMediaFiles.get(0).getId();
-//        int fileId2 = getMediaFiles.get(1).getId();
-//
-//        ProductPriceFilter ppFilter = new ProductPriceFilter();
-//        ppFilter.setFileIdIn(String.valueOf(fileId1));
-//        ppFilter.setIsLowest(false);
-//        ProductPriceService.ListProductPriceBuilder productPriceListBeforePurchase = ProductPriceService.list(ppFilter);
-//        com.kaltura.client.utils.response.base.Response<ListResponse<ProductPrice>> productPriceResponse =
-//                executor.executeSync(productPriceListBeforePurchase.setKs(classMasterUserKs));
-//        assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(fileId1);
-//        assertThat(((PpvPrice)productPriceResponse.results.getObjects().get(0)).getPpvDescriptions().get(0).getValue()).isEqualTo(fileId1);
-//        // TODO: complete
-//    }
-//
+    @Issue("BEO-5584")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "ingest VOD with different Ppv", enabled = false)
+    public void updateVodMediaPpv() {
+        List<String> ppvNames = DBUtils.getPpvNames(4);
+
+        // insert vod
+        List<VodFile> files = getDefaultAssetFiles(ppvNames.get(0), ppvNames.get(1));
+        VodData vodData = getVodData(MOVIE, INSERT).files(files);
+        MediaAsset movie = insertVod(vodData, true);
+
+        // update ppvs
+        files.get(0).ppvModule(ppvNames.get(2));
+        files.get(1).ppvModule(ppvNames.get(3));
+        vodData = new VodData().files(files);
+        movie = updateVod(movie.getExternalId(), vodData);
+
+        List<MediaFile> mediaFiles = movie.getMediaFiles();
+        assertThat(mediaFiles.size()).isEqualTo(2);
+
+        // assert ppvs update
+        ProductPriceFilter filter = new ProductPriceFilter();
+        List<String> fileIds = Arrays.asList(String.valueOf(mediaFiles.get(0).getId()), String.valueOf(mediaFiles.get(1).getId()));
+        filter.setFileIdIn(getConcatenatedString(fileIds));
+
+        com.kaltura.client.utils.response.base.Response<ListResponse<ProductPrice>> productPriceListResponse = executor.executeSync(ProductPriceService.list(filter).setKs(getAnonymousKs()));
+        PpvPrice ppvPrice1 = (PpvPrice) productPriceListResponse.results.getObjects().get(0);
+
+        String ppvName1 = executor.executeSync(PpvService.get(Long.parseLong(ppvPrice1
+                .getPpvModuleId()))
+                .setKs(getAnonymousKs()))
+                .results
+                .getName();
+
+        System.out.println(ppvName1);
+
+        // TODO: 9/17/2018 complete the test after the bug will be fixed
+    }
+
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "update VOD images")
     public void updateImages() {

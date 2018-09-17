@@ -47,8 +47,6 @@ public class IngestVodUtils extends BaseIngestUtils {
 
     private static final List<String> ppvNames = DBUtils.getPpvNames(2);
 
-    public static String ingestXmlRequest = "";
-
     @Accessors(fluent = true)
     @Data
     public static class VodData {
@@ -134,7 +132,7 @@ public class IngestVodUtils extends BaseIngestUtils {
             product_code = "productExampleCode";
 
             assetDuration = "1000";
-            coguid = "file_" + getEpoch();
+            coguid = "file_" + getEpoch() + "_" + getRandomLong();
             this.type = type;
             this.ppvModule = ppvModule;
         }
@@ -439,8 +437,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         // uncomment cdata
         String docAsString = docToString(doc);
-        ingestXmlRequest = uncommentCdataSection(docAsString);
-        return ingestXmlRequest = uncommentCdataSection(docAsString);
+        return uncommentCdataSection(docAsString);
     }
 
     private static Element addFile(Document doc, VodFile vodFile) {
@@ -547,7 +544,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         return dates;
     }
 
-    private static List<VodFile> getDefaultAssetFiles(String ppvModuleName1, String ppvModuleName2) {
+    public static List<VodFile> getDefaultAssetFiles(String ppvModuleName1, String ppvModuleName2) {
         List<VodFile> assetFiles = new ArrayList<>();
         List<String> fileTypeNames = DBUtils.getMediaFileTypeNames(2);
 
