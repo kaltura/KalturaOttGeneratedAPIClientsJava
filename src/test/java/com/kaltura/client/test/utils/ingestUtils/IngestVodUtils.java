@@ -47,7 +47,7 @@ public class IngestVodUtils extends BaseIngestUtils {
     static final String endDateValue = "14/10/2099 17:00:00";
     static final String ppvModuleName = DBUtils.getPpvNames(1).get(0);
 
-//    public static String ingestXmlRequest = "";
+    public static String ingestXmlRequest = "";
 
     @Accessors(fluent = true)
     @Data
