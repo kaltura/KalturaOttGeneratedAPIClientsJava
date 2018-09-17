@@ -10,7 +10,7 @@
                     <!--<![CDATA[-->
                     <feed>
                         <export>
-                            <media erase="false">
+                            <media>
                                 <basic>
                                     <name/>
                                     <thumb/>

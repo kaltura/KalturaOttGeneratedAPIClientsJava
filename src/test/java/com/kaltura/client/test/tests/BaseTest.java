@@ -125,7 +125,7 @@ public class BaseTest {
 
     @Parameters({"accountType"})
     @BeforeSuite(alwaysRun = true)
-    public void baseTest_beforeSuite(@org.testng.annotations.Optional("opc") String accountType, ITestContext testContext) {
+    public void baseTest_beforeSuite(@org.testng.annotations.Optional("regular") String accountType, ITestContext testContext) {
         XmlSuite suite = testContext.getCurrentXmlTest().getSuite();
         Logger.getLogger(BaseTest.class).debug("Start suite >>> Suite: " + suite.getName());
 

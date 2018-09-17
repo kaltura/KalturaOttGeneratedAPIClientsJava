@@ -7,10 +7,7 @@ import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.kaltura.client.services.AssetService.list;
 import static com.kaltura.client.test.tests.BaseTest.executor;
@@ -23,16 +20,16 @@ import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodFile;
 
 public class IngestVodOpcUtils extends BaseIngestUtils {
 
-    public static String name;
-    public static String description;
-    public static String textValue;
-    public static String dateValue;
-    public static double doubleValue;
-    public static boolean booleanValue;
-    public static List<String> tagValues;
+    private static String name;
+    private static String description;
+    private static String stringMetaValue;
+    private static String dateMetaValue;
+    private static double numberMetaValue;
+    private static boolean booleanMetaValue;
+    private static List<String> tagMetaValue;
 
-    public static final String FILE_TYPE_1 = "Test130301";
-    public static final String FILE_TYPE_2 = "new file type1";
+    private static final String FILE_TYPE_1 = "Test130301";
+    private static final String FILE_TYPE_2 = "new file type1";
 
     public static final String EMPTY_FILE_1_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_1 + "\"/>\n";
     public static final String EMPTY_FILE_2_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_2 + "\"/>\n";
@@ -66,30 +63,26 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
     public static HashMap<String, String> datesMetaMap = new HashMap<>();
     public static HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
 
-    public static List<VodFile> movieAssetFiles = new ArrayList<>();
-    public static List<VodFile> episodeAssetFiles = new ArrayList<>();
-    public static List<VodFile> seriesAssetFiles = new ArrayList<>();
-
     public static String tagValue1 = "Jack Nicholson";
     public static String tagValue2 = "Natalie Portman";
 
-    public static VodData getVodData(MediaType mediaType, List<VodFile> mediaAssetFiles, IngestAction action) {
+    public static VodData getVodData(MediaType mediaType, IngestAction action) {
         if (action == INSERT) {
-            generateDefaultValues4Insert(mediaType);
+            initDefaultValues4Insert(mediaType);
         } else if (action == UPDATE) {
-            generateDefaultValues4Update(booleanValue, mediaType);
+            initDefaultValues4Update(booleanMetaValue, mediaType);
         }
 
         VodData data = new VodData()
-                .name(name)
-                .description(description)
-                .thumbUrl(DEFAULT_THUMB)
+                .setDefaultValues()
+//                .name(name)
+//                .description(description)
+//                .thumbUrl(DEFAULT_THUMB)
                 .strings(stringMetaMap)
                 .booleans(booleanHashMap)
                 .numbers(numberMetaMap)
                 .dates(datesMetaMap)
-                .tags(tagsMetaMap)
-                .files(mediaAssetFiles);
+                .tags(tagsMetaMap);
 
         switch (mediaType) {
             case MOVIE:
@@ -106,29 +99,22 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
         }
     }
 
-    private static void generateDefaultValues4Update(boolean previousValue, MediaType mediaType) {
-        textValue = "textValue" + getCurrentDateInFormat("MM/dd/yyyy") + "_updated";
-        dateValue = getOffsetDateInFormat(1, "MM/dd/yyyy");
-        doubleValue = Math.round(getRandomDouble() * 100.0) / 100.0;
-        booleanValue = !previousValue;
-        tagValues = new ArrayList<>();
-        tagValues.add(tagValue1 + "Upd");
-        tagValues.add(tagValue2 + "Upd");
-        tagValues.add(textValue);
+    private static void initDefaultValues4Update(boolean previousValue, MediaType mediaType) {
+        stringMetaValue = "stringMetaValue_" + getCurrentDateInFormat("MM/dd/yyyy") + "_updated";
+        dateMetaValue = getOffsetDateInFormat(1, "MM/dd/yyyy");
+        numberMetaValue = Math.round(getRandomDouble() * 100.0) / 100.0;
+        booleanMetaValue = !previousValue;
+        tagMetaValue = Arrays.asList(tagValue1 + "_updated", tagValue2 + "_updated", stringMetaValue + "_updated");
 
         fillMapsWithData(mediaType);
     }
 
-    private static void generateDefaultValues4Insert(MediaType mediaType) {
-        textValue = "textValue" + getCurrentDateInFormat("MM/dd/yyyy");
-        dateValue = getCurrentDateInFormat("MM/dd/yyyy");
-
-        doubleValue = Math.round(getRandomDouble() * 100.0) / 100.0;
-        booleanValue = getRandomBoolean();
-        tagValues = new ArrayList<>();
-        tagValues.add(tagValue1);
-        tagValues.add(tagValue2);
-        tagValues.add(textValue);
+    private static void initDefaultValues4Insert(MediaType mediaType) {
+        stringMetaValue = "stringMetaValue_" + getCurrentDateInFormat("MM/dd/yyyy");
+        dateMetaValue = getCurrentDateInFormat("MM/dd/yyyy");
+        numberMetaValue = Math.round(getRandomDouble() * 100.0) / 100.0;
+        booleanMetaValue = getRandomBoolean();
+        tagMetaValue = Arrays.asList(tagValue1, tagValue2, stringMetaValue);
 
         fillMapsWithData(mediaType);
     }
@@ -142,27 +128,27 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
 
         switch (mediaType) {
             case MOVIE:
-                stringMetaMap.put(mediaTextFieldName, textValue);
-                numberMetaMap.put(mediaNumberFieldName, doubleValue);
-                datesMetaMap.put(mediaDateFieldName, dateValue);
-                booleanHashMap.put(mediaBooleanFieldName, booleanValue);
-                tagsMetaMap.put(mediaTagFieldName, tagValues);
+                stringMetaMap.put(mediaTextFieldName, stringMetaValue);
+                numberMetaMap.put(mediaNumberFieldName, numberMetaValue);
+                datesMetaMap.put(mediaDateFieldName, dateMetaValue);
+                booleanHashMap.put(mediaBooleanFieldName, booleanMetaValue);
+                tagsMetaMap.put(mediaTagFieldName, tagMetaValue);
                 break;
 
             case EPISODE:
-                stringMetaMap.put(episodeTextFieldName, textValue);
-                numberMetaMap.put(episodeNumberFieldName, doubleValue);
-                datesMetaMap.put(episodeDateFieldName, dateValue);
-                booleanHashMap.put(episodeBooleanFieldName, booleanValue);
-                tagsMetaMap.put(episodeTagFieldName, tagValues);
+                stringMetaMap.put(episodeTextFieldName, stringMetaValue);
+                numberMetaMap.put(episodeNumberFieldName, numberMetaValue);
+                datesMetaMap.put(episodeDateFieldName, dateMetaValue);
+                booleanHashMap.put(episodeBooleanFieldName, booleanMetaValue);
+                tagsMetaMap.put(episodeTagFieldName, tagMetaValue);
                 break;
 
             case SERIES:
-                stringMetaMap.put(seriesTextFieldName, textValue);
-                numberMetaMap.put(seriesNumberFieldName, doubleValue);
-                datesMetaMap.put(seriesDateFieldName, dateValue);
-                booleanHashMap.put(seriesBooleanFieldName, booleanValue);
-                tagsMetaMap.put(seriesTagFieldName, tagValues);
+                stringMetaMap.put(seriesTextFieldName, stringMetaValue);
+                numberMetaMap.put(seriesNumberFieldName, numberMetaValue);
+                datesMetaMap.put(seriesDateFieldName, dateMetaValue);
+                booleanHashMap.put(seriesBooleanFieldName, booleanMetaValue);
+                tagsMetaMap.put(seriesTagFieldName, tagMetaValue);
                 break;
 
             default:
