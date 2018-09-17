@@ -36,6 +36,8 @@ public class AssetCountTests extends BaseTest {
     private ProgramAsset program, program2;
     private MediaAsset asset, asset2;
 
+    //TODO - Change all hardcoded values after Alon will add DB meta anf tags utils.
+
     private final String metaName1 = "synopsis";
     private final String metaValue1 = metaName1 + getRandomValue("_");
 
