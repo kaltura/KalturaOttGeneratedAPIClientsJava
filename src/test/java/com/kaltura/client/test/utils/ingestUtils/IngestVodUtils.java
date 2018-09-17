@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.test.tests.enums.IngestAction;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.Asset;
@@ -40,20 +41,18 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static final String ingestAssetStatusWarningMessagePath = ingestAssetStatusPath + "Warnings.Status.Message";
     public static final String ingestAssetIdPath = ingestAssetStatusPath + "InternalAssetId";
 
-    //
-    static final String coguidDatePattern = "yyMMddHHmmssSS";
-    static final String datePattern = "dd/MM/yyyy hh:mm:ss";
-    static final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
-    static final String endDateValue = "14/10/2099 17:00:00";
-    static final String ppvModuleName = DBUtils.getPpvNames(1).get(0);
+    private static final String datePattern = "dd/MM/yyyy hh:mm:ss";
+    private static final String endDateValue = "14/10/2099 17:00:00";
+    private static final String offsetDateValue = getOffsetDateInFormat(-1, datePattern);
 
-    public static String ingestXmlRequest = "";
+    private static final List<String> ppvNames = DBUtils.getPpvNames(2);
 
     @Accessors(fluent = true)
     @Data
     public static class VodData {
-        private boolean isVirtual = false;
         private boolean isActive = true;
+        private boolean isVirtual = false;
+        private boolean isErase = false;
 
         private String coguid;
         private String name;
@@ -79,8 +78,8 @@ public class IngestVodUtils extends BaseIngestUtils {
         private List<String> thumbRatios;
         private List<VodFile> files;
 
-        private void setDefaultValues() {
-            coguid = getCurrentDateInFormat(coguidDatePattern) + "_" + getRandomLong();
+        public VodData setDefaultValues() {
+            coguid = String.valueOf(getEpochInMillis());
             name = coguid;
             description = "description of " + coguid;
             lang = "eng";
@@ -94,10 +93,12 @@ public class IngestVodUtils extends BaseIngestUtils {
             strings = getDefaultStrings();
             dates = getDefaultDates();
             numbers = getDefaultNumbers();
-            ppvWebName = ppvModuleName;
-            ppvMobileName = ppvModuleName;
+            ppvWebName =  ppvNames.get(0);
+            ppvMobileName =  ppvNames.get(1);
             files = getDefaultAssetFiles(ppvWebName, ppvMobileName);
             thumbRatios = Arrays.asList("4:3", "16:9");
+
+            return this;
         }
     }
 
@@ -131,7 +132,7 @@ public class IngestVodUtils extends BaseIngestUtils {
             product_code = "productExampleCode";
 
             assetDuration = "1000";
-            coguid = "file_" + getEpoch();
+            coguid = "file_" + getEpoch() + "_" + getRandomLong();
             this.type = type;
             this.ppvModule = ppvModule;
         }
@@ -142,7 +143,7 @@ public class IngestVodUtils extends BaseIngestUtils {
      **/
     public static MediaAsset insertVod(VodData vodData, boolean useDefaultValues) {
         if (vodData.coguid == null) {
-            vodData.coguid = getCurrentDateInFormat(coguidDatePattern);
+            vodData.coguid = String.valueOf(getEpochInMillis());
         }
 
         if (useDefaultValues) {
@@ -186,10 +187,10 @@ public class IngestVodUtils extends BaseIngestUtils {
                 vodData.numbers = getDefaultNumbers();
             }
             if (vodData.ppvWebName == null) {
-                vodData.ppvWebName = ppvModuleName;
+                vodData.ppvWebName =  ppvNames.get(0);
             }
             if (vodData.ppvMobileName == null) {
-                vodData.ppvMobileName = ppvModuleName;
+                vodData.ppvMobileName =  ppvNames.get(1);
             }
             if (vodData.files == null) {
                 vodData.files = getDefaultAssetFiles(vodData.ppvWebName, vodData.ppvMobileName);
@@ -199,7 +200,7 @@ public class IngestVodUtils extends BaseIngestUtils {
             }
         }
 
-        String reqBody = buildIngestVodXml(vodData, INSERT.getValue());
+        String reqBody = buildIngestVodXml(vodData, INSERT);
 
         Response resp = executeIngestVodRequestWithAssertion(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
@@ -217,7 +218,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
     public static MediaAsset updateVod(String coguid, VodData vodData) {
         vodData.coguid = coguid;
-        String reqBody = buildIngestVodXml(vodData, UPDATE.getValue());
+        String reqBody = buildIngestVodXml(vodData, UPDATE);
 
         Response resp = executeIngestVodRequestWithAssertion(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
@@ -236,7 +237,7 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static void deleteVod(String coguid) {
         VodData vodData = new VodData();
         vodData.coguid = coguid;
-        String reqBody = buildIngestVodXml(vodData, DELETE.getValue());
+        String reqBody = buildIngestVodXml(vodData, DELETE);
 
         Response resp = executeIngestVodRequestWithAssertion(reqBody);
 
@@ -270,7 +271,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         return resp;
     }
 
-    public static String buildIngestVodXml(VodData vodData, String action) {
+    public static String buildIngestVodXml(VodData vodData, IngestAction action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
@@ -290,10 +291,11 @@ public class IngestVodUtils extends BaseIngestUtils {
         Element media = (Element) doc.getElementsByTagName("media").item(0);
         media.setAttribute("co_guid", vodData.coguid());
         media.setAttribute("entry_id", "entry_" + vodData.coguid());
-        media.setAttribute("action", action);
+        media.setAttribute("action", action.getValue());
         media.setAttribute("is_active", Boolean.toString(vodData.isActive()));
+        media.setAttribute("erase", Boolean.toString(vodData.isErase()));
 
-        if (action.equals(DELETE.getValue())) {
+        if (action.equals(DELETE)) {
             return uncommentCdataSection(docToString(doc));
         }
 
@@ -542,12 +544,12 @@ public class IngestVodUtils extends BaseIngestUtils {
         return dates;
     }
 
-    // TODO: these values should be get in another way than now
-    private static List<VodFile> getDefaultAssetFiles(String ppvModuleName1, String ppvModuleName2) {
+    public static List<VodFile> getDefaultAssetFiles(String ppvModuleName1, String ppvModuleName2) {
         List<VodFile> assetFiles = new ArrayList<>();
+        List<String> fileTypeNames = DBUtils.getMediaFileTypeNames(2);
 
-        VodFile file1 = new VodFile("Web HD", ppvModuleName1);
-        VodFile file2 = new VodFile("Mobile_Devices_Main_HD", ppvModuleName2);
+        VodFile file1 = new VodFile(fileTypeNames.get(0), ppvModuleName1);
+        VodFile file2 = new VodFile(fileTypeNames.get(1), ppvModuleName2);
 
         assetFiles.add(file1);
         assetFiles.add(file2);
