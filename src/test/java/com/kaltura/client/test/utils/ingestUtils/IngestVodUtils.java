@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.test.tests.enums.IngestAction;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.Asset;
@@ -51,8 +52,9 @@ public class IngestVodUtils extends BaseIngestUtils {
     @Accessors(fluent = true)
     @Data
     public static class VodData {
-        private boolean isVirtual = false;
         private boolean isActive = true;
+        private boolean isVirtual = false;
+        private boolean isErase = false;
 
         private String coguid;
         private String name;
@@ -200,7 +202,7 @@ public class IngestVodUtils extends BaseIngestUtils {
             }
         }
 
-        String reqBody = buildIngestVodXml(vodData, INSERT.getValue());
+        String reqBody = buildIngestVodXml(vodData, INSERT);
 
         Response resp = executeIngestVodRequestWithAssertion(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
@@ -218,7 +220,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
     public static MediaAsset updateVod(String coguid, VodData vodData) {
         vodData.coguid = coguid;
-        String reqBody = buildIngestVodXml(vodData, UPDATE.getValue());
+        String reqBody = buildIngestVodXml(vodData, UPDATE);
 
         Response resp = executeIngestVodRequestWithAssertion(reqBody);
         String id = from(resp.asString()).get(ingestAssetIdPath).toString();
@@ -237,7 +239,7 @@ public class IngestVodUtils extends BaseIngestUtils {
     public static void deleteVod(String coguid) {
         VodData vodData = new VodData();
         vodData.coguid = coguid;
-        String reqBody = buildIngestVodXml(vodData, DELETE.getValue());
+        String reqBody = buildIngestVodXml(vodData, DELETE);
 
         Response resp = executeIngestVodRequestWithAssertion(reqBody);
 
@@ -271,7 +273,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         return resp;
     }
 
-    public static String buildIngestVodXml(VodData vodData, String action) {
+    public static String buildIngestVodXml(VodData vodData, IngestAction action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestVOD.xml");
 
         // user and password
@@ -291,10 +293,11 @@ public class IngestVodUtils extends BaseIngestUtils {
         Element media = (Element) doc.getElementsByTagName("media").item(0);
         media.setAttribute("co_guid", vodData.coguid());
         media.setAttribute("entry_id", "entry_" + vodData.coguid());
-        media.setAttribute("action", action);
+        media.setAttribute("action", action.getValue());
         media.setAttribute("is_active", Boolean.toString(vodData.isActive()));
+        media.setAttribute("erase", Boolean.toString(vodData.isErase()));
 
-        if (action.equals(DELETE.getValue())) {
+        if (action.equals(DELETE)) {
             return uncommentCdataSection(docToString(doc));
         }
 
@@ -544,7 +547,6 @@ public class IngestVodUtils extends BaseIngestUtils {
         return dates;
     }
 
-    // TODO: these values should be get in another way than now
     private static List<VodFile> getDefaultAssetFiles(String ppvModuleName1, String ppvModuleName2) {
         List<VodFile> assetFiles = new ArrayList<>();
         List<String> fileTypeNames = DBUtils.getMediaFileTypeNames(2);
