@@ -2,10 +2,40 @@ package com.kaltura.client.test.utils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionManagementUtils extends BaseUtils {
+
+    @Accessors(fluent = true)
+    @Data
+    public static class PermissionItem {
+        private List<String> permissions;
+        private List<String> excludedPermissions;
+        private String name;
+        private String service;
+        private String action;
+        private String type;
+    }
+
+    @Accessors(fluent = true)
+    @Data
+    public static class Permission {
+        private String name;
+        private String usersGroup;
+    }
+
+    @Accessors(fluent = true)
+    @Data
+    public static class Role {
+        private List<String> permissions;
+        private List<String> excludedPermissions;
+        private String name;
+    }
+
 
     public static void printPermissionPermissionItem(PrintWriter writer, long id, long permissionId, long permissionItemId,
                                                int isExcluded, String permissionItemName, String permissionName) {
@@ -110,10 +140,10 @@ public class PermissionManagementUtils extends BaseUtils {
             if (isJson) {
                 printRolesFormat(writer, role);
                 // to separate
-                printRolesFormat(writer, ";");
+                writer.println(";");
                 printPermissionsFormat(writer, role, usersGroup);
                 // to separate
-                printRolesFormat(writer, ";");
+                writer.println(";");
                 printServiceFormat(writer, role, permissionItemName, service, action);
             } else {
                 // XML
@@ -197,6 +227,13 @@ public class PermissionManagementUtils extends BaseUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<String> getConsoleCommand(String path2Util, String parameters) {
+        List<String> commands = new ArrayList<>();
+        commands.add(path2Util);
+        commands.add(parameters);
+        return commands;
     }
 }
 

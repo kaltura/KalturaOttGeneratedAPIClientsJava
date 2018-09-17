@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kaltura</groupId>
     <artifactId>KalturaOttApiClient</artifactId>
-    <version>5.0.1.43134-SNAPSHOT</version>
+    <version>5.0.2.13689-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <properties>
@@ -287,6 +287,7 @@
                     </properties>
                     <suiteXmlFiles>
                         <suiteXmlFile>src\test\resources\testng.xml</suiteXmlFile>
+                        <!--<suiteXmlFile>src\test\resources\testng_opc.xml</suiteXmlFile>-->
                     </suiteXmlFiles>
                     <reportsDirectory>${project.basedir}/target</reportsDirectory>
                     <testFailureIgnore>false</testFailureIgnore>

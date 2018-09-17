@@ -16,9 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.annotation.Nonnull;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
@@ -28,10 +32,15 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class DBUtils extends BaseUtils {
 
-    static final String ERROR_MESSAGE = "*** no data found ***";
+    private static final String ERROR_MESSAGE = "*** no data found ***";
 
     private static boolean isActivationNeeded = false;
     private static boolean isActivationNeededWasLoaded = false;
+
+    @Nonnull
+    private static Stream<Object> arrayToStream(JSONArray array) {
+        return StreamSupport.stream(array.spliterator(), false);
+    }
 
     private static JSONArray buildJsonArrayFromQueryResult(ResultSet rs) throws SQLException {
         JSONArray jsonArray = new JSONArray();
@@ -256,18 +265,39 @@ public class DBUtils extends BaseUtils {
     }
 
     public static int getMediaTypeId(MediaType mediaType) {
-        return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT,
-                partnerId + 1,
-                partnerId + 2,
-                mediaType.getValue())
-                .getJSONObject(0)
-                .getInt("id");
+        if (isOpcGroup) {
+            return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT, partnerId, partnerId, mediaType.getValue())
+                    .getJSONObject(0)
+                    .getInt("id");
+        } else {
+            return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT, partnerId + 1, partnerId + 2, mediaType.getValue())
+                    .getJSONObject(0)
+                    .getInt("id");
+        }
     }
 
     public static String getMediaFileTypeName(int mediaFileId) {
         return getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_ID_SELECT, partnerId + 1, mediaFileId)
                 .getJSONObject(0)
                 .getString("name");
+    }
+
+    public static List<String> getMediaFileTypeNames(int amount) {
+        if (isOpcGroup) {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_IDS_SELECT, amount, partnerId);
+
+            return arrayToStream(jsonArray)
+                    .map(JSONObject.class::cast)
+                    .map(jsonObject -> jsonObject.getString("name"))
+                    .collect(Collectors.toList());
+        } else {
+            JSONArray jsonArray = getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_IDS_SELECT, amount, partnerId + 1);
+
+            return arrayToStream(jsonArray)
+                    .map(JSONObject.class::cast)
+                    .map(jsonObject -> jsonObject.getString("name"))
+                    .collect(Collectors.toList());
+        }
     }
 
     public static List<String> getAnnouncementResultMessageId(int announcementId) {
@@ -282,5 +312,14 @@ public class DBUtils extends BaseUtils {
         }
 
         return ids;
+    }
+
+    public static List<String> getPpvNames(int amount) {
+        JSONArray jsonArray = getJsonArrayFromQueryResult(PPV_NAME_AND_ID_SELECT, amount, partnerId);
+
+        return arrayToStream(jsonArray)
+                .map(JSONObject.class::cast)
+                .map(jsonObject -> jsonObject.getString("name"))
+                .collect(Collectors.toList());
     }
 }

@@ -74,7 +74,7 @@ public class SegmentValue extends ObjectBase {
 	 */
 	private String value;
 	/**
-	 * Threshold - minimuim score to be met for this specific value
+	 * Threshold - minimum score to be met for this specific value
 	 */
 	private Integer threshold;
 

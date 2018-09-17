@@ -236,7 +236,11 @@ public class DBConstants {
 
     static final String MEDIA_FILE_TYPE_ID_SELECT = "SELECT [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and ID = ?";
 
+    static final String MEDIA_FILE_TYPE_IDS_SELECT = "SELECT top (?) [NAME] FROM [TVinci].[dbo].[groups_media_type] where GROUP_ID = ? and status = 1 and IS_ACTIVE = 1 and DESCRIPTION <> ''";
+
     static final String RESULT_MESSAGE_ID_SELECT = "SELECT result_message_id FROM [MessageBox].[dbo].[message_announcements] WHERE group_id = ? AND ID = ?";
+
+    static final String PPV_NAME_AND_ID_SELECT = "select top (?) ID, NAME FROM [Pricing].[dbo].[ppv_modules] where group_id= ? and STATUS = 1 and IS_ACTIVE = 1";
 
     // STORED PROCEDURES:
     static final String SP_INSERT_PERMISSION = "{call TVinci.dbo.__482V0__Insert_Permission(?, ?, ?, ?)}";

@@ -52,6 +52,10 @@ public class ProgramAsset extends Asset {
 		String relatedMediaId();
 		String crid();
 		String linearAssetId();
+		String enableCdvr();
+		String enableCatchUp();
+		String enableStartOver();
+		String enableTrickPlay();
 	}
 
 	/**
@@ -74,6 +78,22 @@ public class ProgramAsset extends Asset {
 	 * Id of linear media asset
 	 */
 	private Long linearAssetId;
+	/**
+	 * Is CDVR enabled for this asset
+	 */
+	private Boolean enableCdvr;
+	/**
+	 * Is catch-up enabled for this asset
+	 */
+	private Boolean enableCatchUp;
+	/**
+	 * Is start over enabled for this asset
+	 */
+	private Boolean enableStartOver;
+	/**
+	 * Is trick-play enabled for this asset
+	 */
+	private Boolean enableTrickPlay;
 
 	// epgChannelId:
 	public Long getEpgChannelId(){
@@ -135,6 +155,22 @@ public class ProgramAsset extends Asset {
 		setToken("linearAssetId", multirequestToken);
 	}
 
+	// enableCdvr:
+	public Boolean getEnableCdvr(){
+		return this.enableCdvr;
+	}
+	// enableCatchUp:
+	public Boolean getEnableCatchUp(){
+		return this.enableCatchUp;
+	}
+	// enableStartOver:
+	public Boolean getEnableStartOver(){
+		return this.enableStartOver;
+	}
+	// enableTrickPlay:
+	public Boolean getEnableTrickPlay(){
+		return this.enableTrickPlay;
+	}
 
 	public ProgramAsset() {
 		super();
@@ -151,6 +187,10 @@ public class ProgramAsset extends Asset {
 		relatedMediaId = GsonParser.parseLong(jsonObject.get("relatedMediaId"));
 		crid = GsonParser.parseString(jsonObject.get("crid"));
 		linearAssetId = GsonParser.parseLong(jsonObject.get("linearAssetId"));
+		enableCdvr = GsonParser.parseBoolean(jsonObject.get("enableCdvr"));
+		enableCatchUp = GsonParser.parseBoolean(jsonObject.get("enableCatchUp"));
+		enableStartOver = GsonParser.parseBoolean(jsonObject.get("enableStartOver"));
+		enableTrickPlay = GsonParser.parseBoolean(jsonObject.get("enableTrickPlay"));
 
 	}
 

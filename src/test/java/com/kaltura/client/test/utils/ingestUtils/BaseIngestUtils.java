@@ -31,11 +31,6 @@ public class BaseIngestUtils {
     static final Header soapActionIngestBusinessModules = new Header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
     static final Header soapActionIngestKalturaEpg = new Header("SOAPAction", "http://tempuri.org/IService/IngestKalturaEpg");
 
-    // actions
-    public static final String INGEST_ACTION_INSERT = "insert";
-    static final String INGEST_ACTION_UPDATE = "update";
-    static final String INGEST_ACTION_DELETE = "delete";
-
     // wait configuration
     public static final int delayBetweenRetriesInSeconds = 5;
     public static final int maxTimeExpectingValidResponseInSeconds = 120;
@@ -44,7 +39,7 @@ public class BaseIngestUtils {
     public static final String FIVE_MINUTES_PERIOD = "5 Minutes";
 
     // data
-    static final String DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
+    public static final String DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
 
     /*
     // PG adapter data
@@ -58,7 +53,7 @@ public class BaseIngestUtils {
     public static final String PG_DEFAULT_PG_SETTINGS = "{}";
     */
 
-    static Document getDocument(String uri) {
+    public static Document getDocument(String uri) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
         Document doc = null;

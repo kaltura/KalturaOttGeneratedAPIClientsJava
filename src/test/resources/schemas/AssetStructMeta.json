@@ -1,0 +1,64 @@
+{
+  "$id": "AssetStructMeta",
+  "definitions": {
+    "AssetStructMeta": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "enum": ["KalturaAssetStructMeta"]
+        },
+        "assetStructId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "metaId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ingestReferencePath": {
+          "type": "string",
+          "minLength": 0
+        },
+        "protectFromIngest": {
+          "type": "boolean"
+        },
+        "defaultIngestValue": {
+          "type": "string",
+          "minLength": 0
+        },
+        "createDate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "updateDate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "isInherited": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "assetStructId",
+        "metaId",
+        "ingestReferencePath",
+        "protectFromIngest",
+        "defaultIngestValue",
+        "createDate",
+        "updateDate",
+        "isInherited"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "executionTime": {
+      "type": "number",
+      "minimum": 0
+    },
+    "result": {
+      "$ref": "#/definitions/AssetStructMeta"
+    }
+  }
+}

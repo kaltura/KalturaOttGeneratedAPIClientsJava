@@ -96,6 +96,10 @@ public class Properties {
         }
         return resourceBundle.getString(propertyKey);
     }
+
+    // playback context options
+    public static final String MEDIA_PROTOCOL = "http";
+    public static final String STREAMER_TYPE = "applehttp";
 }
 
 // todo global list

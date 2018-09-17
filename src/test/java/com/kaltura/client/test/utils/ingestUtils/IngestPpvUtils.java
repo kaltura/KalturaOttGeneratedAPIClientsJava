@@ -1,6 +1,7 @@
 package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
+import com.kaltura.client.test.tests.enums.IngestAction;
 import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.Ppv;
 import io.restassured.response.Response;
@@ -15,6 +16,9 @@ import static com.kaltura.client.services.PpvService.get;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
+import static com.kaltura.client.test.tests.enums.IngestAction.DELETE;
+import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
+import static com.kaltura.client.test.tests.enums.IngestAction.UPDATE;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
@@ -61,7 +65,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
         if (ppvData.firstFileType == null) { ppvData.firstFileType = getProperty(WEB_FILE_TYPE); }
         if (ppvData.secondFileType == null) { ppvData.secondFileType = getProperty(MOBILE_FILE_TYPE); }
 
-        String reqBody = buildIngestPpvXml(ppvData, INGEST_ACTION_INSERT);
+        String reqBody = buildIngestPpvXml(ppvData, INSERT);
         Response resp = executeIngestPpvRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
@@ -78,7 +82,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
     public static Ppv updatePpv(String ppvCode, PpvData ppvData) {
         ppvData.ppvCode = ppvCode;
 
-        String reqBody = buildIngestPpvXml(ppvData, INGEST_ACTION_UPDATE);
+        String reqBody = buildIngestPpvXml(ppvData, UPDATE);
         Response resp = executeIngestPpvRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
@@ -95,7 +99,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
     public static void deletePpv(String ppvCode) {
         PpvData ppvData = new PpvData();
         ppvData.ppvCode = ppvCode;
-        String reqBody = buildIngestPpvXml(ppvData, INGEST_ACTION_DELETE);
+        String reqBody = buildIngestPpvXml(ppvData, DELETE);
 
         Response resp = executeIngestPpvRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
@@ -124,7 +128,7 @@ public class IngestPpvUtils extends BaseIngestUtils {
         return resp;
     }
 
-    private static String buildIngestPpvXml(PpvData ppvData, String action) {
+    private static String buildIngestPpvXml(PpvData ppvData, IngestAction action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestPPV.xml");
 
         // user and password
@@ -138,10 +142,10 @@ public class IngestPpvUtils extends BaseIngestUtils {
         // ppv
         Element ppv = (Element) ingest.getElementsByTagName("ppv").item(0);
         ppv.setAttribute("code", ppvData.ppvCode);
-        ppv.setAttribute("action", action);
+        ppv.setAttribute("action", action.getValue());
         ppv.setAttribute("is_active", Boolean.toString(ppvData.isActive));
 
-        if (action.equals(INGEST_ACTION_DELETE)) {
+        if (action.equals(DELETE)) {
             return uncommentCdataSection(docToString(doc));
         }
 

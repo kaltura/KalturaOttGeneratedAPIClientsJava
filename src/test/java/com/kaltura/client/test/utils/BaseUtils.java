@@ -123,23 +123,20 @@ public class BaseUtils {
     }
 
     public static String getRandomValue(String prefix) {
-        long max = 9999999999L;
-        long randomLongValue = ThreadLocalRandom.current().nextLong(max);
-        return prefix + randomLongValue;
+        return prefix + getRandomLong();
     }
 
-    public static String getRandomValue() {
+    public static long getRandomLong() {
         long max = 9999999999L;
-        long randomLongValue = ThreadLocalRandom.current().nextLong(max);
-        return String.valueOf(randomLongValue);
+        return ThreadLocalRandom.current().nextLong(max);
     }
 
-    public static double getRandomDoubleValue() {
+    public static double getRandomDouble() {
         double max = 9999999.1;
         return ThreadLocalRandom.current().nextDouble(max);
     }
 
-    public static boolean getRandomBooleanValue() {
+    public static boolean getRandomBoolean() {
         return ThreadLocalRandom.current().nextBoolean();
     }
 
