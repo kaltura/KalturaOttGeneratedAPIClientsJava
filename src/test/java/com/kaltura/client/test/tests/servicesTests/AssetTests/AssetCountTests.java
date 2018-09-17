@@ -6,7 +6,6 @@ import com.kaltura.client.test.utils.KsqlBuilder;
 
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
@@ -16,16 +15,19 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 
 import static com.kaltura.client.services.AssetService.*;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
 import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.*;
 import static com.kaltura.client.test.tests.enums.KsqlKey.EPG_ID;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,40 +48,46 @@ public class AssetCountTests extends BaseTest {
 
     private final String epgMetaName = "Country";
     private final String epgMetaValue = epgMetaName + getRandomValue("_");
-    private final String epgTagName = "Director";
-    private final String epgTagValue = epgTagName + getRandomValue("_");
+
+    private final String sharedTagName = "Director";
+    private final String sharedTagValue = sharedTagName + getRandomValue("_");
 
     @BeforeClass
     private void asset_count_before_class() {
 
+        // Metas
         HashMap<String, String> stringMetaMap = new HashMap<>();
         stringMetaMap.put(metaName1, metaValue1);
         stringMetaMap.put(metaName2,metaValue2);
-        stringMetaMap.put(tagName,tagValue);
+
+        // Tags
+        HashMap<String, List<String>> stringTagMap = new HashMap<>();
+        stringTagMap.put(sharedTagName, Arrays.asList(sharedTagValue));
+        stringTagMap.put(tagName,Arrays.asList(tagValue));
 
         // ingest asset 1
-        IngestVodUtils.VodData vodData1 = new IngestVodUtils.VodData()
+        VodData vodData1 = new VodData()
                 .mediaType(MOVIE)
-                .strings(stringMetaMap);
+                .strings(stringMetaMap)
+                .tags(stringTagMap);
         asset = insertVod(vodData1, true);
 
         HashMap<String, String> stringMetaMap2 = new HashMap<>();
         stringMetaMap2.put(metaName1, metaValue1);
         stringMetaMap2.put(metaName2,metaValue3);
-        stringMetaMap2.put(tagName,tagValue);
+        stringTagMap.put(tagName,Arrays.asList(tagValue));
 
         // ingest asset 2
-        IngestVodUtils.VodData vodData2 = new IngestVodUtils.VodData()
+        VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
                 .strings(stringMetaMap2);
-
         asset2 = insertVod(vodData2, true);
 
         HashMap<String, String> epgMetas = new HashMap<>();
         epgMetas.put(epgMetaName, epgMetaValue);
 
         HashMap<String,String> epgTags = new HashMap<>();
-        epgTags.put(epgTagName,epgTagValue);
+        epgTags.put(sharedTagName, sharedTagValue);
         
         // ingest epg programs
         EpgData epgData = new EpgData(getSharedEpgChannelName());
@@ -230,7 +238,7 @@ public class AssetCountTests extends BaseTest {
 
         ArrayList<AssetGroupBy> arrayList = new ArrayList<>();
         AssetMetaOrTagGroupBy assetMetaOrTagGroupBy = new AssetMetaOrTagGroupBy();
-        assetMetaOrTagGroupBy.setValue(epgTagName);
+        assetMetaOrTagGroupBy.setValue(sharedTagName);
         arrayList.add(assetMetaOrTagGroupBy);
 
         searchAssetFilter.setGroupBy(arrayList);
@@ -239,6 +247,45 @@ public class AssetCountTests extends BaseTest {
 
         // asset/action/count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
+        assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
+    }
+
+
+    @Description("VOD and EPG program with the same tag value")
+    @Test
+    private void groupByEPGAndVODTag() {
+        String query = new KsqlBuilder()
+                .equal(sharedTagName, sharedTagValue)
+                .toString();
+
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        searchAssetFilter.setKSql(query);
+
+        ArrayList<AssetGroupBy> arrayList = new ArrayList<>();
+        AssetMetaOrTagGroupBy assetMetaOrTagGroupBy = new AssetMetaOrTagGroupBy();
+        assetMetaOrTagGroupBy.setValue(sharedTagName);
+        arrayList.add(assetMetaOrTagGroupBy);
+
+        searchAssetFilter.setGroupBy(arrayList);
+        CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
+                .setKs(BaseTest.getAnonymousKs());
+
+        // asset/action/count - no filtering (1 VOD asset and 2 EPG programs in count)
+        Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
+        assertThat(assetCountResponse.results.getCount()).isEqualTo(3);
+
+        // asset/action/count - filter by movie type id (1 VOD asset in count)
+        searchAssetFilter.setTypeIn(String.valueOf(getMediaTypeId(MediaType.MOVIE)));
+        countAssetBuilder = AssetService.count(searchAssetFilter)
+                .setKs(BaseTest.getAnonymousKs());
+        assetCountResponse = executor.executeSync(countAssetBuilder);
+        assertThat(assetCountResponse.results.getCount()).isEqualTo(1);
+
+        // asset/action/count - filter by EPG type id (2 EPG programs in count)
+        searchAssetFilter.setTypeIn("0");
+        countAssetBuilder = AssetService.count(searchAssetFilter)
+                .setKs(BaseTest.getAnonymousKs());
+        assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
 }
