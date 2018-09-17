@@ -50,7 +50,7 @@ public class AssetHistoryCleanTests extends BaseTest {
     String masterUserKsCleanAssetsAccordingToWatchStatusDone;
     String masterUserKsCleanAssetsAccordingToWatchStatusProgress;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void assetHistory_clean_tests_before_class() {
         List<MediaAsset> movies = getAssets(2, MOVIE);
 
@@ -71,7 +71,6 @@ public class AssetHistoryCleanTests extends BaseTest {
     @Description("assetHistory/action/clean - no filtering")
     @Test(groups = {"slowBefore"}, priority = -1)
     private void cleanHistory_before_wait() {
-        assetHistory_clean_tests_before_class();
         // create household
         Household household = createHousehold(numOfUsers, numOfDevices, true);
         String udid1 = getDevicesList(household).get(0).getUdid();

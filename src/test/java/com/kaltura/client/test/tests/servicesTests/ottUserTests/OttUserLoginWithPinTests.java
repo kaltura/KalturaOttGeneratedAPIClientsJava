@@ -32,7 +32,7 @@ public class OttUserLoginWithPinTests extends BaseTest {
 
     private final String SECRET = "secret";
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void ottUser_login_tests_setup() {
         // register user
         user = executor.executeSync(register(partnerId, generateOttUser(), defaultUserPassword)).results;
@@ -84,8 +84,6 @@ public class OttUserLoginWithPinTests extends BaseTest {
     @Description("ottUser/action/loginWithPin - loginWithPin with expired pinCode - error 2004")
     @Test(groups = {"slowBefore"})
     private void loginWithPin_with_expired_pinCode_before_wait() {
-        // setup for test
-        ottUser_login_tests_setup();
         // add pin
         AddUserLoginPinBuilder addUserLoginPinBuilder = add(SECRET)
                 .setKs(getAdministratorKs())

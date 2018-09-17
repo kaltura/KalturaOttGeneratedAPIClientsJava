@@ -33,7 +33,7 @@ public class AppTokenAddTests extends BaseTest {
     private APIException apiException;;
 
     // TODO: 5/3/2018 Add comments!
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void add_tests_before_class() {
         sessionUserId = getSharedUser().getUserId();
         appToken = AppTokenUtils.addAppToken(sessionUserId, AppTokenHashType.SHA1, null, null);
@@ -92,8 +92,6 @@ public class AppTokenAddTests extends BaseTest {
     // priority needed, because at parralel execution both test threads launch setup method of this class and this cause to Error 1 at login with operator user.
     @Test(groups = {"slowBefore"}, priority = 1)
     private void addAppTokenWithExpiryDate_before_wait() {
-        // setup for test
-        add_tests_before_class();
         // prepare token with expiration after 1 minute
         Long expiryDate = getEpoch(Calendar.MINUTE, 1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));

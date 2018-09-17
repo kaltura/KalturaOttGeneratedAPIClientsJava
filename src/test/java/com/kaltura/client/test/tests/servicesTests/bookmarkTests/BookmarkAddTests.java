@@ -36,9 +36,8 @@ public class BookmarkAddTests extends BaseTest {
     private Bookmark bookmark;
     private BookmarkFilter bookmarkFilter;
     private int position;
-//    private String masterUserKs;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void bookmark_addTests_before_class() {
         assetList = new ArrayList<>();
         assetId = BaseTest.getSharedMediaAsset().getId();
@@ -48,15 +47,11 @@ public class BookmarkAddTests extends BaseTest {
 
         // Initialize bookmarkFilter object parameters
         bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_ASC, AssetType.MEDIA, assetList);
-
-//        Household household = HouseholdUtils.createHousehold(1,1,false);
-//        masterUserKs = HouseholdUtils.getHouseholdMasterUserKs(household, HouseholdUtils.getDevicesList(household).get(0).getUdid());
     }
 
     @Description("bookmark/action/add - first play")
     @Test(groups = {"slowBefore"})
     private void firstPlayback_before_wait() {
-        bookmark_addTests_before_class();
         position = 0;
 
         bookmark = BookmarkUtils.addBookmark(position, String.valueOf(assetId), fileId, AssetType.MEDIA, BookmarkActionType.FIRST_PLAY);
@@ -259,12 +254,13 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - empty asset id")
-    @Test
+    @Test(enabled = false)
     private void emptyAssetId() {
         // create household
-        Household household = createHousehold(1, 1, true);
+        int numberOfUsersInHousehold = 1;
+        int numberOfDevicesInHousehold = 1;
+        Household household = createHousehold(numberOfUsersInHousehold, numberOfDevicesInHousehold, true);
         String udid1 = getDevicesList(household).get(0).getUdid();
-        String udid2 = getDevicesList(household).get(1).getUdid();
         String masterUserKs = getHouseholdMasterUserKs(household, udid1);
 
         // purchase media and prepare media file for playback

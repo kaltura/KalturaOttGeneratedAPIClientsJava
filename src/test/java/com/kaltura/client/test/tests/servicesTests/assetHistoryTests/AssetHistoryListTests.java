@@ -52,7 +52,7 @@ public class AssetHistoryListTests extends BaseTest {
     private String masterUserKsVodAssetHistoryFilteredByAssetProgress;
 
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void list_tests_before_class() {
         List<MediaAsset> movies = getAssets(2, MOVIE);
 
@@ -72,7 +72,6 @@ public class AssetHistoryListTests extends BaseTest {
     @Description("assetHistory/action/list - with no filter and one device and two media")
     @Test(groups = {"slowBefore"}, priority = -1)
     private void assetHistory_vod_with_one_device_and_two_media_before_wait() {
-        list_tests_before_class();
         // create household
         Household household = createHousehold(numOfUsers, numOfDevices, true);
         String udid1 = getDevicesList(household).get(0).getUdid();

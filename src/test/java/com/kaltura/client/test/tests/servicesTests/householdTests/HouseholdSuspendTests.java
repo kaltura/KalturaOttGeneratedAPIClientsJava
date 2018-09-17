@@ -53,7 +53,7 @@ public class HouseholdSuspendTests extends BaseTest {
         DELETE_ALL_APP_TOKENS
     }
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void household_suspendTests_beforeClass() {
         // set subscription
         subscription = BaseTest.getSharedCommonSubscription();
@@ -423,9 +423,6 @@ public class HouseholdSuspendTests extends BaseTest {
     @Description("household/action/suspend - with renew_subscription role")
     @Test(groups = {"slowBefore"})
     private void suspend_with_renew_subscription_role_before_wait() {
-        // setup for test
-        household_suspendTests_beforeClass();
-
         // set household
         householdSlowTest = HouseholdUtils.createHousehold(numOfUsers, numOfDevices, true);
         HouseholdUser masterUser = HouseholdUtils.getMasterUser(householdSlowTest);

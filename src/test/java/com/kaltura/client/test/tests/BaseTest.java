@@ -169,12 +169,12 @@ public class BaseTest {
         numOfSuites--;
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void baseTest_beforeMethod(Method method) {
         Logger.getLogger(BaseTest.class).debug("Start test >>> Class: " + getClass().getSimpleName() + ", Test: " + method.getName());
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void baseTest_afterMethod(Method method) {
         Logger.getLogger(BaseTest.class).debug("End test >>> Class: " + getClass().getSimpleName() + ", Test: " + method.getName());
     }

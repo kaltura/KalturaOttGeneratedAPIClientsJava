@@ -5,8 +5,8 @@
     <test name="Fast Tests">
         <groups>
             <run>
-                <exclude name="slow_before"/>
-                <exclude name="slow_after"/>
+                <exclude name="slowBefore"/>
+                <exclude name="slowAfter"/>
                 <exclude name="Permission management"/>
                 <exclude name="opc"/>
             </run>
@@ -24,8 +24,8 @@
     <test name="Slow Tests">
         <groups>
             <run>
-                <include name="slow_before"/>
-                <include name="slow_after"/>
+                <include name="slowBefore"/>
+                <include name="slowAfter"/>
             </run>
         </groups>
         <packages>
