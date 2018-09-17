@@ -33,7 +33,7 @@ public class AppTokenAddTests extends BaseTest {
     private APIException apiException;;
 
     // TODO: 5/3/2018 Add comments!
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void add_tests_before_class() {
         sessionUserId = getSharedUser().getUserId();
         appToken = AppTokenUtils.addAppToken(sessionUserId, AppTokenHashType.SHA1, null, null);
@@ -90,10 +90,8 @@ public class AppTokenAddTests extends BaseTest {
 
     @Description("appToken/action/add - with expiry date")
     // priority needed, because at parralel execution both test threads launch setup method of this class and this cause to Error 1 at login with operator user.
-    @Test(groups = "slow_before", priority = 1)
-    private void addAppTokenWithExpiryDate_before() {
-        // setup for test
-        add_tests_before_class();
+    @Test(groups = {"slowBefore"}, priority = 1)
+    private void addAppTokenWithExpiryDate_before_wait() {
         // prepare token with expiration after 1 minute
         Long expiryDate = getEpoch(Calendar.MINUTE, 1);
         appToken = AppTokenUtils.addAppToken(sessionUserId, null, sessionPrivileges, Math.toIntExact(expiryDate));
@@ -109,8 +107,8 @@ public class AppTokenAddTests extends BaseTest {
     }
 
 
-    @Test(groups = "slow_after", dependsOnGroups = {"slow_before"}, priority = 1)
-    private void addAppTokenWithExpiryDate_after() {
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    private void addAppTokenWithExpiryDate_after_wait() {
         // prepare builder and variables for await() functionality
         GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponseSlowTest.results.getId())
                 .setKs(getOperatorKs());
