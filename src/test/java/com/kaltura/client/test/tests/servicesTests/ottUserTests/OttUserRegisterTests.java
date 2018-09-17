@@ -51,7 +51,7 @@ public class OttUserRegisterTests extends BaseTest {
 
         // register - first time
         ottUserResponse = executor.executeSync(OttUserService.register(partnerId, user, defaultUserPassword));
-        user = ottUserResponse.results;
+        String userId = ottUserResponse.results.getId();
 
         // register -  second time
         ottUserResponse = executor.executeSync(OttUserService.register(partnerId, user, defaultUserPassword));
@@ -60,7 +60,7 @@ public class OttUserRegisterTests extends BaseTest {
         assertThat(ottUserResponse.error.getCode()).isEqualTo(getAPIExceptionFromList(2014).getCode());
 
         // cleanup
-        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(user.getId())));
+        executor.executeSync(delete().setKs(getAdministratorKs()).setUserId(Integer.valueOf(userId)));
     }
 
     //<throws name="UserExists"/>

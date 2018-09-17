@@ -79,7 +79,8 @@ public class EntitlementGrantTests extends BaseTest {
         ProductPrice productPrice = productPriceListResponse.results.getObjects().get(0);
 
         assertThat(productPriceListResponse.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPrice.getPrice().getAmount()).isEqualTo(0);
+        // due to double purchase price is not 0
+        assertThat(productPrice.getPrice().getAmount()).isNotEqualTo(0);
         assertThat(productPrice.getPurchaseStatus().getValue()).isEqualTo(PurchaseStatus.SUBSCRIPTION_PURCHASED.getValue());
 
 
