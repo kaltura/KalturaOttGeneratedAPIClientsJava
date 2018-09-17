@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.SubscriptionService;
+import com.kaltura.client.test.tests.enums.IngestAction;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.ProductCode;
@@ -19,6 +20,8 @@ import java.util.List;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.tests.enums.IngestAction.DELETE;
+import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
 import static com.kaltura.client.test.utils.BaseUtils.getFormattedTime;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static io.restassured.RestAssured.given;
@@ -109,7 +112,7 @@ public class IngestMppUtils extends BaseIngestUtils {
 //        if (mppData.couponGroup == null) { mppData.couponGroup = DEFAULT_COUPON_GROUP; }
 //        if (mppData.productCodes == null) { mppData.productCodes = DEFAULT_PRODUCT_CODES; }
 
-        String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_INSERT);
+        String reqBody = buildIngestMppXml(mppData, INSERT);
         Response resp = executeIngestMppRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
@@ -150,7 +153,7 @@ public class IngestMppUtils extends BaseIngestUtils {
     public static void deleteMpp(String mppCode) {
         MppData mppData = new MppData();
         mppData.mppCode = mppCode;
-        String reqBody = buildIngestMppXml(mppData, INGEST_ACTION_DELETE);
+        String reqBody = buildIngestMppXml(mppData, DELETE);
 
         Response resp = executeIngestMppRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
@@ -180,7 +183,7 @@ public class IngestMppUtils extends BaseIngestUtils {
         return resp;
     }
 
-    private static String buildIngestMppXml(MppData mppData, String action) {
+    private static String buildIngestMppXml(MppData mppData, IngestAction action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestMPP.xml");
 
         // user and password
@@ -194,10 +197,10 @@ public class IngestMppUtils extends BaseIngestUtils {
         // multi price plan
         Element mpp = (Element) ingest.getElementsByTagName("multi_price_plan").item(0);
         mpp.setAttribute("code", mppData.mppCode);
-        mpp.setAttribute("action", action);
+        mpp.setAttribute("action", action.getValue());
         mpp.setAttribute("is_active", Boolean.toString(mppData.isActive));
 
-        if (action.equals(INGEST_ACTION_DELETE)) {
+        if (action.equals(DELETE)) {
             return uncommentCdataSection(docToString(doc));
         }
 

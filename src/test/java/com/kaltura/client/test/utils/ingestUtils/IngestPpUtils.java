@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.ingestUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.PricePlanService;
+import com.kaltura.client.test.tests.enums.IngestAction;
 import com.kaltura.client.test.utils.dbUtils.IngestFixtureData;
 import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.PricePlan;
@@ -17,6 +18,9 @@ import org.w3c.dom.Element;
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
 import static com.kaltura.client.test.tests.enums.Currency.EUR;
+import static com.kaltura.client.test.tests.enums.IngestAction.DELETE;
+import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
+import static com.kaltura.client.test.tests.enums.IngestAction.UPDATE;
 import static com.kaltura.client.test.utils.BaseUtils.getRandomValue;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.xml.XmlPath.from;
@@ -80,7 +84,7 @@ public class IngestPpUtils extends BaseIngestUtils {
             ppData.recurringPeriods = DEFAULT_RECURRING_PERIODS;
         }
 
-        String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_INSERT);
+        String reqBody = buildIngestPpXml(ppData, INSERT);
         Response resp = executeIngestPpRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
@@ -99,7 +103,7 @@ public class IngestPpUtils extends BaseIngestUtils {
     public static PricePlan updatePp(String ppCode, PpData ppData) {
         ppData.ppCode = ppCode;
 
-        String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_UPDATE);
+        String reqBody = buildIngestPpXml(ppData, UPDATE);
         Response resp = executeIngestPpRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
 
@@ -120,7 +124,7 @@ public class IngestPpUtils extends BaseIngestUtils {
     public static void deletePp(String ppCode) {
         PpData ppData = new PpData();
         ppData.ppCode = ppCode;
-        String reqBody = buildIngestPpXml(ppData, INGEST_ACTION_DELETE);
+        String reqBody = buildIngestPpXml(ppData, DELETE);
 
         Response resp = executeIngestPpRequest(reqBody);
         String reportId = from(resp.asString()).getString(ingestReportIdPath);
@@ -151,7 +155,7 @@ public class IngestPpUtils extends BaseIngestUtils {
         return resp;
     }
 
-    private static String buildIngestPpXml(PpData ppData, String action) {
+    private static String buildIngestPpXml(PpData ppData, IngestAction action) {
         Document doc = getDocument("src/test/resources/ingest_xml_templates/ingestPP.xml");
 
         // user and password
@@ -165,10 +169,10 @@ public class IngestPpUtils extends BaseIngestUtils {
         // price plan
         Element pp = (Element) ingest.getElementsByTagName("price_plan").item(0);
         pp.setAttribute("code", ppData.ppCode);
-        pp.setAttribute("action", action);
+        pp.setAttribute("action", action.getValue());
         pp.setAttribute("is_active", Boolean.toString(ppData.isActive));
 
-        if (action.equals(INGEST_ACTION_DELETE)) {
+        if (action.equals(DELETE)) {
             return uncommentCdataSection(docToString(doc));
         }
 

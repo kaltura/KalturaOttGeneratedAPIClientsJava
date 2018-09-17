@@ -31,11 +31,6 @@ public class BaseIngestUtils {
     static final Header soapActionIngestBusinessModules = new Header("SOAPAction", "http://tempuri.org/IService/IngestBusinessModules");
     static final Header soapActionIngestKalturaEpg = new Header("SOAPAction", "http://tempuri.org/IService/IngestKalturaEpg");
 
-    // actions
-    public static final String INGEST_ACTION_INSERT = "insert";
-    static final String INGEST_ACTION_UPDATE = "update";
-    static final String INGEST_ACTION_DELETE = "delete";
-
     // wait configuration
     public static final int delayBetweenRetriesInSeconds = 5;
     public static final int maxTimeExpectingValidResponseInSeconds = 120;
