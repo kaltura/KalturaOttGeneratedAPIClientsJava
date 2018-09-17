@@ -82,8 +82,8 @@ public class OttUserLoginWithPinTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("ottUser/action/loginWithPin - loginWithPin with expired pinCode - error 2004")
-    @Test(groups = "slow_before")
-    private void loginWithPin_with_expired_pinCode_before() {
+    @Test(groups = {"slowBefore"})
+    private void loginWithPin_with_expired_pinCode_before_wait() {
         // setup for test
         ottUser_login_tests_setup();
         // add pin
@@ -93,8 +93,8 @@ public class OttUserLoginWithPinTests extends BaseTest {
         userLoginPinResponse = executor.executeSync(addUserLoginPinBuilder);
     }
 
-    @Test(groups = "slow_after", dependsOnGroups = {"slow_before"}, priority = 2)
-    private void loginWithPin_with_expired_pinCode_after() {
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    private void loginWithPin_with_expired_pinCode_after_wait() {
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 10;
         int maxTimeExpectingValidResponseInSeconds = 200;

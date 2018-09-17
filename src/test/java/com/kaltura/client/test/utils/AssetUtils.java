@@ -3,7 +3,6 @@ package com.kaltura.client.test.utils;
 import com.kaltura.client.Logger;
 import com.kaltura.client.enums.*;
 import com.kaltura.client.services.AssetService;
-import com.kaltura.client.services.BookmarkService;
 import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.services.SocialActionService;
 import com.kaltura.client.test.tests.enums.MediaType;
@@ -15,17 +14,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.kaltura.client.services.AssetFileService.GetContextAssetFileBuilder;
+import static com.kaltura.client.services.AssetFileService.getContext;
 import static com.kaltura.client.services.AssetService.*;
 import static com.kaltura.client.services.BookmarkService.AddBookmarkBuilder;
 import static com.kaltura.client.services.BookmarkService.add;
 import static com.kaltura.client.services.HouseholdService.delete;
 import static com.kaltura.client.services.SocialActionService.AddSocialActionBuilder;
+import static com.kaltura.client.test.Properties.MEDIA_PROTOCOL;
+import static com.kaltura.client.test.Properties.STREAMER_TYPE;
 import static com.kaltura.client.test.tests.BaseTest.SharedHousehold.getSharedMasterUserKs;
 import static com.kaltura.client.test.tests.BaseTest.executor;
 import static com.kaltura.client.test.tests.BaseTest.getOperatorKs;
-import static com.kaltura.client.test.tests.BaseTest.getSharedCommonSubscription;
 import static com.kaltura.client.test.tests.enums.KsqlKey.ASSET_TYPE;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMediaTypeId;
+import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -114,6 +117,40 @@ public class AssetUtils extends BaseUtils {
         executor.executeSync(addBookmarkBuilder);
     }
 
+    public static void playbackAssetFilePreparation(String userKs, String assetId, String assetFileId, AssetType assetType, PlaybackContextType context, UrlType urlType) {
+
+        PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
+        playbackContextOptions.setMediaProtocol(MEDIA_PROTOCOL);
+        playbackContextOptions.setStreamerType(STREAMER_TYPE);
+        playbackContextOptions.setAssetFileIds(assetFileId);
+        playbackContextOptions.setContext(context);
+        playbackContextOptions.setUrlType(urlType);
+
+        GetPlaybackContextAssetBuilder getPlaybackContextAssetBuilder = getPlaybackContext(assetId, assetType, playbackContextOptions).setKs(userKs);
+        Response<PlaybackContext> playbackContextResponse = executor.executeSync(getPlaybackContextAssetBuilder);
+
+        assertThat(playbackContextResponse.error).isNull();
+        assertThat(playbackContextResponse.results.getMessages().get(0).getCode()).isEqualTo("OK");
+        assertThat(playbackContextResponse.results.getSources().size()).isGreaterThan(0);
+        assertThat(playbackContextResponse.results.getSources().get(0).getAssetId()).isEqualTo(Integer.valueOf(assetId));
+        assertThat(playbackContextResponse.results.getSources().get(0).getId()).isEqualTo(Integer.valueOf(assetFileId));
+        String playbackUrl = playbackContextResponse.results.getSources().get(0).getUrl();
+
+        if (urlType.equals(UrlType.PLAYMANIFEST)){
+            io.restassured.response.Response resp = given()
+                                                    .when().redirects().follow(false)
+                                                    .get(playbackUrl);
+            assertThat(resp.getStatusCode()).isEqualTo(302);
+            assertThat(resp.getHeader("Location")).contains("switch3.castup.net");
+        }
+
+        GetContextAssetFileBuilder getContextAssetFileBuilder = getContext(assetFileId, ContextType.NONE).setKs(userKs);
+        Response<AssetFileContext> assetFileContextResponse = executor.executeSync(getContextAssetFileBuilder);
+
+        assertThat(assetFileContextResponse.error).isNull();
+        assertThat(assetFileContextResponse.results.getFullLifeCycle()).isNotEqualTo("00:00:00");
+        assertThat(assetFileContextResponse.results.getViewLifeCycle()).isNotEqualTo("00:00:00");
+    }
 
     public static void addLikesToAsset(Long assetId, int numOfActions, AssetType assetType) {
         if (numOfActions <= 0) {

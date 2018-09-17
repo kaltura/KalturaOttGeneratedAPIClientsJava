@@ -1,0 +1,38 @@
+{
+  "$id": "AssetFileContext",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "fullLifeCycle": {
+          "type": "string"
+        },
+        "isOfflinePlayBack": {
+          "type": "boolean"
+        },
+        "viewLifeCycle": {
+          "type": "string"
+        },
+        "objectType": {
+          "type": "string",
+          "enum": [
+            "KalturaAssetFileContext"
+          ]
+        }
+      },
+      "required": [
+        "fullLifeCycle",
+        "isOfflinePlayBack",
+        "viewLifeCycle"
+      ]
+    },
+    "executionTime": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "result",
+    "executionTime"
+  ]
+}

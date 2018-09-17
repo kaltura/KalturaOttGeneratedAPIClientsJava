@@ -421,7 +421,7 @@ public class HouseholdSuspendTests extends BaseTest {
 
     @Severity(SeverityLevel.NORMAL)
     @Description("household/action/suspend - with renew_subscription role")
-    @Test(groups = "slow_before")
+    @Test(groups = {"slowBefore"})
     private void suspend_with_renew_subscription_role_before_wait() {
         // setup for test
         household_suspendTests_beforeClass();
@@ -466,7 +466,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isTrue();
     }
 
-    @Test(groups = "slow_after", dependsOnGroups = {"slow_before"}, priority = 3)
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
     private void suspend_with_renew_subscription_role_after_wait() {
         // get productprice list for asset in subscription - after renew
         Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId()), Optional.empty(), false).get(0);

@@ -90,8 +90,8 @@ public class AppTokenAddTests extends BaseTest {
 
     @Description("appToken/action/add - with expiry date")
     // priority needed, because at parralel execution both test threads launch setup method of this class and this cause to Error 1 at login with operator user.
-    @Test(groups = "slow_before", priority = 1)
-    private void addAppTokenWithExpiryDate_before() {
+    @Test(groups = {"slowBefore"}, priority = 1)
+    private void addAppTokenWithExpiryDate_before_wait() {
         // setup for test
         add_tests_before_class();
         // prepare token with expiration after 1 minute
@@ -109,8 +109,8 @@ public class AppTokenAddTests extends BaseTest {
     }
 
 
-    @Test(groups = "slow_after", dependsOnGroups = {"slow_before"}, priority = 1)
-    private void addAppTokenWithExpiryDate_after() {
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    private void addAppTokenWithExpiryDate_after_wait() {
         // prepare builder and variables for await() functionality
         GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponseSlowTest.results.getId())
                 .setKs(getOperatorKs());
