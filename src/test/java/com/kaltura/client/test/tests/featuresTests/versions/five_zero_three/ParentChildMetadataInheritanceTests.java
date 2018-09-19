@@ -40,7 +40,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     }
 
     // added to play with methods that are going to be checked
-    @Test
+    @Test(groups = {"opc"})
     public void sandbox() {
         String prefix = "MaxTest_assetStruct_";
 
