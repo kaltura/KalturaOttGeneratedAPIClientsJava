@@ -1,4 +1,4 @@
-package com.kaltura.client.test.tests.servicesTests.countryList;
+package com.kaltura.client.test.tests.servicesTests.countryTests;
 
 import com.kaltura.client.enums.CountryOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
@@ -46,7 +46,7 @@ public class CountryListTests extends BaseTest {
         ListCountryBuilder listCountryBuilder = new ListCountryBuilder(countryFilter)
                 .setKs(getOperatorKs());
 
-        // country/action/list
+        // country/action/list - order by name ASC
         Response<ListResponse<Country>> countryResponse = executor.executeSync(listCountryBuilder);
         List<String> newList = new ArrayList<>();
         for (Country country: countryResponse.results.getObjects()) {
@@ -55,5 +55,40 @@ public class CountryListTests extends BaseTest {
         ArrayList<String> temp = new ArrayList<>(newList);
         Collections.sort(temp);
         assertThat(temp).isEqualTo(newList);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("country/action/list - filter by country id's")
+    @Test
+    private void listCountryByIds() {
+
+        String countryId = "1";
+        String countryId2 = "2";
+
+        CountryFilter countryFilter = new CountryFilter();
+        countryFilter.setIdIn(countryId + "," + countryId2);
+        ListCountryBuilder listCountryBuilder = new ListCountryBuilder(countryFilter)
+                .setKs(getOperatorKs());
+        Response<ListResponse<Country>> countryResponse = executor.executeSync(listCountryBuilder);
+
+        // Total count = 2
+        assertThat(countryResponse.results.getTotalCount()).isEqualTo(2);
+        // object[0] country id = 1
+        assertThat(countryResponse.results.getObjects().get(0).getId()).isEqualTo(countryId);
+        // object[0] country id = 2
+        assertThat(countryResponse.results.getObjects().get(1).getId()).isEqualTo(countryId2);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("country/action/list - filter by current country ip")
+    @Test
+    private void listCountryByCurrentIp() {
+
+        CountryFilter countryFilter = new CountryFilter();
+        countryFilter.setIpEqualCurrent(true);
+        ListCountryBuilder listCountryBuilder = new ListCountryBuilder(countryFilter)
+                .setKs(getOperatorKs());
+        Response<ListResponse<Country>> countryResponse = executor.executeSync(listCountryBuilder);
+
     }
 }
