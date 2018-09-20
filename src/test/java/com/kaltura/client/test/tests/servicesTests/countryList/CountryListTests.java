@@ -2,7 +2,6 @@ package com.kaltura.client.test.tests.servicesTests.countryList;
 
 import com.kaltura.client.enums.CountryOrderBy;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.types.Collection;
 import com.kaltura.client.types.Country;
 import com.kaltura.client.types.CountryFilter;
 import com.kaltura.client.types.ListResponse;
@@ -13,7 +12,6 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.kaltura.client.services.CountryService.*;
 import static org.assertj.core.api.Assertions.assertThat;
