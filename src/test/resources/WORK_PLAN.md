@@ -11,7 +11,7 @@ Migrate features tests from ReadyAPI
 |------------------------------|--------|
 | announcement                 | Alon - in progress |
 | appToken                     |  Done  |
-| asset                        |  Shmulik - in progress  |
+| asset                        | Shmulik/Alon - in progress  |
 | assetComment                 |  Done  |
 | assetFile                    |        |
 | assetHistory                 |  Done  |
@@ -29,7 +29,7 @@ Migrate features tests from ReadyAPI
 | configurationGroupDevice     |        |
 | configurationGroupTag        |        |
 | configurations               |        |
-| country                      |        |
+| country                      | Shmulik - in progress       |
 | coupon                       |        |
 | couponsGroup                 |        |
 | currency                     |        |
