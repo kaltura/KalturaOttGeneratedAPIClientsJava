@@ -127,7 +127,7 @@ public class AssetCountTests extends BaseTest {
         AssetService.CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 VOD assets in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
@@ -156,7 +156,7 @@ public class AssetCountTests extends BaseTest {
         AssetService.CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 VOD assets in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
@@ -185,7 +185,7 @@ public class AssetCountTests extends BaseTest {
         AssetService.CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 VOD assets in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
         assertThat(assetCountResponse.results.getSubs().get(0).getObjects().get(0).getCount()).isEqualTo(1);
@@ -218,7 +218,7 @@ public class AssetCountTests extends BaseTest {
         CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 EPG in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
@@ -247,7 +247,7 @@ public class AssetCountTests extends BaseTest {
         CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 EPG in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
