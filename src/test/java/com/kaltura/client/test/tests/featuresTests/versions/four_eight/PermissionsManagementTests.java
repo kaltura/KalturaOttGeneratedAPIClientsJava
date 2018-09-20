@@ -9,13 +9,11 @@ import io.qameta.allure.SeverityLevel;
 import org.apache.commons.io.FileUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import static com.kaltura.client.test.utils.BaseUtils.deleteFile;
 import static com.kaltura.client.test.utils.BaseUtils.getFileContent;
-import static com.kaltura.client.test.utils.PermissionManagementUtils.executeCommandsInColsole;
-import static com.kaltura.client.test.utils.PermissionManagementUtils.getConsoleCommand;
+import static com.kaltura.client.test.utils.PermissionManagementUtils.*;
 import static com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,20 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Test(groups = {"Permission management"})
 public class PermissionsManagementTests {
-
-    String mainFile = "PermissionsDeployment.exe";
-    // that file generated automatically
-    String path2Log = "C:\\log\\permissions\\permissions.log";
-    String path2Util = "C:\\123\\PermissionsExport\\bin\\Debug\\";
-
-    // these files are generated
-    String dataFilePath = path2Util + "333\\" + "exp1.txt";
-    String path2JsonFolder = path2Util + "333\\JSON\\";
-    String generatedDataFilePath = path2Util + "333\\" + "import.txt";
-    String path2JsonRoles = path2JsonFolder + "roles.json";
-    String path2JsonPermissions = path2JsonFolder + "permissions.json";
-    String path2JsonMethods = path2JsonFolder + "permission_items\\controllers\\";
-    String fullPath2Util = path2Util + mainFile;
 
     // these files added into project
     String importOnly4TablesFilePath;
@@ -458,43 +442,24 @@ public class PermissionsManagementTests {
         String roleName = "MaxTest" + suffix;
         String permissionItemName = "Asset_List_Max" + suffix;
         String serviceName = "asset";
-        fillFilesWithImportData(roleName, permissionItemName, "partner*", serviceName, "list");
+        PermissionManagementUtils.fillFilesWithImportData(roleName, permissionItemName, "partner*", serviceName, "list");
 
-        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
-                permissionItemName, serviceName, "list", "permissionItemObject" + suffix,
-                "parameter" + suffix, true);
+        // import command
+        commands = getConsoleCommand(fullPath2Util, IMPORT_JSON_KEY + path2JsonFolder);
+        executeCommandsInColsole(commands);
 
-        String importFileContent = getFileContent(generatedDataFilePath);
-        assertThat(importFileContent).contains(roleName);
-        assertThat(importFileContent).contains(permissionItemName);
-        checkActionResult(serviceName, importFileContent);
+        // find new records in DB after the import
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
+        assertThat(idRoleHavingName).isGreaterThan(0);
+        assertThat(idPermissionItemHavingName).isGreaterThan(0);
+        assertThat(idPermissionHavingName).isGreaterThan(0);
 
         // cleaning
-        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
         PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
-        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
         PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
-        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
         PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
-    }
-
-    private void fillFilesWithImportData(String roleName, String permissionItemName, String usersGroup, String serviceName, String actionName) {
-        fillRolesFile(roleName);
-        fillPermissionsFile(roleName, usersGroup);
-        fillServiceFile(roleName, permissionItemName, serviceName, actionName);
-    }
-
-    private void fillServiceFile(String roleName, String permissionItemName, String serviceName, String actionName) {
-        // TODO:
-
-    }
-
-    private void fillPermissionsFile(String roleName, String usersGroup) {
-        // TODO:
-    }
-
-    private void fillRolesFile(String roleName) {
-        // TODO:
     }
 
     // method checks that all related files contain information related to service
