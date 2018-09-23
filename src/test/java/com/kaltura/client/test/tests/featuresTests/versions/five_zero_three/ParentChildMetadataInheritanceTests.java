@@ -1,7 +1,6 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 
 import com.kaltura.client.enums.AssetReferenceType;
-import com.kaltura.client.enums.MetaOrderBy;
 import com.kaltura.client.services.*;
 import com.kaltura.client.services.AssetService.RemoveMetasAndTagsAssetBuilder;
 import com.kaltura.client.services.AssetService.GetAssetBuilder;
@@ -20,11 +19,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
+import static com.kaltura.client.test.utils.AssetStructMetaUtils.getAssetStructMeta;
+import static com.kaltura.client.test.utils.AssetStructUtils.getAssetStruct;
 import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMetaIdByName;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.getVodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
@@ -39,8 +39,66 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Test(groups = { "opc", "Parent Child Metadata Inheritance" })
 public class ParentChildMetadataInheritanceTests extends BaseTest {
 
+    private String metaIds;
+    private Response<ListResponse<AssetStruct>> sharedAssetStructListResponse;
+
     @BeforeClass()
     public void setUp() {
+        // assetStructList to fill default metaIds
+        AssetStructFilter filter = new AssetStructFilter();
+        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+        sharedAssetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getOperatorKs()));
+        assertThat(sharedAssetStructListResponse.results.getTotalCount()).isGreaterThan(0);
+        metaIds = sharedAssetStructListResponse.results.getObjects().get(0).getMetaIds();
+    }
+
+    @Test
+    public void testAssetStructListSecurity() {
+        // assetStructList Master
+        AssetStructFilter filter = new AssetStructFilter();
+        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(SharedHousehold.getSharedMasterUserKs()));
+        assertThat(assetStructListResponse.error.getMessage()).isEqualToIgnoringCase("Service Forbidden");
+
+        // TODO: check if there is a new bug
+        // assetStructList Operator
+        filter = new AssetStructFilter();
+        listAssetStructBuilder = AssetStructService.list(filter);
+        assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getManagerKs()));
+        assertThat(assetStructListResponse.error.getMessage()).isEqualToIgnoringCase("Service Forbidden");
+    }
+
+    @Test
+    public void testCreateInheritance() {
+        List<AssetStruct> assetStructs = loadAssetStructsWithoutHierarchy(3, sharedAssetStructListResponse.results.getObjects());
+        AssetStruct assetStructGrandParent = assetStructs.get(0);
+        AssetStruct assetStructParent = assetStructs.get(1);
+        AssetStruct assetStructChildren = assetStructs.get(2);
+
+        /*System.out.println(assetStructGrandParent.getId());
+        System.out.println(assetStructParent.getId());
+        System.out.println(assetStructChildren.getId());
+
+        System.out.println(assetStructGrandParent.getMetaIds());
+        System.out.println(assetStructParent.getMetaIds());
+        System.out.println(assetStructChildren.getMetaIds());*/
+
+        // TODO: complete
+        //assetStructParent.setConnectedParentMetaId();
+        //UpdateAssetStructBuilder updateAssetStructBuilder = AssetStructService.update(assetStructParent.getId(), assetStructParent);
+    }
+
+    private List<AssetStruct> loadAssetStructsWithoutHierarchy(int countOfAssetStructs, List<AssetStruct> listOfAssetStructs) {
+        List<AssetStruct> result = new ArrayList<>();
+        for (AssetStruct assetStruct: listOfAssetStructs) {
+            if ((result.size() < countOfAssetStructs) && (assetStruct.getParentId() == 0)) {
+                result.add(assetStruct);
+            }
+        }
+        return result;
     }
 
     // added to play with methods that are going to be checked
@@ -48,14 +106,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     public void sandbox() {
         String prefix = "MaxTest_assetStruct_";
 
-        // assetStructList
-        AssetStructFilter filter = new AssetStructFilter();
-        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
-        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
-                .setKs(getOperatorKs()));
-        assertThat(assetStructListResponse.results.getTotalCount()).isGreaterThan(0);
-        String metaIds = assetStructListResponse.results.getObjects().get(0).getMetaIds();
-        Long assetStructId = assetStructListResponse.results.getObjects().get(0).getId();
+        Long assetStructId = sharedAssetStructListResponse.results.getObjects().get(0).getId();
 
         AssetStructMetaFilter assetStructMetaFilter = new AssetStructMetaFilter();
         assetStructMetaFilter.setAssetStructIdEqual(assetStructId);
@@ -84,8 +135,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         //assertThat(assetStructMetaResponse.results.getInherited()).isEqualTo(isInherited);
 
         // assetStructAdd
-        AssetStruct assetStruct = getAssetStruct(prefix, "eng");
-        assetStruct.setMetaIds(metaIds);
+        AssetStruct assetStruct = getAssetStruct(prefix, "eng", false, metaIds, null, null, null);
         AddAssetStructBuilder addAssetStructBuilder = AssetStructService.add(assetStruct);
         Response<AssetStruct> assetStructResponse = executor.executeSync(addAssetStructBuilder
                 .setKs(getOperatorKs()).setLanguage("*"));
@@ -176,30 +226,5 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 
     @AfterClass()
     public void tearDown() {
-    }
-
-    private AssetStructMeta getAssetStructMeta(String defaultIngestValue, String ingestReferencePath,
-                                               boolean isProtectFromIngest, boolean isInherited) {
-        AssetStructMeta assetStructMeta = new AssetStructMeta();
-        assetStructMeta.setDefaultIngestValue(defaultIngestValue);
-        assetStructMeta.setIngestReferencePath(ingestReferencePath);
-        assetStructMeta.setProtectFromIngest(isProtectFromIngest);
-        // TODO: update library to have options update it
-        //assetStructMeta.setIsInherited(isInherited);
-        return assetStructMeta;
-    }
-
-    AssetStruct getAssetStruct(String prefix, String language) {
-        AssetStruct assetStruct = new AssetStruct();
-        assetStruct.setSystemName(prefix + "_System_name");
-        List<TranslationToken> translationTokens = new ArrayList<>();
-        TranslationToken translationToken = new TranslationToken();
-        translationToken.setValue(prefix + "_multiLingualName");
-        translationToken.setLanguage(language);
-        translationTokens.add(translationToken);
-        assetStruct.setMultilingualName(translationTokens);
-        assetStruct.setIsProtected(false);
-        assetStruct.setMetaIds("");
-        return assetStruct;
     }
 }
