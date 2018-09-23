@@ -14,6 +14,7 @@ public class DBConstants {
     static final String ID = "id";
     static final String INT_DISCOUNT_ID = "internal_discount_id";
     static final String IS_ACTIVATION_NEEDED = "is_activation_needed";
+    static final String IS_BASIC = "is_basic";
     static final String IS_RENEWED = "is_renew";
     static final String MAX_VIEWS_COUNT = "max_views_number";
     static final String NAME = "name";
@@ -82,6 +83,9 @@ public class DBConstants {
     static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=? and is_active=1 and [status]=1 order by UPDATE_DATE DESC";
+
+    static final String META_OR_TAG_SELECT_BY_NAME = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
+            "WHERE [STATUS]=1 AND GROUP_ID=? AND SYSTEM_NAME=?\n";
 
     static final String PPV_SELECT_BY_PRICE_PLAN = "select top 1 * from [Pricing].[dbo].[ppv_modules]\n" +
             "where [status]=1 and is_active=1\n" +

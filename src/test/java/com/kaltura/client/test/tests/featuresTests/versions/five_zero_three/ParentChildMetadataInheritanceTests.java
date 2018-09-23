@@ -1,9 +1,12 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 
-import com.kaltura.client.services.AssetStructMetaService;
+import com.kaltura.client.enums.AssetReferenceType;
+import com.kaltura.client.enums.MetaOrderBy;
+import com.kaltura.client.services.*;
+import com.kaltura.client.services.AssetService.RemoveMetasAndTagsAssetBuilder;
+import com.kaltura.client.services.AssetService.GetAssetBuilder;
 import com.kaltura.client.services.AssetStructMetaService.ListAssetStructMetaBuilder;
 import com.kaltura.client.services.AssetStructMetaService.UpdateAssetStructMetaBuilder;
-import com.kaltura.client.services.AssetStructService;
 import com.kaltura.client.services.AssetStructService.AddAssetStructBuilder;
 import com.kaltura.client.services.AssetStructService.DeleteAssetStructBuilder;
 import com.kaltura.client.services.AssetStructService.ListAssetStructBuilder;
@@ -16,12 +19,13 @@ import io.qameta.allure.Link;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
 import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
+import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMetaIdByName;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.getVodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
@@ -40,7 +44,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     }
 
     // added to play with methods that are going to be checked
-    @Test(groups = {"opc"})
+    @Test
     public void sandbox() {
         String prefix = "MaxTest_assetStruct_";
 
@@ -109,24 +113,40 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         IngestVodUtils.VodData vodData = getVodData(MOVIE, INSERT);
         MediaAsset movie = insertVod(vodData, true);
 
-//        assertThat(movie.getName()).isEqualTo(movie.getExternalId());
-//        assertThat(movie.getDescription()).isEqualTo("description of " + movie.getExternalId());
-//        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(stringMetaValue);
-//        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(numberMetaValue);
-//        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateMetaValue);
-//        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(booleanMetaValue);
-//
-//        Map<String, MultilingualStringValueArray> tags = movie.getTags();
-//        Map.Entry<String, MultilingualStringValueArray> entry = tags.entrySet().iterator().next();
-//        List<MultilingualStringValue> tagsValues = entry.getValue().getObjects();
-//        for (MultilingualStringValue tagValue: tagsValues) {
-//            assertThat(tagMetaValue).contains(tagValue.getValue());
-//        }
-//        assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());
+        assertThat(movie.getName()).isEqualTo(movie.getExternalId());
+        assertThat(movie.getDescription()).isEqualTo("description of " + movie.getExternalId());
+        // get all metas
+        Set<String> movieMetasNames = movie.getMetas().keySet();
+        int metasSizeAfterCreation = movieMetasNames.size();
+        int nonBasicMediaMetasCount = 0;
+        assertThat(metasSizeAfterCreation).isGreaterThan(0);
 
-        // TODO: update idIn with real values from DB to check metas and tags are really deleted
-        /*RemoveMetasAndTagsAssetBuilder removeMetasAndTagsAssetBuilder =
-                AssetService.removeMetasAndTags(movie.getId(), AssetReferenceType.MEDIA, "");
+        // get all tags
+        Set<String> movieTagsNames = movie.getTags().keySet();
+        int tagsSizeAfterCreation = movieTagsNames.size();
+        assertThat(tagsSizeAfterCreation).isGreaterThan(0);
+
+        // get all metas and tags info to remove them from media
+        List<String> metaIds = new ArrayList<>();
+        int metaId;
+        for (String metaName: movieMetasNames) {
+            metaId = getMetaIdByName(metaName, false);
+            if (metaId !=-1) {
+                metaIds.add(String.valueOf(metaId));
+                nonBasicMediaMetasCount++;
+            }
+        }
+        for (String metaName: movieTagsNames) {
+            metaId = getMetaIdByName(metaName, true);
+            if (metaId !=-1) {
+                metaIds.add(String.valueOf(metaId));
+            }
+        }
+        String metaIdsIn = String.join(",", metaIds);
+
+        // removeMetasAndTags
+        RemoveMetasAndTagsAssetBuilder removeMetasAndTagsAssetBuilder =
+                AssetService.removeMetasAndTags(movie.getId(), AssetReferenceType.MEDIA, metaIdsIn);
         Response<Boolean> booleanResponse = executor.executeSync(removeMetasAndTagsAssetBuilder
                 .setKs(getOperatorKs()));
         assertThat(booleanResponse.results).isEqualTo(true);
@@ -139,18 +159,8 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 
         assertThat(movie.getName()).isEqualTo(movie.getExternalId());
         assertThat(movie.getDescription()).isEqualTo("description of " + movie.getExternalId());
-        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(stringMetaValue);
-        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(numberMetaValue);
-        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(dateMetaValue);
-        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(booleanMetaValue);
-
-        tags = movie.getTags();
-        entry = tags.entrySet().iterator().next();
-        tagsValues = entry.getValue().getObjects();
-        for (MultilingualStringValue tagValue: tagsValues) {
-            assertThat(tagMetaValue).contains(tagValue.getValue());
-        }
-        assertThat(tagsValues.size()).isEqualTo(tagsMetaMap.entrySet().iterator().next().getValue().size());*/
+        assertThat(movie.getMetas().keySet().size()).isEqualTo(metasSizeAfterCreation - nonBasicMediaMetasCount);
+        assertThat(movie.getTags().keySet().size()).isEqualTo(0);
 
         // cleanup
         deleteVod(movie.getExternalId());
