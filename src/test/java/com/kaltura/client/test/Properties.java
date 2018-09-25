@@ -90,6 +90,10 @@ public class Properties {
     public static final String MAX_CODE_PERCENTAGE = "max_code_percentage";
     public static final String MAX_EXECUTION_TIME_IN_SEC = "max_execution_time_in_sec";
 
+    // permissions management
+    public static final String PERMISSION_LOG_FILE = "permission_log_file";
+    public static final String PERMISSION_CONSOLE_UTIL_FILE = "permission_console_util_file";
+
     public static String getProperty(String propertyKey) {
         if (resourceBundle == null) {
             resourceBundle = ResourceBundle.getBundle("test");
