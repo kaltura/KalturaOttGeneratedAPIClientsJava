@@ -64,7 +64,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         sharedAssetStruct1 = assetStructResponse.results;
         assertThat(sharedAssetStruct1.getSystemName()).isEqualToIgnoringCase(prefix + "_System_name");
         // create shared assetStruct2
-        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
         sharedAssetStruct2 = getAssetStruct(prefix, "eng", false, metaIds, null, null, null);
         addAssetStructBuilder = AssetStructService.add(sharedAssetStruct2);
         assetStructResponse = executor.executeSync(addAssetStructBuilder
