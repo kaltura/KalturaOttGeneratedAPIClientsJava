@@ -51,6 +51,7 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
 		String score();
+		String days();
 		RequestBuilder.ListTokenizer<ContentActionCondition.Tokenizer> actions();
 	}
 
@@ -58,6 +59,10 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 	 * The minimum score to be met
 	 */
 	private Integer score;
+	/**
+	 * How many days back should the actions be considered
+	 */
+	private Integer days;
 	/**
 	 * List of the actions that consist the condition
 	 */
@@ -73,6 +78,18 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 
 	public void score(String multirequestToken){
 		setToken("score", multirequestToken);
+	}
+
+	// days:
+	public Integer getDays(){
+		return this.days;
+	}
+	public void setDays(Integer days){
+		this.days = days;
+	}
+
+	public void days(String multirequestToken){
+		setToken("days", multirequestToken);
 	}
 
 	// actions:
@@ -95,6 +112,7 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 
 		// set members values:
 		score = GsonParser.parseInt(jsonObject.get("score"));
+		days = GsonParser.parseInt(jsonObject.get("days"));
 		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), ContentActionCondition.class);
 
 	}
@@ -103,6 +121,7 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaContentScoreCondition");
 		kparams.add("score", this.score);
+		kparams.add("days", this.days);
 		kparams.add("actions", this.actions);
 		return kparams;
 	}

@@ -29,10 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -42,87 +41,90 @@ import java.util.List;
  */
 
 /**
- * Defines a condition which is essentially a combination of several
-  monetization-based actions, each has their own score multiplier
+ * Indicates a segment of a user
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ScoredMonetizationCondition.Tokenizer.class)
-public class ScoredMonetizationCondition extends BaseSegmentCondition {
+@MultiRequestBuilder.Tokenizer(UserSegment.Tokenizer.class)
+public class UserSegment extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String score();
-		String days();
-		RequestBuilder.ListTokenizer<MonetizationCondition.Tokenizer> actions();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String segmentId();
+		String segmentationTypeId();
+		String userId();
 	}
 
 	/**
-	 * The minimum score to be met
+	 * Segment Id
 	 */
-	private Integer score;
+	private Long segmentId;
 	/**
-	 * How many days back should the actions be considered
+	 * Segmentation type Id
 	 */
-	private Integer days;
+	private Long segmentationTypeId;
 	/**
-	 * List of the actions that consist the condition
+	 * User Id of segment
 	 */
-	private List<MonetizationCondition> actions;
+	private String userId;
 
-	// score:
-	public Integer getScore(){
-		return this.score;
+	// segmentId:
+	public Long getSegmentId(){
+		return this.segmentId;
 	}
-	public void setScore(Integer score){
-		this.score = score;
-	}
-
-	public void score(String multirequestToken){
-		setToken("score", multirequestToken);
+	public void setSegmentId(Long segmentId){
+		this.segmentId = segmentId;
 	}
 
-	// days:
-	public Integer getDays(){
-		return this.days;
-	}
-	public void setDays(Integer days){
-		this.days = days;
+	public void segmentId(String multirequestToken){
+		setToken("segmentId", multirequestToken);
 	}
 
-	public void days(String multirequestToken){
-		setToken("days", multirequestToken);
+	// segmentationTypeId:
+	public Long getSegmentationTypeId(){
+		return this.segmentationTypeId;
+	}
+	public void setSegmentationTypeId(Long segmentationTypeId){
+		this.segmentationTypeId = segmentationTypeId;
 	}
 
-	// actions:
-	public List<MonetizationCondition> getActions(){
-		return this.actions;
+	public void segmentationTypeId(String multirequestToken){
+		setToken("segmentationTypeId", multirequestToken);
 	}
-	public void setActions(List<MonetizationCondition> actions){
-		this.actions = actions;
+
+	// userId:
+	public String getUserId(){
+		return this.userId;
+	}
+	public void setUserId(String userId){
+		this.userId = userId;
+	}
+
+	public void userId(String multirequestToken){
+		setToken("userId", multirequestToken);
 	}
 
 
-	public ScoredMonetizationCondition() {
+	public UserSegment() {
 		super();
 	}
 
-	public ScoredMonetizationCondition(JsonObject jsonObject) throws APIException {
+	public UserSegment(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		score = GsonParser.parseInt(jsonObject.get("score"));
-		days = GsonParser.parseInt(jsonObject.get("days"));
-		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), MonetizationCondition.class);
+		segmentId = GsonParser.parseLong(jsonObject.get("segmentId"));
+		segmentationTypeId = GsonParser.parseLong(jsonObject.get("segmentationTypeId"));
+		userId = GsonParser.parseString(jsonObject.get("userId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaScoredMonetizationCondition");
-		kparams.add("score", this.score);
-		kparams.add("days", this.days);
-		kparams.add("actions", this.actions);
+		kparams.add("objectType", "KalturaUserSegment");
+		kparams.add("segmentId", this.segmentId);
+		kparams.add("segmentationTypeId", this.segmentationTypeId);
+		kparams.add("userId", this.userId);
 		return kparams;
 	}
 
