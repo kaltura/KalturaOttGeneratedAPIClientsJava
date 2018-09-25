@@ -122,6 +122,9 @@ public class IngestVodUtils extends BaseIngestUtils {
         @Setter
         private String ppvModule;
 
+
+        public VodFile() {}
+
         public VodFile(String type, String ppvModule) {
             quality = "HIGH";
             handling_type = "CLIP";
@@ -130,12 +133,13 @@ public class IngestVodUtils extends BaseIngestUtils {
             alt_cdn_code = "http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m";
             billing_type = "Tvinci";
             product_code = "productExampleCode";
-
             assetDuration = "1000";
+
             coguid = "file_" + getEpoch() + "_" + getRandomLong();
             this.type = type;
             this.ppvModule = ppvModule;
         }
+
     }
 
     /**
