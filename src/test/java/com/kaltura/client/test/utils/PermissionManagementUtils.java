@@ -2,7 +2,6 @@ package com.kaltura.client.test.utils;
 
 import com.google.gson.*;
 import com.kaltura.client.Logger;
-import com.kaltura.client.test.tests.featuresTests.versions.four_eight.PermissionsManagementTests;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -10,11 +9,15 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kaltura.client.test.Properties.PERMISSION_CONSOLE_UTIL_FILE;
+import static com.kaltura.client.test.Properties.PERMISSION_LOG_FILE;
+import static com.kaltura.client.test.Properties.getProperty;
+
 public class PermissionManagementUtils extends BaseUtils {
 
     // that file generated automatically
-    public static String path2Log = "C:\\log\\permissions\\permissions.log";
-    public static String path2Util = "C:\\123\\PermissionsExport\\bin\\Debug\\";
+    public static String path2Log = getProperty(PERMISSION_LOG_FILE);
+    public static String path2Util = getProperty(PERMISSION_CONSOLE_UTIL_FILE);
     public static String mainFile = "PermissionsDeployment.exe";
     public static String fullPath2Util = path2Util + mainFile;
 
@@ -243,8 +246,8 @@ public class PermissionManagementUtils extends BaseUtils {
         writer.println("</role>");
     }
 
-    public static String executeCommandsInColsole(List<String> commands) {
-        Logger.getLogger(PermissionManagementUtils.class).debug("started executeCommandsInColsole");
+    public static String executeCommandsInConsole(List<String> commands) {
+        Logger.getLogger(PermissionManagementUtils.class).debug("started executeCommandsInConsole");
         StringBuilder output = new StringBuilder();
         StringBuilder input = new StringBuilder();
         for(String command: commands){

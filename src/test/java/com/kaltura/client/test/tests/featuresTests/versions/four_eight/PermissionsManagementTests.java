@@ -47,7 +47,7 @@ public class PermissionsManagementTests {
     @Test(description = "execute console util without parameters")
     public void runningWithoutParameters() {
         List<String> commands = getConsoleCommand(fullPath2Util, "");
-        String consoleOutput = executeCommandsInColsole(commands);
+        String consoleOutput = executeCommandsInConsole(commands);
 
         assertThat(consoleOutput).contains("Permissions deployment tool");
         assertThat(consoleOutput).contains("Shortcut: e");
@@ -62,7 +62,7 @@ public class PermissionsManagementTests {
     @Test(description = "execute console util to export without mentioned file")
     public void runningExportWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_KEY);
-        String consoleOutput = executeCommandsInColsole(commands);
+        String consoleOutput = executeCommandsInConsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
@@ -72,7 +72,7 @@ public class PermissionsManagementTests {
     @Test(description = "execute console util to import without mentioned file")
     public void runningImportWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY);
-        String consoleOutput = executeCommandsInColsole(commands);
+        String consoleOutput = executeCommandsInConsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
@@ -82,7 +82,7 @@ public class PermissionsManagementTests {
     @Test(description = "execute console util to delete without mentioned file")
     public void runningDeleteWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY);
-        String consoleOutput = executeCommandsInColsole(commands);
+        String consoleOutput = executeCommandsInConsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
@@ -100,7 +100,7 @@ public class PermissionsManagementTests {
 
         // export from DB
         List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_KEY + dataFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // checks that created file contains inserted data
         String fileContent = getFileContent(dataFilePath);
@@ -126,7 +126,7 @@ public class PermissionsManagementTests {
 
         // try to import into DB
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + importOnly4TablesFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         String fileContent = getFileContent(path2Log);
         assertThat(fileContent).contains("Import failed: reading from XML resulted in empty data set or data set with less than 5 tables");
@@ -140,7 +140,7 @@ public class PermissionsManagementTests {
 
         // try to import into DB
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + path2EmptyFile);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         String fileContent = getFileContent(path2Log);
         assertThat(fileContent).contains("Failed importing permissions, ex = System.Xml.XmlException: Root element is missing");
@@ -154,7 +154,7 @@ public class PermissionsManagementTests {
 
         // try to import into DB
         List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + path2EmptyFile);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         String fileContent = getFileContent(path2Log);
         assertThat(fileContent).contains("Failed deleting permissions, ex = System.Xml.XmlException: Root element is missing");
@@ -172,7 +172,7 @@ public class PermissionsManagementTests {
 
         // import into DB
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + generatedDataFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // check data in DB
         int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
@@ -203,41 +203,48 @@ public class PermissionsManagementTests {
     @Severity(SeverityLevel.NORMAL)
     @Test(description = "execute console util to check items from DB not mentioned in import file should be mentioned in log")
     public void runningImportToCheckLogHasItemsFromDBNotMentionedInFile() {
-        // TODO: update test
         // remove log file
         deleteFile(path2Log);
 
-        // insert data in DB
-        String suffix = String.valueOf(BaseUtils.getEpoch()) + "inserted";
-        String roleName = "MaxTest" + suffix;
-        String permissionItemName = "Asset_List_Max" + suffix;
-        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName, "partner*",
-                permissionItemName, "asset", "list", "permissionItemObject" + suffix,
-                "parameter" + suffix, false);
-        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
+        // insert data in DB to check they will be mentioned in log file
+        String suffix1 = String.valueOf(BaseUtils.getEpoch()) + "inserted";
+        String roleName1 = "MaxTest" + suffix1;
+        String permissionItemName1 = "Asset_List_Max" + suffix1;
+        PermissionManagementUtils.insertDataInAllTables(generatedDataFilePath, roleName1, "partner*",
+                permissionItemName1, "asset", "list", "permissionItemObject" + suffix1,
+                "parameter" + suffix1, false);
+        String filePath2Check = generatedDataFilePath;
 
         // generate import file data
-        suffix = String.valueOf(BaseUtils.getEpoch());
-        roleName = "MaxTest" + suffix;
-        permissionItemName = "Asset_List_Max" + suffix;
+        String suffix = String.valueOf(BaseUtils.getEpoch());
+        String roleName = "MaxTest" + suffix;
+        String permissionItemName = "Asset_List_Max" + suffix;
         PermissionManagementUtils.generateFileWithInsertedIntoDBData(generatedDataFilePath, roleName, "partner*",
                 permissionItemName, "asset", "list", "permissionItemObject" + suffix,
                 "parameter" + suffix, 1, 2, 3, 4, 5, false);
 
-        // try to import into DB
-        List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + path2EmptyFile);
-        String outputInConsole = executeCommandsInColsole(commands);
+        // import into DB
+        List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + generatedDataFilePath);
+        executeCommandsInConsole(commands);
 
         String fileContent = getFileContent(path2Log);
-        assertThat(fileContent).contains("ex = System.Xml.XmlException: Root element is missing");
-        assertThat(outputInConsole).contains("ex = System.Xml.XmlException: Root element is missing");
+        int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName1, 0);
+        assertThat(fileContent).contains("!!NOT EXISTS IN SOURCE!! Table : role Id : " + idRoleHavingName + " Name : " + "MaxTest" + suffix1);
 
         // cleaning
-//        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
-//        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
-//        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
-//        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
-//        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
+        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+        int idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName1);
+        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+        int idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName1, 0);
+        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
+
+        idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
+        PermissionsManagementDBUtils.deleteRoleAndItsPermissions(idRoleHavingName);
+        idPermissionItemHavingName = getIdRecordHavingNameInPermissionItems(permissionItemName);
+        PermissionsManagementDBUtils.deletePermissionItem(idPermissionItemHavingName);
+        idPermissionHavingName = getIdRecordHavingRoleNameInPermissions(roleName, 0);
+        PermissionsManagementDBUtils.deletePermission(idPermissionHavingName);
+
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -252,7 +259,7 @@ public class PermissionsManagementTests {
 
         // import into DB
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + generatedDataFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // check data in DB
         int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
@@ -279,7 +286,7 @@ public class PermissionsManagementTests {
 
         // delete from DB
         commands = getConsoleCommand(fullPath2Util, DELETE_KEY + generatedDataFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // DB should be empty
         rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
@@ -304,10 +311,10 @@ public class PermissionsManagementTests {
 
         // import into DB
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_KEY + generatedDataFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // retry import
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // check data in DB
         int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
@@ -348,7 +355,7 @@ public class PermissionsManagementTests {
 
         // try delete
         List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + generatedDataFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // check data still in DB
         int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
@@ -368,7 +375,7 @@ public class PermissionsManagementTests {
 
         // delete
         List<String> commands = getConsoleCommand(fullPath2Util, DELETE_KEY + generatedDataFilePath);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // check data deleted from DB
         int rowsInRolesHavingName = getCountRowsHavingRoleNameInRoles(roleName, 0);
@@ -380,7 +387,7 @@ public class PermissionsManagementTests {
     @Test(description = "execute console util to export in JSON without mentioned file")
     public void runningExportJsonWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY);
-        String consoleOutput = executeCommandsInColsole(commands);
+        String consoleOutput = executeCommandsInConsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
@@ -390,7 +397,7 @@ public class PermissionsManagementTests {
     @Test(description = "execute console util to import in JSON without mentioned file")
     public void runningImportJsonWithoutFile() {
         List<String> commands = getConsoleCommand(fullPath2Util, IMPORT_JSON_KEY);
-        String consoleOutput = executeCommandsInColsole(commands);
+        String consoleOutput = executeCommandsInConsole(commands);
 
         assertThat(consoleOutput).contains("The system cannot find the file specified");
     }
@@ -411,7 +418,7 @@ public class PermissionsManagementTests {
                 "parameter" + suffix, true);
         // command
         List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY + path2JsonFolder);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         String importFileContent = getFileContent(generatedDataFilePath);
         assertThat(importFileContent).contains(roleName);
@@ -435,7 +442,7 @@ public class PermissionsManagementTests {
 
         // export command to get results and not break the system
         List<String> commands = getConsoleCommand(fullPath2Util, EXPORT_JSON_KEY + path2JsonFolder);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // prepare data
         String suffix = String.valueOf(BaseUtils.getEpoch());
@@ -446,7 +453,7 @@ public class PermissionsManagementTests {
 
         // import command
         commands = getConsoleCommand(fullPath2Util, IMPORT_JSON_KEY + path2JsonFolder);
-        executeCommandsInColsole(commands);
+        executeCommandsInConsole(commands);
 
         // find new records in DB after the import
         int idRoleHavingName = getIdRecordHavingRoleNameInRoles(roleName, 0);
