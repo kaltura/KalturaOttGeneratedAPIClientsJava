@@ -36,6 +36,8 @@ public class AssetCountTests extends BaseTest {
     private ProgramAsset program, program2;
     private MediaAsset asset, asset2;
 
+    //TODO - Change all hardcoded values after Alon will add DB meta anf tags utils.
+
     private final String metaName1 = "synopsis";
     private final String metaValue1 = metaName1 + getRandomValue("_");
 
@@ -125,7 +127,7 @@ public class AssetCountTests extends BaseTest {
         AssetService.CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 VOD assets in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
@@ -154,7 +156,7 @@ public class AssetCountTests extends BaseTest {
         AssetService.CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 VOD assets in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
@@ -183,7 +185,7 @@ public class AssetCountTests extends BaseTest {
         AssetService.CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 VOD assets in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
         assertThat(assetCountResponse.results.getSubs().get(0).getObjects().get(0).getCount()).isEqualTo(1);
@@ -216,7 +218,7 @@ public class AssetCountTests extends BaseTest {
         CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 EPG in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }
@@ -245,7 +247,7 @@ public class AssetCountTests extends BaseTest {
         CountAssetBuilder countAssetBuilder = AssetService.count(searchAssetFilter)
                 .setKs(BaseTest.getAnonymousKs());
 
-        // asset/action/count
+        // asset/action/count - 2 EPG in count
         Response<AssetCount> assetCountResponse = executor.executeSync(countAssetBuilder);
         assertThat(assetCountResponse.results.getCount()).isEqualTo(2);
     }

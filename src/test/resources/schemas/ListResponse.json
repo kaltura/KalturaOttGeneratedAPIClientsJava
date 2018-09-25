@@ -94,7 +94,8 @@
             "KalturaDynamicChannelListResponse",
             "KalturaDiscountDetailsListResponse",
             "KalturaAssetStructMetaListResponse",
-            "KalturaAssetStructListResponse"
+            "KalturaAssetStructListResponse",
+            "KalturaCountryListResponse"
           ]
         }
       },

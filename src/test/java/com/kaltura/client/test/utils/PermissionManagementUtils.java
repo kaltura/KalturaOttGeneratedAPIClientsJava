@@ -1,6 +1,8 @@
 package com.kaltura.client.test.utils;
 
+import com.google.gson.*;
 import com.kaltura.client.Logger;
+import com.kaltura.client.test.tests.featuresTests.versions.four_eight.PermissionsManagementTests;
 import com.kaltura.client.test.utils.dbUtils.PermissionsManagementDBUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -9,6 +11,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionManagementUtils extends BaseUtils {
+
+    // that file generated automatically
+    public static String path2Log = "C:\\log\\permissions\\permissions.log";
+    public static String path2Util = "C:\\123\\PermissionsExport\\bin\\Debug\\";
+    public static String mainFile = "PermissionsDeployment.exe";
+    public static String fullPath2Util = path2Util + mainFile;
+
+    // these files are generated
+    public static String dataFilePath = path2Util + "333\\" + "exp1.txt";
+    public static String path2JsonFolder = path2Util + "333\\JSON\\";
+    public static String generatedDataFilePath = path2Util + "333\\" + "import.txt";
+    public static String path2JsonRoles = path2JsonFolder + "roles.json";
+    public static String path2JsonPermissions = path2JsonFolder + "permissions.json";
+    public static String path2JsonMethods = path2JsonFolder + "permission_items\\controllers\\";
+
+    // json related strings
+    public static final String SERVICE_PERMISSION_ITEMS_NODE = "permission_items";
+    public static final String SERVICE_TYPE_DEFAULT_VALUE = "Action";
+    public static final String SERVICE_PERMISSIONS_NODE = "permissions";
+    public static final String SERVICE_EXCLUDED_PERMISSIONS_NODE = "excluded_permissions";
+    public static final String SERVICE_NAME_NODE = "name";
+    public static final String SERVICE_SERVICE_NODE = "service";
+    public static final String SERVICE_ACTION_NODE = "action";
+    public static final String SERVICE_TYPE_NODE = "type";
+
+    public static final String PERMISSIONS_PERMISSIONS_NODE = "permissions";
+    public static final String PERMISSIONS_NAME_NODE = "name";
+    public static final String PERMISSIONS_USERS_GROUP_NODE = "users_group";
+
+    public static final String ROLES_ROLES_NODE = "roles";
+    public static final String ROLES_PERMISSIONS_NODE = "permissions";
+    public static final String ROLES_EXCLUDED_PERMISSIONS_NODE = "excluded_permissions";
+    public static final String ROLES_NAME_NODE = "name";
 
     @Accessors(fluent = true)
     @Data
@@ -36,6 +71,124 @@ public class PermissionManagementUtils extends BaseUtils {
         private String name;
     }
 
+    private static void fillRolesFile(String roleName) {
+        try {
+            // get from file array of permissions
+            JsonParser parser = new JsonParser();
+            JsonElement jsonElement = parser.parse(new FileReader(path2JsonRoles));
+            JsonObject jsonObj = jsonElement.getAsJsonObject();
+            JsonArray array = jsonObj.getAsJsonArray(ROLES_ROLES_NODE);
+
+            // add into array of roles new role
+            List<String> excludedPermissions = new ArrayList<String>();
+            List<String> permissions = new ArrayList<String>();
+            permissions.add(roleName);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            jsonObj = new JsonObject();
+            jsonObj.add(ROLES_PERMISSIONS_NODE, gson.toJsonTree(permissions).getAsJsonArray());
+            jsonObj.add(ROLES_EXCLUDED_PERMISSIONS_NODE, gson.toJsonTree(excludedPermissions).getAsJsonArray());
+            jsonObj.addProperty(ROLES_NAME_NODE, roleName);
+            array.add(jsonObj);
+
+            // overwrite role file
+            jsonObj = new JsonObject();
+            jsonObj.add(ROLES_ROLES_NODE, array);
+            try (Writer writer = new FileWriter(path2JsonRoles, false)) {
+                gson.toJson(jsonObj, writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void fillServiceFile(String roleName, String permissionItemName, String serviceName, String actionName) {
+        try {
+            // get from file array of permissions related to service
+            JsonParser parser = new JsonParser();
+            String path2serviceFile = path2JsonMethods + serviceName + ".json";
+            JsonElement jsonElement = parser.parse(new FileReader(path2serviceFile));
+            JsonObject jsonObj = jsonElement.getAsJsonObject();
+            JsonArray array = jsonObj.getAsJsonArray(SERVICE_PERMISSION_ITEMS_NODE);
+
+            // create PermissionItem object with new data
+            List<String> permissions = new ArrayList<String>();
+            permissions.add(roleName);
+            PermissionItem permissionItem = new PermissionItem()
+                    .permissions(permissions)
+                    .excludedPermissions(new ArrayList<>())
+                    .name(permissionItemName)
+                    .service(serviceName)
+                    .action(actionName)
+                    .type(SERVICE_TYPE_DEFAULT_VALUE);
+
+            // add into array of permissions the PermissionItem object
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            jsonObj = getPermissionItemAsJsonObject(permissionItem, gson);
+            array.add(jsonObj);
+
+            // overwrite service file
+            jsonObj = new JsonObject();
+            jsonObj.add(SERVICE_PERMISSION_ITEMS_NODE, array);
+            jsonObj.addProperty(SERVICE_TYPE_NODE, SERVICE_TYPE_DEFAULT_VALUE);
+
+            try (Writer writer = new FileWriter(path2serviceFile, false)) {
+                gson.toJson(jsonObj, writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static JsonObject getPermissionItemAsJsonObject(PermissionItem permissionItem, Gson gson) {
+        JsonObject result = new JsonObject();
+
+        result.add(SERVICE_PERMISSIONS_NODE, gson.toJsonTree(permissionItem.permissions()).getAsJsonArray());
+        result.add(SERVICE_EXCLUDED_PERMISSIONS_NODE, gson.toJsonTree(permissionItem.excludedPermissions()).getAsJsonArray());
+        result.addProperty(SERVICE_NAME_NODE, permissionItem.name());
+        result.addProperty(SERVICE_SERVICE_NODE, permissionItem.service());
+        result.addProperty(SERVICE_ACTION_NODE, permissionItem.action());
+        result.addProperty(SERVICE_TYPE_NODE, SERVICE_TYPE_DEFAULT_VALUE);
+
+        return result;
+    }
+
+    private static void fillPermissionsFile(String roleName, String usersGroup) {
+        try {
+            // get from file array of permissions
+            JsonParser parser = new JsonParser();
+            JsonElement jsonElement = parser.parse(new FileReader(path2JsonPermissions));
+            JsonObject jsonObj = jsonElement.getAsJsonObject();
+            JsonArray array = jsonObj.getAsJsonArray(PERMISSIONS_PERMISSIONS_NODE);
+
+            // add into array of permissions new permission data
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            jsonObj = new JsonObject();
+            jsonObj.addProperty(PERMISSIONS_NAME_NODE, roleName);
+            jsonObj.addProperty(PERMISSIONS_USERS_GROUP_NODE, usersGroup);
+            array.add(jsonObj);
+
+            // overwrite permissions file
+            jsonObj = new JsonObject();
+            jsonObj.add(PERMISSIONS_PERMISSIONS_NODE, array);
+            try (Writer writer = new FileWriter(path2JsonPermissions, false)) {
+                gson.toJson(jsonObj, writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void fillFilesWithImportData(String roleName, String permissionItemName, String usersGroup, String serviceName, String actionName) {
+        fillRolesFile(roleName);
+        fillPermissionsFile(roleName, usersGroup);
+        fillServiceFile(roleName, permissionItemName, serviceName, actionName);
+    }
 
     public static void printPermissionPermissionItem(PrintWriter writer, long id, long permissionId, long permissionItemId,
                                                int isExcluded, String permissionItemName, String permissionName) {

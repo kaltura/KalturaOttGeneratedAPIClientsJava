@@ -5,10 +5,7 @@ import com.kaltura.client.services.SubscriptionService;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.tests.enums.PremiumService;
 import com.kaltura.client.test.utils.BaseUtils;
-import com.kaltura.client.types.Ppv;
-import com.kaltura.client.types.PricePlan;
-import com.kaltura.client.types.Subscription;
-import com.kaltura.client.types.SubscriptionFilter;
+import com.kaltura.client.types.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -217,7 +214,7 @@ public class DBUtils extends BaseUtils {
     public static int getUnActiveAsset() {
         return getJsonArrayFromQueryResult(UNACTIVE_ASSET_ID_SELECT, partnerId + 1)
                 .getJSONObject(0)
-                .getInt("id");
+                .getInt(ID);
     }
 
     public static Subscription getSubscriptionWithPremiumService(PremiumService premiumService) {
@@ -268,18 +265,18 @@ public class DBUtils extends BaseUtils {
         if (isOpcGroup) {
             return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT, partnerId, partnerId, mediaType.getValue())
                     .getJSONObject(0)
-                    .getInt("id");
+                    .getInt(ID);
         } else {
             return getJsonArrayFromQueryResult(MEDIA_TYPE_ID_SELECT, partnerId + 1, partnerId + 2, mediaType.getValue())
                     .getJSONObject(0)
-                    .getInt("id");
+                    .getInt(ID);
         }
     }
 
     public static String getMediaFileTypeName(int mediaFileId) {
         return getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_ID_SELECT, partnerId + 1, mediaFileId)
                 .getJSONObject(0)
-                .getString("name");
+                .getString(NAME);
     }
 
     public static List<String> getMediaFileTypeNames(int amount) {
@@ -288,14 +285,14 @@ public class DBUtils extends BaseUtils {
 
             return arrayToStream(jsonArray)
                     .map(JSONObject.class::cast)
-                    .map(jsonObject -> jsonObject.getString("name"))
+                    .map(jsonObject -> jsonObject.getString(NAME))
                     .collect(Collectors.toList());
         } else {
             JSONArray jsonArray = getJsonArrayFromQueryResult(MEDIA_FILE_TYPE_IDS_SELECT, amount, partnerId + 1);
 
             return arrayToStream(jsonArray)
                     .map(JSONObject.class::cast)
-                    .map(jsonObject -> jsonObject.getString("name"))
+                    .map(jsonObject -> jsonObject.getString(NAME))
                     .collect(Collectors.toList());
         }
     }
@@ -319,7 +316,14 @@ public class DBUtils extends BaseUtils {
 
         return arrayToStream(jsonArray)
                 .map(JSONObject.class::cast)
-                .map(jsonObject -> jsonObject.getString("name"))
+                .map(jsonObject -> jsonObject.getString(NAME))
                 .collect(Collectors.toList());
+    }
+
+    public static int getMetaIdByName(String metaName, boolean processBasicFields) {
+        JSONObject jsonObject =
+                getJsonArrayFromQueryResult(META_OR_TAG_SELECT_BY_NAME, partnerId, metaName)
+                        .getJSONObject(0);
+        return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getInt(ID) : -1;
     }
 }
