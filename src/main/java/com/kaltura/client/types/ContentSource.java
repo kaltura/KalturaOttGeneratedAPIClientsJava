@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ContentFieldType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -48,30 +47,13 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class ContentSource extends SegmentSource {
 	
 	public interface Tokenizer extends SegmentSource.Tokenizer {
-		String type();
 		String field();
 	}
 
 	/**
-	 * Content data type
-	 */
-	private ContentFieldType type;
-	/**
-	 * Field name
+	 * Topic (meta or tag) name
 	 */
 	private String field;
-
-	// type:
-	public ContentFieldType getType(){
-		return this.type;
-	}
-	public void setType(ContentFieldType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
 
 	// field:
 	public String getField(){
@@ -96,7 +78,6 @@ public class ContentSource extends SegmentSource {
 		if(jsonObject == null) return;
 
 		// set members values:
-		type = ContentFieldType.get(GsonParser.parseString(jsonObject.get("type")));
 		field = GsonParser.parseString(jsonObject.get("field"));
 
 	}
@@ -104,7 +85,6 @@ public class ContentSource extends SegmentSource {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaContentSource");
-		kparams.add("type", this.type);
 		kparams.add("field", this.field);
 		return kparams;
 	}

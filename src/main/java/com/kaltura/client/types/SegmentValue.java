@@ -51,6 +51,7 @@ public class SegmentValue extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
+		String systematicName();
 		String name();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String value();
@@ -61,6 +62,10 @@ public class SegmentValue extends ObjectBase {
 	 * Id of segment
 	 */
 	private Long id;
+	/**
+	 * Systematic name of segment
+	 */
+	private String systematicName;
 	/**
 	 * Name of segment
 	 */
@@ -82,12 +87,16 @@ public class SegmentValue extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
+	// systematicName:
+	public String getSystematicName(){
+		return this.systematicName;
+	}
+	public void setSystematicName(String systematicName){
+		this.systematicName = systematicName;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void systematicName(String multirequestToken){
+		setToken("systematicName", multirequestToken);
 	}
 
 	// name:
@@ -138,6 +147,7 @@ public class SegmentValue extends ObjectBase {
 
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
+		systematicName = GsonParser.parseString(jsonObject.get("systematicName"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		value = GsonParser.parseString(jsonObject.get("value"));
@@ -148,7 +158,7 @@ public class SegmentValue extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentValue");
-		kparams.add("id", this.id);
+		kparams.add("systematicName", this.systematicName);
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("value", this.value);
 		kparams.add("threshold", this.threshold);

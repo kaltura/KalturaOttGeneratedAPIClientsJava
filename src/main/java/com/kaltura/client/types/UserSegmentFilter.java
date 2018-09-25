@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,39 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MonetizationType implements EnumAsString {
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	BOXSET("boxset");
 
-	private String value;
-
-	MonetizationType(String value) {
-		this.value = value;
+/**
+ * Filter for user segments
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(UserSegmentFilter.Tokenizer.class)
+public class UserSegmentFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String userIdEqual();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * User ID
+	 */
+	private String userIdEqual;
+
+	// userIdEqual:
+	public String getUserIdEqual(){
+		return this.userIdEqual;
+	}
+	public void setUserIdEqual(String userIdEqual){
+		this.userIdEqual = userIdEqual;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void userIdEqual(String multirequestToken){
+		setToken("userIdEqual", multirequestToken);
 	}
 
-	public static MonetizationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over MonetizationType defined values and compare the inner value with the given one:
-		for(MonetizationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MonetizationType.values().length > 0 ? MonetizationType.values()[0]: null;
-   }
+
+	public UserSegmentFilter() {
+		super();
+	}
+
+	public UserSegmentFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		userIdEqual = GsonParser.parseString(jsonObject.get("userIdEqual"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaUserSegmentFilter");
+		kparams.add("userIdEqual", this.userIdEqual);
+		return kparams;
+	}
+
 }
+
