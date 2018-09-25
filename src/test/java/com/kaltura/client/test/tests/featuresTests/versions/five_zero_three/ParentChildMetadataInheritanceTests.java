@@ -62,13 +62,13 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
                 .setKs(SharedHousehold.getSharedMasterUserKs()));
         assertThat(assetStructListResponse.error.getMessage()).isEqualToIgnoringCase("Service Forbidden");
 
-        // TODO: check if there is a new bug
         // assetStructList Operator
         filter = new AssetStructFilter();
         listAssetStructBuilder = AssetStructService.list(filter);
         assetStructListResponse = executor.executeSync(listAssetStructBuilder
-                .setKs(getManagerKs()));
-        assertThat(assetStructListResponse.error.getMessage()).isEqualToIgnoringCase("Service Forbidden");
+                .setKs(getOperatorKs()));
+        assertThat(assetStructListResponse.results).isNotNull();
+        assertThat(assetStructListResponse.error).isNull();
     }
 
     @Test
