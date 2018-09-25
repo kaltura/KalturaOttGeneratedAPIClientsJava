@@ -51,7 +51,6 @@ public class SegmentValues extends BaseSegmentValue {
 	
 	public interface Tokenizer extends BaseSegmentValue.Tokenizer {
 		SegmentSource.Tokenizer source();
-		String threshold();
 		RequestBuilder.ListTokenizer<SegmentValue.Tokenizer> values();
 	}
 
@@ -59,10 +58,6 @@ public class SegmentValues extends BaseSegmentValue {
 	 * Segment values source
 	 */
 	private SegmentSource source;
-	/**
-	 * Threshold - minimum score to be met for all values in general (can be overriden)
-	 */
-	private Integer threshold;
 	/**
 	 * List of segment values
 	 */
@@ -74,18 +69,6 @@ public class SegmentValues extends BaseSegmentValue {
 	}
 	public void setSource(SegmentSource source){
 		this.source = source;
-	}
-
-	// threshold:
-	public Integer getThreshold(){
-		return this.threshold;
-	}
-	public void setThreshold(Integer threshold){
-		this.threshold = threshold;
-	}
-
-	public void threshold(String multirequestToken){
-		setToken("threshold", multirequestToken);
 	}
 
 	// values:
@@ -108,7 +91,6 @@ public class SegmentValues extends BaseSegmentValue {
 
 		// set members values:
 		source = GsonParser.parseObject(jsonObject.getAsJsonObject("source"), SegmentSource.class);
-		threshold = GsonParser.parseInt(jsonObject.get("threshold"));
 		values = GsonParser.parseArray(jsonObject.getAsJsonArray("values"), SegmentValue.class);
 
 	}
@@ -117,7 +99,6 @@ public class SegmentValues extends BaseSegmentValue {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentValues");
 		kparams.add("source", this.source);
-		kparams.add("threshold", this.threshold);
 		kparams.add("values", this.values);
 		return kparams;
 	}

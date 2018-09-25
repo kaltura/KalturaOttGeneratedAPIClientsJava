@@ -19,6 +19,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.kaltura.client.services.AssetService.ListAssetBuilder;
 import static com.kaltura.client.services.AssetService.list;
@@ -35,6 +36,7 @@ import static com.kaltura.client.test.utils.ingestUtils.IngestEpgUtils.insertEpg
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.*;
 import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class SearchAssetFilterTests extends BaseTest {
 
@@ -52,7 +54,7 @@ public class SearchAssetFilterTests extends BaseTest {
 
 
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     private void asset_list_searchAssetFilter_before_class() {
         // Get asset from shared asset method
         tagValue = getRandomValue(tagName + "_");
@@ -342,8 +344,8 @@ public class SearchAssetFilterTests extends BaseTest {
 
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD - order by VIEWS")
-    @Test
-    private void orderVodAssetsByViews() {
+    @Test(groups = "slowBefore")
+    private void orderVodAssetsByViews_before_wait() {
 
         int numOfActionsAsset = 3;
         int numOfActionsAsset2 = 2;
@@ -363,7 +365,11 @@ public class SearchAssetFilterTests extends BaseTest {
         for (int i = 0; i < numOfActionsAsset3; i++) {
             addViewToAsset(asset3, AssetType.MEDIA);
         }
-
+    }
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("asset/action/list - VOD - order by VIEWS")
+    @Test(groups = "slowAfter", dependsOnGroups = "slowBefore")
+    private void orderVodAssetsByViews_after_wait() {
         String query = new KsqlBuilder()
                 .openOr()
                 .equal(MEDIA_ID.getValue(), Math.toIntExact(asset.getId()))
@@ -373,9 +379,24 @@ public class SearchAssetFilterTests extends BaseTest {
                 .toString();
         assetFilter = getSearchAssetFilter(query, null, null, null, null, AssetOrderBy.VIEWS_DESC.getValue());
 
+        // prepare variables for await() functionality
+        int delayBetweenRetriesInSeconds = 15;
+        int maxTimeExpectingValidResponseInSeconds = 80;
+        // wait for pin to expire
+        await()
+                .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
+                .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
+                .until(() -> {
+                    List<Asset> assetsList = executor.executeSync(list(assetFilter).setKs(getSharedMasterUserKs())).results.getObjects();
+                    return  assetsList.get(0).getId().equals(asset.getId()) &&
+                            assetsList.get(1).getId().equals(asset2.getId()) &&
+                            assetsList.get(2).getId().equals(asset3.getId());
+                });
+
         Response<ListResponse<Asset>> assetListResponse = executor.executeSync(list(assetFilter)
                 .setKs(getSharedMasterUserKs()));
 
+        assertThat(assetListResponse.error).isNull();
         assertThat(assetListResponse.results.getTotalCount()).isEqualTo(3);
         assertThat(assetListResponse.results.getObjects().get(0).getId()).isEqualTo(asset.getId());
         assertThat(assetListResponse.results.getObjects().get(1).getId()).isEqualTo(asset2.getId());

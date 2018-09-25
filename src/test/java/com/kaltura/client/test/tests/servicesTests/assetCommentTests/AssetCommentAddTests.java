@@ -9,6 +9,7 @@ import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Description;
+import org.assertj.core.data.Offset;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -62,7 +63,7 @@ public class AssetCommentAddTests extends BaseTest {
         assertThat(assetCommentResponse.results.getText()).isEqualTo(text);
         assertThat(assetCommentResponse.results.getSubHeader()).isEqualTo(subHeader);
         assertThat(assetCommentResponse.results.getHeader()).isEqualTo(header);
-        assertThat(assetCommentResponse.results.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getEpoch());
+        assertThat(assetCommentResponse.results.getCreateDate()).isCloseTo(BaseUtils.getEpoch(), Offset.offset ((long)10));
 
 
         //Initialize assetCommentFilter object
@@ -83,7 +84,7 @@ public class AssetCommentAddTests extends BaseTest {
         assertThat(assetCommentObjectResponse.getHeader()).isEqualTo(assetCommentResponse.results.getHeader());
         assertThat(assetCommentObjectResponse.getText()).isEqualTo(assetCommentResponse.results.getText());
         assertThat(assetCommentObjectResponse.getWriter()).isEqualTo(assetCommentResponse.results.getWriter());
-        assertThat(assetCommentObjectResponse.getCreateDate()).isLessThanOrEqualTo(BaseUtils.getEpoch());
+        assertThat(assetCommentObjectResponse.getCreateDate()).isCloseTo(BaseUtils.getEpoch(), Offset.offset ((long)10));
     }
 
 

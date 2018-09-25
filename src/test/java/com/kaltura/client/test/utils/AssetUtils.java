@@ -99,21 +99,14 @@ public class AssetUtils extends BaseUtils {
         HouseholdUser householdUser = HouseholdUtils.getMasterUser(household);
 
         // Login user
-        String ks = OttUserUtils.getKs(Integer.parseInt(householdUser.getUserId()));
+        String ks = OttUserUtils.getKs(Integer.parseInt(householdUser.getUserId()), HouseholdUtils.getDevicesList(household).get(0).getUdid());
 
         // Purchase PPV (to allow bookmark
         PurchaseUtils.purchasePpv(ks,Optional.of(Math.toIntExact(asset.getId())),Optional.empty(),Optional.empty());
-        PlaybackContextOptions playbackContextOptions = new PlaybackContextOptions();
-        playbackContextOptions.setContext(PlaybackContextType.PLAYBACK);
 
-        //asset/action/getPlaybackContext
-        AssetService.getPlaybackContext(String.valueOf(asset.getId()),assetType, playbackContextOptions)
-                .setKs(ks);
         Bookmark bookmark = BookmarkUtils.addBookmark(0, String.valueOf(asset.getId()), asset.getMediaFiles().get(0).getId(), assetType, BookmarkActionType.FIRST_PLAY);
-
-      //bookmark/action/add
-        AddBookmarkBuilder addBookmarkBuilder = add(bookmark)
-                .setKs(getSharedMasterUserKs());
+        //bookmark/action/add
+        AddBookmarkBuilder addBookmarkBuilder = add(bookmark).setKs(ks);
         executor.executeSync(addBookmarkBuilder);
     }
 
