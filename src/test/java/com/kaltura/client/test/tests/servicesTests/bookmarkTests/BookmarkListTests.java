@@ -88,7 +88,7 @@ public class BookmarkListTests extends BaseTest {
     }
 
     @Description("bookmark/action/list - order by")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void BookmarkOrderBy_after_wait() {
         // set filter
         BookmarkFilter bookmarkFilter = BookmarkUtils.listBookmark(BookmarkOrderBy.POSITION_DESC,AssetType.MEDIA, assetList);

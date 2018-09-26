@@ -107,7 +107,7 @@ public class AppTokenAddTests extends BaseTest {
     }
 
 
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void addAppTokenWithExpiryDate_after_wait() {
         // prepare builder and variables for await() functionality
         GetAppTokenBuilder getAppTokenBuilder = AppTokenService.get(addAppTokenResponseSlowTest.results.getId())

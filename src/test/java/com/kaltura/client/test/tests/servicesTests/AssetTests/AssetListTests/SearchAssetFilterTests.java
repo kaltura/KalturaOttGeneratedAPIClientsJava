@@ -368,7 +368,7 @@ public class SearchAssetFilterTests extends BaseTest {
     }
     @Severity(SeverityLevel.CRITICAL)
     @Description("asset/action/list - VOD - order by VIEWS")
-    @Test(groups = "slowAfter", dependsOnGroups = "slowBefore")
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void orderVodAssetsByViews_after_wait() {
         String query = new KsqlBuilder()
                 .openOr()
