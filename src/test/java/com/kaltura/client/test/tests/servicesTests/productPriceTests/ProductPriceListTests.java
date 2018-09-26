@@ -170,7 +170,7 @@ public class ProductPriceListTests extends BaseTest {
         ListProductPriceBuilder productPriceListAfterPurchaseForAnotherFileFromTheSameMedia = ProductPriceService.list(ppFilter);
         productPriceResponse = executor.executeSync(productPriceListAfterPurchaseForAnotherFileFromTheSameMedia.setKs(classMasterUserKs));
         assertThat(productPriceResponse.results.getTotalCount()).isEqualTo(1);
-        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.PPV_PURCHASED);
+        assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isIn(PurchaseStatus.FOR_PURCHASE, PurchaseStatus.FOR_PURCHASE_SUBSCRIPTION_ONLY);
         assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(0)).getFileId()).isEqualTo(mobileMediaFileId);
     }
 
@@ -335,10 +335,10 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(0).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductType()).isEqualTo(TransactionType.SUBSCRIPTION);
         assertThat(productPriceResponse.results.getObjects().get(0).getProductId()).isEqualTo(String.valueOf(webHDFileOnlySubId));
-        assertThat(productPriceResponse.results.getObjects().get(1).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(1).getPurchaseStatus()).isIn(PurchaseStatus.FOR_PURCHASE, PurchaseStatus.FOR_PURCHASE_SUBSCRIPTION_ONLY);
         assertThat(productPriceResponse.results.getObjects().get(1).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(1)).getFileId()).isEqualTo(getSharedWebMediaFile().getId());
-        assertThat(productPriceResponse.results.getObjects().get(2).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(2).getPurchaseStatus()).isIn(PurchaseStatus.FOR_PURCHASE, PurchaseStatus.FOR_PURCHASE_SUBSCRIPTION_ONLY);
         assertThat(productPriceResponse.results.getObjects().get(2).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(2)).getFileId()).isEqualTo(getSharedMobileMediaFile().getId());
 
@@ -354,7 +354,7 @@ public class ProductPriceListTests extends BaseTest {
         assertThat(productPriceResponse.results.getObjects().get(1).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(productPriceResponse.results.getObjects().get(1).getPrice().getAmount()).isEqualTo(0);
         assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(1)).getFileId()).isEqualTo(getSharedWebMediaFile().getId());
-        assertThat(productPriceResponse.results.getObjects().get(2).getPurchaseStatus()).isEqualTo(PurchaseStatus.FOR_PURCHASE);
+        assertThat(productPriceResponse.results.getObjects().get(2).getPurchaseStatus()).isIn(PurchaseStatus.FOR_PURCHASE, PurchaseStatus.FOR_PURCHASE_SUBSCRIPTION_ONLY);
         assertThat(productPriceResponse.results.getObjects().get(2).getProductType()).isEqualTo(TransactionType.PPV);
         assertThat(productPriceResponse.results.getObjects().get(2).getPrice().getAmount()).isGreaterThan(0);
         assertThat(((PpvPrice) productPriceResponse.results.getObjects().get(2)).getFileId()).isEqualTo(getSharedMobileMediaFile().getId());
