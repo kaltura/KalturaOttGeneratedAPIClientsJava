@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import javax.annotation.Nonnull;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -320,10 +321,65 @@ public class DBUtils extends BaseUtils {
                 .collect(Collectors.toList());
     }
 
-    public static int getMetaIdByName(String metaName, boolean processBasicFields) {
+    public static Long getMetaIdByName(String metaName, boolean processBasicFields) {
         JSONObject jsonObject =
                 getJsonArrayFromQueryResult(META_OR_TAG_SELECT_BY_NAME, partnerId, metaName)
                         .getJSONObject(0);
-        return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getInt(ID) : -1;
+        return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getLong(ID) : -1;
+    }
+
+    // TODO: check if it be used after completing functionality
+    public static Long loadBasicAssetStructMetaId() {
+        return getJsonArrayFromQueryResult(BASIC_META_SELECT, partnerId)
+                .getJSONObject(0)
+                .getLong(ID);
+    }
+
+    public static List<String> getAllAssetStructMetas(String type, int countItems) {
+        List<String> result = new ArrayList<>();
+        // TODO: ask developers about ids for assetStructMeta types
+        List<Integer> idTypes = new ArrayList<>();
+        idTypes.add(6);
+        idTypes.add(2);
+        idTypes.add(5);
+        idTypes.add(3);
+        int idOfType =-1;
+        switch (type) {
+            case "Text":
+                idOfType = idTypes.get(0);
+                break;
+            case "Number":
+                idOfType = idTypes.get(1);
+                break;
+            case "Date":
+                idOfType = idTypes.get(2);
+                break;
+            case "Boolean":
+                idOfType = idTypes.get(3);
+                break;
+            default:
+                // all types
+                break;
+        }
+
+        JSONArray dbResult;
+        if (idOfType ==-1) {
+            // if type was not specified
+            for (int i=0; i < idTypes.size(); i++) {
+                dbResult = getJsonArrayFromQueryResult(META_SELECT, countItems, 0, partnerId);
+                addSystemNamesFromResponse2List(result, dbResult);
+            }
+        } else {
+            dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idOfType);
+            addSystemNamesFromResponse2List(result, dbResult);
+        }
+
+        return result;
+    }
+
+    static void addSystemNamesFromResponse2List(List<String> result, JSONArray dbResult) {
+        for (int i=0; i < dbResult.length(); i++) {
+            result.add(dbResult.getJSONObject(i).getString("system_name"));
+        }
     }
 }

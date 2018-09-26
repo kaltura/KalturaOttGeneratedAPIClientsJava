@@ -1,17 +1,9 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 
-import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.*;
-import com.kaltura.client.services.AssetService.RemoveMetasAndTagsAssetBuilder;
-import com.kaltura.client.services.AssetService.GetAssetBuilder;
-import com.kaltura.client.services.AssetStructMetaService.ListAssetStructMetaBuilder;
-import com.kaltura.client.services.AssetStructMetaService.UpdateAssetStructMetaBuilder;
-import com.kaltura.client.services.AssetStructService.AddAssetStructBuilder;
-import com.kaltura.client.services.AssetStructService.DeleteAssetStructBuilder;
-import com.kaltura.client.services.AssetStructService.ListAssetStructBuilder;
-import com.kaltura.client.services.AssetStructService.UpdateAssetStructBuilder;
+import com.kaltura.client.services.AssetStructService.*;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
+import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Link;
@@ -20,16 +12,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
-import static com.kaltura.client.test.tests.enums.MediaType.MOVIE;
-import static com.kaltura.client.test.utils.AssetStructMetaUtils.getAssetStructMeta;
+
+import static com.kaltura.client.test.utils.AssetStructMetaUtils.loadAssetStructMeta;
 import static com.kaltura.client.test.utils.AssetStructUtils.getAssetStruct;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
-import static com.kaltura.client.test.utils.dbUtils.DBUtils.getMetaIdByName;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.getVodData;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -43,34 +29,43 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     private String metaIds;
     private Response<ListResponse<AssetStruct>> sharedAssetStructListResponse;
     private AssetStruct sharedAssetStruct1, sharedAssetStruct2;
+    private AssetStructMeta sharedMetaString1, sharedMetaString2, sharedMetaNumber1, sharedMetaNumber2;
+    private AssetStructMeta sharedMetaDate1, sharedMetaDate2, sharedMetaBoolean1, sharedMetaBoolean2;
+    private String sharedBasicMetaIds;
 
     @BeforeClass()
     public void setUp() {
         // TODO: check if assetStructList be useful at the end
         // assetStructList to fill default metaIds
-        AssetStructFilter filter = new AssetStructFilter();
-        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
-        sharedAssetStructListResponse = executor.executeSync(listAssetStructBuilder
-                .setKs(getOperatorKs()));
-        assertThat(sharedAssetStructListResponse.results.getTotalCount()).isGreaterThan(0);
-        metaIds = sharedAssetStructListResponse.results.getObjects().get(0).getMetaIds();
+//        AssetStructFilter filter = new AssetStructFilter();
+//        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+//        sharedAssetStructListResponse = executor.executeSync(listAssetStructBuilder
+//                .setKs(getOperatorKs()));
+//        assertThat(sharedAssetStructListResponse.results.getTotalCount()).isGreaterThan(0);
+//        metaIds = sharedAssetStructListResponse.results.getObjects().get(0).getMetaIds();
+
+        // identify shared assetStructMetas
+        List<String> assetStructNames = DBUtils.getAllAssetStructMetas("", 2);
+        sharedMetaString1 = loadAssetStructMeta(assetStructNames.get(0));
+        sharedMetaString2 = loadAssetStructMeta(assetStructNames.get(1));
+        sharedMetaNumber1 = loadAssetStructMeta(assetStructNames.get(2));
+        sharedMetaNumber2 = loadAssetStructMeta(assetStructNames.get(3));
+        sharedMetaDate1 = loadAssetStructMeta(assetStructNames.get(4));
+        sharedMetaDate2 = loadAssetStructMeta(assetStructNames.get(5));
+        sharedMetaBoolean1 = loadAssetStructMeta(assetStructNames.get(6));
+        sharedMetaBoolean2 = loadAssetStructMeta(assetStructNames.get(7));
+        // TODO: ask Lior why ONLY these ids are obvious when DB has more basic metas?
+        sharedBasicMetaIds = "58,629,1482,1493,1494,1495,1496,1497,566";//loadBasicAssetStructMetaId();
 
         // create shared assetStruct1
         String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
-        sharedAssetStruct1 = getAssetStruct(prefix, "eng", false, metaIds, null, null, null);
-        AddAssetStructBuilder addAssetStructBuilder = AssetStructService.add(sharedAssetStruct1);
-        Response<AssetStruct> assetStructResponse = executor.executeSync(addAssetStructBuilder
-                .setKs(getOperatorKs()).setLanguage("*"));
-        sharedAssetStruct1 = assetStructResponse.results;
-        assertThat(sharedAssetStruct1.getSystemName()).isEqualToIgnoringCase(prefix + "_System_name");
+        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        sharedAssetStruct1 = createAssetStruct(prefix, metaIds);
+
         // create shared assetStruct2
         prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
-        sharedAssetStruct2 = getAssetStruct(prefix, "eng", false, metaIds, null, null, null);
-        addAssetStructBuilder = AssetStructService.add(sharedAssetStruct2);
-        assetStructResponse = executor.executeSync(addAssetStructBuilder
-                .setKs(getOperatorKs()).setLanguage("*"));
-        sharedAssetStruct2 = assetStructResponse.results;
-        assertThat(sharedAssetStruct2.getSystemName()).isEqualToIgnoringCase(prefix + "_System_name");
+        metaIds = sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
+        sharedAssetStruct2 = createAssetStruct(prefix, metaIds);
     }
 
     @Test
@@ -93,29 +88,78 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 
     @Test
     public void testCreateInheritance() {
-        // add assetStruct1 with fields to connect
-        // add assetStruct2 with fields to connect
-        // check fields have link as it can be done in API and additionally on Tvm
+        // create assetStruct1
+        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
+        AssetStruct assetStruct1 = createAssetStruct(prefix, metaIds);
+        // create assetStruct2
+        metaIds = sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
+        AssetStruct assetStruct2 = createAssetStruct(prefix, metaIds);
 
+        // set inheritance
+        AssetStruct assetStruct2Update = copyAssetStructObject(assetStruct2);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStruct1.getId(),
+                sharedMetaString1.getMetaId(), sharedMetaString2.getMetaId());
+        updateAssetStruct(assetStruct2.getId(), assetStruct2Update);
 
-        List<AssetStruct> assetStructs = loadAssetStructsWithoutHierarchy(3, sharedAssetStructListResponse.results.getObjects());
-        AssetStruct assetStructGrandParent = assetStructs.get(0);
-        AssetStruct assetStructParent = assetStructs.get(1);
-        AssetStruct assetStructChildren = assetStructs.get(2);
+        // check parent doesn't have changes in related inheritance fields
+        AssetStructFilter filter = new AssetStructFilter();
+        filter.setIdIn(assetStruct1.getId().toString());
+        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getOperatorKs()));
+        AssetStruct assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+        assertThat(assetStructFromResponse.getParentId()).isEqualTo(0L);
+        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(0L);
+        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(0L);
 
-        /*System.out.println(assetStructGrandParent.getId());
-        System.out.println(assetStructParent.getId());
-        System.out.println(assetStructChildren.getId());
+        // check children asset struct has changes
+        filter.setIdIn(assetStruct2.getId().toString());
+        listAssetStructBuilder = AssetStructService.list(filter);
+        assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getOperatorKs()));
+        assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStruct1.getId());
+        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
+        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
 
-        System.out.println(assetStructGrandParent.getMetaIds());
-        System.out.println(assetStructParent.getMetaIds());
-        System.out.println(assetStructChildren.getMetaIds());*/
-
-        // TODO: complete
-        //assetStructParent.setConnectedParentMetaId();
-        //UpdateAssetStructBuilder updateAssetStructBuilder = AssetStructService.update(assetStructParent.getId(), assetStructParent);
+        // remove assetStructs
+        deleteAssetStruct(assetStruct2.getId()); // firstly should be deleted children
+        deleteAssetStruct(assetStruct1.getId());
     }
 
+    AssetStruct copyAssetStructObject(AssetStruct assetStruct2Copy) {
+        AssetStruct result = new AssetStruct();
+        result.setConnectedParentMetaId(assetStruct2Copy.getConnectedParentMetaId());
+        result.setConnectingMetaId(assetStruct2Copy.getConnectingMetaId());
+        result.setParentId(assetStruct2Copy.getParentId());
+        result.setMetaIds(assetStruct2Copy.getMetaIds());
+        result.setSystemName(assetStruct2Copy.getSystemName());
+        result.setIsProtected(assetStruct2Copy.getIsProtected());
+        result.setPluralName(assetStruct2Copy.getPluralName());
+        result.setMultilingualName(assetStruct2Copy.getMultilingualName());
+        result.setFeatures(assetStruct2Copy.getFeatures());
+
+        return result;
+    }
+
+    void setInheritanceFieldsInAssetStruct(AssetStruct assetStruct, Long parentAssetStructId,
+                                           Long connectedParentMetaId, Long connectingMetaId) {
+        assetStruct.setParentId(parentAssetStructId);
+        assetStruct.setConnectedParentMetaId(connectedParentMetaId);
+        assetStruct.setConnectingMetaId(connectingMetaId);
+    }
+
+    void updateAssetStruct(Long assetStructId, AssetStruct updatedAssetStruct) {
+        UpdateAssetStructBuilder updateAssetStructBuilder = AssetStructService.update(
+                assetStructId, updatedAssetStruct);
+        Response<AssetStruct> assetStructResponse = executor.executeSync(updateAssetStructBuilder
+                        .setKs(getOperatorKs()).setLanguage("*"));
+        assertThat(assetStructResponse.results).isNotNull();
+    }
+
+    // TODO: Check if it used after implementation
     private List<AssetStruct> loadAssetStructsWithoutHierarchy(int countOfAssetStructs, List<AssetStruct> listOfAssetStructs) {
         List<AssetStruct> result = new ArrayList<>();
         for (AssetStruct assetStruct: listOfAssetStructs) {
@@ -252,14 +296,28 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     @AfterClass()
     public void tearDown() {
         // cleaning created shared assetStructs
-        DeleteAssetStructBuilder deleteAssetStructBuilder = AssetStructService.delete(sharedAssetStruct1.getId());
+        deleteAssetStruct(sharedAssetStruct1.getId());
+        deleteAssetStruct(sharedAssetStruct2.getId());
+    }
+
+    void deleteAssetStruct(Long assetStructId) {
+        DeleteAssetStructBuilder deleteAssetStructBuilder = AssetStructService.delete(assetStructId);
         Response<Boolean> deleteAssetStructResponse = executor.executeSync(deleteAssetStructBuilder
                 .setKs(getOperatorKs()));
         assertThat(deleteAssetStructResponse.results.booleanValue()).isEqualTo(true);
+    }
 
-        deleteAssetStructBuilder = AssetStructService.delete(sharedAssetStruct2.getId());
-        deleteAssetStructResponse = executor.executeSync(deleteAssetStructBuilder
-                .setKs(getOperatorKs()));
-        assertThat(deleteAssetStructResponse.results.booleanValue()).isEqualTo(true);
+    AssetStruct createAssetStruct(String prefix, String metaIds) {
+        AssetStruct result = getAssetStruct(prefix, "eng", false, metaIds, null,
+                null, null);
+
+        AddAssetStructBuilder addAssetStructBuilder = AssetStructService.add(result);
+        Response<AssetStruct> assetStructResponse = executor.executeSync(addAssetStructBuilder
+                .setKs(getOperatorKs()).setLanguage("*"));
+        result = assetStructResponse.results;
+
+        assertThat(result.getSystemName()).isEqualToIgnoringCase(prefix + "_System_name");
+
+        return result;
     }
 }
