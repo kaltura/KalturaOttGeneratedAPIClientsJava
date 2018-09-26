@@ -74,6 +74,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         private Map<String, String> dates;
         private Map<String, Double> numbers;
         private Map<String, Boolean> booleans;
+        private Map<String, String> multiLingualName;
 
         private List<String> thumbRatios;
         private List<VodFile> files;
@@ -122,9 +123,6 @@ public class IngestVodUtils extends BaseIngestUtils {
         @Setter
         private String ppvModule;
 
-
-        public VodFile() {}
-
         public VodFile(String type, String ppvModule) {
             quality = "HIGH";
             handling_type = "CLIP";
@@ -139,7 +137,6 @@ public class IngestVodUtils extends BaseIngestUtils {
             this.type = type;
             this.ppvModule = ppvModule;
         }
-
     }
 
     /**
@@ -301,6 +298,19 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         if (action.equals(DELETE)) {
             return uncommentCdataSection(docToString(doc));
+        }
+
+        // multilingual name
+        if (vodData.multiLingualName() != null) {
+            vodData.name(null);
+
+            Element nameElement = (Element) media.getElementsByTagName("name").item(0);
+            vodData.multiLingualName().forEach((lang, name) -> {
+                Element value = doc.createElement("value");
+                value.setAttribute("lang", lang);
+                value.setTextContent(name);
+                nameElement.appendChild(value);
+            });
         }
 
         // name
