@@ -448,8 +448,19 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(description = "ingest VOD with empty images and thumb fields")
-    public void insertVodMediaBaseEmptyImagesAndFields() {
+    @Test(description = "ingest VOD with empty images urls")
+    public void insertVodMediaBaseWithEmptyImageUrl() {
+        // empty thumb tag
+        VodData vodData = getVodData(MOVIE, INSERT).thumbUrl("");
+        String ingestXml = buildIngestVodXml(vodData, INSERT);
+
+        Response resp = executeIngestVodRequest(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageInvalidUrlForImage");
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Test(description = "ingest VOD files with same coguid")
+    public void insertVodMediaBaseFilesWithSameCoguid() {
         // empty images tag
         VodData vodData = getVodData(MOVIE, INSERT);
         long epoch = getEpoch();
@@ -459,13 +470,6 @@ public class IngestVodOpcTests extends BaseTest {
 
         Response resp = executeIngestVodRequest(ingestXml);
         assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUnique");
-
-        // empty thumb tag
-        VodData vodData1 = getVodData(MOVIE, INSERT).thumbUrl("");
-        ingestXml = buildIngestVodXml(vodData1, INSERT);
-
-        resp = executeIngestVodRequest(ingestXml);
-        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageInvalidUrlForImage");
     }
 
     @Issue("BEO-5584")

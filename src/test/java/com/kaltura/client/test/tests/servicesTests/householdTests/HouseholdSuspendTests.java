@@ -463,7 +463,7 @@ public class HouseholdSuspendTests extends BaseTest {
         assertThat(booleanResponse.results).isTrue();
     }
 
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void suspend_with_renew_subscription_role_after_wait() {
         // get productprice list for asset in subscription - after renew
         Asset asset = SubscriptionUtils.getAssetsListBySubscription(Integer.parseInt(fiveMinRenewSubscriptionSlowTest.getId()), Optional.empty(), false).get(0);
