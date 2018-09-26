@@ -74,6 +74,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         private Map<String, String> dates;
         private Map<String, Double> numbers;
         private Map<String, Boolean> booleans;
+        private Map<String, String> multiLingualName;
 
         private List<String> thumbRatios;
         private List<VodFile> files;
@@ -130,8 +131,8 @@ public class IngestVodUtils extends BaseIngestUtils {
             alt_cdn_code = "http://alt_cdntesting.qa.mkaltura.com/p/231/sp/23100/playManifest/entryId/0_3ugsts44/format/hdnetworkmanifest/tags/mbr/protocol/http/f/a.a4m";
             billing_type = "Tvinci";
             product_code = "productExampleCode";
-
             assetDuration = "1000";
+
             coguid = "file_" + getEpoch() + "_" + getRandomLong();
             this.type = type;
             this.ppvModule = ppvModule;
@@ -297,6 +298,19 @@ public class IngestVodUtils extends BaseIngestUtils {
 
         if (action.equals(DELETE)) {
             return uncommentCdataSection(docToString(doc));
+        }
+
+        // multilingual name
+        if (vodData.multiLingualName() != null) {
+            vodData.name(null);
+
+            Element nameElement = (Element) media.getElementsByTagName("name").item(0);
+            vodData.multiLingualName().forEach((lang, name) -> {
+                Element value = doc.createElement("value");
+                value.setAttribute("lang", lang);
+                value.setTextContent(name);
+                nameElement.appendChild(value);
+            });
         }
 
         // name

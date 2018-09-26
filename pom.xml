@@ -15,7 +15,7 @@
 
     <packaging>jar</packaging>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.10</java.version>
         <aspectj.version>1.8.10</aspectj.version>
     </properties>
 
@@ -225,13 +225,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.apache.commons</groupId>-->
-            <!--<artifactId>commons-vfs2</artifactId>-->
-            <!--<version>2.2</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
@@ -249,7 +242,6 @@
 
     <build>
         <plugins>
-
             <!-- Use java version 1.6 to compile the code -->
             <!-- This may not be a strict requirement, so may want to loosen in future -->
             <plugin>
@@ -263,12 +255,14 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.10</source>
+                    <target>1.10</target>
                 </configuration>
             </plugin>
 
@@ -361,7 +355,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
@@ -371,7 +364,6 @@
                 </configuration>
                 <!-- to generate report after build run command: mvn clean test allure:serve or mvn clean test allure:report -->
             </plugin>
-
         </plugins>
     </build>
 

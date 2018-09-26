@@ -20,19 +20,11 @@ import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.VodFile;
 
 public class IngestVodOpcUtils extends BaseIngestUtils {
 
-    private static String name;
-    private static String description;
     private static String stringMetaValue;
     private static String dateMetaValue;
     private static double numberMetaValue;
     private static boolean booleanMetaValue;
     private static List<String> tagMetaValue;
-
-    private static final String FILE_TYPE_1 = "Test130301";
-    private static final String FILE_TYPE_2 = "new file type1";
-
-    public static final String EMPTY_FILE_1_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_1 + "\"/>\n";
-    public static final String EMPTY_FILE_2_TAG = "<file PPV_MODULE=\"\" alt_cdn_code=\"\" assetDuration=\"\" billing_type=\"\" cdn_code=\"\" cdn_name=\"\" co_guid=\"\" handling_type=\"\" product_code=\"\" quality=\"\" type=\"" + FILE_TYPE_2 + "\"/>\n";
 
     // TODO: how to get these data from DB or request?
     // Movie fields
@@ -57,14 +49,14 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
     public static final String seriesTagFieldName = "Studio";
 
     // fields & values
-    public static HashMap<String, String> stringMetaMap = new HashMap<>();
-    public static HashMap<String, Double> numberMetaMap = new HashMap<>();
-    public static HashMap<String, Boolean> booleanHashMap = new HashMap<>();
-    public static HashMap<String, String> datesMetaMap = new HashMap<>();
-    public static HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
+    private static HashMap<String, String> stringMetaMap = new HashMap<>();
+    private static HashMap<String, Double> numberMetaMap = new HashMap<>();
+    private static HashMap<String, Boolean> booleanHashMap = new HashMap<>();
+    private static HashMap<String, String> datesMetaMap = new HashMap<>();
+    private static HashMap<String, List<String>> tagsMetaMap = new HashMap<>();
 
-    public static String tagValue1 = "Jack Nicholson";
-    public static String tagValue2 = "Natalie Portman";
+    private static String tagValue1 = "Jack Nicholson";
+    private static String tagValue2 = "Natalie Portman";
 
     public static VodData getVodData(MediaType mediaType, IngestAction action) {
         if (action == INSERT) {
@@ -75,9 +67,6 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
 
         VodData data = new VodData()
                 .setDefaultValues()
-//                .name(name)
-//                .description(description)
-//                .thumbUrl(DEFAULT_THUMB)
                 .strings(stringMetaMap)
                 .booleans(booleanHashMap)
                 .numbers(numberMetaMap)
@@ -198,18 +187,5 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
             }
         }
         return false;
-    }
-
-    public static String getUpdatedIngestXml(String ingestXml, String openTag2Update, String closeTag2Update, String updateOnString) {
-        int positionBeginTag = ingestXml.indexOf(openTag2Update);
-        int positionEndTag;
-        if ("/>".equals(closeTag2Update)) {
-            positionEndTag = ingestXml.indexOf(closeTag2Update, positionBeginTag);
-        } else {
-            positionEndTag = ingestXml.indexOf(closeTag2Update);
-        }
-
-        String string2Delete = ingestXml.substring(positionBeginTag, positionEndTag + closeTag2Update.length());
-        return ingestXml.replace(string2Delete, updateOnString);
     }
 }

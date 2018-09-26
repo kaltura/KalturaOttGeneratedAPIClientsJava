@@ -5,6 +5,7 @@ import com.kaltura.client.services.AssetService;
 import com.kaltura.client.services.PpvService;
 import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.utils.BaseUtils;
 import com.kaltura.client.test.utils.KsqlBuilder;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.types.*;
@@ -18,6 +19,7 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -351,37 +353,37 @@ public class IngestVodOpcTests extends BaseTest {
         assertThat(from(resp.asString()).getString(ingestStatusPath)).isEqualTo(status);
     }
 
-//    @Severity(SeverityLevel.NORMAL)
-//    @Test(description = "try insert with invalid meta or tag field")
-//    public void insertWithInvalidMetaOrTagField() {
-//        String suffix = "_" + getEpoch();
-//        VodData vodData = getVodData(MOVIE, INSERT);
-//
-//        String updatedField = mediaNumberFieldName + suffix;
-//        vodData.numbers(Map.of(updatedField, getRandomDouble()));
-//        assertInvalidMovieField(vodData, updatedField, "meta");
-//        vodData.numbers(Map.of());
-//
-//        updatedField = mediaBooleanFieldName + suffix;
-//        vodData.booleans(Map.of(updatedField, getRandomBoolean()));
-//        assertInvalidMovieField(vodData, updatedField, "meta");
-//        vodData.booleans(Map.of());
-//
-//        updatedField = mediaTagFieldName + suffix;
-//        vodData.tags(Map.of(updatedField, List.of(String.valueOf(getEpochInMillis()))));
-//        assertInvalidMovieField(vodData, updatedField, "tag");
-//        vodData.tags(Map.of());
-//
-//        updatedField = mediaTextFieldName + suffix;
-//        vodData.strings(Map.of(updatedField, getRandomString()));
-//        assertInvalidMovieField(vodData, updatedField, "meta");
-//        vodData.strings(Map.of());
-//
-//        updatedField = mediaDateFieldName + suffix;
-//        vodData.dates(Map.of(updatedField, BaseUtils.getCurrentDateInFormat("yyyyMMddHHmmss")));
-//        assertInvalidMovieField(vodData, updatedField, "meta");
-//        vodData.dates(Map.of());
-//    }
+    @Severity(SeverityLevel.NORMAL)
+    @Test(description = "try insert with invalid meta or tag field")
+    public void insertWithInvalidMetaOrTagField() {
+        String suffix = "_" + getEpoch();
+        VodData vodData = getVodData(MOVIE, INSERT);
+
+        String updatedField = mediaNumberFieldName + suffix;
+        vodData.numbers(Map.of(updatedField, getRandomDouble()));
+        assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.numbers(Map.of());
+
+        updatedField = mediaBooleanFieldName + suffix;
+        vodData.booleans(Map.of(updatedField, getRandomBoolean()));
+        assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.booleans(Map.of());
+
+        updatedField = mediaTagFieldName + suffix;
+        vodData.tags(Map.of(updatedField, List.of(String.valueOf(getEpochInMillis()))));
+        assertInvalidMovieField(vodData, updatedField, "tag");
+        vodData.tags(Map.of());
+
+        updatedField = mediaTextFieldName + suffix;
+        vodData.strings(Map.of(updatedField, getRandomString()));
+        assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.strings(Map.of());
+
+        updatedField = mediaDateFieldName + suffix;
+        vodData.dates(Map.of(updatedField, BaseUtils.getCurrentDateInFormat("yyyyMMddHHmmss")));
+        assertInvalidMovieField(vodData, updatedField, "meta");
+        vodData.dates(Map.of());
+    }
 
     @Severity(SeverityLevel.NORMAL)
     @Test(description = "insert multilingual fields", enabled = false)
@@ -446,8 +448,19 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.MINOR)
-    @Test(description = "ingest VOD with empty images and thumb fields")
-    public void insertVodMediaBaseEmptyImagesAndFields() {
+    @Test(description = "ingest VOD with empty images urls")
+    public void insertVodMediaBaseWithEmptyImageUrl() {
+        // empty thumb tag
+        VodData vodData = getVodData(MOVIE, INSERT).thumbUrl("");
+        String ingestXml = buildIngestVodXml(vodData, INSERT);
+
+        Response resp = executeIngestVodRequest(ingestXml);
+        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageInvalidUrlForImage");
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Test(description = "ingest VOD files with same coguid")
+    public void insertVodMediaBaseFilesWithSameCoguid() {
         // empty images tag
         VodData vodData = getVodData(MOVIE, INSERT);
         long epoch = getEpoch();
@@ -457,13 +470,6 @@ public class IngestVodOpcTests extends BaseTest {
 
         Response resp = executeIngestVodRequest(ingestXml);
         assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("MediaFileExternalIdMustBeUnique");
-
-        // empty thumb tag
-        VodData vodData1 = getVodData(MOVIE, INSERT).thumbUrl("");
-        ingestXml = buildIngestVodXml(vodData1, INSERT);
-
-        resp = executeIngestVodRequest(ingestXml);
-        assertThat(from(resp.asString()).getString(ingestAssetStatusWarningMessagePath)).contains("InvalidUrlForImageInvalidUrlForImage");
     }
 
     @Issue("BEO-5584")
