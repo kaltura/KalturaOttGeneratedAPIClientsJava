@@ -12,3 +12,4 @@ src/test/resources/db_utils_list.txt
 src/test/resources/utils_list.txt
 src/test/resources/testXml.xml
 logs/
+surefire/
