@@ -64,7 +64,7 @@ public class BookmarkAddTests extends BaseTest {
         assertThat(booleanResponse.error).isNull();
     }
     @Description("bookmark/action/add - first play")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void firstPlayback_after_wait() {
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 15;
@@ -118,7 +118,7 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - pause")
-    @Test(groups = {"slowAfter"}, dependsOnMethods = {"pausePlayback_before_wait"})
+    @Test(groups = {"slowAfter"}, dependsOnMethods = {"pausePlayback_before_wait"}, alwaysRun = true)
     private void pausePlayback_after_wait() {
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 15;
@@ -156,7 +156,7 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - 95% watching == finish watching")
-    @Test(groups = {"slowAfter"}, dependsOnMethods = {"watchingNinetyFive_before_wait"})
+    @Test(groups = {"slowAfter"}, dependsOnMethods = {"watchingNinetyFive_before_wait"}, alwaysRun = true)
     private void watchingNinetyFive_after_wait() {
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 15;
@@ -192,7 +192,7 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - back to start - position:0")
-    @Test(groups = {"slowAfter"}, dependsOnMethods = {"backToStart_before_wait"})
+    @Test(groups = {"slowAfter"}, dependsOnMethods = {"backToStart_before_wait"}, alwaysRun = true)
     private void backToStart_after_wait() {
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 15;
@@ -230,7 +230,7 @@ public class BookmarkAddTests extends BaseTest {
     }
 
     @Description("bookmark/action/add - finish watching")
-    @Test(groups = {"slowAfter"}, dependsOnMethods = {"finishWatching_before_wait"})
+    @Test(groups = {"slowAfter"}, dependsOnMethods = {"finishWatching_before_wait"}, alwaysRun = true)
     private void finishWatching_after_wait() {
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 15;

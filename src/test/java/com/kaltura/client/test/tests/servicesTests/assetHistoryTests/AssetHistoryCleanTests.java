@@ -100,7 +100,7 @@ public class AssetHistoryCleanTests extends BaseTest {
     }
 
     @Description("assetHistory/action/clean - no filtering")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void cleanHistory_after_wait() {
         // assetHistory/action/list - both assets should returned
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -170,7 +170,7 @@ public class AssetHistoryCleanTests extends BaseTest {
     }
 
     @Description("assetHistory/action/clean - filtered by asset id")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void cleanSpecifcAssetHistory_after_wait() {
         // assetHistory/action/clean
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -239,7 +239,7 @@ public class AssetHistoryCleanTests extends BaseTest {
     }
 
     @Description("assetHistory/action/clean - filtered by asset type")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void cleanSpecifcAssetTypeHistory_after_wait() {
         //assetHistory/action/clean - only episode type (episode)
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -308,7 +308,7 @@ public class AssetHistoryCleanTests extends BaseTest {
     }
 
     @Description("assetHistory/action/clean - filtered by asset finished")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void cleanAssetsAccordingToWatchStatusDone_after_wait() {
         //assetHistory/action/clean - only asset that were finished (episode)
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -375,7 +375,7 @@ public class AssetHistoryCleanTests extends BaseTest {
     }
 
     @Description("assetHistory/action/clean - filtered by asset in progress")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void cleanAssetsAccordingToWatchStatusProgress_after_wait() {
         // assetHistory/action/clean - only asset that in progress (movie)
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();

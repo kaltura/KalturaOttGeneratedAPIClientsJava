@@ -36,6 +36,9 @@ public class DBConstants {
 
     static final String AND_ACTIVE_STATUS = " and u.activate_status=1";
 
+    static final String BASIC_META_SELECT = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
+            "WHERE [STATUS]=1 AND IS_BASIC=1 AND GROUP_ID=?\n";
+
     static final String RESET_PASSWORD_TOKEN_SELECT = "SELECT [CP_TOKEN] FROM [Users].[dbo].[users] WHERE [USERNAME] = ?";
 
     static final String CHANNEL_EXPRESSION_SELECT = "select t.tag_type_id as tag_name, t.value as tag_value\n" +
@@ -83,6 +86,9 @@ public class DBConstants {
     static final String INGEST_ITEMS_DATA_SELECT = "select TOP (1) *\n" +
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=? and is_active=1 and [status]=1 order by UPDATE_DATE DESC";
+
+    static final String META_SELECT = "SELECT TOP (?) * FROM [TVinci].[dbo].[topics]\n" +
+            "WHERE IS_BASIC=? AND GROUP_ID=? AND [STATUS]=1";
 
     static final String META_OR_TAG_SELECT_BY_NAME = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
             "WHERE [STATUS]=1 AND GROUP_ID=? AND SYSTEM_NAME=?\n";

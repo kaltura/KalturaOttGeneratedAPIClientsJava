@@ -101,7 +101,7 @@ public class AssetHistoryListTests extends BaseTest {
     }
 
     @Description("assetHistory/action/list - with no filter and one device and two media")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void assetHistory_vod_with_one_device_and_two_media_after_wait() {
         // assetHistory/action/list - both assets should returned
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -185,7 +185,7 @@ public class AssetHistoryListTests extends BaseTest {
     }
 
     @Description("assetHistory/action/list - with no filter and two devices and one media")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void assetHistory_vod_with_two_devices_and_one_media_after_wait() {
         // assetHistory/action/list - both assets should returned
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -265,7 +265,7 @@ public class AssetHistoryListTests extends BaseTest {
     }
 
     @Description("assetHistory/action/list - filtered by movie asset id")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void vodAssetHistoryFilteredByAssetId_after_wait() {
         //assetHistory/action/list - filter by asset 2 id
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -336,7 +336,7 @@ public class AssetHistoryListTests extends BaseTest {
     }
 
     @Description("assetHistory/action/list - filtered by movie type id")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void vodAssetHistoryFilteredByAssetType_after_wait() {
         //assetHistory/action/list - filter by in progress assets only
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();
@@ -397,7 +397,7 @@ public class AssetHistoryListTests extends BaseTest {
     }
 
     @Description("assetHistory/action/list - filtered by assets progress")
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void vodAssetHistoryFilteredByAssetProgress_after_wait() {
         //assetHistory/action/list - filter by in progress assets only
         AssetHistoryFilter assetHistoryFilter = new AssetHistoryFilter();

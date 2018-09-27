@@ -91,7 +91,7 @@ public class OttUserLoginWithPinTests extends BaseTest {
         userLoginPinResponse = executor.executeSync(addUserLoginPinBuilder);
     }
 
-    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"})
+    @Test(groups = {"slowAfter"}, dependsOnGroups = {"slowBefore"}, alwaysRun = true)
     private void loginWithPin_with_expired_pinCode_after_wait() {
         // prepare variables for await() functionality
         int delayBetweenRetriesInSeconds = 10;
