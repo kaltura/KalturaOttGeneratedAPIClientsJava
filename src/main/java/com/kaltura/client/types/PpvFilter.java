@@ -25,12 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.types;
 
-import com.kaltura.client.types.Ppv;
-import com.kaltura.client.types.PpvFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,47 +39,55 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class PpvService {
+/**
+ * Filtering Asset Struct Metas
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PpvFilter.Tokenizer.class)
+public class PpvFilter extends Filter {
 	
-	public static class GetPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, GetPpvBuilder> {
-		
-		public GetPpvBuilder(long id) {
-			super(Ppv.class, "ppv", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idIn();
 	}
 
 	/**
-	 * Returns ppv object by internal identifier
-	 * 
-	 * @param id ppv identifier
+	 * Comma separated identifiers
 	 */
-    public static GetPpvBuilder get(long id)  {
-		return new GetPpvBuilder(id);
+	private String idIn;
+
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
 	}
-	
-	public static class ListPpvBuilder extends ListResponseRequestBuilder<Ppv, Ppv.Tokenizer, ListPpvBuilder> {
-		
-		public ListPpvBuilder(PpvFilter filter) {
-			super(Ppv.class, "ppv", "list");
-			params.add("filter", filter);
-		}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public static ListPpvBuilder list()  {
-		return list(null);
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
-	/**
-	 * Returns all ppv objects
-	 * 
-	 * @param filter Filter parameters for filtering out the result
-	 */
-    public static ListPpvBuilder list(PpvFilter filter)  {
-		return new ListPpvBuilder(filter);
+
+	public PpvFilter() {
+		super();
 	}
+
+	public PpvFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPpvFilter");
+		kparams.add("idIn", this.idIn);
+		return kparams;
+	}
+
 }
+

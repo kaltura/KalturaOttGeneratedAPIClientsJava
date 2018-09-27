@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.AssetFilePpv;
 import com.kaltura.client.types.AssetFilePpvFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,6 +40,50 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class AssetFilePpvService {
+	
+	public static class AddAssetFilePpvBuilder extends RequestBuilder<AssetFilePpv, AssetFilePpv.Tokenizer, AddAssetFilePpvBuilder> {
+		
+		public AddAssetFilePpvBuilder(AssetFilePpv assetFilePpv) {
+			super(AssetFilePpv.class, "assetfileppv", "add");
+			params.add("assetFilePpv", assetFilePpv);
+		}
+	}
+
+	/**
+	 * Add asset file ppv
+	 * 
+	 * @param assetFilePpv asset file ppv
+	 */
+    public static AddAssetFilePpvBuilder add(AssetFilePpv assetFilePpv)  {
+		return new AddAssetFilePpvBuilder(assetFilePpv);
+	}
+	
+	public static class DeleteAssetFilePpvBuilder extends RequestBuilder<Boolean, String, DeleteAssetFilePpvBuilder> {
+		
+		public DeleteAssetFilePpvBuilder(long assetFileId, long ppvModuleId) {
+			super(Boolean.class, "assetfileppv", "delete");
+			params.add("assetFileId", assetFileId);
+			params.add("ppvModuleId", ppvModuleId);
+		}
+		
+		public void assetFileId(String multirequestToken) {
+			params.add("assetFileId", multirequestToken);
+		}
+		
+		public void ppvModuleId(String multirequestToken) {
+			params.add("ppvModuleId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete asset file ppv
+	 * 
+	 * @param assetFileId Asset file id
+	 * @param ppvModuleId Ppv module id
+	 */
+    public static DeleteAssetFilePpvBuilder delete(long assetFileId, long ppvModuleId)  {
+		return new DeleteAssetFilePpvBuilder(assetFileId, ppvModuleId);
+	}
 	
 	public static class ListAssetFilePpvBuilder extends ListResponseRequestBuilder<AssetFilePpv, AssetFilePpv.Tokenizer, ListAssetFilePpvBuilder> {
 		
@@ -55,5 +100,34 @@ public class AssetFilePpvService {
 	 */
     public static ListAssetFilePpvBuilder list(AssetFilePpvFilter filter)  {
 		return new ListAssetFilePpvBuilder(filter);
+	}
+	
+	public static class UpdateAssetFilePpvBuilder extends RequestBuilder<AssetFilePpv, AssetFilePpv.Tokenizer, UpdateAssetFilePpvBuilder> {
+		
+		public UpdateAssetFilePpvBuilder(long assetFileId, long ppvModuleId, AssetFilePpv assetFilePpv) {
+			super(AssetFilePpv.class, "assetfileppv", "update");
+			params.add("assetFileId", assetFileId);
+			params.add("ppvModuleId", ppvModuleId);
+			params.add("assetFilePpv", assetFilePpv);
+		}
+		
+		public void assetFileId(String multirequestToken) {
+			params.add("assetFileId", multirequestToken);
+		}
+		
+		public void ppvModuleId(String multirequestToken) {
+			params.add("ppvModuleId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update assetFilePpv
+	 * 
+	 * @param assetFileId Asset file id
+	 * @param ppvModuleId Ppv module id
+	 * @param assetFilePpv assetFilePpv
+	 */
+    public static UpdateAssetFilePpvBuilder update(long assetFileId, long ppvModuleId, AssetFilePpv assetFilePpv)  {
+		return new UpdateAssetFilePpvBuilder(assetFileId, ppvModuleId, assetFilePpv);
 	}
 }
