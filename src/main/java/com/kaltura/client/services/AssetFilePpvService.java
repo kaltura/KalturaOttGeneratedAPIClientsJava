@@ -27,9 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Ppv;
+import com.kaltura.client.types.AssetFilePpv;
+import com.kaltura.client.types.AssetFilePpvFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,40 +38,22 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class PpvService {
+public class AssetFilePpvService {
 	
-	public static class GetPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, GetPpvBuilder> {
+	public static class ListAssetFilePpvBuilder extends ListResponseRequestBuilder<AssetFilePpv, AssetFilePpv.Tokenizer, ListAssetFilePpvBuilder> {
 		
-		public GetPpvBuilder(long id) {
-			super(Ppv.class, "ppv", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
+		public ListAssetFilePpvBuilder(AssetFilePpvFilter filter) {
+			super(AssetFilePpv.class, "assetfileppv", "list");
+			params.add("filter", filter);
 		}
 	}
 
 	/**
-	 * Returns ppv object by internal identifier
+	 * Return a list of asset files ppvs for the account with optional filter
 	 * 
-	 * @param id ppv identifier
+	 * @param filter Filter parameters for filtering out the result
 	 */
-    public static GetPpvBuilder get(long id)  {
-		return new GetPpvBuilder(id);
-	}
-	
-	public static class ListPpvBuilder extends ListResponseRequestBuilder<Ppv, Ppv.Tokenizer, ListPpvBuilder> {
-		
-		public ListPpvBuilder() {
-			super(Ppv.class, "ppv", "list");
-		}
-	}
-
-	/**
-	 * Returns all ppv objects
-	 */
-    public static ListPpvBuilder list()  {
-		return new ListPpvBuilder();
+    public static ListAssetFilePpvBuilder list(AssetFilePpvFilter filter)  {
+		return new ListAssetFilePpvBuilder(filter);
 	}
 }
