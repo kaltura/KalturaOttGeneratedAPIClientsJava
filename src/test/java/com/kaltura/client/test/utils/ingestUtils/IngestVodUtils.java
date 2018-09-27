@@ -70,11 +70,15 @@ public class IngestVodUtils extends BaseIngestUtils {
         private MediaType mediaType;
 
         private Map<String, List<String>> tags;
-        private Map<String, String> strings;
-        private Map<String, String> dates;
-        private Map<String, Double> numbers;
-        private Map<String, Boolean> booleans;
-        private Map<String, String> multiLingualName;
+        private Map<String, String> stringsMeta;
+        private Map<String, String> datesMeta;
+        private Map<String, Double> numbersMeta;
+        private Map<String, Boolean> booleansMeta;
+
+        private Map<String, String> multilingualName;
+        private Map<String, String> multilingualDescription;
+        private Map<String, Map<String, String>> multilingualStringsMeta;
+        private Map<String, List<Map<String, String>>> multilingualTags;
 
         private List<String> thumbRatios;
         private List<VodFile> files;
@@ -91,14 +95,39 @@ public class IngestVodUtils extends BaseIngestUtils {
             endDate = endDateValue;
             mediaType = MediaType.MOVIE;
             tags = getDefaultTags();
-            strings = getDefaultStrings();
-            dates = getDefaultDates();
-            numbers = getDefaultNumbers();
-            ppvWebName =  ppvNames.get(0);
-            ppvMobileName =  ppvNames.get(1);
+            stringsMeta = getDefaultStrings();
+            datesMeta = getDefaultDates();
+            numbersMeta = getDefaultNumbers();
+            ppvWebName = ppvNames.get(0);
+            ppvMobileName = ppvNames.get(1);
             files = getDefaultAssetFiles(ppvWebName, ppvMobileName);
             thumbRatios = Arrays.asList("4:3", "16:9");
 
+            return this;
+        }
+
+        // custom setters for multilingual fields to reset the parallel regular fields
+        public VodData multilingualName(Map<String, String> multilingualName) {
+            this.name = null;
+            this.multilingualName = multilingualName;
+            return this;
+        }
+
+        public VodData multilingualDescription(Map<String, String> multilingualDescription) {
+            this.description = null;
+            this.multilingualDescription = multilingualDescription;
+            return this;
+        }
+
+        public VodData multilingualStringsMeta(Map<String, Map<String, String>> multilingualStringsMeta) {
+            this.stringsMeta = null;
+            this.multilingualStringsMeta = multilingualStringsMeta;
+            return this;
+        }
+
+        public VodData multilingualTags(Map<String, List<Map<String, String>>> multilingualTags) {
+            this.tags = null;
+            this.multilingualTags = multilingualTags;
             return this;
         }
     }
@@ -178,20 +207,20 @@ public class IngestVodUtils extends BaseIngestUtils {
             if (vodData.tags == null) {
                 vodData.tags = getDefaultTags();
             }
-            if (vodData.strings == null) {
-                vodData.strings = getDefaultStrings();
+            if (vodData.stringsMeta == null) {
+                vodData.stringsMeta = getDefaultStrings();
             }
-            if (vodData.dates == null) {
-                vodData.dates = getDefaultDates();
+            if (vodData.datesMeta == null) {
+                vodData.datesMeta = getDefaultDates();
             }
-            if (vodData.numbers == null) {
-                vodData.numbers = getDefaultNumbers();
+            if (vodData.numbersMeta == null) {
+                vodData.numbersMeta = getDefaultNumbers();
             }
             if (vodData.ppvWebName == null) {
-                vodData.ppvWebName =  ppvNames.get(0);
+                vodData.ppvWebName = ppvNames.get(0);
             }
             if (vodData.ppvMobileName == null) {
-                vodData.ppvMobileName =  ppvNames.get(1);
+                vodData.ppvMobileName = ppvNames.get(1);
             }
             if (vodData.files == null) {
                 vodData.files = getDefaultAssetFiles(vodData.ppvWebName, vodData.ppvMobileName);
@@ -300,19 +329,6 @@ public class IngestVodUtils extends BaseIngestUtils {
             return uncommentCdataSection(docToString(doc));
         }
 
-        // multilingual name
-        if (vodData.multiLingualName() != null) {
-            vodData.name(null);
-
-            Element nameElement = (Element) media.getElementsByTagName("name").item(0);
-            vodData.multiLingualName().forEach((lang, name) -> {
-                Element value = doc.createElement("value");
-                value.setAttribute("lang", lang);
-                value.setTextContent(name);
-                nameElement.appendChild(value);
-            });
-        }
-
         // name
         if (vodData.name() != null) {
             Element nameElement = (Element) media.getElementsByTagName("name").item(0);
@@ -373,10 +389,10 @@ public class IngestVodUtils extends BaseIngestUtils {
             media.getElementsByTagName("geo_block_rule").item(0).setTextContent(vodData.geoBlockRule());
         }
 
-        // strings
-        if (vodData.strings() != null) {
+        // stringsMeta
+        if (vodData.stringsMeta() != null) {
             Element stringsElement = (Element) media.getElementsByTagName("strings").item(0);
-            for (Map.Entry<String, String> entry : vodData.strings().entrySet()) {
+            for (Map.Entry<String, String> entry : vodData.stringsMeta().entrySet()) {
                 // meta node
                 Element meta = generateAndAppendMetaNode(doc, stringsElement, entry.getKey());
 
@@ -388,37 +404,37 @@ public class IngestVodUtils extends BaseIngestUtils {
             }
         }
 
-        // booleans
-        if (vodData.booleans() != null) {
+        // booleansMeta
+        if (vodData.booleansMeta() != null) {
             Element booleansElement = (Element) media.getElementsByTagName("booleans").item(0);
-            for (Map.Entry<String, Boolean> entry : vodData.booleans().entrySet()) {
+            for (Map.Entry<String, Boolean> entry : vodData.booleansMeta().entrySet()) {
                 // meta node
                 Element meta = generateAndAppendMetaNode(doc, booleansElement, entry.getKey());
                 meta.setTextContent(String.valueOf(entry.getValue()));
             }
         }
 
-        // doubles
-        if (vodData.numbers() != null) {
+        // doublesMeta
+        if (vodData.numbersMeta() != null) {
             Element doublesElement = (Element) media.getElementsByTagName("doubles").item(0);
-            for (Map.Entry<String, Double> entry : vodData.numbers().entrySet()) {
+            for (Map.Entry<String, Double> entry : vodData.numbersMeta().entrySet()) {
                 // meta node
                 Element meta = generateAndAppendMetaNode(doc, doublesElement, entry.getKey());
                 meta.setTextContent(String.valueOf(entry.getValue()));
             }
         }
 
-        // dates
-        if (vodData.dates() != null) {
+        // datesMeta
+        if (vodData.datesMeta() != null) {
             Element datesMetaElement = (Element) media.getElementsByTagName("dates").item(1);
-            for (Map.Entry<String, String> entry : vodData.dates().entrySet()) {
+            for (Map.Entry<String, String> entry : vodData.datesMeta().entrySet()) {
                 // meta node
                 Element metaElement = generateAndAppendMetaNode(doc, datesMetaElement, entry.getKey());
                 metaElement.setTextContent(entry.getValue());
             }
         }
 
-        // metas
+        // tags
         if (vodData.tags() != null) {
             Element metasElement = (Element) media.getElementsByTagName("metas").item(0);
             for (Map.Entry<String, List<String>> entry : vodData.tags().entrySet()) {
@@ -447,6 +463,66 @@ public class IngestVodUtils extends BaseIngestUtils {
             for (VodFile vodFile : vodData.files) {
                 files.appendChild(addFile(doc, vodFile));
             }
+        }
+
+        // multilingual fields
+        // multilingual name
+        if (vodData.multilingualName() != null) {
+            Element nameElement = (Element) media.getElementsByTagName("name").item(0);
+            vodData.multilingualName().forEach((lang, name) -> {
+                Element value = doc.createElement("value");
+                value.setAttribute("lang", lang);
+                value.setTextContent(name);
+                nameElement.appendChild(value);
+            });
+        }
+
+        // multilingual description
+        if (vodData.multilingualDescription() != null) {
+            Element descriptionElement = (Element) media.getElementsByTagName("description").item(0);
+            vodData.multilingualDescription.forEach((lang, name) -> {
+                Element value = doc.createElement("value");
+                value.setAttribute("lang", lang);
+                value.setTextContent(name);
+                descriptionElement.appendChild(value);
+            });
+        }
+
+        // multilingual stringsMeta
+        if (vodData.multilingualStringsMeta() != null) {
+            Element stringsElement = (Element) media.getElementsByTagName("strings").item(0);
+            vodData.multilingualStringsMeta().forEach((meta, langValueMap) -> {
+                // meta node
+                Element metaElement = generateAndAppendMetaNode(doc, stringsElement, meta);
+                langValueMap.forEach((lang, name) -> {
+                    // value node
+                    Element value = doc.createElement("value");
+                    value.setAttribute("lang", lang);
+                    value.setTextContent(name);
+                    metaElement.appendChild(value);
+                });
+            });
+        }
+
+        // multilingual tags
+        if (vodData.multilingualTags() != null) {
+            Element metasElement = (Element) media.getElementsByTagName("metas").item(0);
+            vodData.multilingualTags().forEach((tag, tagsValuesMap) -> {
+                // meta node
+                Element metaElement = generateAndAppendMetaNode(doc, metasElement, tag);
+                tagsValuesMap.forEach(langValueMap -> {
+                    // container node
+                    Element container = doc.createElement("container");
+                    metaElement.appendChild(container);
+                    langValueMap.forEach((lang, name) -> {
+                        // value node
+                        Element value = doc.createElement("value");
+                        value.setAttribute("lang", lang);
+                        value.setTextContent(name);
+                        container.appendChild(value);
+                    });
+                });
+            });
         }
 
         // uncomment cdata
