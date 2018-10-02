@@ -391,7 +391,7 @@ public class IngestVodOpcTests extends BaseTest {
         // TODO: 9/17/2018 complete test
 //        // ingested Movie for checking multilanguage
 //        final String JAP = "jap";
-//        final String ENG = "eng";
+//        final String ENG = DEFAULT_LANGUAGE;
 //        String suffix = "multilingual";
 //
 ////        name = "Name_" + localCoguid.substring(0, localCoguid.length() - 2); // to not update name automatically

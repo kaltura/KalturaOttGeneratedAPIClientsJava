@@ -328,6 +328,13 @@ public class DBUtils extends BaseUtils {
         return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getLong(ID) : -1;
     }
 
+    public static String getMetaNameById(Long id, boolean processBasicFields) {
+        JSONObject jsonObject =
+                getJsonArrayFromQueryResult(META_NAME_SELECT_BY_ID, partnerId, id)
+                        .getJSONObject(0);
+        return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getString(SYSTEM_NAME) : null;
+    }
+
     // TODO: check if it be used after completing functionality
     public static Long loadBasicAssetStructMetaId() {
         return getJsonArrayFromQueryResult(BASIC_META_SELECT, partnerId)
@@ -366,7 +373,7 @@ public class DBUtils extends BaseUtils {
         if (idOfType ==-1) {
             // if type was not specified
             for (int i=0; i < idTypes.size(); i++) {
-                dbResult = getJsonArrayFromQueryResult(META_SELECT, countItems, 0, partnerId);
+                dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idTypes.get(i));
                 addSystemNamesFromResponse2List(result, dbResult);
             }
         } else {

@@ -20,6 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.config;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.DEFAULT_LANGUAGE;
 import static io.restassured.RestAssured.given;
 
 public class BaseUtils {
@@ -252,7 +253,7 @@ public class BaseUtils {
 
     public static List<TranslationToken> setTranslationToken(String value) {
         TranslationToken translationToken = new TranslationToken();
-        translationToken.setLanguage("eng");
+        translationToken.setLanguage(DEFAULT_LANGUAGE);
         translationToken.setValue(value);
 
         List<TranslationToken> translationTokens = new ArrayList<>();

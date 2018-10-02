@@ -10,7 +10,9 @@ import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -238,8 +240,26 @@ public class AssetUtils extends BaseUtils {
     }
 
     public static String getCoguid(Asset asset) {
-        // TODO: 7/1/2018 finsih util 
+        // TODO: 7/1/2018 finish util
+        //asset.getExternalId() can be used for ingested items
         return null;
+    }
+
+    public static MediaAsset getMediaAsset(Long type, String name, String description) {
+        MediaAsset result = new MediaAsset();
+        result.setType(type.intValue());
+        result.setMultilingualName(setTranslationToken(name));
+        result.setMultilingualDescription(setTranslationToken(description));
+        String currentDate = getCurrentDateInFormat("yyMMddHHmmss");
+        result.setExternalId("Media_" + currentDate);
+        result.setStatus(true);
+        result.setEntryId(currentDate);
+
+        //TODO: add others fields if needed
+        //result.setMetas(metas);
+        //result.setTags(tags);
+
+        return result;
     }
 }
 
