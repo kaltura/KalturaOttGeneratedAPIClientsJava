@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
-import static com.kaltura.client.test.tests.enums.MediaType.EPISODE;
-import static com.kaltura.client.test.tests.enums.MediaType.SERIES;
+import static com.kaltura.client.test.tests.enums.MediaType.*;
 import static com.kaltura.client.test.utils.AssetStructMetaUtils.loadAssetStructMeta;
 import static com.kaltura.client.test.utils.AssetStructUtils.copyAssetStructObject;
 import static com.kaltura.client.test.utils.AssetStructUtils.getAssetStruct;
@@ -300,11 +299,9 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         deleteAssetStruct(assetStructChildren2.getId()); // firstly should be deleted childrens
         deleteAssetStruct(assetStructChildren1.getId()); // firstly should be deleted childrens
         deleteAssetStruct(assetStructParent.getId());
-
-        // TODO: check if it completed
     }
 
-    @Test
+    @Test // TODO: wait response from Alon
     public void testInheritanceWithIngest() {
         // create parent
         String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
@@ -342,7 +339,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         deleteAssetStruct(assetStructParent.getId());
     }
 
-//    @Test TODO: after ingest
+//    @Test //TODO: after ingest
 //    public void testIngestRules() {
 //        IngestVodUtils.VodData vodData = getVodData(SERIES, INSERT);
 //        MediaAsset series = insertVod(vodData, true);
@@ -352,7 +349,22 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 //        MediaAsset episode = insertVod(vodData, true);
 //        assertThat(episode.getExternalId()).isNotNull();
 //
+//        vodData = getVodData(MOVIE, INSERT);
+//        MediaAsset movie = insertVod(vodData, true);
+//        assertThat(movie.getExternalId()).isNotNull();
+//
+//        vodData = getVodData(LINEAR, INSERT);
+//        MediaAsset linear = insertVod(vodData, true);
+//        assertThat(linear.getExternalId()).isNotNull();
+//
+//        System.out.println("SERIES POLICY: " + series.getInheritancePolicy().getValue());
+//        System.out.println("EPISODE POLICY: " + episode.getInheritancePolicy().getValue());
+//        System.out.println("MOVIE POLICY: " + movie.getInheritancePolicy().getValue());
+//        System.out.println("LINEAR POLICY: " + linear.getInheritancePolicy().getValue());
+//
 //        // cleanup
+//        deleteVod(linear.getExternalId());
+//        deleteVod(movie.getExternalId());
 //        deleteVod(series.getExternalId());
 //        deleteVod(episode.getExternalId());
 //    }
