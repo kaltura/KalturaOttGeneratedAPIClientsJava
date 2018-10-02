@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
-
-import com.kaltura.client.types.Ppv;
-import com.kaltura.client.types.PpvFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -38,48 +33,38 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum AssetInheritancePolicy implements EnumAsString {
+	ENABLE("Enable"),
+	DISABLE("Disable");
 
-public class PpvService {
-	
-	public static class GetPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, GetPpvBuilder> {
-		
-		public GetPpvBuilder(long id) {
-			super(Ppv.class, "ppv", "get");
-			params.add("id", id);
+	private String value;
+
+	AssetInheritancePolicy(String value) {
+		this.value = value;
+	}
+
+	@Override
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public static AssetInheritancePolicy get(String value) {
+		if(value == null)
+		{
+			return null;
 		}
 		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
+		// goes over AssetInheritancePolicy defined values and compare the inner value with the given one:
+		for(AssetInheritancePolicy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
 		}
-	}
-
-	/**
-	 * Returns ppv object by internal identifier
-	 * 
-	 * @param id ppv identifier
-	 */
-    public static GetPpvBuilder get(long id)  {
-		return new GetPpvBuilder(id);
-	}
-	
-	public static class ListPpvBuilder extends ListResponseRequestBuilder<Ppv, Ppv.Tokenizer, ListPpvBuilder> {
-		
-		public ListPpvBuilder(PpvFilter filter) {
-			super(Ppv.class, "ppv", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	public static ListPpvBuilder list()  {
-		return list(null);
-	}
-
-	/**
-	 * Returns all ppv objects
-	 * 
-	 * @param filter Filter parameters for filtering out the result
-	 */
-    public static ListPpvBuilder list(PpvFilter filter)  {
-		return new ListPpvBuilder(filter);
-	}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return AssetInheritancePolicy.values().length > 0 ? AssetInheritancePolicy.values()[0]: null;
+   }
 }
