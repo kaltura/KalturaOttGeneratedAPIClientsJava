@@ -83,6 +83,8 @@ public class IngestVodUtils extends BaseIngestUtils {
         private List<String> thumbRatios;
         private List<VodFile> files;
 
+        private String customMediaType;
+
         public VodData setDefaultValues() {
             coguid = String.valueOf(getEpochInMillis());
             name = coguid;
@@ -380,6 +382,11 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // media type
+        if (vodData.customMediaType() != null) {
+            vodData.mediaType(null);
+            media.getElementsByTagName("media_type").item(0).setTextContent(vodData.customMediaType());
+        }
+
         if (vodData.mediaType() != null) {
             media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType().getValue());
         }
