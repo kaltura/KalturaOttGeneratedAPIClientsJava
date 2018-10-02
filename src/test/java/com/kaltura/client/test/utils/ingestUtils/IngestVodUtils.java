@@ -94,14 +94,19 @@ public class IngestVodUtils extends BaseIngestUtils {
             startDate = offsetDateValue;
             endDate = endDateValue;
             mediaType = MediaType.MOVIE;
-            tags = getDefaultTags();
-            stringsMeta = getDefaultStrings();
-            datesMeta = getDefaultDates();
-            numbersMeta = getDefaultNumbers();
             ppvWebName = ppvNames.get(0);
             ppvMobileName = ppvNames.get(1);
             files = getDefaultAssetFiles(ppvWebName, ppvMobileName);
             thumbRatios = Arrays.asList("4:3", "16:9");
+
+            return this;
+        }
+
+        public VodData setDefaultTagsAndMetas() {
+            tags = getDefaultTags();
+            stringsMeta = getDefaultStrings();
+            datesMeta = getDefaultDates();
+            numbersMeta = getDefaultNumbers();
 
             return this;
         }

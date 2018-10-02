@@ -75,25 +75,19 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
 
         switch (mediaType) {
             case MOVIE:
-                data.mediaType(MediaType.MOVIE).isVirtual(false);
+                data.mediaType(MediaType.MOVIE).isVirtual(false).setDefaultTagsAndMetas();
                 return data;
             case EPISODE:
-                data.mediaType(MediaType.EPISODE).isVirtual(false);
+                data.mediaType(MediaType.EPISODE).isVirtual(false).setDefaultTagsAndMetas();
                 return data;
             case SERIES:
-                data.mediaType(MediaType.SERIES).isVirtual(true);
+                data.mediaType(MediaType.SERIES).isVirtual(true).setDefaultTagsAndMetas();
                 return data;
 //            case LINEAR:
-//                data.mediaType(MediaType.LINEAR).isVirtual(false);
+//                data.mediaType(MediaType.LINEAR).isVirtual(false).setDefaultTagsAndMetas();
 //                return data;
             default:
-//                data
-//                        .tags(null)
-//                        .stringsMeta(null)
-//                        .datesMeta(null)
-//                        .numbersMeta(null)
-//                        .booleansMeta(null)
-//                        .isVirtual(false);
+//                data.isVirtual(false);
 //                return data;
                 return null;
         }

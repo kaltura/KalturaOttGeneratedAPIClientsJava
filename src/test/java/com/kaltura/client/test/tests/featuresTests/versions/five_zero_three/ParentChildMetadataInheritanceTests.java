@@ -334,7 +334,8 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 
         // ingest metas of needed type
 //        IngestVodUtils.VodData vodData = getVodData(MediaType.PACKAGE, INSERT)
-//                .multilingualStringsMeta(metas);
+//                .multilingualStringsMeta(metas)
+//                .mediaType(assetStructParent.getSystemName());
 //        MediaAsset mediaAsset = insertVod(vodData, false);
 //        assertThat(mediaAsset.getExternalId()).isNotNull();
 
