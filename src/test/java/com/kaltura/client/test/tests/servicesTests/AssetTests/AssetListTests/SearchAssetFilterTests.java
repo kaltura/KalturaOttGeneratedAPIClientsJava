@@ -86,7 +86,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .mediaType(MOVIE)
                 .catalogStartDate(getFormattedTime(Calendar.MINUTE,-100, getTimeZone("UTC")))
                 .tags(tagMap)
-                .strings(stringMetaMap1)
+                .stringsMeta(stringMetaMap1)
                 .geoBlockRule(geoBlockRule);
 
         asset2 = insertVod(vodData2, true);
@@ -96,7 +96,7 @@ public class SearchAssetFilterTests extends BaseTest {
                 .mediaType(EPISODE)
                 .catalogStartDate(getFormattedTime(Calendar.MINUTE,-10, getTimeZone("UTC")))
                 .tags(tagMap)
-                .strings(stringMetaMap2);
+                .stringsMeta(stringMetaMap2);
         asset3 = insertVod(vodData3, true);
 
         // ingest epg 1

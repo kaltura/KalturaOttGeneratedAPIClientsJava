@@ -65,6 +65,9 @@
               },
               {
                 "$ref": "AssetStruct.json#/definitions/AssetStruct"
+              },
+              {
+                "$ref": "Language.json#/definitions/Language"
               }
             ]
           }
@@ -95,7 +98,8 @@
             "KalturaDiscountDetailsListResponse",
             "KalturaAssetStructMetaListResponse",
             "KalturaAssetStructListResponse",
-            "KalturaCountryListResponse"
+            "KalturaCountryListResponse",
+            "KalturaLanguageListResponse"
           ]
         }
       },

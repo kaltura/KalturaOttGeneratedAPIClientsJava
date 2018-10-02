@@ -67,10 +67,10 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
 
         VodData data = new VodData()
                 .setDefaultValues()
-                .strings(stringMetaMap)
-                .booleans(booleanHashMap)
-                .numbers(numberMetaMap)
-                .dates(datesMetaMap)
+                .stringsMeta(stringMetaMap)
+                .booleansMeta(booleanHashMap)
+                .numbersMeta(numberMetaMap)
+                .datesMeta(datesMetaMap)
                 .tags(tagsMetaMap);
 
         switch (mediaType) {

@@ -70,7 +70,7 @@ public class AssetCountTests extends BaseTest {
         // ingest asset 1
         VodData vodData1 = new VodData()
                 .mediaType(MOVIE)
-                .strings(stringMetaMap)
+                .stringsMeta(stringMetaMap)
                 .tags(stringTagMap);
         asset = insertVod(vodData1, true);
 
@@ -82,7 +82,7 @@ public class AssetCountTests extends BaseTest {
         // ingest asset 2
         VodData vodData2 = new VodData()
                 .mediaType(MOVIE)
-                .strings(stringMetaMap2);
+                .stringsMeta(stringMetaMap2);
         asset2 = insertVod(vodData2, true);
 
         HashMap<String, String> epgMetas = new HashMap<>();

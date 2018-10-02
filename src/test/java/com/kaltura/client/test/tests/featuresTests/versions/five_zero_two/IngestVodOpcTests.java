@@ -64,10 +64,10 @@ public class IngestVodOpcTests extends BaseTest {
 
         assertThat(movie.getName()).isEqualTo(vodData.name());
         assertThat(movie.getDescription()).isEqualTo(vodData.description());
-        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(vodData.strings().get(mediaTextFieldName));
-        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(vodData.numbers().get(mediaNumberFieldName));
-        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.dates().get(mediaDateFieldName));
-        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(vodData.booleans().get(mediaBooleanFieldName));
+        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(vodData.stringsMeta().get(mediaTextFieldName));
+        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(vodData.numbersMeta().get(mediaNumberFieldName));
+        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.datesMeta().get(mediaDateFieldName));
+        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(vodData.booleansMeta().get(mediaBooleanFieldName));
         assertThat(movie.getTags().get(mediaTagFieldName).getObjects()).extracting("value").containsExactlyElementsOf(vodData.tags().get(mediaTagFieldName));
         assertFiles(vodData.files(), movie.getId().toString());
         assertThat(movie.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
@@ -111,10 +111,10 @@ public class IngestVodOpcTests extends BaseTest {
 
         assertThat(movie.getName()).isEqualTo(vodData.name());
         assertThat(movie.getDescription()).isEqualTo(vodData.description());
-        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(vodData.strings().get(mediaTextFieldName));
-        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(vodData.numbers().get(mediaNumberFieldName));
-        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.dates().get(mediaDateFieldName));
-        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(vodData.booleans().get(mediaBooleanFieldName));
+        assertThat(((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(vodData.stringsMeta().get(mediaTextFieldName));
+        assertThat(((DoubleValue)movie.getMetas().get(mediaNumberFieldName)).getValue()).isEqualTo(vodData.numbersMeta().get(mediaNumberFieldName));
+        assertThat(getFormattedDate(((LongValue)movie.getMetas().get(mediaDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.datesMeta().get(mediaDateFieldName));
+        assertThat(((BooleanValue)movie.getMetas().get(mediaBooleanFieldName)).getValue()).isEqualTo(vodData.booleansMeta().get(mediaBooleanFieldName));
         assertThat(movie.getTags().get(mediaTagFieldName).getObjects()).extracting("value").containsExactlyElementsOf(vodData.tags().get(mediaTagFieldName));
         assertFiles(vodData.files(), movie.getId().toString());
         assertThat(movie.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
@@ -128,10 +128,10 @@ public class IngestVodOpcTests extends BaseTest {
 
         assertThat(episode.getName()).isEqualTo(vodData.name());
         assertThat(episode.getDescription()).isEqualTo(vodData.description());
-        assertThat(((MultilingualStringValue) episode.getMetas().get(episodeTextFieldName)).getValue()).isEqualTo(vodData.strings().get(episodeTextFieldName));
-        assertThat(((DoubleValue) episode.getMetas().get(episodeNumberFieldName)).getValue()).isEqualTo(vodData.numbers().get(episodeNumberFieldName));
-        assertThat(getFormattedDate(((LongValue) episode.getMetas().get(episodeDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.dates().get(episodeDateFieldName));
-        assertThat(((BooleanValue) episode.getMetas().get(episodeBooleanFieldName)).getValue()).isEqualTo(vodData.booleans().get(episodeBooleanFieldName));
+        assertThat(((MultilingualStringValue) episode.getMetas().get(episodeTextFieldName)).getValue()).isEqualTo(vodData.stringsMeta().get(episodeTextFieldName));
+        assertThat(((DoubleValue) episode.getMetas().get(episodeNumberFieldName)).getValue()).isEqualTo(vodData.numbersMeta().get(episodeNumberFieldName));
+        assertThat(getFormattedDate(((LongValue) episode.getMetas().get(episodeDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.datesMeta().get(episodeDateFieldName));
+        assertThat(((BooleanValue) episode.getMetas().get(episodeBooleanFieldName)).getValue()).isEqualTo(vodData.booleansMeta().get(episodeBooleanFieldName));
         assertThat(episode.getTags().get(episodeTagFieldName).getObjects()).extracting("value").containsExactlyElementsOf(vodData.tags().get(episodeTagFieldName));
         assertFiles(vodData.files(), episode.getId().toString());
         assertThat(episode.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
@@ -148,10 +148,10 @@ public class IngestVodOpcTests extends BaseTest {
 
         assertThat(series.getName()).isEqualTo(vodData.name());
         assertThat(series.getDescription()).isEqualTo(vodData.description());
-        assertThat(((StringValue) series.getMetas().get(seriesTextFieldName)).getValue()).isEqualTo(vodData.strings().get(seriesTextFieldName));
-        assertThat(((DoubleValue) series.getMetas().get(seriesNumberFieldName)).getValue()).isEqualTo(vodData.numbers().get(seriesNumberFieldName));
-        assertThat(getFormattedDate(((LongValue) series.getMetas().get(seriesDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.dates().get(seriesDateFieldName));
-        assertThat(((BooleanValue) series.getMetas().get(seriesBooleanFieldName)).getValue()).isEqualTo(vodData.booleans().get(seriesBooleanFieldName));
+        assertThat(((StringValue) series.getMetas().get(seriesTextFieldName)).getValue()).isEqualTo(vodData.stringsMeta().get(seriesTextFieldName));
+        assertThat(((DoubleValue) series.getMetas().get(seriesNumberFieldName)).getValue()).isEqualTo(vodData.numbersMeta().get(seriesNumberFieldName));
+        assertThat(getFormattedDate(((LongValue) series.getMetas().get(seriesDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.datesMeta().get(seriesDateFieldName));
+        assertThat(((BooleanValue) series.getMetas().get(seriesBooleanFieldName)).getValue()).isEqualTo(vodData.booleansMeta().get(seriesBooleanFieldName));
         assertThat(series.getTags().get(seriesTagFieldName).getObjects()).extracting("value").containsExactlyElementsOf(vodData.tags().get(seriesTagFieldName));
         assertFiles(vodData.files(), series.getId().toString());
         assertThat(series.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
@@ -170,10 +170,10 @@ public class IngestVodOpcTests extends BaseTest {
 
         assertThat(episode.getName()).isEqualTo(vodData.name());
         assertThat(episode.getDescription()).isEqualTo(vodData.description());
-        assertThat(((MultilingualStringValue) episode.getMetas().get(episodeTextFieldName)).getValue()).isEqualTo(vodData.strings().get(episodeTextFieldName));
-        assertThat(((DoubleValue) episode.getMetas().get(episodeNumberFieldName)).getValue()).isEqualTo(vodData.numbers().get(episodeNumberFieldName));
-        assertThat(getFormattedDate(((LongValue) episode.getMetas().get(episodeDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.dates().get(episodeDateFieldName));
-        assertThat(((BooleanValue) episode.getMetas().get(episodeBooleanFieldName)).getValue()).isEqualTo(vodData.booleans().get(episodeBooleanFieldName));
+        assertThat(((MultilingualStringValue) episode.getMetas().get(episodeTextFieldName)).getValue()).isEqualTo(vodData.stringsMeta().get(episodeTextFieldName));
+        assertThat(((DoubleValue) episode.getMetas().get(episodeNumberFieldName)).getValue()).isEqualTo(vodData.numbersMeta().get(episodeNumberFieldName));
+        assertThat(getFormattedDate(((LongValue) episode.getMetas().get(episodeDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.datesMeta().get(episodeDateFieldName));
+        assertThat(((BooleanValue) episode.getMetas().get(episodeBooleanFieldName)).getValue()).isEqualTo(vodData.booleansMeta().get(episodeBooleanFieldName));
         assertThat(episode.getTags().get(episodeTagFieldName).getObjects()).extracting("value").containsExactlyElementsOf(vodData.tags().get(episodeTagFieldName));
 //        assertFiles(vodData.files(), episode.getId().toString());
         assertThat(episode.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
@@ -189,10 +189,10 @@ public class IngestVodOpcTests extends BaseTest {
 
         assertThat(series.getName()).isEqualTo(vodData.name());
         assertThat(series.getDescription()).isEqualTo(vodData.description());
-        assertThat(((StringValue) series.getMetas().get(seriesTextFieldName)).getValue()).isEqualTo(vodData.strings().get(seriesTextFieldName));
-        assertThat(((DoubleValue) series.getMetas().get(seriesNumberFieldName)).getValue()).isEqualTo(vodData.numbers().get(seriesNumberFieldName));
-        assertThat(getFormattedDate(((LongValue) series.getMetas().get(seriesDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.dates().get(seriesDateFieldName));
-        assertThat(((BooleanValue) series.getMetas().get(seriesBooleanFieldName)).getValue()).isEqualTo(vodData.booleans().get(seriesBooleanFieldName));
+        assertThat(((StringValue) series.getMetas().get(seriesTextFieldName)).getValue()).isEqualTo(vodData.stringsMeta().get(seriesTextFieldName));
+        assertThat(((DoubleValue) series.getMetas().get(seriesNumberFieldName)).getValue()).isEqualTo(vodData.numbersMeta().get(seriesNumberFieldName));
+        assertThat(getFormattedDate(((LongValue) series.getMetas().get(seriesDateFieldName)).getValue(), getTimeZone("UTC"), "MM/dd/yyyy")).isEqualTo(vodData.datesMeta().get(seriesDateFieldName));
+        assertThat(((BooleanValue) series.getMetas().get(seriesBooleanFieldName)).getValue()).isEqualTo(vodData.booleansMeta().get(seriesBooleanFieldName));
         assertThat(series.getTags().get(seriesTagFieldName).getObjects()).extracting("value").containsExactlyElementsOf(vodData.tags().get(seriesTagFieldName));
 //        assertFiles(vodData.files(), series.getId().toString());
         assertThat(series.getImages()).extracting("ratio").containsAll(vodData.thumbRatios());
@@ -360,14 +360,14 @@ public class IngestVodOpcTests extends BaseTest {
         VodData vodData = getVodData(MOVIE, INSERT);
 
         String updatedField = mediaNumberFieldName + suffix;
-        vodData.numbers(Map.of(updatedField, getRandomDouble()));
+        vodData.numbersMeta(Map.of(updatedField, getRandomDouble()));
         assertInvalidMovieField(vodData, updatedField, "meta");
-        vodData.numbers(Map.of());
+        vodData.numbersMeta(Map.of());
 
         updatedField = mediaBooleanFieldName + suffix;
-        vodData.booleans(Map.of(updatedField, getRandomBoolean()));
+        vodData.booleansMeta(Map.of(updatedField, getRandomBoolean()));
         assertInvalidMovieField(vodData, updatedField, "meta");
-        vodData.booleans(Map.of());
+        vodData.booleansMeta(Map.of());
 
         updatedField = mediaTagFieldName + suffix;
         vodData.tags(Map.of(updatedField, List.of(String.valueOf(getEpochInMillis()))));
@@ -375,14 +375,14 @@ public class IngestVodOpcTests extends BaseTest {
         vodData.tags(Map.of());
 
         updatedField = mediaTextFieldName + suffix;
-        vodData.strings(Map.of(updatedField, getRandomString()));
+        vodData.stringsMeta(Map.of(updatedField, getRandomString()));
         assertInvalidMovieField(vodData, updatedField, "meta");
-        vodData.strings(Map.of());
+        vodData.stringsMeta(Map.of());
 
         updatedField = mediaDateFieldName + suffix;
-        vodData.dates(Map.of(updatedField, BaseUtils.getCurrentDateInFormat("yyyyMMddHHmmss")));
+        vodData.datesMeta(Map.of(updatedField, BaseUtils.getCurrentDateInFormat("yyyyMMddHHmmss")));
         assertInvalidMovieField(vodData, updatedField, "meta");
-        vodData.dates(Map.of());
+        vodData.datesMeta(Map.of());
     }
 
     @Severity(SeverityLevel.NORMAL)

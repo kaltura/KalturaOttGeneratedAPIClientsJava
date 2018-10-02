@@ -1,0 +1,49 @@
+{
+  "$id": "Language",
+  "definitions": {
+    "Language": {
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "enum": ["KalturaLanguage"]
+        },
+        "code": {
+          "type": "string",
+          "minLength": 0
+        },
+        "direction": {
+          "type": "string",
+          "minLength": 0
+        },
+        "isDefault": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 0
+        },
+        "systemName": {
+          "type": "string",
+          "minLength": 0
+        }
+      },
+      "required": [
+        "objectType",
+        "code",
+        "direction",
+        "isDefault",
+        "name",
+        "systemName"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "result": {
+      "$ref": "#/definitions/Language"
+    },
+    "executionTime": {"type": "number"}
+  },
+  "required": ["result", "executionTime"]
+}
