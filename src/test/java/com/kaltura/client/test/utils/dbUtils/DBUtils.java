@@ -343,7 +343,7 @@ public class DBUtils extends BaseUtils {
                 .getLong(ID);
     }
 
-    public static List<String> getAllAssetStructMetas(AssetStructMetaType type, int countItems) {
+    public static List<String> getAssetStructMetas(AssetStructMetaType type, int countItems) {
         List<String> result = new ArrayList<>();
         // TODO: ask developers about ids for assetStructMeta types
         List<Integer> idTypes = new ArrayList<>();
@@ -375,19 +375,17 @@ public class DBUtils extends BaseUtils {
             // if type was not specified
             for (int i=0; i < idTypes.size(); i++) {
                 dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idTypes.get(i));
-                addSystemNamesFromResponse2List(result, dbResult);
+                for (int j=0; j < dbResult.length(); j++) {
+                    result.add(dbResult.getJSONObject(j).getString("system_name"));
+                }
             }
         } else {
             dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idOfType);
-            addSystemNamesFromResponse2List(result, dbResult);
+            for (int i=0; i < dbResult.length(); i++) {
+                result.add(dbResult.getJSONObject(i).getString("system_name"));
+            }
         }
 
         return result;
-    }
-
-    static void addSystemNamesFromResponse2List(List<String> result, JSONArray dbResult) {
-        for (int i=0; i < dbResult.length(); i++) {
-            result.add(dbResult.getJSONObject(i).getString("system_name"));
-        }
     }
 }

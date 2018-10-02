@@ -388,7 +388,7 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(description = "insert multilingual fields", enabled = false)
+    @Test(description = "insert multilingual fields", enabled = true)
     public void insertMultiLingualFields() {
         // TODO: 9/17/2018 complete test
         // set multi languages
@@ -410,10 +410,11 @@ public class IngestVodOpcTests extends BaseTest {
         String lang2Tag = "tag_" + lang2Name;
 
         // set strings meta
+        List<String> metaNames = Arrays.asList("shmulik_str3", "BoxOffice", "alon_test2");
         Map<String, Map<String, String>> metas = new HashMap<>();
-        metas.put("shmulik_str3", Map.of(lang1, lang1Meta, lang2, lang2Meta));
-        metas.put("BoxOffice", Map.of(lang1, lang1Meta, lang2, lang2Meta));
-        metas.put("alon_test2", Map.of(lang1, lang1Meta, lang2, lang2Meta));
+        metas.put(metaNames.get(0), Map.of(lang1, lang1Meta, lang2, lang2Meta));
+        metas.put(metaNames.get(1), Map.of(lang1, lang1Meta, lang2, lang2Meta));
+        metas.put(metaNames.get(2), Map.of(lang1, lang1Meta, lang2, lang2Meta));
 
         // set tags
         Map<String, List<Map<String, String>>> tags = new HashMap<>();
@@ -429,17 +430,25 @@ public class IngestVodOpcTests extends BaseTest {
         MediaAsset asset = insertVod(vodData, false);
 
         // assert multilingual data
-        // lang1
+        // assert lang1 asset
         Asset lang1Asset = executor.executeSync(get(String.valueOf(asset.getId()), AssetReferenceType.MEDIA)
                 .setKs(getAnonymousKs())
                 .setLanguage(lang1))
                 .results;
 
+        // assert name
         assertThat(lang1Asset.getName()).isEqualTo(lang1Name);
+
+        // assert description
         assertThat(lang1Asset.getDescription()).isEqualTo(lang1Description);
+
+        // aasert metas
+        assertThat(lang1Asset.getMetas().keySet()).containsAll(metaNames);
+        lang1Asset.getMetas().forEach((s, value) -> System.out.println(s + "_" + value.getDescription()));
 //        assertThat(((MultilingualStringValue)asset.getMetas().get(mediaTextFieldName)).getValue())
 //                .isEqualTo(stringMetaDataValue + JAP);
-//        // check tag value
+
+        // assert tags
 //        boolean isTagValueFound = isTagValueFound(tagValue1 + JAP, asset);
 //        assertThat(isTagValueFound).isEqualTo(true);
 
