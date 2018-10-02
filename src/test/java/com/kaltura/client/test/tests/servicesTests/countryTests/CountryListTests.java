@@ -14,6 +14,7 @@ import java.util.*;
 
 import static com.kaltura.client.services.CountryService.*;
 import static com.kaltura.client.test.utils.BaseUtils.getAPIExceptionFromList;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.DEFAULT_LANGUAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CountryListTests extends BaseTest {
@@ -98,7 +99,7 @@ public class CountryListTests extends BaseTest {
         String usaCountryCode = "US";
         String currency = "USD";
         String currencySign = "$";
-        String langCode = "eng";
+        String langCode = DEFAULT_LANGUAGE;
 
         CountryFilter countryFilter = new CountryFilter();
         countryFilter.setIpEqual(usaIp);

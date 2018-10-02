@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.dbUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.SubscriptionService;
+import com.kaltura.client.test.tests.enums.AssetStructMetaType;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.tests.enums.PremiumService;
 import com.kaltura.client.test.utils.BaseUtils;
@@ -328,6 +329,13 @@ public class DBUtils extends BaseUtils {
         return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getLong(ID) : -1;
     }
 
+    public static String getMetaNameById(Long id, boolean processBasicFields) {
+        JSONObject jsonObject =
+                getJsonArrayFromQueryResult(META_NAME_SELECT_BY_ID, partnerId, id)
+                        .getJSONObject(0);
+        return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getString(SYSTEM_NAME) : null;
+    }
+
     // TODO: check if it be used after completing functionality
     public static Long loadBasicAssetStructMetaId() {
         return getJsonArrayFromQueryResult(BASIC_META_SELECT, partnerId)
@@ -335,26 +343,26 @@ public class DBUtils extends BaseUtils {
                 .getLong(ID);
     }
 
-    public static List<String> getAllAssetStructMetas(String type, int countItems) {
+    public static List<String> getAllAssetStructMetas(AssetStructMetaType type, int countItems) {
         List<String> result = new ArrayList<>();
         // TODO: ask developers about ids for assetStructMeta types
         List<Integer> idTypes = new ArrayList<>();
-        idTypes.add(6);
-        idTypes.add(2);
-        idTypes.add(5);
-        idTypes.add(3);
+        idTypes.add(6); // text
+        idTypes.add(2); // number
+        idTypes.add(5); // date
+        idTypes.add(3); // boolean
         int idOfType =-1;
         switch (type) {
-            case "Text":
+            case TEXT:
                 idOfType = idTypes.get(0);
                 break;
-            case "Number":
+            case NUMBER:
                 idOfType = idTypes.get(1);
                 break;
-            case "Date":
+            case DATE:
                 idOfType = idTypes.get(2);
                 break;
-            case "Boolean":
+            case BOOLEAN:
                 idOfType = idTypes.get(3);
                 break;
             default:
@@ -366,7 +374,7 @@ public class DBUtils extends BaseUtils {
         if (idOfType ==-1) {
             // if type was not specified
             for (int i=0; i < idTypes.size(); i++) {
-                dbResult = getJsonArrayFromQueryResult(META_SELECT, countItems, 0, partnerId);
+                dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idTypes.get(i));
                 addSystemNamesFromResponse2List(result, dbResult);
             }
         } else {

@@ -26,6 +26,7 @@ public class DBConstants {
     static final String SERV_ID = "serv_id";
     static final String SUBSCRIPTION_ONLY = "subscription_only";
     static final String SUB_ID = "sub_id";
+    static final String SYSTEM_NAME = "system_name";
     static final String TAG_NAME = "tag_name";
     static final String TAG_VALUE = "tag_value";
     static final String USERNAME = "username";
@@ -88,7 +89,10 @@ public class DBConstants {
             "where [group_id]=? and is_active=1 and [status]=1 order by UPDATE_DATE DESC";
 
     static final String META_SELECT = "SELECT TOP (?) * FROM [TVinci].[dbo].[topics]\n" +
-            "WHERE IS_BASIC=? AND GROUP_ID=? AND [STATUS]=1";
+            "WHERE IS_BASIC=? AND GROUP_ID=? AND [STATUS]=1 AND TOPIC_TYPE_ID !=4"; // 4 IS FOR TAGS
+
+    static final String META_NAME_SELECT_BY_ID = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
+            "WHERE [STATUS]=1 AND GROUP_ID=? AND ID=?\n";
 
     static final String META_OR_TAG_SELECT_BY_NAME = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
             "WHERE [STATUS]=1 AND GROUP_ID=? AND SYSTEM_NAME=?\n";

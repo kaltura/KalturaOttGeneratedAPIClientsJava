@@ -455,7 +455,6 @@ public class IngestVodOpcTests extends BaseTest {
 //        // check tag value
 //        isTagValueFound = isTagValueFound(tagValue1, asset);
 //        assertThat(isTagValueFound).isEqualTo(true);
-//        // TODO: update multilingual fields
     }
 
     @Severity(SeverityLevel.MINOR)
