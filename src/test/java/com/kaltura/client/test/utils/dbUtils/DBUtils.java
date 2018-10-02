@@ -2,6 +2,7 @@ package com.kaltura.client.test.utils.dbUtils;
 
 import com.kaltura.client.Logger;
 import com.kaltura.client.services.SubscriptionService;
+import com.kaltura.client.test.tests.enums.AssetStructMetaType;
 import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.tests.enums.PremiumService;
 import com.kaltura.client.test.utils.BaseUtils;
@@ -342,26 +343,26 @@ public class DBUtils extends BaseUtils {
                 .getLong(ID);
     }
 
-    public static List<String> getAllAssetStructMetas(String type, int countItems) {
+    public static List<String> getAllAssetStructMetas(AssetStructMetaType type, int countItems) {
         List<String> result = new ArrayList<>();
         // TODO: ask developers about ids for assetStructMeta types
         List<Integer> idTypes = new ArrayList<>();
-        idTypes.add(6);
-        idTypes.add(2);
-        idTypes.add(5);
-        idTypes.add(3);
+        idTypes.add(6); // text
+        idTypes.add(2); // number
+        idTypes.add(5); // date
+        idTypes.add(3); // boolean
         int idOfType =-1;
         switch (type) {
-            case "Text":
+            case TEXT:
                 idOfType = idTypes.get(0);
                 break;
-            case "Number":
+            case NUMBER:
                 idOfType = idTypes.get(1);
                 break;
-            case "Date":
+            case DATE:
                 idOfType = idTypes.get(2);
                 break;
-            case "Boolean":
+            case BOOLEAN:
                 idOfType = idTypes.get(3);
                 break;
             default:

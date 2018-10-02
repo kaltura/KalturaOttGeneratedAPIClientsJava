@@ -87,10 +87,15 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
 //                data.mediaType(MediaType.LINEAR).isVirtual(false);
 //                return data;
             default:
-//                data.isVirtual(false);
+//                data
+//                        .tags(null)
+//                        .stringsMeta(null)
+//                        .datesMeta(null)
+//                        .numbersMeta(null)
+//                        .booleansMeta(null)
+//                        .isVirtual(false);
 //                return data;
                 return null;
-
         }
     }
 

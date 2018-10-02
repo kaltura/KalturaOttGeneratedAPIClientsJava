@@ -3,6 +3,8 @@ package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 import com.kaltura.client.services.*;
 import com.kaltura.client.services.AssetStructService.*;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.AssetStructMetaType;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
 import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
@@ -16,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.kaltura.client.test.tests.enums.AssetStructMetaType.ALL;
 import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
 import static com.kaltura.client.test.tests.enums.MediaType.*;
 import static com.kaltura.client.test.utils.AssetStructMetaUtils.loadAssetStructMeta;
@@ -62,7 +65,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 //        metaIds = sharedAssetStructListResponse.results.getObjects().get(0).getMetaIds();
 
         // identify shared assetStructMetas
-        List<String> assetStructNames = DBUtils.getAllAssetStructMetas("", 2);
+        List<String> assetStructNames = DBUtils.getAllAssetStructMetas(ALL, 2);
         sharedMetaString1 = loadAssetStructMeta(assetStructNames.get(0));
         sharedMetaString2 = loadAssetStructMeta(assetStructNames.get(1));
         sharedMetaNumber1 = loadAssetStructMeta(assetStructNames.get(2));
@@ -330,11 +333,13 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 //        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
 
         // ingest metas of needed type
-//        IngestVodUtils.VodData vodData = getVodData(null, INSERT)
-//                .multilingualStringMeta(metas);
-
+//        IngestVodUtils.VodData vodData = getVodData(MediaType.PACKAGE, INSERT)
+//                .multilingualStringsMeta(metas);
+//        MediaAsset mediaAsset = insertVod(vodData, false);
+//        assertThat(mediaAsset.getExternalId()).isNotNull();
 
         // remove assetStructs
+//        deleteVod(mediaAsset.getExternalId());
         deleteAssetStruct(assetStructChildren1.getId()); // firstly should be deleted childrens
         deleteAssetStruct(assetStructParent.getId());
     }
