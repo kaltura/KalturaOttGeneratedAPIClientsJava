@@ -16,7 +16,7 @@ Migrate features tests from ReadyAPI
 | assetFile                    |        |
 | assetHistory                 |  Done  |
 | assetRule                    |        |
-| assetStatistics              |        |
+| assetStatistics              |  Michael      |
 | assetUserRule                |        |
 | bookmark                     |  Done  |
 | cDVRAdapterProfile           |        |

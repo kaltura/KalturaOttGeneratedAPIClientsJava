@@ -25,7 +25,7 @@ import static io.restassured.RestAssured.given;
 
 public class BaseUtils {
 
-    private static final String API_SCHEMA_URL = getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION) + "/clientlibs/KalturaClient.xml";
+    public static final String API_SCHEMA_URL = getProperty(API_BASE_URL) + "/" + getProperty(API_VERSION) + "/clientlibs/KalturaClient.xml";
     private static List<APIException> exceptions;
 
     // to get e.g. yesterday date in specific date format need call the method so: getOffsetDateInFormat(-1, pattern);
@@ -182,11 +182,10 @@ public class BaseUtils {
                 e.printStackTrace();
             }
             Document doc = null;
+            Logger.getLogger(BaseUtils.class).debug(API_SCHEMA_URL);
             try {
                 doc = db.parse(new URL(API_SCHEMA_URL).openStream());
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (SAXException | IOException e) {
                 e.printStackTrace();
             }
             NodeList nodeList = doc.getElementsByTagName("error");
