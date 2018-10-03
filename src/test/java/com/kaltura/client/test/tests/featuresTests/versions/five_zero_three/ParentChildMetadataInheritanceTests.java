@@ -3,10 +3,7 @@ package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 import com.kaltura.client.services.*;
 import com.kaltura.client.services.AssetStructService.*;
 import com.kaltura.client.test.tests.BaseTest;
-import com.kaltura.client.test.tests.enums.AssetStructMetaType;
-import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
-import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Link;
@@ -19,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.kaltura.client.test.tests.enums.AssetStructMetaType.ALL;
-import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
-import static com.kaltura.client.test.tests.enums.MediaType.*;
 import static com.kaltura.client.test.utils.AssetStructMetaUtils.loadAssetStructMeta;
 import static com.kaltura.client.test.utils.AssetStructUtils.copyAssetStructObject;
 import static com.kaltura.client.test.utils.AssetStructUtils.getAssetStruct;
@@ -28,9 +23,7 @@ import static com.kaltura.client.test.utils.AssetStructUtils.setInheritanceField
 import static com.kaltura.client.test.utils.AssetUtils.getMediaAsset;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.DEFAULT_LANGUAGE;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.getVodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
-import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -65,7 +58,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 //        metaIds = sharedAssetStructListResponse.results.getObjects().get(0).getMetaIds();
 
         // identify shared assetStructMetas
-        List<String> assetStructNames = DBUtils.getAllAssetStructMetas(ALL, 2);
+        List<String> assetStructNames = DBUtils.getAssetStructMetas(ALL, 2);
         sharedMetaString1 = loadAssetStructMeta(assetStructNames.get(0));
         sharedMetaString2 = loadAssetStructMeta(assetStructNames.get(1));
         sharedMetaNumber1 = loadAssetStructMeta(assetStructNames.get(2));
