@@ -88,11 +88,17 @@ public class DBConstants {
             "from [Tvinci].[dbo].[groups_passwords]\n" +
             "where [group_id]=? and is_active=1 and [status]=1 order by UPDATE_DATE DESC";
 
+    static final String META_ID_SELECT_BY_ASSET_STRUCT_ID = "SELECT * FROM [TVinci].[dbo].[template_topics]\n" +
+            "WHERE [STATUS]=1 AND GROUP_ID=? AND TEMPLATE_ID=?\n";
+
     static final String META_SELECT = "SELECT TOP (?) * FROM [TVinci].[dbo].[topics]\n" +
             "WHERE IS_BASIC=? AND GROUP_ID=? AND [STATUS]=1 AND TOPIC_TYPE_ID !=4"; // 4 IS FOR TAGS
 
     static final String META_NAME_SELECT_BY_ID = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
             "WHERE [STATUS]=1 AND GROUP_ID=? AND ID=?\n";
+//
+//    static final String META_NAME_SELECT_BY_IDS = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
+//            "WHERE [STATUS]=1 AND GROUP_ID=? AND ID in (?)\n";
 
     static final String META_OR_TAG_SELECT_BY_NAME = "SELECT * FROM [TVinci].[dbo].[topics]\n" +
             "WHERE [STATUS]=1 AND GROUP_ID=? AND SYSTEM_NAME=?\n";

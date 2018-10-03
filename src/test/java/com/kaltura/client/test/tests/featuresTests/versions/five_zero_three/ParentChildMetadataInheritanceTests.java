@@ -1,9 +1,12 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_three;
 
+import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.services.*;
 import com.kaltura.client.services.AssetStructService.*;
 import com.kaltura.client.test.tests.BaseTest;
+import com.kaltura.client.test.tests.enums.MediaType;
 import com.kaltura.client.test.utils.dbUtils.DBUtils;
+import com.kaltura.client.test.utils.ingestUtils.IngestVodUtils;
 import com.kaltura.client.types.*;
 import com.kaltura.client.utils.response.base.Response;
 import io.qameta.allure.Link;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.kaltura.client.test.tests.enums.AssetStructMetaType.ALL;
+import static com.kaltura.client.test.tests.enums.IngestAction.INSERT;
 import static com.kaltura.client.test.utils.AssetStructMetaUtils.loadAssetStructMeta;
 import static com.kaltura.client.test.utils.AssetStructUtils.copyAssetStructObject;
 import static com.kaltura.client.test.utils.AssetStructUtils.getAssetStruct;
@@ -23,7 +27,10 @@ import static com.kaltura.client.test.utils.AssetStructUtils.setInheritanceField
 import static com.kaltura.client.test.utils.AssetUtils.getMediaAsset;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
 import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.DEFAULT_LANGUAGE;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodOpcUtils.getVodData;
 import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.insertVod;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.updateVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -35,13 +42,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ParentChildMetadataInheritanceTests extends BaseTest {
 
     private String metaIds;
+    private String allMetaIds;
     private Response<ListResponse<AssetStruct>> sharedAssetStructListResponse;
     private AssetStruct sharedAssetStruct1, sharedAssetStruct2;
     private AssetStructMeta sharedMetaString1, sharedMetaString2, sharedMetaNumber1, sharedMetaNumber2;
     private AssetStructMeta sharedMetaDate1, sharedMetaDate2, sharedMetaBoolean1, sharedMetaBoolean2;
     private String sharedBasicMetaIds;
     private String language1;
-    private Map<String, Map<String, String>> metas = new HashMap<>();
+    private Map<String, Map<String, String>> partMetas = new HashMap<>();
+    private Map<String, Map<String, String>> allMetas = new HashMap<>();
+    private Map<String, Map<String, String>> allUpdatedMetas = new HashMap<>();
 
     @BeforeClass()
     public void setUp() {
@@ -67,18 +77,33 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         sharedMetaDate2 = loadAssetStructMeta(assetStructNames.get(5));
         sharedMetaBoolean1 = loadAssetStructMeta(assetStructNames.get(6));
         sharedMetaBoolean2 = loadAssetStructMeta(assetStructNames.get(7));
-        // TODO: ask Lior why ONLY these ids are obvious when DB has more basic metas?
+        // TODO: ask Lior why ONLY these ids are obvious when DB has more basic partMetas?
         sharedBasicMetaIds = "58,629,1482,1493,1494,1495,1496,1497,566";//loadBasicAssetStructMetaId();
 
-        // TODO: check if type of metas should be updated????
-        metas.put(assetStructNames.get(0), Map.of(language1, "Default string value1"));
-        metas.put(assetStructNames.get(1), Map.of(language1, "Default string value2"));
-        metas.put(assetStructNames.get(2), Map.of(language1, "1111"));
-        metas.put(assetStructNames.get(3), Map.of(language1, "1112"));
-        metas.put(assetStructNames.get(4), Map.of(language1, "01/01/2001"));
-        metas.put(assetStructNames.get(5), Map.of(language1, "01/01/2002"));
-        metas.put(assetStructNames.get(6), Map.of(language1, "true"));
-        metas.put(assetStructNames.get(7), Map.of(language1, "false"));
+        // fill allMetaIds with fixture partMetas
+        allMetaIds = getAllFixtureMetaIds();
+
+        // TODO: check if type of partMetas should be updated????
+        partMetas.put(assetStructNames.get(0), Map.of(language1, "Default string value1"));
+        //partMetas.put(assetStructNames.get(1), Map.of(language1, "Default string value2"));
+        partMetas.put(assetStructNames.get(2), Map.of(language1, "1111"));
+        //partMetas.put(assetStructNames.get(3), Map.of(language1, "1112"));
+        partMetas.put(assetStructNames.get(4), Map.of(language1, "01/01/2001"));
+        //partMetas.put(assetStructNames.get(5), Map.of(language1, "01/01/2002"));
+        partMetas.put(assetStructNames.get(6), Map.of(language1, "true"));
+        //partMetas.put(assetStructNames.get(7), Map.of(language1, "false"));
+
+        allMetas.putAll(partMetas);
+        allMetas.put(assetStructNames.get(1), Map.of(language1, "Default string value2"));
+        allMetas.put(assetStructNames.get(3), Map.of(language1, "1112"));
+        allMetas.put(assetStructNames.get(5), Map.of(language1, "01/01/2002"));
+        allMetas.put(assetStructNames.get(7), Map.of(language1, "false"));
+
+        allUpdatedMetas.putAll(allMetas);
+        allUpdatedMetas.put(assetStructNames.get(1), Map.of(language1, "Default string value22"));
+        allUpdatedMetas.put(assetStructNames.get(3), Map.of(language1, "11122"));
+        allUpdatedMetas.put(assetStructNames.get(5), Map.of(language1, "01/01/2022"));
+        allUpdatedMetas.put(assetStructNames.get(7), Map.of(language1, "true"));
 
         // create shared assetStruct1
         String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
@@ -89,6 +114,27 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
         metaIds = sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
         sharedAssetStruct2 = createAssetStruct(prefix, metaIds);
+    }
+
+    String getAllFixtureMetaIds() {
+        StringBuilder allMetaIdsSb = new StringBuilder();
+        allMetaIdsSb
+                .append(sharedMetaString1.getMetaId().toString())
+                .append(",")
+                .append(sharedMetaString2.getMetaId().toString())
+                .append(",")
+                .append(sharedMetaNumber1.getMetaId().toString())
+                .append(",")
+                .append(sharedMetaNumber2.getMetaId().toString())
+                .append(",")
+                .append(sharedMetaDate1.getMetaId().toString())
+                .append(",")
+                .append(sharedMetaDate2.getMetaId().toString())
+                .append(",")
+                .append(sharedMetaBoolean1.getMetaId().toString())
+                .append(",")
+                .append(sharedMetaBoolean2.getMetaId().toString());
+        return allMetaIdsSb.toString();
     }
 
     @Test
@@ -297,44 +343,54 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         deleteAssetStruct(assetStructParent.getId());
     }
 
-    @Test // TODO: wait response from Alon
+    @Test // TODO: wait response from Anat why children wasn't changed
     public void testInheritanceWithIngest() {
         // create parent
-        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        String metaIds = allMetaIds + "," + sharedBasicMetaIds;
         String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
         AssetStruct assetStructParent = createAssetStruct(prefix, metaIds);
         // create children1
-        metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        metaIds = allMetaIds + "," + sharedBasicMetaIds;
         prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
-        AssetStruct assetStructChildren1 = createAssetStruct(prefix, metaIds);
+        AssetStruct assetStructChildren = createAssetStruct(prefix, metaIds);
 
-        // set inheritance between Children1 and Parent
-        AssetStruct assetStruct2Update = copyAssetStructObject(assetStructChildren1);
+        // set inheritance between Children and Parent
+        AssetStruct assetStruct2Update = copyAssetStructObject(assetStructChildren);
         setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStructParent.getId(),
-                sharedMetaString1.getMetaId(), sharedMetaDate2.getMetaId());
-        updateAssetStruct(assetStructChildren1.getId(), assetStruct2Update, false);
+                sharedMetaString1.getMetaId(), sharedMetaString1.getMetaId());
+        updateAssetStruct(assetStructChildren.getId(), assetStruct2Update, false);
 
-//        // check children asset1 struct has changes
-//        AssetStructFilter filter = new AssetStructFilter();
-//        filter.setIdIn(assetStructChildren1.getId().toString());
-//        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
-//        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
-//                .setKs(getOperatorKs()));
-//        AssetStruct assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
-//        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStructParent.getId());
-//        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
-//        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+        // ingest all metas of needed type // TODO: it does not work with NULL - discuss with Alon what MediaType use instead of it
+        IngestVodUtils.VodData parentVodData = getVodData(MediaType.PACKAGE, INSERT)
+                .multilingualStringsMeta(partMetas)
+                .customMediaType(assetStructParent.getSystemName());
+        MediaAsset parentAsset = insertVod(parentVodData, false);
+        assertThat(parentAsset.getExternalId()).isNotNull();
 
-        // ingest metas of needed type
-//        IngestVodUtils.VodData vodData = getVodData(MediaType.PACKAGE, INSERT)
-//                .multilingualStringsMeta(metas)
-//                .mediaType(assetStructParent.getSystemName());
-//        MediaAsset mediaAsset = insertVod(vodData, false);
-//        assertThat(mediaAsset.getExternalId()).isNotNull();
+        IngestVodUtils.VodData childrenVodData = getVodData(MediaType.PACKAGE, INSERT)
+                .multilingualStringsMeta(allMetas)
+                .customMediaType(assetStructChildren.getSystemName());
+        MediaAsset childrenAsset = insertVod(childrenVodData, false);
+        assertThat(childrenAsset.getExternalId()).isNotNull();
+        // TODO: check metas on children
+
+        String coguid = parentAsset.getExternalId();
+        parentVodData = new IngestVodUtils.VodData()
+                .multilingualStringsMeta(allUpdatedMetas)
+                .customMediaType(assetStructParent.getSystemName());
+        parentAsset = updateVod(coguid, parentVodData);
+
+        // TODO: check metas on children after parent update
+
+        AssetService.GetAssetBuilder getAssetBuilder = AssetService.get(childrenAsset.getId().toString(), AssetReferenceType.MEDIA);
+        Response<Asset> assetResponse = executor.executeSync(getAssetBuilder
+                .setKs(getOperatorKs()));
+        assertThat(assetResponse.results).isNotNull();
 
         // remove assetStructs
-//        deleteVod(mediaAsset.getExternalId());
-        deleteAssetStruct(assetStructChildren1.getId()); // firstly should be deleted childrens
+        deleteVod(childrenAsset.getExternalId());
+        deleteVod(parentAsset.getExternalId());
+        deleteAssetStruct(assetStructChildren.getId()); // firstly should be deleted children
         deleteAssetStruct(assetStructParent.getId());
     }
 

@@ -83,13 +83,13 @@ public class IngestVodOpcUtils extends BaseIngestUtils {
             case SERIES:
                 data.mediaType(MediaType.SERIES).isVirtual(true).setDefaultTagsAndMetas();
                 return data;
-//            case LINEAR:
-//                data.mediaType(MediaType.LINEAR).isVirtual(false).setDefaultTagsAndMetas();
-//                return data;
+            case LINEAR:
+                data.mediaType(MediaType.LINEAR).isVirtual(false).setDefaultTagsAndMetas();
+                return data;
             default:
-//                data.isVirtual(false);
-//                return data;
-                return null;
+                data.isVirtual(false);
+                return data;
+//                return null;
         }
     }
 

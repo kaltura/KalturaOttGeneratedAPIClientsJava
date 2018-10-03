@@ -25,6 +25,7 @@ import java.util.stream.StreamSupport;
 
 import static com.kaltura.client.test.Properties.*;
 import static com.kaltura.client.test.tests.BaseTest.*;
+import static com.kaltura.client.test.tests.enums.AssetStructMetaType.getIdsOfMetaTypes;
 import static com.kaltura.client.test.utils.dbUtils.DBConstants.*;
 import static com.kaltura.client.test.utils.dbUtils.IngestFixtureData.loadFirstPricePlanFromJsonArray;
 import static org.assertj.core.api.Assertions.fail;
@@ -335,6 +336,41 @@ public class DBUtils extends BaseUtils {
                         .getJSONObject(0);
         return (processBasicFields || (jsonObject.getInt(IS_BASIC) == 0)) ? jsonObject.getString(SYSTEM_NAME) : null;
     }
+// TODO: probably have to be removed as has select with IN that we aren't process
+//    public static List<String> getMetaNamesByAssetStructId(Long assetStructId, AssetStructMetaType type) {
+//        List<String> result = new ArrayList<>();
+//
+//        List<String> metaIds = new ArrayList<>();
+//        JSONArray jsonArrayFromQueryResult = getJsonArrayFromQueryResult(META_ID_SELECT_BY_ASSET_STRUCT_ID, partnerId, assetStructId);
+//        for (int i=0; i < jsonArrayFromQueryResult.length(); i++) {
+//            metaIds.add(String.valueOf(jsonArrayFromQueryResult.getJSONObject(i).getLong("topic_id")));
+//        }
+//        if (metaIds.size() > 0) {
+//            List<Integer> idsOfMetaTypes = getIdsOfMetaTypes();
+//            int idOfType = getIdOfSelectedMetaType(type, idsOfMetaTypes);
+//
+//            String ids = String.join(",", metaIds);
+//            JSONArray dbResult;
+//            if (idOfType ==-1) {
+//                // if type was not specified
+//                for (int i=0; i < idsOfMetaTypes.size(); i++) {
+//                    dbResult = getJsonArrayFromQueryResult(META_NAME_SELECT_BY_IDS + " AND TOPIC_TYPE_ID=?",
+//                            partnerId, ids, idsOfMetaTypes.get(i));
+//                    for (int j=0; j < dbResult.length(); j++) {
+//                        result.add(dbResult.getJSONObject(j).getString(SYSTEM_NAME));
+//                    }
+//                }
+//            } else {
+//                dbResult = getJsonArrayFromQueryResult(META_NAME_SELECT_BY_IDS + " AND TOPIC_TYPE_ID=?",
+//                        partnerId, ids, idOfType);
+//                for (int i=0; i < dbResult.length(); i++) {
+//                    result.add(dbResult.getJSONObject(i).getString(SYSTEM_NAME));
+//                }
+//            }
+//        }
+//
+//        return result;
+//    }
 
     // TODO: check if it be used after completing functionality
     public static Long loadBasicAssetStructMetaId() {
@@ -345,15 +381,32 @@ public class DBUtils extends BaseUtils {
 
     public static List<String> getAssetStructMetas(AssetStructMetaType type, int countItems) {
         List<String> result = new ArrayList<>();
-        // TODO: ask developers about ids for assetStructMeta types
-        List<Integer> idTypes = new ArrayList<>();
-        idTypes.add(6); // text
-        idTypes.add(2); // number
-        idTypes.add(5); // date
-        idTypes.add(3); // boolean
+        List<Integer> idsOfMetaTypes = getIdsOfMetaTypes();
+        int idOfType = getIdOfSelectedMetaType(type, idsOfMetaTypes);
+
+        JSONArray dbResult;
+        if (idOfType ==-1) {
+            // if type was not specified
+            for (int i=0; i < idsOfMetaTypes.size(); i++) {
+                dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idsOfMetaTypes.get(i));
+                for (int j=0; j < dbResult.length(); j++) {
+                    result.add(dbResult.getJSONObject(j).getString(SYSTEM_NAME));
+                }
+            }
+        } else {
+            dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idOfType);
+            for (int i=0; i < dbResult.length(); i++) {
+                result.add(dbResult.getJSONObject(i).getString(SYSTEM_NAME));
+            }
+        }
+
+        return result;
+    }
+
+    static int getIdOfSelectedMetaType(AssetStructMetaType type, List<Integer> idTypes) {
         int idOfType =-1;
         switch (type) {
-            case TEXT:
+            case MULTI_LINGUAL_TEXT:
                 idOfType = idTypes.get(0);
                 break;
             case NUMBER:
@@ -365,27 +418,13 @@ public class DBUtils extends BaseUtils {
             case BOOLEAN:
                 idOfType = idTypes.get(3);
                 break;
+            case STRING:
+                idOfType = idTypes.get(4);
+                break;
             default:
                 // all types
                 break;
         }
-
-        JSONArray dbResult;
-        if (idOfType ==-1) {
-            // if type was not specified
-            for (int i=0; i < idTypes.size(); i++) {
-                dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idTypes.get(i));
-                for (int j=0; j < dbResult.length(); j++) {
-                    result.add(dbResult.getJSONObject(j).getString("system_name"));
-                }
-            }
-        } else {
-            dbResult = getJsonArrayFromQueryResult(META_SELECT + " AND TOPIC_TYPE_ID=?", countItems, 0, partnerId, idOfType);
-            for (int i=0; i < dbResult.length(); i++) {
-                result.add(dbResult.getJSONObject(i).getString("system_name"));
-            }
-        }
-
-        return result;
+        return idOfType;
     }
 }
