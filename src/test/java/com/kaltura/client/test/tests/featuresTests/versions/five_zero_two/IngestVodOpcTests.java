@@ -1,7 +1,7 @@
 package com.kaltura.client.test.tests.featuresTests.versions.five_zero_two;
 
 import com.kaltura.client.enums.AssetReferenceType;
-import com.kaltura.client.services.AssetService;
+import com.kaltura.client.services.LanguageService;
 import com.kaltura.client.services.PpvService;
 import com.kaltura.client.services.ProductPriceService;
 import com.kaltura.client.test.tests.BaseTest;
@@ -18,12 +18,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.kaltura.client.services.AssetService.list;
+import static com.kaltura.client.services.AssetService.*;
+import static com.kaltura.client.services.AssetService.get;
 import static com.kaltura.client.test.tests.enums.IngestAction.*;
 import static com.kaltura.client.test.tests.enums.KsqlKey.MEDIA_ID;
 import static com.kaltura.client.test.tests.enums.MediaType.*;
@@ -386,65 +388,82 @@ public class IngestVodOpcTests extends BaseTest {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(description = "insert multilingual fields", enabled = false)
+    @Test(description = "insert multilingual fields", enabled = true)
     public void insertMultiLingualFields() {
         // TODO: 9/17/2018 complete test
-//        // ingested Movie for checking multilanguage
-//        final String JAP = "jap";
-//        final String ENG = "eng";
-//        String suffix = "multilingual";
-//
-////        name = "Name_" + localCoguid.substring(0, localCoguid.length() - 2); // to not update name automatically
-////        description = "Description_" + localCoguid.substring(0, localCoguid.length() - 2); // to not update description automatically
-////
-//        VodData vodData = getVodData(MOVIE, INSERT);
-//        MediaAsset movie = insertVod(vodData, true);
-//        String nameData = "<value lang=\"eng\">" + movie.getName() + "</value>";
-//        String descriptionData = "<value lang=\"eng\">" + movie.getDescription() + "</value>";
-//        String stringMetaDataValue = ((MultilingualStringValue)movie.getMetas().get(mediaTextFieldName)).getValue();
-//        String stringMetaData = "<value lang=\"eng\">" + stringMetaDataValue + "</value>";
-//        String tagData = "<value lang=\"eng\">" + tagValue1 + "</value>";
-//
-//        // to get xml having all fields supporting multilingual
-//        String ingestXml = ingestXmlRequest.replaceAll(localCoguid, localCoguid + suffix);
-//        ingestXml = ingestXml.replaceAll(nameData, nameData + nameData.replaceAll(ENG, JAP)
-//                .replaceAll(movie.getName(), movie.getName() + JAP));
-//        ingestXml = ingestXml.replaceAll(descriptionData, descriptionData + descriptionData.replaceAll(ENG, JAP)
-//                .replaceAll(movie.getDescription(), movie.getDescription() + JAP));
-//        ingestXml = ingestXml.replaceAll(stringMetaData, stringMetaData + stringMetaData.replaceAll(ENG, JAP)
-//                .replaceAll(stringMetaDataValue, stringMetaDataValue + JAP));
-//        ingestXml = ingestXml.replaceAll(tagData, tagData + tagData.replaceAll(ENG, JAP))
-//                .replaceAll("lang=\"jap\">" + tagValue1, "lang=\"jap\">" + tagValue1 + JAP);
-//
-//        Response resp = executeIngestVodRequest(ingestXml);
-//
-//        assertThat(from(resp.asString()).getString(ingestAssetStatusMessagePath)).isEqualTo("OK");
-//        String id = from(resp.asString()).get(ingestAssetIdPath).toString();
-//        assertThat(id).isEqualTo(movie.getId().toString());
-//
-//        AssetService.GetAssetBuilder getAssetBuilder = AssetService.get(id, AssetReferenceType.MEDIA)
-//                .setKs(getAnonymousKs())
-//                .setLanguage(JAP);
-//        Asset asset = executor.executeSync(getAssetBuilder).results;
-//        assertThat(asset.getName()).isEqualTo(movie.getName() + JAP);
-//        assertThat(asset.getDescription()).isEqualTo(movie.getDescription() + JAP);
+        // set multi languages
+        List<Language> languages = executor.executeSync(LanguageService.list(new LanguageFilter())
+                .setKs(getOperatorKs()))
+                .results
+                .getObjects();
+        String lang1 = languages.get(0).getCode();
+        String lang2 = languages.get(1).getCode();
+
+        // prepare data
+        String lang1Name = getRandomString();
+        String lang2Name = getRandomString();
+        String lang1Description = "description_" + lang1Name;
+        String lang2Description = "description_" + lang2Name;
+        String lang1Meta = "meta_" + lang1Name;
+        String lang2Meta = "meta_" + lang2Name;
+        String lang1Tag = "tag_" + lang1Name;
+        String lang2Tag = "tag_" + lang2Name;
+
+        // set strings meta
+        List<String> metaNames = Arrays.asList("shmulik_str3", "BoxOffice", "alon_test2");
+        Map<String, Map<String, String>> metas = new HashMap<>();
+        metas.put(metaNames.get(0), Map.of(lang1, lang1Meta, lang2, lang2Meta));
+        metas.put(metaNames.get(1), Map.of(lang1, lang1Meta, lang2, lang2Meta));
+        metas.put(metaNames.get(2), Map.of(lang1, lang1Meta, lang2, lang2Meta));
+
+        // set tags
+        Map<String, List<Map<String, String>>> tags = new HashMap<>();
+        tags.put("Actors", Arrays.asList(Map.of(lang1, lang1Tag, lang2, lang2Tag), Map.of(lang1, lang1Tag, lang2, lang2Tag), Map.of(lang1, lang1Tag, lang2, lang2Tag)));
+        tags.put("TagsTest", Arrays.asList(Map.of(lang1, lang1Tag, lang2, lang2Tag), Map.of(lang1, lang1Tag, lang2, lang2Tag), Map.of(lang1, lang1Tag, lang2, lang2Tag)));
+
+        // ingest vod
+        VodData vodData = getVodData(MOVIE, INSERT)
+                .multilingualName(Map.of(lang1, lang1Name, lang2, lang2Name))
+                .multilingualDescription(Map.of(lang1, lang1Description, lang2, lang2Description))
+                .multilingualStringsMeta(metas)
+                .multilingualTags(tags);
+        MediaAsset asset = insertVod(vodData, false);
+
+        // assert multilingual data
+        // assert lang1 asset
+        Asset lang1Asset = executor.executeSync(get(String.valueOf(asset.getId()), AssetReferenceType.MEDIA)
+                .setKs(getAnonymousKs())
+                .setLanguage(lang1))
+                .results;
+
+        // assert name
+        assertThat(lang1Asset.getName()).isEqualTo(lang1Name);
+
+        // assert description
+        assertThat(lang1Asset.getDescription()).isEqualTo(lang1Description);
+
+        // aasert metas
+        assertThat(lang1Asset.getMetas().keySet()).containsAll(metaNames);
+        lang1Asset.getMetas().forEach((s, value) -> System.out.println(s + "_" + value.getDescription()));
 //        assertThat(((MultilingualStringValue)asset.getMetas().get(mediaTextFieldName)).getValue())
 //                .isEqualTo(stringMetaDataValue + JAP);
-//        // check tag value
+
+        // assert tags
 //        boolean isTagValueFound = isTagValueFound(tagValue1 + JAP, asset);
 //        assertThat(isTagValueFound).isEqualTo(true);
-//
-//        getAssetBuilder = AssetService.get(id, AssetReferenceType.MEDIA)
-//                .setKs(getAnonymousKs())
-//                .setLanguage(ENG);
-//        asset = executor.executeSync(getAssetBuilder).results;
-//        assertThat(asset.getName()).isEqualTo(movie.getName());
-//        assertThat(asset.getDescription()).isEqualTo(movie.getDescription());
+
+        // lang2
+        Asset lang2Asset = executor.executeSync(get(String.valueOf(asset.getId()), AssetReferenceType.MEDIA)
+                .setKs(getAnonymousKs())
+                .setLanguage(lang2))
+                .results;
+
+        assertThat(lang2Asset.getName()).isEqualTo(lang2Name);
+        assertThat(lang2Asset.getDescription()).isEqualTo(lang2Description);
 //        assertThat(((MultilingualStringValue)asset.getMetas().get(mediaTextFieldName)).getValue()).isEqualTo(stringMetaDataValue);
 //        // check tag value
 //        isTagValueFound = isTagValueFound(tagValue1, asset);
 //        assertThat(isTagValueFound).isEqualTo(true);
-//        // TODO: update multilingual fields
     }
 
     @Severity(SeverityLevel.MINOR)
@@ -601,7 +620,7 @@ public class IngestVodOpcTests extends BaseTest {
 
         deleteVod(coguid);
 
-        AssetService.ListAssetBuilder listAssetBuilder = list(assetFilter).setKs(getAnonymousKs());
+        ListAssetBuilder listAssetBuilder = list(assetFilter).setKs(getAnonymousKs());
         await()
                 .pollInterval(delayBetweenRetriesInSeconds, TimeUnit.SECONDS)
                 .atMost(maxTimeExpectingValidResponseInSeconds, TimeUnit.SECONDS)
@@ -612,7 +631,7 @@ public class IngestVodOpcTests extends BaseTest {
     private void assertFiles(List<VodFile> ingestAssetFiles, String assetId) {
         boolean isFileWasFound = false;
 
-        AssetService.GetAssetBuilder assetBuilder = AssetService.get(assetId, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
+        GetAssetBuilder assetBuilder = get(assetId, AssetReferenceType.MEDIA).setKs(getAnonymousKs());
         com.kaltura.client.utils.response.base.Response<Asset> assetGetResponse = executor.executeSync(assetBuilder);
         List<MediaFile> getMediaFiles = assetGetResponse.results.getMediaFiles();
 

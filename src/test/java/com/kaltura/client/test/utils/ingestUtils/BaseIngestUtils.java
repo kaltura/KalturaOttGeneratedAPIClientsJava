@@ -41,8 +41,10 @@ public class BaseIngestUtils {
     // data
     public static final String DEFAULT_THUMB = "http://opengameart.org/sites/default/files/styles/thumbnail/public/pictures/picture-1760-1321510314.png";
 
-    /*
-    // PG adapter data
+    // language
+    public static final String DEFAULT_LANGUAGE = "eng";
+
+    /*// PG adapter data
     public static final String PG_DEFAULT_ADAPTER_URL = "http://172.31.6.89:90/PGAdapter/Service.svc";
     public static final String PG_DEFAULT_RENEW_URL = PG_DEFAULT_ADAPTER_URL + "?StateCode=0";
     public static final String PG_DEFAULT_SHARED_SECRET = "123456";

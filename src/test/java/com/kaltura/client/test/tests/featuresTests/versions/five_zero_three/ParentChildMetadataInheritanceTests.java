@@ -11,11 +11,19 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static com.kaltura.client.test.tests.enums.AssetStructMetaType.ALL;
 import static com.kaltura.client.test.utils.AssetStructMetaUtils.loadAssetStructMeta;
+import static com.kaltura.client.test.utils.AssetStructUtils.copyAssetStructObject;
 import static com.kaltura.client.test.utils.AssetStructUtils.getAssetStruct;
+import static com.kaltura.client.test.utils.AssetStructUtils.setInheritanceFieldsInAssetStruct;
+import static com.kaltura.client.test.utils.AssetUtils.getMediaAsset;
 import static com.kaltura.client.test.utils.BaseUtils.getCurrentDateInFormat;
+import static com.kaltura.client.test.utils.ingestUtils.BaseIngestUtils.DEFAULT_LANGUAGE;
+import static com.kaltura.client.test.utils.ingestUtils.IngestVodUtils.deleteVod;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -32,9 +40,14 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     private AssetStructMeta sharedMetaString1, sharedMetaString2, sharedMetaNumber1, sharedMetaNumber2;
     private AssetStructMeta sharedMetaDate1, sharedMetaDate2, sharedMetaBoolean1, sharedMetaBoolean2;
     private String sharedBasicMetaIds;
+    private String language1;
+    private Map<String, Map<String, String>> metas = new HashMap<>();
 
     @BeforeClass()
     public void setUp() {
+        List<Language> languages = executor.executeSync(LanguageService.list(new LanguageFilter())
+                .setKs(getOperatorKs())).results.getObjects();
+        language1 = languages.get(0).getCode();
         // TODO: check if assetStructList be useful at the end
         // assetStructList to fill default metaIds
 //        AssetStructFilter filter = new AssetStructFilter();
@@ -45,7 +58,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 //        metaIds = sharedAssetStructListResponse.results.getObjects().get(0).getMetaIds();
 
         // identify shared assetStructMetas
-        List<String> assetStructNames = DBUtils.getAllAssetStructMetas("", 2);
+        List<String> assetStructNames = DBUtils.getAssetStructMetas(ALL, 2);
         sharedMetaString1 = loadAssetStructMeta(assetStructNames.get(0));
         sharedMetaString2 = loadAssetStructMeta(assetStructNames.get(1));
         sharedMetaNumber1 = loadAssetStructMeta(assetStructNames.get(2));
@@ -56,6 +69,16 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         sharedMetaBoolean2 = loadAssetStructMeta(assetStructNames.get(7));
         // TODO: ask Lior why ONLY these ids are obvious when DB has more basic metas?
         sharedBasicMetaIds = "58,629,1482,1493,1494,1495,1496,1497,566";//loadBasicAssetStructMetaId();
+
+        // TODO: check if type of metas should be updated????
+        metas.put(assetStructNames.get(0), Map.of(language1, "Default string value1"));
+        metas.put(assetStructNames.get(1), Map.of(language1, "Default string value2"));
+        metas.put(assetStructNames.get(2), Map.of(language1, "1111"));
+        metas.put(assetStructNames.get(3), Map.of(language1, "1112"));
+        metas.put(assetStructNames.get(4), Map.of(language1, "01/01/2001"));
+        metas.put(assetStructNames.get(5), Map.of(language1, "01/01/2002"));
+        metas.put(assetStructNames.get(6), Map.of(language1, "true"));
+        metas.put(assetStructNames.get(7), Map.of(language1, "false"));
 
         // create shared assetStruct1
         String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
@@ -101,7 +124,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         AssetStruct assetStruct2Update = copyAssetStructObject(assetStruct2);
         setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStruct1.getId(),
                 sharedMetaString1.getMetaId(), sharedMetaString2.getMetaId());
-        updateAssetStruct(assetStruct2.getId(), assetStruct2Update);
+        updateAssetStruct(assetStruct2.getId(), assetStruct2Update, false);
 
         // check parent doesn't have changes in related inheritance fields
         AssetStructFilter filter = new AssetStructFilter();
@@ -129,35 +152,289 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         deleteAssetStruct(assetStruct1.getId());
     }
 
-    AssetStruct copyAssetStructObject(AssetStruct assetStruct2Copy) {
-        AssetStruct result = new AssetStruct();
-        result.setConnectedParentMetaId(assetStruct2Copy.getConnectedParentMetaId());
-        result.setConnectingMetaId(assetStruct2Copy.getConnectingMetaId());
-        result.setParentId(assetStruct2Copy.getParentId());
-        result.setMetaIds(assetStruct2Copy.getMetaIds());
-        result.setSystemName(assetStruct2Copy.getSystemName());
-        result.setIsProtected(assetStruct2Copy.getIsProtected());
-        result.setPluralName(assetStruct2Copy.getPluralName());
-        result.setMultilingualName(assetStruct2Copy.getMultilingualName());
-        result.setFeatures(assetStruct2Copy.getFeatures());
+    @Test(enabled = false) // TODO: remove after deletion
+    public void testInheritance4TextAndNumericFieldsOnly() {
+        // create assetStruct1
+        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
+        AssetStruct assetStruct1 = createAssetStruct(prefix, metaIds);
+        // create assetStruct2
+        metaIds = sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
+        AssetStruct assetStruct2 = createAssetStruct(prefix, metaIds);
+
+        // set inheritance // to try set inheritance between different types of meta
+        AssetStruct assetStruct2Update = copyAssetStructObject(assetStruct2);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStruct1.getId(),
+                sharedMetaString1.getMetaId(), sharedMetaDate2.getMetaId());
+        updateAssetStruct(assetStruct2.getId(), assetStruct2Update, true);
+
+        // TODO: wait response from Anat and depends on it continue the test with other types
+        // check children asset struct has changes
+//        AssetStructFilter filter = new AssetStructFilter();
+//        filter.setIdIn(assetStruct2.getId().toString());
+//        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+//        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
+//                .setKs(getOperatorKs()));
+//        AssetStruct assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+//        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStruct1.getId());
+//        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
+//        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+
+        // remove assetStructs
+        deleteAssetStruct(assetStruct2.getId()); // firstly should be deleted children
+        deleteAssetStruct(assetStruct1.getId());
+    }
+
+    @Test
+    public void testInheritance3Levels() {
+        // create granpa
+        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
+        AssetStruct assetStructGrandParent = createAssetStruct(prefix, metaIds);
+        // create parent
+        metaIds = sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
+        AssetStruct assetStructParent = createAssetStruct(prefix, metaIds);
+        // create children
+        metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "3";
+        AssetStruct assetStructChildren = createAssetStruct(prefix, metaIds);
+
+        // set inheritance between Children and Parent
+        AssetStruct assetStruct2Update = copyAssetStructObject(assetStructChildren);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStructParent.getId(),
+                sharedMetaString2.getMetaId(), sharedMetaDate2.getMetaId());
+        updateAssetStruct(assetStructChildren.getId(), assetStruct2Update, false);
+
+        // set inheritance between Parent and GrandParent
+        assetStruct2Update = copyAssetStructObject(assetStructParent);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStructGrandParent.getId(),
+                sharedMetaString1.getMetaId(), sharedMetaDate2.getMetaId());
+        updateAssetStruct(assetStructParent.getId(), assetStruct2Update, false);
+
+        // check children asset struct has changes
+        AssetStructFilter filter = new AssetStructFilter();
+        filter.setIdIn(assetStructChildren.getId().toString());
+        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getOperatorKs()));
+        AssetStruct assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStructParent.getId());
+        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+
+        // check parent asset struct has changes
+        filter = new AssetStructFilter();
+        filter.setIdIn(assetStructParent.getId().toString());
+        listAssetStructBuilder = AssetStructService.list(filter);
+        assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getOperatorKs()));
+        assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStructGrandParent.getId());
+        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
+        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+
+        // remove assetStructs
+        deleteAssetStruct(assetStructChildren.getId()); // firstly should be deleted children
+        deleteAssetStruct(assetStructParent.getId()); // secondly should be deleted parent
+        deleteAssetStruct(assetStructGrandParent.getId());
+    }
+
+    // checking that on BE level it is doesn't supported limitation about 1 children maximum
+    @Test
+    public void testInheritanceParentWith2Childrens() {
+        // create parent
+        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
+        AssetStruct assetStructParent = createAssetStruct(prefix, metaIds);
+        // create children1
+        metaIds = sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
+        AssetStruct assetStructChildren1 = createAssetStruct(prefix, metaIds);
+        // create children2
+        metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedMetaString2.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "3";
+        AssetStruct assetStructChildren2 = createAssetStruct(prefix, metaIds);
+
+        // set inheritance between Children2 and Parent
+        AssetStruct assetStruct2Update = copyAssetStructObject(assetStructChildren2);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStructParent.getId(),
+                sharedMetaString1.getMetaId(), sharedMetaDate2.getMetaId());
+        updateAssetStruct(assetStructChildren2.getId(), assetStruct2Update, false);
+
+        // set inheritance between Children1 and Parent
+        assetStruct2Update = copyAssetStructObject(assetStructChildren1);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStructParent.getId(),
+                sharedMetaString1.getMetaId(), sharedMetaDate2.getMetaId());
+        updateAssetStruct(assetStructChildren1.getId(), assetStruct2Update, false);
+
+        // check children asset2 struct has changes
+        AssetStructFilter filter = new AssetStructFilter();
+        filter.setIdIn(assetStructChildren2.getId().toString());
+        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getOperatorKs()));
+        AssetStruct assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStructParent.getId());
+        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
+        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+
+        // check children asset1 struct has changes
+        filter = new AssetStructFilter();
+        filter.setIdIn(assetStructChildren1.getId().toString());
+        listAssetStructBuilder = AssetStructService.list(filter);
+        assetStructListResponse = executor.executeSync(listAssetStructBuilder
+                .setKs(getOperatorKs()));
+        assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStructParent.getId());
+        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
+        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+
+        // remove assetStructs
+        deleteAssetStruct(assetStructChildren2.getId()); // firstly should be deleted childrens
+        deleteAssetStruct(assetStructChildren1.getId()); // firstly should be deleted childrens
+        deleteAssetStruct(assetStructParent.getId());
+    }
+
+    @Test // TODO: wait response from Alon
+    public void testInheritanceWithIngest() {
+        // create parent
+        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
+        AssetStruct assetStructParent = createAssetStruct(prefix, metaIds);
+        // create children1
+        metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
+        AssetStruct assetStructChildren1 = createAssetStruct(prefix, metaIds);
+
+        // set inheritance between Children1 and Parent
+        AssetStruct assetStruct2Update = copyAssetStructObject(assetStructChildren1);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStructParent.getId(),
+                sharedMetaString1.getMetaId(), sharedMetaDate2.getMetaId());
+        updateAssetStruct(assetStructChildren1.getId(), assetStruct2Update, false);
+
+//        // check children asset1 struct has changes
+//        AssetStructFilter filter = new AssetStructFilter();
+//        filter.setIdIn(assetStructChildren1.getId().toString());
+//        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+//        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
+//                .setKs(getOperatorKs()));
+//        AssetStruct assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+//        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStructParent.getId());
+//        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
+//        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+
+        // ingest metas of needed type
+//        IngestVodUtils.VodData vodData = getVodData(MediaType.PACKAGE, INSERT)
+//                .multilingualStringsMeta(metas);
+//        MediaAsset mediaAsset = insertVod(vodData, false);
+//        assertThat(mediaAsset.getExternalId()).isNotNull();
+
+        // remove assetStructs
+//        deleteVod(mediaAsset.getExternalId());
+        deleteAssetStruct(assetStructChildren1.getId()); // firstly should be deleted childrens
+        deleteAssetStruct(assetStructParent.getId());
+    }
+
+//    @Test //TODO: after ingest
+//    public void testIngestRules() {
+//        IngestVodUtils.VodData vodData = getVodData(SERIES, INSERT);
+//        MediaAsset series = insertVod(vodData, true);
+//        assertThat(series.getExternalId()).isNotNull();
+//
+//        vodData = getVodData(EPISODE, INSERT);
+//        MediaAsset episode = insertVod(vodData, true);
+//        assertThat(episode.getExternalId()).isNotNull();
+//
+//        vodData = getVodData(MOVIE, INSERT);
+//        MediaAsset movie = insertVod(vodData, true);
+//        assertThat(movie.getExternalId()).isNotNull();
+//
+//        vodData = getVodData(LINEAR, INSERT);
+//        MediaAsset linear = insertVod(vodData, true);
+//        assertThat(linear.getExternalId()).isNotNull();
+//
+//        System.out.println("SERIES POLICY: " + series.getInheritancePolicy().getValue());
+//        System.out.println("EPISODE POLICY: " + episode.getInheritancePolicy().getValue());
+//        System.out.println("MOVIE POLICY: " + movie.getInheritancePolicy().getValue());
+//        System.out.println("LINEAR POLICY: " + linear.getInheritancePolicy().getValue());
+//
+//        // cleanup
+//        deleteVod(linear.getExternalId());
+//        deleteVod(movie.getExternalId());
+//        deleteVod(series.getExternalId());
+//        deleteVod(episode.getExternalId());
+//    }
+
+    @Test
+    public void testApiCreationOfAssetsWithInheritance() {
+        // create parent
+        String metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        String prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss");
+        AssetStruct assetStructParent = createAssetStruct(prefix, metaIds);
+        // create children
+        metaIds = sharedMetaString1.getMetaId().toString() + "," + sharedBasicMetaIds;
+        prefix = "AssetStruct_" + getCurrentDateInFormat("yyMMddHHmmss") + "2";
+        AssetStruct assetStructChildren = createAssetStruct(prefix, metaIds);
+        Map<String, String> metas = new HashMap<>();
+        metas.put(DBUtils.getMetaNameById(sharedMetaString1.getMetaId(), false), "some default value");
+        // set inheritance between Children and Parent
+        AssetStruct assetStruct2Update = copyAssetStructObject(assetStructChildren);
+        setInheritanceFieldsInAssetStruct(assetStruct2Update, assetStructParent.getId(),
+                sharedMetaString1.getMetaId(), sharedMetaDate2.getMetaId());
+        updateAssetStruct(assetStructChildren.getId(), assetStruct2Update, false);
+
+        // TODO: complete
+        MediaAsset asset = getMediaAsset(assetStructParent.getId(), "testName", "testDescription");
+        asset.setMetas(loadMetas(metas));
+        AssetService.AddAssetBuilder addAssetBuilder = AssetService.add(asset);
+        Response<Asset> response = executor.executeSync(addAssetBuilder
+                .setKs(getOperatorKs())
+                .setLanguage("*"));
+        asset = (MediaAsset) response.results;
+
+        MediaAsset asset2 = getMediaAsset(assetStructChildren.getId(), "testName2", "testDescription2");
+        asset2.setMetas(loadMetas(metas));
+        addAssetBuilder = AssetService.add(asset2);
+        response = executor.executeSync(addAssetBuilder
+                .setKs(getOperatorKs())
+                .setLanguage("*"));
+        asset2 = (MediaAsset) response.results;
+//
+//        // check children asset1 struct has changes
+//        AssetStructFilter filter = new AssetStructFilter();
+//        filter.setIdIn(assetStructChildren.getId().toString());
+//        ListAssetStructBuilder listAssetStructBuilder = AssetStructService.list(filter);
+//        Response<ListResponse<AssetStruct>> assetStructListResponse = executor.executeSync(listAssetStructBuilder
+//                .setKs(getOperatorKs()));
+//        AssetStruct assetStructFromResponse = assetStructListResponse.results.getObjects().get(0);
+//        assertThat(assetStructFromResponse.getParentId()).isEqualTo(assetStructParent.getId());
+//        assertThat(assetStructFromResponse.getConnectedParentMetaId()).isEqualTo(sharedMetaString1.getMetaId());
+//        assertThat(assetStructFromResponse.getConnectingMetaId()).isEqualTo(sharedMetaString2.getMetaId());
+
+        // 4rent folder has some logic
+
+        // remove assetStructs
+        deleteVod(asset.getExternalId());
+        deleteVod(asset2.getExternalId());
+        deleteAssetStruct(assetStructChildren.getId()); // firstly should be deleted children
+        deleteAssetStruct(assetStructParent.getId());
+    }
+
+    // TODO: find better name and option to use it in the whole project
+    private Map<String, Value> loadMetas(Map<String, String> metas) {
+        Map<String, Value> result = new HashMap<>();
+        for (Map.Entry<String, String> entry: metas.entrySet()) {
+            StringValue value = new StringValue();
+            value.setValue(entry.getValue());
+            //value.value(entry.getValue());
+            result.put(entry.getKey(), value);
+        }
 
         return result;
     }
 
-    void setInheritanceFieldsInAssetStruct(AssetStruct assetStruct, Long parentAssetStructId,
-                                           Long connectedParentMetaId, Long connectingMetaId) {
-        assetStruct.setParentId(parentAssetStructId);
-        assetStruct.setConnectedParentMetaId(connectedParentMetaId);
-        assetStruct.setConnectingMetaId(connectingMetaId);
-    }
-
-    void updateAssetStruct(Long assetStructId, AssetStruct updatedAssetStruct) {
-        UpdateAssetStructBuilder updateAssetStructBuilder = AssetStructService.update(
-                assetStructId, updatedAssetStruct);
-        Response<AssetStruct> assetStructResponse = executor.executeSync(updateAssetStructBuilder
-                        .setKs(getOperatorKs()).setLanguage("*"));
-        assertThat(assetStructResponse.results).isNotNull();
-    }
 
     // TODO: Check if it used after implementation
     private List<AssetStruct> loadAssetStructsWithoutHierarchy(int countOfAssetStructs, List<AssetStruct> listOfAssetStructs) {
@@ -204,7 +481,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
 //        //assertThat(assetStructMetaResponse.results.getInherited()).isEqualTo(isInherited);
 //
 //        // assetStructAdd
-//        AssetStruct assetStruct = getAssetStruct(prefix, "eng", false, metaIds, null, null, null);
+//        AssetStruct assetStruct = getAssetStruct(prefix, DEFAULT_LANGUAGE, false, metaIds, null, null, null);
 //        AddAssetStructBuilder addAssetStructBuilder = AssetStructService.add(assetStruct);
 //        Response<AssetStruct> assetStructResponse = executor.executeSync(addAssetStructBuilder
 //                .setKs(getOperatorKs()).setLanguage("*"));
@@ -308,7 +585,7 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
     }
 
     AssetStruct createAssetStruct(String prefix, String metaIds) {
-        AssetStruct result = getAssetStruct(prefix, "eng", false, metaIds, null,
+        AssetStruct result = getAssetStruct(prefix, DEFAULT_LANGUAGE, false, metaIds, null,
                 null, null);
 
         AddAssetStructBuilder addAssetStructBuilder = AssetStructService.add(result);
@@ -319,5 +596,19 @@ public class ParentChildMetadataInheritanceTests extends BaseTest {
         assertThat(result.getSystemName()).isEqualToIgnoringCase(prefix + "_System_name");
 
         return result;
+    }
+
+    Response<AssetStruct> updateAssetStruct(Long assetStructId, AssetStruct updatedAssetStruct, boolean isErrorExpected) {
+        UpdateAssetStructBuilder updateAssetStructBuilder = AssetStructService.update(
+                assetStructId, updatedAssetStruct);
+        Response<AssetStruct> assetStructResponse = executor.executeSync(updateAssetStructBuilder
+                .setKs(getOperatorKs()).setLanguage("*"));
+        if (isErrorExpected) {
+            assertThat(assetStructResponse.error).isNotNull();
+        } else {
+            assertThat(assetStructResponse.results).isNotNull();
+        }
+
+        return assetStructResponse;
     }
 }

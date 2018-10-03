@@ -198,7 +198,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // title
         Element title = doc.createElement("title");
-        title.setAttribute("lang", "eng");
+        title.setAttribute("lang", DEFAULT_LANGUAGE);
         title.setTextContent(name);
         programme.appendChild(title);
 
@@ -209,7 +209,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // desc
         Element desc = doc.createElement("desc");
-        desc.setAttribute("lang", "eng");
+        desc.setAttribute("lang", DEFAULT_LANGUAGE);
         desc.setTextContent(startDate + " until " + endDate);
         programme.appendChild(desc);
 
@@ -220,8 +220,8 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // language
         Element lang = doc.createElement("language");
-        lang.setAttribute("lang", "eng");
-        lang.setTextContent("eng");
+        lang.setAttribute("lang", DEFAULT_LANGUAGE);
+        lang.setTextContent(DEFAULT_LANGUAGE);
         programme.appendChild(lang);
 
         // icon
@@ -269,7 +269,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // metaValues
         Element metaValues = doc.createElement("MetaValues");
-        metaValues.setAttribute("lang", "eng");
+        metaValues.setAttribute("lang", DEFAULT_LANGUAGE);
         metaValues.setTextContent(metaValuesString);
         metas.appendChild(metaValues);
 
@@ -287,7 +287,7 @@ public class IngestEpgUtils extends BaseIngestUtils {
 
         // TagValues
         Element tagValues = doc.createElement("TagValues");
-        tagValues.setAttribute("lang", "eng");
+        tagValues.setAttribute("lang", DEFAULT_LANGUAGE);
         tagValues.setTextContent(tagValuesString);
         tags.appendChild(tagValues);
 

@@ -83,11 +83,13 @@ public class IngestVodUtils extends BaseIngestUtils {
         private List<String> thumbRatios;
         private List<VodFile> files;
 
+        private String customMediaType;
+
         public VodData setDefaultValues() {
             coguid = String.valueOf(getEpochInMillis());
             name = coguid;
             description = "description of " + coguid;
-            lang = "eng";
+            lang = DEFAULT_LANGUAGE;
             thumbUrl = DEFAULT_THUMB;
             catalogStartDate = offsetDateValue;
             catalogEndDate = endDateValue;
@@ -184,7 +186,7 @@ public class IngestVodUtils extends BaseIngestUtils {
                 vodData.description = "description of " + vodData.coguid;
             }
             if (vodData.lang == null) {
-                vodData.lang = "eng";
+                vodData.lang = DEFAULT_LANGUAGE;
             }
             if (vodData.thumbUrl == null) {
                 vodData.thumbUrl = DEFAULT_THUMB;
@@ -333,7 +335,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         if (vodData.name() != null) {
             Element nameElement = (Element) media.getElementsByTagName("name").item(0);
             Element value = doc.createElement("value");
-            value.setAttribute("lang", vodData.lang != null ? vodData.lang : "eng");
+            value.setAttribute("lang", vodData.lang != null ? vodData.lang : DEFAULT_LANGUAGE);
             value.setTextContent(vodData.name);
             nameElement.appendChild(value);
         }
@@ -348,7 +350,7 @@ public class IngestVodUtils extends BaseIngestUtils {
         if (vodData.description() != null) {
             Element descriptionElement = (Element) media.getElementsByTagName("description").item(0);
             Element value = doc.createElement("value");
-            value.setAttribute("lang", vodData.lang != null ? vodData.lang : "eng");
+            value.setAttribute("lang", vodData.lang != null ? vodData.lang : DEFAULT_LANGUAGE);
             value.setTextContent(vodData.description);
             descriptionElement.appendChild(value);
         }
@@ -380,6 +382,11 @@ public class IngestVodUtils extends BaseIngestUtils {
         }
 
         // media type
+        if (vodData.customMediaType() != null) {
+            vodData.mediaType(null);
+            media.getElementsByTagName("media_type").item(0).setTextContent(vodData.customMediaType());
+        }
+
         if (vodData.mediaType() != null) {
             media.getElementsByTagName("media_type").item(0).setTextContent(vodData.mediaType().getValue());
         }
@@ -398,7 +405,7 @@ public class IngestVodUtils extends BaseIngestUtils {
 
                 // value node
                 Element value = doc.createElement("value");
-                value.setAttribute("lang", "eng");
+                value.setAttribute("lang", DEFAULT_LANGUAGE);
                 value.setTextContent(entry.getValue());
                 meta.appendChild(value);
             }
@@ -449,7 +456,7 @@ public class IngestVodUtils extends BaseIngestUtils {
                         // value node
                         Element value = doc.createElement("value");
                         value.setTextContent(s);
-                        value.setAttribute("lang", "eng");
+                        value.setAttribute("lang", DEFAULT_LANGUAGE);
                         container.appendChild(value);
                     }
                 }
