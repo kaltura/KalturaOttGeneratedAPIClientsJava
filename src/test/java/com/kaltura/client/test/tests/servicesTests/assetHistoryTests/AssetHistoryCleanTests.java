@@ -69,7 +69,7 @@ public class AssetHistoryCleanTests extends BaseTest {
 
 
     @Description("assetHistory/action/clean - no filtering")
-    @Test(groups = {"slowBefore"}, priority = -1)
+    @Test(groups = {"slowBefore"})
     private void cleanHistory_before_wait() {
         // create household
         Household household = createHousehold(numOfUsers, numOfDevices, true);
