@@ -62,7 +62,7 @@ public class NotificationService {
 	 * TBD
 	 * 
 	 * @param identifier In case type is 'announcement', identifier should be the announcement ID. In
-	 * case type is 'system', identifier should be 'login" (the login topic)
+	 * case type is 'system', identifier should be 'login' (the login topic)
 	 * @param type 'announcement' - TV-Series topic, 'system' - login topic
 	 */
     public static RegisterNotificationBuilder register(String identifier, NotificationType type)  {

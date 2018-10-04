@@ -71,9 +71,9 @@ public class PartnerConfigurationService {
 	 * 
 	 * @param configuration Partner Configuration
 	 *             possible configuration type: 
-	 *             "configuration": { "value": 0, "partner_configuration_type": {
-	 * "type": "OSSAdapter", "objectType": "KalturaPartnerConfigurationHolder" },
-	 *             "objectType": "KalturaBillingPartnerConfig"}
+	 *             'configuration': { 'value': 0, 'partner_configuration_type': {
+	 * 'type': 'OSSAdapter', 'objectType': 'KalturaPartnerConfigurationHolder' },
+	 *             'objectType': 'KalturaBillingPartnerConfig'}
 	 */
     public static UpdatePartnerConfigurationBuilder update(PartnerConfiguration configuration)  {
 		return new UpdatePartnerConfigurationBuilder(configuration);
