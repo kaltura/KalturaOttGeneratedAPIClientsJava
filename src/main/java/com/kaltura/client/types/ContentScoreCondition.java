@@ -50,34 +50,63 @@ import java.util.List;
 public class ContentScoreCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String score();
+		String minScore();
+		String maxScore();
 		String days();
+		String field();
+		String value();
 		RequestBuilder.ListTokenizer<ContentActionCondition.Tokenizer> actions();
 	}
 
 	/**
 	 * The minimum score to be met
 	 */
-	private Integer score;
+	private Integer minScore;
+	/**
+	 * The maximum score to be met
+	 */
+	private Integer maxScore;
 	/**
 	 * How many days back should the actions be considered
 	 */
 	private Integer days;
 	/**
+	 * If condition should be applied on specific field (and not the one of the segment
+	  value)
+	 */
+	private String field;
+	/**
+	 * If condition should be applied on specific field (and not the one of the segment
+	  value) -
+	 */
+	private String value;
+	/**
 	 * List of the actions that consist the condition
 	 */
 	private List<ContentActionCondition> actions;
 
-	// score:
-	public Integer getScore(){
-		return this.score;
+	// minScore:
+	public Integer getMinScore(){
+		return this.minScore;
 	}
-	public void setScore(Integer score){
-		this.score = score;
+	public void setMinScore(Integer minScore){
+		this.minScore = minScore;
 	}
 
-	public void score(String multirequestToken){
-		setToken("score", multirequestToken);
+	public void minScore(String multirequestToken){
+		setToken("minScore", multirequestToken);
+	}
+
+	// maxScore:
+	public Integer getMaxScore(){
+		return this.maxScore;
+	}
+	public void setMaxScore(Integer maxScore){
+		this.maxScore = maxScore;
+	}
+
+	public void maxScore(String multirequestToken){
+		setToken("maxScore", multirequestToken);
 	}
 
 	// days:
@@ -90,6 +119,30 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 
 	public void days(String multirequestToken){
 		setToken("days", multirequestToken);
+	}
+
+	// field:
+	public String getField(){
+		return this.field;
+	}
+	public void setField(String field){
+		this.field = field;
+	}
+
+	public void field(String multirequestToken){
+		setToken("field", multirequestToken);
+	}
+
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
 	// actions:
@@ -111,8 +164,11 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		score = GsonParser.parseInt(jsonObject.get("score"));
+		minScore = GsonParser.parseInt(jsonObject.get("minScore"));
+		maxScore = GsonParser.parseInt(jsonObject.get("maxScore"));
 		days = GsonParser.parseInt(jsonObject.get("days"));
+		field = GsonParser.parseString(jsonObject.get("field"));
+		value = GsonParser.parseString(jsonObject.get("value"));
 		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), ContentActionCondition.class);
 
 	}
@@ -120,8 +176,11 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaContentScoreCondition");
-		kparams.add("score", this.score);
+		kparams.add("minScore", this.minScore);
+		kparams.add("maxScore", this.maxScore);
 		kparams.add("days", this.days);
+		kparams.add("field", this.field);
+		kparams.add("value", this.value);
 		kparams.add("actions", this.actions);
 		return kparams;
 	}
