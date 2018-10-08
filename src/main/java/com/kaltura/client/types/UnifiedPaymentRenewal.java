@@ -52,6 +52,7 @@ public class UnifiedPaymentRenewal extends ObjectBase {
 		String date();
 		String unifiedPaymentId();
 		RequestBuilder.ListTokenizer<EntitlementRenewalBase.Tokenizer> entitlements();
+		String userId();
 	}
 
 	/**
@@ -70,6 +71,10 @@ public class UnifiedPaymentRenewal extends ObjectBase {
 	 * List of entitlements in this unified payment renewal
 	 */
 	private List<EntitlementRenewalBase> entitlements;
+	/**
+	 * User ID
+	 */
+	private Long userId;
 
 	// price:
 	public Price getPrice(){
@@ -111,6 +116,18 @@ public class UnifiedPaymentRenewal extends ObjectBase {
 		this.entitlements = entitlements;
 	}
 
+	// userId:
+	public Long getUserId(){
+		return this.userId;
+	}
+	public void setUserId(Long userId){
+		this.userId = userId;
+	}
+
+	public void userId(String multirequestToken){
+		setToken("userId", multirequestToken);
+	}
+
 
 	public UnifiedPaymentRenewal() {
 		super();
@@ -126,6 +143,7 @@ public class UnifiedPaymentRenewal extends ObjectBase {
 		date = GsonParser.parseLong(jsonObject.get("date"));
 		unifiedPaymentId = GsonParser.parseLong(jsonObject.get("unifiedPaymentId"));
 		entitlements = GsonParser.parseArray(jsonObject.getAsJsonArray("entitlements"), EntitlementRenewalBase.class);
+		userId = GsonParser.parseLong(jsonObject.get("userId"));
 
 	}
 
@@ -136,6 +154,7 @@ public class UnifiedPaymentRenewal extends ObjectBase {
 		kparams.add("date", this.date);
 		kparams.add("unifiedPaymentId", this.unifiedPaymentId);
 		kparams.add("entitlements", this.entitlements);
+		kparams.add("userId", this.userId);
 		return kparams;
 	}
 

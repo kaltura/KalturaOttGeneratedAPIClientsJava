@@ -50,6 +50,7 @@ public class EntitlementRenewal extends ObjectBase {
 		String date();
 		String purchaseId();
 		String subscriptionId();
+		String userId();
 	}
 
 	/**
@@ -68,6 +69,10 @@ public class EntitlementRenewal extends ObjectBase {
 	 * Subscription ID
 	 */
 	private Long subscriptionId;
+	/**
+	 * User ID
+	 */
+	private Long userId;
 
 	// price:
 	public Price getPrice(){
@@ -113,6 +118,18 @@ public class EntitlementRenewal extends ObjectBase {
 		setToken("subscriptionId", multirequestToken);
 	}
 
+	// userId:
+	public Long getUserId(){
+		return this.userId;
+	}
+	public void setUserId(Long userId){
+		this.userId = userId;
+	}
+
+	public void userId(String multirequestToken){
+		setToken("userId", multirequestToken);
+	}
+
 
 	public EntitlementRenewal() {
 		super();
@@ -128,6 +145,7 @@ public class EntitlementRenewal extends ObjectBase {
 		date = GsonParser.parseLong(jsonObject.get("date"));
 		purchaseId = GsonParser.parseLong(jsonObject.get("purchaseId"));
 		subscriptionId = GsonParser.parseLong(jsonObject.get("subscriptionId"));
+		userId = GsonParser.parseLong(jsonObject.get("userId"));
 
 	}
 
@@ -138,6 +156,7 @@ public class EntitlementRenewal extends ObjectBase {
 		kparams.add("date", this.date);
 		kparams.add("purchaseId", this.purchaseId);
 		kparams.add("subscriptionId", this.subscriptionId);
+		kparams.add("userId", this.userId);
 		return kparams;
 	}
 
