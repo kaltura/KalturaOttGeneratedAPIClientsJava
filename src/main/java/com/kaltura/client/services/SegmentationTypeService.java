@@ -51,9 +51,9 @@ public class SegmentationTypeService {
 	}
 
 	/**
-	 * ...
+	 * Adds a new segmentation type to the system
 	 * 
-	 * @param segmentationType .
+	 * @param segmentationType The segmentation type to be added
 	 */
     public static AddSegmentationTypeBuilder add(SegmentationType segmentationType)  {
 		return new AddSegmentationTypeBuilder(segmentationType);
@@ -94,10 +94,10 @@ public class SegmentationTypeService {
 	}
 
 	/**
-	 * ...
+	 * Lists all segmentation types in group
 	 * 
-	 * @param filter .
-	 * @param pager .
+	 * @param filter Segmentation type filter - basically empty
+	 * @param pager Simple pager
 	 */
     public static ListSegmentationTypeBuilder list(SegmentationTypeFilter filter, FilterPager pager)  {
 		return new ListSegmentationTypeBuilder(filter, pager);
@@ -105,7 +105,7 @@ public class SegmentationTypeService {
 	
 	public static class UpdateSegmentationTypeBuilder extends RequestBuilder<SegmentationType, SegmentationType.Tokenizer, UpdateSegmentationTypeBuilder> {
 		
-		public UpdateSegmentationTypeBuilder(int segmentationTypeId, SegmentationType segmentationType) {
+		public UpdateSegmentationTypeBuilder(long segmentationTypeId, SegmentationType segmentationType) {
 			super(SegmentationType.class, "segmentationtype", "update");
 			params.add("segmentationTypeId", segmentationTypeId);
 			params.add("segmentationType", segmentationType);
@@ -117,12 +117,12 @@ public class SegmentationTypeService {
 	}
 
 	/**
-	 * ...
+	 * Updates an existing segmentation type
 	 * 
-	 * @param segmentationTypeId .
-	 * @param segmentationType .
+	 * @param segmentationTypeId The ID of the object that will be updated
+	 * @param segmentationType The segmentation type to be updated
 	 */
-    public static UpdateSegmentationTypeBuilder update(int segmentationTypeId, SegmentationType segmentationType)  {
+    public static UpdateSegmentationTypeBuilder update(long segmentationTypeId, SegmentationType segmentationType)  {
 		return new UpdateSegmentationTypeBuilder(segmentationTypeId, segmentationType);
 	}
 }

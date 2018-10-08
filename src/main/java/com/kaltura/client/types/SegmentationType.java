@@ -83,14 +83,6 @@ public class SegmentationType extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -153,7 +145,6 @@ public class SegmentationType extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentationType");
-		kparams.add("id", this.id);
 		kparams.add("name", this.name);
 		kparams.add("description", this.description);
 		kparams.add("conditions", this.conditions);
