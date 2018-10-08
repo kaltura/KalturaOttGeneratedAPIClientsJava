@@ -32,8 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -53,7 +51,6 @@ public class SegmentValue extends ObjectBase {
 		String id();
 		String systematicName();
 		String name();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String value();
 		String threshold();
 	}
@@ -70,10 +67,6 @@ public class SegmentValue extends ObjectBase {
 	 * Name of segment
 	 */
 	private String name;
-	/**
-	 * Name of segment
-	 */
-	private List<TranslationToken> multilingualName;
 	/**
 	 * The value of the segment
 	 */
@@ -103,12 +96,12 @@ public class SegmentValue extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	// multilingualName:
-	public List<TranslationToken> getMultilingualName(){
-		return this.multilingualName;
+	public void setName(String name){
+		this.name = name;
 	}
-	public void setMultilingualName(List<TranslationToken> multilingualName){
-		this.multilingualName = multilingualName;
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
 	// value:
@@ -149,7 +142,6 @@ public class SegmentValue extends ObjectBase {
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		systematicName = GsonParser.parseString(jsonObject.get("systematicName"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		value = GsonParser.parseString(jsonObject.get("value"));
 		threshold = GsonParser.parseInt(jsonObject.get("threshold"));
 
@@ -159,7 +151,7 @@ public class SegmentValue extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentValue");
 		kparams.add("systematicName", this.systematicName);
-		kparams.add("multilingualName", this.multilingualName);
+		kparams.add("name", this.name);
 		kparams.add("value", this.value);
 		kparams.add("threshold", this.threshold);
 		return kparams;
