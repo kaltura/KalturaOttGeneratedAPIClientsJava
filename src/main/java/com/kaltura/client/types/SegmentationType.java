@@ -53,7 +53,9 @@ public class SegmentationType extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String description();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualDescription();
 		RequestBuilder.ListTokenizer<BaseSegmentCondition.Tokenizer> conditions();
 		BaseSegmentValue.Tokenizer value();
 	}
@@ -67,9 +69,17 @@ public class SegmentationType extends ObjectBase {
 	 */
 	private String name;
 	/**
+	 * Name of segmentation type
+	 */
+	private List<TranslationToken> multilingualName;
+	/**
 	 * Description of segmentation type
 	 */
 	private String description;
+	/**
+	 * Description of segmentation type
+	 */
+	private List<TranslationToken> multilingualDescription;
 	/**
 	 * Segmentation conditions - can be empty
 	 */
@@ -95,24 +105,24 @@ public class SegmentationType extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
+	// multilingualName:
+	public List<TranslationToken> getMultilingualName(){
+		return this.multilingualName;
 	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	public void setMultilingualName(List<TranslationToken> multilingualName){
+		this.multilingualName = multilingualName;
 	}
 
 	// description:
 	public String getDescription(){
 		return this.description;
 	}
-	public void setDescription(String description){
-		this.description = description;
+	// multilingualDescription:
+	public List<TranslationToken> getMultilingualDescription(){
+		return this.multilingualDescription;
 	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
+	public void setMultilingualDescription(List<TranslationToken> multilingualDescription){
+		this.multilingualDescription = multilingualDescription;
 	}
 
 	// conditions:
@@ -144,7 +154,9 @@ public class SegmentationType extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
+		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		description = GsonParser.parseString(jsonObject.get("description"));
+		multilingualDescription = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualDescription"), TranslationToken.class);
 		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), BaseSegmentCondition.class);
 		value = GsonParser.parseObject(jsonObject.getAsJsonObject("value"), BaseSegmentValue.class);
 
@@ -154,8 +166,8 @@ public class SegmentationType extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentationType");
 		kparams.add("id", this.id);
-		kparams.add("name", this.name);
-		kparams.add("description", this.description);
+		kparams.add("multilingualName", this.multilingualName);
+		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("conditions", this.conditions);
 		kparams.add("value", this.value);
 		return kparams;
