@@ -34,7 +34,8 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum PpvOrderBy implements EnumAsString {
-	NONE("NONE");
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC");
 
 	private String value;
 
