@@ -61,14 +61,19 @@ public class UserSegmentService {
 	
 	public static class DeleteUserSegmentBuilder extends RequestBuilder<Boolean, String, DeleteUserSegmentBuilder> {
 		
-		public DeleteUserSegmentBuilder(String userId, long segmentId) {
+		public DeleteUserSegmentBuilder(String userId, long segmentationTypeId, long segmentId) {
 			super(Boolean.class, "usersegment", "delete");
 			params.add("userId", userId);
+			params.add("segmentationTypeId", segmentationTypeId);
 			params.add("segmentId", segmentId);
 		}
 		
 		public void userId(String multirequestToken) {
 			params.add("userId", multirequestToken);
+		}
+		
+		public void segmentationTypeId(String multirequestToken) {
+			params.add("segmentationTypeId", multirequestToken);
 		}
 		
 		public void segmentId(String multirequestToken) {
@@ -80,10 +85,11 @@ public class UserSegmentService {
 	 * Deletes a segment from a user
 	 * 
 	 * @param userId User id
+	 * @param segmentationTypeId Segmentation type id
 	 * @param segmentId Segment id
 	 */
-    public static DeleteUserSegmentBuilder delete(String userId, long segmentId)  {
-		return new DeleteUserSegmentBuilder(userId, segmentId);
+    public static DeleteUserSegmentBuilder delete(String userId, long segmentationTypeId, long segmentId)  {
+		return new DeleteUserSegmentBuilder(userId, segmentationTypeId, segmentId);
 	}
 	
 	public static class ListUserSegmentBuilder extends ListResponseRequestBuilder<UserSegment, UserSegment.Tokenizer, ListUserSegmentBuilder> {
