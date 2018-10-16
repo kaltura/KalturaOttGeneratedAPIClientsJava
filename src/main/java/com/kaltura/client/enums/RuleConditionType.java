@@ -37,7 +37,11 @@ public enum RuleConditionType implements EnumAsString {
 	ASSET("ASSET"),
 	COUNTRY("COUNTRY"),
 	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE");
+	IP_RANGE("IP_RANGE"),
+	BUSINESS_MODULE("BUSINESS_MODULE"),
+	SEGMENTS("SEGMENTS"),
+	DATE("DATE"),
+	OR("OR");
 
 	private String value;
 

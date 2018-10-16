@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -45,54 +43,11 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetRuleBase.Tokenizer.class)
-public abstract class AssetRuleBase extends ObjectBase {
+public abstract class AssetRuleBase extends Rule {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String description();
+	public interface Tokenizer extends Rule.Tokenizer {
 	}
 
-	/**
-	 * ID
-	 */
-	private Long id;
-	/**
-	 * Name
-	 */
-	private String name;
-	/**
-	 * Description
-	 */
-	private String description;
-
-	// id:
-	public Long getId(){
-		return this.id;
-	}
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
 
 
 	public AssetRuleBase() {
@@ -101,21 +56,11 @@ public abstract class AssetRuleBase extends ObjectBase {
 
 	public AssetRuleBase(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		description = GsonParser.parseString(jsonObject.get("description"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetRuleBase");
-		kparams.add("name", this.name);
-		kparams.add("description", this.description);
 		return kparams;
 	}
 

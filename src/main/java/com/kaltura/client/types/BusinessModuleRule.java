@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -40,52 +42,63 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Country condition
+ * Business module rule
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CountryCondition.Tokenizer.class)
-public class CountryCondition extends NotCondition {
+@MultiRequestBuilder.Tokenizer(BusinessModuleRule.Tokenizer.class)
+public class BusinessModuleRule extends Rule {
 	
-	public interface Tokenizer extends NotCondition.Tokenizer {
-		String countries();
+	public interface Tokenizer extends Rule.Tokenizer {
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
+		RequestBuilder.ListTokenizer<ApplyDiscountModuleAction.Tokenizer> actions();
 	}
 
 	/**
-	 * Comma separated countries IDs list
+	 * List of conditions for the rule
 	 */
-	private String countries;
+	private List<Condition> conditions;
+	/**
+	 * List of actions for the rule
+	 */
+	private List<ApplyDiscountModuleAction> actions;
 
-	// countries:
-	public String getCountries(){
-		return this.countries;
+	// conditions:
+	public List<Condition> getConditions(){
+		return this.conditions;
 	}
-	public void setCountries(String countries){
-		this.countries = countries;
+	public void setConditions(List<Condition> conditions){
+		this.conditions = conditions;
 	}
 
-	public void countries(String multirequestToken){
-		setToken("countries", multirequestToken);
+	// actions:
+	public List<ApplyDiscountModuleAction> getActions(){
+		return this.actions;
+	}
+	public void setActions(List<ApplyDiscountModuleAction> actions){
+		this.actions = actions;
 	}
 
 
-	public CountryCondition() {
+	public BusinessModuleRule() {
 		super();
 	}
 
-	public CountryCondition(JsonObject jsonObject) throws APIException {
+	public BusinessModuleRule(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		countries = GsonParser.parseString(jsonObject.get("countries"));
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
+		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), ApplyDiscountModuleAction.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCountryCondition");
-		kparams.add("countries", this.countries);
+		kparams.add("objectType", "KalturaBusinessModuleRule");
+		kparams.add("conditions", this.conditions);
+		kparams.add("actions", this.actions);
 		return kparams;
 	}
 

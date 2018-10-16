@@ -106,7 +106,7 @@ public class UserSegmentService {
 	}
 
 	/**
-	 * Retrieve all the segments that apply for this user
+	 * Retrieve all the segments that apply for given user
 	 * 
 	 * @param filter Filter
 	 * @param pager Pager

@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,43 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleActionType implements EnumAsString {
-	BLOCK("BLOCK"),
-	START_DATE_OFFSET("START_DATE_OFFSET"),
-	END_DATE_OFFSET("END_DATE_OFFSET"),
-	USER_BLOCK("USER_BLOCK"),
-	ALLOW_PLAYBACK("ALLOW_PLAYBACK"),
-	BLOCK_PLAYBACK("BLOCK_PLAYBACK"),
-	APPLY_DISCOUNT_MODULE("APPLY_DISCOUNT_MODULE");
 
-	private String value;
-
-	RuleActionType(String value) {
-		this.value = value;
+/**
+ * Segments condition
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SegmentsCondition.Tokenizer.class)
+public class SegmentsCondition extends Condition {
+	
+	public interface Tokenizer extends Condition.Tokenizer {
+		String segmentsIds();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Comma separated segments IDs list
+	 */
+	private String segmentsIds;
+
+	// segmentsIds:
+	public String getSegmentsIds(){
+		return this.segmentsIds;
+	}
+	public void setSegmentsIds(String segmentsIds){
+		this.segmentsIds = segmentsIds;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void segmentsIds(String multirequestToken){
+		setToken("segmentsIds", multirequestToken);
 	}
 
-	public static RuleActionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleActionType defined values and compare the inner value with the given one:
-		for(RuleActionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleActionType.values().length > 0 ? RuleActionType.values()[0]: null;
-   }
+
+	public SegmentsCondition() {
+		super();
+	}
+
+	public SegmentsCondition(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		segmentsIds = GsonParser.parseString(jsonObject.get("segmentsIds"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSegmentsCondition");
+		kparams.add("segmentsIds", this.segmentsIds);
+		return kparams;
+	}
+
 }
+

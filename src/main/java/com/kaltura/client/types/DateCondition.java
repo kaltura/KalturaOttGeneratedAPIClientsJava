@@ -40,52 +40,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Country condition
+ * Date condition
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CountryCondition.Tokenizer.class)
-public class CountryCondition extends NotCondition {
+@MultiRequestBuilder.Tokenizer(DateCondition.Tokenizer.class)
+public class DateCondition extends NotCondition {
 	
 	public interface Tokenizer extends NotCondition.Tokenizer {
-		String countries();
+		String startDate();
+		String endDate();
 	}
 
 	/**
-	 * Comma separated countries IDs list
+	 * Start date
 	 */
-	private String countries;
+	private Long startDate;
+	/**
+	 * End date
+	 */
+	private Long endDate;
 
-	// countries:
-	public String getCountries(){
-		return this.countries;
+	// startDate:
+	public Long getStartDate(){
+		return this.startDate;
 	}
-	public void setCountries(String countries){
-		this.countries = countries;
+	public void setStartDate(Long startDate){
+		this.startDate = startDate;
 	}
 
-	public void countries(String multirequestToken){
-		setToken("countries", multirequestToken);
+	public void startDate(String multirequestToken){
+		setToken("startDate", multirequestToken);
+	}
+
+	// endDate:
+	public Long getEndDate(){
+		return this.endDate;
+	}
+	public void setEndDate(Long endDate){
+		this.endDate = endDate;
+	}
+
+	public void endDate(String multirequestToken){
+		setToken("endDate", multirequestToken);
 	}
 
 
-	public CountryCondition() {
+	public DateCondition() {
 		super();
 	}
 
-	public CountryCondition(JsonObject jsonObject) throws APIException {
+	public DateCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		countries = GsonParser.parseString(jsonObject.get("countries"));
+		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
+		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCountryCondition");
-		kparams.add("countries", this.countries);
+		kparams.add("objectType", "KalturaDateCondition");
+		kparams.add("startDate", this.startDate);
+		kparams.add("endDate", this.endDate);
 		return kparams;
 	}
 

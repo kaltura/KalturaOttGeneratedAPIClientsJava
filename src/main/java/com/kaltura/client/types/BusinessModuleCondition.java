@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,52 +41,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Country condition
+ * Business module condition
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CountryCondition.Tokenizer.class)
-public class CountryCondition extends NotCondition {
+@MultiRequestBuilder.Tokenizer(BusinessModuleCondition.Tokenizer.class)
+public class BusinessModuleCondition extends Condition {
 	
-	public interface Tokenizer extends NotCondition.Tokenizer {
-		String countries();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String businessModuleType();
+		String businessModuleId();
 	}
 
 	/**
-	 * Comma separated countries IDs list
+	 * Business module type
 	 */
-	private String countries;
+	private TransactionType businessModuleType;
+	/**
+	 * Business module ID
+	 */
+	private Long businessModuleId;
 
-	// countries:
-	public String getCountries(){
-		return this.countries;
+	// businessModuleType:
+	public TransactionType getBusinessModuleType(){
+		return this.businessModuleType;
 	}
-	public void setCountries(String countries){
-		this.countries = countries;
+	public void setBusinessModuleType(TransactionType businessModuleType){
+		this.businessModuleType = businessModuleType;
 	}
 
-	public void countries(String multirequestToken){
-		setToken("countries", multirequestToken);
+	public void businessModuleType(String multirequestToken){
+		setToken("businessModuleType", multirequestToken);
+	}
+
+	// businessModuleId:
+	public Long getBusinessModuleId(){
+		return this.businessModuleId;
+	}
+	public void setBusinessModuleId(Long businessModuleId){
+		this.businessModuleId = businessModuleId;
+	}
+
+	public void businessModuleId(String multirequestToken){
+		setToken("businessModuleId", multirequestToken);
 	}
 
 
-	public CountryCondition() {
+	public BusinessModuleCondition() {
 		super();
 	}
 
-	public CountryCondition(JsonObject jsonObject) throws APIException {
+	public BusinessModuleCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		countries = GsonParser.parseString(jsonObject.get("countries"));
+		businessModuleType = TransactionType.get(GsonParser.parseString(jsonObject.get("businessModuleType")));
+		businessModuleId = GsonParser.parseLong(jsonObject.get("businessModuleId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCountryCondition");
-		kparams.add("countries", this.countries);
+		kparams.add("objectType", "KalturaBusinessModuleCondition");
+		kparams.add("businessModuleType", this.businessModuleType);
+		kparams.add("businessModuleId", this.businessModuleId);
 		return kparams;
 	}
 

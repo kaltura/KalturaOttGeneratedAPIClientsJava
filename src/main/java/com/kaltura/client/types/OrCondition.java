@@ -25,7 +25,14 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,43 +40,49 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleActionType implements EnumAsString {
-	BLOCK("BLOCK"),
-	START_DATE_OFFSET("START_DATE_OFFSET"),
-	END_DATE_OFFSET("END_DATE_OFFSET"),
-	USER_BLOCK("USER_BLOCK"),
-	ALLOW_PLAYBACK("ALLOW_PLAYBACK"),
-	BLOCK_PLAYBACK("BLOCK_PLAYBACK"),
-	APPLY_DISCOUNT_MODULE("APPLY_DISCOUNT_MODULE");
 
-	private String value;
-
-	RuleActionType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(OrCondition.Tokenizer.class)
+public class OrCondition extends Condition {
+	
+	public interface Tokenizer extends Condition.Tokenizer {
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * List of conditions with or between them
+	 */
+	private List<Condition> conditions;
+
+	// conditions:
+	public List<Condition> getConditions(){
+		return this.conditions;
+	}
+	public void setConditions(List<Condition> conditions){
+		this.conditions = conditions;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public OrCondition() {
+		super();
 	}
 
-	public static RuleActionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleActionType defined values and compare the inner value with the given one:
-		for(RuleActionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleActionType.values().length > 0 ? RuleActionType.values()[0]: null;
-   }
+	public OrCondition(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaOrCondition");
+		kparams.add("conditions", this.conditions);
+		return kparams;
+	}
+
 }
+
