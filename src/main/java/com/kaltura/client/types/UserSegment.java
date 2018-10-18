@@ -49,7 +49,6 @@ public class UserSegment extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String segmentId();
-		String segmentationTypeId();
 		String userId();
 	}
 
@@ -57,10 +56,6 @@ public class UserSegment extends ObjectBase {
 	 * Segment Id
 	 */
 	private Long segmentId;
-	/**
-	 * Segmentation type Id
-	 */
-	private Long segmentationTypeId;
 	/**
 	 * User Id of segment
 	 */
@@ -76,18 +71,6 @@ public class UserSegment extends ObjectBase {
 
 	public void segmentId(String multirequestToken){
 		setToken("segmentId", multirequestToken);
-	}
-
-	// segmentationTypeId:
-	public Long getSegmentationTypeId(){
-		return this.segmentationTypeId;
-	}
-	public void setSegmentationTypeId(Long segmentationTypeId){
-		this.segmentationTypeId = segmentationTypeId;
-	}
-
-	public void segmentationTypeId(String multirequestToken){
-		setToken("segmentationTypeId", multirequestToken);
 	}
 
 	// userId:
@@ -114,7 +97,6 @@ public class UserSegment extends ObjectBase {
 
 		// set members values:
 		segmentId = GsonParser.parseLong(jsonObject.get("segmentId"));
-		segmentationTypeId = GsonParser.parseLong(jsonObject.get("segmentationTypeId"));
 		userId = GsonParser.parseString(jsonObject.get("userId"));
 
 	}
@@ -123,7 +105,6 @@ public class UserSegment extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaUserSegment");
 		kparams.add("segmentId", this.segmentId);
-		kparams.add("segmentationTypeId", this.segmentationTypeId);
 		kparams.add("userId", this.userId);
 		return kparams;
 	}

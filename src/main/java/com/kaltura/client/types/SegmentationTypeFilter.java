@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -46,8 +47,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class SegmentationTypeFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
+		String idIn();
 	}
 
+	/**
+	 * Comma separated segmentation types identifieridentifiers
+	 */
+	private String idIn;
+
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
+	}
+
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
+	}
 
 
 	public SegmentationTypeFilter() {
@@ -56,11 +74,18 @@ public class SegmentationTypeFilter extends Filter {
 
 	public SegmentationTypeFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentationTypeFilter");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 
