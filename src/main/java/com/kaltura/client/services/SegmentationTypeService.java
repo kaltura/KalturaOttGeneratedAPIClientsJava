@@ -89,6 +89,10 @@ public class SegmentationTypeService {
 		}
 	}
 
+	public static ListSegmentationTypeBuilder list()  {
+		return list(null);
+	}
+
 	public static ListSegmentationTypeBuilder list(SegmentationTypeFilter filter)  {
 		return list(filter, null);
 	}
