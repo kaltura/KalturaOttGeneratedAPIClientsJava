@@ -67,6 +67,7 @@ public class MediaFile extends AssetFile {
 		String outputProtecationLevel();
 		String cdnAdapaterProfileId();
 		String status();
+		String catalogEndDate();
 	}
 
 	/**
@@ -149,6 +150,10 @@ public class MediaFile extends AssetFile {
 	 * The media file status
 	 */
 	private Boolean status;
+	/**
+	 * Catalog end date
+	 */
+	private Long catalogEndDate;
 
 	// assetId:
 	public Integer getAssetId(){
@@ -374,6 +379,18 @@ public class MediaFile extends AssetFile {
 		setToken("status", multirequestToken);
 	}
 
+	// catalogEndDate:
+	public Long getCatalogEndDate(){
+		return this.catalogEndDate;
+	}
+	public void setCatalogEndDate(Long catalogEndDate){
+		this.catalogEndDate = catalogEndDate;
+	}
+
+	public void catalogEndDate(String multirequestToken){
+		setToken("catalogEndDate", multirequestToken);
+	}
+
 
 	public MediaFile() {
 		super();
@@ -405,6 +422,7 @@ public class MediaFile extends AssetFile {
 		outputProtecationLevel = GsonParser.parseString(jsonObject.get("outputProtecationLevel"));
 		cdnAdapaterProfileId = GsonParser.parseLong(jsonObject.get("cdnAdapaterProfileId"));
 		status = GsonParser.parseBoolean(jsonObject.get("status"));
+		catalogEndDate = GsonParser.parseLong(jsonObject.get("catalogEndDate"));
 
 	}
 
@@ -429,6 +447,7 @@ public class MediaFile extends AssetFile {
 		kparams.add("outputProtecationLevel", this.outputProtecationLevel);
 		kparams.add("cdnAdapaterProfileId", this.cdnAdapaterProfileId);
 		kparams.add("status", this.status);
+		kparams.add("catalogEndDate", this.catalogEndDate);
 		return kparams;
 	}
 

@@ -57,7 +57,6 @@ public class SegmentationType extends ObjectBase {
 		RequestBuilder.ListTokenizer<BaseSegmentCondition.Tokenizer> conditions();
 		BaseSegmentValue.Tokenizer value();
 		String createDate();
-		String affectsContentOrdering();
 	}
 
 	/**
@@ -84,10 +83,6 @@ public class SegmentationType extends ObjectBase {
 	 * Create date of segmentation type
 	 */
 	private Long createDate;
-	/**
-	 * Do the segments of this type affect content ordering of channels and searches
-	 */
-	private Boolean affectsContentOrdering;
 
 	// id:
 	public Long getId(){
@@ -137,18 +132,6 @@ public class SegmentationType extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
-	// affectsContentOrdering:
-	public Boolean getAffectsContentOrdering(){
-		return this.affectsContentOrdering;
-	}
-	public void setAffectsContentOrdering(Boolean affectsContentOrdering){
-		this.affectsContentOrdering = affectsContentOrdering;
-	}
-
-	public void affectsContentOrdering(String multirequestToken){
-		setToken("affectsContentOrdering", multirequestToken);
-	}
-
 
 	public SegmentationType() {
 		super();
@@ -166,7 +149,6 @@ public class SegmentationType extends ObjectBase {
 		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), BaseSegmentCondition.class);
 		value = GsonParser.parseObject(jsonObject.getAsJsonObject("value"), BaseSegmentValue.class);
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		affectsContentOrdering = GsonParser.parseBoolean(jsonObject.get("affectsContentOrdering"));
 
 	}
 
@@ -177,7 +159,6 @@ public class SegmentationType extends ObjectBase {
 		kparams.add("description", this.description);
 		kparams.add("conditions", this.conditions);
 		kparams.add("value", this.value);
-		kparams.add("affectsContentOrdering", this.affectsContentOrdering);
 		return kparams;
 	}
 
