@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.SkipOptions;
 import com.kaltura.client.types.BaseResponseProfile;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
@@ -55,6 +56,8 @@ public class RequestConfiguration extends ObjectBase {
 		String currency();
 		String ks();
 		BaseResponseProfile.Tokenizer responseProfile();
+		String abortAllOnError();
+		String skipOnOrror();
 	}
 
 	/**
@@ -81,6 +84,14 @@ public class RequestConfiguration extends ObjectBase {
 	 * Kaltura response profile object
 	 */
 	private BaseResponseProfile responseProfile;
+	/**
+	 * Abort all following requests if current request has an error
+	 */
+	private Boolean abortAllOnError;
+	/**
+	 * Skip current request according to skip option
+	 */
+	private SkipOptions skipOnOrror;
 
 	// partnerId:
 	public Integer getPartnerId(){
@@ -150,6 +161,30 @@ public class RequestConfiguration extends ObjectBase {
 		this.responseProfile = responseProfile;
 	}
 
+	// abortAllOnError:
+	public Boolean getAbortAllOnError(){
+		return this.abortAllOnError;
+	}
+	public void setAbortAllOnError(Boolean abortAllOnError){
+		this.abortAllOnError = abortAllOnError;
+	}
+
+	public void abortAllOnError(String multirequestToken){
+		setToken("abortAllOnError", multirequestToken);
+	}
+
+	// skipOnOrror:
+	public SkipOptions getSkipOnOrror(){
+		return this.skipOnOrror;
+	}
+	public void setSkipOnOrror(SkipOptions skipOnOrror){
+		this.skipOnOrror = skipOnOrror;
+	}
+
+	public void skipOnOrror(String multirequestToken){
+		setToken("skipOnOrror", multirequestToken);
+	}
+
 
 	public RequestConfiguration() {
 		super();
@@ -167,6 +202,8 @@ public class RequestConfiguration extends ObjectBase {
 		currency = GsonParser.parseString(jsonObject.get("currency"));
 		ks = GsonParser.parseString(jsonObject.get("ks"));
 		responseProfile = GsonParser.parseObject(jsonObject.getAsJsonObject("responseProfile"), BaseResponseProfile.class);
+		abortAllOnError = GsonParser.parseBoolean(jsonObject.get("abortAllOnError"));
+		skipOnOrror = SkipOptions.get(GsonParser.parseString(jsonObject.get("skipOnOrror")));
 
 	}
 
@@ -179,6 +216,8 @@ public class RequestConfiguration extends ObjectBase {
 		kparams.add("currency", this.currency);
 		kparams.add("ks", this.ks);
 		kparams.add("responseProfile", this.responseProfile);
+		kparams.add("abortAllOnError", this.abortAllOnError);
+		kparams.add("skipOnOrror", this.skipOnOrror);
 		return kparams;
 	}
 
