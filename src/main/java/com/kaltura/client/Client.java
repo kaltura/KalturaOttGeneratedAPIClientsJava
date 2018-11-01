@@ -44,7 +44,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:18-11-01");
-		this.setApiVersion("5.0.3.14494");
+		this.setApiVersion("5.0.3.18941");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
@@ -223,6 +223,46 @@ public class Client extends ClientBase {
 	public BaseResponseProfile getResponseProfile(){
 		if(this.requestConfiguration.containsKey("responseProfile")){
 			return(BaseResponseProfile) this.requestConfiguration.get("responseProfile");
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @param abortAllOnError Abort all following requests if current request has an error
+	 */
+	public void setAbortAllOnError(Boolean abortAllOnError){
+		this.requestConfiguration.put("abortAllOnError", abortAllOnError);
+	}
+	
+	/**
+	 * Abort all following requests if current request has an error
+	 * 
+	 * @return Boolean
+	 */
+	public Boolean getAbortAllOnError(){
+		if(this.requestConfiguration.containsKey("abortAllOnError")){
+			return(Boolean) this.requestConfiguration.get("abortAllOnError");
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @param skipOnOrror Skip current request according to skip option
+	 */
+	public void setSkipOnOrror(SkipOptions skipOnOrror){
+		this.requestConfiguration.put("skipOnOrror", skipOnOrror);
+	}
+	
+	/**
+	 * Skip current request according to skip option
+	 * 
+	 * @return SkipOptions
+	 */
+	public SkipOptions getSkipOnOrror(){
+		if(this.requestConfiguration.containsKey("skipOnOrror")){
+			return(SkipOptions) this.requestConfiguration.get("skipOnOrror");
 		}
 		
 		return null;

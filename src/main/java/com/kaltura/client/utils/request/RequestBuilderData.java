@@ -116,4 +116,20 @@ public abstract class RequestBuilderData<SelfType> {
 		return (SelfType) this;
 	}
 	
+	/**
+	 * @param abortAllOnError Abort all following requests if current request has an error
+	 */
+	public SelfType setAbortAllOnError(Boolean abortAllOnError){
+		params.add("abortAllOnError", abortAllOnError);
+		return (SelfType) this;
+	}
+	
+	/**
+	 * @param skipOnOrror Skip current request according to skip option
+	 */
+	public SelfType setSkipOnOrror(SkipOptions skipOnOrror){
+		params.add("skipOnOrror", skipOnOrror);
+		return (SelfType) this;
+	}
+	
 }
