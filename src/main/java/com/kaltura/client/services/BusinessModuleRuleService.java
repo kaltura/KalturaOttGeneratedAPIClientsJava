@@ -80,6 +80,27 @@ public class BusinessModuleRuleService {
 		return new DeleteBusinessModuleRuleBuilder(id);
 	}
 	
+	public static class GetBusinessModuleRuleBuilder extends RequestBuilder<BusinessModuleRule, BusinessModuleRule.Tokenizer, GetBusinessModuleRuleBuilder> {
+		
+		public GetBusinessModuleRuleBuilder(long id) {
+			super(BusinessModuleRule.class, "businessmodulerule", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get business module rule by ID
+	 * 
+	 * @param id ID to get
+	 */
+    public static GetBusinessModuleRuleBuilder get(long id)  {
+		return new GetBusinessModuleRuleBuilder(id);
+	}
+	
 	public static class ListBusinessModuleRuleBuilder extends ListResponseRequestBuilder<BusinessModuleRule, BusinessModuleRule.Tokenizer, ListBusinessModuleRuleBuilder> {
 		
 		public ListBusinessModuleRuleBuilder(BusinessModuleRuleFilter filter) {
