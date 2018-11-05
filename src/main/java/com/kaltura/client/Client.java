@@ -29,6 +29,7 @@ package com.kaltura.client;
 
 import com.kaltura.client.utils.request.ConnectionConfiguration;
 import com.kaltura.client.types.BaseResponseProfile;
+import com.kaltura.client.enums.SkipOptions;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,7 +45,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:18-11-05");
-		this.setApiVersion("5.0.3.19704");
+		this.setApiVersion("5.0.3.21168");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
