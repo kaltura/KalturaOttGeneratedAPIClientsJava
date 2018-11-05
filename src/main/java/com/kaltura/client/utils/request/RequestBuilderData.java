@@ -29,6 +29,7 @@ package com.kaltura.client.utils.request;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.types.BaseResponseProfile;
+import com.kaltura.client.enums.string;
 
 /**
  * This class was generated using clients-generator\exec.php
