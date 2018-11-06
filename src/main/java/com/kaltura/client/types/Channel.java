@@ -61,6 +61,7 @@ public class Channel extends BaseChannel {
 		ChannelOrder.Tokenizer orderBy();
 		String createDate();
 		String updateDate();
+		String supportSegmentBasedOrdering();
 	}
 
 	/**
@@ -107,6 +108,11 @@ public class Channel extends BaseChannel {
 	 * Specifies when was the Channel last updated. Date and time represented as epoch.
 	 */
 	private Long updateDate;
+	/**
+	 * Specifies whether the assets in this channel will be ordered based on their
+	  match to the user&amp;#39;s segments (see BEO-5524)
+	 */
+	private Boolean supportSegmentBasedOrdering;
 
 	// name:
 	public String getName(){
@@ -196,6 +202,18 @@ public class Channel extends BaseChannel {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
+	// supportSegmentBasedOrdering:
+	public Boolean getSupportSegmentBasedOrdering(){
+		return this.supportSegmentBasedOrdering;
+	}
+	public void setSupportSegmentBasedOrdering(Boolean supportSegmentBasedOrdering){
+		this.supportSegmentBasedOrdering = supportSegmentBasedOrdering;
+	}
+
+	public void supportSegmentBasedOrdering(String multirequestToken){
+		setToken("supportSegmentBasedOrdering", multirequestToken);
+	}
+
 
 	public Channel() {
 		super();
@@ -218,6 +236,7 @@ public class Channel extends BaseChannel {
 		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), ChannelOrder.class);
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		supportSegmentBasedOrdering = GsonParser.parseBoolean(jsonObject.get("supportSegmentBasedOrdering"));
 
 	}
 
@@ -231,6 +250,7 @@ public class Channel extends BaseChannel {
 		kparams.add("oldDescription", this.oldDescription);
 		kparams.add("isActive", this.isActive);
 		kparams.add("orderBy", this.orderBy);
+		kparams.add("supportSegmentBasedOrdering", this.supportSegmentBasedOrdering);
 		return kparams;
 	}
 
