@@ -126,10 +126,10 @@ public abstract class RequestBuilderData<SelfType> {
 	}
 	
 	/**
-	 * @param skipOnOrror Skip current request according to skip option
+	 * @param skipOnError Skip current request according to skip option
 	 */
-	public SelfType setSkipOnOrror(SkipOptions skipOnOrror){
-		params.add("skipOnOrror", skipOnOrror);
+	public SelfType setSkipOnError(SkipOptions skipOnError){
+		params.add("skipOnError", skipOnError);
 		return (SelfType) this;
 	}
 	

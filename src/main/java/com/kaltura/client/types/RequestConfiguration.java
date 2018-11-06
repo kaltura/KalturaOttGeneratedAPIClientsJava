@@ -57,7 +57,7 @@ public class RequestConfiguration extends ObjectBase {
 		String ks();
 		BaseResponseProfile.Tokenizer responseProfile();
 		String abortAllOnError();
-		String skipOnOrror();
+		String skipOnError();
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class RequestConfiguration extends ObjectBase {
 	/**
 	 * Skip current request according to skip option
 	 */
-	private SkipOptions skipOnOrror;
+	private SkipOptions skipOnError;
 
 	// partnerId:
 	public Integer getPartnerId(){
@@ -173,16 +173,16 @@ public class RequestConfiguration extends ObjectBase {
 		setToken("abortAllOnError", multirequestToken);
 	}
 
-	// skipOnOrror:
-	public SkipOptions getSkipOnOrror(){
-		return this.skipOnOrror;
+	// skipOnError:
+	public SkipOptions getSkipOnError(){
+		return this.skipOnError;
 	}
-	public void setSkipOnOrror(SkipOptions skipOnOrror){
-		this.skipOnOrror = skipOnOrror;
+	public void setSkipOnError(SkipOptions skipOnError){
+		this.skipOnError = skipOnError;
 	}
 
-	public void skipOnOrror(String multirequestToken){
-		setToken("skipOnOrror", multirequestToken);
+	public void skipOnError(String multirequestToken){
+		setToken("skipOnError", multirequestToken);
 	}
 
 
@@ -203,7 +203,7 @@ public class RequestConfiguration extends ObjectBase {
 		ks = GsonParser.parseString(jsonObject.get("ks"));
 		responseProfile = GsonParser.parseObject(jsonObject.getAsJsonObject("responseProfile"), BaseResponseProfile.class);
 		abortAllOnError = GsonParser.parseBoolean(jsonObject.get("abortAllOnError"));
-		skipOnOrror = SkipOptions.get(GsonParser.parseString(jsonObject.get("skipOnOrror")));
+		skipOnError = SkipOptions.get(GsonParser.parseString(jsonObject.get("skipOnError")));
 
 	}
 
@@ -217,7 +217,7 @@ public class RequestConfiguration extends ObjectBase {
 		kparams.add("ks", this.ks);
 		kparams.add("responseProfile", this.responseProfile);
 		kparams.add("abortAllOnError", this.abortAllOnError);
-		kparams.add("skipOnOrror", this.skipOnOrror);
+		kparams.add("skipOnError", this.skipOnError);
 		return kparams;
 	}
 

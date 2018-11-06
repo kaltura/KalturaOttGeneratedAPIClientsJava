@@ -45,7 +45,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:18-11-06");
-		this.setApiVersion("5.0.3.17592");
+		this.setApiVersion("5.0.3.25438");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
@@ -250,10 +250,10 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * @param skipOnOrror Skip current request according to skip option
+	 * @param skipOnError Skip current request according to skip option
 	 */
-	public void setSkipOnOrror(SkipOptions skipOnOrror){
-		this.requestConfiguration.put("skipOnOrror", skipOnOrror);
+	public void setSkipOnError(SkipOptions skipOnError){
+		this.requestConfiguration.put("skipOnError", skipOnError);
 	}
 	
 	/**
@@ -261,9 +261,9 @@ public class Client extends ClientBase {
 	 * 
 	 * @return SkipOptions
 	 */
-	public SkipOptions getSkipOnOrror(){
-		if(this.requestConfiguration.containsKey("skipOnOrror")){
-			return(SkipOptions) this.requestConfiguration.get("skipOnOrror");
+	public SkipOptions getSkipOnError(){
+		if(this.requestConfiguration.containsKey("skipOnError")){
+			return(SkipOptions) this.requestConfiguration.get("skipOnError");
 		}
 		
 		return null;
