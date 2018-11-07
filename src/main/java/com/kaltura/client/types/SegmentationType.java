@@ -57,6 +57,7 @@ public class SegmentationType extends ObjectBase {
 		RequestBuilder.ListTokenizer<BaseSegmentCondition.Tokenizer> conditions();
 		BaseSegmentValue.Tokenizer value();
 		String createDate();
+		String version();
 	}
 
 	/**
@@ -83,6 +84,10 @@ public class SegmentationType extends ObjectBase {
 	 * Create date of segmentation type
 	 */
 	private Long createDate;
+	/**
+	 * Segmentation type version
+	 */
+	private Long version;
 
 	// id:
 	public Long getId(){
@@ -132,6 +137,10 @@ public class SegmentationType extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
+	// version:
+	public Long getVersion(){
+		return this.version;
+	}
 
 	public SegmentationType() {
 		super();
@@ -149,6 +158,7 @@ public class SegmentationType extends ObjectBase {
 		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), BaseSegmentCondition.class);
 		value = GsonParser.parseObject(jsonObject.getAsJsonObject("value"), BaseSegmentValue.class);
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		version = GsonParser.parseLong(jsonObject.get("version"));
 
 	}
 
