@@ -48,6 +48,10 @@ public class CollectionService {
 		}
 	}
 
+	public static ListCollectionBuilder list()  {
+		return list(null);
+	}
+
 	/**
 	 * Returns a list of subscriptions requested by Subscription ID or file ID
 	 * 
