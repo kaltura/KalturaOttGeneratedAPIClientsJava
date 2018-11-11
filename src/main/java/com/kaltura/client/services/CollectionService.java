@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.Collection;
 import com.kaltura.client.types.CollectionFilter;
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
@@ -42,9 +43,10 @@ public class CollectionService {
 	
 	public static class ListCollectionBuilder extends ListResponseRequestBuilder<Collection, Collection.Tokenizer, ListCollectionBuilder> {
 		
-		public ListCollectionBuilder(CollectionFilter filter) {
+		public ListCollectionBuilder(CollectionFilter filter, FilterPager pager) {
 			super(Collection.class, "collection", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
@@ -52,12 +54,17 @@ public class CollectionService {
 		return list(null);
 	}
 
+	public static ListCollectionBuilder list(CollectionFilter filter)  {
+		return list(filter, null);
+	}
+
 	/**
 	 * Returns a list of subscriptions requested by Subscription ID or file ID
 	 * 
 	 * @param filter Filter request
+	 * @param pager Page size and index
 	 */
-    public static ListCollectionBuilder list(CollectionFilter filter)  {
-		return new ListCollectionBuilder(filter);
+    public static ListCollectionBuilder list(CollectionFilter filter, FilterPager pager)  {
+		return new ListCollectionBuilder(filter, pager);
 	}
 }

@@ -28,6 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.Coupon;
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -44,19 +45,29 @@ public class SubscriptionService {
 	
 	public static class ListSubscriptionBuilder extends ListResponseRequestBuilder<Subscription, Subscription.Tokenizer, ListSubscriptionBuilder> {
 		
-		public ListSubscriptionBuilder(SubscriptionFilter filter) {
+		public ListSubscriptionBuilder(SubscriptionFilter filter, FilterPager pager) {
 			super(Subscription.class, "subscription", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
+	}
+
+	public static ListSubscriptionBuilder list()  {
+		return list(null);
+	}
+
+	public static ListSubscriptionBuilder list(SubscriptionFilter filter)  {
+		return list(filter, null);
 	}
 
 	/**
 	 * Returns a list of subscriptions requested by Subscription ID or file ID
 	 * 
 	 * @param filter Filter request
+	 * @param pager Page size and index
 	 */
-    public static ListSubscriptionBuilder list(SubscriptionFilter filter)  {
-		return new ListSubscriptionBuilder(filter);
+    public static ListSubscriptionBuilder list(SubscriptionFilter filter, FilterPager pager)  {
+		return new ListSubscriptionBuilder(filter, pager);
 	}
 	
 	public static class ValidateCouponSubscriptionBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, ValidateCouponSubscriptionBuilder> {
