@@ -51,6 +51,7 @@ public class MonetizationSource extends SegmentSource {
 	public interface Tokenizer extends SegmentSource.Tokenizer {
 		String type();
 		String operator();
+		String days();
 	}
 
 	/**
@@ -61,6 +62,10 @@ public class MonetizationSource extends SegmentSource {
 	 * Mathermtical operator to calculate
 	 */
 	private MathemticalOperatorType operator;
+	/**
+	 * Days to consider when checking the users&amp;#39; purchaes
+	 */
+	private Integer days;
 
 	// type:
 	public MonetizationType getType(){
@@ -86,6 +91,18 @@ public class MonetizationSource extends SegmentSource {
 		setToken("operator", multirequestToken);
 	}
 
+	// days:
+	public Integer getDays(){
+		return this.days;
+	}
+	public void setDays(Integer days){
+		this.days = days;
+	}
+
+	public void days(String multirequestToken){
+		setToken("days", multirequestToken);
+	}
+
 
 	public MonetizationSource() {
 		super();
@@ -99,6 +116,7 @@ public class MonetizationSource extends SegmentSource {
 		// set members values:
 		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
 		operator = MathemticalOperatorType.get(GsonParser.parseString(jsonObject.get("operator")));
+		days = GsonParser.parseInt(jsonObject.get("days"));
 
 	}
 
@@ -107,6 +125,7 @@ public class MonetizationSource extends SegmentSource {
 		kparams.add("objectType", "KalturaMonetizationSource");
 		kparams.add("type", this.type);
 		kparams.add("operator", this.operator);
+		kparams.add("days", this.days);
 		return kparams;
 	}
 
