@@ -54,7 +54,7 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 		String maxScore();
 		String days();
 		String field();
-		String value();
+		RequestBuilder.ListTokenizer<StringValue.Tokenizer> values();
 		RequestBuilder.ListTokenizer<ContentActionCondition.Tokenizer> actions();
 	}
 
@@ -77,9 +77,9 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 	private String field;
 	/**
 	 * If condition should be applied on specific field (and not the one of the segment
-	  value) -
+	  value) -               list of values to be considered together
 	 */
-	private String value;
+	private List<StringValue> values;
 	/**
 	 * List of the actions that consist the condition
 	 */
@@ -133,16 +133,12 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 		setToken("field", multirequestToken);
 	}
 
-	// value:
-	public String getValue(){
-		return this.value;
+	// values:
+	public List<StringValue> getValues(){
+		return this.values;
 	}
-	public void setValue(String value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
+	public void setValues(List<StringValue> values){
+		this.values = values;
 	}
 
 	// actions:
@@ -168,7 +164,7 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 		maxScore = GsonParser.parseInt(jsonObject.get("maxScore"));
 		days = GsonParser.parseInt(jsonObject.get("days"));
 		field = GsonParser.parseString(jsonObject.get("field"));
-		value = GsonParser.parseString(jsonObject.get("value"));
+		values = GsonParser.parseArray(jsonObject.getAsJsonArray("values"), StringValue.class);
 		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), ContentActionCondition.class);
 
 	}
@@ -180,7 +176,7 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 		kparams.add("maxScore", this.maxScore);
 		kparams.add("days", this.days);
 		kparams.add("field", this.field);
-		kparams.add("value", this.value);
+		kparams.add("values", this.values);
 		kparams.add("actions", this.actions);
 		return kparams;
 	}

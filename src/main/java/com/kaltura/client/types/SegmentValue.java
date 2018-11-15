@@ -52,7 +52,6 @@ public class SegmentValue extends ObjectBase {
 		String systematicName();
 		String name();
 		String value();
-		String threshold();
 	}
 
 	/**
@@ -71,10 +70,6 @@ public class SegmentValue extends ObjectBase {
 	 * The value of the segment
 	 */
 	private String value;
-	/**
-	 * Threshold - minimum score to be met for this specific value
-	 */
-	private Integer threshold;
 
 	// id:
 	public Long getId(){
@@ -116,18 +111,6 @@ public class SegmentValue extends ObjectBase {
 		setToken("value", multirequestToken);
 	}
 
-	// threshold:
-	public Integer getThreshold(){
-		return this.threshold;
-	}
-	public void setThreshold(Integer threshold){
-		this.threshold = threshold;
-	}
-
-	public void threshold(String multirequestToken){
-		setToken("threshold", multirequestToken);
-	}
-
 
 	public SegmentValue() {
 		super();
@@ -143,7 +126,6 @@ public class SegmentValue extends ObjectBase {
 		systematicName = GsonParser.parseString(jsonObject.get("systematicName"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		value = GsonParser.parseString(jsonObject.get("value"));
-		threshold = GsonParser.parseInt(jsonObject.get("threshold"));
 
 	}
 
@@ -153,7 +135,6 @@ public class SegmentValue extends ObjectBase {
 		kparams.add("systematicName", this.systematicName);
 		kparams.add("name", this.name);
 		kparams.add("value", this.value);
-		kparams.add("threshold", this.threshold);
 		return kparams;
 	}
 
