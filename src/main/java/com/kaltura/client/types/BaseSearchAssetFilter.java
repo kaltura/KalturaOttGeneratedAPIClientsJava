@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.GroupByOrder;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -48,6 +49,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 	public interface Tokenizer extends AssetFilter.Tokenizer {
 		String kSql();
 		RequestBuilder.ListTokenizer<AssetGroupBy.Tokenizer> groupBy();
+		String groupOrderBy();
 	}
 
 	/**
@@ -81,6 +83,10 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 	 * groupBy
 	 */
 	private List<AssetGroupBy> groupBy;
+	/**
+	 * order by of grouping
+	 */
+	private GroupByOrder groupOrderBy;
 
 	// kSql:
 	public String getKSql(){
@@ -102,6 +108,18 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		this.groupBy = groupBy;
 	}
 
+	// groupOrderBy:
+	public GroupByOrder getGroupOrderBy(){
+		return this.groupOrderBy;
+	}
+	public void setGroupOrderBy(GroupByOrder groupOrderBy){
+		this.groupOrderBy = groupOrderBy;
+	}
+
+	public void groupOrderBy(String multirequestToken){
+		setToken("groupOrderBy", multirequestToken);
+	}
+
 
 	public BaseSearchAssetFilter() {
 		super();
@@ -115,6 +133,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		// set members values:
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		groupBy = GsonParser.parseArray(jsonObject.getAsJsonArray("groupBy"), AssetGroupBy.class);
+		groupOrderBy = GroupByOrder.get(GsonParser.parseString(jsonObject.get("groupOrderBy")));
 
 	}
 
@@ -123,6 +142,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		kparams.add("objectType", "KalturaBaseSearchAssetFilter");
 		kparams.add("kSql", this.kSql);
 		kparams.add("groupBy", this.groupBy);
+		kparams.add("groupOrderBy", this.groupOrderBy);
 		return kparams;
 	}
 
