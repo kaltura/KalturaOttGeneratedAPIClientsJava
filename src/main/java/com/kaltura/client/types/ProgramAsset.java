@@ -111,14 +111,6 @@ public class ProgramAsset extends Asset {
 	public String getEpgId(){
 		return this.epgId;
 	}
-	public void setEpgId(String epgId){
-		this.epgId = epgId;
-	}
-
-	public void epgId(String multirequestToken){
-		setToken("epgId", multirequestToken);
-	}
-
 	// relatedMediaId:
 	public Long getRelatedMediaId(){
 		return this.relatedMediaId;
@@ -147,30 +139,54 @@ public class ProgramAsset extends Asset {
 	public Long getLinearAssetId(){
 		return this.linearAssetId;
 	}
-	public void setLinearAssetId(Long linearAssetId){
-		this.linearAssetId = linearAssetId;
-	}
-
-	public void linearAssetId(String multirequestToken){
-		setToken("linearAssetId", multirequestToken);
-	}
-
 	// enableCdvr:
 	public Boolean getEnableCdvr(){
 		return this.enableCdvr;
 	}
+	public void setEnableCdvr(Boolean enableCdvr){
+		this.enableCdvr = enableCdvr;
+	}
+
+	public void enableCdvr(String multirequestToken){
+		setToken("enableCdvr", multirequestToken);
+	}
+
 	// enableCatchUp:
 	public Boolean getEnableCatchUp(){
 		return this.enableCatchUp;
 	}
+	public void setEnableCatchUp(Boolean enableCatchUp){
+		this.enableCatchUp = enableCatchUp;
+	}
+
+	public void enableCatchUp(String multirequestToken){
+		setToken("enableCatchUp", multirequestToken);
+	}
+
 	// enableStartOver:
 	public Boolean getEnableStartOver(){
 		return this.enableStartOver;
 	}
+	public void setEnableStartOver(Boolean enableStartOver){
+		this.enableStartOver = enableStartOver;
+	}
+
+	public void enableStartOver(String multirequestToken){
+		setToken("enableStartOver", multirequestToken);
+	}
+
 	// enableTrickPlay:
 	public Boolean getEnableTrickPlay(){
 		return this.enableTrickPlay;
 	}
+	public void setEnableTrickPlay(Boolean enableTrickPlay){
+		this.enableTrickPlay = enableTrickPlay;
+	}
+
+	public void enableTrickPlay(String multirequestToken){
+		setToken("enableTrickPlay", multirequestToken);
+	}
+
 
 	public ProgramAsset() {
 		super();
@@ -198,10 +214,12 @@ public class ProgramAsset extends Asset {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaProgramAsset");
 		kparams.add("epgChannelId", this.epgChannelId);
-		kparams.add("epgId", this.epgId);
 		kparams.add("relatedMediaId", this.relatedMediaId);
 		kparams.add("crid", this.crid);
-		kparams.add("linearAssetId", this.linearAssetId);
+		kparams.add("enableCdvr", this.enableCdvr);
+		kparams.add("enableCatchUp", this.enableCatchUp);
+		kparams.add("enableStartOver", this.enableStartOver);
+		kparams.add("enableTrickPlay", this.enableTrickPlay);
 		return kparams;
 	}
 
