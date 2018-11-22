@@ -58,7 +58,9 @@ public class AssetService {
 	}
 
 	/**
-	 * Add a new asset
+	 * Add a new asset.              For metas of type bool-&amp;gt; use
+	  kalturaBoolValue, type number-&amp;gt; KalturaDoubleValue, type date -&amp;gt;
+	  KalturaLongValue, type string -&amp;gt; KalturaStringValue
 	 * 
 	 * @param asset Asset object
 	 */
@@ -275,7 +277,9 @@ public class AssetService {
 	}
 
 	/**
-	 * update an existing asset
+	 * update an existing asset.              For metas of type bool-&amp;gt; use
+	  kalturaBoolValue, type number-&amp;gt; KalturaDoubleValue, type date -&amp;gt;
+	  KalturaLongValue, type string -&amp;gt; KalturaStringValue
 	 * 
 	 * @param id Asset Identifier
 	 * @param asset Asset object
