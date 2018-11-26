@@ -29,7 +29,7 @@ package com.kaltura.client.utils.request;
 
 import com.kaltura.client.Params;
 import com.kaltura.client.types.BaseResponseProfile;
-import com.kaltura.client.enums.SkipOptions;
+import com.kaltura.client.types.SkipCondition;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -126,10 +126,10 @@ public abstract class RequestBuilderData<SelfType> {
 	}
 	
 	/**
-	 * @param skipOnError Skip current request according to skip option
+	 * @param skipCondition Skip current request according to skip condition
 	 */
-	public SelfType setSkipOnError(SkipOptions skipOnError){
-		params.add("skipOnError", skipOnError);
+	public SelfType setSkipCondition(SkipCondition skipCondition){
+		params.add("skipCondition", skipCondition);
 		return (SelfType) this;
 	}
 	

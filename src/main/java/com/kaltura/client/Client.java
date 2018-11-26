@@ -29,7 +29,7 @@ package com.kaltura.client;
 
 import com.kaltura.client.utils.request.ConnectionConfiguration;
 import com.kaltura.client.types.BaseResponseProfile;
-import com.kaltura.client.enums.SkipOptions;
+import com.kaltura.client.types.SkipCondition;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -44,8 +44,8 @@ public class Client extends ClientBase {
 	public Client(ConnectionConfiguration config) {
 		super(config);
 		
-		this.setClientTag("java:18-11-25");
-		this.setApiVersion("5.0.3.42010");
+		this.setClientTag("java:18-11-26");
+		this.setApiVersion("5.0.3.22718");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
@@ -250,20 +250,20 @@ public class Client extends ClientBase {
 	}
 	
 	/**
-	 * @param skipOnError Skip current request according to skip option
+	 * @param skipCondition Skip current request according to skip condition
 	 */
-	public void setSkipOnError(SkipOptions skipOnError){
-		this.requestConfiguration.put("skipOnError", skipOnError);
+	public void setSkipCondition(SkipCondition skipCondition){
+		this.requestConfiguration.put("skipCondition", skipCondition);
 	}
 	
 	/**
-	 * Skip current request according to skip option
+	 * Skip current request according to skip condition
 	 * 
-	 * @return SkipOptions
+	 * @return SkipCondition
 	 */
-	public SkipOptions getSkipOnError(){
-		if(this.requestConfiguration.containsKey("skipOnError")){
-			return(SkipOptions) this.requestConfiguration.get("skipOnError");
+	public SkipCondition getSkipCondition(){
+		if(this.requestConfiguration.containsKey("skipCondition")){
+			return(SkipCondition) this.requestConfiguration.get("skipCondition");
 		}
 		
 		return null;
