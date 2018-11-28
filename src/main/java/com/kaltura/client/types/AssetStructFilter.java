@@ -53,7 +53,7 @@ public class AssetStructFilter extends Filter {
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * Comma separated identifiers, id = 0 is identified as program AssetStruct
 	 */
 	private String idIn;
 	/**

@@ -73,7 +73,7 @@ public class AssetStructService {
 	/**
 	 * Delete an existing assetStruct
 	 * 
-	 * @param id AssetStruct Identifier
+	 * @param id AssetStruct Identifier, id = 0 is identified as program AssetStruct
 	 */
     public static DeleteAssetStructBuilder delete(long id)  {
 		return new DeleteAssetStructBuilder(id);
@@ -116,7 +116,7 @@ public class AssetStructService {
 	/**
 	 * Update an existing assetStruct
 	 * 
-	 * @param id AssetStruct Identifier
+	 * @param id AssetStruct Identifier, id = 0 is identified as program AssetStruct
 	 * @param assetStruct AssetStruct Object
 	 */
     public static UpdateAssetStructBuilder update(long id, AssetStruct assetStruct)  {
