@@ -99,14 +99,6 @@ public class ProgramAsset extends Asset {
 	public Long getEpgChannelId(){
 		return this.epgChannelId;
 	}
-	public void setEpgChannelId(Long epgChannelId){
-		this.epgChannelId = epgChannelId;
-	}
-
-	public void epgChannelId(String multirequestToken){
-		setToken("epgChannelId", multirequestToken);
-	}
-
 	// epgId:
 	public String getEpgId(){
 		return this.epgId;
@@ -139,6 +131,14 @@ public class ProgramAsset extends Asset {
 	public Long getLinearAssetId(){
 		return this.linearAssetId;
 	}
+	public void setLinearAssetId(Long linearAssetId){
+		this.linearAssetId = linearAssetId;
+	}
+
+	public void linearAssetId(String multirequestToken){
+		setToken("linearAssetId", multirequestToken);
+	}
+
 	// enableCdvr:
 	public Boolean getEnableCdvr(){
 		return this.enableCdvr;
@@ -213,9 +213,9 @@ public class ProgramAsset extends Asset {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaProgramAsset");
-		kparams.add("epgChannelId", this.epgChannelId);
 		kparams.add("relatedMediaId", this.relatedMediaId);
 		kparams.add("crid", this.crid);
+		kparams.add("linearAssetId", this.linearAssetId);
 		kparams.add("enableCdvr", this.enableCdvr);
 		kparams.add("enableCatchUp", this.enableCatchUp);
 		kparams.add("enableStartOver", this.enableStartOver);
