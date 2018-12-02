@@ -45,7 +45,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:18-12-02");
-		this.setApiVersion("5.0.3.15726");
+		this.setApiVersion("5.0.3.17321");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
@@ -84,6 +84,26 @@ public class Client extends ClientBase {
 	public String getApiVersion(){
 		if(this.clientConfiguration.containsKey("apiVersion")){
 			return(String) this.clientConfiguration.get("apiVersion");
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @param abortOnError Abort the Multireuqset call if any error occurs in one of the requests
+	 */
+	public void setAbortOnError(Boolean abortOnError){
+		this.clientConfiguration.put("abortOnError", abortOnError);
+	}
+	
+	/**
+	 * Abort the Multireuqset call if any error occurs in one of the requests
+	 * 
+	 * @return Boolean
+	 */
+	public Boolean getAbortOnError(){
+		if(this.clientConfiguration.containsKey("abortOnError")){
+			return(Boolean) this.clientConfiguration.get("abortOnError");
 		}
 		
 		return null;

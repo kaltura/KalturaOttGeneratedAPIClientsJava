@@ -62,6 +62,14 @@ public abstract class RequestBuilderData<SelfType> {
 	}
 	
 	/**
+	 * @param abortOnError Abort the Multireuqset call if any error occurs in one of the requests
+	 */
+	public SelfType setAbortOnError(Boolean abortOnError){
+		params.add("abortOnError", abortOnError);
+		return (SelfType) this;
+	}
+	
+	/**
 	 * @param partnerId Impersonated partner id
 	 */
 	public SelfType setPartnerId(Integer partnerId){
