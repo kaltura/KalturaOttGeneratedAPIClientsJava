@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.RuleActionType;
 import com.kaltura.client.enums.RuleConditionType;
 import com.kaltura.client.types.SlimAsset;
 import com.kaltura.client.utils.GsonParser;
@@ -51,6 +52,7 @@ public class AssetRuleFilter extends Filter {
 	public interface Tokenizer extends Filter.Tokenizer {
 		String conditionsContainType();
 		SlimAsset.Tokenizer assetApplied();
+		String actionsContainType();
 	}
 
 	/**
@@ -62,6 +64,10 @@ public class AssetRuleFilter extends Filter {
 	 * Indicates if to return an asset rule list that related to specific asset
 	 */
 	private SlimAsset assetApplied;
+	/**
+	 * Indicates which asset rule list to return by this KalturaRuleActionType.
+	 */
+	private RuleActionType actionsContainType;
 
 	// conditionsContainType:
 	public RuleConditionType getConditionsContainType(){
@@ -83,6 +89,18 @@ public class AssetRuleFilter extends Filter {
 		this.assetApplied = assetApplied;
 	}
 
+	// actionsContainType:
+	public RuleActionType getActionsContainType(){
+		return this.actionsContainType;
+	}
+	public void setActionsContainType(RuleActionType actionsContainType){
+		this.actionsContainType = actionsContainType;
+	}
+
+	public void actionsContainType(String multirequestToken){
+		setToken("actionsContainType", multirequestToken);
+	}
+
 
 	public AssetRuleFilter() {
 		super();
@@ -96,6 +114,7 @@ public class AssetRuleFilter extends Filter {
 		// set members values:
 		conditionsContainType = RuleConditionType.get(GsonParser.parseString(jsonObject.get("conditionsContainType")));
 		assetApplied = GsonParser.parseObject(jsonObject.getAsJsonObject("assetApplied"), SlimAsset.class);
+		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
 
 	}
 
@@ -104,6 +123,7 @@ public class AssetRuleFilter extends Filter {
 		kparams.add("objectType", "KalturaAssetRuleFilter");
 		kparams.add("conditionsContainType", this.conditionsContainType);
 		kparams.add("assetApplied", this.assetApplied);
+		kparams.add("actionsContainType", this.actionsContainType);
 		return kparams;
 	}
 

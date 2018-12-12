@@ -43,9 +43,9 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(OrCondition.Tokenizer.class)
-public class OrCondition extends Condition {
+public class OrCondition extends NotCondition {
 	
-	public interface Tokenizer extends Condition.Tokenizer {
+	public interface Tokenizer extends NotCondition.Tokenizer {
 		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
 	}
 
