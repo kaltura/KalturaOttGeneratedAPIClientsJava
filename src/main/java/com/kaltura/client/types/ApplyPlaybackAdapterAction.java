@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -33,44 +38,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleActionType implements EnumAsString {
-	BLOCK("BLOCK"),
-	START_DATE_OFFSET("START_DATE_OFFSET"),
-	END_DATE_OFFSET("END_DATE_OFFSET"),
-	USER_BLOCK("USER_BLOCK"),
-	ALLOW_PLAYBACK("ALLOW_PLAYBACK"),
-	BLOCK_PLAYBACK("BLOCK_PLAYBACK"),
-	APPLY_DISCOUNT_MODULE("APPLY_DISCOUNT_MODULE"),
-	APPLY_PLAYBACK_ADAPTER("APPLY_PLAYBACK_ADAPTER");
 
-	private String value;
-
-	RuleActionType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ApplyPlaybackAdapterAction.Tokenizer.class)
+public class ApplyPlaybackAdapterAction extends AssetRuleAction {
+	
+	public interface Tokenizer extends AssetRuleAction.Tokenizer {
+		String adapterId();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Playback Adapter Identifier
+	 */
+	private Long adapterId;
+
+	// adapterId:
+	public Long getAdapterId(){
+		return this.adapterId;
+	}
+	public void setAdapterId(Long adapterId){
+		this.adapterId = adapterId;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void adapterId(String multirequestToken){
+		setToken("adapterId", multirequestToken);
 	}
 
-	public static RuleActionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleActionType defined values and compare the inner value with the given one:
-		for(RuleActionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleActionType.values().length > 0 ? RuleActionType.values()[0]: null;
-   }
+
+	public ApplyPlaybackAdapterAction() {
+		super();
+	}
+
+	public ApplyPlaybackAdapterAction(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		adapterId = GsonParser.parseLong(jsonObject.get("adapterId"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaApplyPlaybackAdapterAction");
+		kparams.add("adapterId", this.adapterId);
+		return kparams;
+	}
+
 }
+

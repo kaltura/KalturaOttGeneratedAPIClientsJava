@@ -33,19 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleActionType implements EnumAsString {
-	BLOCK("BLOCK"),
-	START_DATE_OFFSET("START_DATE_OFFSET"),
-	END_DATE_OFFSET("END_DATE_OFFSET"),
-	USER_BLOCK("USER_BLOCK"),
-	ALLOW_PLAYBACK("ALLOW_PLAYBACK"),
-	BLOCK_PLAYBACK("BLOCK_PLAYBACK"),
-	APPLY_DISCOUNT_MODULE("APPLY_DISCOUNT_MODULE"),
-	APPLY_PLAYBACK_ADAPTER("APPLY_PLAYBACK_ADAPTER");
+public enum PlaybackProfileOrderBy implements EnumAsString {
+	NAME_ASC("NAME_ASC");
 
 	private String value;
 
-	RuleActionType(String value) {
+	PlaybackProfileOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -58,19 +51,19 @@ public enum RuleActionType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static RuleActionType get(String value) {
+	public static PlaybackProfileOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over RuleActionType defined values and compare the inner value with the given one:
-		for(RuleActionType item: values()) {
+		// goes over PlaybackProfileOrderBy defined values and compare the inner value with the given one:
+		for(PlaybackProfileOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleActionType.values().length > 0 ? RuleActionType.values()[0]: null;
+		return PlaybackProfileOrderBy.values().length > 0 ? PlaybackProfileOrderBy.values()[0]: null;
    }
 }
