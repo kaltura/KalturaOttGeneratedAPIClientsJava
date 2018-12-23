@@ -27,36 +27,40 @@
 // ===================================================================================================
 package com.kaltura.client;
 
-//public class LoggerLog4j extends Logger implements ILogger
-//{
-//	protected Logger logger;
-//	static protected LoggerFactory loggerFactory = new KalturaLoggerFactory();
-//
-//	static class KalturaLoggerFactory implements LoggerFactory {
-//		@Override
-//		public Logger makeNewLoggerInstance(String name) {
-//			return new LoggerLog4j(name);
-//		}
-//	}
-//
-//	// Creation & retrieval methods:
-//	public static ILogger get(String name)
-//	{
-//		Logger logger = LogManager.getLogger(name, loggerFactory);
-//		if(logger instanceof Logger){
-//			return (LoggerLog4j) logger;
-//		}
-//
-//		return null;
-//	}
-//
-//	protected LoggerLog4j(String name)
-//	{
-//		super(name);
-//	}
-//
-//	@Override
-//	public boolean isEnabled() {
-//		return this.isInfoEnabled();
-//	}
-//}
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
+
+public class LoggerLog4j extends Logger implements ILogger
+{
+	protected Logger logger;
+	static protected LoggerFactory loggerFactory = new KalturaLoggerFactory();
+	
+	static class KalturaLoggerFactory implements LoggerFactory {
+		@Override
+		public Logger makeNewLoggerInstance(String name) {
+			return new LoggerLog4j(name);
+		}
+	}
+	
+	// Creation & retrieval methods:
+	public static ILogger get(String name)
+	{
+		Logger logger = LogManager.getLogger(name, loggerFactory);
+		if(logger instanceof Logger){
+			return (LoggerLog4j) logger;
+		}
+		
+		return null;
+	}
+	
+	protected LoggerLog4j(String name)
+	{
+		super(name);
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.isInfoEnabled();
+	}
+}

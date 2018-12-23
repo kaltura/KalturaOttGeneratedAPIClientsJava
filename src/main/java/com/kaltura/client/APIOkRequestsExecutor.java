@@ -6,20 +6,30 @@ import com.kaltura.client.utils.request.ConnectionConfiguration;
 import com.kaltura.client.utils.request.ExecutedRequest;
 import com.kaltura.client.utils.request.RequestElement;
 import com.kaltura.client.utils.response.base.ResponseElement;
-import okhttp3.*;
-import okhttp3.MultipartBody.Builder;
-import okhttp3.internal.Util;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.Okio;
-import okio.Source;
-import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.ConnectionPool;
+import okhttp3.Dispatcher;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.MultipartBody.Builder;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.internal.Util;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 
 /**
  * @hide
@@ -118,8 +128,7 @@ public class APIOkRequestsExecutor implements RequestQueue {
 
     private OkHttpClient mOkClient;
     private boolean enableLogs = true;
-//    private static ILogger logger = Logger.getLogger(TAG);
-    private static org.apache.logging.log4j.Logger logger = LogManager.getLogger(TAG);
+    private static ILogger logger = Logger.getLogger(TAG);
 
     protected static APIOkRequestsExecutor self;
 
@@ -182,12 +191,12 @@ public class APIOkRequestsExecutor implements RequestQueue {
 
     @Override
     public void enableLogs(boolean enable) {
-//        this.enableLogs = enable;
-//        if (enable) {
-//            logger = Logger.getLogger(TAG);
-//        } else {
-//            logger = new LoggerNull(TAG);
-//        }
+        this.enableLogs = enable;
+        if (enable) {
+            logger = Logger.getLogger(TAG);
+        } else {
+            logger = new LoggerNull(TAG);
+        }
     }
 
     @SuppressWarnings("rawtypes")
