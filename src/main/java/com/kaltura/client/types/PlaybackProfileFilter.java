@@ -53,13 +53,13 @@ public class PlaybackProfileFilter extends Filter {
 	/**
 	 * Playback profile to filter by
 	 */
-	private Long playbackProfileEqual;
+	private Integer playbackProfileEqual;
 
 	// playbackProfileEqual:
-	public Long getPlaybackProfileEqual(){
+	public Integer getPlaybackProfileEqual(){
 		return this.playbackProfileEqual;
 	}
-	public void setPlaybackProfileEqual(Long playbackProfileEqual){
+	public void setPlaybackProfileEqual(Integer playbackProfileEqual){
 		this.playbackProfileEqual = playbackProfileEqual;
 	}
 
@@ -78,7 +78,7 @@ public class PlaybackProfileFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		playbackProfileEqual = GsonParser.parseLong(jsonObject.get("playbackProfileEqual"));
+		playbackProfileEqual = GsonParser.parseInt(jsonObject.get("playbackProfileEqual"));
 
 	}
 

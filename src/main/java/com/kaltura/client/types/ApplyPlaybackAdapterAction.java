@@ -50,13 +50,13 @@ public class ApplyPlaybackAdapterAction extends AssetRuleAction {
 	/**
 	 * Playback Adapter Identifier
 	 */
-	private Long adapterId;
+	private Integer adapterId;
 
 	// adapterId:
-	public Long getAdapterId(){
+	public Integer getAdapterId(){
 		return this.adapterId;
 	}
-	public void setAdapterId(Long adapterId){
+	public void setAdapterId(Integer adapterId){
 		this.adapterId = adapterId;
 	}
 
@@ -75,7 +75,7 @@ public class ApplyPlaybackAdapterAction extends AssetRuleAction {
 		if(jsonObject == null) return;
 
 		// set members values:
-		adapterId = GsonParser.parseLong(jsonObject.get("adapterId"));
+		adapterId = GsonParser.parseInt(jsonObject.get("adapterId"));
 
 	}
 
