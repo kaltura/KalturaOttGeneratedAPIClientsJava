@@ -152,11 +152,12 @@ public class RecordingService {
 		return new ListRecordingBuilder(filter, pager);
 	}
 	
-	public static class ProtectRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, ProtectRecordingBuilder> {
+	public static class UpdateRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, UpdateRecordingBuilder> {
 		
-		public ProtectRecordingBuilder(long id) {
-			super(Recording.class, "recording", "protect");
+		public UpdateRecordingBuilder(long id, Recording recording) {
+			super(Recording.class, "recording", "update");
 			params.add("id", id);
+			params.add("recording", recording);
 		}
 		
 		public void id(String multirequestToken) {
@@ -165,12 +166,12 @@ public class RecordingService {
 	}
 
 	/**
-	 * Protects an existing recording from the cleanup process for the defined
-	  protection period
+	 * Update an existing recording with is protected field
 	 * 
-	 * @param id Recording identifier
+	 * @param id recording identifier
+	 * @param recording recording to update
 	 */
-    public static ProtectRecordingBuilder protect(long id)  {
-		return new ProtectRecordingBuilder(id);
+    public static UpdateRecordingBuilder update(long id, Recording recording)  {
+		return new UpdateRecordingBuilder(id, recording);
 	}
 }
