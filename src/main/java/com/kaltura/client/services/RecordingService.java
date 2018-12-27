@@ -152,6 +152,28 @@ public class RecordingService {
 		return new ListRecordingBuilder(filter, pager);
 	}
 	
+	public static class ProtectRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, ProtectRecordingBuilder> {
+		
+		public ProtectRecordingBuilder(long id) {
+			super(Recording.class, "recording", "protect");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Deprecated, please use recording.update instead              Protects an
+	  existing recording from the cleanup process for the defined protection period
+	 * 
+	 * @param id Recording identifier
+	 */
+    public static ProtectRecordingBuilder protect(long id)  {
+		return new ProtectRecordingBuilder(id);
+	}
+	
 	public static class UpdateRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, UpdateRecordingBuilder> {
 		
 		public UpdateRecordingBuilder(long id, Recording recording) {
