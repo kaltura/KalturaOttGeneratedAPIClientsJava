@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,29 +39,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Houshold premium service
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseholdPremiumService.Tokenizer.class)
-public class HouseholdPremiumService extends PremiumService {
+@MultiRequestBuilder.Tokenizer(OTTObjectSupportNullable.Tokenizer.class)
+public class OTTObjectSupportNullable extends ObjectBase {
 	
-	public interface Tokenizer extends PremiumService.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
 
 
-	public HouseholdPremiumService() {
+	public OTTObjectSupportNullable() {
 		super();
 	}
 
-	public HouseholdPremiumService(JsonObject jsonObject) throws APIException {
+	public OTTObjectSupportNullable(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseholdPremiumService");
+		kparams.add("objectType", "KalturaOTTObjectSupportNullable");
 		return kparams;
 	}
 
