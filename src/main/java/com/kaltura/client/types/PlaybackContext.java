@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2018  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -50,6 +50,8 @@ public class PlaybackContext extends ObjectBase {
 		RequestBuilder.ListTokenizer<PlaybackSource.Tokenizer> sources();
 		RequestBuilder.ListTokenizer<RuleAction.Tokenizer> actions();
 		RequestBuilder.ListTokenizer<AccessControlMessage.Tokenizer> messages();
+		RequestBuilder.ListTokenizer<CaptionPlaybackPluginData.Tokenizer> playbackCaptions();
+		RequestBuilder.ListTokenizer<BumpersPlaybackPluginData.Tokenizer> playbackBumpers();
 	}
 
 	/**
@@ -64,6 +66,14 @@ public class PlaybackContext extends ObjectBase {
 	 * Messages
 	 */
 	private List<AccessControlMessage> messages;
+	/**
+	 * Playback captions
+	 */
+	private List<CaptionPlaybackPluginData> playbackCaptions;
+	/**
+	 * Playback bumpers
+	 */
+	private List<BumpersPlaybackPluginData> playbackBumpers;
 
 	// sources:
 	public List<PlaybackSource> getSources(){
@@ -89,6 +99,22 @@ public class PlaybackContext extends ObjectBase {
 		this.messages = messages;
 	}
 
+	// playbackCaptions:
+	public List<CaptionPlaybackPluginData> getPlaybackCaptions(){
+		return this.playbackCaptions;
+	}
+	public void setPlaybackCaptions(List<CaptionPlaybackPluginData> playbackCaptions){
+		this.playbackCaptions = playbackCaptions;
+	}
+
+	// playbackBumpers:
+	public List<BumpersPlaybackPluginData> getPlaybackBumpers(){
+		return this.playbackBumpers;
+	}
+	public void setPlaybackBumpers(List<BumpersPlaybackPluginData> playbackBumpers){
+		this.playbackBumpers = playbackBumpers;
+	}
+
 
 	public PlaybackContext() {
 		super();
@@ -103,6 +129,8 @@ public class PlaybackContext extends ObjectBase {
 		sources = GsonParser.parseArray(jsonObject.getAsJsonArray("sources"), PlaybackSource.class);
 		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), RuleAction.class);
 		messages = GsonParser.parseArray(jsonObject.getAsJsonArray("messages"), AccessControlMessage.class);
+		playbackCaptions = GsonParser.parseArray(jsonObject.getAsJsonArray("playbackCaptions"), CaptionPlaybackPluginData.class);
+		playbackBumpers = GsonParser.parseArray(jsonObject.getAsJsonArray("playbackBumpers"), BumpersPlaybackPluginData.class);
 
 	}
 
@@ -112,6 +140,8 @@ public class PlaybackContext extends ObjectBase {
 		kparams.add("sources", this.sources);
 		kparams.add("actions", this.actions);
 		kparams.add("messages", this.messages);
+		kparams.add("playbackCaptions", this.playbackCaptions);
+		kparams.add("playbackBumpers", this.playbackBumpers);
 		return kparams;
 	}
 
