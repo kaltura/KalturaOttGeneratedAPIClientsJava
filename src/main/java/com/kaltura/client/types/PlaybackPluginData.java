@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,68 +40,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BumpersPlaybackPluginData.Tokenizer.class)
-public class BumpersPlaybackPluginData extends PlaybackPluginData {
+@MultiRequestBuilder.Tokenizer(PlaybackPluginData.Tokenizer.class)
+public class PlaybackPluginData extends ObjectBase {
 	
-	public interface Tokenizer extends PlaybackPluginData.Tokenizer {
-		String url();
-		String streamertype();
-	}
-
-	/**
-	 * url
-	 */
-	private String url;
-	/**
-	 * Streamer type: hls, dash, progressive.
-	 */
-	private String streamertype;
-
-	// url:
-	public String getUrl(){
-		return this.url;
-	}
-	public void setUrl(String url){
-		this.url = url;
-	}
-
-	public void url(String multirequestToken){
-		setToken("url", multirequestToken);
-	}
-
-	// streamertype:
-	public String getStreamertype(){
-		return this.streamertype;
-	}
-	public void setStreamertype(String streamertype){
-		this.streamertype = streamertype;
-	}
-
-	public void streamertype(String multirequestToken){
-		setToken("streamertype", multirequestToken);
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
 
-	public BumpersPlaybackPluginData() {
+
+	public PlaybackPluginData() {
 		super();
 	}
 
-	public BumpersPlaybackPluginData(JsonObject jsonObject) throws APIException {
+	public PlaybackPluginData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		url = GsonParser.parseString(jsonObject.get("url"));
-		streamertype = GsonParser.parseString(jsonObject.get("streamertype"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBumpersPlaybackPluginData");
-		kparams.add("url", this.url);
-		kparams.add("streamertype", this.streamertype);
+		kparams.add("objectType", "KalturaPlaybackPluginData");
 		return kparams;
 	}
 
