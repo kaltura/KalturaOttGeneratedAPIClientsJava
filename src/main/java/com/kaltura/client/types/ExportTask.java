@@ -34,8 +34,6 @@ import com.kaltura.client.enums.ExportType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -60,7 +58,6 @@ public class ExportTask extends ObjectBase {
 		String exportType();
 		String frequency();
 		String notificationUrl();
-		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> vodTypes();
 		String isActive();
 	}
 
@@ -99,11 +96,6 @@ public class ExportTask extends ObjectBase {
 	  done
 	 */
 	private String notificationUrl;
-	/**
-	 * List of media type identifiers (as configured in TVM) to export. used only in
-	  case data_type = vod
-	 */
-	private List<IntegerValue> vodTypes;
 	/**
 	 * Indicates if the task is active or not
 	 */
@@ -197,14 +189,6 @@ public class ExportTask extends ObjectBase {
 		setToken("notificationUrl", multirequestToken);
 	}
 
-	// vodTypes:
-	public List<IntegerValue> getVodTypes(){
-		return this.vodTypes;
-	}
-	public void setVodTypes(List<IntegerValue> vodTypes){
-		this.vodTypes = vodTypes;
-	}
-
 	// isActive:
 	public Boolean getIsActive(){
 		return this.isActive;
@@ -236,7 +220,6 @@ public class ExportTask extends ObjectBase {
 		exportType = ExportType.get(GsonParser.parseString(jsonObject.get("exportType")));
 		frequency = GsonParser.parseLong(jsonObject.get("frequency"));
 		notificationUrl = GsonParser.parseString(jsonObject.get("notificationUrl"));
-		vodTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("vodTypes"), IntegerValue.class);
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 
 	}
@@ -251,7 +234,6 @@ public class ExportTask extends ObjectBase {
 		kparams.add("exportType", this.exportType);
 		kparams.add("frequency", this.frequency);
 		kparams.add("notificationUrl", this.notificationUrl);
-		kparams.add("vodTypes", this.vodTypes);
 		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
