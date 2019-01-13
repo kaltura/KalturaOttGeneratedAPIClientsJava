@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2019  Kaltura Inc.
+// Copyright (C) 2006-2018  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -56,6 +56,7 @@ public class RequestConfiguration extends ObjectBase {
 		String currency();
 		String ks();
 		BaseResponseProfile.Tokenizer responseProfile();
+		String abortOnError();
 		String abortAllOnError();
 		SkipCondition.Tokenizer skipCondition();
 	}
@@ -85,7 +86,11 @@ public class RequestConfiguration extends ObjectBase {
 	 */
 	private BaseResponseProfile responseProfile;
 	/**
-	 * Abort all following requests if current request has an error
+	 * Abort the Multireuqset call if any error occurs in one of the requests
+	 */
+	private Boolean abortOnError;
+	/**
+	 * Abort all following requests in Multireuqset if current request has an error
 	 */
 	private Boolean abortAllOnError;
 	/**
@@ -161,6 +166,18 @@ public class RequestConfiguration extends ObjectBase {
 		this.responseProfile = responseProfile;
 	}
 
+	// abortOnError:
+	public Boolean getAbortOnError(){
+		return this.abortOnError;
+	}
+	public void setAbortOnError(Boolean abortOnError){
+		this.abortOnError = abortOnError;
+	}
+
+	public void abortOnError(String multirequestToken){
+		setToken("abortOnError", multirequestToken);
+	}
+
 	// abortAllOnError:
 	public Boolean getAbortAllOnError(){
 		return this.abortAllOnError;
@@ -198,6 +215,7 @@ public class RequestConfiguration extends ObjectBase {
 		currency = GsonParser.parseString(jsonObject.get("currency"));
 		ks = GsonParser.parseString(jsonObject.get("ks"));
 		responseProfile = GsonParser.parseObject(jsonObject.getAsJsonObject("responseProfile"), BaseResponseProfile.class);
+		abortOnError = GsonParser.parseBoolean(jsonObject.get("abortOnError"));
 		abortAllOnError = GsonParser.parseBoolean(jsonObject.get("abortAllOnError"));
 		skipCondition = GsonParser.parseObject(jsonObject.getAsJsonObject("skipCondition"), SkipCondition.class);
 
@@ -212,6 +230,7 @@ public class RequestConfiguration extends ObjectBase {
 		kparams.add("currency", this.currency);
 		kparams.add("ks", this.ks);
 		kparams.add("responseProfile", this.responseProfile);
+		kparams.add("abortOnError", this.abortOnError);
 		kparams.add("abortAllOnError", this.abortAllOnError);
 		kparams.add("skipCondition", this.skipCondition);
 		return kparams;
