@@ -60,7 +60,7 @@ public class FavoriteService {
 	
 	public static class DeleteFavoriteBuilder extends RequestBuilder<Boolean, String, DeleteFavoriteBuilder> {
 		
-		public DeleteFavoriteBuilder(int id) {
+		public DeleteFavoriteBuilder(long id) {
 			super(Boolean.class, "favorite", "delete");
 			params.add("id", id);
 		}
@@ -75,7 +75,7 @@ public class FavoriteService {
 	 * 
 	 * @param id Media identifier
 	 */
-    public static DeleteFavoriteBuilder delete(int id)  {
+    public static DeleteFavoriteBuilder delete(long id)  {
 		return new DeleteFavoriteBuilder(id);
 	}
 	

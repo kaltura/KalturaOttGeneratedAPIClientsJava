@@ -39,7 +39,8 @@ public enum ImageObjectType implements EnumAsString {
 	CHANNEL("CHANNEL"),
 	CATEGORY("CATEGORY"),
 	PARTNER("PARTNER"),
-	IMAGE_TYPE("IMAGE_TYPE");
+	IMAGE_TYPE("IMAGE_TYPE"),
+	PROGRAM_GROUP("PROGRAM_GROUP");
 
 	private String value;
 

@@ -64,7 +64,7 @@ public class ImageFilter extends Filter {
 	 */
 	private ImageObjectType imageObjectTypeEqual;
 	/**
-	 * Filter images that are default on atleast on image type or not default at any
+	 * Filter images that are default on at least on image type or not default at any
 	 */
 	private Boolean isDefaultEqual;
 

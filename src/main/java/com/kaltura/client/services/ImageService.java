@@ -89,10 +89,6 @@ public class ImageService {
 		}
 	}
 
-	public static ListImageBuilder list()  {
-		return list(null);
-	}
-
 	/**
 	 * Get the list of images by different filtering
 	 * 
