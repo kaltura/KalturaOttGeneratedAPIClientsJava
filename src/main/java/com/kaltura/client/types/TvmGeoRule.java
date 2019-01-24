@@ -49,13 +49,15 @@ public class TvmGeoRule extends TvmRule {
 	public interface Tokenizer extends TvmRule.Tokenizer {
 		String onlyOrBut();
 		String countryIds();
-		String proxyRule();
-		String proxyLevel();
+		String proxyRuleId();
+		String proxyRuleName();
+		String proxyLevelId();
+		String proxyLevelName();
 	}
 
 	/**
 	 * Indicates if the rule is relevent ONLY for the country ids or except country ids
-	  here.
+	  here. - is that true?
 	 */
 	private Boolean onlyOrBut;
 	/**
@@ -63,13 +65,21 @@ public class TvmGeoRule extends TvmRule {
 	 */
 	private String countryIds;
 	/**
-	 * proxyRule - what is that?
+	 * proxyRuleId - what is that?
 	 */
-	private Integer proxyRule;
+	private Integer proxyRuleId;
 	/**
-	 * proxyLevel - what is that?
+	 * proxyRuleName - what is that?
 	 */
-	private Integer proxyLevel;
+	private String proxyRuleName;
+	/**
+	 * proxyLevelId - what is that?
+	 */
+	private Integer proxyLevelId;
+	/**
+	 * proxyLevelName - what is that?
+	 */
+	private String proxyLevelName;
 
 	// onlyOrBut:
 	public Boolean getOnlyOrBut(){
@@ -95,28 +105,52 @@ public class TvmGeoRule extends TvmRule {
 		setToken("countryIds", multirequestToken);
 	}
 
-	// proxyRule:
-	public Integer getProxyRule(){
-		return this.proxyRule;
+	// proxyRuleId:
+	public Integer getProxyRuleId(){
+		return this.proxyRuleId;
 	}
-	public void setProxyRule(Integer proxyRule){
-		this.proxyRule = proxyRule;
-	}
-
-	public void proxyRule(String multirequestToken){
-		setToken("proxyRule", multirequestToken);
+	public void setProxyRuleId(Integer proxyRuleId){
+		this.proxyRuleId = proxyRuleId;
 	}
 
-	// proxyLevel:
-	public Integer getProxyLevel(){
-		return this.proxyLevel;
-	}
-	public void setProxyLevel(Integer proxyLevel){
-		this.proxyLevel = proxyLevel;
+	public void proxyRuleId(String multirequestToken){
+		setToken("proxyRuleId", multirequestToken);
 	}
 
-	public void proxyLevel(String multirequestToken){
-		setToken("proxyLevel", multirequestToken);
+	// proxyRuleName:
+	public String getProxyRuleName(){
+		return this.proxyRuleName;
+	}
+	public void setProxyRuleName(String proxyRuleName){
+		this.proxyRuleName = proxyRuleName;
+	}
+
+	public void proxyRuleName(String multirequestToken){
+		setToken("proxyRuleName", multirequestToken);
+	}
+
+	// proxyLevelId:
+	public Integer getProxyLevelId(){
+		return this.proxyLevelId;
+	}
+	public void setProxyLevelId(Integer proxyLevelId){
+		this.proxyLevelId = proxyLevelId;
+	}
+
+	public void proxyLevelId(String multirequestToken){
+		setToken("proxyLevelId", multirequestToken);
+	}
+
+	// proxyLevelName:
+	public String getProxyLevelName(){
+		return this.proxyLevelName;
+	}
+	public void setProxyLevelName(String proxyLevelName){
+		this.proxyLevelName = proxyLevelName;
+	}
+
+	public void proxyLevelName(String multirequestToken){
+		setToken("proxyLevelName", multirequestToken);
 	}
 
 
@@ -132,8 +166,10 @@ public class TvmGeoRule extends TvmRule {
 		// set members values:
 		onlyOrBut = GsonParser.parseBoolean(jsonObject.get("onlyOrBut"));
 		countryIds = GsonParser.parseString(jsonObject.get("countryIds"));
-		proxyRule = GsonParser.parseInt(jsonObject.get("proxyRule"));
-		proxyLevel = GsonParser.parseInt(jsonObject.get("proxyLevel"));
+		proxyRuleId = GsonParser.parseInt(jsonObject.get("proxyRuleId"));
+		proxyRuleName = GsonParser.parseString(jsonObject.get("proxyRuleName"));
+		proxyLevelId = GsonParser.parseInt(jsonObject.get("proxyLevelId"));
+		proxyLevelName = GsonParser.parseString(jsonObject.get("proxyLevelName"));
 
 	}
 
@@ -142,8 +178,10 @@ public class TvmGeoRule extends TvmRule {
 		kparams.add("objectType", "KalturaTvmGeoRule");
 		kparams.add("onlyOrBut", this.onlyOrBut);
 		kparams.add("countryIds", this.countryIds);
-		kparams.add("proxyRule", this.proxyRule);
-		kparams.add("proxyLevel", this.proxyLevel);
+		kparams.add("proxyRuleId", this.proxyRuleId);
+		kparams.add("proxyRuleName", this.proxyRuleName);
+		kparams.add("proxyLevelId", this.proxyLevelId);
+		kparams.add("proxyLevelName", this.proxyLevelName);
 		return kparams;
 	}
 
