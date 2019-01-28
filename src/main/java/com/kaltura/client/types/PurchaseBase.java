@@ -49,6 +49,7 @@ public class PurchaseBase extends ObjectBase {
 		String productId();
 		String contentId();
 		String productType();
+		String adapterData();
 	}
 
 	/**
@@ -63,6 +64,10 @@ public class PurchaseBase extends ObjectBase {
 	 * Package type. Possible values: PPV, Subscription, Collection
 	 */
 	private TransactionType productType;
+	/**
+	 * Additional data for the adapter
+	 */
+	private String adapterData;
 
 	// productId:
 	public Integer getProductId(){
@@ -100,6 +105,18 @@ public class PurchaseBase extends ObjectBase {
 		setToken("productType", multirequestToken);
 	}
 
+	// adapterData:
+	public String getAdapterData(){
+		return this.adapterData;
+	}
+	public void setAdapterData(String adapterData){
+		this.adapterData = adapterData;
+	}
+
+	public void adapterData(String multirequestToken){
+		setToken("adapterData", multirequestToken);
+	}
+
 
 	public PurchaseBase() {
 		super();
@@ -114,6 +131,7 @@ public class PurchaseBase extends ObjectBase {
 		productId = GsonParser.parseInt(jsonObject.get("productId"));
 		contentId = GsonParser.parseInt(jsonObject.get("contentId"));
 		productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
+		adapterData = GsonParser.parseString(jsonObject.get("adapterData"));
 
 	}
 
@@ -123,6 +141,7 @@ public class PurchaseBase extends ObjectBase {
 		kparams.add("productId", this.productId);
 		kparams.add("contentId", this.contentId);
 		kparams.add("productType", this.productType);
+		kparams.add("adapterData", this.adapterData);
 		return kparams;
 	}
 

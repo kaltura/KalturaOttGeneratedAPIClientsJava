@@ -25,13 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.enums.TvmRuleType;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -39,57 +33,38 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum TvmRuleType implements EnumAsString {
+	GEO("Geo"),
+	DEVICE("Device");
 
-/**
- * TVM rule
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(TvmRule.Tokenizer.class)
-public abstract class TvmRule extends Rule {
-	
-	public interface Tokenizer extends Rule.Tokenizer {
-		String createDate();
-		String ruleType();
+	private String value;
+
+	TvmRuleType(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Specifies when was the tvm rule was created. Date and time represented as epoch.
-	 */
-	private Long createDate;
-	/**
-	 * Specifies the tvm rule type.
-	 */
-	private TvmRuleType ruleType;
-
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
-	}
-	// ruleType:
-	public TvmRuleType getRuleType(){
-		return this.ruleType;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public TvmRule() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public TvmRule(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		ruleType = TvmRuleType.get(GsonParser.parseString(jsonObject.get("ruleType")));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaTvmRule");
-		return kparams;
-	}
-
+	public static TvmRuleType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over TvmRuleType defined values and compare the inner value with the given one:
+		for(TvmRuleType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return TvmRuleType.values().length > 0 ? TvmRuleType.values()[0]: null;
+   }
 }
-

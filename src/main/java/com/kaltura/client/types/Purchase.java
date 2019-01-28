@@ -49,7 +49,6 @@ public class Purchase extends PurchaseBase {
 		String paymentMethodId();
 		String paymentGatewayId();
 		String coupon();
-		String adapterData();
 	}
 
 	/**
@@ -75,10 +74,6 @@ public class Purchase extends PurchaseBase {
 	 * Coupon code
 	 */
 	private String coupon;
-	/**
-	 * Additional data for the adapter
-	 */
-	private String adapterData;
 
 	// currency:
 	public String getCurrency(){
@@ -140,18 +135,6 @@ public class Purchase extends PurchaseBase {
 		setToken("coupon", multirequestToken);
 	}
 
-	// adapterData:
-	public String getAdapterData(){
-		return this.adapterData;
-	}
-	public void setAdapterData(String adapterData){
-		this.adapterData = adapterData;
-	}
-
-	public void adapterData(String multirequestToken){
-		setToken("adapterData", multirequestToken);
-	}
-
 
 	public Purchase() {
 		super();
@@ -168,7 +151,6 @@ public class Purchase extends PurchaseBase {
 		paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
 		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
 		coupon = GsonParser.parseString(jsonObject.get("coupon"));
-		adapterData = GsonParser.parseString(jsonObject.get("adapterData"));
 
 	}
 
@@ -180,7 +162,6 @@ public class Purchase extends PurchaseBase {
 		kparams.add("paymentMethodId", this.paymentMethodId);
 		kparams.add("paymentGatewayId", this.paymentGatewayId);
 		kparams.add("coupon", this.coupon);
-		kparams.add("adapterData", this.adapterData);
 		return kparams;
 	}
 

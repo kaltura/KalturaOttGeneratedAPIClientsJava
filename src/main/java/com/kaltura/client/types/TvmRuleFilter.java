@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleType;
+import com.kaltura.client.enums.TvmRuleType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -55,17 +55,17 @@ public class TvmRuleFilter extends Filter {
 	/**
 	 * Indicates which tvm rule list to return by their type.
 	 */
-	private RuleType ruleTypeEqual;
+	private TvmRuleType ruleTypeEqual;
 	/**
 	 * Indicates which tvm rule list to return by their name.
 	 */
 	private String nameEqual;
 
 	// ruleTypeEqual:
-	public RuleType getRuleTypeEqual(){
+	public TvmRuleType getRuleTypeEqual(){
 		return this.ruleTypeEqual;
 	}
-	public void setRuleTypeEqual(RuleType ruleTypeEqual){
+	public void setRuleTypeEqual(TvmRuleType ruleTypeEqual){
 		this.ruleTypeEqual = ruleTypeEqual;
 	}
 
@@ -96,7 +96,7 @@ public class TvmRuleFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		ruleTypeEqual = RuleType.get(GsonParser.parseString(jsonObject.get("ruleTypeEqual")));
+		ruleTypeEqual = TvmRuleType.get(GsonParser.parseString(jsonObject.get("ruleTypeEqual")));
 		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
 
 	}
