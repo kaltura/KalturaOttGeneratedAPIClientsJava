@@ -189,8 +189,8 @@ public class OttUserService {
 	}
 
 	/**
-	 * Retrieve user by external identifier or username or if filter is null all user
-	  in the master or the user itself
+	 * Returns list of OTTUser (limited to 500 items). Filters by username/external
+	  identifier/idIn or roleIdIn
 	 * 
 	 * @param filter Filter request
 	 */
