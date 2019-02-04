@@ -25,11 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
-
-import com.kaltura.client.types.HouseholdLimitations;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using clients-generator\exec.php
@@ -37,41 +33,38 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum DeleteMediaPolicy implements EnumAsString {
+	DISABLE("Disable"),
+	DELETE("Delete");
 
-public class HouseholdLimitationsService {
-	
-	public static class GetHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, GetHouseholdLimitationsBuilder> {
-		
-		public GetHouseholdLimitationsBuilder(int id) {
-			super(HouseholdLimitations.class, "householdlimitations", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
+	private String value;
+
+	DeleteMediaPolicy(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Get the limitation module by id
-	 * 
-	 * @param id Household limitations module identifier
-	 */
-    public static GetHouseholdLimitationsBuilder get(int id)  {
-		return new GetHouseholdLimitationsBuilder(id);
-	}
-	
-	public static class ListHouseholdLimitationsBuilder extends ListResponseRequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, ListHouseholdLimitationsBuilder> {
-		
-		public ListHouseholdLimitationsBuilder() {
-			super(HouseholdLimitations.class, "householdlimitations", "list");
-		}
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	/**
-	 * Get the list of PartnerConfiguration
-	 */
-    public static ListHouseholdLimitationsBuilder list()  {
-		return new ListHouseholdLimitationsBuilder();
+	public void setValue(String value) {
+		this.value = value;
 	}
+
+	public static DeleteMediaPolicy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over DeleteMediaPolicy defined values and compare the inner value with the given one:
+		for(DeleteMediaPolicy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return DeleteMediaPolicy.values().length > 0 ? DeleteMediaPolicy.values()[0]: null;
+   }
 }

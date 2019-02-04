@@ -37,7 +37,8 @@ public enum PartnerConfigurationType implements EnumAsString {
 	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
 	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
 	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency");
+	CONCURRENCY("Concurrency"),
+	GENERAL("General");
 
 	private String value;
 

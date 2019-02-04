@@ -48,12 +48,17 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class Currency extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
 		String name();
 		String code();
 		String sign();
 		String isDefault();
 	}
 
+	/**
+	 * Identifier
+	 */
+	private Integer id;
 	/**
 	 * Currency name
 	 */
@@ -70,6 +75,18 @@ public class Currency extends ObjectBase {
 	 * Is the default Currency of the account
 	 */
 	private Boolean isDefault;
+
+	// id:
+	public Integer getId(){
+		return this.id;
+	}
+	public void setId(Integer id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
 	// name:
 	public String getName(){
@@ -130,6 +147,7 @@ public class Currency extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
+		id = GsonParser.parseInt(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		code = GsonParser.parseString(jsonObject.get("code"));
 		sign = GsonParser.parseString(jsonObject.get("sign"));
@@ -140,6 +158,7 @@ public class Currency extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCurrency");
+		kparams.add("id", this.id);
 		kparams.add("name", this.name);
 		kparams.add("code", this.code);
 		kparams.add("sign", this.sign);
