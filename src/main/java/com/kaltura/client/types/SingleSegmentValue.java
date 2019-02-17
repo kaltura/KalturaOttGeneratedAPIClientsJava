@@ -45,25 +45,16 @@ public class SingleSegmentValue extends BaseSegmentValue {
 	
 	public interface Tokenizer extends BaseSegmentValue.Tokenizer {
 		String id();
-		String affectedUsers();
 	}
 
 	/**
 	 * Id of segment
 	 */
 	private Long id;
-	/**
-	 * The amount of users that are being affected by this Segmentation type
-	 */
-	private Integer affectedUsers;
 
 	// id:
 	public Long getId(){
 		return this.id;
-	}
-	// affectedUsers:
-	public Integer getAffectedUsers(){
-		return this.affectedUsers;
 	}
 
 	public SingleSegmentValue() {
@@ -77,7 +68,6 @@ public class SingleSegmentValue extends BaseSegmentValue {
 
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
-		affectedUsers = GsonParser.parseInt(jsonObject.get("affectedUsers"));
 
 	}
 

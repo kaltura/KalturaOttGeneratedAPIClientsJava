@@ -138,27 +138,16 @@ public class HouseholdDeviceService {
 	
 	public static class GetHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, GetHouseholdDeviceBuilder> {
 		
-		public GetHouseholdDeviceBuilder(String udid) {
+		public GetHouseholdDeviceBuilder() {
 			super(HouseholdDevice.class, "householddevice", "get");
-			params.add("udid", udid);
 		}
-		
-		public void udid(String multirequestToken) {
-			params.add("udid", multirequestToken);
-		}
-	}
-
-	public static GetHouseholdDeviceBuilder get()  {
-		return get(null);
 	}
 
 	/**
 	 * Returns device registration status to the supplied household
-	 * 
-	 * @param udid device id
 	 */
-    public static GetHouseholdDeviceBuilder get(String udid)  {
-		return new GetHouseholdDeviceBuilder(udid);
+    public static GetHouseholdDeviceBuilder get()  {
+		return new GetHouseholdDeviceBuilder();
 	}
 	
 	public static class ListHouseholdDeviceBuilder extends ListResponseRequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, ListHouseholdDeviceBuilder> {
