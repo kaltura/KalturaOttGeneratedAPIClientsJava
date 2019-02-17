@@ -48,6 +48,7 @@ public class ExternalRecording extends Recording {
 	public interface Tokenizer extends Recording.Tokenizer {
 		String externalId();
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaData();
+		String expiryDate();
 	}
 
 	/**
@@ -58,6 +59,11 @@ public class ExternalRecording extends Recording {
 	 * key/value map field for extra data
 	 */
 	private Map<String, StringValue> metaData;
+	/**
+	 * Specifies until when the recording is available. Date and time represented as
+	  epoch.
+	 */
+	private Long expiryDate;
 
 	// externalId:
 	public String getExternalId(){
@@ -79,6 +85,10 @@ public class ExternalRecording extends Recording {
 		this.metaData = metaData;
 	}
 
+	// expiryDate:
+	public Long getExpiryDate(){
+		return this.expiryDate;
+	}
 
 	public ExternalRecording() {
 		super();
@@ -92,6 +102,7 @@ public class ExternalRecording extends Recording {
 		// set members values:
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		metaData = GsonParser.parseMap(jsonObject.getAsJsonObject("metaData"), StringValue.class);
+		expiryDate = GsonParser.parseLong(jsonObject.get("expiryDate"));
 
 	}
 
