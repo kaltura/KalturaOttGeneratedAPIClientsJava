@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -43,8 +44,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class AssetUserRuleFilterAction extends AssetUserRuleAction {
 	
 	public interface Tokenizer extends AssetUserRuleAction.Tokenizer {
+		String applyOnChannel();
 	}
 
+	/**
+	 * Indicates whether to apply on channel
+	 */
+	private Boolean applyOnChannel;
+
+	// applyOnChannel:
+	public Boolean getApplyOnChannel(){
+		return this.applyOnChannel;
+	}
+	public void setApplyOnChannel(Boolean applyOnChannel){
+		this.applyOnChannel = applyOnChannel;
+	}
+
+	public void applyOnChannel(String multirequestToken){
+		setToken("applyOnChannel", multirequestToken);
+	}
 
 
 	public AssetUserRuleFilterAction() {
@@ -53,11 +71,18 @@ public class AssetUserRuleFilterAction extends AssetUserRuleAction {
 
 	public AssetUserRuleFilterAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		applyOnChannel = GsonParser.parseBoolean(jsonObject.get("applyOnChannel"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetUserRuleFilterAction");
+		kparams.add("applyOnChannel", this.applyOnChannel);
 		return kparams;
 	}
 
