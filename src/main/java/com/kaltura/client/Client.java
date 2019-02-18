@@ -45,7 +45,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:19-02-18");
-		this.setApiVersion("5.1.2.28271");
+		this.setApiVersion("5.1.2.28528");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
@@ -284,26 +284,6 @@ public class Client extends ClientBase {
 	public SkipCondition getSkipCondition(){
 		if(this.requestConfiguration.containsKey("skipCondition")){
 			return(SkipCondition) this.requestConfiguration.get("skipCondition");
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * @param abortOnError Abort the Multireuqset call if any error occurs in one of the requests
-	 */
-	public void setAbortOnError(Boolean abortOnError){
-		this.requestConfiguration.put("abortOnError", abortOnError);
-	}
-	
-	/**
-	 * Abort the Multireuqset call if any error occurs in one of the requests
-	 * 
-	 * @return Boolean
-	 */
-	public Boolean getAbortOnError(){
-		if(this.requestConfiguration.containsKey("abortOnError")){
-			return(Boolean) this.requestConfiguration.get("abortOnError");
 		}
 		
 		return null;
