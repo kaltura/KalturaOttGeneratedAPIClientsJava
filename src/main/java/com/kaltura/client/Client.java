@@ -32,7 +32,7 @@ import com.kaltura.client.types.BaseResponseProfile;
 import com.kaltura.client.types.SkipCondition;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
@@ -45,7 +45,7 @@ public class Client extends ClientBase {
 		super(config);
 		
 		this.setClientTag("java:19-02-19");
-		this.setApiVersion("5.1.2.18604");
+		this.setApiVersion("5.1.1.42123");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	

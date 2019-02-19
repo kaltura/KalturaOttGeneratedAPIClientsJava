@@ -32,7 +32,7 @@ import com.kaltura.client.types.BaseResponseProfile;
 import com.kaltura.client.types.SkipCondition;
 
 /**
- * This class was generated using clients-generator\exec.php
+ * This class was generated using exec.php
  * against an XML schema provided by Kaltura.
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
