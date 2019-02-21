@@ -37,7 +37,8 @@ public enum MediaFileStreamerType implements EnumAsString {
 	APPLE_HTTP("APPLE_HTTP"),
 	MPEG_DASH("MPEG_DASH"),
 	URL("URL"),
-	SMOOTH_STREAMING("SMOOTH_STREAMING");
+	SMOOTH_STREAMING("SMOOTH_STREAMING"),
+	NONE("NONE");
 
 	private String value;
 
