@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
+import com.kaltura.client.enums.BatchUploadJobStatus;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,72 +41,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset user rule filter
+ * Bulk Upload Filter
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetUserRuleFilter.Tokenizer.class)
-public class AssetUserRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(BulkUploadFilter.Tokenizer.class)
+public class BulkUploadFilter extends PersistedFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String attachedUserIdEqualCurrent();
-		String actionsContainType();
+	public interface Tokenizer extends PersistedFilter.Tokenizer {
+		String statusEqual();
 	}
 
 	/**
-	 * Indicates if to get the asset user rule list for the attached user or for the
-	  entire group
+	 * Indicates which Bulk Upload list to return by this KalturaBatchUploadJobStatus.
 	 */
-	private Boolean attachedUserIdEqualCurrent;
-	/**
-	 * Indicates which asset rule list to return by this KalturaRuleActionType.
-	 */
-	private RuleActionType actionsContainType;
+	private BatchUploadJobStatus statusEqual;
 
-	// attachedUserIdEqualCurrent:
-	public Boolean getAttachedUserIdEqualCurrent(){
-		return this.attachedUserIdEqualCurrent;
+	// statusEqual:
+	public BatchUploadJobStatus getStatusEqual(){
+		return this.statusEqual;
 	}
-	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
-		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
+	public void setStatusEqual(BatchUploadJobStatus statusEqual){
+		this.statusEqual = statusEqual;
 	}
 
-	public void attachedUserIdEqualCurrent(String multirequestToken){
-		setToken("attachedUserIdEqualCurrent", multirequestToken);
-	}
-
-	// actionsContainType:
-	public RuleActionType getActionsContainType(){
-		return this.actionsContainType;
-	}
-	public void setActionsContainType(RuleActionType actionsContainType){
-		this.actionsContainType = actionsContainType;
-	}
-
-	public void actionsContainType(String multirequestToken){
-		setToken("actionsContainType", multirequestToken);
+	public void statusEqual(String multirequestToken){
+		setToken("statusEqual", multirequestToken);
 	}
 
 
-	public AssetUserRuleFilter() {
+	public BulkUploadFilter() {
 		super();
 	}
 
-	public AssetUserRuleFilter(JsonObject jsonObject) throws APIException {
+	public BulkUploadFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
-		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
+		statusEqual = BatchUploadJobStatus.get(GsonParser.parseString(jsonObject.get("statusEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetUserRuleFilter");
-		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
-		kparams.add("actionsContainType", this.actionsContainType);
+		kparams.add("objectType", "KalturaBulkUploadFilter");
+		kparams.add("statusEqual", this.statusEqual);
 		return kparams;
 	}
 

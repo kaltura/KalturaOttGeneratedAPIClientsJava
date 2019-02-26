@@ -29,7 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.ResponseStatus;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,72 +42,73 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset user rule filter
+ * Bulk Upload Result
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetUserRuleFilter.Tokenizer.class)
-public class AssetUserRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(BulkUploadResult.Tokenizer.class)
+public abstract class BulkUploadResult extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String attachedUserIdEqualCurrent();
-		String actionsContainType();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String objectId();
+		String index();
+		String bulkUploadId();
+		ResponseStatus.Tokenizer status();
 	}
 
 	/**
-	 * Indicates if to get the asset user rule list for the attached user or for the
-	  entire group
+	 * the result ObjectId (assetId, userId etc)
 	 */
-	private Boolean attachedUserIdEqualCurrent;
+	private Long objectId;
 	/**
-	 * Indicates which asset rule list to return by this KalturaRuleActionType.
+	 * result index
 	 */
-	private RuleActionType actionsContainType;
+	private Integer index;
+	/**
+	 * Bulk upload identifier
+	 */
+	private Long bulkUploadId;
+	/**
+	 * status
+	 */
+	private ResponseStatus status;
 
-	// attachedUserIdEqualCurrent:
-	public Boolean getAttachedUserIdEqualCurrent(){
-		return this.attachedUserIdEqualCurrent;
+	// objectId:
+	public Long getObjectId(){
+		return this.objectId;
 	}
-	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
-		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
+	// index:
+	public Integer getIndex(){
+		return this.index;
 	}
-
-	public void attachedUserIdEqualCurrent(String multirequestToken){
-		setToken("attachedUserIdEqualCurrent", multirequestToken);
+	// bulkUploadId:
+	public Long getBulkUploadId(){
+		return this.bulkUploadId;
 	}
-
-	// actionsContainType:
-	public RuleActionType getActionsContainType(){
-		return this.actionsContainType;
-	}
-	public void setActionsContainType(RuleActionType actionsContainType){
-		this.actionsContainType = actionsContainType;
+	// status:
+	public ResponseStatus getStatus(){
+		return this.status;
 	}
 
-	public void actionsContainType(String multirequestToken){
-		setToken("actionsContainType", multirequestToken);
-	}
-
-
-	public AssetUserRuleFilter() {
+	public BulkUploadResult() {
 		super();
 	}
 
-	public AssetUserRuleFilter(JsonObject jsonObject) throws APIException {
+	public BulkUploadResult(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
-		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
+		objectId = GsonParser.parseLong(jsonObject.get("objectId"));
+		index = GsonParser.parseInt(jsonObject.get("index"));
+		bulkUploadId = GsonParser.parseLong(jsonObject.get("bulkUploadId"));
+		status = GsonParser.parseObject(jsonObject.getAsJsonObject("status"), ResponseStatus.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetUserRuleFilter");
-		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
-		kparams.add("actionsContainType", this.actionsContainType);
+		kparams.add("objectType", "KalturaBulkUploadResult");
 		return kparams;
 	}
 

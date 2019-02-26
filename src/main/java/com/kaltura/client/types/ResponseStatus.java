@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,72 +41,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset user rule filter
+ * Response Status
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetUserRuleFilter.Tokenizer.class)
-public class AssetUserRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(ResponseStatus.Tokenizer.class)
+public class ResponseStatus extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String attachedUserIdEqualCurrent();
-		String actionsContainType();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String code();
+		String message();
 	}
 
 	/**
-	 * Indicates if to get the asset user rule list for the attached user or for the
-	  entire group
+	 * Code
 	 */
-	private Boolean attachedUserIdEqualCurrent;
+	private Integer code;
 	/**
-	 * Indicates which asset rule list to return by this KalturaRuleActionType.
+	 * Message
 	 */
-	private RuleActionType actionsContainType;
+	private String message;
 
-	// attachedUserIdEqualCurrent:
-	public Boolean getAttachedUserIdEqualCurrent(){
-		return this.attachedUserIdEqualCurrent;
+	// code:
+	public Integer getCode(){
+		return this.code;
 	}
-	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
-		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
-	}
-
-	public void attachedUserIdEqualCurrent(String multirequestToken){
-		setToken("attachedUserIdEqualCurrent", multirequestToken);
+	// message:
+	public String getMessage(){
+		return this.message;
 	}
 
-	// actionsContainType:
-	public RuleActionType getActionsContainType(){
-		return this.actionsContainType;
-	}
-	public void setActionsContainType(RuleActionType actionsContainType){
-		this.actionsContainType = actionsContainType;
-	}
-
-	public void actionsContainType(String multirequestToken){
-		setToken("actionsContainType", multirequestToken);
-	}
-
-
-	public AssetUserRuleFilter() {
+	public ResponseStatus() {
 		super();
 	}
 
-	public AssetUserRuleFilter(JsonObject jsonObject) throws APIException {
+	public ResponseStatus(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
-		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
+		code = GsonParser.parseInt(jsonObject.get("code"));
+		message = GsonParser.parseString(jsonObject.get("message"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetUserRuleFilter");
-		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
-		kparams.add("actionsContainType", this.actionsContainType);
+		kparams.add("objectType", "KalturaResponseStatus");
 		return kparams;
 	}
 

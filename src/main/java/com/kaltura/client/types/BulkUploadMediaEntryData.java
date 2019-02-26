@@ -29,9 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BatchJobStatus;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -41,72 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * instractions for upload media asset values
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Bulk.Tokenizer.class)
-public class Bulk extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkUploadMediaEntryData.Tokenizer.class)
+public class BulkUploadMediaEntryData extends BulkUploadAssetEntryData {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String status();
-		String createDate();
-		String updateDate();
+	public interface Tokenizer extends BulkUploadAssetEntryData.Tokenizer {
 	}
 
-	/**
-	 * Bulk identifier
-	 */
-	private Long id;
-	/**
-	 * Status
-	 */
-	private BatchJobStatus status;
-	/**
-	 * Specifies when was the bulk action created. Date and time represented as epoch
-	 */
-	private Long createDate;
-	/**
-	 * Specifies when was the bulk action last updated. Date and time represented as
-	  epoch
-	 */
-	private Long updateDate;
 
-	// id:
-	public Long getId(){
-		return this.id;
-	}
-	// status:
-	public BatchJobStatus getStatus(){
-		return this.status;
-	}
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
-	}
-	// updateDate:
-	public Long getUpdateDate(){
-		return this.updateDate;
-	}
 
-	public Bulk() {
+	public BulkUploadMediaEntryData() {
 		super();
 	}
 
-	public Bulk(JsonObject jsonObject) throws APIException {
+	public BulkUploadMediaEntryData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		status = BatchJobStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulk");
+		kparams.add("objectType", "KalturaBulkUploadMediaEntryData");
 		return kparams;
 	}
 

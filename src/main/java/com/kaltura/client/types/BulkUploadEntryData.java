@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,37 +38,32 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BulkOrderBy implements EnumAsString {
-	NONE("NONE");
 
-	private String value;
-
-	BulkOrderBy(String value) {
-		this.value = value;
+/**
+ * instractions for upload data values
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BulkUploadEntryData.Tokenizer.class)
+public abstract class BulkUploadEntryData extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public BulkUploadEntryData() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public BulkUploadEntryData(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static BulkOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BulkOrderBy defined values and compare the inner value with the given one:
-		for(BulkOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BulkOrderBy.values().length > 0 ? BulkOrderBy.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBulkUploadEntryData");
+		return kparams;
+	}
+
 }
+

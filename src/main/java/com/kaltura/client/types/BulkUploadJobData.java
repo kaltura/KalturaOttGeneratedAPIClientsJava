@@ -29,7 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
+import com.kaltura.client.types.BulkUploadEntryData;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,72 +42,48 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset user rule filter
+ * instractions for upload data type
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetUserRuleFilter.Tokenizer.class)
-public class AssetUserRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(BulkUploadJobData.Tokenizer.class)
+public abstract class BulkUploadJobData extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String attachedUserIdEqualCurrent();
-		String actionsContainType();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		BulkUploadEntryData.Tokenizer entryData();
 	}
 
 	/**
-	 * Indicates if to get the asset user rule list for the attached user or for the
-	  entire group
+	 * EntryData
 	 */
-	private Boolean attachedUserIdEqualCurrent;
-	/**
-	 * Indicates which asset rule list to return by this KalturaRuleActionType.
-	 */
-	private RuleActionType actionsContainType;
+	private BulkUploadEntryData entryData;
 
-	// attachedUserIdEqualCurrent:
-	public Boolean getAttachedUserIdEqualCurrent(){
-		return this.attachedUserIdEqualCurrent;
+	// entryData:
+	public BulkUploadEntryData getEntryData(){
+		return this.entryData;
 	}
-	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
-		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
-	}
-
-	public void attachedUserIdEqualCurrent(String multirequestToken){
-		setToken("attachedUserIdEqualCurrent", multirequestToken);
-	}
-
-	// actionsContainType:
-	public RuleActionType getActionsContainType(){
-		return this.actionsContainType;
-	}
-	public void setActionsContainType(RuleActionType actionsContainType){
-		this.actionsContainType = actionsContainType;
-	}
-
-	public void actionsContainType(String multirequestToken){
-		setToken("actionsContainType", multirequestToken);
+	public void setEntryData(BulkUploadEntryData entryData){
+		this.entryData = entryData;
 	}
 
 
-	public AssetUserRuleFilter() {
+	public BulkUploadJobData() {
 		super();
 	}
 
-	public AssetUserRuleFilter(JsonObject jsonObject) throws APIException {
+	public BulkUploadJobData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
-		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
+		entryData = GsonParser.parseObject(jsonObject.getAsJsonObject("entryData"), BulkUploadEntryData.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetUserRuleFilter");
-		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
-		kparams.add("actionsContainType", this.actionsContainType);
+		kparams.add("objectType", "KalturaBulkUploadJobData");
+		kparams.add("entryData", this.entryData);
 		return kparams;
 	}
 
