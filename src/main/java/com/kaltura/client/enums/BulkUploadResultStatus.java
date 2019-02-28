@@ -33,13 +33,14 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BatchUploadJobAction implements EnumAsString {
-	UPSERT("Upsert"),
-	DELETE("Delete");
+public enum BulkUploadResultStatus implements EnumAsString {
+	ERROR("ERROR"),
+	OK("OK"),
+	IN_PROGRESS("IN_PROGRESS");
 
 	private String value;
 
-	BatchUploadJobAction(String value) {
+	BulkUploadResultStatus(String value) {
 		this.value = value;
 	}
 
@@ -52,19 +53,19 @@ public enum BatchUploadJobAction implements EnumAsString {
 		this.value = value;
 	}
 
-	public static BatchUploadJobAction get(String value) {
+	public static BulkUploadResultStatus get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over BatchUploadJobAction defined values and compare the inner value with the given one:
-		for(BatchUploadJobAction item: values()) {
+		// goes over BulkUploadResultStatus defined values and compare the inner value with the given one:
+		for(BulkUploadResultStatus item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BatchUploadJobAction.values().length > 0 ? BatchUploadJobAction.values()[0]: null;
+		return BulkUploadResultStatus.values().length > 0 ? BulkUploadResultStatus.values()[0]: null;
    }
 }

@@ -41,7 +41,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkUploadAssetResult.Tokenizer.class)
-public class BulkUploadAssetResult extends BulkUploadResult {
+public abstract class BulkUploadAssetResult extends BulkUploadResult {
 	
 	public interface Tokenizer extends BulkUploadResult.Tokenizer {
 		String type();

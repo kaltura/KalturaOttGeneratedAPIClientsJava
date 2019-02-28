@@ -25,13 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -39,57 +33,39 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum BulkUploadJobStatus implements EnumAsString {
+	PENDING("PENDING"),
+	UPLOADED("UPLOADED"),
+	QUEUED("QUEUED");
 
-/**
- * Response Status
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ResponseStatus.Tokenizer.class)
-public class ResponseStatus extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String code();
-		String message();
+	private String value;
+
+	BulkUploadJobStatus(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Code
-	 */
-	private Integer code;
-	/**
-	 * Message
-	 */
-	private String message;
-
-	// code:
-	public Integer getCode(){
-		return this.code;
-	}
-	// message:
-	public String getMessage(){
-		return this.message;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public ResponseStatus() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public ResponseStatus(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		code = GsonParser.parseInt(jsonObject.get("code"));
-		message = GsonParser.parseString(jsonObject.get("message"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaResponseStatus");
-		return kparams;
-	}
-
+	public static BulkUploadJobStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over BulkUploadJobStatus defined values and compare the inner value with the given one:
+		for(BulkUploadJobStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return BulkUploadJobStatus.values().length > 0 ? BulkUploadJobStatus.values()[0]: null;
+   }
 }
-

@@ -29,8 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.BulkUploadResultStatus;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.ResponseStatus;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -52,7 +52,9 @@ public abstract class BulkUploadResult extends ObjectBase {
 		String objectId();
 		String index();
 		String bulkUploadId();
-		ResponseStatus.Tokenizer status();
+		String status();
+		String errorCode();
+		String errorMessage();
 	}
 
 	/**
@@ -70,7 +72,15 @@ public abstract class BulkUploadResult extends ObjectBase {
 	/**
 	 * status
 	 */
-	private ResponseStatus status;
+	private BulkUploadResultStatus status;
+	/**
+	 * Error Code
+	 */
+	private Integer errorCode;
+	/**
+	 * Error Message
+	 */
+	private String errorMessage;
 
 	// objectId:
 	public Long getObjectId(){
@@ -85,8 +95,16 @@ public abstract class BulkUploadResult extends ObjectBase {
 		return this.bulkUploadId;
 	}
 	// status:
-	public ResponseStatus getStatus(){
+	public BulkUploadResultStatus getStatus(){
 		return this.status;
+	}
+	// errorCode:
+	public Integer getErrorCode(){
+		return this.errorCode;
+	}
+	// errorMessage:
+	public String getErrorMessage(){
+		return this.errorMessage;
 	}
 
 	public BulkUploadResult() {
@@ -102,7 +120,9 @@ public abstract class BulkUploadResult extends ObjectBase {
 		objectId = GsonParser.parseLong(jsonObject.get("objectId"));
 		index = GsonParser.parseInt(jsonObject.get("index"));
 		bulkUploadId = GsonParser.parseLong(jsonObject.get("bulkUploadId"));
-		status = GsonParser.parseObject(jsonObject.getAsJsonObject("status"), ResponseStatus.class);
+		status = BulkUploadResultStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		errorCode = GsonParser.parseInt(jsonObject.get("errorCode"));
+		errorMessage = GsonParser.parseString(jsonObject.get("errorMessage"));
 
 	}
 

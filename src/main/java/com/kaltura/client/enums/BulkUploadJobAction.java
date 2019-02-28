@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,32 +33,38 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum BulkUploadJobAction implements EnumAsString {
+	UPSERT("Upsert"),
+	DELETE("Delete");
 
-/**
- * instractions for upload data values
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkUploadEntryData.Tokenizer.class)
-public abstract class BulkUploadEntryData extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	private String value;
+
+	BulkUploadJobAction(String value) {
+		this.value = value;
 	}
 
-
-
-	public BulkUploadEntryData() {
-		super();
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public BulkUploadEntryData(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkUploadEntryData");
-		return kparams;
-	}
-
+	public static BulkUploadJobAction get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over BulkUploadJobAction defined values and compare the inner value with the given one:
+		for(BulkUploadJobAction item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return BulkUploadJobAction.values().length > 0 ? BulkUploadJobAction.values()[0]: null;
+   }
 }
-

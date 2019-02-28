@@ -29,8 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BatchUploadJobAction;
-import com.kaltura.client.enums.BatchUploadJobStatus;
+import com.kaltura.client.enums.BulkUploadJobAction;
+import com.kaltura.client.enums.BulkUploadJobStatus;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -53,11 +53,12 @@ public class BulkUpload extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
+		String fileName();
 		String status();
+		String action();
+		String numOfObjects();
 		String createDate();
 		String updateDate();
-		String uploadTokenId();
-		String action();
 		RequestBuilder.ListTokenizer<BulkUploadResult.Tokenizer> results();
 	}
 
@@ -66,9 +67,21 @@ public class BulkUpload extends ObjectBase {
 	 */
 	private Long id;
 	/**
+	 * File Name
+	 */
+	private String fileName;
+	/**
 	 * Status
 	 */
-	private BatchUploadJobStatus status;
+	private BulkUploadJobStatus status;
+	/**
+	 * Action
+	 */
+	private BulkUploadJobAction action;
+	/**
+	 * Total number of objects in file
+	 */
+	private Integer numOfObjects;
 	/**
 	 * Specifies when was the bulk action created. Date and time represented as epoch
 	 */
@@ -79,14 +92,6 @@ public class BulkUpload extends ObjectBase {
 	 */
 	private Long updateDate;
 	/**
-	 * Upload Token Id
-	 */
-	private String uploadTokenId;
-	/**
-	 * Action
-	 */
-	private BatchUploadJobAction action;
-	/**
 	 * A list of results
 	 */
 	private List<BulkUploadResult> results;
@@ -95,9 +100,21 @@ public class BulkUpload extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
+	// fileName:
+	public String getFileName(){
+		return this.fileName;
+	}
 	// status:
-	public BatchUploadJobStatus getStatus(){
+	public BulkUploadJobStatus getStatus(){
 		return this.status;
+	}
+	// action:
+	public BulkUploadJobAction getAction(){
+		return this.action;
+	}
+	// numOfObjects:
+	public Integer getNumOfObjects(){
+		return this.numOfObjects;
 	}
 	// createDate:
 	public Long getCreateDate(){
@@ -106,14 +123,6 @@ public class BulkUpload extends ObjectBase {
 	// updateDate:
 	public Long getUpdateDate(){
 		return this.updateDate;
-	}
-	// uploadTokenId:
-	public String getUploadTokenId(){
-		return this.uploadTokenId;
-	}
-	// action:
-	public BatchUploadJobAction getAction(){
-		return this.action;
 	}
 	// results:
 	public List<BulkUploadResult> getResults(){
@@ -131,11 +140,12 @@ public class BulkUpload extends ObjectBase {
 
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
-		status = BatchUploadJobStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		fileName = GsonParser.parseString(jsonObject.get("fileName"));
+		status = BulkUploadJobStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		action = BulkUploadJobAction.get(GsonParser.parseString(jsonObject.get("action")));
+		numOfObjects = GsonParser.parseInt(jsonObject.get("numOfObjects"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-		uploadTokenId = GsonParser.parseString(jsonObject.get("uploadTokenId"));
-		action = BatchUploadJobAction.get(GsonParser.parseString(jsonObject.get("action")));
 		results = GsonParser.parseArray(jsonObject.getAsJsonArray("results"), BulkUploadResult.class);
 
 	}
