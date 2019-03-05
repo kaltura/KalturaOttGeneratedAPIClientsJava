@@ -25,12 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.types;
 
-import com.kaltura.client.types.BulkUpload;
-import com.kaltura.client.types.BulkUploadFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,47 +39,54 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class BulkUploadService {
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BulkUploadAssetData.Tokenizer.class)
+public class BulkUploadAssetData extends BulkUploadObjectData {
 	
-	public static class GetBulkUploadBuilder extends RequestBuilder<BulkUpload, BulkUpload.Tokenizer, GetBulkUploadBuilder> {
-		
-		public GetBulkUploadBuilder(long id) {
-			super(BulkUpload.class, "bulkupload", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
+	public interface Tokenizer extends BulkUploadObjectData.Tokenizer {
+		String typeId();
 	}
 
 	/**
-	 * Get BulkUpload by ID
-	 * 
-	 * @param id ID to get
+	 * Identifies the asset type (EPG, Recording, Movie, TV Series, etc).              
+	  Possible values: 0 – EPG linear programs, 1 - Recording; or any asset type ID
+	  according to the asset types IDs defined in the system.
 	 */
-    public static GetBulkUploadBuilder get(long id)  {
-		return new GetBulkUploadBuilder(id);
+	private Long typeId;
+
+	// typeId:
+	public Long getTypeId(){
+		return this.typeId;
 	}
-	
-	public static class ListBulkUploadBuilder extends ListResponseRequestBuilder<BulkUpload, BulkUpload.Tokenizer, ListBulkUploadBuilder> {
-		
-		public ListBulkUploadBuilder(BulkUploadFilter filter) {
-			super(BulkUpload.class, "bulkupload", "list");
-			params.add("filter", filter);
-		}
+	public void setTypeId(Long typeId){
+		this.typeId = typeId;
 	}
 
-	public static ListBulkUploadBuilder list()  {
-		return list(null);
+	public void typeId(String multirequestToken){
+		setToken("typeId", multirequestToken);
 	}
 
-	/**
-	 * Get list of KalturaBulkUpload by filter
-	 * 
-	 * @param filter Filtering the bulk action request
-	 */
-    public static ListBulkUploadBuilder list(BulkUploadFilter filter)  {
-		return new ListBulkUploadBuilder(filter);
+
+	public BulkUploadAssetData() {
+		super();
 	}
+
+	public BulkUploadAssetData(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		typeId = GsonParser.parseLong(jsonObject.get("typeId"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBulkUploadAssetData");
+		kparams.add("typeId", this.typeId);
+		return kparams;
+	}
+
 }
+

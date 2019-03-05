@@ -34,6 +34,8 @@ import com.kaltura.client.enums.UrlType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -50,6 +52,7 @@ public class PlaybackContextOptions extends ObjectBase {
 		String mediaProtocol();
 		String streamerType();
 		String assetFileIds();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
 		String context();
 		String urlType();
 	}
@@ -66,6 +69,10 @@ public class PlaybackContextOptions extends ObjectBase {
 	 * List of comma separated media file IDs
 	 */
 	private String assetFileIds;
+	/**
+	 * key/value map field for extra data
+	 */
+	private Map<String, StringValue> adapterData;
 	/**
 	 * Playback context type
 	 */
@@ -111,6 +118,14 @@ public class PlaybackContextOptions extends ObjectBase {
 		setToken("assetFileIds", multirequestToken);
 	}
 
+	// adapterData:
+	public Map<String, StringValue> getAdapterData(){
+		return this.adapterData;
+	}
+	public void setAdapterData(Map<String, StringValue> adapterData){
+		this.adapterData = adapterData;
+	}
+
 	// context:
 	public PlaybackContextType getContext(){
 		return this.context;
@@ -149,6 +164,7 @@ public class PlaybackContextOptions extends ObjectBase {
 		mediaProtocol = GsonParser.parseString(jsonObject.get("mediaProtocol"));
 		streamerType = GsonParser.parseString(jsonObject.get("streamerType"));
 		assetFileIds = GsonParser.parseString(jsonObject.get("assetFileIds"));
+		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
 		context = PlaybackContextType.get(GsonParser.parseString(jsonObject.get("context")));
 		urlType = UrlType.get(GsonParser.parseString(jsonObject.get("urlType")));
 
@@ -160,6 +176,7 @@ public class PlaybackContextOptions extends ObjectBase {
 		kparams.add("mediaProtocol", this.mediaProtocol);
 		kparams.add("streamerType", this.streamerType);
 		kparams.add("assetFileIds", this.assetFileIds);
+		kparams.add("adapterData", this.adapterData);
 		kparams.add("context", this.context);
 		kparams.add("urlType", this.urlType);
 		return kparams;

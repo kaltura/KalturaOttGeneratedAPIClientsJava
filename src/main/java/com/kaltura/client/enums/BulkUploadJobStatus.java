@@ -34,9 +34,16 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum BulkUploadJobStatus implements EnumAsString {
-	PENDING("PENDING"),
-	UPLOADED("UPLOADED"),
-	QUEUED("QUEUED");
+	PENDING("Pending"),
+	UPLOADED("Uploaded"),
+	QUEUED("Queued"),
+	PARSING("Parsing"),
+	PROCESSING("Processing"),
+	PROCESSED("Processed"),
+	SUCCESS("Success"),
+	PARTIAL("Partial"),
+	FAILED("Failed"),
+	FATAL("Fatal");
 
 	private String value;
 

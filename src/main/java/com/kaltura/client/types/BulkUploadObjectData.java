@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2011  Kaltura Inc.
+// Copyright (C) 2006-2019  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -25,38 +25,42 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client;
+package com.kaltura.client.types;
 
-import com.kaltura.client.enums.EnumAsInt;
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
-public enum ServiceResponseTypeFormat implements EnumAsInt{
+/**
+ * This class was generated using exec.php
+ * against an XML schema provided by Kaltura.
+ * 
+ * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
+ */
 
-	RESPONSE_TYPE_JSON(1),
-	RESPONSE_TYPE_XML(2),
-	RESPONSE_TYPE_PHP(3),
-	RESPONSE_TYPE_PHP_ARRAY(4),
-	RESPONSE_TYPE_PHP_OBJECT(5),
-	RESPONSE_TYPE_RAW(6),
-	RESPONSE_TYPE_HTML(7);
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BulkUploadObjectData.Tokenizer.class)
+public abstract class BulkUploadObjectData extends ObjectBase {
 	
-	private int hashCode;
-	
-	ServiceResponseTypeFormat(int hashCode) {
-		this.hashCode = hashCode;
-	}
-    
-	public int getValue() {
-		return this.hashCode;
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
-	public static ServiceResponseTypeFormat get(int value) {
-		// goes over KalturaAppTokenStatus defined values and compare the inner value with the given one:
-		for (ServiceResponseTypeFormat item : values()) {
-			if(item.getValue() == value) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ServiceResponseTypeFormat.values().length > 0 ? ServiceResponseTypeFormat.values()[0] : null;
+
+
+	public BulkUploadObjectData() {
+		super();
 	}
+
+	public BulkUploadObjectData(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBulkUploadObjectData");
+		return kparams;
+	}
+
 }
+

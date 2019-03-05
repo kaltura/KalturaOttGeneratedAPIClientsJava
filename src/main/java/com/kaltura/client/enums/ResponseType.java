@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
-
-import com.kaltura.client.types.BulkUpload;
-import com.kaltura.client.types.BulkUploadFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,48 +33,41 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum ResponseType implements EnumAsInt {
+	JSON(1),
+	XML(2),
+	JSONP(9),
+	ASSET_XML(30),
+	EXCEL(31);
 
-public class BulkUploadService {
-	
-	public static class GetBulkUploadBuilder extends RequestBuilder<BulkUpload, BulkUpload.Tokenizer, GetBulkUploadBuilder> {
-		
-		public GetBulkUploadBuilder(long id) {
-			super(BulkUpload.class, "bulkupload", "get");
-			params.add("id", id);
+	private int value;
+
+	ResponseType(int value) {
+		this.value = value;
+	}
+
+	@Override
+	public int getValue() {
+		return this.value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public static ResponseType get(Integer value) {
+		if(value == null)
+		{
+			return null;
 		}
 		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
+		// goes over ResponseType defined values and compare the inner value with the given one:
+		for(ResponseType item: values()) {
+			if(item.getValue() == value) {
+				return item;
+			}
 		}
-	}
-
-	/**
-	 * Get BulkUpload by ID
-	 * 
-	 * @param id ID to get
-	 */
-    public static GetBulkUploadBuilder get(long id)  {
-		return new GetBulkUploadBuilder(id);
-	}
-	
-	public static class ListBulkUploadBuilder extends ListResponseRequestBuilder<BulkUpload, BulkUpload.Tokenizer, ListBulkUploadBuilder> {
-		
-		public ListBulkUploadBuilder(BulkUploadFilter filter) {
-			super(BulkUpload.class, "bulkupload", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	public static ListBulkUploadBuilder list()  {
-		return list(null);
-	}
-
-	/**
-	 * Get list of KalturaBulkUpload by filter
-	 * 
-	 * @param filter Filtering the bulk action request
-	 */
-    public static ListBulkUploadBuilder list(BulkUploadFilter filter)  {
-		return new ListBulkUploadBuilder(filter);
-	}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return ResponseType.values().length > 0 ? ResponseType.values()[0]: null;
+   }
 }

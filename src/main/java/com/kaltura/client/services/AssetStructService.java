@@ -79,6 +79,27 @@ public class AssetStructService {
 		return new DeleteAssetStructBuilder(id);
 	}
 	
+	public static class GetAssetStructBuilder extends RequestBuilder<AssetStruct, AssetStruct.Tokenizer, GetAssetStructBuilder> {
+		
+		public GetAssetStructBuilder(long id) {
+			super(AssetStruct.class, "assetstruct", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get AssetStruct by ID
+	 * 
+	 * @param id ID to get
+	 */
+    public static GetAssetStructBuilder get(long id)  {
+		return new GetAssetStructBuilder(id);
+	}
+	
 	public static class ListAssetStructBuilder extends ListResponseRequestBuilder<AssetStruct, AssetStruct.Tokenizer, ListAssetStructBuilder> {
 		
 		public ListAssetStructBuilder(AssetStructFilter filter) {

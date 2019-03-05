@@ -34,9 +34,9 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum BulkUploadResultStatus implements EnumAsString {
-	ERROR("ERROR"),
-	OK("OK"),
-	IN_PROGRESS("IN_PROGRESS");
+	ERROR("Error"),
+	OK("Ok"),
+	INPROGRESS("InProgress");
 
 	private String value;
 
