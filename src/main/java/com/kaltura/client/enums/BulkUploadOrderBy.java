@@ -35,8 +35,7 @@ package com.kaltura.client.enums;
  */
 public enum BulkUploadOrderBy implements EnumAsString {
 	NONE("NONE"),
-	UPDATE_DATE("UPDATE_DATE"),
-	STATUS("STATUS");
+	UPDATE_DATE("UPDATE_DATE");
 
 	private String value;
 

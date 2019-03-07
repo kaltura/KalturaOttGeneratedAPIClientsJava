@@ -39,6 +39,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * indicates the asset object type in the bulk file
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkUploadAssetData.Tokenizer.class)
 public class BulkUploadAssetData extends BulkUploadObjectData {

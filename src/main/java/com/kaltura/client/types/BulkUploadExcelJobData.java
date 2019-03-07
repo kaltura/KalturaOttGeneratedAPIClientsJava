@@ -39,7 +39,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * instractions for upload data type with Excel
+ * instructions for upload data type with Excel
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkUploadExcelJobData.Tokenizer.class)

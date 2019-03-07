@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.BulkUpload;
 import com.kaltura.client.types.BulkUploadFilter;
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -64,9 +65,10 @@ public class BulkUploadService {
 	
 	public static class ListBulkUploadBuilder extends ListResponseRequestBuilder<BulkUpload, BulkUpload.Tokenizer, ListBulkUploadBuilder> {
 		
-		public ListBulkUploadBuilder(BulkUploadFilter filter) {
+		public ListBulkUploadBuilder(BulkUploadFilter filter, FilterPager pager) {
 			super(BulkUpload.class, "bulkupload", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
@@ -74,12 +76,17 @@ public class BulkUploadService {
 		return list(null);
 	}
 
+	public static ListBulkUploadBuilder list(BulkUploadFilter filter)  {
+		return list(filter, null);
+	}
+
 	/**
 	 * Get list of KalturaBulkUpload by filter
 	 * 
 	 * @param filter Filtering the bulk action request
+	 * @param pager Paging the request
 	 */
-    public static ListBulkUploadBuilder list(BulkUploadFilter filter)  {
-		return new ListBulkUploadBuilder(filter);
+    public static ListBulkUploadBuilder list(BulkUploadFilter filter, FilterPager pager)  {
+		return new ListBulkUploadBuilder(filter, pager);
 	}
 }

@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BulkUploadJobStatus;
+import com.kaltura.client.enums.DateComparisonType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -45,27 +45,79 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkUploadFilter.Tokenizer.class)
-public class BulkUploadFilter extends PersistedFilter {
+public class BulkUploadFilter extends Filter {
 	
-	public interface Tokenizer extends PersistedFilter.Tokenizer {
-		String statusEqual();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String uploadedOnEqual();
+		String dateComparisonType();
+		String statusIn();
+		String userIdEqualCurrent();
 	}
 
 	/**
-	 * Indicates which Bulk Upload list to return by this KalturaBatchUploadJobStatus.
+	 * upload date to search within.
 	 */
-	private BulkUploadJobStatus statusEqual;
+	private Long uploadedOnEqual;
+	/**
+	 * Date Comparison Type.
+	 */
+	private DateComparisonType dateComparisonType;
+	/**
+	 * List of KalturaBulkUploadJobStatus to search within.
+	 */
+	private String statusIn;
+	/**
+	 * Indicates if to get the BulkUpload list that created by current user or by the
+	  entire group.
+	 */
+	private Boolean userIdEqualCurrent;
 
-	// statusEqual:
-	public BulkUploadJobStatus getStatusEqual(){
-		return this.statusEqual;
+	// uploadedOnEqual:
+	public Long getUploadedOnEqual(){
+		return this.uploadedOnEqual;
 	}
-	public void setStatusEqual(BulkUploadJobStatus statusEqual){
-		this.statusEqual = statusEqual;
+	public void setUploadedOnEqual(Long uploadedOnEqual){
+		this.uploadedOnEqual = uploadedOnEqual;
 	}
 
-	public void statusEqual(String multirequestToken){
-		setToken("statusEqual", multirequestToken);
+	public void uploadedOnEqual(String multirequestToken){
+		setToken("uploadedOnEqual", multirequestToken);
+	}
+
+	// dateComparisonType:
+	public DateComparisonType getDateComparisonType(){
+		return this.dateComparisonType;
+	}
+	public void setDateComparisonType(DateComparisonType dateComparisonType){
+		this.dateComparisonType = dateComparisonType;
+	}
+
+	public void dateComparisonType(String multirequestToken){
+		setToken("dateComparisonType", multirequestToken);
+	}
+
+	// statusIn:
+	public String getStatusIn(){
+		return this.statusIn;
+	}
+	public void setStatusIn(String statusIn){
+		this.statusIn = statusIn;
+	}
+
+	public void statusIn(String multirequestToken){
+		setToken("statusIn", multirequestToken);
+	}
+
+	// userIdEqualCurrent:
+	public Boolean getUserIdEqualCurrent(){
+		return this.userIdEqualCurrent;
+	}
+	public void setUserIdEqualCurrent(Boolean userIdEqualCurrent){
+		this.userIdEqualCurrent = userIdEqualCurrent;
+	}
+
+	public void userIdEqualCurrent(String multirequestToken){
+		setToken("userIdEqualCurrent", multirequestToken);
 	}
 
 
@@ -79,14 +131,20 @@ public class BulkUploadFilter extends PersistedFilter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		statusEqual = BulkUploadJobStatus.get(GsonParser.parseString(jsonObject.get("statusEqual")));
+		uploadedOnEqual = GsonParser.parseLong(jsonObject.get("uploadedOnEqual"));
+		dateComparisonType = DateComparisonType.get(GsonParser.parseString(jsonObject.get("dateComparisonType")));
+		statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
+		userIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("userIdEqualCurrent"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBulkUploadFilter");
-		kparams.add("statusEqual", this.statusEqual);
+		kparams.add("uploadedOnEqual", this.uploadedOnEqual);
+		kparams.add("dateComparisonType", this.dateComparisonType);
+		kparams.add("statusIn", this.statusIn);
+		kparams.add("userIdEqualCurrent", this.userIdEqualCurrent);
 		return kparams;
 	}
 

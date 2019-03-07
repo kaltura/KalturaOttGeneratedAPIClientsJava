@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,32 +33,39 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum DateComparisonType implements EnumAsString {
+	GREATERTHANOREQUAL("GreaterThanOrEqual"),
+	LESSTHANOREQUAL("LessThanOrEqual"),
+	EQUAL("Equal");
 
-/**
- * instructions for upload data (the data file type, how to read the file, etc)
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkUploadJobData.Tokenizer.class)
-public abstract class BulkUploadJobData extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	private String value;
+
+	DateComparisonType(String value) {
+		this.value = value;
 	}
 
-
-
-	public BulkUploadJobData() {
-		super();
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public BulkUploadJobData(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkUploadJobData");
-		return kparams;
-	}
-
+	public static DateComparisonType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over DateComparisonType defined values and compare the inner value with the given one:
+		for(DateComparisonType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return DateComparisonType.values().length > 0 ? DateComparisonType.values()[0]: null;
+   }
 }
-
