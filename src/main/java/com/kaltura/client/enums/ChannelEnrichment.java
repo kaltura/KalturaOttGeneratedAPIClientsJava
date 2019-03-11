@@ -41,11 +41,7 @@ public enum ChannelEnrichment implements EnumAsString {
 	DEVICETYPE("DeviceType"),
 	UTCOFFSET("UTCOffset"),
 	LANGUAGE("Language"),
-	NPVRSUPPORT("NPVRSupport"),
-	CATCHUP("Catchup"),
-	PARENTAL("Parental"),
-	DTTREGION("DTTRegion"),
-	ATHOME("AtHome");
+	DTTREGION("DTTRegion");
 
 	private String value;
 

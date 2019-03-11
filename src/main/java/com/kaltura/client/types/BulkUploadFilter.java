@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DateComparisonType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -48,64 +47,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class BulkUploadFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String uploadedOnEqual();
-		String dateComparisonType();
-		String statusIn();
+		String fileObjectNameEqual();
+		String createDateGreaterThanOrEqual();
 		String userIdEqualCurrent();
+		String shouldGetOnGoingBulkUploads();
 	}
 
 	/**
-	 * upload date to search within.
+	 * File&amp;#39;s objectType name (must be type of KalturaOTTObject)
 	 */
-	private Long uploadedOnEqual;
+	private String fileObjectNameEqual;
 	/**
-	 * Date Comparison Type.
+	 * upload date to search within (search in the last 60 days)
 	 */
-	private DateComparisonType dateComparisonType;
-	/**
-	 * List of KalturaBulkUploadJobStatus to search within.
-	 */
-	private String statusIn;
+	private Long createDateGreaterThanOrEqual;
 	/**
 	 * Indicates if to get the BulkUpload list that created by current user or by the
 	  entire group.
 	 */
 	private Boolean userIdEqualCurrent;
+	/**
+	 * Indicates if to get the BulkUpload list that are stil in OnGoing process or
+	  finished.
+	 */
+	private Boolean shouldGetOnGoingBulkUploads;
 
-	// uploadedOnEqual:
-	public Long getUploadedOnEqual(){
-		return this.uploadedOnEqual;
+	// fileObjectNameEqual:
+	public String getFileObjectNameEqual(){
+		return this.fileObjectNameEqual;
 	}
-	public void setUploadedOnEqual(Long uploadedOnEqual){
-		this.uploadedOnEqual = uploadedOnEqual;
-	}
-
-	public void uploadedOnEqual(String multirequestToken){
-		setToken("uploadedOnEqual", multirequestToken);
-	}
-
-	// dateComparisonType:
-	public DateComparisonType getDateComparisonType(){
-		return this.dateComparisonType;
-	}
-	public void setDateComparisonType(DateComparisonType dateComparisonType){
-		this.dateComparisonType = dateComparisonType;
+	public void setFileObjectNameEqual(String fileObjectNameEqual){
+		this.fileObjectNameEqual = fileObjectNameEqual;
 	}
 
-	public void dateComparisonType(String multirequestToken){
-		setToken("dateComparisonType", multirequestToken);
+	public void fileObjectNameEqual(String multirequestToken){
+		setToken("fileObjectNameEqual", multirequestToken);
 	}
 
-	// statusIn:
-	public String getStatusIn(){
-		return this.statusIn;
+	// createDateGreaterThanOrEqual:
+	public Long getCreateDateGreaterThanOrEqual(){
+		return this.createDateGreaterThanOrEqual;
 	}
-	public void setStatusIn(String statusIn){
-		this.statusIn = statusIn;
+	public void setCreateDateGreaterThanOrEqual(Long createDateGreaterThanOrEqual){
+		this.createDateGreaterThanOrEqual = createDateGreaterThanOrEqual;
 	}
 
-	public void statusIn(String multirequestToken){
-		setToken("statusIn", multirequestToken);
+	public void createDateGreaterThanOrEqual(String multirequestToken){
+		setToken("createDateGreaterThanOrEqual", multirequestToken);
 	}
 
 	// userIdEqualCurrent:
@@ -120,6 +108,18 @@ public class BulkUploadFilter extends Filter {
 		setToken("userIdEqualCurrent", multirequestToken);
 	}
 
+	// shouldGetOnGoingBulkUploads:
+	public Boolean getShouldGetOnGoingBulkUploads(){
+		return this.shouldGetOnGoingBulkUploads;
+	}
+	public void setShouldGetOnGoingBulkUploads(Boolean shouldGetOnGoingBulkUploads){
+		this.shouldGetOnGoingBulkUploads = shouldGetOnGoingBulkUploads;
+	}
+
+	public void shouldGetOnGoingBulkUploads(String multirequestToken){
+		setToken("shouldGetOnGoingBulkUploads", multirequestToken);
+	}
+
 
 	public BulkUploadFilter() {
 		super();
@@ -131,20 +131,20 @@ public class BulkUploadFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		uploadedOnEqual = GsonParser.parseLong(jsonObject.get("uploadedOnEqual"));
-		dateComparisonType = DateComparisonType.get(GsonParser.parseString(jsonObject.get("dateComparisonType")));
-		statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
+		fileObjectNameEqual = GsonParser.parseString(jsonObject.get("fileObjectNameEqual"));
+		createDateGreaterThanOrEqual = GsonParser.parseLong(jsonObject.get("createDateGreaterThanOrEqual"));
 		userIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("userIdEqualCurrent"));
+		shouldGetOnGoingBulkUploads = GsonParser.parseBoolean(jsonObject.get("shouldGetOnGoingBulkUploads"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBulkUploadFilter");
-		kparams.add("uploadedOnEqual", this.uploadedOnEqual);
-		kparams.add("dateComparisonType", this.dateComparisonType);
-		kparams.add("statusIn", this.statusIn);
+		kparams.add("fileObjectNameEqual", this.fileObjectNameEqual);
+		kparams.add("createDateGreaterThanOrEqual", this.createDateGreaterThanOrEqual);
 		kparams.add("userIdEqualCurrent", this.userIdEqualCurrent);
+		kparams.add("shouldGetOnGoingBulkUploads", this.shouldGetOnGoingBulkUploads);
 		return kparams;
 	}
 

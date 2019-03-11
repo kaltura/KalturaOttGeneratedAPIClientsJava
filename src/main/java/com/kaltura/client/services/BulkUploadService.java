@@ -72,10 +72,6 @@ public class BulkUploadService {
 		}
 	}
 
-	public static ListBulkUploadBuilder list()  {
-		return list(null);
-	}
-
 	public static ListBulkUploadBuilder list(BulkUploadFilter filter)  {
 		return list(filter, null);
 	}
