@@ -59,6 +59,7 @@ public class BulkUpload extends ObjectBase {
 		String numOfObjects();
 		String createDate();
 		String updateDate();
+		String uploadedByUserId();
 		RequestBuilder.ListTokenizer<BulkUploadResult.Tokenizer> results();
 	}
 
@@ -92,6 +93,10 @@ public class BulkUpload extends ObjectBase {
 	 */
 	private Long updateDate;
 	/**
+	 * The user who uploaded this bulk
+	 */
+	private Long uploadedByUserId;
+	/**
 	 * A list of results
 	 */
 	private List<BulkUploadResult> results;
@@ -124,6 +129,10 @@ public class BulkUpload extends ObjectBase {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
+	// uploadedByUserId:
+	public Long getUploadedByUserId(){
+		return this.uploadedByUserId;
+	}
 	// results:
 	public List<BulkUploadResult> getResults(){
 		return this.results;
@@ -146,6 +155,7 @@ public class BulkUpload extends ObjectBase {
 		numOfObjects = GsonParser.parseInt(jsonObject.get("numOfObjects"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		uploadedByUserId = GsonParser.parseLong(jsonObject.get("uploadedByUserId"));
 		results = GsonParser.parseArray(jsonObject.getAsJsonArray("results"), BulkUploadResult.class);
 
 	}

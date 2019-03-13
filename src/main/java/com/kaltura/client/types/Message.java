@@ -29,12 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BulkUploadResultStatus;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -44,103 +43,86 @@ import java.util.List;
  */
 
 /**
- * Bulk Upload Result
+ * Message
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkUploadResult.Tokenizer.class)
-public abstract class BulkUploadResult extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(Message.Tokenizer.class)
+public class Message extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String objectId();
-		String index();
-		String bulkUploadId();
-		String status();
-		String errorCode();
-		String errorMessage();
-		RequestBuilder.ListTokenizer<Message.Tokenizer> warnings();
+		String code();
+		String message();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> args();
 	}
 
 	/**
-	 * the result ObjectId (assetId, userId etc)
+	 * Massage code
 	 */
-	private Long objectId;
+	private Integer code;
 	/**
-	 * result index
+	 * Message details
 	 */
-	private Integer index;
+	private String message;
 	/**
-	 * Bulk upload identifier
+	 * Message args
 	 */
-	private Long bulkUploadId;
-	/**
-	 * status
-	 */
-	private BulkUploadResultStatus status;
-	/**
-	 * Error Code
-	 */
-	private Integer errorCode;
-	/**
-	 * Error Message
-	 */
-	private String errorMessage;
-	/**
-	 * A list of warnings
-	 */
-	private List<Message> warnings;
+	private Map<String, StringValue> args;
 
-	// objectId:
-	public Long getObjectId(){
-		return this.objectId;
+	// code:
+	public Integer getCode(){
+		return this.code;
 	}
-	// index:
-	public Integer getIndex(){
-		return this.index;
-	}
-	// bulkUploadId:
-	public Long getBulkUploadId(){
-		return this.bulkUploadId;
-	}
-	// status:
-	public BulkUploadResultStatus getStatus(){
-		return this.status;
-	}
-	// errorCode:
-	public Integer getErrorCode(){
-		return this.errorCode;
-	}
-	// errorMessage:
-	public String getErrorMessage(){
-		return this.errorMessage;
-	}
-	// warnings:
-	public List<Message> getWarnings(){
-		return this.warnings;
+	public void setCode(Integer code){
+		this.code = code;
 	}
 
-	public BulkUploadResult() {
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
+	}
+
+	// message:
+	public String getMessage(){
+		return this.message;
+	}
+	public void setMessage(String message){
+		this.message = message;
+	}
+
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
+
+	// args:
+	public Map<String, StringValue> getArgs(){
+		return this.args;
+	}
+	public void setArgs(Map<String, StringValue> args){
+		this.args = args;
+	}
+
+
+	public Message() {
 		super();
 	}
 
-	public BulkUploadResult(JsonObject jsonObject) throws APIException {
+	public Message(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		objectId = GsonParser.parseLong(jsonObject.get("objectId"));
-		index = GsonParser.parseInt(jsonObject.get("index"));
-		bulkUploadId = GsonParser.parseLong(jsonObject.get("bulkUploadId"));
-		status = BulkUploadResultStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		errorCode = GsonParser.parseInt(jsonObject.get("errorCode"));
-		errorMessage = GsonParser.parseString(jsonObject.get("errorMessage"));
-		warnings = GsonParser.parseArray(jsonObject.getAsJsonArray("warnings"), Message.class);
+		code = GsonParser.parseInt(jsonObject.get("code"));
+		message = GsonParser.parseString(jsonObject.get("message"));
+		args = GsonParser.parseMap(jsonObject.getAsJsonObject("args"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkUploadResult");
+		kparams.add("objectType", "KalturaMessage");
+		kparams.add("code", this.code);
+		kparams.add("message", this.message);
+		kparams.add("args", this.args);
 		return kparams;
 	}
 
