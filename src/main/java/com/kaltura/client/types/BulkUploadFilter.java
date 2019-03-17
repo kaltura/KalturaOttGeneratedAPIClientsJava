@@ -47,7 +47,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class BulkUploadFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String bulkObjectNameEqual();
+		String bulkObjectTypeEqual();
 		String createDateGreaterThanOrEqual();
 		String uploadedByUserIdEqualCurrent();
 		String statusIn();
@@ -56,7 +56,7 @@ public class BulkUploadFilter extends Filter {
 	/**
 	 * bulk objects Type name (must be type of KalturaOTTObject)
 	 */
-	private String bulkObjectNameEqual;
+	private String bulkObjectTypeEqual;
 	/**
 	 * upload date to search within (search in the last 60 days)
 	 */
@@ -71,16 +71,16 @@ public class BulkUploadFilter extends Filter {
 	 */
 	private String statusIn;
 
-	// bulkObjectNameEqual:
-	public String getBulkObjectNameEqual(){
-		return this.bulkObjectNameEqual;
+	// bulkObjectTypeEqual:
+	public String getBulkObjectTypeEqual(){
+		return this.bulkObjectTypeEqual;
 	}
-	public void setBulkObjectNameEqual(String bulkObjectNameEqual){
-		this.bulkObjectNameEqual = bulkObjectNameEqual;
+	public void setBulkObjectTypeEqual(String bulkObjectTypeEqual){
+		this.bulkObjectTypeEqual = bulkObjectTypeEqual;
 	}
 
-	public void bulkObjectNameEqual(String multirequestToken){
-		setToken("bulkObjectNameEqual", multirequestToken);
+	public void bulkObjectTypeEqual(String multirequestToken){
+		setToken("bulkObjectTypeEqual", multirequestToken);
 	}
 
 	// createDateGreaterThanOrEqual:
@@ -130,7 +130,7 @@ public class BulkUploadFilter extends Filter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		bulkObjectNameEqual = GsonParser.parseString(jsonObject.get("bulkObjectNameEqual"));
+		bulkObjectTypeEqual = GsonParser.parseString(jsonObject.get("bulkObjectTypeEqual"));
 		createDateGreaterThanOrEqual = GsonParser.parseLong(jsonObject.get("createDateGreaterThanOrEqual"));
 		uploadedByUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("uploadedByUserIdEqualCurrent"));
 		statusIn = GsonParser.parseString(jsonObject.get("statusIn"));
@@ -140,7 +140,7 @@ public class BulkUploadFilter extends Filter {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBulkUploadFilter");
-		kparams.add("bulkObjectNameEqual", this.bulkObjectNameEqual);
+		kparams.add("bulkObjectTypeEqual", this.bulkObjectTypeEqual);
 		kparams.add("createDateGreaterThanOrEqual", this.createDateGreaterThanOrEqual);
 		kparams.add("uploadedByUserIdEqualCurrent", this.uploadedByUserIdEqualCurrent);
 		kparams.add("statusIn", this.statusIn);
