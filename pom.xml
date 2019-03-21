@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kaltura</groupId>
     <artifactId>KalturaOttApiClient</artifactId>
-    <version>5.2.0.207-SNAPSHOT</version>
+    <version>5.2.0.15395-SNAPSHOT</version>
 
     <packaging>jar</packaging>
     <properties>
