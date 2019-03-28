@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -42,25 +43,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * instructions for upload data type with xml
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkUploadXmlJobData.Tokenizer.class)
-public class BulkUploadXmlJobData extends BulkUploadJobData {
+@MultiRequestBuilder.Tokenizer(BulkUploadIngestJobData.Tokenizer.class)
+public class BulkUploadIngestJobData extends BulkUploadJobData {
 	
 	public interface Tokenizer extends BulkUploadJobData.Tokenizer {
+		String ingestProfileId();
+	}
+
+	/**
+	 * Identifies the ingest profile that will handle the ingest of programs           
+	    Ingest profiles are created separately using the ingest profile service
+	 */
+	private Integer ingestProfileId;
+
+	// ingestProfileId:
+	public Integer getIngestProfileId(){
+		return this.ingestProfileId;
+	}
+	public void setIngestProfileId(Integer ingestProfileId){
+		this.ingestProfileId = ingestProfileId;
+	}
+
+	public void ingestProfileId(String multirequestToken){
+		setToken("ingestProfileId", multirequestToken);
 	}
 
 
-
-	public BulkUploadXmlJobData() {
+	public BulkUploadIngestJobData() {
 		super();
 	}
 
-	public BulkUploadXmlJobData(JsonObject jsonObject) throws APIException {
+	public BulkUploadIngestJobData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		ingestProfileId = GsonParser.parseInt(jsonObject.get("ingestProfileId"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkUploadXmlJobData");
+		kparams.add("objectType", "KalturaBulkUploadIngestJobData");
+		kparams.add("ingestProfileId", this.ingestProfileId);
 		return kparams;
 	}
 
