@@ -32,6 +32,8 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -53,7 +55,7 @@ public class IngestProfile extends ObjectBase {
 		String externalId();
 		String assetTypeId();
 		String transformationAdapterUrl();
-		String transformationAdapterSettings();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> transformationAdapterSettings();
 		String transformationAdapterSharedSecret();
 		String defaultAutoFillPolicy();
 		String defaultOverlapPolicy();
@@ -82,7 +84,7 @@ public class IngestProfile extends ObjectBase {
 	/**
 	 * Transformation Adapter settings
 	 */
-	private String transformationAdapterSettings;
+	private Map<String, StringValue> transformationAdapterSettings;
 	/**
 	 * Transformation Adapter shared secret
 	 */
@@ -149,15 +151,11 @@ public class IngestProfile extends ObjectBase {
 	}
 
 	// transformationAdapterSettings:
-	public String getTransformationAdapterSettings(){
+	public Map<String, StringValue> getTransformationAdapterSettings(){
 		return this.transformationAdapterSettings;
 	}
-	public void setTransformationAdapterSettings(String transformationAdapterSettings){
+	public void setTransformationAdapterSettings(Map<String, StringValue> transformationAdapterSettings){
 		this.transformationAdapterSettings = transformationAdapterSettings;
-	}
-
-	public void transformationAdapterSettings(String multirequestToken){
-		setToken("transformationAdapterSettings", multirequestToken);
 	}
 
 	// transformationAdapterSharedSecret:
@@ -212,7 +210,7 @@ public class IngestProfile extends ObjectBase {
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		assetTypeId = GsonParser.parseInt(jsonObject.get("assetTypeId"));
 		transformationAdapterUrl = GsonParser.parseString(jsonObject.get("transformationAdapterUrl"));
-		transformationAdapterSettings = GsonParser.parseString(jsonObject.get("transformationAdapterSettings"));
+		transformationAdapterSettings = GsonParser.parseMap(jsonObject.getAsJsonObject("transformationAdapterSettings"), StringValue.class);
 		transformationAdapterSharedSecret = GsonParser.parseString(jsonObject.get("transformationAdapterSharedSecret"));
 		defaultAutoFillPolicy = GsonParser.parseInt(jsonObject.get("defaultAutoFillPolicy"));
 		defaultOverlapPolicy = GsonParser.parseInt(jsonObject.get("defaultOverlapPolicy"));
