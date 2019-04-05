@@ -40,12 +40,11 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * indicates the asset object type in the bulk file (this class is not abstract for
-  backward-compatibility)
+ * indicates the asset object type in the bulk file
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkUploadAssetData.Tokenizer.class)
-public class BulkUploadAssetData extends BulkUploadObjectData {
+public abstract class BulkUploadAssetData extends BulkUploadObjectData {
 	
 	public interface Tokenizer extends BulkUploadObjectData.Tokenizer {
 		String typeId();

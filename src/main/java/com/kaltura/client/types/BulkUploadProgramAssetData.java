@@ -42,25 +42,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * indicates the epg asset object type in the bulk file
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkUploadEpgAssetData.Tokenizer.class)
-public class BulkUploadEpgAssetData extends BulkUploadAssetData {
+@MultiRequestBuilder.Tokenizer(BulkUploadProgramAssetData.Tokenizer.class)
+public class BulkUploadProgramAssetData extends BulkUploadAssetData {
 	
 	public interface Tokenizer extends BulkUploadAssetData.Tokenizer {
 	}
 
 
 
-	public BulkUploadEpgAssetData() {
+	public BulkUploadProgramAssetData() {
 		super();
 	}
 
-	public BulkUploadEpgAssetData(JsonObject jsonObject) throws APIException {
+	public BulkUploadProgramAssetData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkUploadEpgAssetData");
+		kparams.add("objectType", "KalturaBulkUploadProgramAssetData");
 		return kparams;
 	}
 
