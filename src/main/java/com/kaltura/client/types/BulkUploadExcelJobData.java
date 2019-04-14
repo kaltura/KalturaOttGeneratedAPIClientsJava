@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,44 +37,32 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ChannelEnrichment implements EnumAsString {
-	CLIENTLOCATION("ClientLocation"),
-	USERID("UserId"),
-	HOUSEHOLDID("HouseholdId"),
-	DEVICEID("DeviceId"),
-	DEVICETYPE("DeviceType"),
-	UTCOFFSET("UTCOffset"),
-	LANGUAGE("Language"),
-	DTTREGION("DTTRegion");
 
-	private String value;
-
-	ChannelEnrichment(String value) {
-		this.value = value;
+/**
+ * instructions for upload data type with Excel
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BulkUploadExcelJobData.Tokenizer.class)
+public class BulkUploadExcelJobData extends BulkUploadJobData {
+	
+	public interface Tokenizer extends BulkUploadJobData.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public BulkUploadExcelJobData() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public BulkUploadExcelJobData(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static ChannelEnrichment get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over ChannelEnrichment defined values and compare the inner value with the given one:
-		for(ChannelEnrichment item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ChannelEnrichment.values().length > 0 ? ChannelEnrichment.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBulkUploadExcelJobData");
+		return kparams;
+	}
+
 }
+

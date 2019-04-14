@@ -56,7 +56,7 @@ public class UserAssetRuleFilter extends Filter {
 	 */
 	private Long assetIdEqual;
 	/**
-	 * Asset type to filter by - 0 = EPG, 1 = media
+	 * Asset type to filter by - 0 = EPG, 1 = media, 2 = npvr
 	 */
 	private Integer assetTypeEqual;
 

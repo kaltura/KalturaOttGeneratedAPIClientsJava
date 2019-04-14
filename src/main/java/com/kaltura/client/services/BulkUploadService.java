@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Bulk;
-import com.kaltura.client.types.BulkFilter;
+import com.kaltura.client.types.BulkUpload;
+import com.kaltura.client.types.BulkUploadFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,39 +40,12 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class BulkService {
+public class BulkUploadService {
 	
-	public static class ListBulkBuilder extends ListResponseRequestBuilder<Bulk, Bulk.Tokenizer, ListBulkBuilder> {
+	public static class GetBulkUploadBuilder extends RequestBuilder<BulkUpload, BulkUpload.Tokenizer, GetBulkUploadBuilder> {
 		
-		public ListBulkBuilder(BulkFilter filter, FilterPager pager) {
-			super(Bulk.class, "bulk", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
-
-	public static ListBulkBuilder list()  {
-		return list(null);
-	}
-
-	public static ListBulkBuilder list(BulkFilter filter)  {
-		return list(filter, null);
-	}
-
-	/**
-	 * List bulk actions
-	 * 
-	 * @param filter Filtering the bulk action request
-	 * @param pager Paging the request
-	 */
-    public static ListBulkBuilder list(BulkFilter filter, FilterPager pager)  {
-		return new ListBulkBuilder(filter, pager);
-	}
-	
-	public static class ServeLogBulkBuilder extends RequestBuilder<Bulk, Bulk.Tokenizer, ServeLogBulkBuilder> {
-		
-		public ServeLogBulkBuilder(long id) {
-			super(Bulk.class, "bulk", "serveLog");
+		public GetBulkUploadBuilder(long id) {
+			super(BulkUpload.class, "bulkupload", "get");
 			params.add("id", id);
 		}
 		
@@ -82,11 +55,34 @@ public class BulkService {
 	}
 
 	/**
-	 * ServeLog action returns the log file for the bulk action
+	 * Get BulkUpload by ID
 	 * 
-	 * @param id bulk action id
+	 * @param id ID to get
 	 */
-    public static ServeLogBulkBuilder serveLog(long id)  {
-		return new ServeLogBulkBuilder(id);
+    public static GetBulkUploadBuilder get(long id)  {
+		return new GetBulkUploadBuilder(id);
+	}
+	
+	public static class ListBulkUploadBuilder extends ListResponseRequestBuilder<BulkUpload, BulkUpload.Tokenizer, ListBulkUploadBuilder> {
+		
+		public ListBulkUploadBuilder(BulkUploadFilter filter, FilterPager pager) {
+			super(BulkUpload.class, "bulkupload", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
+
+	public static ListBulkUploadBuilder list(BulkUploadFilter filter)  {
+		return list(filter, null);
+	}
+
+	/**
+	 * Get list of KalturaBulkUpload by filter
+	 * 
+	 * @param filter Filtering the bulk action request
+	 * @param pager Paging the request
+	 */
+    public static ListBulkUploadBuilder list(BulkUploadFilter filter, FilterPager pager)  {
+		return new ListBulkUploadBuilder(filter, pager);
 	}
 }

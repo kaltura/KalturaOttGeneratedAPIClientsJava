@@ -33,19 +33,21 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ChannelEnrichment implements EnumAsString {
-	CLIENTLOCATION("ClientLocation"),
-	USERID("UserId"),
-	HOUSEHOLDID("HouseholdId"),
-	DEVICEID("DeviceId"),
-	DEVICETYPE("DeviceType"),
-	UTCOFFSET("UTCOffset"),
-	LANGUAGE("Language"),
-	DTTREGION("DTTRegion");
+public enum BulkUploadJobStatus implements EnumAsString {
+	PENDING("Pending"),
+	UPLOADED("Uploaded"),
+	QUEUED("Queued"),
+	PARSING("Parsing"),
+	PROCESSING("Processing"),
+	PROCESSED("Processed"),
+	SUCCESS("Success"),
+	PARTIAL("Partial"),
+	FAILED("Failed"),
+	FATAL("Fatal");
 
 	private String value;
 
-	ChannelEnrichment(String value) {
+	BulkUploadJobStatus(String value) {
 		this.value = value;
 	}
 
@@ -58,19 +60,19 @@ public enum ChannelEnrichment implements EnumAsString {
 		this.value = value;
 	}
 
-	public static ChannelEnrichment get(String value) {
+	public static BulkUploadJobStatus get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ChannelEnrichment defined values and compare the inner value with the given one:
-		for(ChannelEnrichment item: values()) {
+		// goes over BulkUploadJobStatus defined values and compare the inner value with the given one:
+		for(BulkUploadJobStatus item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ChannelEnrichment.values().length > 0 ? ChannelEnrichment.values()[0]: null;
+		return BulkUploadJobStatus.values().length > 0 ? BulkUploadJobStatus.values()[0]: null;
    }
 }

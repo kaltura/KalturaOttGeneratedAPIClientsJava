@@ -29,8 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BatchJobStatus;
-import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,50 +39,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * instructions for upload data (the data file type, how to read the file, etc)
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkFilter.Tokenizer.class)
-public class BulkFilter extends PersistedFilter {
+@MultiRequestBuilder.Tokenizer(BulkUploadJobData.Tokenizer.class)
+public abstract class BulkUploadJobData extends ObjectBase {
 	
-	public interface Tokenizer extends PersistedFilter.Tokenizer {
-		String statusEqual();
-	}
-
-	/**
-	 * dynamicOrderBy - order by Meta
-	 */
-	private BatchJobStatus statusEqual;
-
-	// statusEqual:
-	public BatchJobStatus getStatusEqual(){
-		return this.statusEqual;
-	}
-	public void setStatusEqual(BatchJobStatus statusEqual){
-		this.statusEqual = statusEqual;
-	}
-
-	public void statusEqual(String multirequestToken){
-		setToken("statusEqual", multirequestToken);
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
 
-	public BulkFilter() {
+
+	public BulkUploadJobData() {
 		super();
 	}
 
-	public BulkFilter(JsonObject jsonObject) throws APIException {
+	public BulkUploadJobData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		statusEqual = BatchJobStatus.get(GsonParser.parseString(jsonObject.get("statusEqual")));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkFilter");
-		kparams.add("statusEqual", this.statusEqual);
+		kparams.add("objectType", "KalturaBulkUploadJobData");
 		return kparams;
 	}
 

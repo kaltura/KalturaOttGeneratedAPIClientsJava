@@ -33,44 +33,41 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ChannelEnrichment implements EnumAsString {
-	CLIENTLOCATION("ClientLocation"),
-	USERID("UserId"),
-	HOUSEHOLDID("HouseholdId"),
-	DEVICEID("DeviceId"),
-	DEVICETYPE("DeviceType"),
-	UTCOFFSET("UTCOffset"),
-	LANGUAGE("Language"),
-	DTTREGION("DTTRegion");
+public enum ResponseType implements EnumAsInt {
+	JSON(1),
+	XML(2),
+	JSONP(9),
+	ASSET_XML(30),
+	EXCEL(31);
 
-	private String value;
+	private int value;
 
-	ChannelEnrichment(String value) {
+	ResponseType(int value) {
 		this.value = value;
 	}
 
 	@Override
-	public String getValue() {
+	public int getValue() {
 		return this.value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(int value) {
 		this.value = value;
 	}
 
-	public static ChannelEnrichment get(String value) {
+	public static ResponseType get(Integer value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ChannelEnrichment defined values and compare the inner value with the given one:
-		for(ChannelEnrichment item: values()) {
-			if(item.getValue().equals(value)) {
+		// goes over ResponseType defined values and compare the inner value with the given one:
+		for(ResponseType item: values()) {
+			if(item.getValue() == value) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ChannelEnrichment.values().length > 0 ? ChannelEnrichment.values()[0]: null;
+		return ResponseType.values().length > 0 ? ResponseType.values()[0]: null;
    }
 }

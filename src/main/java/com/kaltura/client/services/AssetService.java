@@ -27,18 +27,26 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.FileHolder;
+import com.kaltura.client.Files;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.types.AdsContext;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
+import com.kaltura.client.types.BulkUpload;
+import com.kaltura.client.types.BulkUploadAssetData;
+import com.kaltura.client.types.BulkUploadJobData;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.PlaybackContext;
 import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.SearchAssetFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * This class was generated using exec.php
@@ -66,6 +74,40 @@ public class AssetService {
 	 */
     public static AddAssetBuilder add(Asset asset)  {
 		return new AddAssetBuilder(asset);
+	}
+	
+	public static class AddFromBulkUploadAssetBuilder extends RequestBuilder<BulkUpload, BulkUpload.Tokenizer, AddFromBulkUploadAssetBuilder> {
+		
+		public AddFromBulkUploadAssetBuilder(FileHolder fileData, BulkUploadJobData bulkUploadJobData, BulkUploadAssetData bulkUploadAssetData) {
+			super(BulkUpload.class, "asset", "addFromBulkUpload");
+			files = new Files();
+			files.add("fileData", fileData);
+			params.add("bulkUploadJobData", bulkUploadJobData);
+			params.add("bulkUploadAssetData", bulkUploadAssetData);
+		}
+	}
+
+	public static AddFromBulkUploadAssetBuilder addFromBulkUpload(File fileData, BulkUploadJobData bulkUploadJobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return addFromBulkUpload(new FileHolder(fileData), bulkUploadJobData, bulkUploadAssetData);
+	}
+
+	public static AddFromBulkUploadAssetBuilder addFromBulkUpload(InputStream fileData, String fileDataMimeType, String fileDataName, long fileDataSize, BulkUploadJobData bulkUploadJobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName, fileDataSize), bulkUploadJobData, bulkUploadAssetData);
+	}
+
+	public static AddFromBulkUploadAssetBuilder addFromBulkUpload(FileInputStream fileData, String fileDataMimeType, String fileDataName, BulkUploadJobData bulkUploadJobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName), bulkUploadJobData, bulkUploadAssetData);
+	}
+
+	/**
+	 * Add new bulk upload batch job Conversion profile id can be specified in the API.
+	 * 
+	 * @param fileData fileData
+	 * @param bulkUploadJobData bulkUploadJobData
+	 * @param bulkUploadAssetData bulkUploadAssetData
+	 */
+    public static AddFromBulkUploadAssetBuilder addFromBulkUpload(FileHolder fileData, BulkUploadJobData bulkUploadJobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return new AddFromBulkUploadAssetBuilder(fileData, bulkUploadJobData, bulkUploadAssetData);
 	}
 	
 	public static class CountAssetBuilder extends RequestBuilder<AssetCount, AssetCount.Tokenizer, CountAssetBuilder> {

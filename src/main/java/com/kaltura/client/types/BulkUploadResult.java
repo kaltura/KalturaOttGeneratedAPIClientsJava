@@ -29,10 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BatchJobStatus;
+import com.kaltura.client.enums.BulkUploadResultStatus;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -41,72 +43,94 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Bulk Upload Result
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Bulk.Tokenizer.class)
-public class Bulk extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkUploadResult.Tokenizer.class)
+public abstract class BulkUploadResult extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
+		String objectId();
+		String index();
+		String bulkUploadId();
 		String status();
-		String createDate();
-		String updateDate();
+		RequestBuilder.ListTokenizer<Message.Tokenizer> errors();
+		RequestBuilder.ListTokenizer<Message.Tokenizer> warnings();
 	}
 
 	/**
-	 * Bulk identifier
+	 * the result ObjectId (assetId, userId etc)
 	 */
-	private Long id;
+	private Long objectId;
 	/**
-	 * Status
+	 * result index
 	 */
-	private BatchJobStatus status;
+	private Integer index;
 	/**
-	 * Specifies when was the bulk action created. Date and time represented as epoch
+	 * Bulk upload identifier
 	 */
-	private Long createDate;
+	private Long bulkUploadId;
 	/**
-	 * Specifies when was the bulk action last updated. Date and time represented as
-	  epoch
+	 * status
 	 */
-	private Long updateDate;
+	private BulkUploadResultStatus status;
+	/**
+	 * A list of errors
+	 */
+	private List<Message> errors;
+	/**
+	 * A list of warnings
+	 */
+	private List<Message> warnings;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// objectId:
+	public Long getObjectId(){
+		return this.objectId;
+	}
+	// index:
+	public Integer getIndex(){
+		return this.index;
+	}
+	// bulkUploadId:
+	public Long getBulkUploadId(){
+		return this.bulkUploadId;
 	}
 	// status:
-	public BatchJobStatus getStatus(){
+	public BulkUploadResultStatus getStatus(){
 		return this.status;
 	}
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
+	// errors:
+	public List<Message> getErrors(){
+		return this.errors;
 	}
-	// updateDate:
-	public Long getUpdateDate(){
-		return this.updateDate;
+	// warnings:
+	public List<Message> getWarnings(){
+		return this.warnings;
 	}
 
-	public Bulk() {
+	public BulkUploadResult() {
 		super();
 	}
 
-	public Bulk(JsonObject jsonObject) throws APIException {
+	public BulkUploadResult(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		status = BatchJobStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		objectId = GsonParser.parseLong(jsonObject.get("objectId"));
+		index = GsonParser.parseInt(jsonObject.get("index"));
+		bulkUploadId = GsonParser.parseLong(jsonObject.get("bulkUploadId"));
+		status = BulkUploadResultStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		errors = GsonParser.parseArray(jsonObject.getAsJsonArray("errors"), Message.class);
+		warnings = GsonParser.parseArray(jsonObject.getAsJsonArray("warnings"), Message.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulk");
+		kparams.add("objectType", "KalturaBulkUploadResult");
 		return kparams;
 	}
 

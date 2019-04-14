@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,49 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BatchJobStatus implements EnumAsString {
-	PENDING("PENDING"),
-	QUEUED("QUEUED"),
-	PROCESSING("PROCESSING"),
-	PROCESSED("PROCESSED"),
-	MOVEFILE("MOVEFILE"),
-	FINISHED("FINISHED"),
-	FAILED("FAILED"),
-	ABORTED("ABORTED"),
-	ALMOST_DONE("ALMOST_DONE"),
-	RETRY("RETRY"),
-	FATAL("FATAL"),
-	DONT_PROCESS("DONT_PROCESS"),
-	FINISHED_PARTIALLY("FINISHED_PARTIALLY");
 
-	private String value;
-
-	BatchJobStatus(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BulkUploadAssetResult.Tokenizer.class)
+public abstract class BulkUploadAssetResult extends BulkUploadResult {
+	
+	public interface Tokenizer extends BulkUploadResult.Tokenizer {
+		String type();
+		String externalId();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Identifies the asset type (EPG, Recording, Movie, TV Series, etc).              
+	  Possible values: 0 – EPG linear programs, 1 - Recording; or any asset type ID
+	  according to the asset types IDs defined in the system.
+	 */
+	private Integer type;
+	/**
+	 * External identifier for the asset
+	 */
+	private String externalId;
+
+	// type:
+	public Integer getType(){
+		return this.type;
+	}
+	// externalId:
+	public String getExternalId(){
+		return this.externalId;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public BulkUploadAssetResult() {
+		super();
 	}
 
-	public static BatchJobStatus get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BatchJobStatus defined values and compare the inner value with the given one:
-		for(BatchJobStatus item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BatchJobStatus.values().length > 0 ? BatchJobStatus.values()[0]: null;
-   }
+	public BulkUploadAssetResult(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		type = GsonParser.parseInt(jsonObject.get("type"));
+		externalId = GsonParser.parseString(jsonObject.get("externalId"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBulkUploadAssetResult");
+		return kparams;
+	}
+
 }
+

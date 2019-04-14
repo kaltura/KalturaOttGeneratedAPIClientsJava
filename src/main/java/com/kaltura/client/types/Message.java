@@ -29,9 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -41,72 +43,86 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset user rule filter
+ * Message
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetUserRuleFilter.Tokenizer.class)
-public class AssetUserRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(Message.Tokenizer.class)
+public class Message extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String attachedUserIdEqualCurrent();
-		String actionsContainType();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String code();
+		String message();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> args();
 	}
 
 	/**
-	 * Indicates if to get the asset user rule list for the attached user or for the
-	  entire group
+	 * Massage code
 	 */
-	private Boolean attachedUserIdEqualCurrent;
+	private Integer code;
 	/**
-	 * Indicates which asset rule list to return by this KalturaRuleActionType.
+	 * Message details
 	 */
-	private RuleActionType actionsContainType;
+	private String message;
+	/**
+	 * Message args
+	 */
+	private Map<String, StringValue> args;
 
-	// attachedUserIdEqualCurrent:
-	public Boolean getAttachedUserIdEqualCurrent(){
-		return this.attachedUserIdEqualCurrent;
+	// code:
+	public Integer getCode(){
+		return this.code;
 	}
-	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
-		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
-	}
-
-	public void attachedUserIdEqualCurrent(String multirequestToken){
-		setToken("attachedUserIdEqualCurrent", multirequestToken);
-	}
-
-	// actionsContainType:
-	public RuleActionType getActionsContainType(){
-		return this.actionsContainType;
-	}
-	public void setActionsContainType(RuleActionType actionsContainType){
-		this.actionsContainType = actionsContainType;
+	public void setCode(Integer code){
+		this.code = code;
 	}
 
-	public void actionsContainType(String multirequestToken){
-		setToken("actionsContainType", multirequestToken);
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
+	}
+
+	// message:
+	public String getMessage(){
+		return this.message;
+	}
+	public void setMessage(String message){
+		this.message = message;
+	}
+
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
+
+	// args:
+	public Map<String, StringValue> getArgs(){
+		return this.args;
+	}
+	public void setArgs(Map<String, StringValue> args){
+		this.args = args;
 	}
 
 
-	public AssetUserRuleFilter() {
+	public Message() {
 		super();
 	}
 
-	public AssetUserRuleFilter(JsonObject jsonObject) throws APIException {
+	public Message(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
-		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
+		code = GsonParser.parseInt(jsonObject.get("code"));
+		message = GsonParser.parseString(jsonObject.get("message"));
+		args = GsonParser.parseMap(jsonObject.getAsJsonObject("args"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetUserRuleFilter");
-		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
-		kparams.add("actionsContainType", this.actionsContainType);
+		kparams.add("objectType", "KalturaMessage");
+		kparams.add("code", this.code);
+		kparams.add("message", this.message);
+		kparams.add("args", this.args);
 		return kparams;
 	}
 

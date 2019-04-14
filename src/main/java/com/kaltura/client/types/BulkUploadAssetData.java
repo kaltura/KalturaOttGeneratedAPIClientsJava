@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RuleActionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,72 +40,54 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset user rule filter
+ * indicates the asset object type in the bulk file
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetUserRuleFilter.Tokenizer.class)
-public class AssetUserRuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(BulkUploadAssetData.Tokenizer.class)
+public abstract class BulkUploadAssetData extends BulkUploadObjectData {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String attachedUserIdEqualCurrent();
-		String actionsContainType();
+	public interface Tokenizer extends BulkUploadObjectData.Tokenizer {
+		String typeId();
 	}
 
 	/**
-	 * Indicates if to get the asset user rule list for the attached user or for the
-	  entire group
+	 * Identifies the asset type (EPG, Recording, Movie, TV Series, etc).              
+	  Possible values: 0 – EPG linear programs, 1 - Recording; or any asset type ID
+	  according to the asset types IDs defined in the system.
 	 */
-	private Boolean attachedUserIdEqualCurrent;
-	/**
-	 * Indicates which asset rule list to return by this KalturaRuleActionType.
-	 */
-	private RuleActionType actionsContainType;
+	private Long typeId;
 
-	// attachedUserIdEqualCurrent:
-	public Boolean getAttachedUserIdEqualCurrent(){
-		return this.attachedUserIdEqualCurrent;
+	// typeId:
+	public Long getTypeId(){
+		return this.typeId;
 	}
-	public void setAttachedUserIdEqualCurrent(Boolean attachedUserIdEqualCurrent){
-		this.attachedUserIdEqualCurrent = attachedUserIdEqualCurrent;
+	public void setTypeId(Long typeId){
+		this.typeId = typeId;
 	}
 
-	public void attachedUserIdEqualCurrent(String multirequestToken){
-		setToken("attachedUserIdEqualCurrent", multirequestToken);
-	}
-
-	// actionsContainType:
-	public RuleActionType getActionsContainType(){
-		return this.actionsContainType;
-	}
-	public void setActionsContainType(RuleActionType actionsContainType){
-		this.actionsContainType = actionsContainType;
-	}
-
-	public void actionsContainType(String multirequestToken){
-		setToken("actionsContainType", multirequestToken);
+	public void typeId(String multirequestToken){
+		setToken("typeId", multirequestToken);
 	}
 
 
-	public AssetUserRuleFilter() {
+	public BulkUploadAssetData() {
 		super();
 	}
 
-	public AssetUserRuleFilter(JsonObject jsonObject) throws APIException {
+	public BulkUploadAssetData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
-		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
+		typeId = GsonParser.parseLong(jsonObject.get("typeId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetUserRuleFilter");
-		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
-		kparams.add("actionsContainType", this.actionsContainType);
+		kparams.add("objectType", "KalturaBulkUploadAssetData");
+		kparams.add("typeId", this.typeId);
 		return kparams;
 	}
 

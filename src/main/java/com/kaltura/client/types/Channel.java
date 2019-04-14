@@ -62,6 +62,7 @@ public class Channel extends BaseChannel {
 		String createDate();
 		String updateDate();
 		String supportSegmentBasedOrdering();
+		String assetUserRuleId();
 	}
 
 	/**
@@ -113,6 +114,10 @@ public class Channel extends BaseChannel {
 	  match to the user&amp;#39;s segments (see BEO-5524)
 	 */
 	private Boolean supportSegmentBasedOrdering;
+	/**
+	 * Asset user rule identifier
+	 */
+	private Long assetUserRuleId;
 
 	// name:
 	public String getName(){
@@ -214,6 +219,18 @@ public class Channel extends BaseChannel {
 		setToken("supportSegmentBasedOrdering", multirequestToken);
 	}
 
+	// assetUserRuleId:
+	public Long getAssetUserRuleId(){
+		return this.assetUserRuleId;
+	}
+	public void setAssetUserRuleId(Long assetUserRuleId){
+		this.assetUserRuleId = assetUserRuleId;
+	}
+
+	public void assetUserRuleId(String multirequestToken){
+		setToken("assetUserRuleId", multirequestToken);
+	}
+
 
 	public Channel() {
 		super();
@@ -237,6 +254,7 @@ public class Channel extends BaseChannel {
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		supportSegmentBasedOrdering = GsonParser.parseBoolean(jsonObject.get("supportSegmentBasedOrdering"));
+		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 
 	}
 
@@ -251,6 +269,7 @@ public class Channel extends BaseChannel {
 		kparams.add("isActive", this.isActive);
 		kparams.add("orderBy", this.orderBy);
 		kparams.add("supportSegmentBasedOrdering", this.supportSegmentBasedOrdering);
+		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		return kparams;
 	}
 
