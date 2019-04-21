@@ -34,6 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -63,6 +64,7 @@ public class Channel extends BaseChannel {
 		String updateDate();
 		String supportSegmentBasedOrdering();
 		String assetUserRuleId();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaData();
 	}
 
 	/**
@@ -118,6 +120,10 @@ public class Channel extends BaseChannel {
 	 * Asset user rule identifier
 	 */
 	private Long assetUserRuleId;
+	/**
+	 * key/value map field for extra data
+	 */
+	private Map<String, StringValue> metaData;
 
 	// name:
 	public String getName(){
@@ -231,6 +237,14 @@ public class Channel extends BaseChannel {
 		setToken("assetUserRuleId", multirequestToken);
 	}
 
+	// metaData:
+	public Map<String, StringValue> getMetaData(){
+		return this.metaData;
+	}
+	public void setMetaData(Map<String, StringValue> metaData){
+		this.metaData = metaData;
+	}
+
 
 	public Channel() {
 		super();
@@ -255,6 +269,7 @@ public class Channel extends BaseChannel {
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		supportSegmentBasedOrdering = GsonParser.parseBoolean(jsonObject.get("supportSegmentBasedOrdering"));
 		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
+		metaData = GsonParser.parseMap(jsonObject.getAsJsonObject("metaData"), StringValue.class);
 
 	}
 
@@ -270,6 +285,7 @@ public class Channel extends BaseChannel {
 		kparams.add("orderBy", this.orderBy);
 		kparams.add("supportSegmentBasedOrdering", this.supportSegmentBasedOrdering);
 		kparams.add("assetUserRuleId", this.assetUserRuleId);
+		kparams.add("metaData", this.metaData);
 		return kparams;
 	}
 

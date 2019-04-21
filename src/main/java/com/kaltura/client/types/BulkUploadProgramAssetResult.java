@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,72 +39,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Login response
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(LoginSession.Tokenizer.class)
-public class LoginSession extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkUploadProgramAssetResult.Tokenizer.class)
+public class BulkUploadProgramAssetResult extends BulkUploadResult {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String ks();
-		String expiry();
+	public interface Tokenizer extends BulkUploadResult.Tokenizer {
+		String programId();
+		String programExternalId();
+		String liveAssetId();
+		String liveAssetExternalId();
 	}
 
 	/**
-	 * Access token in a KS format
+	 * The programID that was created
 	 */
-	private String ks;
+	private Integer programId;
 	/**
-	 * Expiration
+	 * The external program Id as was sent in the bulk xml file
 	 */
-	private Long expiry;
+	private String programExternalId;
+	/**
+	 * The  live asset Id that was identified according liveAssetExternalId that was
+	  sent in bulk xml file
+	 */
+	private Integer liveAssetId;
+	/**
+	 * The external live asset Id as was sent in bulk xml file
+	 */
+	private String liveAssetExternalId;
 
-	// ks:
-	public String getKs(){
-		return this.ks;
+	// programId:
+	public Integer getProgramId(){
+		return this.programId;
 	}
-	public void setKs(String ks){
-		this.ks = ks;
+	// programExternalId:
+	public String getProgramExternalId(){
+		return this.programExternalId;
 	}
-
-	public void ks(String multirequestToken){
-		setToken("ks", multirequestToken);
+	// liveAssetId:
+	public Integer getLiveAssetId(){
+		return this.liveAssetId;
 	}
-
-	// expiry:
-	public Long getExpiry(){
-		return this.expiry;
-	}
-	public void setExpiry(Long expiry){
-		this.expiry = expiry;
+	// liveAssetExternalId:
+	public String getLiveAssetExternalId(){
+		return this.liveAssetExternalId;
 	}
 
-	public void expiry(String multirequestToken){
-		setToken("expiry", multirequestToken);
-	}
-
-
-	public LoginSession() {
+	public BulkUploadProgramAssetResult() {
 		super();
 	}
 
-	public LoginSession(JsonObject jsonObject) throws APIException {
+	public BulkUploadProgramAssetResult(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		ks = GsonParser.parseString(jsonObject.get("ks"));
-		expiry = GsonParser.parseLong(jsonObject.get("expiry"));
+		programId = GsonParser.parseInt(jsonObject.get("programId"));
+		programExternalId = GsonParser.parseString(jsonObject.get("programExternalId"));
+		liveAssetId = GsonParser.parseInt(jsonObject.get("liveAssetId"));
+		liveAssetExternalId = GsonParser.parseString(jsonObject.get("liveAssetExternalId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaLoginSession");
-		kparams.add("ks", this.ks);
-		kparams.add("expiry", this.expiry);
+		kparams.add("objectType", "KalturaBulkUploadProgramAssetResult");
 		return kparams;
 	}
 

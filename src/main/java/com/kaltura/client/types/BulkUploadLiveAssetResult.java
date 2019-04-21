@@ -29,9 +29,10 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,72 +41,61 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Login response
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(LoginSession.Tokenizer.class)
-public class LoginSession extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkUploadLiveAssetResult.Tokenizer.class)
+public class BulkUploadLiveAssetResult extends BulkUploadResult {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String ks();
-		String expiry();
+	public interface Tokenizer extends BulkUploadResult.Tokenizer {
+		String id();
+		String externalEpgIngestId();
+		RequestBuilder.ListTokenizer<BulkUploadProgramAssetResult.Tokenizer> programs();
 	}
 
 	/**
-	 * Access token in a KS format
+	 * The internal kaltura channel id
 	 */
-	private String ks;
+	private Integer id;
 	/**
-	 * Expiration
+	 * Indicates the epg asset object id in the bulk file
 	 */
-	private Long expiry;
+	private String externalEpgIngestId;
+	/**
+	 * List of programs that were ingested to the channel
+	 */
+	private List<BulkUploadProgramAssetResult> programs;
 
-	// ks:
-	public String getKs(){
-		return this.ks;
+	// id:
+	public Integer getId(){
+		return this.id;
 	}
-	public void setKs(String ks){
-		this.ks = ks;
+	// externalEpgIngestId:
+	public String getExternalEpgIngestId(){
+		return this.externalEpgIngestId;
 	}
-
-	public void ks(String multirequestToken){
-		setToken("ks", multirequestToken);
-	}
-
-	// expiry:
-	public Long getExpiry(){
-		return this.expiry;
-	}
-	public void setExpiry(Long expiry){
-		this.expiry = expiry;
+	// programs:
+	public List<BulkUploadProgramAssetResult> getPrograms(){
+		return this.programs;
 	}
 
-	public void expiry(String multirequestToken){
-		setToken("expiry", multirequestToken);
-	}
-
-
-	public LoginSession() {
+	public BulkUploadLiveAssetResult() {
 		super();
 	}
 
-	public LoginSession(JsonObject jsonObject) throws APIException {
+	public BulkUploadLiveAssetResult(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		ks = GsonParser.parseString(jsonObject.get("ks"));
-		expiry = GsonParser.parseLong(jsonObject.get("expiry"));
+		id = GsonParser.parseInt(jsonObject.get("id"));
+		externalEpgIngestId = GsonParser.parseString(jsonObject.get("externalEpgIngestId"));
+		programs = GsonParser.parseArray(jsonObject.getAsJsonArray("programs"), BulkUploadProgramAssetResult.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaLoginSession");
-		kparams.add("ks", this.ks);
-		kparams.add("expiry", this.expiry);
+		kparams.add("objectType", "KalturaBulkUploadLiveAssetResult");
 		return kparams;
 	}
 

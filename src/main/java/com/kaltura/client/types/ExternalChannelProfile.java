@@ -34,6 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -58,6 +59,7 @@ public class ExternalChannelProfile extends ObjectBase {
 		String recommendationEngineId();
 		RequestBuilder.ListTokenizer<ChannelEnrichmentHolder.Tokenizer> enrichments();
 		String assetUserRuleId();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaData();
 	}
 
 	/**
@@ -92,6 +94,10 @@ public class ExternalChannelProfile extends ObjectBase {
 	 * Asset user rule identifier
 	 */
 	private Long assetUserRuleId;
+	/**
+	 * key/value map field for extra data
+	 */
+	private Map<String, StringValue> metaData;
 
 	// id:
 	public Integer getId(){
@@ -177,6 +183,14 @@ public class ExternalChannelProfile extends ObjectBase {
 		setToken("assetUserRuleId", multirequestToken);
 	}
 
+	// metaData:
+	public Map<String, StringValue> getMetaData(){
+		return this.metaData;
+	}
+	public void setMetaData(Map<String, StringValue> metaData){
+		this.metaData = metaData;
+	}
+
 
 	public ExternalChannelProfile() {
 		super();
@@ -196,6 +210,7 @@ public class ExternalChannelProfile extends ObjectBase {
 		recommendationEngineId = GsonParser.parseInt(jsonObject.get("recommendationEngineId"));
 		enrichments = GsonParser.parseArray(jsonObject.getAsJsonArray("enrichments"), ChannelEnrichmentHolder.class);
 		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
+		metaData = GsonParser.parseMap(jsonObject.getAsJsonObject("metaData"), StringValue.class);
 
 	}
 
@@ -209,6 +224,7 @@ public class ExternalChannelProfile extends ObjectBase {
 		kparams.add("recommendationEngineId", this.recommendationEngineId);
 		kparams.add("enrichments", this.enrichments);
 		kparams.add("assetUserRuleId", this.assetUserRuleId);
+		kparams.add("metaData", this.metaData);
 		return kparams;
 	}
 

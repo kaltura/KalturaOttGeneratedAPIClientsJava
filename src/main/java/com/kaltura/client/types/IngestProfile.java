@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.IngestProfileAutofillPolicy;
+import com.kaltura.client.enums.IngestProfileOverlapPolicy;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -92,11 +94,11 @@ public class IngestProfile extends ObjectBase {
 	/**
 	 * Ingest profile default Auto-fill policy
 	 */
-	private Integer defaultAutoFillPolicy;
+	private IngestProfileAutofillPolicy defaultAutoFillPolicy;
 	/**
 	 * Ingest profile default Overlap policy
 	 */
-	private Integer defaultOverlapPolicy;
+	private IngestProfileOverlapPolicy defaultOverlapPolicy;
 
 	// id:
 	public Integer getId(){
@@ -171,10 +173,10 @@ public class IngestProfile extends ObjectBase {
 	}
 
 	// defaultAutoFillPolicy:
-	public Integer getDefaultAutoFillPolicy(){
+	public IngestProfileAutofillPolicy getDefaultAutoFillPolicy(){
 		return this.defaultAutoFillPolicy;
 	}
-	public void setDefaultAutoFillPolicy(Integer defaultAutoFillPolicy){
+	public void setDefaultAutoFillPolicy(IngestProfileAutofillPolicy defaultAutoFillPolicy){
 		this.defaultAutoFillPolicy = defaultAutoFillPolicy;
 	}
 
@@ -183,10 +185,10 @@ public class IngestProfile extends ObjectBase {
 	}
 
 	// defaultOverlapPolicy:
-	public Integer getDefaultOverlapPolicy(){
+	public IngestProfileOverlapPolicy getDefaultOverlapPolicy(){
 		return this.defaultOverlapPolicy;
 	}
-	public void setDefaultOverlapPolicy(Integer defaultOverlapPolicy){
+	public void setDefaultOverlapPolicy(IngestProfileOverlapPolicy defaultOverlapPolicy){
 		this.defaultOverlapPolicy = defaultOverlapPolicy;
 	}
 
@@ -212,8 +214,8 @@ public class IngestProfile extends ObjectBase {
 		transformationAdapterUrl = GsonParser.parseString(jsonObject.get("transformationAdapterUrl"));
 		transformationAdapterSettings = GsonParser.parseMap(jsonObject.getAsJsonObject("transformationAdapterSettings"), StringValue.class);
 		transformationAdapterSharedSecret = GsonParser.parseString(jsonObject.get("transformationAdapterSharedSecret"));
-		defaultAutoFillPolicy = GsonParser.parseInt(jsonObject.get("defaultAutoFillPolicy"));
-		defaultOverlapPolicy = GsonParser.parseInt(jsonObject.get("defaultOverlapPolicy"));
+		defaultAutoFillPolicy = IngestProfileAutofillPolicy.get(GsonParser.parseString(jsonObject.get("defaultAutoFillPolicy")));
+		defaultOverlapPolicy = IngestProfileOverlapPolicy.get(GsonParser.parseString(jsonObject.get("defaultOverlapPolicy")));
 
 	}
 
