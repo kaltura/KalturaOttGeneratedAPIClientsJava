@@ -1,6 +1,8 @@
 package com.kaltura.client.utils.request;
 
+import com.google.gson.Gson;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ResponseType;
 import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ObjectBase;
@@ -149,7 +151,7 @@ public abstract class RequestBuilder<ReturnedType, TokenizerType, SelfType> exte
     	}
     }
 
-    public MultiRequestBuilder add(RequestBuilder<?, ?, ?> another) {
+    public MultiRequestBuilder add(RequestBuilder<?, ?, ?> another) throws APIException {
         try {
             return new MultiRequestBuilder(this, another);
         } catch (Exception e) {
@@ -203,8 +205,21 @@ public abstract class RequestBuilder<ReturnedType, TokenizerType, SelfType> exte
 
     @Override
     public String getTag() {
-        return action;
+        return service + "." + action;
     }
+
+	@Override
+	public String toString() {
+		return String.format("{\"service\":\"%s\"," +
+						"\"action\":\"%s\"," +
+						"\"type\":\"%s\"," +
+						"\"params\":%s}",
+				service, action, type, params);
+	}
+	
+	public ContentRequestBuilder setResponseFormat(ResponseType format) {
+		return new ContentRequestBuilder(this, format);
+	}
 }
 
 

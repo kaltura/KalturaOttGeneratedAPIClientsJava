@@ -9,9 +9,25 @@ import com.kaltura.client.utils.response.base.ResponseElement;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+// for Proxy support
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -113,8 +129,18 @@ public class APIOkRequestsExecutor implements RequestQueue {
 		}
 
 		@Override
-		public int getTypeFormat() {
-			return ServiceResponseTypeFormat.RESPONSE_TYPE_JSON.getValue();
+		public String getProxy() {
+		    return null;
+		}
+
+		@Override
+		public int getProxyPort() {
+		    return 0;
+		}
+		
+		@Override
+		public boolean getIgnoreSslDomainVerification() {
+			return false;
 		}
     };
 
@@ -128,10 +154,44 @@ public class APIOkRequestsExecutor implements RequestQueue {
 
     private OkHttpClient mOkClient;
     private boolean enableLogs = true;
-    private static ILogger logger = Logger.getLogger(TAG);
+    private Set<String> enableLogHeaders = new HashSet<String>();
+
+    protected static ILogger logger = Logger.getLogger(TAG);
 
     protected static APIOkRequestsExecutor self;
 
+	protected static HostnameVerifier hostnameVerifier = new HostnameVerifier() {		
+		@Override
+		public boolean verify(String arg0, SSLSession arg1) {
+			return true;
+		}
+	};
+	protected static final TrustManager[] trustAllCerts = new TrustManager[] {
+	    new X509TrustManager() {
+	        @Override
+	        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+	        }
+
+	        @Override
+	        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+	        }
+
+	        @Override
+	        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+	          return new java.security.cert.X509Certificate[]{};
+	        }
+	    }
+	};
+	protected static final SSLContext trustAllSslContext;
+	static {
+	    try {
+	        trustAllSslContext = SSLContext.getInstance("SSL");
+	        trustAllSslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+	    } catch (NoSuchAlgorithmException | KeyManagementException e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+	protected static final SSLSocketFactory trustAllSslSocketFactory = trustAllSslContext.getSocketFactory();
 
     public static APIOkRequestsExecutor getExecutor() {
         if (self == null) {
@@ -179,6 +239,16 @@ public class APIOkRequestsExecutor implements RequestQueue {
                 .readTimeout(config.getReadTimeout(), TimeUnit.MILLISECONDS)
                 .writeTimeout(config.getWriteTimeout(), TimeUnit.MILLISECONDS)
                 .retryOnConnectionFailure(config.getMaxRetry(1) > 0);
+                
+        if(config.getIgnoreSslDomainVerification()) {
+        	builder.hostnameVerifier(hostnameVerifier);
+        	builder.sslSocketFactory(trustAllSslSocketFactory, (X509TrustManager)trustAllCerts[0]);
+        }
+	if (config.getProxy() != null && config.getProxyPort() != 0){
+		logger.debug("Proxy host is: " + config.getProxy());
+		logger.debug("Proxy port is: " + config.getProxyPort());
+		builder.proxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress(config.getProxy(), config.getProxyPort())));
+	}
 
         return builder;
     }
@@ -197,6 +267,18 @@ public class APIOkRequestsExecutor implements RequestQueue {
         } else {
             logger = new LoggerNull(TAG);
         }
+    }
+
+    @Override
+    public void enableLogResponseHeader(String header, boolean log) {
+    	if(log) {
+    		if(!this.enableLogHeaders.contains(header)) {
+    			this.enableLogHeaders.add(header);
+    		}
+    	}
+    	else if(this.enableLogHeaders.contains(header)) {
+			this.enableLogHeaders.remove(header);
+		}
     }
 
     @SuppressWarnings("rawtypes")
@@ -322,11 +404,26 @@ public class APIOkRequestsExecutor implements RequestQueue {
     }
 
     @SuppressWarnings("rawtypes")
-	protected ResponseElement onGotResponse(Response response, RequestElement action) {
-        String requestId = getRequestId(response);
-
+	protected ResponseElement onGotResponse(final Response response, RequestElement action) {
+        final String requestId = getRequestId(response);
+        
+        if(this.enableLogHeaders.contains("*")) {
+        	logger.debug("response [" + requestId + "] Response: " + response.code() + " " + response.message());
+        	for(String header : response.headers().names()) {        		
+			    logger.debug("response [" + requestId + "] " + header + ": " + response.headers().get(header));
+			}
+        }
+        else {
+        	for(String header : this.enableLogHeaders) {
+		        String value = response.headers().get(header);
+		        if (value != null) {
+		            logger.debug("response [" + requestId + "] " + header + ": " + value);
+		        }
+			}
+        }
+        
         if (!response.isSuccessful()) { // in case response has failure status
-            return new ExecutedRequest().requestId(requestId).error(ErrorElement.fromCode(response.code(), response.message())).success(false);
+            return new ExecutedRequest().requestId(requestId).headers(response.headers().toMultimap()).error(ErrorElement.fromCode(response.code(), response.message())).success(false);
 
         } else {
 
@@ -342,7 +439,7 @@ public class APIOkRequestsExecutor implements RequestQueue {
             	logger.debug("response [" + requestId + "] body:\n" + responseString);
             }
             
-            return new ExecutedRequest().requestId(requestId).response(responseString).code(response.code()).success(responseString != null);
+            return new ExecutedRequest().requestId(requestId).response(responseString).headers(response.headers().toMultimap()).code(response.code()).success(responseString != null);
         }
     }
 
