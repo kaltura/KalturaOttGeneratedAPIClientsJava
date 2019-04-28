@@ -1,8 +1,6 @@
 package com.kaltura.client.utils.request;
 
-import com.google.gson.Gson;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ResponseType;
 import com.kaltura.client.types.APIException;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ObjectBase;
@@ -215,10 +213,6 @@ public abstract class RequestBuilder<ReturnedType, TokenizerType, SelfType> exte
 						"\"type\":\"%s\"," +
 						"\"params\":%s}",
 				service, action, type, params);
-	}
-	
-	public ContentRequestBuilder setResponseFormat(ResponseType format) {
-		return new ContentRequestBuilder(this, format);
 	}
 }
 
