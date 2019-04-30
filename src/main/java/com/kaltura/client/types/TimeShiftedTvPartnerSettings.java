@@ -68,6 +68,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		String quotaOveragePolicy();
 		String protectionPolicy();
 		String recoveryGracePeriod();
+		String privateCopyEnabled();
 	}
 
 	/**
@@ -159,6 +160,10 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 	 * The time in days for recovery recording that was delete by Auto Delete .
 	 */
 	private Integer recoveryGracePeriod;
+	/**
+	 * Is private copy enabled for the account
+	 */
+	private Boolean privateCopyEnabled;
 
 	// catchUpEnabled:
 	public Boolean getCatchUpEnabled(){
@@ -412,6 +417,18 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		setToken("recoveryGracePeriod", multirequestToken);
 	}
 
+	// privateCopyEnabled:
+	public Boolean getPrivateCopyEnabled(){
+		return this.privateCopyEnabled;
+	}
+	public void setPrivateCopyEnabled(Boolean privateCopyEnabled){
+		this.privateCopyEnabled = privateCopyEnabled;
+	}
+
+	public void privateCopyEnabled(String multirequestToken){
+		setToken("privateCopyEnabled", multirequestToken);
+	}
+
 
 	public TimeShiftedTvPartnerSettings() {
 		super();
@@ -444,6 +461,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		quotaOveragePolicy = QuotaOveragePolicy.get(GsonParser.parseString(jsonObject.get("quotaOveragePolicy")));
 		protectionPolicy = ProtectionPolicy.get(GsonParser.parseString(jsonObject.get("protectionPolicy")));
 		recoveryGracePeriod = GsonParser.parseInt(jsonObject.get("recoveryGracePeriod"));
+		privateCopyEnabled = GsonParser.parseBoolean(jsonObject.get("privateCopyEnabled"));
 
 	}
 
@@ -471,6 +489,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		kparams.add("quotaOveragePolicy", this.quotaOveragePolicy);
 		kparams.add("protectionPolicy", this.protectionPolicy);
 		kparams.add("recoveryGracePeriod", this.recoveryGracePeriod);
+		kparams.add("privateCopyEnabled", this.privateCopyEnabled);
 		return kparams;
 	}
 
