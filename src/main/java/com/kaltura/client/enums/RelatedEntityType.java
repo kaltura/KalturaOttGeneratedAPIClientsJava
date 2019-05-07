@@ -33,17 +33,15 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MetaDataType implements EnumAsString {
-	STRING("STRING"),
-	MULTILINGUAL_STRING("MULTILINGUAL_STRING"),
-	NUMBER("NUMBER"),
-	BOOLEAN("BOOLEAN"),
-	DATE("DATE"),
-	RELEATED_ENTITY("RELEATED_ENTITY");
+public enum RelatedEntityType implements EnumAsString {
+	CHANNEL("CHANNEL"),
+	EXTERNAL_CHANNEL("EXTERNAL_CHANNEL"),
+	MEDIA("MEDIA"),
+	PROGRAM("PROGRAM");
 
 	private String value;
 
-	MetaDataType(String value) {
+	RelatedEntityType(String value) {
 		this.value = value;
 	}
 
@@ -56,19 +54,19 @@ public enum MetaDataType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static MetaDataType get(String value) {
+	public static RelatedEntityType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over MetaDataType defined values and compare the inner value with the given one:
-		for(MetaDataType item: values()) {
+		// goes over RelatedEntityType defined values and compare the inner value with the given one:
+		for(RelatedEntityType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MetaDataType.values().length > 0 ? MetaDataType.values()[0]: null;
+		return RelatedEntityType.values().length > 0 ? RelatedEntityType.values()[0]: null;
    }
 }

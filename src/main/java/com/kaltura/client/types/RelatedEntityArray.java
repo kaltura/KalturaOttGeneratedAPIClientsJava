@@ -25,7 +25,15 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -33,42 +41,49 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MetaDataType implements EnumAsString {
-	STRING("STRING"),
-	MULTILINGUAL_STRING("MULTILINGUAL_STRING"),
-	NUMBER("NUMBER"),
-	BOOLEAN("BOOLEAN"),
-	DATE("DATE"),
-	RELEATED_ENTITY("RELEATED_ENTITY");
 
-	private String value;
-
-	MetaDataType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(RelatedEntityArray.Tokenizer.class)
+public class RelatedEntityArray extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.ListTokenizer<RelatedEntity.Tokenizer> objects();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * List of related entities
+	 */
+	private List<RelatedEntity> objects;
+
+	// objects:
+	public List<RelatedEntity> getObjects(){
+		return this.objects;
+	}
+	public void setObjects(List<RelatedEntity> objects){
+		this.objects = objects;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public RelatedEntityArray() {
+		super();
 	}
 
-	public static MetaDataType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over MetaDataType defined values and compare the inner value with the given one:
-		for(MetaDataType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MetaDataType.values().length > 0 ? MetaDataType.values()[0]: null;
-   }
+	public RelatedEntityArray(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), RelatedEntity.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaRelatedEntityArray");
+		kparams.add("objects", this.objects);
+		return kparams;
+	}
+
 }
+

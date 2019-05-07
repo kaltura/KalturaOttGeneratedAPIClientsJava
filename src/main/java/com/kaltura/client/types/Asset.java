@@ -61,6 +61,7 @@ public abstract class Asset extends ObjectBase {
 		RequestBuilder.ListTokenizer<MediaFile.Tokenizer> mediaFiles();
 		RequestBuilder.MapTokenizer<Value.Tokenizer> metas();
 		RequestBuilder.MapTokenizer<MultilingualStringValueArray.Tokenizer> tags();
+		RequestBuilder.MapTokenizer<RelatedEntityArray.Tokenizer> relatedEntities();
 		String startDate();
 		String endDate();
 		String createDate();
@@ -112,6 +113,11 @@ public abstract class Asset extends ObjectBase {
 	  system
 	 */
 	private Map<String, MultilingualStringValueArray> tags;
+	/**
+	 * Dynamic collection of key-value pairs according to the related entity defined in
+	  the system
+	 */
+	private Map<String, RelatedEntityArray> relatedEntities;
 	/**
 	 * Date and time represented as epoch. For VOD – since when the asset is
 	  available in the catalog. For EPG/Linear – when the program is aired (can be
@@ -200,6 +206,14 @@ public abstract class Asset extends ObjectBase {
 		this.tags = tags;
 	}
 
+	// relatedEntities:
+	public Map<String, RelatedEntityArray> getRelatedEntities(){
+		return this.relatedEntities;
+	}
+	public void setRelatedEntities(Map<String, RelatedEntityArray> relatedEntities){
+		this.relatedEntities = relatedEntities;
+	}
+
 	// startDate:
 	public Long getStartDate(){
 		return this.startDate;
@@ -265,6 +279,7 @@ public abstract class Asset extends ObjectBase {
 		mediaFiles = GsonParser.parseArray(jsonObject.getAsJsonArray("mediaFiles"), MediaFile.class);
 		metas = GsonParser.parseMap(jsonObject.getAsJsonObject("metas"), Value.class);
 		tags = GsonParser.parseMap(jsonObject.getAsJsonObject("tags"), MultilingualStringValueArray.class);
+		relatedEntities = GsonParser.parseMap(jsonObject.getAsJsonObject("relatedEntities"), RelatedEntityArray.class);
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
@@ -281,6 +296,7 @@ public abstract class Asset extends ObjectBase {
 		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("metas", this.metas);
 		kparams.add("tags", this.tags);
+		kparams.add("relatedEntities", this.relatedEntities);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
 		kparams.add("externalId", this.externalId);
