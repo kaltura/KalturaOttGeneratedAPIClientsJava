@@ -33,21 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleActionType implements EnumAsString {
-	BLOCK("BLOCK"),
-	START_DATE_OFFSET("START_DATE_OFFSET"),
-	END_DATE_OFFSET("END_DATE_OFFSET"),
-	USER_BLOCK("USER_BLOCK"),
-	ALLOW_PLAYBACK("ALLOW_PLAYBACK"),
-	BLOCK_PLAYBACK("BLOCK_PLAYBACK"),
-	APPLY_DISCOUNT_MODULE("APPLY_DISCOUNT_MODULE"),
-	APPLY_PLAYBACK_ADAPTER("APPLY_PLAYBACK_ADAPTER"),
-	FILTER("FILTER"),
-	ASSET_LIFE_CYCLE_TRANSITION("ASSET_LIFE_CYCLE_TRANSITION");
+public enum SubscriptionTriggerType implements EnumAsString {
+	START_DATE("START_DATE"),
+	END_DATE("END_DATE");
 
 	private String value;
 
-	RuleActionType(String value) {
+	SubscriptionTriggerType(String value) {
 		this.value = value;
 	}
 
@@ -60,19 +52,19 @@ public enum RuleActionType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static RuleActionType get(String value) {
+	public static SubscriptionTriggerType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over RuleActionType defined values and compare the inner value with the given one:
-		for(RuleActionType item: values()) {
+		// goes over SubscriptionTriggerType defined values and compare the inner value with the given one:
+		for(SubscriptionTriggerType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleActionType.values().length > 0 ? RuleActionType.values()[0]: null;
+		return SubscriptionTriggerType.values().length > 0 ? SubscriptionTriggerType.values()[0]: null;
    }
 }

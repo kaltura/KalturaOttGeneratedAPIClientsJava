@@ -85,6 +85,7 @@ public class Subscription extends ObjectBase {
 		String dependencyType();
 		String externalId();
 		String isCancellationBlocked();
+		String preSaleDate();
 	}
 
 	/**
@@ -214,6 +215,10 @@ public class Subscription extends ObjectBase {
 	 * Is cancellation blocked for the subscription
 	 */
 	private Boolean isCancellationBlocked;
+	/**
+	 * The Pre-Sale date the subscription is available for purchasing
+	 */
+	private Long preSaleDate;
 
 	// id:
 	public String getId(){
@@ -527,6 +532,18 @@ public class Subscription extends ObjectBase {
 		setToken("isCancellationBlocked", multirequestToken);
 	}
 
+	// preSaleDate:
+	public Long getPreSaleDate(){
+		return this.preSaleDate;
+	}
+	public void setPreSaleDate(Long preSaleDate){
+		this.preSaleDate = preSaleDate;
+	}
+
+	public void preSaleDate(String multirequestToken){
+		setToken("preSaleDate", multirequestToken);
+	}
+
 
 	public Subscription() {
 		super();
@@ -569,6 +586,7 @@ public class Subscription extends ObjectBase {
 		dependencyType = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyType")));
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		isCancellationBlocked = GsonParser.parseBoolean(jsonObject.get("isCancellationBlocked"));
+		preSaleDate = GsonParser.parseLong(jsonObject.get("preSaleDate"));
 
 	}
 
@@ -604,6 +622,7 @@ public class Subscription extends ObjectBase {
 		kparams.add("dependencyType", this.dependencyType);
 		kparams.add("externalId", this.externalId);
 		kparams.add("isCancellationBlocked", this.isCancellationBlocked);
+		kparams.add("preSaleDate", this.preSaleDate);
 		return kparams;
 	}
 
