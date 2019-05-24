@@ -51,6 +51,7 @@ public abstract class Rule extends ObjectBase {
 		String id();
 		String name();
 		String description();
+		String label();
 	}
 
 	/**
@@ -65,6 +66,10 @@ public abstract class Rule extends ObjectBase {
 	 * Description
 	 */
 	private String description;
+	/**
+	 * Label
+	 */
+	private String label;
 
 	// id:
 	public Long getId(){
@@ -94,6 +99,18 @@ public abstract class Rule extends ObjectBase {
 		setToken("description", multirequestToken);
 	}
 
+	// label:
+	public String getLabel(){
+		return this.label;
+	}
+	public void setLabel(String label){
+		this.label = label;
+	}
+
+	public void label(String multirequestToken){
+		setToken("label", multirequestToken);
+	}
+
 
 	public Rule() {
 		super();
@@ -108,6 +125,7 @@ public abstract class Rule extends ObjectBase {
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		description = GsonParser.parseString(jsonObject.get("description"));
+		label = GsonParser.parseString(jsonObject.get("label"));
 
 	}
 
@@ -116,6 +134,7 @@ public abstract class Rule extends ObjectBase {
 		kparams.add("objectType", "KalturaRule");
 		kparams.add("name", this.name);
 		kparams.add("description", this.description);
+		kparams.add("label", this.label);
 		return kparams;
 	}
 
