@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.TopicNotificationMessage;
 import com.kaltura.client.types.TopicNotificationMessageFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -82,9 +83,10 @@ public class TopicNotificationMessageService {
 	
 	public static class ListTopicNotificationMessageBuilder extends ListResponseRequestBuilder<TopicNotificationMessage, TopicNotificationMessage.Tokenizer, ListTopicNotificationMessageBuilder> {
 		
-		public ListTopicNotificationMessageBuilder(TopicNotificationMessageFilter filter) {
+		public ListTopicNotificationMessageBuilder(TopicNotificationMessageFilter filter, FilterPager pager) {
 			super(TopicNotificationMessage.class, "topicnotificationmessage", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
@@ -92,13 +94,18 @@ public class TopicNotificationMessageService {
 		return list(null);
 	}
 
+	public static ListTopicNotificationMessageBuilder list(TopicNotificationMessageFilter filter)  {
+		return list(filter, null);
+	}
+
 	/**
 	 * Lists all topic notifications in the system.
 	 * 
 	 * @param filter Filter options
+	 * @param pager Paging the request
 	 */
-    public static ListTopicNotificationMessageBuilder list(TopicNotificationMessageFilter filter)  {
-		return new ListTopicNotificationMessageBuilder(filter);
+    public static ListTopicNotificationMessageBuilder list(TopicNotificationMessageFilter filter, FilterPager pager)  {
+		return new ListTopicNotificationMessageBuilder(filter, pager);
 	}
 	
 	public static class UpdateTopicNotificationMessageBuilder extends RequestBuilder<TopicNotificationMessage, TopicNotificationMessage.Tokenizer, UpdateTopicNotificationMessageBuilder> {
