@@ -39,41 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Filtering cloud external recordings
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
+public class CloudRecordingFilter extends ExternalRecordingFilter {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
+		String adapterData();
 	}
 
 	/**
-	 * Permission identifier
+	 * Adapter Data
 	 */
-	private String group;
+	private String adapterData;
 
-	// group:
-	public String getGroup(){
-		return this.group;
+	// adapterData:
+	public String getAdapterData(){
+		return this.adapterData;
+	}
+	public void setAdapterData(String adapterData){
+		this.adapterData = adapterData;
 	}
 
-	public GroupPermission() {
+	public void adapterData(String multirequestToken){
+		setToken("adapterData", multirequestToken);
+	}
+
+
+	public CloudRecordingFilter() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
+		adapterData = GsonParser.parseString(jsonObject.get("adapterData"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaCloudRecordingFilter");
+		kparams.add("adapterData", this.adapterData);
 		return kparams;
 	}
 

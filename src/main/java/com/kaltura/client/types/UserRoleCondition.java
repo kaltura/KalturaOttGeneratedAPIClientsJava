@@ -39,41 +39,54 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * UserRole Condition - indicates which users this rule is applied on by their
+  roles
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(UserRoleCondition.Tokenizer.class)
+public class UserRoleCondition extends Condition {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String idIn();
 	}
 
 	/**
-	 * Permission identifier
+	 * Comma separated user role IDs list
 	 */
-	private String group;
+	private String idIn;
 
-	// group:
-	public String getGroup(){
-		return this.group;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public GroupPermission() {
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
+	}
+
+
+	public UserRoleCondition() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public UserRoleCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaUserRoleCondition");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 

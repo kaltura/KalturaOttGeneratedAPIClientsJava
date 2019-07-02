@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.Permission;
 import com.kaltura.client.types.PermissionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -40,6 +41,44 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PermissionService {
+	
+	public static class AddPermissionBuilder extends RequestBuilder<Permission, Permission.Tokenizer, AddPermissionBuilder> {
+		
+		public AddPermissionBuilder(Permission permission) {
+			super(Permission.class, "permission", "add");
+			params.add("permission", permission);
+		}
+	}
+
+	/**
+	 * Adds new permission
+	 * 
+	 * @param permission Permission to insert
+	 */
+    public static AddPermissionBuilder add(Permission permission)  {
+		return new AddPermissionBuilder(permission);
+	}
+	
+	public static class DeletePermissionBuilder extends NullRequestBuilder {
+		
+		public DeletePermissionBuilder(long id) {
+			super("permission", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Deletes an existing permission
+	 * 
+	 * @param id Permission ID to delete
+	 */
+    public static DeletePermissionBuilder delete(long id)  {
+		return new DeletePermissionBuilder(id);
+	}
 	
 	public static class GetCurrentPermissionsPermissionBuilder extends RequestBuilder<String, String, GetCurrentPermissionsPermissionBuilder> {
 		

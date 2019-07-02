@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.RuleActionType;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -51,6 +52,7 @@ public class BusinessModuleRuleFilter extends Filter {
 		String businessModuleTypeApplied();
 		String businessModuleIdApplied();
 		String segmentIdsApplied();
+		String actionsContainType();
 	}
 
 	/**
@@ -65,6 +67,10 @@ public class BusinessModuleRuleFilter extends Filter {
 	 * Comma separated segment IDs the rules applied on
 	 */
 	private String segmentIdsApplied;
+	/**
+	 * Indicates which business module rule list to return by their action.
+	 */
+	private RuleActionType actionsContainType;
 
 	// businessModuleTypeApplied:
 	public TransactionType getBusinessModuleTypeApplied(){
@@ -102,6 +108,18 @@ public class BusinessModuleRuleFilter extends Filter {
 		setToken("segmentIdsApplied", multirequestToken);
 	}
 
+	// actionsContainType:
+	public RuleActionType getActionsContainType(){
+		return this.actionsContainType;
+	}
+	public void setActionsContainType(RuleActionType actionsContainType){
+		this.actionsContainType = actionsContainType;
+	}
+
+	public void actionsContainType(String multirequestToken){
+		setToken("actionsContainType", multirequestToken);
+	}
+
 
 	public BusinessModuleRuleFilter() {
 		super();
@@ -116,6 +134,7 @@ public class BusinessModuleRuleFilter extends Filter {
 		businessModuleTypeApplied = TransactionType.get(GsonParser.parseString(jsonObject.get("businessModuleTypeApplied")));
 		businessModuleIdApplied = GsonParser.parseLong(jsonObject.get("businessModuleIdApplied"));
 		segmentIdsApplied = GsonParser.parseString(jsonObject.get("segmentIdsApplied"));
+		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
 
 	}
 
@@ -125,6 +144,7 @@ public class BusinessModuleRuleFilter extends Filter {
 		kparams.add("businessModuleTypeApplied", this.businessModuleTypeApplied);
 		kparams.add("businessModuleIdApplied", this.businessModuleIdApplied);
 		kparams.add("segmentIdsApplied", this.segmentIdsApplied);
+		kparams.add("actionsContainType", this.actionsContainType);
 		return kparams;
 	}
 

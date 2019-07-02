@@ -53,6 +53,7 @@ public class AssetRuleFilter extends Filter {
 		String conditionsContainType();
 		SlimAsset.Tokenizer assetApplied();
 		String actionsContainType();
+		String assetRuleIdEqual();
 	}
 
 	/**
@@ -68,6 +69,10 @@ public class AssetRuleFilter extends Filter {
 	 * Indicates which asset rule list to return by this KalturaRuleActionType.
 	 */
 	private RuleActionType actionsContainType;
+	/**
+	 * Asset rule id
+	 */
+	private Long assetRuleIdEqual;
 
 	// conditionsContainType:
 	public RuleConditionType getConditionsContainType(){
@@ -101,6 +106,18 @@ public class AssetRuleFilter extends Filter {
 		setToken("actionsContainType", multirequestToken);
 	}
 
+	// assetRuleIdEqual:
+	public Long getAssetRuleIdEqual(){
+		return this.assetRuleIdEqual;
+	}
+	public void setAssetRuleIdEqual(Long assetRuleIdEqual){
+		this.assetRuleIdEqual = assetRuleIdEqual;
+	}
+
+	public void assetRuleIdEqual(String multirequestToken){
+		setToken("assetRuleIdEqual", multirequestToken);
+	}
+
 
 	public AssetRuleFilter() {
 		super();
@@ -115,6 +132,7 @@ public class AssetRuleFilter extends Filter {
 		conditionsContainType = RuleConditionType.get(GsonParser.parseString(jsonObject.get("conditionsContainType")));
 		assetApplied = GsonParser.parseObject(jsonObject.getAsJsonObject("assetApplied"), SlimAsset.class);
 		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
+		assetRuleIdEqual = GsonParser.parseLong(jsonObject.get("assetRuleIdEqual"));
 
 	}
 
@@ -124,6 +142,7 @@ public class AssetRuleFilter extends Filter {
 		kparams.add("conditionsContainType", this.conditionsContainType);
 		kparams.add("assetApplied", this.assetApplied);
 		kparams.add("actionsContainType", this.actionsContainType);
+		kparams.add("assetRuleIdEqual", this.assetRuleIdEqual);
 		return kparams;
 	}
 
