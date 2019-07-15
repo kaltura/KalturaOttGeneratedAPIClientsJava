@@ -42,7 +42,10 @@ public enum RuleConditionType implements EnumAsString {
 	SEGMENTS("SEGMENTS"),
 	DATE("DATE"),
 	OR("OR"),
-	HEADER("HEADER");
+	HEADER("HEADER"),
+	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
+	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
+	USER_ROLE("USER_ROLE");
 
 	private String value;
 
