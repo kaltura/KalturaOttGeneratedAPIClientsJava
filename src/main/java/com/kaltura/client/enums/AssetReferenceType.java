@@ -36,8 +36,7 @@ package com.kaltura.client.enums;
 public enum AssetReferenceType implements EnumAsString {
 	MEDIA("media"),
 	EPG_INTERNAL("epg_internal"),
-	EPG_EXTERNAL("epg_external"),
-	NPVR("npvr");
+	EPG_EXTERNAL("epg_external");
 
 	private String value;
 

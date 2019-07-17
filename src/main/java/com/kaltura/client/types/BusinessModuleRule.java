@@ -50,7 +50,7 @@ public class BusinessModuleRule extends Rule {
 	
 	public interface Tokenizer extends Rule.Tokenizer {
 		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
-		RequestBuilder.ListTokenizer<BusinessModuleRuleAction.Tokenizer> actions();
+		RequestBuilder.ListTokenizer<ApplyDiscountModuleAction.Tokenizer> actions();
 		String createDate();
 		String updateDate();
 	}
@@ -62,7 +62,7 @@ public class BusinessModuleRule extends Rule {
 	/**
 	 * List of actions for the rule
 	 */
-	private List<BusinessModuleRuleAction> actions;
+	private List<ApplyDiscountModuleAction> actions;
 	/**
 	 * Create date of the rule
 	 */
@@ -81,10 +81,10 @@ public class BusinessModuleRule extends Rule {
 	}
 
 	// actions:
-	public List<BusinessModuleRuleAction> getActions(){
+	public List<ApplyDiscountModuleAction> getActions(){
 		return this.actions;
 	}
-	public void setActions(List<BusinessModuleRuleAction> actions){
+	public void setActions(List<ApplyDiscountModuleAction> actions){
 		this.actions = actions;
 	}
 
@@ -108,7 +108,7 @@ public class BusinessModuleRule extends Rule {
 
 		// set members values:
 		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
-		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), BusinessModuleRuleAction.class);
+		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), ApplyDiscountModuleAction.class);
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
