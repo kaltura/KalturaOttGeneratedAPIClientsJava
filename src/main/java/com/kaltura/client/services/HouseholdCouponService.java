@@ -27,9 +27,10 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilter;
+import com.kaltura.client.types.HouseholdCoupon;
+import com.kaltura.client.types.HouseholdCouponFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -39,12 +40,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class CouponService {
+public class HouseholdCouponService {
 	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
+	public static class AddHouseholdCouponBuilder extends RequestBuilder<HouseholdCoupon, HouseholdCoupon.Tokenizer, AddHouseholdCouponBuilder> {
 		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
+		public AddHouseholdCouponBuilder(HouseholdCoupon householdCoupon) {
+			super(HouseholdCoupon.class, "householdcoupon", "add");
+			params.add("householdCoupon", householdCoupon);
+		}
+	}
+
+	/**
+	 * householdCoupon add
+	 * 
+	 * @param householdCoupon householdCoupon details
+	 */
+    public static AddHouseholdCouponBuilder add(HouseholdCoupon householdCoupon)  {
+		return new AddHouseholdCouponBuilder(householdCoupon);
+	}
+	
+	public static class DeleteHouseholdCouponBuilder extends NullRequestBuilder {
+		
+		public DeleteHouseholdCouponBuilder(String code) {
+			super("householdcoupon", "delete");
 			params.add("code", code);
 		}
 		
@@ -54,28 +72,32 @@ public class CouponService {
 	}
 
 	/**
-	 * Returns information about a coupon
+	 * Remove coupon from household
 	 * 
 	 * @param code Coupon code
 	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
+    public static DeleteHouseholdCouponBuilder delete(String code)  {
+		return new DeleteHouseholdCouponBuilder(code);
 	}
 	
-	public static class ListCouponBuilder extends ListResponseRequestBuilder<Coupon, Coupon.Tokenizer, ListCouponBuilder> {
+	public static class ListHouseholdCouponBuilder extends ListResponseRequestBuilder<HouseholdCoupon, HouseholdCoupon.Tokenizer, ListHouseholdCouponBuilder> {
 		
-		public ListCouponBuilder(CouponFilter filter) {
-			super(Coupon.class, "coupon", "list");
+		public ListHouseholdCouponBuilder(HouseholdCouponFilter filter) {
+			super(HouseholdCoupon.class, "householdcoupon", "list");
 			params.add("filter", filter);
 		}
 	}
 
+	public static ListHouseholdCouponBuilder list()  {
+		return list(null);
+	}
+
 	/**
-	 * Lists coupon codes.
+	 * Gets all HouseholdCoupon items for a household
 	 * 
-	 * @param filter Filter options
+	 * @param filter Request filter
 	 */
-    public static ListCouponBuilder list(CouponFilter filter)  {
-		return new ListCouponBuilder(filter);
+    public static ListHouseholdCouponBuilder list(HouseholdCouponFilter filter)  {
+		return new ListHouseholdCouponBuilder(filter);
 	}
 }

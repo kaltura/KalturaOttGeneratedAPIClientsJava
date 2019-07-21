@@ -29,9 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.CouponStatus;
-import com.kaltura.client.types.CouponsGroup;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,84 +40,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Coupon details container
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Coupon.Tokenizer.class)
-public class Coupon extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(HouseholdCouponFilter.Tokenizer.class)
+public class HouseholdCouponFilter extends CrudFilter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		CouponsGroup.Tokenizer couponsGroup();
-		String status();
-		String totalUses();
-		String leftUses();
-		String couponCode();
+	public interface Tokenizer extends CrudFilter.Tokenizer {
+		String businessModuleTypeEqual();
+		String businessModuleIdEqual();
 	}
 
 	/**
-	 * Coupons group details
+	 * Indicates which household coupons list to return by their business module type.
 	 */
-	private CouponsGroup couponsGroup;
+	private TransactionType businessModuleTypeEqual;
 	/**
-	 * Coupon status
+	 * Indicates which household coupons list to return by their business module ID.
 	 */
-	private CouponStatus status;
-	/**
-	 * Total available coupon uses
-	 */
-	private Integer totalUses;
-	/**
-	 * Left coupon uses
-	 */
-	private Integer leftUses;
-	/**
-	 * Coupon code
-	 */
-	private String couponCode;
+	private Long businessModuleIdEqual;
 
-	// couponsGroup:
-	public CouponsGroup getCouponsGroup(){
-		return this.couponsGroup;
+	// businessModuleTypeEqual:
+	public TransactionType getBusinessModuleTypeEqual(){
+		return this.businessModuleTypeEqual;
 	}
-	// status:
-	public CouponStatus getStatus(){
-		return this.status;
-	}
-	// totalUses:
-	public Integer getTotalUses(){
-		return this.totalUses;
-	}
-	// leftUses:
-	public Integer getLeftUses(){
-		return this.leftUses;
-	}
-	// couponCode:
-	public String getCouponCode(){
-		return this.couponCode;
+	public void setBusinessModuleTypeEqual(TransactionType businessModuleTypeEqual){
+		this.businessModuleTypeEqual = businessModuleTypeEqual;
 	}
 
-	public Coupon() {
+	public void businessModuleTypeEqual(String multirequestToken){
+		setToken("businessModuleTypeEqual", multirequestToken);
+	}
+
+	// businessModuleIdEqual:
+	public Long getBusinessModuleIdEqual(){
+		return this.businessModuleIdEqual;
+	}
+	public void setBusinessModuleIdEqual(Long businessModuleIdEqual){
+		this.businessModuleIdEqual = businessModuleIdEqual;
+	}
+
+	public void businessModuleIdEqual(String multirequestToken){
+		setToken("businessModuleIdEqual", multirequestToken);
+	}
+
+
+	public HouseholdCouponFilter() {
 		super();
 	}
 
-	public Coupon(JsonObject jsonObject) throws APIException {
+	public HouseholdCouponFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
-		status = CouponStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		totalUses = GsonParser.parseInt(jsonObject.get("totalUses"));
-		leftUses = GsonParser.parseInt(jsonObject.get("leftUses"));
-		couponCode = GsonParser.parseString(jsonObject.get("couponCode"));
+		businessModuleTypeEqual = TransactionType.get(GsonParser.parseString(jsonObject.get("businessModuleTypeEqual")));
+		businessModuleIdEqual = GsonParser.parseLong(jsonObject.get("businessModuleIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCoupon");
+		kparams.add("objectType", "KalturaHouseholdCouponFilter");
+		kparams.add("businessModuleTypeEqual", this.businessModuleTypeEqual);
+		kparams.add("businessModuleIdEqual", this.businessModuleIdEqual);
 		return kparams;
 	}
 
