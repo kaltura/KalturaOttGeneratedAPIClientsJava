@@ -54,7 +54,6 @@ public class Coupon extends ObjectBase {
 		String status();
 		String totalUses();
 		String leftUses();
-		String couponCode();
 	}
 
 	/**
@@ -73,10 +72,6 @@ public class Coupon extends ObjectBase {
 	 * Left coupon uses
 	 */
 	private Integer leftUses;
-	/**
-	 * Coupon code
-	 */
-	private String couponCode;
 
 	// couponsGroup:
 	public CouponsGroup getCouponsGroup(){
@@ -94,10 +89,6 @@ public class Coupon extends ObjectBase {
 	public Integer getLeftUses(){
 		return this.leftUses;
 	}
-	// couponCode:
-	public String getCouponCode(){
-		return this.couponCode;
-	}
 
 	public Coupon() {
 		super();
@@ -113,7 +104,6 @@ public class Coupon extends ObjectBase {
 		status = CouponStatus.get(GsonParser.parseString(jsonObject.get("status")));
 		totalUses = GsonParser.parseInt(jsonObject.get("totalUses"));
 		leftUses = GsonParser.parseInt(jsonObject.get("leftUses"));
-		couponCode = GsonParser.parseString(jsonObject.get("couponCode"));
 
 	}
 
