@@ -25,12 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.types;
 
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,43 +39,52 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class CouponService {
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(CouponFilter.Tokenizer.class)
+public class CouponFilter extends Filter {
 	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
-		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
-		}
-		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
-		}
+	public interface Tokenizer extends Filter.Tokenizer {
+		String couponCodesIn();
 	}
 
 	/**
-	 * Returns information about a coupon
-	 * 
-	 * @param code Coupon code
+	 * Comma separated list of coupon codes.
 	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
+	private String couponCodesIn;
+
+	// couponCodesIn:
+	public String getCouponCodesIn(){
+		return this.couponCodesIn;
 	}
-	
-	public static class ListCouponBuilder extends ListResponseRequestBuilder<Coupon, Coupon.Tokenizer, ListCouponBuilder> {
-		
-		public ListCouponBuilder(CouponFilter filter) {
-			super(Coupon.class, "coupon", "list");
-			params.add("filter", filter);
-		}
+	public void setCouponCodesIn(String couponCodesIn){
+		this.couponCodesIn = couponCodesIn;
 	}
 
-	/**
-	 * Lists coupon codes.
-	 * 
-	 * @param filter Filter options
-	 */
-    public static ListCouponBuilder list(CouponFilter filter)  {
-		return new ListCouponBuilder(filter);
+	public void couponCodesIn(String multirequestToken){
+		setToken("couponCodesIn", multirequestToken);
 	}
+
+
+	public CouponFilter() {
+		super();
+	}
+
+	public CouponFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		couponCodesIn = GsonParser.parseString(jsonObject.get("couponCodesIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaCouponFilter");
+		kparams.add("couponCodesIn", this.couponCodesIn);
+		return kparams;
+	}
+
 }
+

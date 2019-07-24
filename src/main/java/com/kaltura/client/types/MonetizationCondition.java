@@ -55,6 +55,7 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		String days();
 		String type();
 		String operator();
+		String businessModuleIdIn();
 	}
 
 	/**
@@ -77,6 +78,10 @@ public class MonetizationCondition extends BaseSegmentCondition {
 	 * Mathermtical operator to calculate
 	 */
 	private MathemticalOperatorType operator;
+	/**
+	 * Comma saperated list of business module IDs
+	 */
+	private String businessModuleIdIn;
 
 	// minValue:
 	public Integer getMinValue(){
@@ -138,6 +143,18 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		setToken("operator", multirequestToken);
 	}
 
+	// businessModuleIdIn:
+	public String getBusinessModuleIdIn(){
+		return this.businessModuleIdIn;
+	}
+	public void setBusinessModuleIdIn(String businessModuleIdIn){
+		this.businessModuleIdIn = businessModuleIdIn;
+	}
+
+	public void businessModuleIdIn(String multirequestToken){
+		setToken("businessModuleIdIn", multirequestToken);
+	}
+
 
 	public MonetizationCondition() {
 		super();
@@ -154,6 +171,7 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		days = GsonParser.parseInt(jsonObject.get("days"));
 		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
 		operator = MathemticalOperatorType.get(GsonParser.parseString(jsonObject.get("operator")));
+		businessModuleIdIn = GsonParser.parseString(jsonObject.get("businessModuleIdIn"));
 
 	}
 
@@ -165,6 +183,7 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		kparams.add("days", this.days);
 		kparams.add("type", this.type);
 		kparams.add("operator", this.operator);
+		kparams.add("businessModuleIdIn", this.businessModuleIdIn);
 		return kparams;
 	}
 
