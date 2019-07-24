@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
-
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,44 +33,37 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum HouseholdCouponOrderBy implements EnumAsString {
+	NONE("NONE");
 
-public class CouponService {
-	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
-		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
-		}
-		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
-		}
+	private String value;
+
+	HouseholdCouponOrderBy(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Returns information about a coupon
-	 * 
-	 * @param code Coupon code
-	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
-	}
-	
-	public static class ListCouponBuilder extends ListResponseRequestBuilder<Coupon, Coupon.Tokenizer, ListCouponBuilder> {
-		
-		public ListCouponBuilder(CouponFilter filter) {
-			super(Coupon.class, "coupon", "list");
-			params.add("filter", filter);
-		}
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	/**
-	 * Lists coupon codes.
-	 * 
-	 * @param filter Filter options
-	 */
-    public static ListCouponBuilder list(CouponFilter filter)  {
-		return new ListCouponBuilder(filter);
+	public void setValue(String value) {
+		this.value = value;
 	}
+
+	public static HouseholdCouponOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over HouseholdCouponOrderBy defined values and compare the inner value with the given one:
+		for(HouseholdCouponOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return HouseholdCouponOrderBy.values().length > 0 ? HouseholdCouponOrderBy.values()[0]: null;
+   }
 }

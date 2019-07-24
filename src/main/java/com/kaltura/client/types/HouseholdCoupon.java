@@ -25,12 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.types;
 
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,43 +39,55 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class CouponService {
+/**
+ * Household Coupon details
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(HouseholdCoupon.Tokenizer.class)
+public class HouseholdCoupon extends CrudObject {
 	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
-		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
-		}
-		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
-		}
+	public interface Tokenizer extends CrudObject.Tokenizer {
+		String code();
 	}
 
 	/**
-	 * Returns information about a coupon
-	 * 
-	 * @param code Coupon code
+	 * Coupon code
 	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
+	private String code;
+
+	// code:
+	public String getCode(){
+		return this.code;
 	}
-	
-	public static class ListCouponBuilder extends ListResponseRequestBuilder<Coupon, Coupon.Tokenizer, ListCouponBuilder> {
-		
-		public ListCouponBuilder(CouponFilter filter) {
-			super(Coupon.class, "coupon", "list");
-			params.add("filter", filter);
-		}
+	public void setCode(String code){
+		this.code = code;
 	}
 
-	/**
-	 * Lists coupon codes.
-	 * 
-	 * @param filter Filter options
-	 */
-    public static ListCouponBuilder list(CouponFilter filter)  {
-		return new ListCouponBuilder(filter);
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
 	}
+
+
+	public HouseholdCoupon() {
+		super();
+	}
+
+	public HouseholdCoupon(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		code = GsonParser.parseString(jsonObject.get("code"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaHouseholdCoupon");
+		kparams.add("code", this.code);
+		return kparams;
+	}
+
 }
+

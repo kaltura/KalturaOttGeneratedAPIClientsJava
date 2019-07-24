@@ -27,9 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -39,43 +37,19 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class CouponService {
+public class PartnerService {
 	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
+	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
 		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
-		}
-		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
+		public ExternalLoginPartnerBuilder() {
+			super(LoginSession.class, "partner", "externalLogin");
 		}
 	}
 
 	/**
-	 * Returns information about a coupon
-	 * 
-	 * @param code Coupon code
+	 * Returns a login session for external system (like OVP)
 	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
-	}
-	
-	public static class ListCouponBuilder extends ListResponseRequestBuilder<Coupon, Coupon.Tokenizer, ListCouponBuilder> {
-		
-		public ListCouponBuilder(CouponFilter filter) {
-			super(Coupon.class, "coupon", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	/**
-	 * Lists coupon codes.
-	 * 
-	 * @param filter Filter options
-	 */
-    public static ListCouponBuilder list(CouponFilter filter)  {
-		return new ListCouponBuilder(filter);
+    public static ExternalLoginPartnerBuilder externalLogin()  {
+		return new ExternalLoginPartnerBuilder();
 	}
 }
