@@ -42,25 +42,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * Kaltura Houseold CouponCode Filter
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseoldCouponCodeFilter.Tokenizer.class)
-public class HouseoldCouponCodeFilter extends RelatedObjectFilter {
+@MultiRequestBuilder.Tokenizer(HouseholdCouponCodeFilter.Tokenizer.class)
+public class HouseholdCouponCodeFilter extends RelatedObjectFilter {
 	
 	public interface Tokenizer extends RelatedObjectFilter.Tokenizer {
 	}
 
 
 
-	public HouseoldCouponCodeFilter() {
+	public HouseholdCouponCodeFilter() {
 		super();
 	}
 
-	public HouseoldCouponCodeFilter(JsonObject jsonObject) throws APIException {
+	public HouseholdCouponCodeFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseoldCouponCodeFilter");
+		kparams.add("objectType", "KalturaHouseholdCouponCodeFilter");
 		return kparams;
 	}
 
