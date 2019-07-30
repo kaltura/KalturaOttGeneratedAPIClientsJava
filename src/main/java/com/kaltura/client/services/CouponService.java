@@ -28,8 +28,6 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -60,22 +58,5 @@ public class CouponService {
 	 */
     public static GetCouponBuilder get(String code)  {
 		return new GetCouponBuilder(code);
-	}
-	
-	public static class ListCouponBuilder extends ListResponseRequestBuilder<Coupon, Coupon.Tokenizer, ListCouponBuilder> {
-		
-		public ListCouponBuilder(CouponFilter filter) {
-			super(Coupon.class, "coupon", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	/**
-	 * Lists coupon codes.
-	 * 
-	 * @param filter Filter options
-	 */
-    public static ListCouponBuilder list(CouponFilter filter)  {
-		return new ListCouponBuilder(filter);
 	}
 }
