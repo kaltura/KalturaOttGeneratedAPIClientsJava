@@ -29,10 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -42,48 +39,28 @@ import java.util.Map;
  */
 
 /**
- * Filtering cloud external recordings
+ * Kaltura Houseold CouponCode Filter
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
-public class CloudRecordingFilter extends ExternalRecordingFilter {
+@MultiRequestBuilder.Tokenizer(HouseholdCouponCodeFilter.Tokenizer.class)
+public class HouseholdCouponCodeFilter extends RelatedObjectFilter {
 	
-	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
-	}
-
-	/**
-	 * Adapter Data
-	 */
-	private Map<String, StringValue> adapterData;
-
-	// adapterData:
-	public Map<String, StringValue> getAdapterData(){
-		return this.adapterData;
-	}
-	public void setAdapterData(Map<String, StringValue> adapterData){
-		this.adapterData = adapterData;
+	public interface Tokenizer extends RelatedObjectFilter.Tokenizer {
 	}
 
 
-	public CloudRecordingFilter() {
+
+	public HouseholdCouponCodeFilter() {
 		super();
 	}
 
-	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
+	public HouseholdCouponCodeFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCloudRecordingFilter");
-		kparams.add("adapterData", this.adapterData);
+		kparams.add("objectType", "KalturaHouseholdCouponCodeFilter");
 		return kparams;
 	}
 

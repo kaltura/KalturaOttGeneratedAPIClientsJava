@@ -41,49 +41,46 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filtering cloud external recordings
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
-public class CloudRecordingFilter extends ExternalRecordingFilter {
+@MultiRequestBuilder.Tokenizer(ExternalSeriesRecording.Tokenizer.class)
+public class ExternalSeriesRecording extends SeriesRecording {
 	
-	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
+	public interface Tokenizer extends SeriesRecording.Tokenizer {
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaData();
 	}
 
 	/**
-	 * Adapter Data
+	 * MetaData filtering
 	 */
-	private Map<String, StringValue> adapterData;
+	private Map<String, StringValue> metaData;
 
-	// adapterData:
-	public Map<String, StringValue> getAdapterData(){
-		return this.adapterData;
+	// metaData:
+	public Map<String, StringValue> getMetaData(){
+		return this.metaData;
 	}
-	public void setAdapterData(Map<String, StringValue> adapterData){
-		this.adapterData = adapterData;
+	public void setMetaData(Map<String, StringValue> metaData){
+		this.metaData = metaData;
 	}
 
 
-	public CloudRecordingFilter() {
+	public ExternalSeriesRecording() {
 		super();
 	}
 
-	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
+	public ExternalSeriesRecording(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
+		metaData = GsonParser.parseMap(jsonObject.getAsJsonObject("metaData"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCloudRecordingFilter");
-		kparams.add("adapterData", this.adapterData);
+		kparams.add("objectType", "KalturaExternalSeriesRecording");
+		kparams.add("metaData", this.metaData);
 		return kparams;
 	}
 

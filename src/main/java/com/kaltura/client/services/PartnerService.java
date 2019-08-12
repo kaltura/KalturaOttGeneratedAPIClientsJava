@@ -25,14 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -41,51 +37,19 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filtering cloud external recordings
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
-public class CloudRecordingFilter extends ExternalRecordingFilter {
+public class PartnerService {
 	
-	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
+	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
+		
+		public ExternalLoginPartnerBuilder() {
+			super(LoginSession.class, "partner", "externalLogin");
+		}
 	}
 
 	/**
-	 * Adapter Data
+	 * Returns a login session for external system (like OVP)
 	 */
-	private Map<String, StringValue> adapterData;
-
-	// adapterData:
-	public Map<String, StringValue> getAdapterData(){
-		return this.adapterData;
+    public static ExternalLoginPartnerBuilder externalLogin()  {
+		return new ExternalLoginPartnerBuilder();
 	}
-	public void setAdapterData(Map<String, StringValue> adapterData){
-		this.adapterData = adapterData;
-	}
-
-
-	public CloudRecordingFilter() {
-		super();
-	}
-
-	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCloudRecordingFilter");
-		kparams.add("adapterData", this.adapterData);
-		return kparams;
-	}
-
 }
-

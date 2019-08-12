@@ -25,14 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -40,52 +33,37 @@ import java.util.Map;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum HouseholdCouponOrderBy implements EnumAsString {
+	NONE("NONE");
 
-/**
- * Filtering cloud external recordings
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
-public class CloudRecordingFilter extends ExternalRecordingFilter {
-	
-	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
+	private String value;
+
+	HouseholdCouponOrderBy(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Adapter Data
-	 */
-	private Map<String, StringValue> adapterData;
-
-	// adapterData:
-	public Map<String, StringValue> getAdapterData(){
-		return this.adapterData;
-	}
-	public void setAdapterData(Map<String, StringValue> adapterData){
-		this.adapterData = adapterData;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-
-	public CloudRecordingFilter() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCloudRecordingFilter");
-		kparams.add("adapterData", this.adapterData);
-		return kparams;
-	}
-
+	public static HouseholdCouponOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over HouseholdCouponOrderBy defined values and compare the inner value with the given one:
+		for(HouseholdCouponOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return HouseholdCouponOrderBy.values().length > 0 ? HouseholdCouponOrderBy.values()[0]: null;
+   }
 }
-

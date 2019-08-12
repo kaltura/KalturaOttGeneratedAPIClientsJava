@@ -31,8 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -41,49 +39,50 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filtering cloud external recordings
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
-public class CloudRecordingFilter extends ExternalRecordingFilter {
+@MultiRequestBuilder.Tokenizer(CouponFilter.Tokenizer.class)
+public class CouponFilter extends Filter {
 	
-	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String couponCodesIn();
 	}
 
 	/**
-	 * Adapter Data
+	 * Comma separated list of coupon codes.
 	 */
-	private Map<String, StringValue> adapterData;
+	private String couponCodesIn;
 
-	// adapterData:
-	public Map<String, StringValue> getAdapterData(){
-		return this.adapterData;
+	// couponCodesIn:
+	public String getCouponCodesIn(){
+		return this.couponCodesIn;
 	}
-	public void setAdapterData(Map<String, StringValue> adapterData){
-		this.adapterData = adapterData;
+	public void setCouponCodesIn(String couponCodesIn){
+		this.couponCodesIn = couponCodesIn;
+	}
+
+	public void couponCodesIn(String multirequestToken){
+		setToken("couponCodesIn", multirequestToken);
 	}
 
 
-	public CloudRecordingFilter() {
+	public CouponFilter() {
 		super();
 	}
 
-	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
+	public CouponFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
+		couponCodesIn = GsonParser.parseString(jsonObject.get("couponCodesIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCloudRecordingFilter");
-		kparams.add("adapterData", this.adapterData);
+		kparams.add("objectType", "KalturaCouponFilter");
+		kparams.add("couponCodesIn", this.couponCodesIn);
 		return kparams;
 	}
 

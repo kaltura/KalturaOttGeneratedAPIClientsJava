@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -47,24 +49,20 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class CloudSeriesRecordingFilter extends SeriesRecordingFilter {
 	
 	public interface Tokenizer extends SeriesRecordingFilter.Tokenizer {
-		String adapterData();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
 	}
 
 	/**
 	 * Adapter Data
 	 */
-	private String adapterData;
+	private Map<String, StringValue> adapterData;
 
 	// adapterData:
-	public String getAdapterData(){
+	public Map<String, StringValue> getAdapterData(){
 		return this.adapterData;
 	}
-	public void setAdapterData(String adapterData){
+	public void setAdapterData(Map<String, StringValue> adapterData){
 		this.adapterData = adapterData;
-	}
-
-	public void adapterData(String multirequestToken){
-		setToken("adapterData", multirequestToken);
 	}
 
 
@@ -78,7 +76,7 @@ public class CloudSeriesRecordingFilter extends SeriesRecordingFilter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		adapterData = GsonParser.parseString(jsonObject.get("adapterData"));
+		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
 
 	}
 

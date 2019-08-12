@@ -31,8 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -42,48 +40,52 @@ import java.util.Map;
  */
 
 /**
- * Filtering cloud external recordings
+ * Household Coupon details
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
-public class CloudRecordingFilter extends ExternalRecordingFilter {
+@MultiRequestBuilder.Tokenizer(HouseholdCoupon.Tokenizer.class)
+public class HouseholdCoupon extends CrudObject {
 	
-	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
+	public interface Tokenizer extends CrudObject.Tokenizer {
+		String code();
 	}
 
 	/**
-	 * Adapter Data
+	 * Coupon code
 	 */
-	private Map<String, StringValue> adapterData;
+	private String code;
 
-	// adapterData:
-	public Map<String, StringValue> getAdapterData(){
-		return this.adapterData;
+	// code:
+	public String getCode(){
+		return this.code;
 	}
-	public void setAdapterData(Map<String, StringValue> adapterData){
-		this.adapterData = adapterData;
+	public void setCode(String code){
+		this.code = code;
+	}
+
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
 	}
 
 
-	public CloudRecordingFilter() {
+	public HouseholdCoupon() {
 		super();
 	}
 
-	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
+	public HouseholdCoupon(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
+		code = GsonParser.parseString(jsonObject.get("code"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCloudRecordingFilter");
-		kparams.add("adapterData", this.adapterData);
+		kparams.add("objectType", "KalturaHouseholdCoupon");
+		kparams.add("code", this.code);
 		return kparams;
 	}
 
