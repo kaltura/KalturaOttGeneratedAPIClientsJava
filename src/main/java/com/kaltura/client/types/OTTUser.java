@@ -69,8 +69,6 @@ public class OTTUser extends BaseOTTUser {
 		String roleIds();
 		String createDate();
 		String updateDate();
-		String lastLoginDate();
-		String failedLoginCount();
 	}
 
 	/**
@@ -141,14 +139,6 @@ public class OTTUser extends BaseOTTUser {
 	 * User last update date
 	 */
 	private Long updateDate;
-	/**
-	 * The date of the last successful login
-	 */
-	private Long lastLoginDate;
-	/**
-	 * The number of failed login attempts since the last successful login
-	 */
-	private Integer failedLoginCount;
 
 	// householdId:
 	public Integer getHouseholdId(){
@@ -298,14 +288,6 @@ public class OTTUser extends BaseOTTUser {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	// lastLoginDate:
-	public Long getLastLoginDate(){
-		return this.lastLoginDate;
-	}
-	// failedLoginCount:
-	public Integer getFailedLoginCount(){
-		return this.failedLoginCount;
-	}
 
 	public OTTUser() {
 		super();
@@ -334,8 +316,6 @@ public class OTTUser extends BaseOTTUser {
 		roleIds = GsonParser.parseString(jsonObject.get("roleIds"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-		lastLoginDate = GsonParser.parseLong(jsonObject.get("lastLoginDate"));
-		failedLoginCount = GsonParser.parseInt(jsonObject.get("failedLoginCount"));
 
 	}
 
