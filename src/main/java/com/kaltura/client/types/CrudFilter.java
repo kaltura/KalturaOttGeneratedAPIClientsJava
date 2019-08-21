@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,41 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Base Crud filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(CrudFilter.Tokenizer.class)
+public abstract class CrudFilter extends Filter {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends Filter.Tokenizer {
 	}
 
-	/**
-	 * Permission identifier
-	 */
-	private String group;
 
-	// group:
-	public String getGroup(){
-		return this.group;
-	}
 
-	public GroupPermission() {
+	public CrudFilter() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public CrudFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaCrudFilter");
 		return kparams;
 	}
 

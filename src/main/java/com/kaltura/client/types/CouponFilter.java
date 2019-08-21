@@ -40,40 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(CouponFilter.Tokenizer.class)
+public class CouponFilter extends Filter {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String couponCodesIn();
 	}
 
 	/**
-	 * Permission identifier
+	 * Comma separated list of coupon codes.
 	 */
-	private String group;
+	private String couponCodesIn;
 
-	// group:
-	public String getGroup(){
-		return this.group;
+	// couponCodesIn:
+	public String getCouponCodesIn(){
+		return this.couponCodesIn;
+	}
+	public void setCouponCodesIn(String couponCodesIn){
+		this.couponCodesIn = couponCodesIn;
 	}
 
-	public GroupPermission() {
+	public void couponCodesIn(String multirequestToken){
+		setToken("couponCodesIn", multirequestToken);
+	}
+
+
+	public CouponFilter() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public CouponFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
+		couponCodesIn = GsonParser.parseString(jsonObject.get("couponCodesIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaCouponFilter");
+		kparams.add("couponCodesIn", this.couponCodesIn);
 		return kparams;
 	}
 

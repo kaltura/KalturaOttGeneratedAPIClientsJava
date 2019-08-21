@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,44 +33,39 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum AssetIndexStatus implements EnumAsString {
+	OK("Ok"),
+	DELETED("Deleted"),
+	NOTUPDATED("NotUpdated");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
-	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	private String value;
+
+	AssetIndexStatus(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Permission identifier
-	 */
-	private String group;
-
-	// group:
-	public String getGroup(){
-		return this.group;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public GroupPermission() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
-		return kparams;
-	}
-
+	public static AssetIndexStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over AssetIndexStatus defined values and compare the inner value with the given one:
+		for(AssetIndexStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return AssetIndexStatus.values().length > 0 ? AssetIndexStatus.values()[0]: null;
+   }
 }
-

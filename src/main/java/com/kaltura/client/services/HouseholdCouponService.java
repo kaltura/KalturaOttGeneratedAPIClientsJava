@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Permission;
-import com.kaltura.client.types.PermissionFilter;
+import com.kaltura.client.types.HouseholdCoupon;
+import com.kaltura.client.types.HouseholdCouponFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,29 +40,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class PermissionService {
+public class HouseholdCouponService {
 	
-	public static class AddPermissionBuilder extends RequestBuilder<Permission, Permission.Tokenizer, AddPermissionBuilder> {
+	public static class AddHouseholdCouponBuilder extends RequestBuilder<HouseholdCoupon, HouseholdCoupon.Tokenizer, AddHouseholdCouponBuilder> {
 		
-		public AddPermissionBuilder(Permission permission) {
-			super(Permission.class, "permission", "add");
-			params.add("permission", permission);
+		public AddHouseholdCouponBuilder(HouseholdCoupon objectToAdd) {
+			super(HouseholdCoupon.class, "householdcoupon", "add");
+			params.add("objectToAdd", objectToAdd);
 		}
 	}
 
 	/**
-	 * Adds new permission
+	 * householdCoupon add
 	 * 
-	 * @param permission Permission to insert
+	 * @param objectToAdd householdCoupon details
 	 */
-    public static AddPermissionBuilder add(Permission permission)  {
-		return new AddPermissionBuilder(permission);
+    public static AddHouseholdCouponBuilder add(HouseholdCoupon objectToAdd)  {
+		return new AddHouseholdCouponBuilder(objectToAdd);
 	}
 	
-	public static class DeletePermissionBuilder extends NullRequestBuilder {
+	public static class DeleteHouseholdCouponBuilder extends NullRequestBuilder {
 		
-		public DeletePermissionBuilder(long id) {
-			super("permission", "delete");
+		public DeleteHouseholdCouponBuilder(String id) {
+			super("householdcoupon", "delete");
 			params.add("id", id);
 		}
 		
@@ -72,47 +72,32 @@ public class PermissionService {
 	}
 
 	/**
-	 * Deletes an existing permission
+	 * Remove coupon from household
 	 * 
-	 * @param id Permission ID to delete
+	 * @param id Coupon code
 	 */
-    public static DeletePermissionBuilder delete(long id)  {
-		return new DeletePermissionBuilder(id);
+    public static DeleteHouseholdCouponBuilder delete(String id)  {
+		return new DeleteHouseholdCouponBuilder(id);
 	}
 	
-	public static class GetCurrentPermissionsPermissionBuilder extends RequestBuilder<String, String, GetCurrentPermissionsPermissionBuilder> {
+	public static class ListHouseholdCouponBuilder extends ListResponseRequestBuilder<HouseholdCoupon, HouseholdCoupon.Tokenizer, ListHouseholdCouponBuilder> {
 		
-		public GetCurrentPermissionsPermissionBuilder() {
-			super(String.class, "permission", "getCurrentPermissions");
-		}
-	}
-
-	/**
-	 * Returns permission names as comma separated string
-	 */
-    public static GetCurrentPermissionsPermissionBuilder getCurrentPermissions()  {
-		return new GetCurrentPermissionsPermissionBuilder();
-	}
-	
-	public static class ListPermissionBuilder extends ListResponseRequestBuilder<Permission, Permission.Tokenizer, ListPermissionBuilder> {
-		
-		public ListPermissionBuilder(PermissionFilter filter) {
-			super(Permission.class, "permission", "list");
+		public ListHouseholdCouponBuilder(HouseholdCouponFilter filter) {
+			super(HouseholdCoupon.class, "householdcoupon", "list");
 			params.add("filter", filter);
 		}
 	}
 
-	public static ListPermissionBuilder list()  {
-		return list(null);
+	public static ListHouseholdCouponBuilder list()  {
+		return list();
 	}
 
 	/**
-	 * Retrieving permissions by identifiers, if filter is empty, returns all partner
-	  permissions
+	 * Gets all HouseholdCoupon items for a household
 	 * 
-	 * @param filter Filter for permissions
+	 * @param filter Request filter
 	 */
-    public static ListPermissionBuilder list(PermissionFilter filter)  {
-		return new ListPermissionBuilder(filter);
+    public static ListHouseholdCouponBuilder list(HouseholdCouponFilter filter)  {
+		return new ListHouseholdCouponBuilder(filter);
 	}
 }
