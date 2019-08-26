@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,25 +39,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SubscribeReference.Tokenizer.class)
-public class SubscribeReference extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BusinessModuleRuleAction.Tokenizer.class)
+public abstract class BusinessModuleRuleAction extends RuleAction {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends RuleAction.Tokenizer {
 	}
 
 
 
-	public SubscribeReference() {
+	public BusinessModuleRuleAction() {
 		super();
 	}
 
-	public SubscribeReference(JsonObject jsonObject) throws APIException {
+	public BusinessModuleRuleAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSubscribeReference");
+		kparams.add("objectType", "KalturaBusinessModuleRuleAction");
 		return kparams;
 	}
 
