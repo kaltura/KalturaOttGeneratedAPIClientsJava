@@ -37,7 +37,8 @@ public enum LinearChannelType implements EnumAsString {
 	UNKNOWN("UNKNOWN"),
 	DTT("DTT"),
 	OTT("OTT"),
-	DTT_AND_OTT("DTT_AND_OTT");
+	DTT_AND_OTT("DTT_AND_OTT"),
+	VRM_EXPORT("VRM_EXPORT");
 
 	private String value;
 
