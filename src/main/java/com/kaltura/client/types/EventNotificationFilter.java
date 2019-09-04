@@ -44,10 +44,15 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class EventNotificationFilter extends CrudFilter {
 	
 	public interface Tokenizer extends CrudFilter.Tokenizer {
+		String idEqual();
 		String objectIdEqual();
 		String objectTypeEqual();
 	}
 
+	/**
+	 * Indicates which event notification to return by their event notifications Id.
+	 */
+	private String idEqual;
 	/**
 	 * Indicates which objectId to return by their event notifications.
 	 */
@@ -56,6 +61,18 @@ public class EventNotificationFilter extends CrudFilter {
 	 * Indicates which objectType to return by their event notifications.
 	 */
 	private String objectTypeEqual;
+
+	// idEqual:
+	public String getIdEqual(){
+		return this.idEqual;
+	}
+	public void setIdEqual(String idEqual){
+		this.idEqual = idEqual;
+	}
+
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
+	}
 
 	// objectIdEqual:
 	public Long getObjectIdEqual(){
@@ -92,6 +109,7 @@ public class EventNotificationFilter extends CrudFilter {
 		if(jsonObject == null) return;
 
 		// set members values:
+		idEqual = GsonParser.parseString(jsonObject.get("idEqual"));
 		objectIdEqual = GsonParser.parseLong(jsonObject.get("objectIdEqual"));
 		objectTypeEqual = GsonParser.parseString(jsonObject.get("objectTypeEqual"));
 
@@ -100,6 +118,7 @@ public class EventNotificationFilter extends CrudFilter {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaEventNotificationFilter");
+		kparams.add("idEqual", this.idEqual);
 		kparams.add("objectIdEqual", this.objectIdEqual);
 		kparams.add("objectTypeEqual", this.objectTypeEqual);
 		return kparams;
