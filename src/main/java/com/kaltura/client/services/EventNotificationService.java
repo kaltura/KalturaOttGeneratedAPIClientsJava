@@ -72,10 +72,6 @@ public class EventNotificationService {
 		}
 	}
 
-	public static ListEventNotificationBuilder list()  {
-		return list();
-	}
-
 	/**
 	 * Gets all EventNotification items for a given Object id and type
 	 * 
