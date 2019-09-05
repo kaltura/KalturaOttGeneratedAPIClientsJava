@@ -50,7 +50,7 @@ public class EventNotification extends CrudObject {
 	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String objectId();
-		String objectType();
+		String eventObjectType();
 		String message();
 		String status();
 		String actionType();
@@ -67,9 +67,9 @@ public class EventNotification extends CrudObject {
 	 */
 	private Long objectId;
 	/**
-	 * Object type
+	 * Event object type
 	 */
-	private String objectType;
+	private String eventObjectType;
 	/**
 	 * Message
 	 */
@@ -115,16 +115,16 @@ public class EventNotification extends CrudObject {
 		setToken("objectId", multirequestToken);
 	}
 
-	// objectType:
-	public String getObjectType(){
-		return this.objectType;
+	// eventObjectType:
+	public String getEventObjectType(){
+		return this.eventObjectType;
 	}
-	public void setObjectType(String objectType){
-		this.objectType = objectType;
+	public void setEventObjectType(String eventObjectType){
+		this.eventObjectType = eventObjectType;
 	}
 
-	public void objectType(String multirequestToken){
-		setToken("objectType", multirequestToken);
+	public void eventObjectType(String multirequestToken){
+		setToken("eventObjectType", multirequestToken);
 	}
 
 	// message:
@@ -184,7 +184,7 @@ public class EventNotification extends CrudObject {
 		// set members values:
 		id = GsonParser.parseString(jsonObject.get("id"));
 		objectId = GsonParser.parseLong(jsonObject.get("objectId"));
-		objectType = GsonParser.parseString(jsonObject.get("objectType"));
+		eventObjectType = GsonParser.parseString(jsonObject.get("eventObjectType"));
 		message = GsonParser.parseString(jsonObject.get("message"));
 		status = EventNotificationStatus.get(GsonParser.parseString(jsonObject.get("status")));
 		actionType = GsonParser.parseString(jsonObject.get("actionType"));
@@ -198,7 +198,7 @@ public class EventNotification extends CrudObject {
 		kparams.add("objectType", "KalturaEventNotification");
 		kparams.add("id", this.id);
 		kparams.add("objectId", this.objectId);
-		kparams.add("objectType", this.objectType);
+		kparams.add("eventObjectType", this.eventObjectType);
 		kparams.add("message", this.message);
 		kparams.add("status", this.status);
 		kparams.add("actionType", this.actionType);
