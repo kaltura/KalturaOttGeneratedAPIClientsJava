@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Password policy settings filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CrudFilter.Tokenizer.class)
-public abstract class CrudFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
+public class PasswordPolicyFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends CrudFilter.Tokenizer {
+		String userRoleIdIn();
+	}
+
+	/**
+	 * Comma separated list of role Ids.
+	 */
+	private String userRoleIdIn;
+
+	// userRoleIdIn:
+	public String getUserRoleIdIn(){
+		return this.userRoleIdIn;
+	}
+	public void setUserRoleIdIn(String userRoleIdIn){
+		this.userRoleIdIn = userRoleIdIn;
+	}
+
+	public void userRoleIdIn(String multirequestToken){
+		setToken("userRoleIdIn", multirequestToken);
 	}
 
 
-
-	public CrudFilter() {
+	public PasswordPolicyFilter() {
 		super();
 	}
 
-	public CrudFilter(JsonObject jsonObject) throws APIException {
+	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCrudFilter");
+		kparams.add("objectType", "KalturaPasswordPolicyFilter");
+		kparams.add("userRoleIdIn", this.userRoleIdIn);
 		return kparams;
 	}
 

@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +40,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * KalturaRegex
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CrudFilter.Tokenizer.class)
-public abstract class CrudFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(Regex.Tokenizer.class)
+public class Regex extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String expression();
+		String description();
+	}
+
+	/**
+	 * regex expression
+	 */
+	private String expression;
+	/**
+	 * description
+	 */
+	private String description;
+
+	// expression:
+	public String getExpression(){
+		return this.expression;
+	}
+	public void setExpression(String expression){
+		this.expression = expression;
+	}
+
+	public void expression(String multirequestToken){
+		setToken("expression", multirequestToken);
+	}
+
+	// description:
+	public String getDescription(){
+		return this.description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
+
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
 	}
 
 
-
-	public CrudFilter() {
+	public Regex() {
 		super();
 	}
 
-	public CrudFilter(JsonObject jsonObject) throws APIException {
+	public Regex(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		expression = GsonParser.parseString(jsonObject.get("expression"));
+		description = GsonParser.parseString(jsonObject.get("description"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCrudFilter");
+		kparams.add("objectType", "KalturaRegex");
+		kparams.add("expression", this.expression);
+		kparams.add("description", this.description);
 		return kparams;
 	}
 
