@@ -59,8 +59,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String mailSettings();
 		String dateFormat();
 		String householdLimitationModule();
-		String enableRegionFiltering();
-		String defaultRegion();
 	}
 
 	/**
@@ -103,14 +101,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Household limitation&amp;#160;module
 	 */
 	private Integer householdLimitationModule;
-	/**
-	 * Enable Region Filtering
-	 */
-	private Boolean enableRegionFiltering;
-	/**
-	 * Default Region
-	 */
-	private Integer defaultRegion;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -232,30 +222,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		setToken("householdLimitationModule", multirequestToken);
 	}
 
-	// enableRegionFiltering:
-	public Boolean getEnableRegionFiltering(){
-		return this.enableRegionFiltering;
-	}
-	public void setEnableRegionFiltering(Boolean enableRegionFiltering){
-		this.enableRegionFiltering = enableRegionFiltering;
-	}
-
-	public void enableRegionFiltering(String multirequestToken){
-		setToken("enableRegionFiltering", multirequestToken);
-	}
-
-	// defaultRegion:
-	public Integer getDefaultRegion(){
-		return this.defaultRegion;
-	}
-	public void setDefaultRegion(Integer defaultRegion){
-		this.defaultRegion = defaultRegion;
-	}
-
-	public void defaultRegion(String multirequestToken){
-		setToken("defaultRegion", multirequestToken);
-	}
-
 
 	public GeneralPartnerConfig() {
 		super();
@@ -277,8 +243,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		mailSettings = GsonParser.parseString(jsonObject.get("mailSettings"));
 		dateFormat = GsonParser.parseString(jsonObject.get("dateFormat"));
 		householdLimitationModule = GsonParser.parseInt(jsonObject.get("householdLimitationModule"));
-		enableRegionFiltering = GsonParser.parseBoolean(jsonObject.get("enableRegionFiltering"));
-		defaultRegion = GsonParser.parseInt(jsonObject.get("defaultRegion"));
 
 	}
 
@@ -295,8 +259,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("mailSettings", this.mailSettings);
 		kparams.add("dateFormat", this.dateFormat);
 		kparams.add("householdLimitationModule", this.householdLimitationModule);
-		kparams.add("enableRegionFiltering", this.enableRegionFiltering);
-		kparams.add("defaultRegion", this.defaultRegion);
 		return kparams;
 	}
 

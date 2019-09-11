@@ -38,6 +38,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Base Crud filter
+ */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CrudFilter.Tokenizer.class)
 public abstract class CrudFilter extends Filter {

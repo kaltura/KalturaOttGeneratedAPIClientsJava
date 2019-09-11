@@ -30,8 +30,6 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.Region;
 import com.kaltura.client.types.RegionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.NullRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -41,44 +39,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class RegionService {
-	
-	public static class AddRegionBuilder extends RequestBuilder<Region, Region.Tokenizer, AddRegionBuilder> {
-		
-		public AddRegionBuilder(Region region) {
-			super(Region.class, "region", "add");
-			params.add("region", region);
-		}
-	}
-
-	/**
-	 * Adds a new region for partner
-	 * 
-	 * @param region Region to add
-	 */
-    public static AddRegionBuilder add(Region region)  {
-		return new AddRegionBuilder(region);
-	}
-	
-	public static class DeleteRegionBuilder extends NullRequestBuilder {
-		
-		public DeleteRegionBuilder(int id) {
-			super("region", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete an existing region
-	 * 
-	 * @param id Region ID to delete
-	 */
-    public static DeleteRegionBuilder delete(int id)  {
-		return new DeleteRegionBuilder(id);
-	}
 	
 	public static class ListRegionBuilder extends ListResponseRequestBuilder<Region, Region.Tokenizer, ListRegionBuilder> {
 		
@@ -95,28 +55,5 @@ public class RegionService {
 	 */
     public static ListRegionBuilder list(RegionFilter filter)  {
 		return new ListRegionBuilder(filter);
-	}
-	
-	public static class UpdateRegionBuilder extends RequestBuilder<Region, Region.Tokenizer, UpdateRegionBuilder> {
-		
-		public UpdateRegionBuilder(int id, Region region) {
-			super(Region.class, "region", "update");
-			params.add("id", id);
-			params.add("region", region);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update an existing region
-	 * 
-	 * @param id Region ID to update
-	 * @param region Region to update
-	 */
-    public static UpdateRegionBuilder update(int id, Region region)  {
-		return new UpdateRegionBuilder(id, region);
 	}
 }
