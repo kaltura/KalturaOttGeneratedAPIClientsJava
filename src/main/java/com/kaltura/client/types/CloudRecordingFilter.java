@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -39,41 +41,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Filtering cloud external recordings
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(CloudRecordingFilter.Tokenizer.class)
+public class CloudRecordingFilter extends ExternalRecordingFilter {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends ExternalRecordingFilter.Tokenizer {
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> adapterData();
 	}
 
 	/**
-	 * Permission identifier
+	 * Adapter Data
 	 */
-	private String group;
+	private Map<String, StringValue> adapterData;
 
-	// group:
-	public String getGroup(){
-		return this.group;
+	// adapterData:
+	public Map<String, StringValue> getAdapterData(){
+		return this.adapterData;
+	}
+	public void setAdapterData(Map<String, StringValue> adapterData){
+		this.adapterData = adapterData;
 	}
 
-	public GroupPermission() {
+
+	public CloudRecordingFilter() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public CloudRecordingFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
+		adapterData = GsonParser.parseMap(jsonObject.getAsJsonObject("adapterData"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaCloudRecordingFilter");
+		kparams.add("adapterData", this.adapterData);
 		return kparams;
 	}
 

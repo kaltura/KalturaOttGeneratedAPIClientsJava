@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Region;
-import com.kaltura.client.types.RegionFilter;
+import com.kaltura.client.types.HouseholdCoupon;
+import com.kaltura.client.types.HouseholdCouponFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -40,29 +40,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class RegionService {
+public class HouseholdCouponService {
 	
-	public static class AddRegionBuilder extends RequestBuilder<Region, Region.Tokenizer, AddRegionBuilder> {
+	public static class AddHouseholdCouponBuilder extends RequestBuilder<HouseholdCoupon, HouseholdCoupon.Tokenizer, AddHouseholdCouponBuilder> {
 		
-		public AddRegionBuilder(Region region) {
-			super(Region.class, "region", "add");
-			params.add("region", region);
+		public AddHouseholdCouponBuilder(HouseholdCoupon objectToAdd) {
+			super(HouseholdCoupon.class, "householdcoupon", "add");
+			params.add("objectToAdd", objectToAdd);
 		}
 	}
 
 	/**
-	 * Adds a new region for partner
+	 * householdCoupon add
 	 * 
-	 * @param region Region to add
+	 * @param objectToAdd householdCoupon details
 	 */
-    public static AddRegionBuilder add(Region region)  {
-		return new AddRegionBuilder(region);
+    public static AddHouseholdCouponBuilder add(HouseholdCoupon objectToAdd)  {
+		return new AddHouseholdCouponBuilder(objectToAdd);
 	}
 	
-	public static class DeleteRegionBuilder extends NullRequestBuilder {
+	public static class DeleteHouseholdCouponBuilder extends NullRequestBuilder {
 		
-		public DeleteRegionBuilder(int id) {
-			super("region", "delete");
+		public DeleteHouseholdCouponBuilder(String id) {
+			super("householdcoupon", "delete");
 			params.add("id", id);
 		}
 		
@@ -72,51 +72,32 @@ public class RegionService {
 	}
 
 	/**
-	 * Delete an existing region
+	 * Remove coupon from household
 	 * 
-	 * @param id Region ID to delete
+	 * @param id Coupon code
 	 */
-    public static DeleteRegionBuilder delete(int id)  {
-		return new DeleteRegionBuilder(id);
+    public static DeleteHouseholdCouponBuilder delete(String id)  {
+		return new DeleteHouseholdCouponBuilder(id);
 	}
 	
-	public static class ListRegionBuilder extends ListResponseRequestBuilder<Region, Region.Tokenizer, ListRegionBuilder> {
+	public static class ListHouseholdCouponBuilder extends ListResponseRequestBuilder<HouseholdCoupon, HouseholdCoupon.Tokenizer, ListHouseholdCouponBuilder> {
 		
-		public ListRegionBuilder(RegionFilter filter) {
-			super(Region.class, "region", "list");
+		public ListHouseholdCouponBuilder(HouseholdCouponFilter filter) {
+			super(HouseholdCoupon.class, "householdcoupon", "list");
 			params.add("filter", filter);
 		}
 	}
 
-	/**
-	 * Returns all regions for the partner
-	 * 
-	 * @param filter Regions filter
-	 */
-    public static ListRegionBuilder list(RegionFilter filter)  {
-		return new ListRegionBuilder(filter);
-	}
-	
-	public static class UpdateRegionBuilder extends RequestBuilder<Region, Region.Tokenizer, UpdateRegionBuilder> {
-		
-		public UpdateRegionBuilder(int id, Region region) {
-			super(Region.class, "region", "update");
-			params.add("id", id);
-			params.add("region", region);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
+	public static ListHouseholdCouponBuilder list()  {
+		return list();
 	}
 
 	/**
-	 * Update an existing region
+	 * Gets all HouseholdCoupon items for a household
 	 * 
-	 * @param id Region ID to update
-	 * @param region Region to update
+	 * @param filter Request filter
 	 */
-    public static UpdateRegionBuilder update(int id, Region region)  {
-		return new UpdateRegionBuilder(id, region);
+    public static ListHouseholdCouponBuilder list(HouseholdCouponFilter filter)  {
+		return new ListHouseholdCouponBuilder(filter);
 	}
 }

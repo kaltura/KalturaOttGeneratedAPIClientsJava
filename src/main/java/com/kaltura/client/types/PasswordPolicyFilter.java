@@ -39,41 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Password policy settings filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
+public class PasswordPolicyFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends CrudFilter.Tokenizer {
+		String userRoleIdIn();
 	}
 
 	/**
-	 * Permission identifier
+	 * Comma separated list of role Ids.
 	 */
-	private String group;
+	private String userRoleIdIn;
 
-	// group:
-	public String getGroup(){
-		return this.group;
+	// userRoleIdIn:
+	public String getUserRoleIdIn(){
+		return this.userRoleIdIn;
+	}
+	public void setUserRoleIdIn(String userRoleIdIn){
+		this.userRoleIdIn = userRoleIdIn;
 	}
 
-	public GroupPermission() {
+	public void userRoleIdIn(String multirequestToken){
+		setToken("userRoleIdIn", multirequestToken);
+	}
+
+
+	public PasswordPolicyFilter() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
+		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaPasswordPolicyFilter");
+		kparams.add("userRoleIdIn", this.userRoleIdIn);
 		return kparams;
 	}
 

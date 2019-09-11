@@ -25,12 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.LoginSession;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,43 +37,19 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+public class PartnerService {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
+		
+		public ExternalLoginPartnerBuilder() {
+			super(LoginSession.class, "partner", "externalLogin");
+		}
 	}
 
 	/**
-	 * Permission identifier
+	 * Returns a login session for external system (like OVP)
 	 */
-	private String group;
-
-	// group:
-	public String getGroup(){
-		return this.group;
+    public static ExternalLoginPartnerBuilder externalLogin()  {
+		return new ExternalLoginPartnerBuilder();
 	}
-
-	public GroupPermission() {
-		super();
-	}
-
-	public GroupPermission(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
-		return kparams;
-	}
-
 }
-

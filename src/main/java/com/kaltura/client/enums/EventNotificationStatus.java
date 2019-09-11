@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,44 +33,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum EventNotificationStatus implements EnumAsString {
+	SENT("SENT"),
+	FAILED("FAILED"),
+	SUCCESS("SUCCESS"),
+	FAILED_TO_SEND("FAILED_TO_SEND");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
-	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	private String value;
+
+	EventNotificationStatus(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Permission identifier
-	 */
-	private String group;
-
-	// group:
-	public String getGroup(){
-		return this.group;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public GroupPermission() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
-		return kparams;
-	}
-
+	public static EventNotificationStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over EventNotificationStatus defined values and compare the inner value with the given one:
+		for(EventNotificationStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return EventNotificationStatus.values().length > 0 ? EventNotificationStatus.values()[0]: null;
+   }
 }
-

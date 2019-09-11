@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilter;
+import com.kaltura.client.types.EventNotification;
+import com.kaltura.client.types.EventNotificationFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,43 +39,45 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class CouponService {
+public class EventNotificationService {
 	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
+	public static class UpdateEventNotificationBuilder extends RequestBuilder<EventNotification, EventNotification.Tokenizer, UpdateEventNotificationBuilder> {
 		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
+		public UpdateEventNotificationBuilder(String id, EventNotification objectToUpdate) {
+			super(EventNotification.class, "eventnotification", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
 		}
 		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
 	/**
-	 * Returns information about a coupon
+	 * eventNotification update
 	 * 
-	 * @param code Coupon code
+	 * @param id Object ID to update
+	 * @param objectToUpdate eventNotification details
 	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
+    public static UpdateEventNotificationBuilder update(String id, EventNotification objectToUpdate)  {
+		return new UpdateEventNotificationBuilder(id, objectToUpdate);
 	}
 	
-	public static class ListCouponBuilder extends ListResponseRequestBuilder<Coupon, Coupon.Tokenizer, ListCouponBuilder> {
+	public static class ListEventNotificationBuilder extends ListResponseRequestBuilder<EventNotification, EventNotification.Tokenizer, ListEventNotificationBuilder> {
 		
-		public ListCouponBuilder(CouponFilter filter) {
-			super(Coupon.class, "coupon", "list");
+		public ListEventNotificationBuilder(EventNotificationFilter filter) {
+			super(EventNotification.class, "eventnotification", "list");
 			params.add("filter", filter);
 		}
 	}
 
 	/**
-	 * Lists coupon codes.
+	 * Gets all EventNotification items for a given Object id and type
 	 * 
-	 * @param filter Filter options
+	 * @param filter Request filter
 	 */
-    public static ListCouponBuilder list(CouponFilter filter)  {
-		return new ListCouponBuilder(filter);
+    public static ListEventNotificationBuilder list(EventNotificationFilter filter)  {
+		return new ListEventNotificationBuilder(filter);
 	}
 }

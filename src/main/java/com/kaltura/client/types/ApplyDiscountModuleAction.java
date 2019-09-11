@@ -41,9 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ApplyDiscountModuleAction.Tokenizer.class)
-public class ApplyDiscountModuleAction extends RuleAction {
+public class ApplyDiscountModuleAction extends BusinessModuleRuleAction {
 	
-	public interface Tokenizer extends RuleAction.Tokenizer {
+	public interface Tokenizer extends BusinessModuleRuleAction.Tokenizer {
 		String discountModuleId();
 	}
 

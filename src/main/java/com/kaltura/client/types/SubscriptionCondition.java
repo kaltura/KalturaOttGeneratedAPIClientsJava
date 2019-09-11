@@ -40,40 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(SubscriptionCondition.Tokenizer.class)
+public abstract class SubscriptionCondition extends Condition {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String idIn();
 	}
 
 	/**
-	 * Permission identifier
+	 * Comma separated subscription IDs list
 	 */
-	private String group;
+	private String idIn;
 
-	// group:
-	public String getGroup(){
-		return this.group;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public GroupPermission() {
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
+	}
+
+
+	public SubscriptionCondition() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public SubscriptionCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaSubscriptionCondition");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 

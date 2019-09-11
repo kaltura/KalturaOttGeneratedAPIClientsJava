@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,40 +41,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GroupPermission.Tokenizer.class)
-public class GroupPermission extends Permission {
+@MultiRequestBuilder.Tokenizer(HouseholdCouponFilter.Tokenizer.class)
+public class HouseholdCouponFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Permission.Tokenizer {
-		String group();
+	public interface Tokenizer extends CrudFilter.Tokenizer {
+		String businessModuleTypeEqual();
+		String businessModuleIdEqual();
 	}
 
 	/**
-	 * Permission identifier
+	 * Indicates which household coupons list to return by their business module type.
 	 */
-	private String group;
+	private TransactionType businessModuleTypeEqual;
+	/**
+	 * Indicates which household coupons list to return by their business module ID.
+	 */
+	private Long businessModuleIdEqual;
 
-	// group:
-	public String getGroup(){
-		return this.group;
+	// businessModuleTypeEqual:
+	public TransactionType getBusinessModuleTypeEqual(){
+		return this.businessModuleTypeEqual;
+	}
+	public void setBusinessModuleTypeEqual(TransactionType businessModuleTypeEqual){
+		this.businessModuleTypeEqual = businessModuleTypeEqual;
 	}
 
-	public GroupPermission() {
+	public void businessModuleTypeEqual(String multirequestToken){
+		setToken("businessModuleTypeEqual", multirequestToken);
+	}
+
+	// businessModuleIdEqual:
+	public Long getBusinessModuleIdEqual(){
+		return this.businessModuleIdEqual;
+	}
+	public void setBusinessModuleIdEqual(Long businessModuleIdEqual){
+		this.businessModuleIdEqual = businessModuleIdEqual;
+	}
+
+	public void businessModuleIdEqual(String multirequestToken){
+		setToken("businessModuleIdEqual", multirequestToken);
+	}
+
+
+	public HouseholdCouponFilter() {
 		super();
 	}
 
-	public GroupPermission(JsonObject jsonObject) throws APIException {
+	public HouseholdCouponFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		group = GsonParser.parseString(jsonObject.get("group"));
+		businessModuleTypeEqual = TransactionType.get(GsonParser.parseString(jsonObject.get("businessModuleTypeEqual")));
+		businessModuleIdEqual = GsonParser.parseLong(jsonObject.get("businessModuleIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGroupPermission");
+		kparams.add("objectType", "KalturaHouseholdCouponFilter");
+		kparams.add("businessModuleTypeEqual", this.businessModuleTypeEqual);
+		kparams.add("businessModuleIdEqual", this.businessModuleIdEqual);
 		return kparams;
 	}
 
