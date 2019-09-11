@@ -25,11 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -37,29 +33,37 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum PasswordPolicyOrderBy implements EnumAsString {
+	NONE("NONE");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CrudFilter.Tokenizer.class)
-public abstract class CrudFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
+	private String value;
+
+	PasswordPolicyOrderBy(String value) {
+		this.value = value;
 	}
 
-
-
-	public CrudFilter() {
-		super();
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public CrudFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCrudFilter");
-		return kparams;
-	}
-
+	public static PasswordPolicyOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over PasswordPolicyOrderBy defined values and compare the inner value with the given one:
+		for(PasswordPolicyOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return PasswordPolicyOrderBy.values().length > 0 ? PasswordPolicyOrderBy.values()[0]: null;
+   }
 }
-
