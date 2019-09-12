@@ -89,7 +89,7 @@ public class HouseholdCouponService {
 	}
 
 	public static ListHouseholdCouponBuilder list()  {
-		return list();
+		return list(null);
 	}
 
 	/**
