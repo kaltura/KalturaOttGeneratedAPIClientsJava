@@ -111,6 +111,10 @@ public class PasswordPolicyService {
 		}
 	}
 
+	public static ListPasswordPolicyBuilder list()  {
+		return list(null);
+	}
+
     public static ListPasswordPolicyBuilder list(PasswordPolicyFilter filter)  {
 		return new ListPasswordPolicyBuilder(filter);
 	}
