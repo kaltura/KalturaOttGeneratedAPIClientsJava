@@ -33,12 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum AssetFirstImagePerRatioOrderBy implements EnumAsString {
+public enum AssetImagePerRatioOrderBy implements EnumAsString {
 	NONE("NONE");
 
 	private String value;
 
-	AssetFirstImagePerRatioOrderBy(String value) {
+	AssetImagePerRatioOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -51,19 +51,19 @@ public enum AssetFirstImagePerRatioOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static AssetFirstImagePerRatioOrderBy get(String value) {
+	public static AssetImagePerRatioOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over AssetFirstImagePerRatioOrderBy defined values and compare the inner value with the given one:
-		for(AssetFirstImagePerRatioOrderBy item: values()) {
+		// goes over AssetImagePerRatioOrderBy defined values and compare the inner value with the given one:
+		for(AssetImagePerRatioOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetFirstImagePerRatioOrderBy.values().length > 0 ? AssetFirstImagePerRatioOrderBy.values()[0]: null;
+		return AssetImagePerRatioOrderBy.values().length > 0 ? AssetImagePerRatioOrderBy.values()[0]: null;
    }
 }

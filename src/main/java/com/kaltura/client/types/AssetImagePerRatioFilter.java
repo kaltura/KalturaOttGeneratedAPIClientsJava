@@ -39,28 +39,28 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Kaltura asset first image per ratio filter
+ * Kaltura asset image per ratio filter
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetFirstImagePerRatioFilter.Tokenizer.class)
-public class AssetFirstImagePerRatioFilter extends RelatedObjectFilter {
+@MultiRequestBuilder.Tokenizer(AssetImagePerRatioFilter.Tokenizer.class)
+public class AssetImagePerRatioFilter extends RelatedObjectFilter {
 	
 	public interface Tokenizer extends RelatedObjectFilter.Tokenizer {
 	}
 
 
 
-	public AssetFirstImagePerRatioFilter() {
+	public AssetImagePerRatioFilter() {
 		super();
 	}
 
-	public AssetFirstImagePerRatioFilter(JsonObject jsonObject) throws APIException {
+	public AssetImagePerRatioFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetFirstImagePerRatioFilter");
+		kparams.add("objectType", "KalturaAssetImagePerRatioFilter");
 		return kparams;
 	}
 
