@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,100 +40,28 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Rule base
+ * Base class that defines segment action
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Rule.Tokenizer.class)
-public abstract class Rule extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(BaseSegmentAction.Tokenizer.class)
+public class BaseSegmentAction extends ObjectBase {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
-		String id();
-		String name();
-		String description();
-		String label();
-	}
-
-	/**
-	 * ID
-	 */
-	private Long id;
-	/**
-	 * Name
-	 */
-	private String name;
-	/**
-	 * Description
-	 */
-	private String description;
-	/**
-	 * Label
-	 */
-	private String label;
-
-	// id:
-	public Long getId(){
-		return this.id;
-	}
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
-
-	// label:
-	public String getLabel(){
-		return this.label;
-	}
-	public void setLabel(String label){
-		this.label = label;
-	}
-
-	public void label(String multirequestToken){
-		setToken("label", multirequestToken);
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
 
-	public Rule() {
+
+	public BaseSegmentAction() {
 		super();
 	}
 
-	public Rule(JsonObject jsonObject) throws APIException {
+	public BaseSegmentAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		description = GsonParser.parseString(jsonObject.get("description"));
-		label = GsonParser.parseString(jsonObject.get("label"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRule");
-		kparams.add("name", this.name);
-		kparams.add("description", this.description);
-		kparams.add("label", this.label);
+		kparams.add("objectType", "KalturaBaseSegmentAction");
 		return kparams;
 	}
 

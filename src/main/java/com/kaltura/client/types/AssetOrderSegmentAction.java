@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,40 +42,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Rule base
+ * Asset order segment action
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Rule.Tokenizer.class)
-public abstract class Rule extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(AssetOrderSegmentAction.Tokenizer.class)
+public class AssetOrderSegmentAction extends BaseSegmentAction {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
-		String id();
+	public interface Tokenizer extends BaseSegmentAction.Tokenizer {
 		String name();
-		String description();
-		String label();
+		RequestBuilder.ListTokenizer<StringValue.Tokenizer> values();
 	}
 
 	/**
-	 * ID
-	 */
-	private Long id;
-	/**
-	 * Name
+	 * Action name
 	 */
 	private String name;
 	/**
-	 * Description
+	 * Action values
 	 */
-	private String description;
-	/**
-	 * Label
-	 */
-	private String label;
+	private List<StringValue> values;
 
-	// id:
-	public Long getId(){
-		return this.id;
-	}
 	// name:
 	public String getName(){
 		return this.name;
@@ -86,54 +74,35 @@ public abstract class Rule extends OTTObjectSupportNullable {
 		setToken("name", multirequestToken);
 	}
 
-	// description:
-	public String getDescription(){
-		return this.description;
+	// values:
+	public List<StringValue> getValues(){
+		return this.values;
 	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
-
-	// label:
-	public String getLabel(){
-		return this.label;
-	}
-	public void setLabel(String label){
-		this.label = label;
-	}
-
-	public void label(String multirequestToken){
-		setToken("label", multirequestToken);
+	public void setValues(List<StringValue> values){
+		this.values = values;
 	}
 
 
-	public Rule() {
+	public AssetOrderSegmentAction() {
 		super();
 	}
 
-	public Rule(JsonObject jsonObject) throws APIException {
+	public AssetOrderSegmentAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		description = GsonParser.parseString(jsonObject.get("description"));
-		label = GsonParser.parseString(jsonObject.get("label"));
+		values = GsonParser.parseArray(jsonObject.getAsJsonArray("values"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRule");
+		kparams.add("objectType", "KalturaAssetOrderSegmentAction");
 		kparams.add("name", this.name);
-		kparams.add("description", this.description);
-		kparams.add("label", this.label);
+		kparams.add("values", this.values);
 		return kparams;
 	}
 
