@@ -49,6 +49,7 @@ public class CollectionFilter extends Filter {
 	public interface Tokenizer extends Filter.Tokenizer {
 		String collectionIdIn();
 		String mediaFileIdEqual();
+		String couponGroupIdEqual();
 	}
 
 	/**
@@ -59,6 +60,10 @@ public class CollectionFilter extends Filter {
 	 * Media-file ID to get the subscriptions by
 	 */
 	private Integer mediaFileIdEqual;
+	/**
+	 * couponGroupIdEqual
+	 */
+	private Integer couponGroupIdEqual;
 
 	// collectionIdIn:
 	public String getCollectionIdIn(){
@@ -84,6 +89,18 @@ public class CollectionFilter extends Filter {
 		setToken("mediaFileIdEqual", multirequestToken);
 	}
 
+	// couponGroupIdEqual:
+	public Integer getCouponGroupIdEqual(){
+		return this.couponGroupIdEqual;
+	}
+	public void setCouponGroupIdEqual(Integer couponGroupIdEqual){
+		this.couponGroupIdEqual = couponGroupIdEqual;
+	}
+
+	public void couponGroupIdEqual(String multirequestToken){
+		setToken("couponGroupIdEqual", multirequestToken);
+	}
+
 
 	public CollectionFilter() {
 		super();
@@ -97,6 +114,7 @@ public class CollectionFilter extends Filter {
 		// set members values:
 		collectionIdIn = GsonParser.parseString(jsonObject.get("collectionIdIn"));
 		mediaFileIdEqual = GsonParser.parseInt(jsonObject.get("mediaFileIdEqual"));
+		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
 
 	}
 
@@ -105,6 +123,7 @@ public class CollectionFilter extends Filter {
 		kparams.add("objectType", "KalturaCollectionFilter");
 		kparams.add("collectionIdIn", this.collectionIdIn);
 		kparams.add("mediaFileIdEqual", this.mediaFileIdEqual);
+		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
 		return kparams;
 	}
 

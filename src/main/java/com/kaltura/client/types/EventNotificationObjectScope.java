@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,71 +39,28 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Household Coupon details
+ * Kaltura event notification object scope
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseholdCoupon.Tokenizer.class)
-public class HouseholdCoupon extends CrudObject {
+@MultiRequestBuilder.Tokenizer(EventNotificationObjectScope.Tokenizer.class)
+public class EventNotificationObjectScope extends EventNotificationScope {
 	
-	public interface Tokenizer extends CrudObject.Tokenizer {
-		String code();
-		String lastUsageDate();
-	}
-
-	/**
-	 * Coupon code
-	 */
-	private String code;
-	/**
-	 * Last Usage Date
-	 */
-	private Long lastUsageDate;
-
-	// code:
-	public String getCode(){
-		return this.code;
-	}
-	public void setCode(String code){
-		this.code = code;
-	}
-
-	public void code(String multirequestToken){
-		setToken("code", multirequestToken);
-	}
-
-	// lastUsageDate:
-	public Long getLastUsageDate(){
-		return this.lastUsageDate;
-	}
-	public void setLastUsageDate(Long lastUsageDate){
-		this.lastUsageDate = lastUsageDate;
-	}
-
-	public void lastUsageDate(String multirequestToken){
-		setToken("lastUsageDate", multirequestToken);
+	public interface Tokenizer extends EventNotificationScope.Tokenizer {
 	}
 
 
-	public HouseholdCoupon() {
+
+	public EventNotificationObjectScope() {
 		super();
 	}
 
-	public HouseholdCoupon(JsonObject jsonObject) throws APIException {
+	public EventNotificationObjectScope(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		code = GsonParser.parseString(jsonObject.get("code"));
-		lastUsageDate = GsonParser.parseLong(jsonObject.get("lastUsageDate"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseholdCoupon");
-		kparams.add("code", this.code);
-		kparams.add("lastUsageDate", this.lastUsageDate);
+		kparams.add("objectType", "KalturaEventNotificationObjectScope");
 		return kparams;
 	}
 
