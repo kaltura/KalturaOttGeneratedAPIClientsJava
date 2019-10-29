@@ -41,7 +41,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * KalturaRegex
+ * KalturaRegexExpression
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RegexExpression.Tokenizer.class)

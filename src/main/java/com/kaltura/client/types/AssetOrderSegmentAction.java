@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,71 +42,67 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Household Coupon details
+ * Asset order segment action
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseholdCoupon.Tokenizer.class)
-public class HouseholdCoupon extends CrudObject {
+@MultiRequestBuilder.Tokenizer(AssetOrderSegmentAction.Tokenizer.class)
+public class AssetOrderSegmentAction extends BaseSegmentAction {
 	
-	public interface Tokenizer extends CrudObject.Tokenizer {
-		String code();
-		String lastUsageDate();
+	public interface Tokenizer extends BaseSegmentAction.Tokenizer {
+		String name();
+		RequestBuilder.ListTokenizer<StringValue.Tokenizer> values();
 	}
 
 	/**
-	 * Coupon code
+	 * Action name
 	 */
-	private String code;
+	private String name;
 	/**
-	 * Last Usage Date
+	 * Action values
 	 */
-	private Long lastUsageDate;
+	private List<StringValue> values;
 
-	// code:
-	public String getCode(){
-		return this.code;
+	// name:
+	public String getName(){
+		return this.name;
 	}
-	public void setCode(String code){
-		this.code = code;
-	}
-
-	public void code(String multirequestToken){
-		setToken("code", multirequestToken);
+	public void setName(String name){
+		this.name = name;
 	}
 
-	// lastUsageDate:
-	public Long getLastUsageDate(){
-		return this.lastUsageDate;
-	}
-	public void setLastUsageDate(Long lastUsageDate){
-		this.lastUsageDate = lastUsageDate;
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
-	public void lastUsageDate(String multirequestToken){
-		setToken("lastUsageDate", multirequestToken);
+	// values:
+	public List<StringValue> getValues(){
+		return this.values;
+	}
+	public void setValues(List<StringValue> values){
+		this.values = values;
 	}
 
 
-	public HouseholdCoupon() {
+	public AssetOrderSegmentAction() {
 		super();
 	}
 
-	public HouseholdCoupon(JsonObject jsonObject) throws APIException {
+	public AssetOrderSegmentAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		code = GsonParser.parseString(jsonObject.get("code"));
-		lastUsageDate = GsonParser.parseLong(jsonObject.get("lastUsageDate"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		values = GsonParser.parseArray(jsonObject.getAsJsonArray("values"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseholdCoupon");
-		kparams.add("code", this.code);
-		kparams.add("lastUsageDate", this.lastUsageDate);
+		kparams.add("objectType", "KalturaAssetOrderSegmentAction");
+		kparams.add("name", this.name);
+		kparams.add("values", this.values);
 		return kparams;
 	}
 
