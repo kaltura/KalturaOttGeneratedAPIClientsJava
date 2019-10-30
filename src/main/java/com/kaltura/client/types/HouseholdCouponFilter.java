@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.CouponStatus;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -48,8 +47,6 @@ public class HouseholdCouponFilter extends CrudFilter {
 	public interface Tokenizer extends CrudFilter.Tokenizer {
 		String businessModuleTypeEqual();
 		String businessModuleIdEqual();
-		String couponCode();
-		String status();
 	}
 
 	/**
@@ -60,14 +57,6 @@ public class HouseholdCouponFilter extends CrudFilter {
 	 * Indicates which household coupons list to return by their business module ID.
 	 */
 	private Long businessModuleIdEqual;
-	/**
-	 * Allow clients to inquiry if a specific coupon is part of an HH’s wallet or not
-	 */
-	private String couponCode;
-	/**
-	 * Allow clients to filter out coupons which are valid/invalid
-	 */
-	private CouponStatus status;
 
 	// businessModuleTypeEqual:
 	public TransactionType getBusinessModuleTypeEqual(){
@@ -93,30 +82,6 @@ public class HouseholdCouponFilter extends CrudFilter {
 		setToken("businessModuleIdEqual", multirequestToken);
 	}
 
-	// couponCode:
-	public String getCouponCode(){
-		return this.couponCode;
-	}
-	public void setCouponCode(String couponCode){
-		this.couponCode = couponCode;
-	}
-
-	public void couponCode(String multirequestToken){
-		setToken("couponCode", multirequestToken);
-	}
-
-	// status:
-	public CouponStatus getStatus(){
-		return this.status;
-	}
-	public void setStatus(CouponStatus status){
-		this.status = status;
-	}
-
-	public void status(String multirequestToken){
-		setToken("status", multirequestToken);
-	}
-
 
 	public HouseholdCouponFilter() {
 		super();
@@ -130,8 +95,6 @@ public class HouseholdCouponFilter extends CrudFilter {
 		// set members values:
 		businessModuleTypeEqual = TransactionType.get(GsonParser.parseString(jsonObject.get("businessModuleTypeEqual")));
 		businessModuleIdEqual = GsonParser.parseLong(jsonObject.get("businessModuleIdEqual"));
-		couponCode = GsonParser.parseString(jsonObject.get("couponCode"));
-		status = CouponStatus.get(GsonParser.parseString(jsonObject.get("status")));
 
 	}
 
@@ -140,8 +103,6 @@ public class HouseholdCouponFilter extends CrudFilter {
 		kparams.add("objectType", "KalturaHouseholdCouponFilter");
 		kparams.add("businessModuleTypeEqual", this.businessModuleTypeEqual);
 		kparams.add("businessModuleIdEqual", this.businessModuleIdEqual);
-		kparams.add("couponCode", this.couponCode);
-		kparams.add("status", this.status);
 		return kparams;
 	}
 

@@ -48,17 +48,12 @@ public class HouseholdCoupon extends CrudObject {
 	
 	public interface Tokenizer extends CrudObject.Tokenizer {
 		String code();
-		String lastUsageDate();
 	}
 
 	/**
 	 * Coupon code
 	 */
 	private String code;
-	/**
-	 * Last Usage Date
-	 */
-	private Long lastUsageDate;
 
 	// code:
 	public String getCode(){
@@ -70,18 +65,6 @@ public class HouseholdCoupon extends CrudObject {
 
 	public void code(String multirequestToken){
 		setToken("code", multirequestToken);
-	}
-
-	// lastUsageDate:
-	public Long getLastUsageDate(){
-		return this.lastUsageDate;
-	}
-	public void setLastUsageDate(Long lastUsageDate){
-		this.lastUsageDate = lastUsageDate;
-	}
-
-	public void lastUsageDate(String multirequestToken){
-		setToken("lastUsageDate", multirequestToken);
 	}
 
 
@@ -96,7 +79,6 @@ public class HouseholdCoupon extends CrudObject {
 
 		// set members values:
 		code = GsonParser.parseString(jsonObject.get("code"));
-		lastUsageDate = GsonParser.parseLong(jsonObject.get("lastUsageDate"));
 
 	}
 
@@ -104,7 +86,6 @@ public class HouseholdCoupon extends CrudObject {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaHouseholdCoupon");
 		kparams.add("code", this.code);
-		kparams.add("lastUsageDate", this.lastUsageDate);
 		return kparams;
 	}
 
