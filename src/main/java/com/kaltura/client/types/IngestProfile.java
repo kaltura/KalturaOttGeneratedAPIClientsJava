@@ -61,6 +61,7 @@ public class IngestProfile extends ObjectBase {
 		String transformationAdapterSharedSecret();
 		String defaultAutoFillPolicy();
 		String defaultOverlapPolicy();
+		String overlapChannels();
 	}
 
 	/**
@@ -99,6 +100,10 @@ public class IngestProfile extends ObjectBase {
 	 * Ingest profile default Overlap policy
 	 */
 	private IngestProfileOverlapPolicy defaultOverlapPolicy;
+	/**
+	 * Ingest profile overlap channels
+	 */
+	private String overlapChannels;
 
 	// id:
 	public Integer getId(){
@@ -196,6 +201,18 @@ public class IngestProfile extends ObjectBase {
 		setToken("defaultOverlapPolicy", multirequestToken);
 	}
 
+	// overlapChannels:
+	public String getOverlapChannels(){
+		return this.overlapChannels;
+	}
+	public void setOverlapChannels(String overlapChannels){
+		this.overlapChannels = overlapChannels;
+	}
+
+	public void overlapChannels(String multirequestToken){
+		setToken("overlapChannels", multirequestToken);
+	}
+
 
 	public IngestProfile() {
 		super();
@@ -216,6 +233,7 @@ public class IngestProfile extends ObjectBase {
 		transformationAdapterSharedSecret = GsonParser.parseString(jsonObject.get("transformationAdapterSharedSecret"));
 		defaultAutoFillPolicy = IngestProfileAutofillPolicy.get(GsonParser.parseString(jsonObject.get("defaultAutoFillPolicy")));
 		defaultOverlapPolicy = IngestProfileOverlapPolicy.get(GsonParser.parseString(jsonObject.get("defaultOverlapPolicy")));
+		overlapChannels = GsonParser.parseString(jsonObject.get("overlapChannels"));
 
 	}
 
@@ -230,6 +248,7 @@ public class IngestProfile extends ObjectBase {
 		kparams.add("transformationAdapterSharedSecret", this.transformationAdapterSharedSecret);
 		kparams.add("defaultAutoFillPolicy", this.defaultAutoFillPolicy);
 		kparams.add("defaultOverlapPolicy", this.defaultOverlapPolicy);
+		kparams.add("overlapChannels", this.overlapChannels);
 		return kparams;
 	}
 

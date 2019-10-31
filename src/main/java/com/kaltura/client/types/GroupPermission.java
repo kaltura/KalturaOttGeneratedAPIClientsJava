@@ -56,14 +56,6 @@ public class GroupPermission extends Permission {
 	public String getGroup(){
 		return this.group;
 	}
-	public void setGroup(String group){
-		this.group = group;
-	}
-
-	public void group(String multirequestToken){
-		setToken("group", multirequestToken);
-	}
-
 
 	public GroupPermission() {
 		super();
@@ -82,7 +74,6 @@ public class GroupPermission extends Permission {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaGroupPermission");
-		kparams.add("group", this.group);
 		return kparams;
 	}
 

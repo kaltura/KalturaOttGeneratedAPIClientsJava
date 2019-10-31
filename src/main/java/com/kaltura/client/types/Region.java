@@ -52,6 +52,7 @@ public class Region extends ObjectBase {
 		String externalId();
 		String isDefault();
 		RequestBuilder.ListTokenizer<RegionalChannel.Tokenizer> linearChannels();
+		String parentId();
 	}
 
 	/**
@@ -74,6 +75,10 @@ public class Region extends ObjectBase {
 	 * List of associated linear channels
 	 */
 	private List<RegionalChannel> linearChannels;
+	/**
+	 * Parent region ID
+	 */
+	private Long parentId;
 
 	// id:
 	public Integer getId(){
@@ -115,20 +120,24 @@ public class Region extends ObjectBase {
 	public Boolean getIsDefault(){
 		return this.isDefault;
 	}
-	public void setIsDefault(Boolean isDefault){
-		this.isDefault = isDefault;
-	}
-
-	public void isDefault(String multirequestToken){
-		setToken("isDefault", multirequestToken);
-	}
-
 	// linearChannels:
 	public List<RegionalChannel> getLinearChannels(){
 		return this.linearChannels;
 	}
 	public void setLinearChannels(List<RegionalChannel> linearChannels){
 		this.linearChannels = linearChannels;
+	}
+
+	// parentId:
+	public Long getParentId(){
+		return this.parentId;
+	}
+	public void setParentId(Long parentId){
+		this.parentId = parentId;
+	}
+
+	public void parentId(String multirequestToken){
+		setToken("parentId", multirequestToken);
 	}
 
 
@@ -147,6 +156,7 @@ public class Region extends ObjectBase {
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
 		linearChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("linearChannels"), RegionalChannel.class);
+		parentId = GsonParser.parseLong(jsonObject.get("parentId"));
 
 	}
 
@@ -156,8 +166,8 @@ public class Region extends ObjectBase {
 		kparams.add("id", this.id);
 		kparams.add("name", this.name);
 		kparams.add("externalId", this.externalId);
-		kparams.add("isDefault", this.isDefault);
 		kparams.add("linearChannels", this.linearChannels);
+		kparams.add("parentId", this.parentId);
 		return kparams;
 	}
 
