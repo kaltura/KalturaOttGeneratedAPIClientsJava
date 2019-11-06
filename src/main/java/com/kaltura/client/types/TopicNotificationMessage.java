@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.AnnouncementStatus;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.Trigger;
 import com.kaltura.client.utils.GsonParser;
@@ -54,6 +55,7 @@ public class TopicNotificationMessage extends ObjectBase {
 		String topicNotificationId();
 		Trigger.Tokenizer trigger();
 		RequestBuilder.ListTokenizer<Dispatcher.Tokenizer> dispatchers();
+		String status();
 	}
 
 	/**
@@ -80,6 +82,10 @@ public class TopicNotificationMessage extends ObjectBase {
 	 * Topic notification message dispatchers
 	 */
 	private List<Dispatcher> dispatchers;
+	/**
+	 * Message status
+	 */
+	private AnnouncementStatus status;
 
 	// id:
 	public Long getId(){
@@ -137,6 +143,10 @@ public class TopicNotificationMessage extends ObjectBase {
 		this.dispatchers = dispatchers;
 	}
 
+	// status:
+	public AnnouncementStatus getStatus(){
+		return this.status;
+	}
 
 	public TopicNotificationMessage() {
 		super();
@@ -154,6 +164,7 @@ public class TopicNotificationMessage extends ObjectBase {
 		topicNotificationId = GsonParser.parseLong(jsonObject.get("topicNotificationId"));
 		trigger = GsonParser.parseObject(jsonObject.getAsJsonObject("trigger"), Trigger.class);
 		dispatchers = GsonParser.parseArray(jsonObject.getAsJsonArray("dispatchers"), Dispatcher.class);
+		status = AnnouncementStatus.get(GsonParser.parseString(jsonObject.get("status")));
 
 	}
 

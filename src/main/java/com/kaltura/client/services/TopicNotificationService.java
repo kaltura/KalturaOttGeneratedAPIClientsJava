@@ -88,10 +88,6 @@ public class TopicNotificationService {
 		}
 	}
 
-	public static ListTopicNotificationBuilder list()  {
-		return list(null);
-	}
-
 	/**
 	 * Lists all topic notifications in the system.
 	 * 
