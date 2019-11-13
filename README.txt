@@ -50,6 +50,13 @@ To build the API:
  - Build the project
 
 
+== HTTP Proxy Support ==
+
+After initialising an object of the `Configuration` class, invoke the below methods:
+config.setProxy("proxy.host");
+config.setProxyPort(int_port);
+
+
 == TESTING THE API CLIENT LIBRARY USING ECLIPSE ==
 
 To run the JUnit test suite that accompanies this source:
@@ -64,7 +71,7 @@ The launch settings are saved in the following files:
 - 1. KalturaTestSuite.launch (the JUnit tests)
 - 2. KalturaMainTest.launch (A main test class for quickly testing the build)
 
-There is a log4j.properties file in src/test/resources/log4j. 
+There is a log4j.properties file under src/main/resources. 
  - Edit it to set the log level as desired, defaults are:
   log4j.category.ClientBase.class=DEBUG
   log4j.logger.com.kaltura=ERROR
