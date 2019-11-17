@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.enums.LogLevel;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -38,20 +37,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SystemService {
-	
-	public static class GetLogLevelSystemBuilder extends RequestBuilder<String, String, GetLogLevelSystemBuilder> {
-		
-		public GetLogLevelSystemBuilder() {
-			super(String.class, "system", "getLogLevel");
-		}
-	}
-
-	/**
-	 * Gets the current level of the KLogger
-	 */
-    public static GetLogLevelSystemBuilder getLogLevel()  {
-		return new GetLogLevelSystemBuilder();
-	}
 	
 	public static class GetTimeSystemBuilder extends RequestBuilder<Long, String, GetTimeSystemBuilder> {
 		
@@ -93,26 +78,5 @@ public class SystemService {
 	 */
     public static PingSystemBuilder ping()  {
 		return new PingSystemBuilder();
-	}
-	
-	public static class SetLogLevelSystemBuilder extends RequestBuilder<Boolean, String, SetLogLevelSystemBuilder> {
-		
-		public SetLogLevelSystemBuilder(LogLevel level) {
-			super(Boolean.class, "system", "setLogLevel");
-			params.add("level", level);
-		}
-		
-		public void level(String multirequestToken) {
-			params.add("level", multirequestToken);
-		}
-	}
-
-	/**
-	 * Sets the current level of the KLogger
-	 * 
-	 * @param level Possible levels: trace, debug, info, warning, error, all
-	 */
-    public static SetLogLevelSystemBuilder setLogLevel(LogLevel level)  {
-		return new SetLogLevelSystemBuilder(level);
 	}
 }
