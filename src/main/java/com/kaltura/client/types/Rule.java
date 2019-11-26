@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -45,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Rule.Tokenizer.class)
-public abstract class Rule extends ObjectBase {
+public abstract class Rule extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String id();
 		String name();
 		String description();

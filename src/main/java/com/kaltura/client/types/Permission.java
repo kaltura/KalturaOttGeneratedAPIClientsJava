@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.PermissionType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -48,6 +49,8 @@ public class Permission extends ObjectBase {
 		String id();
 		String name();
 		String friendlyName();
+		String dependsOnPermissionNames();
+		String type();
 	}
 
 	/**
@@ -62,6 +65,14 @@ public class Permission extends ObjectBase {
 	 * Permission friendly name
 	 */
 	private String friendlyName;
+	/**
+	 * Comma separated permissions names from type SPECIAL_FEATURE
+	 */
+	private String dependsOnPermissionNames;
+	/**
+	 * Comma separated permissions names from type SPECIAL_FEATURE
+	 */
+	private PermissionType type;
 
 	// id:
 	public Long getId(){
@@ -91,6 +102,22 @@ public class Permission extends ObjectBase {
 		setToken("friendlyName", multirequestToken);
 	}
 
+	// dependsOnPermissionNames:
+	public String getDependsOnPermissionNames(){
+		return this.dependsOnPermissionNames;
+	}
+	// type:
+	public PermissionType getType(){
+		return this.type;
+	}
+	public void setType(PermissionType type){
+		this.type = type;
+	}
+
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
+
 
 	public Permission() {
 		super();
@@ -105,6 +132,8 @@ public class Permission extends ObjectBase {
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		friendlyName = GsonParser.parseString(jsonObject.get("friendlyName"));
+		dependsOnPermissionNames = GsonParser.parseString(jsonObject.get("dependsOnPermissionNames"));
+		type = PermissionType.get(GsonParser.parseString(jsonObject.get("type")));
 
 	}
 
@@ -113,6 +142,7 @@ public class Permission extends ObjectBase {
 		kparams.add("objectType", "KalturaPermission");
 		kparams.add("name", this.name);
 		kparams.add("friendlyName", this.friendlyName);
+		kparams.add("type", this.type);
 		return kparams;
 	}
 
