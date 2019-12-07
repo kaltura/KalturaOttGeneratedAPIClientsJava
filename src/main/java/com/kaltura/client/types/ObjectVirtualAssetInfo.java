@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ObjectVirtualAssetInfoType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,72 +41,88 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filter for segmentation types
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegmentationTypeFilter.Tokenizer.class)
-public class SegmentationTypeFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(ObjectVirtualAssetInfo.Tokenizer.class)
+public class ObjectVirtualAssetInfo extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		String kSql();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String assetStructId();
+		String metaId();
+		String type();
 	}
 
 	/**
-	 * Comma separated segmentation types identifieridentifiers
+	 * Asset struct identifier
 	 */
-	private String idIn;
+	private Integer assetStructId;
 	/**
-	 * KSQL expression
+	 * Meta identifier
 	 */
-	private String kSql;
+	private Integer metaId;
+	/**
+	 * Object virtual asset info type
+	 */
+	private ObjectVirtualAssetInfoType type;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// assetStructId:
+	public Integer getAssetStructId(){
+		return this.assetStructId;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
+	public void setAssetStructId(Integer assetStructId){
+		this.assetStructId = assetStructId;
 	}
 
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
+	public void assetStructId(String multirequestToken){
+		setToken("assetStructId", multirequestToken);
+	}
+
+	// metaId:
+	public Integer getMetaId(){
+		return this.metaId;
+	}
+	public void setMetaId(Integer metaId){
+		this.metaId = metaId;
+	}
+
+	public void metaId(String multirequestToken){
+		setToken("metaId", multirequestToken);
+	}
+
+	// type:
+	public ObjectVirtualAssetInfoType getType(){
+		return this.type;
+	}
+	public void setType(ObjectVirtualAssetInfoType type){
+		this.type = type;
+	}
+
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
 	}
 
 
-	public SegmentationTypeFilter() {
+	public ObjectVirtualAssetInfo() {
 		super();
 	}
 
-	public SegmentationTypeFilter(JsonObject jsonObject) throws APIException {
+	public ObjectVirtualAssetInfo(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		assetStructId = GsonParser.parseInt(jsonObject.get("assetStructId"));
+		metaId = GsonParser.parseInt(jsonObject.get("metaId"));
+		type = ObjectVirtualAssetInfoType.get(GsonParser.parseString(jsonObject.get("type")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegmentationTypeFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("kSql", this.kSql);
+		kparams.add("objectType", "KalturaObjectVirtualAssetInfo");
+		kparams.add("assetStructId", this.assetStructId);
+		kparams.add("metaId", this.metaId);
+		kparams.add("type", this.type);
 		return kparams;
 	}
 

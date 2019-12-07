@@ -39,6 +39,41 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class SystemService {
 	
+	public static class ClearLocalServerCacheSystemBuilder extends RequestBuilder<Boolean, String, ClearLocalServerCacheSystemBuilder> {
+		
+		public ClearLocalServerCacheSystemBuilder(String action, String key) {
+			super(Boolean.class, "system", "clearLocalServerCache");
+			params.add("action", action);
+			params.add("key", key);
+		}
+		
+		public void action(String multirequestToken) {
+			params.add("action", multirequestToken);
+		}
+		
+		public void key(String multirequestToken) {
+			params.add("key", multirequestToken);
+		}
+	}
+
+	public static ClearLocalServerCacheSystemBuilder clearLocalServerCache()  {
+		return clearLocalServerCache(null);
+	}
+
+	public static ClearLocalServerCacheSystemBuilder clearLocalServerCache(String action)  {
+		return clearLocalServerCache(action, null);
+	}
+
+	/**
+	 * Clear local server cache
+	 * 
+	 * @param action action to perform, possible values: clear_all / keys / getKey
+	 * @param key key to get in case you send action getKey
+	 */
+    public static ClearLocalServerCacheSystemBuilder clearLocalServerCache(String action, String key)  {
+		return new ClearLocalServerCacheSystemBuilder(action, key);
+	}
+	
 	public static class GetLogLevelSystemBuilder extends RequestBuilder<String, String, GetLogLevelSystemBuilder> {
 		
 		public GetLogLevelSystemBuilder() {
@@ -79,6 +114,33 @@ public class SystemService {
 	 */
     public static GetVersionSystemBuilder getVersion()  {
 		return new GetVersionSystemBuilder();
+	}
+	
+	public static class IncrementLayeredCacheGroupConfigVersionSystemBuilder extends RequestBuilder<Boolean, String, IncrementLayeredCacheGroupConfigVersionSystemBuilder> {
+		
+		public IncrementLayeredCacheGroupConfigVersionSystemBuilder(int groupId) {
+			super(Boolean.class, "system", "incrementLayeredCacheGroupConfigVersion");
+			params.add("groupId", groupId);
+		}
+		
+		public void groupId(String multirequestToken) {
+			params.add("groupId", multirequestToken);
+		}
+	}
+
+	public static IncrementLayeredCacheGroupConfigVersionSystemBuilder incrementLayeredCacheGroupConfigVersion()  {
+		return incrementLayeredCacheGroupConfigVersion(0);
+	}
+
+	/**
+	 * Returns true if version has been incremented successfully or false otherwise.
+	  You need to send groupId only if you wish to increment for a specific groupId
+	  and not the one the KS belongs to.
+	 * 
+	 * @param groupId groupId
+	 */
+    public static IncrementLayeredCacheGroupConfigVersionSystemBuilder incrementLayeredCacheGroupConfigVersion(int groupId)  {
+		return new IncrementLayeredCacheGroupConfigVersionSystemBuilder(groupId);
 	}
 	
 	public static class PingSystemBuilder extends RequestBuilder<Boolean, String, PingSystemBuilder> {
