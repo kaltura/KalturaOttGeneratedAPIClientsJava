@@ -38,26 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * indicates the media asset object type in the bulk file
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkUploadLiveAssetResult.Tokenizer.class)
-public class BulkUploadLiveAssetResult extends BulkUploadMediaAssetResult {
+@MultiRequestBuilder.Tokenizer(BulkUploadLiveAssetData.Tokenizer.class)
+public class BulkUploadLiveAssetData extends BulkUploadMediaAssetData {
 	
-	public interface Tokenizer extends BulkUploadMediaAssetResult.Tokenizer {
+	public interface Tokenizer extends BulkUploadMediaAssetData.Tokenizer {
 	}
 
 
 
-	public BulkUploadLiveAssetResult() {
+	public BulkUploadLiveAssetData() {
 		super();
 	}
 
-	public BulkUploadLiveAssetResult(JsonObject jsonObject) throws APIException {
+	public BulkUploadLiveAssetData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkUploadLiveAssetResult");
+		kparams.add("objectType", "KalturaBulkUploadLiveAssetData");
 		return kparams;
 	}
 
