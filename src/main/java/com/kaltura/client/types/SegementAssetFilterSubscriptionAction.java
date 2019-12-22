@@ -43,9 +43,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SegementAssetFilterSubscriptionAction.Tokenizer.class)
-public class SegementAssetFilterSubscriptionAction extends SegementAssetFilterAction {
+public class SegementAssetFilterSubscriptionAction extends SegmentAssetFilterAction {
 	
-	public interface Tokenizer extends SegementAssetFilterAction.Tokenizer {
+	public interface Tokenizer extends SegmentAssetFilterAction.Tokenizer {
 	}
 
 
