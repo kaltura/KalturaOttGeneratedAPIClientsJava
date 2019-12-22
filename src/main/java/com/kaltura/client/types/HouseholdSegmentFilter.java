@@ -39,38 +39,18 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filter for user segments
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserSegmentFilter.Tokenizer.class)
-public class UserSegmentFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(HouseholdSegmentFilter.Tokenizer.class)
+public class HouseholdSegmentFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userIdEqual();
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 		String kSql();
 	}
 
 	/**
-	 * User ID
-	 */
-	private String userIdEqual;
-	/**
 	 * KSQL expression
 	 */
 	private String kSql;
-
-	// userIdEqual:
-	public String getUserIdEqual(){
-		return this.userIdEqual;
-	}
-	public void setUserIdEqual(String userIdEqual){
-		this.userIdEqual = userIdEqual;
-	}
-
-	public void userIdEqual(String multirequestToken){
-		setToken("userIdEqual", multirequestToken);
-	}
 
 	// kSql:
 	public String getKSql(){
@@ -85,25 +65,23 @@ public class UserSegmentFilter extends Filter {
 	}
 
 
-	public UserSegmentFilter() {
+	public HouseholdSegmentFilter() {
 		super();
 	}
 
-	public UserSegmentFilter(JsonObject jsonObject) throws APIException {
+	public HouseholdSegmentFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		userIdEqual = GsonParser.parseString(jsonObject.get("userIdEqual"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserSegmentFilter");
-		kparams.add("userIdEqual", this.userIdEqual);
+		kparams.add("objectType", "KalturaHouseholdSegmentFilter");
 		kparams.add("kSql", this.kSql);
 		return kparams;
 	}
