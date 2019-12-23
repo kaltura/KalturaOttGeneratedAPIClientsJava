@@ -42,25 +42,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * segment asset filter for subscription action
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegementAssetFilterSubscriptionAction.Tokenizer.class)
-public class SegementAssetFilterSubscriptionAction extends SegmentAssetFilterAction {
+@MultiRequestBuilder.Tokenizer(SegmentAssetFilterSubscriptionAction.Tokenizer.class)
+public class SegmentAssetFilterSubscriptionAction extends SegmentAssetFilterAction {
 	
 	public interface Tokenizer extends SegmentAssetFilterAction.Tokenizer {
 	}
 
 
 
-	public SegementAssetFilterSubscriptionAction() {
+	public SegmentAssetFilterSubscriptionAction() {
 		super();
 	}
 
-	public SegementAssetFilterSubscriptionAction(JsonObject jsonObject) throws APIException {
+	public SegmentAssetFilterSubscriptionAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegementAssetFilterSubscriptionAction");
+		kparams.add("objectType", "KalturaSegmentAssetFilterSubscriptionAction");
 		return kparams;
 	}
 
