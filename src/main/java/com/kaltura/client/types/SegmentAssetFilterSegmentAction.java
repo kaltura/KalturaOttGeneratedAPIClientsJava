@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,71 +39,28 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Filter for user segments
+ * segment asset filter for segment action
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserSegmentFilter.Tokenizer.class)
-public class UserSegmentFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SegmentAssetFilterSegmentAction.Tokenizer.class)
+public class SegmentAssetFilterSegmentAction extends SegmentAssetFilterAction {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userIdEqual();
-		String kSql();
-	}
-
-	/**
-	 * User ID
-	 */
-	private String userIdEqual;
-	/**
-	 * KSQL expression
-	 */
-	private String kSql;
-
-	// userIdEqual:
-	public String getUserIdEqual(){
-		return this.userIdEqual;
-	}
-	public void setUserIdEqual(String userIdEqual){
-		this.userIdEqual = userIdEqual;
-	}
-
-	public void userIdEqual(String multirequestToken){
-		setToken("userIdEqual", multirequestToken);
-	}
-
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
-
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
+	public interface Tokenizer extends SegmentAssetFilterAction.Tokenizer {
 	}
 
 
-	public UserSegmentFilter() {
+
+	public SegmentAssetFilterSegmentAction() {
 		super();
 	}
 
-	public UserSegmentFilter(JsonObject jsonObject) throws APIException {
+	public SegmentAssetFilterSegmentAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		userIdEqual = GsonParser.parseString(jsonObject.get("userIdEqual"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserSegmentFilter");
-		kparams.add("userIdEqual", this.userIdEqual);
-		kparams.add("kSql", this.kSql);
+		kparams.add("objectType", "KalturaSegmentAssetFilterSegmentAction");
 		return kparams;
 	}
 

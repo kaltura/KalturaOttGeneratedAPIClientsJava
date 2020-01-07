@@ -40,71 +40,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Filter for user segments
+ * Indicates a segment of a household
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserSegmentFilter.Tokenizer.class)
-public class UserSegmentFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(HouseholdSegment.Tokenizer.class)
+public class HouseholdSegment extends CrudObject {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userIdEqual();
-		String kSql();
+	public interface Tokenizer extends CrudObject.Tokenizer {
+		String segmentId();
+		String householdId();
 	}
 
 	/**
-	 * User ID
+	 * Segment Id
 	 */
-	private String userIdEqual;
+	private Long segmentId;
 	/**
-	 * KSQL expression
+	 * Segment Id
 	 */
-	private String kSql;
+	private Long householdId;
 
-	// userIdEqual:
-	public String getUserIdEqual(){
-		return this.userIdEqual;
+	// segmentId:
+	public Long getSegmentId(){
+		return this.segmentId;
 	}
-	public void setUserIdEqual(String userIdEqual){
-		this.userIdEqual = userIdEqual;
-	}
-
-	public void userIdEqual(String multirequestToken){
-		setToken("userIdEqual", multirequestToken);
+	public void setSegmentId(Long segmentId){
+		this.segmentId = segmentId;
 	}
 
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
+	public void segmentId(String multirequestToken){
+		setToken("segmentId", multirequestToken);
 	}
 
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
+	// householdId:
+	public Long getHouseholdId(){
+		return this.householdId;
+	}
+	public void setHouseholdId(Long householdId){
+		this.householdId = householdId;
+	}
+
+	public void householdId(String multirequestToken){
+		setToken("householdId", multirequestToken);
 	}
 
 
-	public UserSegmentFilter() {
+	public HouseholdSegment() {
 		super();
 	}
 
-	public UserSegmentFilter(JsonObject jsonObject) throws APIException {
+	public HouseholdSegment(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		userIdEqual = GsonParser.parseString(jsonObject.get("userIdEqual"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		segmentId = GsonParser.parseLong(jsonObject.get("segmentId"));
+		householdId = GsonParser.parseLong(jsonObject.get("householdId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserSegmentFilter");
-		kparams.add("userIdEqual", this.userIdEqual);
-		kparams.add("kSql", this.kSql);
+		kparams.add("objectType", "KalturaHouseholdSegment");
+		kparams.add("segmentId", this.segmentId);
+		kparams.add("householdId", this.householdId);
 		return kparams;
 	}
 
