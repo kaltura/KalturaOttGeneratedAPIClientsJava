@@ -39,7 +39,8 @@ public enum PartnerConfigurationType implements EnumAsString {
 	OSSADAPTER("OSSAdapter"),
 	CONCURRENCY("Concurrency"),
 	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset");
+	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
+	COMMERCE("Commerce");
 
 	private String value;
 

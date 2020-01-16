@@ -41,14 +41,14 @@ public class SystemService {
 	
 	public static class ClearLocalServerCacheSystemBuilder extends RequestBuilder<Boolean, String, ClearLocalServerCacheSystemBuilder> {
 		
-		public ClearLocalServerCacheSystemBuilder(String clearCacheAction, String key) {
+		public ClearLocalServerCacheSystemBuilder(String action, String key) {
 			super(Boolean.class, "system", "clearLocalServerCache");
-			params.add("clearCacheAction", clearCacheAction);
+			params.add("action", action);
 			params.add("key", key);
 		}
 		
-		public void clearCacheAction(String multirequestToken) {
-			params.add("clearCacheAction", multirequestToken);
+		public void action(String multirequestToken) {
+			params.add("action", multirequestToken);
 		}
 		
 		public void key(String multirequestToken) {
@@ -60,18 +60,18 @@ public class SystemService {
 		return clearLocalServerCache(null);
 	}
 
-	public static ClearLocalServerCacheSystemBuilder clearLocalServerCache(String clearCacheAction)  {
-		return clearLocalServerCache(clearCacheAction, null);
+	public static ClearLocalServerCacheSystemBuilder clearLocalServerCache(String action)  {
+		return clearLocalServerCache(action, null);
 	}
 
 	/**
 	 * Clear local server cache
 	 * 
-	 * @param clearCacheAction clear cache action to perform, possible values: clear_all / keys / getKey
+	 * @param action action to perform, possible values: clear_all / keys / getKey
 	 * @param key key to get in case you send action getKey
 	 */
-    public static ClearLocalServerCacheSystemBuilder clearLocalServerCache(String clearCacheAction, String key)  {
-		return new ClearLocalServerCacheSystemBuilder(clearCacheAction, key);
+    public static ClearLocalServerCacheSystemBuilder clearLocalServerCache(String action, String key)  {
+		return new ClearLocalServerCacheSystemBuilder(action, key);
 	}
 	
 	public static class GetLogLevelSystemBuilder extends RequestBuilder<String, String, GetLogLevelSystemBuilder> {
