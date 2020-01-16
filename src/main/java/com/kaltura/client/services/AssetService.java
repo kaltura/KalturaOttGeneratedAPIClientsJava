@@ -254,6 +254,45 @@ public class AssetService {
 		return new GetPlaybackContextAssetBuilder(assetId, assetType, contextDataParams, sourceType);
 	}
 	
+	public static class GetPlaybackManifestAssetBuilder extends RequestBuilder<PlaybackContext, PlaybackContext.Tokenizer, GetPlaybackManifestAssetBuilder> {
+		
+		public GetPlaybackManifestAssetBuilder(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams, String sourceType) {
+			super(PlaybackContext.class, "asset", "getPlaybackManifest");
+			params.add("assetId", assetId);
+			params.add("assetType", assetType);
+			params.add("contextDataParams", contextDataParams);
+			params.add("sourceType", sourceType);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void assetType(String multirequestToken) {
+			params.add("assetType", multirequestToken);
+		}
+		
+		public void sourceType(String multirequestToken) {
+			params.add("sourceType", multirequestToken);
+		}
+	}
+
+	public static GetPlaybackManifestAssetBuilder getPlaybackManifest(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
+		return getPlaybackManifest(assetId, assetType, contextDataParams, null);
+	}
+
+	/**
+	 * This action delivers all data relevant for player
+	 * 
+	 * @param assetId Asset identifier
+	 * @param assetType Asset type
+	 * @param contextDataParams Parameters for the request
+	 * @param sourceType Filter sources by type
+	 */
+    public static GetPlaybackManifestAssetBuilder getPlaybackManifest(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams, String sourceType)  {
+		return new GetPlaybackManifestAssetBuilder(assetId, assetType, contextDataParams, sourceType);
+	}
+	
 	public static class ListAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, ListAssetBuilder> {
 		
 		public ListAssetBuilder(AssetFilter filter, FilterPager pager) {
