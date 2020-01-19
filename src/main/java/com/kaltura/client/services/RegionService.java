@@ -27,9 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.BaseRegionFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Region;
-import com.kaltura.client.types.RegionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -83,14 +83,14 @@ public class RegionService {
 	
 	public static class ListRegionBuilder extends ListResponseRequestBuilder<Region, Region.Tokenizer, ListRegionBuilder> {
 		
-		public ListRegionBuilder(RegionFilter filter, FilterPager pager) {
+		public ListRegionBuilder(BaseRegionFilter filter, FilterPager pager) {
 			super(Region.class, "region", "list");
 			params.add("filter", filter);
 			params.add("pager", pager);
 		}
 	}
 
-	public static ListRegionBuilder list(RegionFilter filter)  {
+	public static ListRegionBuilder list(BaseRegionFilter filter)  {
 		return list(filter, null);
 	}
 
@@ -100,7 +100,7 @@ public class RegionService {
 	 * @param filter Regions filter
 	 * @param pager Paging the request
 	 */
-    public static ListRegionBuilder list(RegionFilter filter, FilterPager pager)  {
+    public static ListRegionBuilder list(BaseRegionFilter filter, FilterPager pager)  {
 		return new ListRegionBuilder(filter, pager);
 	}
 	
