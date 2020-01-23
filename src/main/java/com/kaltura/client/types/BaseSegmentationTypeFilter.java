@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,72 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filter for segmentation types
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegmentationTypeFilter.Tokenizer.class)
-public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
+@MultiRequestBuilder.Tokenizer(BaseSegmentationTypeFilter.Tokenizer.class)
+public abstract class BaseSegmentationTypeFilter extends Filter {
 	
-	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
-		String idIn();
-		String kSql();
-	}
-
-	/**
-	 * Comma separated segmentation types identifiers
-	 */
-	private String idIn;
-	/**
-	 * KSQL expression
-	 */
-	private String kSql;
-
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
-	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
-
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
+	public interface Tokenizer extends Filter.Tokenizer {
 	}
 
 
-	public SegmentationTypeFilter() {
+
+	public BaseSegmentationTypeFilter() {
 		super();
 	}
 
-	public SegmentationTypeFilter(JsonObject jsonObject) throws APIException {
+	public BaseSegmentationTypeFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegmentationTypeFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("kSql", this.kSql);
+		kparams.add("objectType", "KalturaBaseSegmentationTypeFilter");
 		return kparams;
 	}
 

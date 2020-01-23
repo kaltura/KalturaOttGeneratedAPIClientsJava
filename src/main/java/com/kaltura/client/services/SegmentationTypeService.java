@@ -27,9 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.BaseSegmentationTypeFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.SegmentationType;
-import com.kaltura.client.types.SegmentationTypeFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -82,7 +82,7 @@ public class SegmentationTypeService {
 	
 	public static class ListSegmentationTypeBuilder extends ListResponseRequestBuilder<SegmentationType, SegmentationType.Tokenizer, ListSegmentationTypeBuilder> {
 		
-		public ListSegmentationTypeBuilder(SegmentationTypeFilter filter, FilterPager pager) {
+		public ListSegmentationTypeBuilder(BaseSegmentationTypeFilter filter, FilterPager pager) {
 			super(SegmentationType.class, "segmentationtype", "list");
 			params.add("filter", filter);
 			params.add("pager", pager);
@@ -93,7 +93,7 @@ public class SegmentationTypeService {
 		return list(null);
 	}
 
-	public static ListSegmentationTypeBuilder list(SegmentationTypeFilter filter)  {
+	public static ListSegmentationTypeBuilder list(BaseSegmentationTypeFilter filter)  {
 		return list(filter, null);
 	}
 
@@ -103,7 +103,7 @@ public class SegmentationTypeService {
 	 * @param filter Segmentation type filter - basically empty
 	 * @param pager Simple pager
 	 */
-    public static ListSegmentationTypeBuilder list(SegmentationTypeFilter filter, FilterPager pager)  {
+    public static ListSegmentationTypeBuilder list(BaseSegmentationTypeFilter filter, FilterPager pager)  {
 		return new ListSegmentationTypeBuilder(filter, pager);
 	}
 	
