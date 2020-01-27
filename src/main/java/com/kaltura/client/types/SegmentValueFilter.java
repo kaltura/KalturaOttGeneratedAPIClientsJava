@@ -39,26 +39,18 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filter for segmentation types
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegmentationTypeFilter.Tokenizer.class)
-public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
+@MultiRequestBuilder.Tokenizer(SegmentValueFilter.Tokenizer.class)
+public class SegmentValueFilter extends BaseSegmentationTypeFilter {
 	
 	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
 		String idIn();
-		String kSql();
 	}
 
 	/**
-	 * Comma separated segmentation types identifiers
+	 * Comma separated segmentation identifiers
 	 */
 	private String idIn;
-	/**
-	 * KSQL expression
-	 */
-	private String kSql;
 
 	// idIn:
 	public String getIdIn(){
@@ -72,39 +64,25 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		setToken("idIn", multirequestToken);
 	}
 
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
 
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
-	}
-
-
-	public SegmentationTypeFilter() {
+	public SegmentValueFilter() {
 		super();
 	}
 
-	public SegmentationTypeFilter(JsonObject jsonObject) throws APIException {
+	public SegmentValueFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegmentationTypeFilter");
+		kparams.add("objectType", "KalturaSegmentValueFilter");
 		kparams.add("idIn", this.idIn);
-		kparams.add("kSql", this.kSql);
 		return kparams;
 	}
 
