@@ -41,9 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(RegionFilter.Tokenizer.class)
-public class RegionFilter extends BaseRegionFilter {
+public class RegionFilter extends Filter {
 	
-	public interface Tokenizer extends BaseRegionFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String externalIdIn();
 		String idIn();
 		String parentIdEqual();
