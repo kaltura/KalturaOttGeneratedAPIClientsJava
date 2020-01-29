@@ -32,7 +32,7 @@ abstract public class Logger
 	// Creation & retrieval methods:
 	public static ILogger getLogger(String name)
 	{
-		return new LoggerLog4j(name);
+		return LoggerOut.getLogger(name);//  KalturaLoggerNull.getLogger(name);// KalturaLoggerLog4j.get(name);
 	}
 	
 	public static ILogger getLogger(Class<?> clazz)
