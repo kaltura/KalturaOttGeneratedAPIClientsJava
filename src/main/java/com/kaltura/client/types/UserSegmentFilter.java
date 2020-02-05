@@ -48,17 +48,12 @@ public class UserSegmentFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String userIdEqual();
-		String kSql();
 	}
 
 	/**
 	 * User ID
 	 */
 	private String userIdEqual;
-	/**
-	 * KSQL expression
-	 */
-	private String kSql;
 
 	// userIdEqual:
 	public String getUserIdEqual(){
@@ -70,18 +65,6 @@ public class UserSegmentFilter extends Filter {
 
 	public void userIdEqual(String multirequestToken){
 		setToken("userIdEqual", multirequestToken);
-	}
-
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
-	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
-
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
 	}
 
 
@@ -96,7 +79,6 @@ public class UserSegmentFilter extends Filter {
 
 		// set members values:
 		userIdEqual = GsonParser.parseString(jsonObject.get("userIdEqual"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
 	}
 
@@ -104,7 +86,6 @@ public class UserSegmentFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaUserSegmentFilter");
 		kparams.add("userIdEqual", this.userIdEqual);
-		kparams.add("kSql", this.kSql);
 		return kparams;
 	}
 

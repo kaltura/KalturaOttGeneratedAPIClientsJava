@@ -44,15 +44,15 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SegmentationTypeFilter.Tokenizer.class)
-public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
+public class SegmentationTypeFilter extends Filter {
 	
-	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String idIn();
 		String kSql();
 	}
 
 	/**
-	 * Comma separated segmentation types identifiers
+	 * Comma separated segmentation types identifieridentifiers
 	 */
 	private String idIn;
 	/**
