@@ -97,6 +97,27 @@ public class AnnouncementService {
 		return new EnableSystemAnnouncementsAnnouncementBuilder();
 	}
 	
+	public static class GetAnnouncementBuilder extends RequestBuilder<Announcement, Announcement.Tokenizer, GetAnnouncementBuilder> {
+		
+		public GetAnnouncementBuilder(long id) {
+			super(Announcement.class, "announcement", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get announcement by Id
+	 * 
+	 * @param id Announcement id
+	 */
+    public static GetAnnouncementBuilder get(long id)  {
+		return new GetAnnouncementBuilder(id);
+	}
+	
 	public static class ListAnnouncementBuilder extends ListResponseRequestBuilder<Announcement, Announcement.Tokenizer, ListAnnouncementBuilder> {
 		
 		public ListAnnouncementBuilder(AnnouncementFilter filter, FilterPager pager) {
