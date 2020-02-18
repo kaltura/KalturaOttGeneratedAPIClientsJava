@@ -25,7 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.CategoryTree;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,39 +36,48 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ObjectVirtualAssetInfoType implements EnumAsString {
-	SUBSCRIPTION("Subscription"),
-	SEGMENT("Segment"),
-	CATEGORY("Category");
 
-	private String value;
-
-	ObjectVirtualAssetInfoType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static ObjectVirtualAssetInfoType get(String value) {
-		if(value == null)
-		{
-			return null;
+public class CategoryTreeService {
+	
+	public static class DuplicateCategoryTreeBuilder extends RequestBuilder<CategoryTree, CategoryTree.Tokenizer, DuplicateCategoryTreeBuilder> {
+		
+		public DuplicateCategoryTreeBuilder(long categoryItemId) {
+			super(CategoryTree.class, "categorytree", "duplicate");
+			params.add("categoryItemId", categoryItemId);
 		}
 		
-		// goes over ObjectVirtualAssetInfoType defined values and compare the inner value with the given one:
-		for(ObjectVirtualAssetInfoType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public void categoryItemId(String multirequestToken) {
+			params.add("categoryItemId", multirequestToken);
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ObjectVirtualAssetInfoType.values().length > 0 ? ObjectVirtualAssetInfoType.values()[0]: null;
-   }
+	}
+
+	/**
+	 * Duplicate category Item
+	 * 
+	 * @param categoryItemId Category item identifier
+	 */
+    public static DuplicateCategoryTreeBuilder duplicate(long categoryItemId)  {
+		return new DuplicateCategoryTreeBuilder(categoryItemId);
+	}
+	
+	public static class GetCategoryTreeBuilder extends RequestBuilder<CategoryTree, CategoryTree.Tokenizer, GetCategoryTreeBuilder> {
+		
+		public GetCategoryTreeBuilder(long categoryItemId) {
+			super(CategoryTree.class, "categorytree", "get");
+			params.add("categoryItemId", categoryItemId);
+		}
+		
+		public void categoryItemId(String multirequestToken) {
+			params.add("categoryItemId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Retrive category tree.
+	 * 
+	 * @param categoryItemId Category item identifier
+	 */
+    public static GetCategoryTreeBuilder get(long categoryItemId)  {
+		return new GetCategoryTreeBuilder(categoryItemId);
+	}
 }
