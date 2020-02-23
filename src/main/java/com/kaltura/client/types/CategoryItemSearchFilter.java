@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,25 +40,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CategoryItemByRootFilter.Tokenizer.class)
-public class CategoryItemByRootFilter extends CategoryItemFilter {
+@MultiRequestBuilder.Tokenizer(CategoryItemSearchFilter.Tokenizer.class)
+public class CategoryItemSearchFilter extends CategoryItemFilter {
 	
 	public interface Tokenizer extends CategoryItemFilter.Tokenizer {
+		String kSql();
+		String rootOnly();
+	}
+
+	/**
+	 * KSQL expression
+	 */
+	private String kSql;
+	/**
+	 * Root only
+	 */
+	private Boolean rootOnly;
+
+	// kSql:
+	public String getKSql(){
+		return this.kSql;
+	}
+	public void setKSql(String kSql){
+		this.kSql = kSql;
+	}
+
+	public void kSql(String multirequestToken){
+		setToken("kSql", multirequestToken);
+	}
+
+	// rootOnly:
+	public Boolean getRootOnly(){
+		return this.rootOnly;
+	}
+	public void setRootOnly(Boolean rootOnly){
+		this.rootOnly = rootOnly;
+	}
+
+	public void rootOnly(String multirequestToken){
+		setToken("rootOnly", multirequestToken);
 	}
 
 
-
-	public CategoryItemByRootFilter() {
+	public CategoryItemSearchFilter() {
 		super();
 	}
 
-	public CategoryItemByRootFilter(JsonObject jsonObject) throws APIException {
+	public CategoryItemSearchFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		rootOnly = GsonParser.parseBoolean(jsonObject.get("rootOnly"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCategoryItemByRootFilter");
+		kparams.add("objectType", "KalturaCategoryItemSearchFilter");
+		kparams.add("kSql", this.kSql);
+		kparams.add("rootOnly", this.rootOnly);
 		return kparams;
 	}
 

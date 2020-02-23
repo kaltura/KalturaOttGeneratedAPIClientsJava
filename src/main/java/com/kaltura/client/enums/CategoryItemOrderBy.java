@@ -34,7 +34,10 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum CategoryItemOrderBy implements EnumAsString {
-	NONE("NONE");
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	CREATE_DATE_ASC("CREATE_DATE_ASC"),
+	CREATE_DATE_DESC("CREATE_DATE_DESC");
 
 	private String value;
 

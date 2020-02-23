@@ -103,18 +103,18 @@ public class CategoryItem extends CrudObject {
 	public Long getParentCategoryId(){
 		return this.parentCategoryId;
 	}
-	public void setParentCategoryId(Long parentCategoryId){
-		this.parentCategoryId = parentCategoryId;
-	}
-
-	public void parentCategoryId(String multirequestToken){
-		setToken("parentCategoryId", multirequestToken);
-	}
-
 	// childCategoriesIds:
 	public String getChildCategoriesIds(){
 		return this.childCategoriesIds;
 	}
+	public void setChildCategoriesIds(String childCategoriesIds){
+		this.childCategoriesIds = childCategoriesIds;
+	}
+
+	public void childCategoriesIds(String multirequestToken){
+		setToken("childCategoriesIds", multirequestToken);
+	}
+
 	// unifiedChannels:
 	public List<UnifiedChannel> getUnifiedChannels(){
 		return this.unifiedChannels;
@@ -155,7 +155,7 @@ public class CategoryItem extends CrudObject {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCategoryItem");
 		kparams.add("name", this.name);
-		kparams.add("parentCategoryId", this.parentCategoryId);
+		kparams.add("childCategoriesIds", this.childCategoriesIds);
 		kparams.add("unifiedChannels", this.unifiedChannels);
 		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
