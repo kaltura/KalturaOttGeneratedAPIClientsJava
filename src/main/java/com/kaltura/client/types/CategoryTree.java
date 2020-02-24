@@ -56,7 +56,7 @@ public class CategoryTree extends ObjectBase {
 		RequestBuilder.ListTokenizer<CategoryTree.Tokenizer> children();
 		RequestBuilder.ListTokenizer<UnifiedChannelInfo.Tokenizer> unifiedChannels();
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
-		RequestBuilder.ListTokenizer<MediaImage.Tokenizer> images();
+		RequestBuilder.ListTokenizer<Image.Tokenizer> images();
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class CategoryTree extends ObjectBase {
 	/**
 	 * Category images
 	 */
-	private List<MediaImage> images;
+	private List<Image> images;
 
 	// id:
 	public Long getId(){
@@ -121,10 +121,10 @@ public class CategoryTree extends ObjectBase {
 	}
 
 	// images:
-	public List<MediaImage> getImages(){
+	public List<Image> getImages(){
 		return this.images;
 	}
-	public void setImages(List<MediaImage> images){
+	public void setImages(List<Image> images){
 		this.images = images;
 	}
 
@@ -144,7 +144,7 @@ public class CategoryTree extends ObjectBase {
 		children = GsonParser.parseArray(jsonObject.getAsJsonArray("children"), CategoryTree.class);
 		unifiedChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("unifiedChannels"), UnifiedChannelInfo.class);
 		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
-		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), MediaImage.class);
+		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), Image.class);
 
 	}
 

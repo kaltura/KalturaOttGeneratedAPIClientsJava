@@ -113,8 +113,12 @@ public class CategoryItemService {
 		}
 	}
 
+	public static ListCategoryItemBuilder list()  {
+		return list(null);
+	}
+
 	public static ListCategoryItemBuilder list(CategoryItemFilter filter)  {
-		return list(filter, );
+		return list(filter, null);
 	}
 
 	/**

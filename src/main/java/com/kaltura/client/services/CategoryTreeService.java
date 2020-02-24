@@ -41,13 +41,18 @@ public class CategoryTreeService {
 	
 	public static class DuplicateCategoryTreeBuilder extends RequestBuilder<CategoryTree, CategoryTree.Tokenizer, DuplicateCategoryTreeBuilder> {
 		
-		public DuplicateCategoryTreeBuilder(long categoryItemId) {
+		public DuplicateCategoryTreeBuilder(long categoryItemId, String name) {
 			super(CategoryTree.class, "categorytree", "duplicate");
 			params.add("categoryItemId", categoryItemId);
+			params.add("name", name);
 		}
 		
 		public void categoryItemId(String multirequestToken) {
 			params.add("categoryItemId", multirequestToken);
+		}
+		
+		public void name(String multirequestToken) {
+			params.add("name", multirequestToken);
 		}
 	}
 
@@ -55,9 +60,10 @@ public class CategoryTreeService {
 	 * Duplicate category Item
 	 * 
 	 * @param categoryItemId Category item identifier
+	 * @param name Root category name
 	 */
-    public static DuplicateCategoryTreeBuilder duplicate(long categoryItemId)  {
-		return new DuplicateCategoryTreeBuilder(categoryItemId);
+    public static DuplicateCategoryTreeBuilder duplicate(long categoryItemId, String name)  {
+		return new DuplicateCategoryTreeBuilder(categoryItemId, name);
 	}
 	
 	public static class GetCategoryTreeBuilder extends RequestBuilder<CategoryTree, CategoryTree.Tokenizer, GetCategoryTreeBuilder> {
