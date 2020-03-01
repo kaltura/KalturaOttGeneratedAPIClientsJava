@@ -52,8 +52,8 @@ public class CategoryItem extends CrudObject {
 	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String name();
-		String parentCategoryId();
-		String childCategoriesIds();
+		String parentId();
+		String childrenIds();
 		RequestBuilder.ListTokenizer<UnifiedChannel.Tokenizer> unifiedChannels();
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 	}
@@ -69,11 +69,11 @@ public class CategoryItem extends CrudObject {
 	/**
 	 * Category parent identifier
 	 */
-	private Long parentCategoryId;
+	private Long parentId;
 	/**
 	 * Comma separated list of child categories&amp;#39; Ids.
 	 */
-	private String childCategoriesIds;
+	private String childrenIds;
 	/**
 	 * List of unified Channels.
 	 */
@@ -99,20 +99,20 @@ public class CategoryItem extends CrudObject {
 		setToken("name", multirequestToken);
 	}
 
-	// parentCategoryId:
-	public Long getParentCategoryId(){
-		return this.parentCategoryId;
+	// parentId:
+	public Long getParentId(){
+		return this.parentId;
 	}
-	// childCategoriesIds:
-	public String getChildCategoriesIds(){
-		return this.childCategoriesIds;
+	// childrenIds:
+	public String getChildrenIds(){
+		return this.childrenIds;
 	}
-	public void setChildCategoriesIds(String childCategoriesIds){
-		this.childCategoriesIds = childCategoriesIds;
+	public void setChildrenIds(String childrenIds){
+		this.childrenIds = childrenIds;
 	}
 
-	public void childCategoriesIds(String multirequestToken){
-		setToken("childCategoriesIds", multirequestToken);
+	public void childrenIds(String multirequestToken){
+		setToken("childrenIds", multirequestToken);
 	}
 
 	// unifiedChannels:
@@ -144,8 +144,8 @@ public class CategoryItem extends CrudObject {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		parentCategoryId = GsonParser.parseLong(jsonObject.get("parentCategoryId"));
-		childCategoriesIds = GsonParser.parseString(jsonObject.get("childCategoriesIds"));
+		parentId = GsonParser.parseLong(jsonObject.get("parentId"));
+		childrenIds = GsonParser.parseString(jsonObject.get("childrenIds"));
 		unifiedChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("unifiedChannels"), UnifiedChannel.class);
 		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 
@@ -155,7 +155,7 @@ public class CategoryItem extends CrudObject {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCategoryItem");
 		kparams.add("name", this.name);
-		kparams.add("childCategoriesIds", this.childCategoriesIds);
+		kparams.add("childrenIds", this.childrenIds);
 		kparams.add("unifiedChannels", this.unifiedChannels);
 		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
