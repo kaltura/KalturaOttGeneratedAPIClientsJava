@@ -53,6 +53,7 @@ public class CategoryTree extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		RequestBuilder.ListTokenizer<CategoryTree.Tokenizer> children();
 		RequestBuilder.ListTokenizer<UnifiedChannelInfo.Tokenizer> unifiedChannels();
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
@@ -67,6 +68,10 @@ public class CategoryTree extends ObjectBase {
 	 * Category name
 	 */
 	private String name;
+	/**
+	 * Category name
+	 */
+	private List<TranslationToken> multilingualName;
 	/**
 	 * List of category tree
 	 */
@@ -92,12 +97,12 @@ public class CategoryTree extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
+	// multilingualName:
+	public List<TranslationToken> getMultilingualName(){
+		return this.multilingualName;
 	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	public void setMultilingualName(List<TranslationToken> multilingualName){
+		this.multilingualName = multilingualName;
 	}
 
 	// children:
@@ -141,6 +146,7 @@ public class CategoryTree extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
+		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		children = GsonParser.parseArray(jsonObject.getAsJsonArray("children"), CategoryTree.class);
 		unifiedChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("unifiedChannels"), UnifiedChannelInfo.class);
 		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
@@ -151,7 +157,7 @@ public class CategoryTree extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCategoryTree");
-		kparams.add("name", this.name);
+		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("unifiedChannels", this.unifiedChannels);
 		kparams.add("dynamicData", this.dynamicData);
 		kparams.add("images", this.images);

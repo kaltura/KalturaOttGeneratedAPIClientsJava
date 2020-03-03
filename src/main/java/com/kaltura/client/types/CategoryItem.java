@@ -52,6 +52,7 @@ public class CategoryItem extends CrudObject {
 	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String name();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String parentId();
 		String childrenIds();
 		RequestBuilder.ListTokenizer<UnifiedChannel.Tokenizer> unifiedChannels();
@@ -66,6 +67,10 @@ public class CategoryItem extends CrudObject {
 	 * Category name
 	 */
 	private String name;
+	/**
+	 * Category name
+	 */
+	private List<TranslationToken> multilingualName;
 	/**
 	 * Category parent identifier
 	 */
@@ -91,12 +96,12 @@ public class CategoryItem extends CrudObject {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
+	// multilingualName:
+	public List<TranslationToken> getMultilingualName(){
+		return this.multilingualName;
 	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	public void setMultilingualName(List<TranslationToken> multilingualName){
+		this.multilingualName = multilingualName;
 	}
 
 	// parentId:
@@ -144,6 +149,7 @@ public class CategoryItem extends CrudObject {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
+		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		parentId = GsonParser.parseLong(jsonObject.get("parentId"));
 		childrenIds = GsonParser.parseString(jsonObject.get("childrenIds"));
 		unifiedChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("unifiedChannels"), UnifiedChannel.class);
@@ -154,7 +160,7 @@ public class CategoryItem extends CrudObject {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCategoryItem");
-		kparams.add("name", this.name);
+		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("childrenIds", this.childrenIds);
 		kparams.add("unifiedChannels", this.unifiedChannels);
 		kparams.add("dynamicData", this.dynamicData);
