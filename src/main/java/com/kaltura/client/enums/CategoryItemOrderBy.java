@@ -37,7 +37,8 @@ public enum CategoryItemOrderBy implements EnumAsString {
 	NAME_ASC("NAME_ASC"),
 	NAME_DESC("NAME_DESC"),
 	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
+	CREATE_DATE_DESC("CREATE_DATE_DESC"),
+	NONE("NONE");
 
 	private String value;
 
