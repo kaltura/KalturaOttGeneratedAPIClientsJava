@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,44 +37,32 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
+/**
+ * Iot settings filter
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(IotFilter.Tokenizer.class)
+public class IotFilter extends CrudFilter {
+	
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public IotFilter() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public IotFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaIotFilter");
+		return kparams;
+	}
+
 }
+

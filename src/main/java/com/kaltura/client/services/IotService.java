@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.Iot;
+import com.kaltura.client.types.IotClientConfiguration;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,44 +37,34 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
+public class IotService {
+	
+	public static class GetClientConfigurationIotBuilder extends RequestBuilder<IotClientConfiguration, IotClientConfiguration.Tokenizer, GetClientConfigurationIotBuilder> {
 		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public GetClientConfigurationIotBuilder() {
+			super(IotClientConfiguration.class, "iot", "getClientConfiguration");
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+	}
+
+	/**
+	 * Get iot Client Configuration
+	 */
+    public static GetClientConfigurationIotBuilder getClientConfiguration()  {
+		return new GetClientConfigurationIotBuilder();
+	}
+	
+	public static class RegisterIotBuilder extends RequestBuilder<Iot, Iot.Tokenizer, RegisterIotBuilder> {
+		
+		public RegisterIotBuilder() {
+			super(Iot.class, "iot", "register");
+		}
+	}
+
+	/**
+	 * Register IOT device
+	 */
+    public static RegisterIotBuilder register()  {
+		return new RegisterIotBuilder();
+	}
 }
