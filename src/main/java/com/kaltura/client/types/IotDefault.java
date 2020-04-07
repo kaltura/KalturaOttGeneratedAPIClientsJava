@@ -41,8 +41,8 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Default.Tokenizer.class)
-public class Default extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IotDefault.Tokenizer.class)
+public class IotDefault extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String poolId();
@@ -100,11 +100,11 @@ public class Default extends ObjectBase {
 	}
 
 
-	public Default() {
+	public IotDefault() {
 		super();
 	}
 
-	public Default(JsonObject jsonObject) throws APIException {
+	public IotDefault(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
@@ -118,7 +118,7 @@ public class Default extends ObjectBase {
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDefault");
+		kparams.add("objectType", "KalturaIotDefault");
 		kparams.add("poolId", this.poolId);
 		kparams.add("region", this.region);
 		kparams.add("appClientId", this.appClientId);
