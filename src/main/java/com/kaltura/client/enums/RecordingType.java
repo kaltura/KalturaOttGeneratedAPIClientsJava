@@ -36,7 +36,8 @@ package com.kaltura.client.enums;
 public enum RecordingType implements EnumAsString {
 	SINGLE("SINGLE"),
 	SEASON("SEASON"),
-	SERIES("SERIES");
+	SERIES("SERIES"),
+	ORIGINALBROADCAST("OriginalBroadcast");
 
 	private String value;
 

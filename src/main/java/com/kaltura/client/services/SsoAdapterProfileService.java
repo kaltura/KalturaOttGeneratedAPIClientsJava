@@ -27,9 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.KeyValue;
 import com.kaltura.client.types.SSOAdapterProfile;
+import com.kaltura.client.types.SSOAdapterProfileInvoke;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -97,6 +100,29 @@ public class SsoAdapterProfileService {
 	 */
     public static GenerateSharedSecretSsoAdapterProfileBuilder generateSharedSecret(int ssoAdapterId)  {
 		return new GenerateSharedSecretSsoAdapterProfileBuilder(ssoAdapterId);
+	}
+	
+	public static class InvokeSsoAdapterProfileBuilder extends RequestBuilder<SSOAdapterProfileInvoke, SSOAdapterProfileInvoke.Tokenizer, InvokeSsoAdapterProfileBuilder> {
+		
+		public InvokeSsoAdapterProfileBuilder(String intent, List<KeyValue> adapterData) {
+			super(SSOAdapterProfileInvoke.class, "ssoadapterprofile", "invoke");
+			params.add("intent", intent);
+			params.add("adapterData", adapterData);
+		}
+		
+		public void intent(String multirequestToken) {
+			params.add("intent", multirequestToken);
+		}
+	}
+
+	/**
+	 * Request validation against 3rd party
+	 * 
+	 * @param intent intent
+	 * @param adapterData adapter Data
+	 */
+    public static InvokeSsoAdapterProfileBuilder invoke(String intent, List<KeyValue> adapterData)  {
+		return new InvokeSsoAdapterProfileBuilder(intent, adapterData);
 	}
 	
 	public static class ListSsoAdapterProfileBuilder extends ListResponseRequestBuilder<SSOAdapterProfile, SSOAdapterProfile.Tokenizer, ListSsoAdapterProfileBuilder> {
