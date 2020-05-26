@@ -33,20 +33,16 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment");
+public enum DurationUnit implements EnumAsString {
+	MINUTES("Minutes"),
+	HOURS("Hours"),
+	DAYS("Days"),
+	MONTHS("Months"),
+	YEARS("Years");
 
 	private String value;
 
-	PartnerConfigurationType(String value) {
+	DurationUnit(String value) {
 		this.value = value;
 	}
 
@@ -59,19 +55,19 @@ public enum PartnerConfigurationType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static PartnerConfigurationType get(String value) {
+	public static DurationUnit get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
+		// goes over DurationUnit defined values and compare the inner value with the given one:
+		for(DurationUnit item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
+		return DurationUnit.values().length > 0 ? DurationUnit.values()[0]: null;
    }
 }
