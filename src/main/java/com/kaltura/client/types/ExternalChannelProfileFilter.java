@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,43 +37,32 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum CategoryItemOrderBy implements EnumAsString {
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	NONE("NONE"),
-	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
-	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
-	private String value;
-
-	CategoryItemOrderBy(String value) {
-		this.value = value;
+/**
+ * External channel profile filter
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ExternalChannelProfileFilter.Tokenizer.class)
+public class ExternalChannelProfileFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public ExternalChannelProfileFilter() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public ExternalChannelProfileFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static CategoryItemOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over CategoryItemOrderBy defined values and compare the inner value with the given one:
-		for(CategoryItemOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return CategoryItemOrderBy.values().length > 0 ? CategoryItemOrderBy.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaExternalChannelProfileFilter");
+		return kparams;
+	}
+
 }
+
