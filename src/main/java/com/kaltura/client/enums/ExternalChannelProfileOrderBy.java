@@ -33,18 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum CategoryItemOrderBy implements EnumAsString {
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	NONE("NONE"),
-	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
-	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
+public enum ExternalChannelProfileOrderBy implements EnumAsString {
+	NONE("NONE");
 
 	private String value;
 
-	CategoryItemOrderBy(String value) {
+	ExternalChannelProfileOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -57,19 +51,19 @@ public enum CategoryItemOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static CategoryItemOrderBy get(String value) {
+	public static ExternalChannelProfileOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over CategoryItemOrderBy defined values and compare the inner value with the given one:
-		for(CategoryItemOrderBy item: values()) {
+		// goes over ExternalChannelProfileOrderBy defined values and compare the inner value with the given one:
+		for(ExternalChannelProfileOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return CategoryItemOrderBy.values().length > 0 ? CategoryItemOrderBy.values()[0]: null;
+		return ExternalChannelProfileOrderBy.values().length > 0 ? ExternalChannelProfileOrderBy.values()[0]: null;
    }
 }

@@ -58,6 +58,9 @@ public class CategoryTree extends ObjectBase {
 		RequestBuilder.ListTokenizer<UnifiedChannelInfo.Tokenizer> unifiedChannels();
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 		RequestBuilder.ListTokenizer<Image.Tokenizer> images();
+		String isActive();
+		String startDateInSeconds();
+		String endDateInSeconds();
 	}
 
 	/**
@@ -88,6 +91,18 @@ public class CategoryTree extends ObjectBase {
 	 * Category images
 	 */
 	private List<Image> images;
+	/**
+	 * Category active status
+	 */
+	private Boolean isActive;
+	/**
+	 * Start date in seconds
+	 */
+	private Long startDateInSeconds;
+	/**
+	 * End date in seconds
+	 */
+	private Long endDateInSeconds;
 
 	// id:
 	public Long getId(){
@@ -133,6 +148,42 @@ public class CategoryTree extends ObjectBase {
 		this.images = images;
 	}
 
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
+
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
+
+	// startDateInSeconds:
+	public Long getStartDateInSeconds(){
+		return this.startDateInSeconds;
+	}
+	public void setStartDateInSeconds(Long startDateInSeconds){
+		this.startDateInSeconds = startDateInSeconds;
+	}
+
+	public void startDateInSeconds(String multirequestToken){
+		setToken("startDateInSeconds", multirequestToken);
+	}
+
+	// endDateInSeconds:
+	public Long getEndDateInSeconds(){
+		return this.endDateInSeconds;
+	}
+	public void setEndDateInSeconds(Long endDateInSeconds){
+		this.endDateInSeconds = endDateInSeconds;
+	}
+
+	public void endDateInSeconds(String multirequestToken){
+		setToken("endDateInSeconds", multirequestToken);
+	}
+
 
 	public CategoryTree() {
 		super();
@@ -151,6 +202,9 @@ public class CategoryTree extends ObjectBase {
 		unifiedChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("unifiedChannels"), UnifiedChannelInfo.class);
 		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 		images = GsonParser.parseArray(jsonObject.getAsJsonArray("images"), Image.class);
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		startDateInSeconds = GsonParser.parseLong(jsonObject.get("startDateInSeconds"));
+		endDateInSeconds = GsonParser.parseLong(jsonObject.get("endDateInSeconds"));
 
 	}
 
@@ -161,6 +215,9 @@ public class CategoryTree extends ObjectBase {
 		kparams.add("unifiedChannels", this.unifiedChannels);
 		kparams.add("dynamicData", this.dynamicData);
 		kparams.add("images", this.images);
+		kparams.add("isActive", this.isActive);
+		kparams.add("startDateInSeconds", this.startDateInSeconds);
+		kparams.add("endDateInSeconds", this.endDateInSeconds);
 		return kparams;
 	}
 
