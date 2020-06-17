@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.Duration;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -41,84 +40,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Suspend Settings
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UnifiedBillingCycle.Tokenizer.class)
-public class UnifiedBillingCycle extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SuspendSettings.Tokenizer.class)
+public class SuspendSettings extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String name();
-		Duration.Tokenizer duration();
-		String paymentGatewayId();
+		String revokeEntitlements();
+		String stopRenew();
 	}
 
 	/**
-	 * UnifiedBillingCycle name
+	 * revoke entitlements
 	 */
-	private String name;
+	private Boolean revokeEntitlements;
 	/**
-	 * cycle duration
+	 * stop renew
 	 */
-	private Duration duration;
-	/**
-	 * Payment Gateway Id
-	 */
-	private Integer paymentGatewayId;
+	private Boolean stopRenew;
 
-	// name:
-	public String getName(){
-		return this.name;
+	// revokeEntitlements:
+	public Boolean getRevokeEntitlements(){
+		return this.revokeEntitlements;
 	}
-	public void setName(String name){
-		this.name = name;
+	public void setRevokeEntitlements(Boolean revokeEntitlements){
+		this.revokeEntitlements = revokeEntitlements;
 	}
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	public void revokeEntitlements(String multirequestToken){
+		setToken("revokeEntitlements", multirequestToken);
 	}
 
-	// duration:
-	public Duration getDuration(){
-		return this.duration;
+	// stopRenew:
+	public Boolean getStopRenew(){
+		return this.stopRenew;
 	}
-	public void setDuration(Duration duration){
-		this.duration = duration;
-	}
-
-	// paymentGatewayId:
-	public Integer getPaymentGatewayId(){
-		return this.paymentGatewayId;
-	}
-	public void setPaymentGatewayId(Integer paymentGatewayId){
-		this.paymentGatewayId = paymentGatewayId;
+	public void setStopRenew(Boolean stopRenew){
+		this.stopRenew = stopRenew;
 	}
 
-	public void paymentGatewayId(String multirequestToken){
-		setToken("paymentGatewayId", multirequestToken);
+	public void stopRenew(String multirequestToken){
+		setToken("stopRenew", multirequestToken);
 	}
 
 
-	public UnifiedBillingCycle() {
+	public SuspendSettings() {
 		super();
 	}
 
-	public UnifiedBillingCycle(JsonObject jsonObject) throws APIException {
+	public SuspendSettings(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		name = GsonParser.parseString(jsonObject.get("name"));
-		duration = GsonParser.parseObject(jsonObject.getAsJsonObject("duration"), Duration.class);
-		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
+		revokeEntitlements = GsonParser.parseBoolean(jsonObject.get("revokeEntitlements"));
+		stopRenew = GsonParser.parseBoolean(jsonObject.get("stopRenew"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUnifiedBillingCycle");
-		kparams.add("name", this.name);
-		kparams.add("duration", this.duration);
-		kparams.add("paymentGatewayId", this.paymentGatewayId);
+		kparams.add("objectType", "KalturaSuspendSettings");
+		kparams.add("revokeEntitlements", this.revokeEntitlements);
+		kparams.add("stopRenew", this.stopRenew);
 		return kparams;
 	}
 
