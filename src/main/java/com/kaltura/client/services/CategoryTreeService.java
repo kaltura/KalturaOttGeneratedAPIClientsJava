@@ -83,6 +83,10 @@ public class CategoryTreeService {
 		}
 	}
 
+	public static GetCategoryTreeBuilder get(long categoryItemId)  {
+		return get(categoryItemId, false);
+	}
+
 	/**
 	 * Retrive category tree.
 	 * 
