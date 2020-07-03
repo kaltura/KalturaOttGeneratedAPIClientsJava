@@ -28,7 +28,6 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.ExternalChannelProfile;
-import com.kaltura.client.types.ExternalChannelProfileFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -81,23 +80,16 @@ public class ExternalChannelProfileService {
 	
 	public static class ListExternalChannelProfileBuilder extends ListResponseRequestBuilder<ExternalChannelProfile, ExternalChannelProfile.Tokenizer, ListExternalChannelProfileBuilder> {
 		
-		public ListExternalChannelProfileBuilder(ExternalChannelProfileFilter filter) {
+		public ListExternalChannelProfileBuilder() {
 			super(ExternalChannelProfile.class, "externalchannelprofile", "list");
-			params.add("filter", filter);
 		}
-	}
-
-	public static ListExternalChannelProfileBuilder list()  {
-		return list(null);
 	}
 
 	/**
 	 * Returns all External channels for partner
-	 * 
-	 * @param filter External channel profile filter
 	 */
-    public static ListExternalChannelProfileBuilder list(ExternalChannelProfileFilter filter)  {
-		return new ListExternalChannelProfileBuilder(filter);
+    public static ListExternalChannelProfileBuilder list()  {
+		return new ListExternalChannelProfileBuilder();
 	}
 	
 	public static class UpdateExternalChannelProfileBuilder extends RequestBuilder<ExternalChannelProfile, ExternalChannelProfile.Tokenizer, UpdateExternalChannelProfileBuilder> {

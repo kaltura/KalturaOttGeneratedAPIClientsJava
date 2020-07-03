@@ -31,7 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.DeleteMediaPolicy;
 import com.kaltura.client.enums.DowngradePolicy;
-import com.kaltura.client.types.RollingDeviceRemovalData;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -62,7 +61,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String householdLimitationModule();
 		String enableRegionFiltering();
 		String defaultRegion();
-		RollingDeviceRemovalData.Tokenizer rollingDeviceData();
 	}
 
 	/**
@@ -113,10 +111,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Default Region
 	 */
 	private Integer defaultRegion;
-	/**
-	 * Rolling Device Policy
-	 */
-	private RollingDeviceRemovalData rollingDeviceData;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -262,14 +256,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		setToken("defaultRegion", multirequestToken);
 	}
 
-	// rollingDeviceData:
-	public RollingDeviceRemovalData getRollingDeviceData(){
-		return this.rollingDeviceData;
-	}
-	public void setRollingDeviceData(RollingDeviceRemovalData rollingDeviceData){
-		this.rollingDeviceData = rollingDeviceData;
-	}
-
 
 	public GeneralPartnerConfig() {
 		super();
@@ -293,7 +279,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		householdLimitationModule = GsonParser.parseInt(jsonObject.get("householdLimitationModule"));
 		enableRegionFiltering = GsonParser.parseBoolean(jsonObject.get("enableRegionFiltering"));
 		defaultRegion = GsonParser.parseInt(jsonObject.get("defaultRegion"));
-		rollingDeviceData = GsonParser.parseObject(jsonObject.getAsJsonObject("rollingDeviceData"), RollingDeviceRemovalData.class);
 
 	}
 
@@ -312,7 +297,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("householdLimitationModule", this.householdLimitationModule);
 		kparams.add("enableRegionFiltering", this.enableRegionFiltering);
 		kparams.add("defaultRegion", this.defaultRegion);
-		kparams.add("rollingDeviceData", this.rollingDeviceData);
 		return kparams;
 	}
 
