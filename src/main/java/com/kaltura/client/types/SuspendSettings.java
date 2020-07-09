@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,69 +40,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Suspend Settings
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ChannelFilter.Tokenizer.class)
-public class ChannelFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(SuspendSettings.Tokenizer.class)
+public class SuspendSettings extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String idEqual();
-		String excludeWatched();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String revokeEntitlements();
+		String stopRenew();
 	}
 
 	/**
-	 * Channel Id
+	 * revoke entitlements
 	 */
-	private Integer idEqual;
+	private Boolean revokeEntitlements;
 	/**
-	 * Exclude watched asset.
+	 * stop renew
 	 */
-	private Boolean excludeWatched;
+	private Boolean stopRenew;
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// revokeEntitlements:
+	public Boolean getRevokeEntitlements(){
+		return this.revokeEntitlements;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
+	public void setRevokeEntitlements(Boolean revokeEntitlements){
+		this.revokeEntitlements = revokeEntitlements;
 	}
 
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
-	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
+	public void revokeEntitlements(String multirequestToken){
+		setToken("revokeEntitlements", multirequestToken);
 	}
 
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
+	// stopRenew:
+	public Boolean getStopRenew(){
+		return this.stopRenew;
+	}
+	public void setStopRenew(Boolean stopRenew){
+		this.stopRenew = stopRenew;
+	}
+
+	public void stopRenew(String multirequestToken){
+		setToken("stopRenew", multirequestToken);
 	}
 
 
-	public ChannelFilter() {
+	public SuspendSettings() {
 		super();
 	}
 
-	public ChannelFilter(JsonObject jsonObject) throws APIException {
+	public SuspendSettings(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
+		revokeEntitlements = GsonParser.parseBoolean(jsonObject.get("revokeEntitlements"));
+		stopRenew = GsonParser.parseBoolean(jsonObject.get("stopRenew"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaChannelFilter");
-		kparams.add("idEqual", this.idEqual);
-		kparams.add("excludeWatched", this.excludeWatched);
+		kparams.add("objectType", "KalturaSuspendSettings");
+		kparams.add("revokeEntitlements", this.revokeEntitlements);
+		kparams.add("stopRenew", this.stopRenew);
 		return kparams;
 	}
 

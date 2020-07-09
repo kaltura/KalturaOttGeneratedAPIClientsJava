@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,69 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Kaltura asset image per ratio filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ChannelFilter.Tokenizer.class)
-public class ChannelFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(AssetHistorySuppressFilter.Tokenizer.class)
+public class AssetHistorySuppressFilter extends RelatedObjectFilter {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String idEqual();
-		String excludeWatched();
-	}
-
-	/**
-	 * Channel Id
-	 */
-	private Integer idEqual;
-	/**
-	 * Exclude watched asset.
-	 */
-	private Boolean excludeWatched;
-
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
-	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
-	}
-
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
-	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
-	}
-
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
+	public interface Tokenizer extends RelatedObjectFilter.Tokenizer {
 	}
 
 
-	public ChannelFilter() {
+
+	public AssetHistorySuppressFilter() {
 		super();
 	}
 
-	public ChannelFilter(JsonObject jsonObject) throws APIException {
+	public AssetHistorySuppressFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaChannelFilter");
-		kparams.add("idEqual", this.idEqual);
-		kparams.add("excludeWatched", this.excludeWatched);
+		kparams.add("objectType", "KalturaAssetHistorySuppressFilter");
 		return kparams;
 	}
 

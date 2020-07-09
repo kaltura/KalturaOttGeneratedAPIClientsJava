@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -39,69 +41,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Partner billing configuration
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ChannelFilter.Tokenizer.class)
-public class ChannelFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(PaymentPartnerConfig.Tokenizer.class)
+public class PaymentPartnerConfig extends PartnerConfiguration {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String idEqual();
-		String excludeWatched();
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		RequestBuilder.ListTokenizer<UnifiedBillingCycle.Tokenizer> unifiedBillingCycles();
 	}
 
 	/**
-	 * Channel Id
+	 * configuration for unified billing cycles.
 	 */
-	private Integer idEqual;
-	/**
-	 * Exclude watched asset.
-	 */
-	private Boolean excludeWatched;
+	private List<UnifiedBillingCycle> unifiedBillingCycles;
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// unifiedBillingCycles:
+	public List<UnifiedBillingCycle> getUnifiedBillingCycles(){
+		return this.unifiedBillingCycles;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
-	}
-
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
-	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
-	}
-
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
+	public void setUnifiedBillingCycles(List<UnifiedBillingCycle> unifiedBillingCycles){
+		this.unifiedBillingCycles = unifiedBillingCycles;
 	}
 
 
-	public ChannelFilter() {
+	public PaymentPartnerConfig() {
 		super();
 	}
 
-	public ChannelFilter(JsonObject jsonObject) throws APIException {
+	public PaymentPartnerConfig(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
+		unifiedBillingCycles = GsonParser.parseArray(jsonObject.getAsJsonArray("unifiedBillingCycles"), UnifiedBillingCycle.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaChannelFilter");
-		kparams.add("idEqual", this.idEqual);
-		kparams.add("excludeWatched", this.excludeWatched);
+		kparams.add("objectType", "KalturaPaymentPartnerConfig");
+		kparams.add("unifiedBillingCycles", this.unifiedBillingCycles);
 		return kparams;
 	}
 

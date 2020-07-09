@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.DurationUnit;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,69 +41,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * representation of duration time unit and value
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ChannelFilter.Tokenizer.class)
-public class ChannelFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(Duration.Tokenizer.class)
+public class Duration extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String idEqual();
-		String excludeWatched();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String unit();
+		String value();
 	}
 
 	/**
-	 * Channel Id
+	 * duration unit
 	 */
-	private Integer idEqual;
+	private DurationUnit unit;
 	/**
-	 * Exclude watched asset.
+	 * duration value
 	 */
-	private Boolean excludeWatched;
+	private Integer value;
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// unit:
+	public DurationUnit getUnit(){
+		return this.unit;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
+	public void setUnit(DurationUnit unit){
+		this.unit = unit;
 	}
 
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
-	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
+	public void unit(String multirequestToken){
+		setToken("unit", multirequestToken);
 	}
 
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
+	// value:
+	public Integer getValue(){
+		return this.value;
+	}
+	public void setValue(Integer value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
 
-	public ChannelFilter() {
+	public Duration() {
 		super();
 	}
 
-	public ChannelFilter(JsonObject jsonObject) throws APIException {
+	public Duration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
+		unit = DurationUnit.get(GsonParser.parseString(jsonObject.get("unit")));
+		value = GsonParser.parseInt(jsonObject.get("value"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaChannelFilter");
-		kparams.add("idEqual", this.idEqual);
-		kparams.add("excludeWatched", this.excludeWatched);
+		kparams.add("objectType", "KalturaDuration");
+		kparams.add("unit", this.unit);
+		kparams.add("value", this.value);
 		return kparams;
 	}
 

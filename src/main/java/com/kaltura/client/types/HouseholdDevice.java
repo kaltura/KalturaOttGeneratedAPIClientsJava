@@ -58,6 +58,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		String deviceFamilyId();
 		CustomDrmPlaybackPluginData.Tokenizer drm();
 		String externalId();
+		String macAddress();
 	}
 
 	/**
@@ -96,6 +97,10 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	 * external Id
 	 */
 	private String externalId;
+	/**
+	 * mac address
+	 */
+	private String macAddress;
 
 	// householdId:
 	public Integer getHouseholdId(){
@@ -181,6 +186,18 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		setToken("externalId", multirequestToken);
 	}
 
+	// macAddress:
+	public String getMacAddress(){
+		return this.macAddress;
+	}
+	public void setMacAddress(String macAddress){
+		this.macAddress = macAddress;
+	}
+
+	public void macAddress(String multirequestToken){
+		setToken("macAddress", multirequestToken);
+	}
+
 
 	public HouseholdDevice() {
 		super();
@@ -201,6 +218,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		deviceFamilyId = GsonParser.parseLong(jsonObject.get("deviceFamilyId"));
 		drm = GsonParser.parseObject(jsonObject.getAsJsonObject("drm"), CustomDrmPlaybackPluginData.class);
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
+		macAddress = GsonParser.parseString(jsonObject.get("macAddress"));
 
 	}
 
@@ -213,6 +231,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		kparams.add("brandId", this.brandId);
 		kparams.add("activatedOn", this.activatedOn);
 		kparams.add("externalId", this.externalId);
+		kparams.add("macAddress", this.macAddress);
 		return kparams;
 	}
 

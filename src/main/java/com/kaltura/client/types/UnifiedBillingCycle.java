@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.Duration;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,68 +42,83 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ChannelFilter.Tokenizer.class)
-public class ChannelFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(UnifiedBillingCycle.Tokenizer.class)
+public class UnifiedBillingCycle extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String idEqual();
-		String excludeWatched();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String name();
+		Duration.Tokenizer duration();
+		String paymentGatewayId();
 	}
 
 	/**
-	 * Channel Id
+	 * UnifiedBillingCycle name
 	 */
-	private Integer idEqual;
+	private String name;
 	/**
-	 * Exclude watched asset.
+	 * cycle duration
 	 */
-	private Boolean excludeWatched;
+	private Duration duration;
+	/**
+	 * Payment Gateway Id
+	 */
+	private Integer paymentGatewayId;
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// name:
+	public String getName(){
+		return this.name;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
-	}
-
-	// excludeWatched:
-	public Boolean getExcludeWatched(){
-		return this.excludeWatched;
-	}
-	public void setExcludeWatched(Boolean excludeWatched){
-		this.excludeWatched = excludeWatched;
+	public void setName(String name){
+		this.name = name;
 	}
 
-	public void excludeWatched(String multirequestToken){
-		setToken("excludeWatched", multirequestToken);
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// duration:
+	public Duration getDuration(){
+		return this.duration;
+	}
+	public void setDuration(Duration duration){
+		this.duration = duration;
+	}
+
+	// paymentGatewayId:
+	public Integer getPaymentGatewayId(){
+		return this.paymentGatewayId;
+	}
+	public void setPaymentGatewayId(Integer paymentGatewayId){
+		this.paymentGatewayId = paymentGatewayId;
+	}
+
+	public void paymentGatewayId(String multirequestToken){
+		setToken("paymentGatewayId", multirequestToken);
 	}
 
 
-	public ChannelFilter() {
+	public UnifiedBillingCycle() {
 		super();
 	}
 
-	public ChannelFilter(JsonObject jsonObject) throws APIException {
+	public UnifiedBillingCycle(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-		excludeWatched = GsonParser.parseBoolean(jsonObject.get("excludeWatched"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		duration = GsonParser.parseObject(jsonObject.getAsJsonObject("duration"), Duration.class);
+		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaChannelFilter");
-		kparams.add("idEqual", this.idEqual);
-		kparams.add("excludeWatched", this.excludeWatched);
+		kparams.add("objectType", "KalturaUnifiedBillingCycle");
+		kparams.add("name", this.name);
+		kparams.add("duration", this.duration);
+		kparams.add("paymentGatewayId", this.paymentGatewayId);
 		return kparams;
 	}
 
