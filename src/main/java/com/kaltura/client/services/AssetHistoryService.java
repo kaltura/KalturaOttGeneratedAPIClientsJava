@@ -32,7 +32,6 @@ import com.kaltura.client.types.AssetHistoryFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -62,27 +61,6 @@ public class AssetHistoryService {
 	 */
     public static CleanAssetHistoryBuilder clean(AssetHistoryFilter filter)  {
 		return new CleanAssetHistoryBuilder(filter);
-	}
-	
-	public static class GetNextEpisodeAssetHistoryBuilder extends RequestBuilder<AssetHistory, AssetHistory.Tokenizer, GetNextEpisodeAssetHistoryBuilder> {
-		
-		public GetNextEpisodeAssetHistoryBuilder(long assetId) {
-			super(AssetHistory.class, "assethistory", "getNextEpisode");
-			params.add("assetId", assetId);
-		}
-		
-		public void assetId(String multirequestToken) {
-			params.add("assetId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Get next episode by last watch asset in given assetId
-	 * 
-	 * @param assetId asset Id of series to search for next episode
-	 */
-    public static GetNextEpisodeAssetHistoryBuilder getNextEpisode(long assetId)  {
-		return new GetNextEpisodeAssetHistoryBuilder(assetId);
 	}
 	
 	public static class ListAssetHistoryBuilder extends ListResponseRequestBuilder<AssetHistory, AssetHistory.Tokenizer, ListAssetHistoryBuilder> {
