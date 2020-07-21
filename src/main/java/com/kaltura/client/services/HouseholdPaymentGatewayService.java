@@ -30,7 +30,6 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.HouseholdPaymentGateway;
 import com.kaltura.client.types.KeyValue;
 import com.kaltura.client.types.PaymentGatewayConfiguration;
-import com.kaltura.client.types.SuspendSettings;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -159,10 +158,9 @@ public class HouseholdPaymentGatewayService {
 	
 	public static class ResumeHouseholdPaymentGatewayBuilder extends NullRequestBuilder {
 		
-		public ResumeHouseholdPaymentGatewayBuilder(int paymentGatewayId, List<KeyValue> adapterData) {
+		public ResumeHouseholdPaymentGatewayBuilder(int paymentGatewayId) {
 			super("householdpaymentgateway", "resume");
 			params.add("paymentGatewayId", paymentGatewayId);
-			params.add("adapterData", adapterData);
 		}
 		
 		public void paymentGatewayId(String multirequestToken) {
@@ -170,18 +168,13 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	public static ResumeHouseholdPaymentGatewayBuilder resume(int paymentGatewayId)  {
-		return resume(paymentGatewayId, null);
-	}
-
 	/**
 	 * Resumes all the entitlements of the given payment gateway
 	 * 
 	 * @param paymentGatewayId Payment gateway ID
-	 * @param adapterData Adapter data
 	 */
-    public static ResumeHouseholdPaymentGatewayBuilder resume(int paymentGatewayId, List<KeyValue> adapterData)  {
-		return new ResumeHouseholdPaymentGatewayBuilder(paymentGatewayId, adapterData);
+    public static ResumeHouseholdPaymentGatewayBuilder resume(int paymentGatewayId)  {
+		return new ResumeHouseholdPaymentGatewayBuilder(paymentGatewayId);
 	}
 	
 	public static class SetChargeIDHouseholdPaymentGatewayBuilder extends RequestBuilder<Boolean, String, SetChargeIDHouseholdPaymentGatewayBuilder> {
@@ -215,10 +208,9 @@ public class HouseholdPaymentGatewayService {
 	
 	public static class SuspendHouseholdPaymentGatewayBuilder extends NullRequestBuilder {
 		
-		public SuspendHouseholdPaymentGatewayBuilder(int paymentGatewayId, SuspendSettings suspendSettings) {
+		public SuspendHouseholdPaymentGatewayBuilder(int paymentGatewayId) {
 			super("householdpaymentgateway", "suspend");
 			params.add("paymentGatewayId", paymentGatewayId);
-			params.add("suspendSettings", suspendSettings);
 		}
 		
 		public void paymentGatewayId(String multirequestToken) {
@@ -226,17 +218,12 @@ public class HouseholdPaymentGatewayService {
 		}
 	}
 
-	public static SuspendHouseholdPaymentGatewayBuilder suspend(int paymentGatewayId)  {
-		return suspend(paymentGatewayId, null);
-	}
-
 	/**
 	 * Suspends all the entitlements of the given payment gateway
 	 * 
 	 * @param paymentGatewayId Payment gateway ID
-	 * @param suspendSettings suspend settings
 	 */
-    public static SuspendHouseholdPaymentGatewayBuilder suspend(int paymentGatewayId, SuspendSettings suspendSettings)  {
-		return new SuspendHouseholdPaymentGatewayBuilder(paymentGatewayId, suspendSettings);
+    public static SuspendHouseholdPaymentGatewayBuilder suspend(int paymentGatewayId)  {
+		return new SuspendHouseholdPaymentGatewayBuilder(paymentGatewayId);
 	}
 }
