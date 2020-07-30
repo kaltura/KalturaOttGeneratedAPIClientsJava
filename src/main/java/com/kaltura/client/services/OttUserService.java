@@ -304,16 +304,23 @@ public class OttUserService {
 	
 	public static class LogoutOttUserBuilder extends RequestBuilder<Boolean, String, LogoutOttUserBuilder> {
 		
-		public LogoutOttUserBuilder() {
+		public LogoutOttUserBuilder(Map<String, StringValue> adapterData) {
 			super(Boolean.class, "ottuser", "logout");
+			params.add("adapterData", adapterData);
 		}
+	}
+
+	public static LogoutOttUserBuilder logout()  {
+		return logout(null);
 	}
 
 	/**
 	 * Logout the calling user.
+	 * 
+	 * @param adapterData adapter data
 	 */
-    public static LogoutOttUserBuilder logout()  {
-		return new LogoutOttUserBuilder();
+    public static LogoutOttUserBuilder logout(Map<String, StringValue> adapterData)  {
+		return new LogoutOttUserBuilder(adapterData);
 	}
 	
 	public static class RegisterOttUserBuilder extends RequestBuilder<OTTUser, OTTUser.Tokenizer, RegisterOttUserBuilder> {

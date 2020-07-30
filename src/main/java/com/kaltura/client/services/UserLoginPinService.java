@@ -41,13 +41,23 @@ public class UserLoginPinService {
 	
 	public static class AddUserLoginPinBuilder extends RequestBuilder<UserLoginPin, UserLoginPin.Tokenizer, AddUserLoginPinBuilder> {
 		
-		public AddUserLoginPinBuilder(String secret) {
+		public AddUserLoginPinBuilder(String secret, int pinUsages, long pinDuration) {
 			super(UserLoginPin.class, "userloginpin", "add");
 			params.add("secret", secret);
+			params.add("pinUsages", pinUsages);
+			params.add("pinDuration", pinDuration);
 		}
 		
 		public void secret(String multirequestToken) {
 			params.add("secret", multirequestToken);
+		}
+		
+		public void pinUsages(String multirequestToken) {
+			params.add("pinUsages", multirequestToken);
+		}
+		
+		public void pinDuration(String multirequestToken) {
+			params.add("pinDuration", multirequestToken);
 		}
 	}
 
@@ -55,15 +65,25 @@ public class UserLoginPinService {
 		return add(null);
 	}
 
+	public static AddUserLoginPinBuilder add(String secret)  {
+		return add(secret, Integer.MIN_VALUE);
+	}
+
+	public static AddUserLoginPinBuilder add(String secret, int pinUsages)  {
+		return add(secret, pinUsages, Long.MIN_VALUE);
+	}
+
 	/**
-	 * Generate a time and usage expiry login-PIN that can allow a single login per
-	  PIN. If an active login-PIN already exists. Calling this API again for same user
-	  will add another login-PIN
+	 * Generate a time and usage expiry login-PIN that can allow a single/multiple
+	  login/s per PIN.               If an active login-PIN already exists. Calling
+	  this API again for same user will add another login-PIN
 	 * 
 	 * @param secret Additional security parameter for optional enhanced security
+	 * @param pinUsages Optional number of pin usages
+	 * @param pinDuration Optional duration in minutes of the pin
 	 */
-    public static AddUserLoginPinBuilder add(String secret)  {
-		return new AddUserLoginPinBuilder(secret);
+    public static AddUserLoginPinBuilder add(String secret, int pinUsages, long pinDuration)  {
+		return new AddUserLoginPinBuilder(secret, pinUsages, pinDuration);
 	}
 	
 	public static class DeleteUserLoginPinBuilder extends RequestBuilder<Boolean, String, DeleteUserLoginPinBuilder> {
@@ -103,10 +123,12 @@ public class UserLoginPinService {
 	
 	public static class UpdateUserLoginPinBuilder extends RequestBuilder<UserLoginPin, UserLoginPin.Tokenizer, UpdateUserLoginPinBuilder> {
 		
-		public UpdateUserLoginPinBuilder(String pinCode, String secret) {
+		public UpdateUserLoginPinBuilder(String pinCode, String secret, int pinUsages, long pinDuration) {
 			super(UserLoginPin.class, "userloginpin", "update");
 			params.add("pinCode", pinCode);
 			params.add("secret", secret);
+			params.add("pinUsages", pinUsages);
+			params.add("pinDuration", pinDuration);
 		}
 		
 		public void pinCode(String multirequestToken) {
@@ -116,10 +138,26 @@ public class UserLoginPinService {
 		public void secret(String multirequestToken) {
 			params.add("secret", multirequestToken);
 		}
+		
+		public void pinUsages(String multirequestToken) {
+			params.add("pinUsages", multirequestToken);
+		}
+		
+		public void pinDuration(String multirequestToken) {
+			params.add("pinDuration", multirequestToken);
+		}
 	}
 
 	public static UpdateUserLoginPinBuilder update(String pinCode)  {
 		return update(pinCode, null);
+	}
+
+	public static UpdateUserLoginPinBuilder update(String pinCode, String secret)  {
+		return update(pinCode, secret, Integer.MIN_VALUE);
+	}
+
+	public static UpdateUserLoginPinBuilder update(String pinCode, String secret, int pinUsages)  {
+		return update(pinCode, secret, pinUsages, Long.MIN_VALUE);
 	}
 
 	/**
@@ -129,8 +167,10 @@ public class UserLoginPinService {
 	 * 
 	 * @param pinCode Device Identifier
 	 * @param secret Additional security parameter to validate the login
+	 * @param pinUsages Optional number of pin usages
+	 * @param pinDuration Optional duration in seconds of the pin
 	 */
-    public static UpdateUserLoginPinBuilder update(String pinCode, String secret)  {
-		return new UpdateUserLoginPinBuilder(pinCode, secret);
+    public static UpdateUserLoginPinBuilder update(String pinCode, String secret, int pinUsages, long pinDuration)  {
+		return new UpdateUserLoginPinBuilder(pinCode, secret, pinUsages, pinDuration);
 	}
 }
