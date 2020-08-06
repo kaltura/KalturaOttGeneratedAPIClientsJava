@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.UserRoleProfile;
-import com.kaltura.client.enums.UserRoleType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,36 +39,18 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * User roles filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UserRoleFilter.Tokenizer.class)
-public class UserRoleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(PermissionItemByIdInFilter.Tokenizer.class)
+public class PermissionItemByIdInFilter extends PermissionItemFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends PermissionItemFilter.Tokenizer {
 		String idIn();
-		String currentUserRoleIdsContains();
-		String typeEqual();
-		String profileEqual();
 	}
 
 	/**
-	 * Comma separated roles identifiers
+	 * Permission item identifiers
 	 */
 	private String idIn;
-	/**
-	 * Indicates whether the results should be filtered by userId using the current
-	 */
-	private Boolean currentUserRoleIdsContains;
-	/**
-	 * User role type
-	 */
-	private UserRoleType typeEqual;
-	/**
-	 * User role profile
-	 */
-	private UserRoleProfile profileEqual;
 
 	// idIn:
 	public String getIdIn(){
@@ -84,67 +64,25 @@ public class UserRoleFilter extends Filter {
 		setToken("idIn", multirequestToken);
 	}
 
-	// currentUserRoleIdsContains:
-	public Boolean getCurrentUserRoleIdsContains(){
-		return this.currentUserRoleIdsContains;
-	}
-	public void setCurrentUserRoleIdsContains(Boolean currentUserRoleIdsContains){
-		this.currentUserRoleIdsContains = currentUserRoleIdsContains;
-	}
 
-	public void currentUserRoleIdsContains(String multirequestToken){
-		setToken("currentUserRoleIdsContains", multirequestToken);
-	}
-
-	// typeEqual:
-	public UserRoleType getTypeEqual(){
-		return this.typeEqual;
-	}
-	public void setTypeEqual(UserRoleType typeEqual){
-		this.typeEqual = typeEqual;
-	}
-
-	public void typeEqual(String multirequestToken){
-		setToken("typeEqual", multirequestToken);
-	}
-
-	// profileEqual:
-	public UserRoleProfile getProfileEqual(){
-		return this.profileEqual;
-	}
-	public void setProfileEqual(UserRoleProfile profileEqual){
-		this.profileEqual = profileEqual;
-	}
-
-	public void profileEqual(String multirequestToken){
-		setToken("profileEqual", multirequestToken);
-	}
-
-
-	public UserRoleFilter() {
+	public PermissionItemByIdInFilter() {
 		super();
 	}
 
-	public UserRoleFilter(JsonObject jsonObject) throws APIException {
+	public PermissionItemByIdInFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		currentUserRoleIdsContains = GsonParser.parseBoolean(jsonObject.get("currentUserRoleIdsContains"));
-		typeEqual = UserRoleType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
-		profileEqual = UserRoleProfile.get(GsonParser.parseString(jsonObject.get("profileEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUserRoleFilter");
+		kparams.add("objectType", "KalturaPermissionItemByIdInFilter");
 		kparams.add("idIn", this.idIn);
-		kparams.add("currentUserRoleIdsContains", this.currentUserRoleIdsContains);
-		kparams.add("typeEqual", this.typeEqual);
-		kparams.add("profileEqual", this.profileEqual);
 		return kparams;
 	}
 

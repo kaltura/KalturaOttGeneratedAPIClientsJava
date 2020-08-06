@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.PermissionType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,42 +41,27 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Permission.Tokenizer.class)
-public class Permission extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(PermissionItem.Tokenizer.class)
+public class PermissionItem extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
-		String friendlyName();
-		String dependsOnPermissionNames();
-		String type();
-		String permissionItemsIds();
+		String isExcluded();
 	}
 
 	/**
-	 * Permission identifier
+	 * Permission item identifier
 	 */
 	private Long id;
 	/**
-	 * Permission name
+	 * Permission item name
 	 */
 	private String name;
 	/**
-	 * Permission friendly name
+	 * Permission isExcluded
 	 */
-	private String friendlyName;
-	/**
-	 * Comma separated permissions names from type SPECIAL_FEATURE
-	 */
-	private String dependsOnPermissionNames;
-	/**
-	 * Comma separated permissions names from type SPECIAL_FEATURE
-	 */
-	private PermissionType type;
-	/**
-	 * Comma separated assosiated permission items IDs
-	 */
-	private String permissionItemsIds;
+	private Boolean isExcluded;
 
 	// id:
 	public Long getId(){
@@ -95,44 +79,24 @@ public class Permission extends ObjectBase {
 		setToken("name", multirequestToken);
 	}
 
-	// friendlyName:
-	public String getFriendlyName(){
-		return this.friendlyName;
+	// isExcluded:
+	public Boolean getIsExcluded(){
+		return this.isExcluded;
 	}
-	public void setFriendlyName(String friendlyName){
-		this.friendlyName = friendlyName;
-	}
-
-	public void friendlyName(String multirequestToken){
-		setToken("friendlyName", multirequestToken);
+	public void setIsExcluded(Boolean isExcluded){
+		this.isExcluded = isExcluded;
 	}
 
-	// dependsOnPermissionNames:
-	public String getDependsOnPermissionNames(){
-		return this.dependsOnPermissionNames;
-	}
-	// type:
-	public PermissionType getType(){
-		return this.type;
-	}
-	public void setType(PermissionType type){
-		this.type = type;
+	public void isExcluded(String multirequestToken){
+		setToken("isExcluded", multirequestToken);
 	}
 
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
 
-	// permissionItemsIds:
-	public String getPermissionItemsIds(){
-		return this.permissionItemsIds;
-	}
-
-	public Permission() {
+	public PermissionItem() {
 		super();
 	}
 
-	public Permission(JsonObject jsonObject) throws APIException {
+	public PermissionItem(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
@@ -140,19 +104,15 @@ public class Permission extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		friendlyName = GsonParser.parseString(jsonObject.get("friendlyName"));
-		dependsOnPermissionNames = GsonParser.parseString(jsonObject.get("dependsOnPermissionNames"));
-		type = PermissionType.get(GsonParser.parseString(jsonObject.get("type")));
-		permissionItemsIds = GsonParser.parseString(jsonObject.get("permissionItemsIds"));
+		isExcluded = GsonParser.parseBoolean(jsonObject.get("isExcluded"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPermission");
+		kparams.add("objectType", "KalturaPermissionItem");
 		kparams.add("name", this.name);
-		kparams.add("friendlyName", this.friendlyName);
-		kparams.add("type", this.type);
+		kparams.add("isExcluded", this.isExcluded);
 		return kparams;
 	}
 
