@@ -41,7 +41,7 @@ public class UserLoginPinService {
 	
 	public static class AddUserLoginPinBuilder extends RequestBuilder<UserLoginPin, UserLoginPin.Tokenizer, AddUserLoginPinBuilder> {
 		
-		public AddUserLoginPinBuilder(String secret, int pinUsages, long pinDuration) {
+		public AddUserLoginPinBuilder(String secret, int pinUsages, int pinDuration) {
 			super(UserLoginPin.class, "userloginpin", "add");
 			params.add("secret", secret);
 			params.add("pinUsages", pinUsages);
@@ -70,7 +70,7 @@ public class UserLoginPinService {
 	}
 
 	public static AddUserLoginPinBuilder add(String secret, int pinUsages)  {
-		return add(secret, pinUsages, Long.MIN_VALUE);
+		return add(secret, pinUsages, Integer.MIN_VALUE);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class UserLoginPinService {
 	 * @param pinUsages Optional number of pin usages
 	 * @param pinDuration Optional duration in minutes of the pin
 	 */
-    public static AddUserLoginPinBuilder add(String secret, int pinUsages, long pinDuration)  {
+    public static AddUserLoginPinBuilder add(String secret, int pinUsages, int pinDuration)  {
 		return new AddUserLoginPinBuilder(secret, pinUsages, pinDuration);
 	}
 	
@@ -123,7 +123,7 @@ public class UserLoginPinService {
 	
 	public static class UpdateUserLoginPinBuilder extends RequestBuilder<UserLoginPin, UserLoginPin.Tokenizer, UpdateUserLoginPinBuilder> {
 		
-		public UpdateUserLoginPinBuilder(String pinCode, String secret, int pinUsages, long pinDuration) {
+		public UpdateUserLoginPinBuilder(String pinCode, String secret, int pinUsages, int pinDuration) {
 			super(UserLoginPin.class, "userloginpin", "update");
 			params.add("pinCode", pinCode);
 			params.add("secret", secret);
@@ -157,7 +157,7 @@ public class UserLoginPinService {
 	}
 
 	public static UpdateUserLoginPinBuilder update(String pinCode, String secret, int pinUsages)  {
-		return update(pinCode, secret, pinUsages, Long.MIN_VALUE);
+		return update(pinCode, secret, pinUsages, Integer.MIN_VALUE);
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class UserLoginPinService {
 	 * @param pinUsages Optional number of pin usages
 	 * @param pinDuration Optional duration in seconds of the pin
 	 */
-    public static UpdateUserLoginPinBuilder update(String pinCode, String secret, int pinUsages, long pinDuration)  {
+    public static UpdateUserLoginPinBuilder update(String pinCode, String secret, int pinUsages, int pinDuration)  {
 		return new UpdateUserLoginPinBuilder(pinCode, secret, pinUsages, pinDuration);
 	}
 }
