@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,53 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Define on demand response
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(OnDemandResponseProfile.Tokenizer.class)
-public class OnDemandResponseProfile extends DetachedResponseProfile {
+@MultiRequestBuilder.Tokenizer(SmsAdapterProfileFilter.Tokenizer.class)
+public class SmsAdapterProfileFilter extends CrudFilter {
 	
-	public interface Tokenizer extends DetachedResponseProfile.Tokenizer {
-		String retrievedProperties();
-	}
-
-	/**
-	 * Comma seperated properties names
-	 */
-	private String retrievedProperties;
-
-	// retrievedProperties:
-	public String getRetrievedProperties(){
-		return this.retrievedProperties;
-	}
-	public void setRetrievedProperties(String retrievedProperties){
-		this.retrievedProperties = retrievedProperties;
-	}
-
-	public void retrievedProperties(String multirequestToken){
-		setToken("retrievedProperties", multirequestToken);
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 	}
 
 
-	public OnDemandResponseProfile() {
+
+	public SmsAdapterProfileFilter() {
 		super();
 	}
 
-	public OnDemandResponseProfile(JsonObject jsonObject) throws APIException {
+	public SmsAdapterProfileFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		retrievedProperties = GsonParser.parseString(jsonObject.get("retrievedProperties"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaOnDemandResponseProfile");
-		kparams.add("retrievedProperties", this.retrievedProperties);
+		kparams.add("objectType", "KalturaSmsAdapterProfileFilter");
 		return kparams;
 	}
 
