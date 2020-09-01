@@ -40,43 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Slim channel
+ * Define on demand response
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseChannel.Tokenizer.class)
-public class BaseChannel extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(OnDemandResponseProfile.Tokenizer.class)
+public class OnDemandResponseProfile extends DetachedResponseProfile {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
-		String id();
+	public interface Tokenizer extends DetachedResponseProfile.Tokenizer {
+		String retrievedProperties();
 	}
 
 	/**
-	 * Unique identifier for the channel
+	 * Comma seperated properties names
 	 */
-	private Long id;
+	private String retrievedProperties;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// retrievedProperties:
+	public String getRetrievedProperties(){
+		return this.retrievedProperties;
+	}
+	public void setRetrievedProperties(String retrievedProperties){
+		this.retrievedProperties = retrievedProperties;
 	}
 
-	public BaseChannel() {
+	public void retrievedProperties(String multirequestToken){
+		setToken("retrievedProperties", multirequestToken);
+	}
+
+
+	public OnDemandResponseProfile() {
 		super();
 	}
 
-	public BaseChannel(JsonObject jsonObject) throws APIException {
+	public OnDemandResponseProfile(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
+		retrievedProperties = GsonParser.parseString(jsonObject.get("retrievedProperties"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseChannel");
+		kparams.add("objectType", "KalturaOnDemandResponseProfile");
+		kparams.add("retrievedProperties", this.retrievedProperties);
 		return kparams;
 	}
 
