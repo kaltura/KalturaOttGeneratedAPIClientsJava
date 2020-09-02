@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.BillingAction;
+import com.kaltura.client.enums.BillingItemsType;
 import com.kaltura.client.enums.EntityReferenceBy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -51,6 +53,10 @@ public class TransactionHistoryFilter extends Filter {
 		String entityReferenceEqual();
 		String startDateGreaterThanOrEqual();
 		String endDateLessThanOrEqual();
+		String entitlementIdEqual();
+		String externalIdEqual();
+		String billingItemsTypeEqual();
+		String billingActionEqual();
 	}
 
 	/**
@@ -65,6 +71,22 @@ public class TransactionHistoryFilter extends Filter {
 	 * Filter transactions earlier than specific date
 	 */
 	private Integer endDateLessThanOrEqual;
+	/**
+	 * Filter transaction by entitlement id
+	 */
+	private Long entitlementIdEqual;
+	/**
+	 * Filter transaction by external Id
+	 */
+	private String externalIdEqual;
+	/**
+	 * Filter transaction by billing item type
+	 */
+	private BillingItemsType billingItemsTypeEqual;
+	/**
+	 * Filter transaction by billing action
+	 */
+	private BillingAction billingActionEqual;
 
 	// entityReferenceEqual:
 	public EntityReferenceBy getEntityReferenceEqual(){
@@ -102,6 +124,54 @@ public class TransactionHistoryFilter extends Filter {
 		setToken("endDateLessThanOrEqual", multirequestToken);
 	}
 
+	// entitlementIdEqual:
+	public Long getEntitlementIdEqual(){
+		return this.entitlementIdEqual;
+	}
+	public void setEntitlementIdEqual(Long entitlementIdEqual){
+		this.entitlementIdEqual = entitlementIdEqual;
+	}
+
+	public void entitlementIdEqual(String multirequestToken){
+		setToken("entitlementIdEqual", multirequestToken);
+	}
+
+	// externalIdEqual:
+	public String getExternalIdEqual(){
+		return this.externalIdEqual;
+	}
+	public void setExternalIdEqual(String externalIdEqual){
+		this.externalIdEqual = externalIdEqual;
+	}
+
+	public void externalIdEqual(String multirequestToken){
+		setToken("externalIdEqual", multirequestToken);
+	}
+
+	// billingItemsTypeEqual:
+	public BillingItemsType getBillingItemsTypeEqual(){
+		return this.billingItemsTypeEqual;
+	}
+	public void setBillingItemsTypeEqual(BillingItemsType billingItemsTypeEqual){
+		this.billingItemsTypeEqual = billingItemsTypeEqual;
+	}
+
+	public void billingItemsTypeEqual(String multirequestToken){
+		setToken("billingItemsTypeEqual", multirequestToken);
+	}
+
+	// billingActionEqual:
+	public BillingAction getBillingActionEqual(){
+		return this.billingActionEqual;
+	}
+	public void setBillingActionEqual(BillingAction billingActionEqual){
+		this.billingActionEqual = billingActionEqual;
+	}
+
+	public void billingActionEqual(String multirequestToken){
+		setToken("billingActionEqual", multirequestToken);
+	}
+
 
 	public TransactionHistoryFilter() {
 		super();
@@ -116,6 +186,10 @@ public class TransactionHistoryFilter extends Filter {
 		entityReferenceEqual = EntityReferenceBy.get(GsonParser.parseString(jsonObject.get("entityReferenceEqual")));
 		startDateGreaterThanOrEqual = GsonParser.parseInt(jsonObject.get("startDateGreaterThanOrEqual"));
 		endDateLessThanOrEqual = GsonParser.parseInt(jsonObject.get("endDateLessThanOrEqual"));
+		entitlementIdEqual = GsonParser.parseLong(jsonObject.get("entitlementIdEqual"));
+		externalIdEqual = GsonParser.parseString(jsonObject.get("externalIdEqual"));
+		billingItemsTypeEqual = BillingItemsType.get(GsonParser.parseString(jsonObject.get("billingItemsTypeEqual")));
+		billingActionEqual = BillingAction.get(GsonParser.parseString(jsonObject.get("billingActionEqual")));
 
 	}
 
@@ -125,6 +199,10 @@ public class TransactionHistoryFilter extends Filter {
 		kparams.add("entityReferenceEqual", this.entityReferenceEqual);
 		kparams.add("startDateGreaterThanOrEqual", this.startDateGreaterThanOrEqual);
 		kparams.add("endDateLessThanOrEqual", this.endDateLessThanOrEqual);
+		kparams.add("entitlementIdEqual", this.entitlementIdEqual);
+		kparams.add("externalIdEqual", this.externalIdEqual);
+		kparams.add("billingItemsTypeEqual", this.billingItemsTypeEqual);
+		kparams.add("billingActionEqual", this.billingActionEqual);
 		return kparams;
 	}
 

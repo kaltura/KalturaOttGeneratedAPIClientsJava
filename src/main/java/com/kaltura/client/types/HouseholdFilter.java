@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,39 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum HouseholdDeviceOrderBy implements EnumAsString {
-	NONE("NONE"),
-	CREATED_DATE_ASC("CREATED_DATE_ASC"),
-	CREATED_DATE_DESC("CREATED_DATE_DESC");
 
-	private String value;
-
-	HouseholdDeviceOrderBy(String value) {
-		this.value = value;
+/**
+ * Household details
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(HouseholdFilter.Tokenizer.class)
+public class HouseholdFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String externalIdEqual();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Household external identifier to search by
+	 */
+	private String externalIdEqual;
+
+	// externalIdEqual:
+	public String getExternalIdEqual(){
+		return this.externalIdEqual;
+	}
+	public void setExternalIdEqual(String externalIdEqual){
+		this.externalIdEqual = externalIdEqual;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void externalIdEqual(String multirequestToken){
+		setToken("externalIdEqual", multirequestToken);
 	}
 
-	public static HouseholdDeviceOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over HouseholdDeviceOrderBy defined values and compare the inner value with the given one:
-		for(HouseholdDeviceOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return HouseholdDeviceOrderBy.values().length > 0 ? HouseholdDeviceOrderBy.values()[0]: null;
-   }
+
+	public HouseholdFilter() {
+		super();
+	}
+
+	public HouseholdFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		externalIdEqual = GsonParser.parseString(jsonObject.get("externalIdEqual"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaHouseholdFilter");
+		kparams.add("externalIdEqual", this.externalIdEqual);
+		return kparams;
+	}
+
 }
+

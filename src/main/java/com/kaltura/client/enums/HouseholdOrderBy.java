@@ -33,14 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum HouseholdDeviceOrderBy implements EnumAsString {
-	NONE("NONE"),
-	CREATED_DATE_ASC("CREATED_DATE_ASC"),
-	CREATED_DATE_DESC("CREATED_DATE_DESC");
+public enum HouseholdOrderBy implements EnumAsString {
+	CREATE_DATE_DESC("CREATE_DATE_DESC");
 
 	private String value;
 
-	HouseholdDeviceOrderBy(String value) {
+	HouseholdOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -53,19 +51,19 @@ public enum HouseholdDeviceOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static HouseholdDeviceOrderBy get(String value) {
+	public static HouseholdOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over HouseholdDeviceOrderBy defined values and compare the inner value with the given one:
-		for(HouseholdDeviceOrderBy item: values()) {
+		// goes over HouseholdOrderBy defined values and compare the inner value with the given one:
+		for(HouseholdOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return HouseholdDeviceOrderBy.values().length > 0 ? HouseholdDeviceOrderBy.values()[0]: null;
+		return HouseholdOrderBy.values().length > 0 ? HouseholdOrderBy.values()[0]: null;
    }
 }
