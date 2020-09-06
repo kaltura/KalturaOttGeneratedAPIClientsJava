@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,47 +33,37 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum SmsAdapterProfileOrderBy implements EnumAsString {
+	NONE("NONE");
 
-/**
- * Slim channel
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseChannel.Tokenizer.class)
-public class BaseChannel extends OTTObjectSupportNullable {
-	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
-		String id();
+	private String value;
+
+	SmsAdapterProfileOrderBy(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Unique identifier for the channel
-	 */
-	private Long id;
-
-	// id:
-	public Long getId(){
-		return this.id;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public BaseChannel() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public BaseChannel(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseChannel");
-		return kparams;
-	}
-
+	public static SmsAdapterProfileOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over SmsAdapterProfileOrderBy defined values and compare the inner value with the given one:
+		for(SmsAdapterProfileOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return SmsAdapterProfileOrderBy.values().length > 0 ? SmsAdapterProfileOrderBy.values()[0]: null;
+   }
 }
-

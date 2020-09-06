@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,44 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Slim channel
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseChannel.Tokenizer.class)
-public class BaseChannel extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(SmsAdapterProfileFilter.Tokenizer.class)
+public class SmsAdapterProfileFilter extends CrudFilter {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
-		String id();
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 	}
 
-	/**
-	 * Unique identifier for the channel
-	 */
-	private Long id;
 
-	// id:
-	public Long getId(){
-		return this.id;
-	}
 
-	public BaseChannel() {
+	public SmsAdapterProfileFilter() {
 		super();
 	}
 
-	public BaseChannel(JsonObject jsonObject) throws APIException {
+	public SmsAdapterProfileFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseChannel");
+		kparams.add("objectType", "KalturaSmsAdapterProfileFilter");
 		return kparams;
 	}
 

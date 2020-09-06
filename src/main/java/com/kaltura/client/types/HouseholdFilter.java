@@ -40,43 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Slim channel
+ * Household details
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseChannel.Tokenizer.class)
-public class BaseChannel extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(HouseholdFilter.Tokenizer.class)
+public class HouseholdFilter extends Filter {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
-		String id();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String externalIdEqual();
 	}
 
 	/**
-	 * Unique identifier for the channel
+	 * Household external identifier to search by
 	 */
-	private Long id;
+	private String externalIdEqual;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// externalIdEqual:
+	public String getExternalIdEqual(){
+		return this.externalIdEqual;
+	}
+	public void setExternalIdEqual(String externalIdEqual){
+		this.externalIdEqual = externalIdEqual;
 	}
 
-	public BaseChannel() {
+	public void externalIdEqual(String multirequestToken){
+		setToken("externalIdEqual", multirequestToken);
+	}
+
+
+	public HouseholdFilter() {
 		super();
 	}
 
-	public BaseChannel(JsonObject jsonObject) throws APIException {
+	public HouseholdFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
+		externalIdEqual = GsonParser.parseString(jsonObject.get("externalIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseChannel");
+		kparams.add("objectType", "KalturaHouseholdFilter");
+		kparams.add("externalIdEqual", this.externalIdEqual);
 		return kparams;
 	}
 
