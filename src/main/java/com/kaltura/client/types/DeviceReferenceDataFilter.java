@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,37 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum HouseholdOrderBy implements EnumAsString {
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
 
-	private String value;
-
-	HouseholdOrderBy(String value) {
-		this.value = value;
+/**
+ * Device Reference Data Filter
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DeviceReferenceDataFilter.Tokenizer.class)
+public class DeviceReferenceDataFilter extends CrudFilter {
+	
+	public interface Tokenizer extends CrudFilter.Tokenizer {
+		String idIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * IdIn
+	 */
+	private String idIn;
+
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
-	public static HouseholdOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over HouseholdOrderBy defined values and compare the inner value with the given one:
-		for(HouseholdOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return HouseholdOrderBy.values().length > 0 ? HouseholdOrderBy.values()[0]: null;
-   }
+
+	public DeviceReferenceDataFilter() {
+		super();
+	}
+
+	public DeviceReferenceDataFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDeviceReferenceDataFilter");
+		kparams.add("idIn", this.idIn);
+		return kparams;
+	}
+
 }
+

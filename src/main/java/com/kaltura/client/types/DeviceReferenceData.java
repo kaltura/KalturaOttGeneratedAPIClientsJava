@@ -40,52 +40,81 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Household details
+ * Device Information
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(HouseholdFilter.Tokenizer.class)
-public class HouseholdFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(DeviceReferenceData.Tokenizer.class)
+public class DeviceReferenceData extends CrudObject {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String externalIdEqual();
+	public interface Tokenizer extends CrudObject.Tokenizer {
+		String id();
+		String name();
+		String status();
 	}
 
 	/**
-	 * Household external identifier to search by
+	 * id
 	 */
-	private String externalIdEqual;
+	private Long id;
+	/**
+	 * Name
+	 */
+	private String name;
+	/**
+	 * Status
+	 */
+	private Boolean status;
 
-	// externalIdEqual:
-	public String getExternalIdEqual(){
-		return this.externalIdEqual;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setExternalIdEqual(String externalIdEqual){
-		this.externalIdEqual = externalIdEqual;
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
 	}
 
-	public void externalIdEqual(String multirequestToken){
-		setToken("externalIdEqual", multirequestToken);
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// status:
+	public Boolean getStatus(){
+		return this.status;
+	}
+	public void setStatus(Boolean status){
+		this.status = status;
+	}
+
+	public void status(String multirequestToken){
+		setToken("status", multirequestToken);
 	}
 
 
-	public HouseholdFilter() {
+	public DeviceReferenceData() {
 		super();
 	}
 
-	public HouseholdFilter(JsonObject jsonObject) throws APIException {
+	public DeviceReferenceData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		externalIdEqual = GsonParser.parseString(jsonObject.get("externalIdEqual"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		status = GsonParser.parseBoolean(jsonObject.get("status"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaHouseholdFilter");
-		kparams.add("externalIdEqual", this.externalIdEqual);
+		kparams.add("objectType", "KalturaDeviceReferenceData");
+		kparams.add("name", this.name);
+		kparams.add("status", this.status);
 		return kparams;
 	}
 

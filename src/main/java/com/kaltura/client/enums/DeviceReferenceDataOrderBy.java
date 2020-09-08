@@ -33,12 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum SmsAdapterProfileOrderBy implements EnumAsString {
+public enum DeviceReferenceDataOrderBy implements EnumAsString {
 	NONE("NONE");
 
 	private String value;
 
-	SmsAdapterProfileOrderBy(String value) {
+	DeviceReferenceDataOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -51,19 +51,19 @@ public enum SmsAdapterProfileOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static SmsAdapterProfileOrderBy get(String value) {
+	public static DeviceReferenceDataOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over SmsAdapterProfileOrderBy defined values and compare the inner value with the given one:
-		for(SmsAdapterProfileOrderBy item: values()) {
+		// goes over DeviceReferenceDataOrderBy defined values and compare the inner value with the given one:
+		for(DeviceReferenceDataOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SmsAdapterProfileOrderBy.values().length > 0 ? SmsAdapterProfileOrderBy.values()[0]: null;
+		return DeviceReferenceDataOrderBy.values().length > 0 ? DeviceReferenceDataOrderBy.values()[0]: null;
    }
 }

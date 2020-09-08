@@ -38,26 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Device Manufacturer Information
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SmsAdapterProfileFilter.Tokenizer.class)
-public class SmsAdapterProfileFilter extends CrudFilter {
+@MultiRequestBuilder.Tokenizer(DeviceManufacturerInformation.Tokenizer.class)
+public class DeviceManufacturerInformation extends DeviceReferenceData {
 	
-	public interface Tokenizer extends CrudFilter.Tokenizer {
+	public interface Tokenizer extends DeviceReferenceData.Tokenizer {
 	}
 
 
 
-	public SmsAdapterProfileFilter() {
+	public DeviceManufacturerInformation() {
 		super();
 	}
 
-	public SmsAdapterProfileFilter(JsonObject jsonObject) throws APIException {
+	public DeviceManufacturerInformation(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSmsAdapterProfileFilter");
+		kparams.add("objectType", "KalturaDeviceManufacturerInformation");
 		return kparams;
 	}
 

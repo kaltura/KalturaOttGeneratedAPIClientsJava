@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,37 +37,29 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum HouseholdDeviceOrderBy implements EnumAsString {
-	NONE("NONE");
 
-	private String value;
-
-	HouseholdDeviceOrderBy(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DeviceManufacturersReferenceDataFilter.Tokenizer.class)
+public class DeviceManufacturersReferenceDataFilter extends DeviceReferenceDataFilter {
+	
+	public interface Tokenizer extends DeviceReferenceDataFilter.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public DeviceManufacturersReferenceDataFilter() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public DeviceManufacturersReferenceDataFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static HouseholdDeviceOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over HouseholdDeviceOrderBy defined values and compare the inner value with the given one:
-		for(HouseholdDeviceOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return HouseholdDeviceOrderBy.values().length > 0 ? HouseholdDeviceOrderBy.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDeviceManufacturersReferenceDataFilter");
+		return kparams;
+	}
+
 }
+
