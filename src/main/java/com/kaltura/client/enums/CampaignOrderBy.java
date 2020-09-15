@@ -33,28 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID("DEVICE_UDID");
+public enum CampaignOrderBy implements EnumAsString {
+	NONE("NONE");
 
 	private String value;
 
-	RuleConditionType(String value) {
+	CampaignOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -67,19 +51,19 @@ public enum RuleConditionType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static RuleConditionType get(String value) {
+	public static CampaignOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
+		// goes over CampaignOrderBy defined values and compare the inner value with the given one:
+		for(CampaignOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
+		return CampaignOrderBy.values().length > 0 ? CampaignOrderBy.values()[0]: null;
    }
 }

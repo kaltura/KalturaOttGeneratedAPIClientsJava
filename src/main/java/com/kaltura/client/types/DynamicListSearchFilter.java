@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,53 +38,57 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID("DEVICE_UDID");
 
-	private String value;
-
-	RuleConditionType(String value) {
-		this.value = value;
+/**
+ * DynamicListSearchFilter
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DynamicListSearchFilter.Tokenizer.class)
+public class DynamicListSearchFilter extends DynamicListFilter {
+	
+	public interface Tokenizer extends DynamicListFilter.Tokenizer {
+		String valueIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Comma-separated String which represent List of objects that is in the
+	  dynamicList.
+	 */
+	private String valueIn;
+
+	// valueIn:
+	public String getValueIn(){
+		return this.valueIn;
+	}
+	public void setValueIn(String valueIn){
+		this.valueIn = valueIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void valueIn(String multirequestToken){
+		setToken("valueIn", multirequestToken);
 	}
 
-	public static RuleConditionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
-   }
+
+	public DynamicListSearchFilter() {
+		super();
+	}
+
+	public DynamicListSearchFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		valueIn = GsonParser.parseString(jsonObject.get("valueIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDynamicListSearchFilter");
+		kparams.add("valueIn", this.valueIn);
+		return kparams;
+	}
+
 }
+
