@@ -68,7 +68,6 @@ public class MediaFile extends AssetFile {
 		String cdnAdapaterProfileId();
 		String status();
 		String catalogEndDate();
-		String opl();
 	}
 
 	/**
@@ -155,10 +154,6 @@ public class MediaFile extends AssetFile {
 	 * Catalog end date
 	 */
 	private Long catalogEndDate;
-	/**
-	 * OPL
-	 */
-	private String opl;
 
 	// assetId:
 	public Integer getAssetId(){
@@ -396,18 +391,6 @@ public class MediaFile extends AssetFile {
 		setToken("catalogEndDate", multirequestToken);
 	}
 
-	// opl:
-	public String getOpl(){
-		return this.opl;
-	}
-	public void setOpl(String opl){
-		this.opl = opl;
-	}
-
-	public void opl(String multirequestToken){
-		setToken("opl", multirequestToken);
-	}
-
 
 	public MediaFile() {
 		super();
@@ -440,7 +423,6 @@ public class MediaFile extends AssetFile {
 		cdnAdapaterProfileId = GsonParser.parseLong(jsonObject.get("cdnAdapaterProfileId"));
 		status = GsonParser.parseBoolean(jsonObject.get("status"));
 		catalogEndDate = GsonParser.parseLong(jsonObject.get("catalogEndDate"));
-		opl = GsonParser.parseString(jsonObject.get("opl"));
 
 	}
 
@@ -466,7 +448,6 @@ public class MediaFile extends AssetFile {
 		kparams.add("cdnAdapaterProfileId", this.cdnAdapaterProfileId);
 		kparams.add("status", this.status);
 		kparams.add("catalogEndDate", this.catalogEndDate);
-		kparams.add("opl", this.opl);
 		return kparams;
 	}
 

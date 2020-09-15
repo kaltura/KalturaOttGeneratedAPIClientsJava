@@ -139,14 +139,6 @@ public class Entitlement extends ObjectBase {
 	public Long getEndDate(){
 		return this.endDate;
 	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
-	}
-
 	// currentDate:
 	public Long getCurrentDate(){
 		return this.currentDate;
@@ -218,7 +210,6 @@ public class Entitlement extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaEntitlement");
-		kparams.add("endDate", this.endDate);
 		return kparams;
 	}
 
