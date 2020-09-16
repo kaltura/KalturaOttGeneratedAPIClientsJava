@@ -27,12 +27,20 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.FileHolder;
+import com.kaltura.client.Files;
+import com.kaltura.client.types.BulkUpload;
+import com.kaltura.client.types.BulkUploadAssetData;
+import com.kaltura.client.types.BulkUploadExcelJobData;
 import com.kaltura.client.types.DynamicList;
 import com.kaltura.client.types.DynamicListFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * This class was generated using exec.php
@@ -119,5 +127,39 @@ public class DynamicListService {
 
     public static ListDynamicListBuilder list(DynamicListFilter filter, FilterPager pager)  {
 		return new ListDynamicListBuilder(filter, pager);
+	}
+	
+	public static class AddFromBulkUploadDynamicListBuilder extends RequestBuilder<BulkUpload, BulkUpload.Tokenizer, AddFromBulkUploadDynamicListBuilder> {
+		
+		public AddFromBulkUploadDynamicListBuilder(FileHolder fileData, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData) {
+			super(BulkUpload.class, "dynamiclist", "addFromBulkUpload");
+			files = new Files();
+			files.add("fileData", fileData);
+			params.add("jobData", jobData);
+			params.add("bulkUploadAssetData", bulkUploadAssetData);
+		}
+	}
+
+	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(File fileData, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return addFromBulkUpload(new FileHolder(fileData), jobData, bulkUploadAssetData);
+	}
+
+	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(InputStream fileData, String fileDataMimeType, String fileDataName, long fileDataSize, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName, fileDataSize), jobData, bulkUploadAssetData);
+	}
+
+	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(FileInputStream fileData, String fileDataMimeType, String fileDataName, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName), jobData, bulkUploadAssetData);
+	}
+
+	/**
+	 * Add new bulk upload batch job Conversion profile id can be specified in the API.
+	 * 
+	 * @param fileData fileData
+	 * @param jobData jobData
+	 * @param bulkUploadAssetData bulkUploadAssetData
+	 */
+    public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(FileHolder fileData, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
+		return new AddFromBulkUploadDynamicListBuilder(fileData, jobData, bulkUploadAssetData);
 	}
 }

@@ -34,8 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum ApiAction implements EnumAsString {
-	INSERT("INSERT"),
-	UPDATE("UPDATE");
+	ADD("ADD");
 
 	private String value;
 
