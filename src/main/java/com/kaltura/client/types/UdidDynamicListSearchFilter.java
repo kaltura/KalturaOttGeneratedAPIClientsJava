@@ -43,9 +43,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(UdidDynamicListSearchFilter.Tokenizer.class)
-public class UdidDynamicListSearchFilter extends DynamicListFilter {
+public class UdidDynamicListSearchFilter extends DynamicListSearchFilter {
 	
-	public interface Tokenizer extends DynamicListFilter.Tokenizer {
+	public interface Tokenizer extends DynamicListSearchFilter.Tokenizer {
 	}
 
 

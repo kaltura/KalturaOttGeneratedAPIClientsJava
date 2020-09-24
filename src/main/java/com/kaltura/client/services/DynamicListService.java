@@ -30,7 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.FileHolder;
 import com.kaltura.client.Files;
 import com.kaltura.client.types.BulkUpload;
-import com.kaltura.client.types.BulkUploadAssetData;
+import com.kaltura.client.types.BulkUploadDynamicListData;
 import com.kaltura.client.types.BulkUploadExcelJobData;
 import com.kaltura.client.types.DynamicList;
 import com.kaltura.client.types.DynamicListFilter;
@@ -131,25 +131,25 @@ public class DynamicListService {
 	
 	public static class AddFromBulkUploadDynamicListBuilder extends RequestBuilder<BulkUpload, BulkUpload.Tokenizer, AddFromBulkUploadDynamicListBuilder> {
 		
-		public AddFromBulkUploadDynamicListBuilder(FileHolder fileData, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData) {
+		public AddFromBulkUploadDynamicListBuilder(FileHolder fileData, BulkUploadExcelJobData jobData, BulkUploadDynamicListData bulkUploadData) {
 			super(BulkUpload.class, "dynamiclist", "addFromBulkUpload");
 			files = new Files();
 			files.add("fileData", fileData);
 			params.add("jobData", jobData);
-			params.add("bulkUploadAssetData", bulkUploadAssetData);
+			params.add("bulkUploadData", bulkUploadData);
 		}
 	}
 
-	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(File fileData, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
-		return addFromBulkUpload(new FileHolder(fileData), jobData, bulkUploadAssetData);
+	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(File fileData, BulkUploadExcelJobData jobData, BulkUploadDynamicListData bulkUploadData)  {
+		return addFromBulkUpload(new FileHolder(fileData), jobData, bulkUploadData);
 	}
 
-	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(InputStream fileData, String fileDataMimeType, String fileDataName, long fileDataSize, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
-		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName, fileDataSize), jobData, bulkUploadAssetData);
+	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(InputStream fileData, String fileDataMimeType, String fileDataName, long fileDataSize, BulkUploadExcelJobData jobData, BulkUploadDynamicListData bulkUploadData)  {
+		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName, fileDataSize), jobData, bulkUploadData);
 	}
 
-	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(FileInputStream fileData, String fileDataMimeType, String fileDataName, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
-		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName), jobData, bulkUploadAssetData);
+	public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(FileInputStream fileData, String fileDataMimeType, String fileDataName, BulkUploadExcelJobData jobData, BulkUploadDynamicListData bulkUploadData)  {
+		return addFromBulkUpload(new FileHolder(fileData, fileDataMimeType, fileDataName), jobData, bulkUploadData);
 	}
 
 	/**
@@ -157,9 +157,9 @@ public class DynamicListService {
 	 * 
 	 * @param fileData fileData
 	 * @param jobData jobData
-	 * @param bulkUploadAssetData bulkUploadAssetData
+	 * @param bulkUploadData bulkUploadData
 	 */
-    public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(FileHolder fileData, BulkUploadExcelJobData jobData, BulkUploadAssetData bulkUploadAssetData)  {
-		return new AddFromBulkUploadDynamicListBuilder(fileData, jobData, bulkUploadAssetData);
+    public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(FileHolder fileData, BulkUploadExcelJobData jobData, BulkUploadDynamicListData bulkUploadData)  {
+		return new AddFromBulkUploadDynamicListBuilder(fileData, jobData, bulkUploadData);
 	}
 }

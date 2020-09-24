@@ -44,28 +44,44 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DynamicListSearchFilter.Tokenizer.class)
-public class DynamicListSearchFilter extends DynamicListFilter {
+public abstract class DynamicListSearchFilter extends DynamicListFilter {
 	
 	public interface Tokenizer extends DynamicListFilter.Tokenizer {
-		String valueIn();
+		String idEqual();
+		String valueEqual();
 	}
 
 	/**
-	 * Comma-separated String which represent List of objects that is in the
-	  dynamicList.
+	 * DynamicList id to search by
 	 */
-	private String valueIn;
+	private Long idEqual;
+	/**
+	 * udid value that should be in the DynamicList
+	 */
+	private String valueEqual;
 
-	// valueIn:
-	public String getValueIn(){
-		return this.valueIn;
+	// idEqual:
+	public Long getIdEqual(){
+		return this.idEqual;
 	}
-	public void setValueIn(String valueIn){
-		this.valueIn = valueIn;
+	public void setIdEqual(Long idEqual){
+		this.idEqual = idEqual;
 	}
 
-	public void valueIn(String multirequestToken){
-		setToken("valueIn", multirequestToken);
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
+	}
+
+	// valueEqual:
+	public String getValueEqual(){
+		return this.valueEqual;
+	}
+	public void setValueEqual(String valueEqual){
+		this.valueEqual = valueEqual;
+	}
+
+	public void valueEqual(String multirequestToken){
+		setToken("valueEqual", multirequestToken);
 	}
 
 
@@ -79,14 +95,16 @@ public class DynamicListSearchFilter extends DynamicListFilter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		valueIn = GsonParser.parseString(jsonObject.get("valueIn"));
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		valueEqual = GsonParser.parseString(jsonObject.get("valueEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDynamicListSearchFilter");
-		kparams.add("valueIn", this.valueIn);
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("valueEqual", this.valueEqual);
 		return kparams;
 	}
 

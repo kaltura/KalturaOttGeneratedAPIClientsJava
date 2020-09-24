@@ -34,7 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum CampaignOrderBy implements EnumAsString {
-	NONE("NONE");
+	START_DATE_DESC("START_DATE_DESC");
 
 	private String value;
 

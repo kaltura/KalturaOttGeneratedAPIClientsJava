@@ -40,49 +40,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceUdidCondition.Tokenizer.class)
-public class DeviceUdidCondition extends Condition {
+@MultiRequestBuilder.Tokenizer(BulkUploadUdidDynamicListResult.Tokenizer.class)
+public class BulkUploadUdidDynamicListResult extends BulkUploadDynamicListResult {
 	
-	public interface Tokenizer extends Condition.Tokenizer {
-		String udidIn();
+	public interface Tokenizer extends BulkUploadDynamicListResult.Tokenizer {
+		String udid();
 	}
 
 	/**
-	 * Comma separated Device Udid IDs list
+	 * The udid from the excel to add to DynamicLis values
 	 */
-	private String udidIn;
+	private String udid;
 
-	// udidIn:
-	public String getUdidIn(){
-		return this.udidIn;
-	}
-	public void setUdidIn(String udidIn){
-		this.udidIn = udidIn;
+	// udid:
+	public String getUdid(){
+		return this.udid;
 	}
 
-	public void udidIn(String multirequestToken){
-		setToken("udidIn", multirequestToken);
-	}
-
-
-	public DeviceUdidCondition() {
+	public BulkUploadUdidDynamicListResult() {
 		super();
 	}
 
-	public DeviceUdidCondition(JsonObject jsonObject) throws APIException {
+	public BulkUploadUdidDynamicListResult(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		udidIn = GsonParser.parseString(jsonObject.get("udidIn"));
+		udid = GsonParser.parseString(jsonObject.get("udid"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceUdidCondition");
-		kparams.add("udidIn", this.udidIn);
+		kparams.add("objectType", "KalturaBulkUploadUdidDynamicListResult");
 		return kparams;
 	}
 
