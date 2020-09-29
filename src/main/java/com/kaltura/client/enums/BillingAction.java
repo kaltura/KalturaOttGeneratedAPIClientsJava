@@ -39,7 +39,8 @@ public enum BillingAction implements EnumAsString {
 	RENEW_PAYMENT("renew_payment"),
 	RENEW_CANCELED_SUBSCRIPTION("renew_canceled_subscription"),
 	CANCEL_SUBSCRIPTION_ORDER("cancel_subscription_order"),
-	SUBSCRIPTION_DATE_CHANGED("subscription_date_changed");
+	SUBSCRIPTION_DATE_CHANGED("subscription_date_changed"),
+	PENDING("pending");
 
 	private String value;
 

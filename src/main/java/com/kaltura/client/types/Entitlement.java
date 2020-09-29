@@ -63,6 +63,7 @@ public class Entitlement extends ObjectBase {
 		String maxUses();
 		String userId();
 		String householdId();
+		String isPending();
 	}
 
 	/**
@@ -122,6 +123,10 @@ public class Entitlement extends ObjectBase {
 	 * The Identifier of the purchasing household
 	 */
 	private Long householdId;
+	/**
+	 * Indicates whether the asynchronous purchase is pending
+	 */
+	private Boolean isPending;
 
 	// id:
 	public Integer getId(){
@@ -187,6 +192,18 @@ public class Entitlement extends ObjectBase {
 	public Long getHouseholdId(){
 		return this.householdId;
 	}
+	// isPending:
+	public Boolean getIsPending(){
+		return this.isPending;
+	}
+	public void setIsPending(Boolean isPending){
+		this.isPending = isPending;
+	}
+
+	public void isPending(String multirequestToken){
+		setToken("isPending", multirequestToken);
+	}
+
 
 	public Entitlement() {
 		super();
@@ -212,6 +229,7 @@ public class Entitlement extends ObjectBase {
 		maxUses = GsonParser.parseInt(jsonObject.get("maxUses"));
 		userId = GsonParser.parseString(jsonObject.get("userId"));
 		householdId = GsonParser.parseLong(jsonObject.get("householdId"));
+		isPending = GsonParser.parseBoolean(jsonObject.get("isPending"));
 
 	}
 
@@ -219,6 +237,7 @@ public class Entitlement extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaEntitlement");
 		kparams.add("endDate", this.endDate);
+		kparams.add("isPending", this.isPending);
 		return kparams;
 	}
 

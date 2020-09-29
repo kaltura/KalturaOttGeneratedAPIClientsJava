@@ -62,6 +62,7 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		String renewIntervalMinutes();
 		String renewStartMinutes();
 		String externalVerification();
+		String isAsyncPolicy();
 	}
 
 	/**
@@ -116,6 +117,10 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 	 * Payment gateway external verification
 	 */
 	private Boolean externalVerification;
+	/**
+	 * Payment gateway - Support asynchronous purchase
+	 */
+	private Boolean isAsyncPolicy;
 
 	// isActive:
 	public Integer getIsActive(){
@@ -269,6 +274,18 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		setToken("externalVerification", multirequestToken);
 	}
 
+	// isAsyncPolicy:
+	public Boolean getIsAsyncPolicy(){
+		return this.isAsyncPolicy;
+	}
+	public void setIsAsyncPolicy(Boolean isAsyncPolicy){
+		this.isAsyncPolicy = isAsyncPolicy;
+	}
+
+	public void isAsyncPolicy(String multirequestToken){
+		setToken("isAsyncPolicy", multirequestToken);
+	}
+
 
 	public PaymentGatewayProfile() {
 		super();
@@ -293,6 +310,7 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		renewIntervalMinutes = GsonParser.parseInt(jsonObject.get("renewIntervalMinutes"));
 		renewStartMinutes = GsonParser.parseInt(jsonObject.get("renewStartMinutes"));
 		externalVerification = GsonParser.parseBoolean(jsonObject.get("externalVerification"));
+		isAsyncPolicy = GsonParser.parseBoolean(jsonObject.get("isAsyncPolicy"));
 
 	}
 
@@ -312,6 +330,7 @@ public class PaymentGatewayProfile extends PaymentGatewayBaseProfile {
 		kparams.add("renewIntervalMinutes", this.renewIntervalMinutes);
 		kparams.add("renewStartMinutes", this.renewStartMinutes);
 		kparams.add("externalVerification", this.externalVerification);
+		kparams.add("isAsyncPolicy", this.isAsyncPolicy);
 		return kparams;
 	}
 
