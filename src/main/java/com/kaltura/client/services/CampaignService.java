@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.enums.ObjectState;
 import com.kaltura.client.types.Campaign;
 import com.kaltura.client.types.CampaignFilter;
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -106,14 +107,19 @@ public class CampaignService {
 	
 	public static class ListCampaignBuilder extends ListResponseRequestBuilder<Campaign, Campaign.Tokenizer, ListCampaignBuilder> {
 		
-		public ListCampaignBuilder(CampaignFilter filter) {
+		public ListCampaignBuilder(CampaignFilter filter, FilterPager pager) {
 			super(Campaign.class, "campaign", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
-    public static ListCampaignBuilder list(CampaignFilter filter)  {
-		return new ListCampaignBuilder(filter);
+	public static ListCampaignBuilder list(CampaignFilter filter)  {
+		return list(filter, null);
+	}
+
+    public static ListCampaignBuilder list(CampaignFilter filter, FilterPager pager)  {
+		return new ListCampaignBuilder(filter, pager);
 	}
 	
 	public static class SetStateCampaignBuilder extends NullRequestBuilder {

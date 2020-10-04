@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.DeviceReferenceData;
 import com.kaltura.client.types.DeviceReferenceDataFilter;
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -105,17 +106,18 @@ public class DeviceReferenceDataService {
 	
 	public static class ListDeviceReferenceDataBuilder extends ListResponseRequestBuilder<DeviceReferenceData, DeviceReferenceData.Tokenizer, ListDeviceReferenceDataBuilder> {
 		
-		public ListDeviceReferenceDataBuilder(DeviceReferenceDataFilter filter) {
+		public ListDeviceReferenceDataBuilder(DeviceReferenceDataFilter filter, FilterPager pager) {
 			super(DeviceReferenceData.class, "devicereferencedata", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
-	public static ListDeviceReferenceDataBuilder list()  {
-		return list(null);
+	public static ListDeviceReferenceDataBuilder list(DeviceReferenceDataFilter filter)  {
+		return list(filter, null);
 	}
 
-    public static ListDeviceReferenceDataBuilder list(DeviceReferenceDataFilter filter)  {
-		return new ListDeviceReferenceDataBuilder(filter);
+    public static ListDeviceReferenceDataBuilder list(DeviceReferenceDataFilter filter, FilterPager pager)  {
+		return new ListDeviceReferenceDataBuilder(filter, pager);
 	}
 }

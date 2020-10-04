@@ -60,6 +60,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		String externalId();
 		String macAddress();
 		String model();
+		String manufacturer();
 		String manufacturerId();
 	}
 
@@ -109,6 +110,10 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	private String model;
 	/**
 	 * manufacturer
+	 */
+	private String manufacturer;
+	/**
+	 * manufacturer Id, read only
 	 */
 	private Long manufacturerId;
 
@@ -220,18 +225,22 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		setToken("model", multirequestToken);
 	}
 
+	// manufacturer:
+	public String getManufacturer(){
+		return this.manufacturer;
+	}
+	public void setManufacturer(String manufacturer){
+		this.manufacturer = manufacturer;
+	}
+
+	public void manufacturer(String multirequestToken){
+		setToken("manufacturer", multirequestToken);
+	}
+
 	// manufacturerId:
 	public Long getManufacturerId(){
 		return this.manufacturerId;
 	}
-	public void setManufacturerId(Long manufacturerId){
-		this.manufacturerId = manufacturerId;
-	}
-
-	public void manufacturerId(String multirequestToken){
-		setToken("manufacturerId", multirequestToken);
-	}
-
 
 	public HouseholdDevice() {
 		super();
@@ -254,6 +263,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		macAddress = GsonParser.parseString(jsonObject.get("macAddress"));
 		model = GsonParser.parseString(jsonObject.get("model"));
+		manufacturer = GsonParser.parseString(jsonObject.get("manufacturer"));
 		manufacturerId = GsonParser.parseLong(jsonObject.get("manufacturerId"));
 
 	}
@@ -269,7 +279,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		kparams.add("externalId", this.externalId);
 		kparams.add("macAddress", this.macAddress);
 		kparams.add("model", this.model);
-		kparams.add("manufacturerId", this.manufacturerId);
+		kparams.add("manufacturer", this.manufacturer);
 		return kparams;
 	}
 

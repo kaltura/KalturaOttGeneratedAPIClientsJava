@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -43,8 +44,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class DeviceManufacturersReferenceDataFilter extends DeviceReferenceDataFilter {
 	
 	public interface Tokenizer extends DeviceReferenceDataFilter.Tokenizer {
+		String nameEqual();
 	}
 
+	/**
+	 * name equal
+	 */
+	private String nameEqual;
+
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
+	}
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
+	}
+
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
+	}
 
 
 	public DeviceManufacturersReferenceDataFilter() {
@@ -53,11 +71,18 @@ public class DeviceManufacturersReferenceDataFilter extends DeviceReferenceDataF
 
 	public DeviceManufacturersReferenceDataFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDeviceManufacturersReferenceDataFilter");
+		kparams.add("nameEqual", this.nameEqual);
 		return kparams;
 	}
 
