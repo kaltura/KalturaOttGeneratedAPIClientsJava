@@ -49,6 +49,7 @@ public class RegionFilter extends BaseRegionFilter {
 		String parentIdEqual();
 		String liveAssetIdEqual();
 		String parentOnly();
+		String exclusiveLcn();
 	}
 
 	/**
@@ -71,6 +72,10 @@ public class RegionFilter extends BaseRegionFilter {
 	 * Parent region to filter by
 	 */
 	private Boolean parentOnly;
+	/**
+	 * Retrieves only the channels belonging specifically to the child region
+	 */
+	private Boolean exclusiveLcn;
 
 	// externalIdIn:
 	public String getExternalIdIn(){
@@ -132,6 +137,18 @@ public class RegionFilter extends BaseRegionFilter {
 		setToken("parentOnly", multirequestToken);
 	}
 
+	// exclusiveLcn:
+	public Boolean getExclusiveLcn(){
+		return this.exclusiveLcn;
+	}
+	public void setExclusiveLcn(Boolean exclusiveLcn){
+		this.exclusiveLcn = exclusiveLcn;
+	}
+
+	public void exclusiveLcn(String multirequestToken){
+		setToken("exclusiveLcn", multirequestToken);
+	}
+
 
 	public RegionFilter() {
 		super();
@@ -148,6 +165,7 @@ public class RegionFilter extends BaseRegionFilter {
 		parentIdEqual = GsonParser.parseInt(jsonObject.get("parentIdEqual"));
 		liveAssetIdEqual = GsonParser.parseInt(jsonObject.get("liveAssetIdEqual"));
 		parentOnly = GsonParser.parseBoolean(jsonObject.get("parentOnly"));
+		exclusiveLcn = GsonParser.parseBoolean(jsonObject.get("exclusiveLcn"));
 
 	}
 
@@ -159,6 +177,7 @@ public class RegionFilter extends BaseRegionFilter {
 		kparams.add("parentIdEqual", this.parentIdEqual);
 		kparams.add("liveAssetIdEqual", this.liveAssetIdEqual);
 		kparams.add("parentOnly", this.parentOnly);
+		kparams.add("exclusiveLcn", this.exclusiveLcn);
 		return kparams;
 	}
 

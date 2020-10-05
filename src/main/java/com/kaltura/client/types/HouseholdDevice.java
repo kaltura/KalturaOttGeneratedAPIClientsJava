@@ -59,8 +59,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		CustomDrmPlaybackPluginData.Tokenizer drm();
 		String externalId();
 		String macAddress();
-		String model();
-		String manufacturerId();
 	}
 
 	/**
@@ -103,14 +101,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	 * mac address
 	 */
 	private String macAddress;
-	/**
-	 * model
-	 */
-	private String model;
-	/**
-	 * manufacturer
-	 */
-	private Long manufacturerId;
 
 	// householdId:
 	public Integer getHouseholdId(){
@@ -208,30 +198,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		setToken("macAddress", multirequestToken);
 	}
 
-	// model:
-	public String getModel(){
-		return this.model;
-	}
-	public void setModel(String model){
-		this.model = model;
-	}
-
-	public void model(String multirequestToken){
-		setToken("model", multirequestToken);
-	}
-
-	// manufacturerId:
-	public Long getManufacturerId(){
-		return this.manufacturerId;
-	}
-	public void setManufacturerId(Long manufacturerId){
-		this.manufacturerId = manufacturerId;
-	}
-
-	public void manufacturerId(String multirequestToken){
-		setToken("manufacturerId", multirequestToken);
-	}
-
 
 	public HouseholdDevice() {
 		super();
@@ -253,8 +219,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		drm = GsonParser.parseObject(jsonObject.getAsJsonObject("drm"), CustomDrmPlaybackPluginData.class);
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		macAddress = GsonParser.parseString(jsonObject.get("macAddress"));
-		model = GsonParser.parseString(jsonObject.get("model"));
-		manufacturerId = GsonParser.parseLong(jsonObject.get("manufacturerId"));
 
 	}
 
@@ -268,8 +232,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		kparams.add("activatedOn", this.activatedOn);
 		kparams.add("externalId", this.externalId);
 		kparams.add("macAddress", this.macAddress);
-		kparams.add("model", this.model);
-		kparams.add("manufacturerId", this.manufacturerId);
 		return kparams;
 	}
 

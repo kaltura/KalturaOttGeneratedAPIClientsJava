@@ -39,50 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Partner catalog configuration
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceManufacturerCondition.Tokenizer.class)
-public class DeviceManufacturerCondition extends Condition {
+@MultiRequestBuilder.Tokenizer(CatalogPartnerConfig.Tokenizer.class)
+public class CatalogPartnerConfig extends PartnerConfiguration {
 	
-	public interface Tokenizer extends Condition.Tokenizer {
-		String idIn();
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		String singleMultilingualMode();
 	}
 
 	/**
-	 * Comma separated Device Manufacturer IDs list
+	 * Single multilingual mode
 	 */
-	private String idIn;
+	private Boolean singleMultilingualMode;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// singleMultilingualMode:
+	public Boolean getSingleMultilingualMode(){
+		return this.singleMultilingualMode;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	public void setSingleMultilingualMode(Boolean singleMultilingualMode){
+		this.singleMultilingualMode = singleMultilingualMode;
 	}
 
+	public void singleMultilingualMode(String multirequestToken){
+		setToken("singleMultilingualMode", multirequestToken);
+	}
 
-	public DeviceManufacturerCondition() {
+
+	public CatalogPartnerConfig() {
 		super();
 	}
 
-	public DeviceManufacturerCondition(JsonObject jsonObject) throws APIException {
+	public CatalogPartnerConfig(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceManufacturerCondition");
-		kparams.add("idIn", this.idIn);
+		kparams.add("objectType", "KalturaCatalogPartnerConfig");
+		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
 		return kparams;
 	}
 
