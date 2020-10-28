@@ -33,6 +33,7 @@ import com.kaltura.client.enums.PurchaseStatus;
 import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.Price;
+import com.kaltura.client.types.PromotionInfo;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -51,7 +52,9 @@ public abstract class ProductPrice extends ObjectBase {
 		String productId();
 		String productType();
 		Price.Tokenizer price();
+		Price.Tokenizer fullPrice();
 		String purchaseStatus();
+		PromotionInfo.Tokenizer promotionInfo();
 	}
 
 	/**
@@ -67,9 +70,17 @@ public abstract class ProductPrice extends ObjectBase {
 	 */
 	private Price price;
 	/**
+	 * The full price of the item (with no discounts)
+	 */
+	private Price fullPrice;
+	/**
 	 * Product purchase status
 	 */
 	private PurchaseStatus purchaseStatus;
+	/**
+	 * Promotion Info
+	 */
+	private PromotionInfo promotionInfo;
 
 	// productId:
 	public String getProductId(){
@@ -103,6 +114,14 @@ public abstract class ProductPrice extends ObjectBase {
 		this.price = price;
 	}
 
+	// fullPrice:
+	public Price getFullPrice(){
+		return this.fullPrice;
+	}
+	public void setFullPrice(Price fullPrice){
+		this.fullPrice = fullPrice;
+	}
+
 	// purchaseStatus:
 	public PurchaseStatus getPurchaseStatus(){
 		return this.purchaseStatus;
@@ -113,6 +132,14 @@ public abstract class ProductPrice extends ObjectBase {
 
 	public void purchaseStatus(String multirequestToken){
 		setToken("purchaseStatus", multirequestToken);
+	}
+
+	// promotionInfo:
+	public PromotionInfo getPromotionInfo(){
+		return this.promotionInfo;
+	}
+	public void setPromotionInfo(PromotionInfo promotionInfo){
+		this.promotionInfo = promotionInfo;
 	}
 
 
@@ -129,7 +156,9 @@ public abstract class ProductPrice extends ObjectBase {
 		productId = GsonParser.parseString(jsonObject.get("productId"));
 		productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
 		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), Price.class);
+		fullPrice = GsonParser.parseObject(jsonObject.getAsJsonObject("fullPrice"), Price.class);
 		purchaseStatus = PurchaseStatus.get(GsonParser.parseString(jsonObject.get("purchaseStatus")));
+		promotionInfo = GsonParser.parseObject(jsonObject.getAsJsonObject("promotionInfo"), PromotionInfo.class);
 
 	}
 
@@ -139,7 +168,9 @@ public abstract class ProductPrice extends ObjectBase {
 		kparams.add("productId", this.productId);
 		kparams.add("productType", this.productType);
 		kparams.add("price", this.price);
+		kparams.add("fullPrice", this.fullPrice);
 		kparams.add("purchaseStatus", this.purchaseStatus);
+		kparams.add("promotionInfo", this.promotionInfo);
 		return kparams;
 	}
 

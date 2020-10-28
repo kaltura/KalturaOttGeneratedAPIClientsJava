@@ -29,11 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DrmSchemeName;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -43,83 +40,79 @@ import java.util.Map;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DrmPlaybackPluginData.Tokenizer.class)
-public class DrmPlaybackPluginData extends PluginData {
+@MultiRequestBuilder.Tokenizer(DynamicList.Tokenizer.class)
+public class DynamicList extends CrudObject {
 	
-	public interface Tokenizer extends PluginData.Tokenizer {
-		String scheme();
-		String licenseURL();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
+	public interface Tokenizer extends CrudObject.Tokenizer {
+		String id();
+		String createDate();
+		String updateDate();
+		String name();
 	}
 
 	/**
-	 * Scheme
+	 * ID
 	 */
-	private DrmSchemeName scheme;
+	private Long id;
 	/**
-	 * License URL
+	 * Create date of the DynamicList
 	 */
-	private String licenseURL;
+	private Long createDate;
 	/**
-	 * Dynamic data
+	 * Update date of the DynamicList
 	 */
-	private Map<String, StringValue> dynamicData;
+	private Long updateDate;
+	/**
+	 * Name
+	 */
+	private String name;
 
-	// scheme:
-	public DrmSchemeName getScheme(){
-		return this.scheme;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setScheme(DrmSchemeName scheme){
-		this.scheme = scheme;
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
 	}
-
-	public void scheme(String multirequestToken){
-		setToken("scheme", multirequestToken);
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
 	}
-
-	// licenseURL:
-	public String getLicenseURL(){
-		return this.licenseURL;
+	// name:
+	public String getName(){
+		return this.name;
 	}
-	public void setLicenseURL(String licenseURL){
-		this.licenseURL = licenseURL;
-	}
-
-	public void licenseURL(String multirequestToken){
-		setToken("licenseURL", multirequestToken);
+	public void setName(String name){
+		this.name = name;
 	}
 
-	// dynamicData:
-	public Map<String, StringValue> getDynamicData(){
-		return this.dynamicData;
-	}
-	public void setDynamicData(Map<String, StringValue> dynamicData){
-		this.dynamicData = dynamicData;
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
 
-	public DrmPlaybackPluginData() {
+	public DynamicList() {
 		super();
 	}
 
-	public DrmPlaybackPluginData(JsonObject jsonObject) throws APIException {
+	public DynamicList(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scheme = DrmSchemeName.get(GsonParser.parseString(jsonObject.get("scheme")));
-		licenseURL = GsonParser.parseString(jsonObject.get("licenseURL"));
-		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		name = GsonParser.parseString(jsonObject.get("name"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDrmPlaybackPluginData");
-		kparams.add("scheme", this.scheme);
-		kparams.add("licenseURL", this.licenseURL);
-		kparams.add("dynamicData", this.dynamicData);
+		kparams.add("objectType", "KalturaDynamicList");
+		kparams.add("name", this.name);
 		return kparams;
 	}
 

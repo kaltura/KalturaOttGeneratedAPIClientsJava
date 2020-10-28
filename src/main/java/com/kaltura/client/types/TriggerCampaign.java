@@ -29,11 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DrmSchemeName;
+import com.kaltura.client.enums.ApiAction;
+import com.kaltura.client.enums.ApiService;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,84 +43,87 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Campaign
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DrmPlaybackPluginData.Tokenizer.class)
-public class DrmPlaybackPluginData extends PluginData {
+@MultiRequestBuilder.Tokenizer(TriggerCampaign.Tokenizer.class)
+public class TriggerCampaign extends Campaign {
 	
-	public interface Tokenizer extends PluginData.Tokenizer {
-		String scheme();
-		String licenseURL();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
+	public interface Tokenizer extends Campaign.Tokenizer {
+		String service();
+		String action();
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> triggerConditions();
 	}
 
 	/**
-	 * Scheme
+	 * service
 	 */
-	private DrmSchemeName scheme;
+	private ApiService service;
 	/**
-	 * License URL
+	 * action
 	 */
-	private String licenseURL;
+	private ApiAction action;
 	/**
-	 * Dynamic data
+	 * List of conditions for the trigger (conditions on the object)
 	 */
-	private Map<String, StringValue> dynamicData;
+	private List<Condition> triggerConditions;
 
-	// scheme:
-	public DrmSchemeName getScheme(){
-		return this.scheme;
+	// service:
+	public ApiService getService(){
+		return this.service;
 	}
-	public void setScheme(DrmSchemeName scheme){
-		this.scheme = scheme;
-	}
-
-	public void scheme(String multirequestToken){
-		setToken("scheme", multirequestToken);
+	public void setService(ApiService service){
+		this.service = service;
 	}
 
-	// licenseURL:
-	public String getLicenseURL(){
-		return this.licenseURL;
-	}
-	public void setLicenseURL(String licenseURL){
-		this.licenseURL = licenseURL;
+	public void service(String multirequestToken){
+		setToken("service", multirequestToken);
 	}
 
-	public void licenseURL(String multirequestToken){
-		setToken("licenseURL", multirequestToken);
+	// action:
+	public ApiAction getAction(){
+		return this.action;
+	}
+	public void setAction(ApiAction action){
+		this.action = action;
 	}
 
-	// dynamicData:
-	public Map<String, StringValue> getDynamicData(){
-		return this.dynamicData;
+	public void action(String multirequestToken){
+		setToken("action", multirequestToken);
 	}
-	public void setDynamicData(Map<String, StringValue> dynamicData){
-		this.dynamicData = dynamicData;
+
+	// triggerConditions:
+	public List<Condition> getTriggerConditions(){
+		return this.triggerConditions;
+	}
+	public void setTriggerConditions(List<Condition> triggerConditions){
+		this.triggerConditions = triggerConditions;
 	}
 
 
-	public DrmPlaybackPluginData() {
+	public TriggerCampaign() {
 		super();
 	}
 
-	public DrmPlaybackPluginData(JsonObject jsonObject) throws APIException {
+	public TriggerCampaign(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scheme = DrmSchemeName.get(GsonParser.parseString(jsonObject.get("scheme")));
-		licenseURL = GsonParser.parseString(jsonObject.get("licenseURL"));
-		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
+		service = ApiService.get(GsonParser.parseString(jsonObject.get("service")));
+		action = ApiAction.get(GsonParser.parseString(jsonObject.get("action")));
+		triggerConditions = GsonParser.parseArray(jsonObject.getAsJsonArray("triggerConditions"), Condition.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDrmPlaybackPluginData");
-		kparams.add("scheme", this.scheme);
-		kparams.add("licenseURL", this.licenseURL);
-		kparams.add("dynamicData", this.dynamicData);
+		kparams.add("objectType", "KalturaTriggerCampaign");
+		kparams.add("service", this.service);
+		kparams.add("action", this.action);
+		kparams.add("triggerConditions", this.triggerConditions);
 		return kparams;
 	}
 

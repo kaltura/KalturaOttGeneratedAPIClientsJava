@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,53 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID_DYNAMIC_LIST("DEVICE_UDID_DYNAMIC_LIST");
 
-	private String value;
-
-	RuleConditionType(String value) {
-		this.value = value;
+/**
+ * indicates the DynamicList object type in the bulk file
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BulkUploadDynamicListData.Tokenizer.class)
+public abstract class BulkUploadDynamicListData extends BulkUploadObjectData {
+	
+	public interface Tokenizer extends BulkUploadObjectData.Tokenizer {
+		String dynamicListId();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Identifies the dynamicList Id
+	 */
+	private Long dynamicListId;
+
+	// dynamicListId:
+	public Long getDynamicListId(){
+		return this.dynamicListId;
+	}
+	public void setDynamicListId(Long dynamicListId){
+		this.dynamicListId = dynamicListId;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void dynamicListId(String multirequestToken){
+		setToken("dynamicListId", multirequestToken);
 	}
 
-	public static RuleConditionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
-   }
+
+	public BulkUploadDynamicListData() {
+		super();
+	}
+
+	public BulkUploadDynamicListData(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		dynamicListId = GsonParser.parseLong(jsonObject.get("dynamicListId"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBulkUploadDynamicListData");
+		kparams.add("dynamicListId", this.dynamicListId);
+		return kparams;
+	}
+
 }
+

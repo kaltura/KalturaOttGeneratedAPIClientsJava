@@ -29,11 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DrmSchemeName;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -42,84 +39,72 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * DynamicListSearchFilter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DrmPlaybackPluginData.Tokenizer.class)
-public class DrmPlaybackPluginData extends PluginData {
+@MultiRequestBuilder.Tokenizer(DynamicListSearchFilter.Tokenizer.class)
+public abstract class DynamicListSearchFilter extends DynamicListFilter {
 	
-	public interface Tokenizer extends PluginData.Tokenizer {
-		String scheme();
-		String licenseURL();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
+	public interface Tokenizer extends DynamicListFilter.Tokenizer {
+		String idEqual();
+		String valueEqual();
 	}
 
 	/**
-	 * Scheme
+	 * DynamicList id to search by
 	 */
-	private DrmSchemeName scheme;
+	private Long idEqual;
 	/**
-	 * License URL
+	 * udid value that should be in the DynamicList
 	 */
-	private String licenseURL;
-	/**
-	 * Dynamic data
-	 */
-	private Map<String, StringValue> dynamicData;
+	private String valueEqual;
 
-	// scheme:
-	public DrmSchemeName getScheme(){
-		return this.scheme;
+	// idEqual:
+	public Long getIdEqual(){
+		return this.idEqual;
 	}
-	public void setScheme(DrmSchemeName scheme){
-		this.scheme = scheme;
+	public void setIdEqual(Long idEqual){
+		this.idEqual = idEqual;
 	}
 
-	public void scheme(String multirequestToken){
-		setToken("scheme", multirequestToken);
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
 	}
 
-	// licenseURL:
-	public String getLicenseURL(){
-		return this.licenseURL;
+	// valueEqual:
+	public String getValueEqual(){
+		return this.valueEqual;
 	}
-	public void setLicenseURL(String licenseURL){
-		this.licenseURL = licenseURL;
-	}
-
-	public void licenseURL(String multirequestToken){
-		setToken("licenseURL", multirequestToken);
+	public void setValueEqual(String valueEqual){
+		this.valueEqual = valueEqual;
 	}
 
-	// dynamicData:
-	public Map<String, StringValue> getDynamicData(){
-		return this.dynamicData;
-	}
-	public void setDynamicData(Map<String, StringValue> dynamicData){
-		this.dynamicData = dynamicData;
+	public void valueEqual(String multirequestToken){
+		setToken("valueEqual", multirequestToken);
 	}
 
 
-	public DrmPlaybackPluginData() {
+	public DynamicListSearchFilter() {
 		super();
 	}
 
-	public DrmPlaybackPluginData(JsonObject jsonObject) throws APIException {
+	public DynamicListSearchFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scheme = DrmSchemeName.get(GsonParser.parseString(jsonObject.get("scheme")));
-		licenseURL = GsonParser.parseString(jsonObject.get("licenseURL"));
-		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		valueEqual = GsonParser.parseString(jsonObject.get("valueEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDrmPlaybackPluginData");
-		kparams.add("scheme", this.scheme);
-		kparams.add("licenseURL", this.licenseURL);
-		kparams.add("dynamicData", this.dynamicData);
+		kparams.add("objectType", "KalturaDynamicListSearchFilter");
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("valueEqual", this.valueEqual);
 		return kparams;
 	}
 

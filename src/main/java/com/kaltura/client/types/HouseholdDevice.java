@@ -59,6 +59,9 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		CustomDrmPlaybackPluginData.Tokenizer drm();
 		String externalId();
 		String macAddress();
+		String model();
+		String manufacturer();
+		String manufacturerId();
 	}
 
 	/**
@@ -101,6 +104,18 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	 * mac address
 	 */
 	private String macAddress;
+	/**
+	 * model
+	 */
+	private String model;
+	/**
+	 * manufacturer
+	 */
+	private String manufacturer;
+	/**
+	 * manufacturer Id, read only
+	 */
+	private Long manufacturerId;
 
 	// householdId:
 	public Integer getHouseholdId(){
@@ -198,6 +213,34 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		setToken("macAddress", multirequestToken);
 	}
 
+	// model:
+	public String getModel(){
+		return this.model;
+	}
+	public void setModel(String model){
+		this.model = model;
+	}
+
+	public void model(String multirequestToken){
+		setToken("model", multirequestToken);
+	}
+
+	// manufacturer:
+	public String getManufacturer(){
+		return this.manufacturer;
+	}
+	public void setManufacturer(String manufacturer){
+		this.manufacturer = manufacturer;
+	}
+
+	public void manufacturer(String multirequestToken){
+		setToken("manufacturer", multirequestToken);
+	}
+
+	// manufacturerId:
+	public Long getManufacturerId(){
+		return this.manufacturerId;
+	}
 
 	public HouseholdDevice() {
 		super();
@@ -219,6 +262,9 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		drm = GsonParser.parseObject(jsonObject.getAsJsonObject("drm"), CustomDrmPlaybackPluginData.class);
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		macAddress = GsonParser.parseString(jsonObject.get("macAddress"));
+		model = GsonParser.parseString(jsonObject.get("model"));
+		manufacturer = GsonParser.parseString(jsonObject.get("manufacturer"));
+		manufacturerId = GsonParser.parseLong(jsonObject.get("manufacturerId"));
 
 	}
 
@@ -232,6 +278,8 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		kparams.add("activatedOn", this.activatedOn);
 		kparams.add("externalId", this.externalId);
 		kparams.add("macAddress", this.macAddress);
+		kparams.add("model", this.model);
+		kparams.add("manufacturer", this.manufacturer);
 		return kparams;
 	}
 

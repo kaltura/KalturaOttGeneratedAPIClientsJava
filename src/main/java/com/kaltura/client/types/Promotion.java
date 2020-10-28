@@ -29,11 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DrmSchemeName;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,84 +42,87 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Promotion
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DrmPlaybackPluginData.Tokenizer.class)
-public class DrmPlaybackPluginData extends PluginData {
+@MultiRequestBuilder.Tokenizer(Promotion.Tokenizer.class)
+public class Promotion extends ObjectBase {
 	
-	public interface Tokenizer extends PluginData.Tokenizer {
-		String scheme();
-		String licenseURL();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String discountModuleId();
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
+		String numberOfRecurring();
 	}
 
 	/**
-	 * Scheme
+	 * The discount module id that is promoted to the user
 	 */
-	private DrmSchemeName scheme;
+	private Long discountModuleId;
 	/**
-	 * License URL
+	 * These conditions define the Promotion that applies on
 	 */
-	private String licenseURL;
+	private List<Condition> conditions;
 	/**
-	 * Dynamic data
+	 * the numer of recurring for this promotion
 	 */
-	private Map<String, StringValue> dynamicData;
+	private Integer numberOfRecurring;
 
-	// scheme:
-	public DrmSchemeName getScheme(){
-		return this.scheme;
+	// discountModuleId:
+	public Long getDiscountModuleId(){
+		return this.discountModuleId;
 	}
-	public void setScheme(DrmSchemeName scheme){
-		this.scheme = scheme;
-	}
-
-	public void scheme(String multirequestToken){
-		setToken("scheme", multirequestToken);
+	public void setDiscountModuleId(Long discountModuleId){
+		this.discountModuleId = discountModuleId;
 	}
 
-	// licenseURL:
-	public String getLicenseURL(){
-		return this.licenseURL;
-	}
-	public void setLicenseURL(String licenseURL){
-		this.licenseURL = licenseURL;
+	public void discountModuleId(String multirequestToken){
+		setToken("discountModuleId", multirequestToken);
 	}
 
-	public void licenseURL(String multirequestToken){
-		setToken("licenseURL", multirequestToken);
+	// conditions:
+	public List<Condition> getConditions(){
+		return this.conditions;
+	}
+	public void setConditions(List<Condition> conditions){
+		this.conditions = conditions;
 	}
 
-	// dynamicData:
-	public Map<String, StringValue> getDynamicData(){
-		return this.dynamicData;
+	// numberOfRecurring:
+	public Integer getNumberOfRecurring(){
+		return this.numberOfRecurring;
 	}
-	public void setDynamicData(Map<String, StringValue> dynamicData){
-		this.dynamicData = dynamicData;
+	public void setNumberOfRecurring(Integer numberOfRecurring){
+		this.numberOfRecurring = numberOfRecurring;
+	}
+
+	public void numberOfRecurring(String multirequestToken){
+		setToken("numberOfRecurring", multirequestToken);
 	}
 
 
-	public DrmPlaybackPluginData() {
+	public Promotion() {
 		super();
 	}
 
-	public DrmPlaybackPluginData(JsonObject jsonObject) throws APIException {
+	public Promotion(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scheme = DrmSchemeName.get(GsonParser.parseString(jsonObject.get("scheme")));
-		licenseURL = GsonParser.parseString(jsonObject.get("licenseURL"));
-		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
+		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
+		numberOfRecurring = GsonParser.parseInt(jsonObject.get("numberOfRecurring"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDrmPlaybackPluginData");
-		kparams.add("scheme", this.scheme);
-		kparams.add("licenseURL", this.licenseURL);
-		kparams.add("dynamicData", this.dynamicData);
+		kparams.add("objectType", "KalturaPromotion");
+		kparams.add("discountModuleId", this.discountModuleId);
+		kparams.add("conditions", this.conditions);
+		kparams.add("numberOfRecurring", this.numberOfRecurring);
 		return kparams;
 	}
 
