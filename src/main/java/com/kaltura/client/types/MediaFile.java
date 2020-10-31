@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.BusinessModuleDetails;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -69,6 +70,7 @@ public class MediaFile extends AssetFile {
 		String status();
 		String catalogEndDate();
 		String opl();
+		BusinessModuleDetails.Tokenizer businessModuleDetails();
 	}
 
 	/**
@@ -159,6 +161,10 @@ public class MediaFile extends AssetFile {
 	 * OPL
 	 */
 	private String opl;
+	/**
+	 * businessModuleDetails
+	 */
+	private BusinessModuleDetails businessModuleDetails;
 
 	// assetId:
 	public Integer getAssetId(){
@@ -408,6 +414,14 @@ public class MediaFile extends AssetFile {
 		setToken("opl", multirequestToken);
 	}
 
+	// businessModuleDetails:
+	public BusinessModuleDetails getBusinessModuleDetails(){
+		return this.businessModuleDetails;
+	}
+	public void setBusinessModuleDetails(BusinessModuleDetails businessModuleDetails){
+		this.businessModuleDetails = businessModuleDetails;
+	}
+
 
 	public MediaFile() {
 		super();
@@ -441,6 +455,7 @@ public class MediaFile extends AssetFile {
 		status = GsonParser.parseBoolean(jsonObject.get("status"));
 		catalogEndDate = GsonParser.parseLong(jsonObject.get("catalogEndDate"));
 		opl = GsonParser.parseString(jsonObject.get("opl"));
+		businessModuleDetails = GsonParser.parseObject(jsonObject.getAsJsonObject("businessModuleDetails"), BusinessModuleDetails.class);
 
 	}
 
@@ -467,6 +482,7 @@ public class MediaFile extends AssetFile {
 		kparams.add("status", this.status);
 		kparams.add("catalogEndDate", this.catalogEndDate);
 		kparams.add("opl", this.opl);
+		kparams.add("businessModuleDetails", this.businessModuleDetails);
 		return kparams;
 	}
 
