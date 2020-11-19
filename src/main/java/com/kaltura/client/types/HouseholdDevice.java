@@ -62,6 +62,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		String model();
 		String manufacturer();
 		String manufacturerId();
+		String lastActivityTime();
 	}
 
 	/**
@@ -116,6 +117,10 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	 * manufacturer Id, read only
 	 */
 	private Long manufacturerId;
+	/**
+	 * Last Activity Time, read only
+	 */
+	private Long lastActivityTime;
 
 	// householdId:
 	public Integer getHouseholdId(){
@@ -241,6 +246,10 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	public Long getManufacturerId(){
 		return this.manufacturerId;
 	}
+	// lastActivityTime:
+	public Long getLastActivityTime(){
+		return this.lastActivityTime;
+	}
 
 	public HouseholdDevice() {
 		super();
@@ -265,6 +274,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		model = GsonParser.parseString(jsonObject.get("model"));
 		manufacturer = GsonParser.parseString(jsonObject.get("manufacturer"));
 		manufacturerId = GsonParser.parseLong(jsonObject.get("manufacturerId"));
+		lastActivityTime = GsonParser.parseLong(jsonObject.get("lastActivityTime"));
 
 	}
 
