@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.DataEncryption;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,47 +39,49 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SecurityPartnerConfig.Tokenizer.class)
+public class SecurityPartnerConfig extends PartnerConfiguration {
+	
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		DataEncryption.Tokenizer encryption();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Encryption config
+	 */
+	private DataEncryption encryption;
+
+	// encryption:
+	public DataEncryption getEncryption(){
+		return this.encryption;
+	}
+	public void setEncryption(DataEncryption encryption){
+		this.encryption = encryption;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public SecurityPartnerConfig() {
+		super();
 	}
 
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+	public SecurityPartnerConfig(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		encryption = GsonParser.parseObject(jsonObject.getAsJsonObject("encryption"), DataEncryption.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSecurityPartnerConfig");
+		kparams.add("encryption", this.encryption);
+		return kparams;
+	}
+
 }
+

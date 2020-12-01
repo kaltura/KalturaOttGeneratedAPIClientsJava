@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.StreamingDevice;
+import com.kaltura.client.types.StreamingDeviceFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,47 +37,27 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
+public class StreamingDeviceService {
+	
+	public static class ListStreamingDeviceBuilder extends ListResponseRequestBuilder<StreamingDevice, StreamingDevice.Tokenizer, ListStreamingDeviceBuilder> {
 		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public ListStreamingDeviceBuilder(StreamingDeviceFilter filter) {
+			super(StreamingDevice.class, "streamingdevice", "list");
+			params.add("filter", filter);
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+	}
+
+	public static ListStreamingDeviceBuilder list()  {
+		return list(null);
+	}
+
+	/**
+	 * Lists of devices that are streaming at that moment
+	 * 
+	 * @param filter Segmentation type filter - basically empty
+	 */
+    public static ListStreamingDeviceBuilder list(StreamingDeviceFilter filter)  {
+		return new ListStreamingDeviceBuilder(filter);
+	}
 }
