@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -65,8 +65,6 @@ public class Household extends ObjectBase {
 		String frequencyNextUserAction();
 		String restriction();
 		String roleId();
-		String createDate();
-		String updateDate();
 	}
 
 	/**
@@ -129,14 +127,6 @@ public class Household extends ObjectBase {
 	 * suspended roleId
 	 */
 	private Integer roleId;
-	/**
-	 * create date
-	 */
-	private Long createDate;
-	/**
-	 * update date
-	 */
-	private Long updateDate;
 
 	// id:
 	public Long getId(){
@@ -230,14 +220,6 @@ public class Household extends ObjectBase {
 	public Integer getRoleId(){
 		return this.roleId;
 	}
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
-	}
-	// updateDate:
-	public Long getUpdateDate(){
-		return this.updateDate;
-	}
 
 	public Household() {
 		super();
@@ -264,8 +246,6 @@ public class Household extends ObjectBase {
 		frequencyNextUserAction = GsonParser.parseLong(jsonObject.get("frequencyNextUserAction"));
 		restriction = HouseholdRestriction.get(GsonParser.parseString(jsonObject.get("restriction")));
 		roleId = GsonParser.parseInt(jsonObject.get("roleId"));
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 

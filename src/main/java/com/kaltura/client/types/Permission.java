@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -51,7 +51,6 @@ public class Permission extends ObjectBase {
 		String friendlyName();
 		String dependsOnPermissionNames();
 		String type();
-		String permissionItemsIds();
 	}
 
 	/**
@@ -74,10 +73,6 @@ public class Permission extends ObjectBase {
 	 * Comma separated permissions names from type SPECIAL_FEATURE
 	 */
 	private PermissionType type;
-	/**
-	 * Comma separated assosiated permission items IDs
-	 */
-	private String permissionItemsIds;
 
 	// id:
 	public Long getId(){
@@ -123,10 +118,6 @@ public class Permission extends ObjectBase {
 		setToken("type", multirequestToken);
 	}
 
-	// permissionItemsIds:
-	public String getPermissionItemsIds(){
-		return this.permissionItemsIds;
-	}
 
 	public Permission() {
 		super();
@@ -143,7 +134,6 @@ public class Permission extends ObjectBase {
 		friendlyName = GsonParser.parseString(jsonObject.get("friendlyName"));
 		dependsOnPermissionNames = GsonParser.parseString(jsonObject.get("dependsOnPermissionNames"));
 		type = PermissionType.get(GsonParser.parseString(jsonObject.get("type")));
-		permissionItemsIds = GsonParser.parseString(jsonObject.get("permissionItemsIds"));
 
 	}
 

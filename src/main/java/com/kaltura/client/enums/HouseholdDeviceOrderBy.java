@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -34,9 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum HouseholdDeviceOrderBy implements EnumAsString {
-	NONE("NONE"),
-	CREATED_DATE_ASC("CREATED_DATE_ASC"),
-	CREATED_DATE_DESC("CREATED_DATE_DESC");
+	NONE("NONE");
 
 	private String value;
 

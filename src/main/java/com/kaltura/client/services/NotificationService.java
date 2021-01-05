@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -30,9 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.enums.NotificationType;
 import com.kaltura.client.types.PushMessage;
 import com.kaltura.client.types.RegistryResponse;
-import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -96,39 +94,23 @@ public class NotificationService {
 	
 	public static class SendSmsNotificationBuilder extends RequestBuilder<Boolean, String, SendSmsNotificationBuilder> {
 		
-		public SendSmsNotificationBuilder(String message, String phoneNumber, Map<String, StringValue> adapterData) {
+		public SendSmsNotificationBuilder(String message) {
 			super(Boolean.class, "notification", "sendSms");
 			params.add("message", message);
-			params.add("phoneNumber", phoneNumber);
-			params.add("adapterData", adapterData);
 		}
 		
 		public void message(String multirequestToken) {
 			params.add("message", multirequestToken);
 		}
-		
-		public void phoneNumber(String multirequestToken) {
-			params.add("phoneNumber", multirequestToken);
-		}
-	}
-
-	public static SendSmsNotificationBuilder sendSms(String message)  {
-		return sendSms(message, null);
-	}
-
-	public static SendSmsNotificationBuilder sendSms(String message, String phoneNumber)  {
-		return sendSms(message, phoneNumber, null);
 	}
 
 	/**
 	 * Sends SMS notification to user
 	 * 
 	 * @param message Message to send
-	 * @param phoneNumber Optional phoneNumber
-	 * @param adapterData Data used by the adapter
 	 */
-    public static SendSmsNotificationBuilder sendSms(String message, String phoneNumber, Map<String, StringValue> adapterData)  {
-		return new SendSmsNotificationBuilder(message, phoneNumber, adapterData);
+    public static SendSmsNotificationBuilder sendSms(String message)  {
+		return new SendSmsNotificationBuilder(message);
 	}
 	
 	public static class SetDevicePushTokenNotificationBuilder extends RequestBuilder<Boolean, String, SetDevicePushTokenNotificationBuilder> {

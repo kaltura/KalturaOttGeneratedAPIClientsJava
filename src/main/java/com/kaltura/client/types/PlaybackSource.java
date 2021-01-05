@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -51,8 +50,6 @@ public class PlaybackSource extends MediaFile {
 		String protocols();
 		RequestBuilder.ListTokenizer<DrmPlaybackPluginData.Tokenizer> drm();
 		String isTokenized();
-		String businessModuleId();
-		String businessModuleType();
 	}
 
 	/**
@@ -73,14 +70,6 @@ public class PlaybackSource extends MediaFile {
 	 * Is Tokenized
 	 */
 	private Boolean isTokenized;
-	/**
-	 * Business Module Id
-	 */
-	private Integer businessModuleId;
-	/**
-	 * Business Module Type
-	 */
-	private TransactionType businessModuleType;
 
 	// format:
 	public String getFormat(){
@@ -126,14 +115,6 @@ public class PlaybackSource extends MediaFile {
 		setToken("isTokenized", multirequestToken);
 	}
 
-	// businessModuleId:
-	public Integer getBusinessModuleId(){
-		return this.businessModuleId;
-	}
-	// businessModuleType:
-	public TransactionType getBusinessModuleType(){
-		return this.businessModuleType;
-	}
 
 	public PlaybackSource() {
 		super();
@@ -149,8 +130,6 @@ public class PlaybackSource extends MediaFile {
 		protocols = GsonParser.parseString(jsonObject.get("protocols"));
 		drm = GsonParser.parseArray(jsonObject.getAsJsonArray("drm"), DrmPlaybackPluginData.class);
 		isTokenized = GsonParser.parseBoolean(jsonObject.get("isTokenized"));
-		businessModuleId = GsonParser.parseInt(jsonObject.get("businessModuleId"));
-		businessModuleType = TransactionType.get(GsonParser.parseString(jsonObject.get("businessModuleType")));
 
 	}
 

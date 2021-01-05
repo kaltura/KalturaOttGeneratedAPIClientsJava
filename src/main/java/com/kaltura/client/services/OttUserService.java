@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -304,23 +304,16 @@ public class OttUserService {
 	
 	public static class LogoutOttUserBuilder extends RequestBuilder<Boolean, String, LogoutOttUserBuilder> {
 		
-		public LogoutOttUserBuilder(Map<String, StringValue> adapterData) {
+		public LogoutOttUserBuilder() {
 			super(Boolean.class, "ottuser", "logout");
-			params.add("adapterData", adapterData);
 		}
-	}
-
-	public static LogoutOttUserBuilder logout()  {
-		return logout(null);
 	}
 
 	/**
 	 * Logout the calling user.
-	 * 
-	 * @param adapterData adapter data
 	 */
-    public static LogoutOttUserBuilder logout(Map<String, StringValue> adapterData)  {
-		return new LogoutOttUserBuilder(adapterData);
+    public static LogoutOttUserBuilder logout()  {
+		return new LogoutOttUserBuilder();
 	}
 	
 	public static class RegisterOttUserBuilder extends RequestBuilder<OTTUser, OTTUser.Tokenizer, RegisterOttUserBuilder> {

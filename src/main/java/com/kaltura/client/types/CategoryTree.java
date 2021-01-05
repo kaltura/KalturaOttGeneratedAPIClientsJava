@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -61,7 +61,6 @@ public class CategoryTree extends ObjectBase {
 		String isActive();
 		String startDateInSeconds();
 		String endDateInSeconds();
-		String type();
 	}
 
 	/**
@@ -104,10 +103,6 @@ public class CategoryTree extends ObjectBase {
 	 * End date in seconds
 	 */
 	private Long endDateInSeconds;
-	/**
-	 * Category type
-	 */
-	private String type;
 
 	// id:
 	public Long getId(){
@@ -189,18 +184,6 @@ public class CategoryTree extends ObjectBase {
 		setToken("endDateInSeconds", multirequestToken);
 	}
 
-	// type:
-	public String getType(){
-		return this.type;
-	}
-	public void setType(String type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
 
 	public CategoryTree() {
 		super();
@@ -222,7 +205,6 @@ public class CategoryTree extends ObjectBase {
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 		startDateInSeconds = GsonParser.parseLong(jsonObject.get("startDateInSeconds"));
 		endDateInSeconds = GsonParser.parseLong(jsonObject.get("endDateInSeconds"));
-		type = GsonParser.parseString(jsonObject.get("type"));
 
 	}
 
@@ -236,7 +218,6 @@ public class CategoryTree extends ObjectBase {
 		kparams.add("isActive", this.isActive);
 		kparams.add("startDateInSeconds", this.startDateInSeconds);
 		kparams.add("endDateInSeconds", this.endDateInSeconds);
-		kparams.add("type", this.type);
 		return kparams;
 	}
 
