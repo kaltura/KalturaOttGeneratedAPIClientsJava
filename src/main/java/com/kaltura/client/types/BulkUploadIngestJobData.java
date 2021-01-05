@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2020  Kaltura Inc.
+// Copyright (C) 2006-2021  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -48,6 +48,7 @@ public class BulkUploadIngestJobData extends BulkUploadJobData {
 	
 	public interface Tokenizer extends BulkUploadJobData.Tokenizer {
 		String ingestProfileId();
+		String disableEpgNotification();
 	}
 
 	/**
@@ -55,6 +56,11 @@ public class BulkUploadIngestJobData extends BulkUploadJobData {
 	    Ingest profiles are created separately using the ingest profile service
 	 */
 	private Integer ingestProfileId;
+	/**
+	 * By default, after the successful ingest, devices will be notified about changes
+	  in epg channels.              This parameter disables this notification.
+	 */
+	private Boolean disableEpgNotification;
 
 	// ingestProfileId:
 	public Integer getIngestProfileId(){
@@ -66,6 +72,18 @@ public class BulkUploadIngestJobData extends BulkUploadJobData {
 
 	public void ingestProfileId(String multirequestToken){
 		setToken("ingestProfileId", multirequestToken);
+	}
+
+	// disableEpgNotification:
+	public Boolean getDisableEpgNotification(){
+		return this.disableEpgNotification;
+	}
+	public void setDisableEpgNotification(Boolean disableEpgNotification){
+		this.disableEpgNotification = disableEpgNotification;
+	}
+
+	public void disableEpgNotification(String multirequestToken){
+		setToken("disableEpgNotification", multirequestToken);
 	}
 
 
@@ -80,6 +98,7 @@ public class BulkUploadIngestJobData extends BulkUploadJobData {
 
 		// set members values:
 		ingestProfileId = GsonParser.parseInt(jsonObject.get("ingestProfileId"));
+		disableEpgNotification = GsonParser.parseBoolean(jsonObject.get("disableEpgNotification"));
 
 	}
 
@@ -87,6 +106,7 @@ public class BulkUploadIngestJobData extends BulkUploadJobData {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBulkUploadIngestJobData");
 		kparams.add("ingestProfileId", this.ingestProfileId);
+		kparams.add("disableEpgNotification", this.disableEpgNotification);
 		return kparams;
 	}
 
