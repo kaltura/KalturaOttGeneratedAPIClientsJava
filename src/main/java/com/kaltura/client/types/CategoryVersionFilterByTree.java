@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.CategoryManagement;
+import com.kaltura.client.enums.CategoryVersionState;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,68 +40,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Partner catalog configuration
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CatalogPartnerConfig.Tokenizer.class)
-public class CatalogPartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(CategoryVersionFilterByTree.Tokenizer.class)
+public class CategoryVersionFilterByTree extends CategoryVersionFilter {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		String singleMultilingualMode();
-		CategoryManagement.Tokenizer categoryManagement();
+	public interface Tokenizer extends CategoryVersionFilter.Tokenizer {
+		String treeIdEqual();
+		String stateEqual();
 	}
 
 	/**
-	 * Single multilingual mode
+	 * Category version tree identifier
 	 */
-	private Boolean singleMultilingualMode;
+	private Long treeIdEqual;
 	/**
-	 * Category management
+	 * Category version state
 	 */
-	private CategoryManagement categoryManagement;
+	private CategoryVersionState stateEqual;
 
-	// singleMultilingualMode:
-	public Boolean getSingleMultilingualMode(){
-		return this.singleMultilingualMode;
+	// treeIdEqual:
+	public Long getTreeIdEqual(){
+		return this.treeIdEqual;
 	}
-	public void setSingleMultilingualMode(Boolean singleMultilingualMode){
-		this.singleMultilingualMode = singleMultilingualMode;
-	}
-
-	public void singleMultilingualMode(String multirequestToken){
-		setToken("singleMultilingualMode", multirequestToken);
+	public void setTreeIdEqual(Long treeIdEqual){
+		this.treeIdEqual = treeIdEqual;
 	}
 
-	// categoryManagement:
-	public CategoryManagement getCategoryManagement(){
-		return this.categoryManagement;
+	public void treeIdEqual(String multirequestToken){
+		setToken("treeIdEqual", multirequestToken);
 	}
-	public void setCategoryManagement(CategoryManagement categoryManagement){
-		this.categoryManagement = categoryManagement;
+
+	// stateEqual:
+	public CategoryVersionState getStateEqual(){
+		return this.stateEqual;
+	}
+	public void setStateEqual(CategoryVersionState stateEqual){
+		this.stateEqual = stateEqual;
+	}
+
+	public void stateEqual(String multirequestToken){
+		setToken("stateEqual", multirequestToken);
 	}
 
 
-	public CatalogPartnerConfig() {
+	public CategoryVersionFilterByTree() {
 		super();
 	}
 
-	public CatalogPartnerConfig(JsonObject jsonObject) throws APIException {
+	public CategoryVersionFilterByTree(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
-		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
+		treeIdEqual = GsonParser.parseLong(jsonObject.get("treeIdEqual"));
+		stateEqual = CategoryVersionState.get(GsonParser.parseString(jsonObject.get("stateEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCatalogPartnerConfig");
-		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
-		kparams.add("categoryManagement", this.categoryManagement);
+		kparams.add("objectType", "KalturaCategoryVersionFilterByTree");
+		kparams.add("treeIdEqual", this.treeIdEqual);
+		kparams.add("stateEqual", this.stateEqual);
 		return kparams;
 	}
 
