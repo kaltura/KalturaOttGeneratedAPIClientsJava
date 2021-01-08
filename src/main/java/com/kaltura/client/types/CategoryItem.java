@@ -62,7 +62,6 @@ public class CategoryItem extends CrudObject {
 		String startDateInSeconds();
 		String endDateInSeconds();
 		String type();
-		String versionId();
 	}
 
 	/**
@@ -114,10 +113,6 @@ public class CategoryItem extends CrudObject {
 	 * Category type
 	 */
 	private String type;
-	/**
-	 * Unique identifier for the category version
-	 */
-	private Long versionId;
 
 	// id:
 	public Long getId(){
@@ -219,10 +214,6 @@ public class CategoryItem extends CrudObject {
 		setToken("type", multirequestToken);
 	}
 
-	// versionId:
-	public Long getVersionId(){
-		return this.versionId;
-	}
 
 	public CategoryItem() {
 		super();
@@ -246,7 +237,6 @@ public class CategoryItem extends CrudObject {
 		startDateInSeconds = GsonParser.parseLong(jsonObject.get("startDateInSeconds"));
 		endDateInSeconds = GsonParser.parseLong(jsonObject.get("endDateInSeconds"));
 		type = GsonParser.parseString(jsonObject.get("type"));
-		versionId = GsonParser.parseLong(jsonObject.get("versionId"));
 
 	}
 

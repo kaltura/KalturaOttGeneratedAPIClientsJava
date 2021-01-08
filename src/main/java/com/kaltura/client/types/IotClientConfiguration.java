@@ -54,6 +54,7 @@ public class IotClientConfiguration extends ObjectBase {
 		CredentialsProvider.Tokenizer credentialsProvider();
 		CognitoUserPool.Tokenizer cognitoUserPool();
 		String json();
+		String topics();
 	}
 
 	/**
@@ -72,6 +73,10 @@ public class IotClientConfiguration extends ObjectBase {
 	 * json
 	 */
 	private String json;
+	/**
+	 * topics
+	 */
+	private String topics;
 
 	// announcementTopic:
 	public String getAnnouncementTopic(){
@@ -113,6 +118,18 @@ public class IotClientConfiguration extends ObjectBase {
 		setToken("json", multirequestToken);
 	}
 
+	// topics:
+	public String getTopics(){
+		return this.topics;
+	}
+	public void setTopics(String topics){
+		this.topics = topics;
+	}
+
+	public void topics(String multirequestToken){
+		setToken("topics", multirequestToken);
+	}
+
 
 	public IotClientConfiguration() {
 		super();
@@ -128,6 +145,7 @@ public class IotClientConfiguration extends ObjectBase {
 		credentialsProvider = GsonParser.parseObject(jsonObject.getAsJsonObject("credentialsProvider"), CredentialsProvider.class);
 		cognitoUserPool = GsonParser.parseObject(jsonObject.getAsJsonObject("cognitoUserPool"), CognitoUserPool.class);
 		json = GsonParser.parseString(jsonObject.get("json"));
+		topics = GsonParser.parseString(jsonObject.get("topics"));
 
 	}
 
@@ -138,6 +156,7 @@ public class IotClientConfiguration extends ObjectBase {
 		kparams.add("credentialsProvider", this.credentialsProvider);
 		kparams.add("cognitoUserPool", this.cognitoUserPool);
 		kparams.add("json", this.json);
+		kparams.add("topics", this.topics);
 		return kparams;
 	}
 
