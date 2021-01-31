@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ResetPasswordPartnerConfig;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,48 +39,49 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(OpcPartnerConfiguration.Tokenizer.class)
+public class OpcPartnerConfiguration extends PartnerConfiguration {
+	
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		ResetPasswordPartnerConfig.Tokenizer resetPassword();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Reset Password
+	 */
+	private ResetPasswordPartnerConfig resetPassword;
+
+	// resetPassword:
+	public ResetPasswordPartnerConfig getResetPassword(){
+		return this.resetPassword;
+	}
+	public void setResetPassword(ResetPasswordPartnerConfig resetPassword){
+		this.resetPassword = resetPassword;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public OpcPartnerConfiguration() {
+		super();
 	}
 
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+	public OpcPartnerConfiguration(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		resetPassword = GsonParser.parseObject(jsonObject.getAsJsonObject("resetPassword"), ResetPasswordPartnerConfig.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaOpcPartnerConfiguration");
+		kparams.add("resetPassword", this.resetPassword);
+		return kparams;
+	}
+
 }
+

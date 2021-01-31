@@ -62,6 +62,7 @@ public class CategoryItem extends CrudObject {
 		String startDateInSeconds();
 		String endDateInSeconds();
 		String type();
+		String virtualAssetId();
 	}
 
 	/**
@@ -113,6 +114,10 @@ public class CategoryItem extends CrudObject {
 	 * Category type
 	 */
 	private String type;
+	/**
+	 * Virtual asset id
+	 */
+	private Long virtualAssetId;
 
 	// id:
 	public Long getId(){
@@ -214,6 +219,10 @@ public class CategoryItem extends CrudObject {
 		setToken("type", multirequestToken);
 	}
 
+	// virtualAssetId:
+	public Long getVirtualAssetId(){
+		return this.virtualAssetId;
+	}
 
 	public CategoryItem() {
 		super();
@@ -237,6 +246,7 @@ public class CategoryItem extends CrudObject {
 		startDateInSeconds = GsonParser.parseLong(jsonObject.get("startDateInSeconds"));
 		endDateInSeconds = GsonParser.parseLong(jsonObject.get("endDateInSeconds"));
 		type = GsonParser.parseString(jsonObject.get("type"));
+		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
