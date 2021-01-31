@@ -105,15 +105,24 @@ public class LiveAsset extends MediaAsset {
 	 */
 	private String externalCdvrId;
 	/**
-	 * Is CDVR enabled for this asset
+	 * Is CDVR enabled for this asset              Please, note that value of this
+	  property is strictly connected with CDV-R setting on Partner level.             
+	  In order to enable CDV-R for KalturaLiveAsset, Partner CDV-R setting should be
+	  enabled.
 	 */
 	private Boolean enableCdvr;
 	/**
-	 * Is catch-up enabled for this asset
+	 * Is catch-up enabled for this asset              Please, note that value of this
+	  property is strictly connected with Catch Up setting on Partner level.          
+	     In order to enable Catch Up for KalturaLiveAsset, Partner Catch Up setting
+	  should be enabled.
 	 */
 	private Boolean enableCatchUp;
 	/**
-	 * Is start over enabled for this asset
+	 * Is start over enabled for this asset              Please, note that value of
+	  this property is strictly connected with Start Over setting on Partner level.   
+	            In order to enable Start Over for KalturaLiveAsset, Partner Start Over
+	  setting should be enabled.
 	 */
 	private Boolean enableStartOver;
 	/**
@@ -131,7 +140,10 @@ public class LiveAsset extends MediaAsset {
 	 */
 	private Boolean enableRecordingPlaybackNonEntitledChannel;
 	/**
-	 * Is trick-play enabled for this asset
+	 * Is trick-play enabled for this asset              Please, note that value of
+	  this property is strictly connected with Trick Play setting on Partner level.   
+	            In order to enable Trick Play for KalturaLiveAsset, Partner Trick Play
+	  setting should be enabled.
 	 */
 	private Boolean enableTrickPlay;
 	/**

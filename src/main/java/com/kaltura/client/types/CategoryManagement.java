@@ -29,9 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.CategoryManagement;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -41,67 +43,67 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Partner catalog configuration
+ * Category management
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CatalogPartnerConfig.Tokenizer.class)
-public class CatalogPartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(CategoryManagement.Tokenizer.class)
+public class CategoryManagement extends ObjectBase {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		String singleMultilingualMode();
-		CategoryManagement.Tokenizer categoryManagement();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String defaultTreeId();
+		RequestBuilder.MapTokenizer<LongValue.Tokenizer> deviceFamilyToCategoryTree();
 	}
 
 	/**
-	 * Single multilingual mode
+	 * Default CategoryVersion tree id
 	 */
-	private Boolean singleMultilingualMode;
+	private Long defaultTreeId;
 	/**
-	 * Category management
+	 * Device family to Category TreeId mapping
 	 */
-	private CategoryManagement categoryManagement;
+	private Map<String, LongValue> deviceFamilyToCategoryTree;
 
-	// singleMultilingualMode:
-	public Boolean getSingleMultilingualMode(){
-		return this.singleMultilingualMode;
+	// defaultTreeId:
+	public Long getDefaultTreeId(){
+		return this.defaultTreeId;
 	}
-	public void setSingleMultilingualMode(Boolean singleMultilingualMode){
-		this.singleMultilingualMode = singleMultilingualMode;
-	}
-
-	public void singleMultilingualMode(String multirequestToken){
-		setToken("singleMultilingualMode", multirequestToken);
+	public void setDefaultTreeId(Long defaultTreeId){
+		this.defaultTreeId = defaultTreeId;
 	}
 
-	// categoryManagement:
-	public CategoryManagement getCategoryManagement(){
-		return this.categoryManagement;
+	public void defaultTreeId(String multirequestToken){
+		setToken("defaultTreeId", multirequestToken);
 	}
-	public void setCategoryManagement(CategoryManagement categoryManagement){
-		this.categoryManagement = categoryManagement;
+
+	// deviceFamilyToCategoryTree:
+	public Map<String, LongValue> getDeviceFamilyToCategoryTree(){
+		return this.deviceFamilyToCategoryTree;
+	}
+	public void setDeviceFamilyToCategoryTree(Map<String, LongValue> deviceFamilyToCategoryTree){
+		this.deviceFamilyToCategoryTree = deviceFamilyToCategoryTree;
 	}
 
 
-	public CatalogPartnerConfig() {
+	public CategoryManagement() {
 		super();
 	}
 
-	public CatalogPartnerConfig(JsonObject jsonObject) throws APIException {
+	public CategoryManagement(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
-		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
+		defaultTreeId = GsonParser.parseLong(jsonObject.get("defaultTreeId"));
+		deviceFamilyToCategoryTree = GsonParser.parseMap(jsonObject.getAsJsonObject("deviceFamilyToCategoryTree"), LongValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCatalogPartnerConfig");
-		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
-		kparams.add("categoryManagement", this.categoryManagement);
+		kparams.add("objectType", "KalturaCategoryManagement");
+		kparams.add("defaultTreeId", this.defaultTreeId);
+		kparams.add("deviceFamilyToCategoryTree", this.deviceFamilyToCategoryTree);
 		return kparams;
 	}
 

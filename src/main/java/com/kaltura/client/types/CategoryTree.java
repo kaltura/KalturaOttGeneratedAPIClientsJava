@@ -62,6 +62,8 @@ public class CategoryTree extends ObjectBase {
 		String startDateInSeconds();
 		String endDateInSeconds();
 		String type();
+		String versionId();
+		String virtualAssetId();
 	}
 
 	/**
@@ -108,6 +110,14 @@ public class CategoryTree extends ObjectBase {
 	 * Category type
 	 */
 	private String type;
+	/**
+	 * Unique identifier for the category version
+	 */
+	private Long versionId;
+	/**
+	 * Virtual asset id
+	 */
+	private Long virtualAssetId;
 
 	// id:
 	public Long getId(){
@@ -201,6 +211,14 @@ public class CategoryTree extends ObjectBase {
 		setToken("type", multirequestToken);
 	}
 
+	// versionId:
+	public Long getVersionId(){
+		return this.versionId;
+	}
+	// virtualAssetId:
+	public Long getVirtualAssetId(){
+		return this.virtualAssetId;
+	}
 
 	public CategoryTree() {
 		super();
@@ -223,6 +241,8 @@ public class CategoryTree extends ObjectBase {
 		startDateInSeconds = GsonParser.parseLong(jsonObject.get("startDateInSeconds"));
 		endDateInSeconds = GsonParser.parseLong(jsonObject.get("endDateInSeconds"));
 		type = GsonParser.parseString(jsonObject.get("type"));
+		versionId = GsonParser.parseLong(jsonObject.get("versionId"));
+		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 

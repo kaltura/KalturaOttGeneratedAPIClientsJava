@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.CategoryManagement;
+import com.kaltura.client.types.ResetPasswordPartnerConfig;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,68 +40,46 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Partner catalog configuration
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CatalogPartnerConfig.Tokenizer.class)
-public class CatalogPartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(OpcPartnerConfiguration.Tokenizer.class)
+public class OpcPartnerConfiguration extends PartnerConfiguration {
 	
 	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		String singleMultilingualMode();
-		CategoryManagement.Tokenizer categoryManagement();
+		ResetPasswordPartnerConfig.Tokenizer resetPassword();
 	}
 
 	/**
-	 * Single multilingual mode
+	 * Reset Password
 	 */
-	private Boolean singleMultilingualMode;
-	/**
-	 * Category management
-	 */
-	private CategoryManagement categoryManagement;
+	private ResetPasswordPartnerConfig resetPassword;
 
-	// singleMultilingualMode:
-	public Boolean getSingleMultilingualMode(){
-		return this.singleMultilingualMode;
+	// resetPassword:
+	public ResetPasswordPartnerConfig getResetPassword(){
+		return this.resetPassword;
 	}
-	public void setSingleMultilingualMode(Boolean singleMultilingualMode){
-		this.singleMultilingualMode = singleMultilingualMode;
-	}
-
-	public void singleMultilingualMode(String multirequestToken){
-		setToken("singleMultilingualMode", multirequestToken);
-	}
-
-	// categoryManagement:
-	public CategoryManagement getCategoryManagement(){
-		return this.categoryManagement;
-	}
-	public void setCategoryManagement(CategoryManagement categoryManagement){
-		this.categoryManagement = categoryManagement;
+	public void setResetPassword(ResetPasswordPartnerConfig resetPassword){
+		this.resetPassword = resetPassword;
 	}
 
 
-	public CatalogPartnerConfig() {
+	public OpcPartnerConfiguration() {
 		super();
 	}
 
-	public CatalogPartnerConfig(JsonObject jsonObject) throws APIException {
+	public OpcPartnerConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
-		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
+		resetPassword = GsonParser.parseObject(jsonObject.getAsJsonObject("resetPassword"), ResetPasswordPartnerConfig.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCatalogPartnerConfig");
-		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
-		kparams.add("categoryManagement", this.categoryManagement);
+		kparams.add("objectType", "KalturaOpcPartnerConfiguration");
+		kparams.add("resetPassword", this.resetPassword);
 		return kparams;
 	}
 

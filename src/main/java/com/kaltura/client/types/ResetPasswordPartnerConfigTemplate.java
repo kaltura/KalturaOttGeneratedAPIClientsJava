@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.CategoryManagement;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,68 +40,88 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Partner catalog configuration
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CatalogPartnerConfig.Tokenizer.class)
-public class CatalogPartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(ResetPasswordPartnerConfigTemplate.Tokenizer.class)
+public class ResetPasswordPartnerConfigTemplate extends ObjectBase {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		String singleMultilingualMode();
-		CategoryManagement.Tokenizer categoryManagement();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String label();
+		String isDefault();
 	}
 
 	/**
-	 * Single multilingual mode
+	 * id
 	 */
-	private Boolean singleMultilingualMode;
+	private String id;
 	/**
-	 * Category management
+	 * label
 	 */
-	private CategoryManagement categoryManagement;
+	private String label;
+	/**
+	 * is Default
+	 */
+	private Boolean isDefault;
 
-	// singleMultilingualMode:
-	public Boolean getSingleMultilingualMode(){
-		return this.singleMultilingualMode;
+	// id:
+	public String getId(){
+		return this.id;
 	}
-	public void setSingleMultilingualMode(Boolean singleMultilingualMode){
-		this.singleMultilingualMode = singleMultilingualMode;
-	}
-
-	public void singleMultilingualMode(String multirequestToken){
-		setToken("singleMultilingualMode", multirequestToken);
-	}
-
-	// categoryManagement:
-	public CategoryManagement getCategoryManagement(){
-		return this.categoryManagement;
-	}
-	public void setCategoryManagement(CategoryManagement categoryManagement){
-		this.categoryManagement = categoryManagement;
+	public void setId(String id){
+		this.id = id;
 	}
 
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-	public CatalogPartnerConfig() {
+	// label:
+	public String getLabel(){
+		return this.label;
+	}
+	public void setLabel(String label){
+		this.label = label;
+	}
+
+	public void label(String multirequestToken){
+		setToken("label", multirequestToken);
+	}
+
+	// isDefault:
+	public Boolean getIsDefault(){
+		return this.isDefault;
+	}
+	public void setIsDefault(Boolean isDefault){
+		this.isDefault = isDefault;
+	}
+
+	public void isDefault(String multirequestToken){
+		setToken("isDefault", multirequestToken);
+	}
+
+
+	public ResetPasswordPartnerConfigTemplate() {
 		super();
 	}
 
-	public CatalogPartnerConfig(JsonObject jsonObject) throws APIException {
+	public ResetPasswordPartnerConfigTemplate(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
-		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
+		id = GsonParser.parseString(jsonObject.get("id"));
+		label = GsonParser.parseString(jsonObject.get("label"));
+		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCatalogPartnerConfig");
-		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
-		kparams.add("categoryManagement", this.categoryManagement);
+		kparams.add("objectType", "KalturaResetPasswordPartnerConfigTemplate");
+		kparams.add("id", this.id);
+		kparams.add("label", this.label);
+		kparams.add("isDefault", this.isDefault);
 		return kparams;
 	}
 

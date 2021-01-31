@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.CategoryManagement;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,68 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Partner catalog configuration
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CatalogPartnerConfig.Tokenizer.class)
-public class CatalogPartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(CategoryVersionFilter.Tokenizer.class)
+public class CategoryVersionFilter extends CrudFilter {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		String singleMultilingualMode();
-		CategoryManagement.Tokenizer categoryManagement();
-	}
-
-	/**
-	 * Single multilingual mode
-	 */
-	private Boolean singleMultilingualMode;
-	/**
-	 * Category management
-	 */
-	private CategoryManagement categoryManagement;
-
-	// singleMultilingualMode:
-	public Boolean getSingleMultilingualMode(){
-		return this.singleMultilingualMode;
-	}
-	public void setSingleMultilingualMode(Boolean singleMultilingualMode){
-		this.singleMultilingualMode = singleMultilingualMode;
-	}
-
-	public void singleMultilingualMode(String multirequestToken){
-		setToken("singleMultilingualMode", multirequestToken);
-	}
-
-	// categoryManagement:
-	public CategoryManagement getCategoryManagement(){
-		return this.categoryManagement;
-	}
-	public void setCategoryManagement(CategoryManagement categoryManagement){
-		this.categoryManagement = categoryManagement;
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 	}
 
 
-	public CatalogPartnerConfig() {
+
+	public CategoryVersionFilter() {
 		super();
 	}
 
-	public CatalogPartnerConfig(JsonObject jsonObject) throws APIException {
+	public CategoryVersionFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
-		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCatalogPartnerConfig");
-		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
-		kparams.add("categoryManagement", this.categoryManagement);
+		kparams.add("objectType", "KalturaCategoryVersionFilter");
 		return kparams;
 	}
 
