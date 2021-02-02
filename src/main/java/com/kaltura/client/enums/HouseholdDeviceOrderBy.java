@@ -34,9 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum HouseholdDeviceOrderBy implements EnumAsString {
-	NONE("NONE"),
-	CREATED_DATE_ASC("CREATED_DATE_ASC"),
-	CREATED_DATE_DESC("CREATED_DATE_DESC");
+	NONE("NONE");
 
 	private String value;
 

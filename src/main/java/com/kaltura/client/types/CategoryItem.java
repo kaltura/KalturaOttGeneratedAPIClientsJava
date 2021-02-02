@@ -61,9 +61,6 @@ public class CategoryItem extends CrudObject {
 		String isActive();
 		String startDateInSeconds();
 		String endDateInSeconds();
-		String type();
-		String versionId();
-		String virtualAssetId();
 	}
 
 	/**
@@ -111,18 +108,6 @@ public class CategoryItem extends CrudObject {
 	 * End date in seconds
 	 */
 	private Long endDateInSeconds;
-	/**
-	 * Category type
-	 */
-	private String type;
-	/**
-	 * Unique identifier for the category version
-	 */
-	private Long versionId;
-	/**
-	 * Virtual asset id
-	 */
-	private Long virtualAssetId;
 
 	// id:
 	public Long getId(){
@@ -212,26 +197,6 @@ public class CategoryItem extends CrudObject {
 		setToken("endDateInSeconds", multirequestToken);
 	}
 
-	// type:
-	public String getType(){
-		return this.type;
-	}
-	public void setType(String type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
-	// versionId:
-	public Long getVersionId(){
-		return this.versionId;
-	}
-	// virtualAssetId:
-	public Long getVirtualAssetId(){
-		return this.virtualAssetId;
-	}
 
 	public CategoryItem() {
 		super();
@@ -254,9 +219,6 @@ public class CategoryItem extends CrudObject {
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 		startDateInSeconds = GsonParser.parseLong(jsonObject.get("startDateInSeconds"));
 		endDateInSeconds = GsonParser.parseLong(jsonObject.get("endDateInSeconds"));
-		type = GsonParser.parseString(jsonObject.get("type"));
-		versionId = GsonParser.parseLong(jsonObject.get("versionId"));
-		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
@@ -270,7 +232,6 @@ public class CategoryItem extends CrudObject {
 		kparams.add("isActive", this.isActive);
 		kparams.add("startDateInSeconds", this.startDateInSeconds);
 		kparams.add("endDateInSeconds", this.endDateInSeconds);
-		kparams.add("type", this.type);
 		return kparams;
 	}
 
