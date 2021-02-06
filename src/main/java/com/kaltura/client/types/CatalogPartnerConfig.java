@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.CategoryManagement;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -49,17 +48,12 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 	
 	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
 		String singleMultilingualMode();
-		CategoryManagement.Tokenizer categoryManagement();
 	}
 
 	/**
 	 * Single multilingual mode
 	 */
 	private Boolean singleMultilingualMode;
-	/**
-	 * Category management
-	 */
-	private CategoryManagement categoryManagement;
 
 	// singleMultilingualMode:
 	public Boolean getSingleMultilingualMode(){
@@ -71,14 +65,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 
 	public void singleMultilingualMode(String multirequestToken){
 		setToken("singleMultilingualMode", multirequestToken);
-	}
-
-	// categoryManagement:
-	public CategoryManagement getCategoryManagement(){
-		return this.categoryManagement;
-	}
-	public void setCategoryManagement(CategoryManagement categoryManagement){
-		this.categoryManagement = categoryManagement;
 	}
 
 
@@ -93,7 +79,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 
 		// set members values:
 		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
-		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
 
 	}
 
@@ -101,7 +86,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCatalogPartnerConfig");
 		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
-		kparams.add("categoryManagement", this.categoryManagement);
 		return kparams;
 	}
 
