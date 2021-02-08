@@ -96,30 +96,4 @@ public class CategoryTreeService {
     public static GetCategoryTreeBuilder get(long categoryItemId, boolean filter)  {
 		return new GetCategoryTreeBuilder(categoryItemId, filter);
 	}
-	
-	public static class GetByVersionCategoryTreeBuilder extends RequestBuilder<CategoryTree, CategoryTree.Tokenizer, GetByVersionCategoryTreeBuilder> {
-		
-		public GetByVersionCategoryTreeBuilder(long versionId) {
-			super(CategoryTree.class, "categorytree", "getByVersion");
-			params.add("versionId", versionId);
-		}
-		
-		public void versionId(String multirequestToken) {
-			params.add("versionId", multirequestToken);
-		}
-	}
-
-	public static GetByVersionCategoryTreeBuilder getByVersion()  {
-		return getByVersion(Long.MIN_VALUE);
-	}
-
-	/**
-	 * Retrieve default category tree of deviceFamilyId by KS or specific one if
-	  versionId is set.
-	 * 
-	 * @param versionId Category version id of tree
-	 */
-    public static GetByVersionCategoryTreeBuilder getByVersion(long versionId)  {
-		return new GetByVersionCategoryTreeBuilder(versionId);
-	}
 }
