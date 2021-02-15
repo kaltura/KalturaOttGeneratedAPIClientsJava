@@ -39,72 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Permissions filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PermissionFilter.Tokenizer.class)
-public class PermissionFilter extends BasePermissionFilter {
+@MultiRequestBuilder.Tokenizer(PermissionByIdInFilter.Tokenizer.class)
+public class PermissionByIdInFilter extends BasePermissionFilter {
 	
 	public interface Tokenizer extends BasePermissionFilter.Tokenizer {
-		String currentUserPermissionsContains();
-		String roleIdIn();
+		String idIn();
 	}
 
 	/**
-	 * Indicates whether the results should be filtered by userId using the current
+	 * Category item identifiers
 	 */
-	private Boolean currentUserPermissionsContains;
-	/**
-	 * Return permissions by role ID
-	 */
-	private Long roleIdIn;
+	private String idIn;
 
-	// currentUserPermissionsContains:
-	public Boolean getCurrentUserPermissionsContains(){
-		return this.currentUserPermissionsContains;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
 	}
-	public void setCurrentUserPermissionsContains(Boolean currentUserPermissionsContains){
-		this.currentUserPermissionsContains = currentUserPermissionsContains;
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void currentUserPermissionsContains(String multirequestToken){
-		setToken("currentUserPermissionsContains", multirequestToken);
-	}
-
-	// roleIdIn:
-	public Long getRoleIdIn(){
-		return this.roleIdIn;
-	}
-	public void setRoleIdIn(Long roleIdIn){
-		this.roleIdIn = roleIdIn;
-	}
-
-	public void roleIdIn(String multirequestToken){
-		setToken("roleIdIn", multirequestToken);
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
 
-	public PermissionFilter() {
+	public PermissionByIdInFilter() {
 		super();
 	}
 
-	public PermissionFilter(JsonObject jsonObject) throws APIException {
+	public PermissionByIdInFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		currentUserPermissionsContains = GsonParser.parseBoolean(jsonObject.get("currentUserPermissionsContains"));
-		roleIdIn = GsonParser.parseLong(jsonObject.get("roleIdIn"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPermissionFilter");
-		kparams.add("currentUserPermissionsContains", this.currentUserPermissionsContains);
-		kparams.add("roleIdIn", this.roleIdIn);
+		kparams.add("objectType", "KalturaPermissionByIdInFilter");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 

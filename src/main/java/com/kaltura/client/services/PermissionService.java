@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.BasePermissionFilter;
 import com.kaltura.client.types.Permission;
-import com.kaltura.client.types.PermissionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -123,7 +123,7 @@ public class PermissionService {
 	
 	public static class ListPermissionBuilder extends ListResponseRequestBuilder<Permission, Permission.Tokenizer, ListPermissionBuilder> {
 		
-		public ListPermissionBuilder(PermissionFilter filter) {
+		public ListPermissionBuilder(BasePermissionFilter filter) {
 			super(Permission.class, "permission", "list");
 			params.add("filter", filter);
 		}
@@ -139,7 +139,7 @@ public class PermissionService {
 	 * 
 	 * @param filter Filter for permissions
 	 */
-    public static ListPermissionBuilder list(PermissionFilter filter)  {
+    public static ListPermissionBuilder list(BasePermissionFilter filter)  {
 		return new ListPermissionBuilder(filter);
 	}
 	
@@ -168,5 +168,28 @@ public class PermissionService {
 	 */
     public static RemovePermissionItemPermissionBuilder removePermissionItem(long permissionId, long permissionItemId)  {
 		return new RemovePermissionItemPermissionBuilder(permissionId, permissionItemId);
+	}
+	
+	public static class UpdatePermissionBuilder extends RequestBuilder<Permission, Permission.Tokenizer, UpdatePermissionBuilder> {
+		
+		public UpdatePermissionBuilder(long id, Permission permission) {
+			super(Permission.class, "permission", "update");
+			params.add("id", id);
+			params.add("permission", permission);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update an existing permission.
+	 * 
+	 * @param id Permission  Identifier
+	 * @param permission Permission object
+	 */
+    public static UpdatePermissionBuilder update(long id, Permission permission)  {
+		return new UpdatePermissionBuilder(id, permission);
 	}
 }
