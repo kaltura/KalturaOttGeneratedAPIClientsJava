@@ -48,8 +48,7 @@ public enum PurchaseStatus implements EnumAsString {
 	USER_SUSPENDED("user_suspended"),
 	NOT_FOR_PURCHASE("not_for_purchase"),
 	INVALID_CURRENCY("invalid_currency"),
-	CURRENCY_NOT_DEFINED_ON_PRICE_CODE("currency_not_defined_on_price_code"),
-	PENDING_ENTITLEMENT("pending_entitlement");
+	CURRENCY_NOT_DEFINED_ON_PRICE_CODE("currency_not_defined_on_price_code");
 
 	private String value;
 

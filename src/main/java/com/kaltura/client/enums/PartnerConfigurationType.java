@@ -42,10 +42,7 @@ public enum PartnerConfigurationType implements EnumAsString {
 	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
 	COMMERCE("Commerce"),
 	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc");
+	PAYMENT("Payment");
 
 	private String value;
 

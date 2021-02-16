@@ -59,33 +59,6 @@ public class PermissionService {
 		return new AddPermissionBuilder(permission);
 	}
 	
-	public static class AddPermissionItemPermissionBuilder extends NullRequestBuilder {
-		
-		public AddPermissionItemPermissionBuilder(long permissionId, long permissionItemId) {
-			super("permission", "addPermissionItem");
-			params.add("permissionId", permissionId);
-			params.add("permissionItemId", permissionItemId);
-		}
-		
-		public void permissionId(String multirequestToken) {
-			params.add("permissionId", multirequestToken);
-		}
-		
-		public void permissionItemId(String multirequestToken) {
-			params.add("permissionItemId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Adds permission item to permission
-	 * 
-	 * @param permissionId Permission ID to add to
-	 * @param permissionItemId Permission item ID to add
-	 */
-    public static AddPermissionItemPermissionBuilder addPermissionItem(long permissionId, long permissionItemId)  {
-		return new AddPermissionItemPermissionBuilder(permissionId, permissionItemId);
-	}
-	
 	public static class DeletePermissionBuilder extends NullRequestBuilder {
 		
 		public DeletePermissionBuilder(long id) {
@@ -141,32 +114,5 @@ public class PermissionService {
 	 */
     public static ListPermissionBuilder list(PermissionFilter filter)  {
 		return new ListPermissionBuilder(filter);
-	}
-	
-	public static class RemovePermissionItemPermissionBuilder extends NullRequestBuilder {
-		
-		public RemovePermissionItemPermissionBuilder(long permissionId, long permissionItemId) {
-			super("permission", "removePermissionItem");
-			params.add("permissionId", permissionId);
-			params.add("permissionItemId", permissionItemId);
-		}
-		
-		public void permissionId(String multirequestToken) {
-			params.add("permissionId", multirequestToken);
-		}
-		
-		public void permissionItemId(String multirequestToken) {
-			params.add("permissionItemId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Removes permission item from permission
-	 * 
-	 * @param permissionId Permission ID to remove from
-	 * @param permissionItemId Permission item ID to remove
-	 */
-    public static RemovePermissionItemPermissionBuilder removePermissionItem(long permissionId, long permissionItemId)  {
-		return new RemovePermissionItemPermissionBuilder(permissionId, permissionItemId);
 	}
 }
