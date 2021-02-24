@@ -40,9 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Epg.Tokenizer.class)
-public class Epg extends Asset {
+public class Epg extends ProgramAsset {
 	
-	public interface Tokenizer extends Asset.Tokenizer {
+	public interface Tokenizer extends ProgramAsset.Tokenizer {
 	}
 
 
