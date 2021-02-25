@@ -75,7 +75,7 @@ public class Permission extends ObjectBase {
 	 */
 	private PermissionType type;
 	/**
-	 * Comma separated associated permission items IDs
+	 * Comma separated assosiated permission items IDs
 	 */
 	private String permissionItemsIds;
 
@@ -127,14 +127,6 @@ public class Permission extends ObjectBase {
 	public String getPermissionItemsIds(){
 		return this.permissionItemsIds;
 	}
-	public void setPermissionItemsIds(String permissionItemsIds){
-		this.permissionItemsIds = permissionItemsIds;
-	}
-
-	public void permissionItemsIds(String multirequestToken){
-		setToken("permissionItemsIds", multirequestToken);
-	}
-
 
 	public Permission() {
 		super();
@@ -161,7 +153,6 @@ public class Permission extends ObjectBase {
 		kparams.add("name", this.name);
 		kparams.add("friendlyName", this.friendlyName);
 		kparams.add("type", this.type);
-		kparams.add("permissionItemsIds", this.permissionItemsIds);
 		return kparams;
 	}
 
