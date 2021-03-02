@@ -50,6 +50,7 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
 		String singleMultilingualMode();
 		CategoryManagement.Tokenizer categoryManagement();
+		String epgMultilingualFallbackSupport();
 	}
 
 	/**
@@ -60,6 +61,10 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 	 * Category management
 	 */
 	private CategoryManagement categoryManagement;
+	/**
+	 * EPG Multilingual Fallback Support
+	 */
+	private Boolean epgMultilingualFallbackSupport;
 
 	// singleMultilingualMode:
 	public Boolean getSingleMultilingualMode(){
@@ -81,6 +86,18 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		this.categoryManagement = categoryManagement;
 	}
 
+	// epgMultilingualFallbackSupport:
+	public Boolean getEpgMultilingualFallbackSupport(){
+		return this.epgMultilingualFallbackSupport;
+	}
+	public void setEpgMultilingualFallbackSupport(Boolean epgMultilingualFallbackSupport){
+		this.epgMultilingualFallbackSupport = epgMultilingualFallbackSupport;
+	}
+
+	public void epgMultilingualFallbackSupport(String multirequestToken){
+		setToken("epgMultilingualFallbackSupport", multirequestToken);
+	}
+
 
 	public CatalogPartnerConfig() {
 		super();
@@ -94,6 +111,7 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		// set members values:
 		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
 		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
+		epgMultilingualFallbackSupport = GsonParser.parseBoolean(jsonObject.get("epgMultilingualFallbackSupport"));
 
 	}
 
@@ -102,6 +120,7 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		kparams.add("objectType", "KalturaCatalogPartnerConfig");
 		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
 		kparams.add("categoryManagement", this.categoryManagement);
+		kparams.add("epgMultilingualFallbackSupport", this.epgMultilingualFallbackSupport);
 		return kparams;
 	}
 
