@@ -35,6 +35,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -63,6 +64,7 @@ public class Meta extends ObjectBase {
 		String parentId();
 		String createDate();
 		String updateDate();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 	}
 
 	/**
@@ -113,6 +115,10 @@ public class Meta extends ObjectBase {
 	 * Specifies when was the meta last updated. Date and time represented as epoch.
 	 */
 	private Long updateDate;
+	/**
+	 * Dynamic data
+	 */
+	private Map<String, StringValue> dynamicData;
 
 	// id:
 	public String getId(){
@@ -222,6 +228,14 @@ public class Meta extends ObjectBase {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
+	// dynamicData:
+	public Map<String, StringValue> getDynamicData(){
+		return this.dynamicData;
+	}
+	public void setDynamicData(Map<String, StringValue> dynamicData){
+		this.dynamicData = dynamicData;
+	}
+
 
 	public Meta() {
 		super();
@@ -245,6 +259,7 @@ public class Meta extends ObjectBase {
 		parentId = GsonParser.parseString(jsonObject.get("parentId"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 
 	}
 
@@ -259,6 +274,7 @@ public class Meta extends ObjectBase {
 		kparams.add("helpText", this.helpText);
 		kparams.add("features", this.features);
 		kparams.add("parentId", this.parentId);
+		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
 	}
 

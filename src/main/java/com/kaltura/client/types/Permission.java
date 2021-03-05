@@ -71,7 +71,7 @@ public class Permission extends ObjectBase {
 	 */
 	private String dependsOnPermissionNames;
 	/**
-	 * Comma separated permissions names from type SPECIAL_FEATURE
+	 * Permission type
 	 */
 	private PermissionType type;
 	/**
