@@ -33,6 +33,8 @@ import com.kaltura.client.enums.DeviceStatus;
 import com.kaltura.client.types.CustomDrmPlaybackPluginData;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -59,6 +61,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		CustomDrmPlaybackPluginData.Tokenizer drm();
 		String externalId();
 		String macAddress();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 		String model();
 		String manufacturer();
 		String manufacturerId();
@@ -105,6 +108,10 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	 * mac address
 	 */
 	private String macAddress;
+	/**
+	 * Dynamic data
+	 */
+	private Map<String, StringValue> dynamicData;
 	/**
 	 * model
 	 */
@@ -218,6 +225,14 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		setToken("macAddress", multirequestToken);
 	}
 
+	// dynamicData:
+	public Map<String, StringValue> getDynamicData(){
+		return this.dynamicData;
+	}
+	public void setDynamicData(Map<String, StringValue> dynamicData){
+		this.dynamicData = dynamicData;
+	}
+
 	// model:
 	public String getModel(){
 		return this.model;
@@ -271,6 +286,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		drm = GsonParser.parseObject(jsonObject.getAsJsonObject("drm"), CustomDrmPlaybackPluginData.class);
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		macAddress = GsonParser.parseString(jsonObject.get("macAddress"));
+		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 		model = GsonParser.parseString(jsonObject.get("model"));
 		manufacturer = GsonParser.parseString(jsonObject.get("manufacturer"));
 		manufacturerId = GsonParser.parseLong(jsonObject.get("manufacturerId"));
@@ -288,6 +304,7 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		kparams.add("activatedOn", this.activatedOn);
 		kparams.add("externalId", this.externalId);
 		kparams.add("macAddress", this.macAddress);
+		kparams.add("dynamicData", this.dynamicData);
 		kparams.add("model", this.model);
 		kparams.add("manufacturer", this.manufacturer);
 		return kparams;
