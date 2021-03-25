@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -34,9 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum HouseholdDeviceOrderBy implements EnumAsString {
-	NONE("NONE"),
-	CREATED_DATE_ASC("CREATED_DATE_ASC"),
-	CREATED_DATE_DESC("CREATED_DATE_DESC");
+	NONE("NONE");
 
 	private String value;
 

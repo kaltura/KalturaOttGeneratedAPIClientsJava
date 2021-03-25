@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -51,7 +51,6 @@ public class Permission extends ObjectBase {
 		String friendlyName();
 		String dependsOnPermissionNames();
 		String type();
-		String permissionItemsIds();
 	}
 
 	/**
@@ -71,13 +70,9 @@ public class Permission extends ObjectBase {
 	 */
 	private String dependsOnPermissionNames;
 	/**
-	 * Permission type
+	 * Comma separated permissions names from type SPECIAL_FEATURE
 	 */
 	private PermissionType type;
-	/**
-	 * Comma separated associated permission items IDs
-	 */
-	private String permissionItemsIds;
 
 	// id:
 	public Long getId(){
@@ -123,18 +118,6 @@ public class Permission extends ObjectBase {
 		setToken("type", multirequestToken);
 	}
 
-	// permissionItemsIds:
-	public String getPermissionItemsIds(){
-		return this.permissionItemsIds;
-	}
-	public void setPermissionItemsIds(String permissionItemsIds){
-		this.permissionItemsIds = permissionItemsIds;
-	}
-
-	public void permissionItemsIds(String multirequestToken){
-		setToken("permissionItemsIds", multirequestToken);
-	}
-
 
 	public Permission() {
 		super();
@@ -151,7 +134,6 @@ public class Permission extends ObjectBase {
 		friendlyName = GsonParser.parseString(jsonObject.get("friendlyName"));
 		dependsOnPermissionNames = GsonParser.parseString(jsonObject.get("dependsOnPermissionNames"));
 		type = PermissionType.get(GsonParser.parseString(jsonObject.get("type")));
-		permissionItemsIds = GsonParser.parseString(jsonObject.get("permissionItemsIds"));
 
 	}
 
@@ -161,7 +143,6 @@ public class Permission extends ObjectBase {
 		kparams.add("name", this.name);
 		kparams.add("friendlyName", this.friendlyName);
 		kparams.add("type", this.type);
-		kparams.add("permissionItemsIds", this.permissionItemsIds);
 		return kparams;
 	}
 

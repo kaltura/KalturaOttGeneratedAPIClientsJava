@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -51,7 +51,6 @@ public class OTTUserFilter extends Filter {
 		String externalIdEqual();
 		String idIn();
 		String roleIdsIn();
-		String emailEqual();
 	}
 
 	/**
@@ -70,10 +69,6 @@ public class OTTUserFilter extends Filter {
 	 * Comma separated list of role Ids.
 	 */
 	private String roleIdsIn;
-	/**
-	 * User email
-	 */
-	private String emailEqual;
 
 	// usernameEqual:
 	public String getUsernameEqual(){
@@ -123,18 +118,6 @@ public class OTTUserFilter extends Filter {
 		setToken("roleIdsIn", multirequestToken);
 	}
 
-	// emailEqual:
-	public String getEmailEqual(){
-		return this.emailEqual;
-	}
-	public void setEmailEqual(String emailEqual){
-		this.emailEqual = emailEqual;
-	}
-
-	public void emailEqual(String multirequestToken){
-		setToken("emailEqual", multirequestToken);
-	}
-
 
 	public OTTUserFilter() {
 		super();
@@ -150,7 +133,6 @@ public class OTTUserFilter extends Filter {
 		externalIdEqual = GsonParser.parseString(jsonObject.get("externalIdEqual"));
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 		roleIdsIn = GsonParser.parseString(jsonObject.get("roleIdsIn"));
-		emailEqual = GsonParser.parseString(jsonObject.get("emailEqual"));
 
 	}
 
@@ -161,7 +143,6 @@ public class OTTUserFilter extends Filter {
 		kparams.add("externalIdEqual", this.externalIdEqual);
 		kparams.add("idIn", this.idIn);
 		kparams.add("roleIdsIn", this.roleIdsIn);
-		kparams.add("emailEqual", this.emailEqual);
 		return kparams;
 	}
 

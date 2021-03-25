@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.UserRoleProfile;
-import com.kaltura.client.enums.UserRoleType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -51,8 +49,6 @@ public class UserRole extends ObjectBase {
 		String name();
 		String permissionNames();
 		String excludedPermissionNames();
-		String type();
-		String profile();
 	}
 
 	/**
@@ -71,14 +67,6 @@ public class UserRole extends ObjectBase {
 	 * permissions associated with the user role in is_exclueded = true
 	 */
 	private String excludedPermissionNames;
-	/**
-	 * Role type
-	 */
-	private UserRoleType type;
-	/**
-	 * Role profile
-	 */
-	private UserRoleProfile profile;
 
 	// id:
 	public Long getId(){
@@ -120,22 +108,6 @@ public class UserRole extends ObjectBase {
 		setToken("excludedPermissionNames", multirequestToken);
 	}
 
-	// type:
-	public UserRoleType getType(){
-		return this.type;
-	}
-	// profile:
-	public UserRoleProfile getProfile(){
-		return this.profile;
-	}
-	public void setProfile(UserRoleProfile profile){
-		this.profile = profile;
-	}
-
-	public void profile(String multirequestToken){
-		setToken("profile", multirequestToken);
-	}
-
 
 	public UserRole() {
 		super();
@@ -151,8 +123,6 @@ public class UserRole extends ObjectBase {
 		name = GsonParser.parseString(jsonObject.get("name"));
 		permissionNames = GsonParser.parseString(jsonObject.get("permissionNames"));
 		excludedPermissionNames = GsonParser.parseString(jsonObject.get("excludedPermissionNames"));
-		type = UserRoleType.get(GsonParser.parseString(jsonObject.get("type")));
-		profile = UserRoleProfile.get(GsonParser.parseString(jsonObject.get("profile")));
 
 	}
 
@@ -162,7 +132,6 @@ public class UserRole extends ObjectBase {
 		kparams.add("name", this.name);
 		kparams.add("permissionNames", this.permissionNames);
 		kparams.add("excludedPermissionNames", this.excludedPermissionNames);
-		kparams.add("profile", this.profile);
 		return kparams;
 	}
 

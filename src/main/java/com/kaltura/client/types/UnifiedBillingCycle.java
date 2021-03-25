@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -49,7 +49,6 @@ public class UnifiedBillingCycle extends ObjectBase {
 		String name();
 		Duration.Tokenizer duration();
 		String paymentGatewayId();
-		String ignorePartialBilling();
 	}
 
 	/**
@@ -64,10 +63,6 @@ public class UnifiedBillingCycle extends ObjectBase {
 	 * Payment Gateway Id
 	 */
 	private Integer paymentGatewayId;
-	/**
-	 * Define if partial billing shall be calculated or not
-	 */
-	private Boolean ignorePartialBilling;
 
 	// name:
 	public String getName(){
@@ -101,18 +96,6 @@ public class UnifiedBillingCycle extends ObjectBase {
 		setToken("paymentGatewayId", multirequestToken);
 	}
 
-	// ignorePartialBilling:
-	public Boolean getIgnorePartialBilling(){
-		return this.ignorePartialBilling;
-	}
-	public void setIgnorePartialBilling(Boolean ignorePartialBilling){
-		this.ignorePartialBilling = ignorePartialBilling;
-	}
-
-	public void ignorePartialBilling(String multirequestToken){
-		setToken("ignorePartialBilling", multirequestToken);
-	}
-
 
 	public UnifiedBillingCycle() {
 		super();
@@ -127,7 +110,6 @@ public class UnifiedBillingCycle extends ObjectBase {
 		name = GsonParser.parseString(jsonObject.get("name"));
 		duration = GsonParser.parseObject(jsonObject.getAsJsonObject("duration"), Duration.class);
 		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
-		ignorePartialBilling = GsonParser.parseBoolean(jsonObject.get("ignorePartialBilling"));
 
 	}
 
@@ -137,7 +119,6 @@ public class UnifiedBillingCycle extends ObjectBase {
 		kparams.add("name", this.name);
 		kparams.add("duration", this.duration);
 		kparams.add("paymentGatewayId", this.paymentGatewayId);
-		kparams.add("ignorePartialBilling", this.ignorePartialBilling);
 		return kparams;
 	}
 

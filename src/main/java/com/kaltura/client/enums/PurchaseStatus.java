@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -48,8 +48,7 @@ public enum PurchaseStatus implements EnumAsString {
 	USER_SUSPENDED("user_suspended"),
 	NOT_FOR_PURCHASE("not_for_purchase"),
 	INVALID_CURRENCY("invalid_currency"),
-	CURRENCY_NOT_DEFINED_ON_PRICE_CODE("currency_not_defined_on_price_code"),
-	PENDING_ENTITLEMENT("pending_entitlement");
+	CURRENCY_NOT_DEFINED_ON_PRICE_CODE("currency_not_defined_on_price_code");
 
 	private String value;
 

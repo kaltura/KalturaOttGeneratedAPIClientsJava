@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -33,8 +33,6 @@ import com.kaltura.client.enums.ObjectVirtualAssetInfoType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -51,7 +49,6 @@ public class ObjectVirtualAssetInfo extends ObjectBase {
 		String assetStructId();
 		String metaId();
 		String type();
-		RequestBuilder.MapTokenizer<LongValue.Tokenizer> extendedTypes();
 	}
 
 	/**
@@ -66,10 +63,6 @@ public class ObjectVirtualAssetInfo extends ObjectBase {
 	 * Object virtual asset info type
 	 */
 	private ObjectVirtualAssetInfoType type;
-	/**
-	 * Extended types mapping
-	 */
-	private Map<String, LongValue> extendedTypes;
 
 	// assetStructId:
 	public Integer getAssetStructId(){
@@ -107,14 +100,6 @@ public class ObjectVirtualAssetInfo extends ObjectBase {
 		setToken("type", multirequestToken);
 	}
 
-	// extendedTypes:
-	public Map<String, LongValue> getExtendedTypes(){
-		return this.extendedTypes;
-	}
-	public void setExtendedTypes(Map<String, LongValue> extendedTypes){
-		this.extendedTypes = extendedTypes;
-	}
-
 
 	public ObjectVirtualAssetInfo() {
 		super();
@@ -129,7 +114,6 @@ public class ObjectVirtualAssetInfo extends ObjectBase {
 		assetStructId = GsonParser.parseInt(jsonObject.get("assetStructId"));
 		metaId = GsonParser.parseInt(jsonObject.get("metaId"));
 		type = ObjectVirtualAssetInfoType.get(GsonParser.parseString(jsonObject.get("type")));
-		extendedTypes = GsonParser.parseMap(jsonObject.getAsJsonObject("extendedTypes"), LongValue.class);
 
 	}
 
@@ -139,7 +123,6 @@ public class ObjectVirtualAssetInfo extends ObjectBase {
 		kparams.add("assetStructId", this.assetStructId);
 		kparams.add("metaId", this.metaId);
 		kparams.add("type", this.type);
-		kparams.add("extendedTypes", this.extendedTypes);
 		return kparams;
 	}
 

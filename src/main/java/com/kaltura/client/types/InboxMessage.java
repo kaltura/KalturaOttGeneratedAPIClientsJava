@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -53,7 +53,6 @@ public class InboxMessage extends ObjectBase {
 		String type();
 		String createdAt();
 		String url();
-		String campaignId();
 	}
 
 	/**
@@ -80,10 +79,6 @@ public class InboxMessage extends ObjectBase {
 	 * url
 	 */
 	private String url;
-	/**
-	 * campaignId
-	 */
-	private Long campaignId;
 
 	// id:
 	public String getId(){
@@ -133,10 +128,6 @@ public class InboxMessage extends ObjectBase {
 		setToken("url", multirequestToken);
 	}
 
-	// campaignId:
-	public Long getCampaignId(){
-		return this.campaignId;
-	}
 
 	public InboxMessage() {
 		super();
@@ -154,7 +145,6 @@ public class InboxMessage extends ObjectBase {
 		type = InboxMessageType.get(GsonParser.parseString(jsonObject.get("type")));
 		createdAt = GsonParser.parseLong(jsonObject.get("createdAt"));
 		url = GsonParser.parseString(jsonObject.get("url"));
-		campaignId = GsonParser.parseLong(jsonObject.get("campaignId"));
 
 	}
 

@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -61,9 +61,6 @@ public class CategoryTree extends ObjectBase {
 		String isActive();
 		String startDateInSeconds();
 		String endDateInSeconds();
-		String type();
-		String versionId();
-		String virtualAssetId();
 	}
 
 	/**
@@ -106,18 +103,6 @@ public class CategoryTree extends ObjectBase {
 	 * End date in seconds
 	 */
 	private Long endDateInSeconds;
-	/**
-	 * Category type
-	 */
-	private String type;
-	/**
-	 * Unique identifier for the category version
-	 */
-	private Long versionId;
-	/**
-	 * Virtual asset id
-	 */
-	private Long virtualAssetId;
 
 	// id:
 	public Long getId(){
@@ -199,26 +184,6 @@ public class CategoryTree extends ObjectBase {
 		setToken("endDateInSeconds", multirequestToken);
 	}
 
-	// type:
-	public String getType(){
-		return this.type;
-	}
-	public void setType(String type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
-	// versionId:
-	public Long getVersionId(){
-		return this.versionId;
-	}
-	// virtualAssetId:
-	public Long getVirtualAssetId(){
-		return this.virtualAssetId;
-	}
 
 	public CategoryTree() {
 		super();
@@ -240,9 +205,6 @@ public class CategoryTree extends ObjectBase {
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 		startDateInSeconds = GsonParser.parseLong(jsonObject.get("startDateInSeconds"));
 		endDateInSeconds = GsonParser.parseLong(jsonObject.get("endDateInSeconds"));
-		type = GsonParser.parseString(jsonObject.get("type"));
-		versionId = GsonParser.parseLong(jsonObject.get("versionId"));
-		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
@@ -256,7 +218,6 @@ public class CategoryTree extends ObjectBase {
 		kparams.add("isActive", this.isActive);
 		kparams.add("startDateInSeconds", this.startDateInSeconds);
 		kparams.add("endDateInSeconds", this.endDateInSeconds);
-		kparams.add("type", this.type);
 		return kparams;
 	}
 

@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -25,11 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -37,32 +33,42 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum LogLevel implements EnumAsString {
+	TRACE("TRACE"),
+	DEBUG("DEBUG"),
+	INFO("INFO"),
+	WARN("WARN"),
+	ERROR("ERROR"),
+	ALL("ALL");
 
-/**
- * Campaign entitlement discount details
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CampaignEntitlementDiscountDetails.Tokenizer.class)
-public class CampaignEntitlementDiscountDetails extends EntitlementDiscountDetailsIdentifier {
-	
-	public interface Tokenizer extends EntitlementDiscountDetailsIdentifier.Tokenizer {
+	private String value;
+
+	LogLevel(String value) {
+		this.value = value;
 	}
 
-
-
-	public CampaignEntitlementDiscountDetails() {
-		super();
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public CampaignEntitlementDiscountDetails(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCampaignEntitlementDiscountDetails");
-		return kparams;
-	}
-
+	public static LogLevel get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over LogLevel defined values and compare the inner value with the given one:
+		for(LogLevel item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return LogLevel.values().length > 0 ? LogLevel.values()[0]: null;
+   }
 }
-

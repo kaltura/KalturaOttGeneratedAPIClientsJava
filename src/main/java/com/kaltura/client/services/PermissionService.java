@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -27,8 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.BasePermissionFilter;
 import com.kaltura.client.types.Permission;
+import com.kaltura.client.types.PermissionFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -57,33 +57,6 @@ public class PermissionService {
 	 */
     public static AddPermissionBuilder add(Permission permission)  {
 		return new AddPermissionBuilder(permission);
-	}
-	
-	public static class AddPermissionItemPermissionBuilder extends NullRequestBuilder {
-		
-		public AddPermissionItemPermissionBuilder(long permissionId, long permissionItemId) {
-			super("permission", "addPermissionItem");
-			params.add("permissionId", permissionId);
-			params.add("permissionItemId", permissionItemId);
-		}
-		
-		public void permissionId(String multirequestToken) {
-			params.add("permissionId", multirequestToken);
-		}
-		
-		public void permissionItemId(String multirequestToken) {
-			params.add("permissionItemId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Adds permission item to permission
-	 * 
-	 * @param permissionId Permission ID to add to
-	 * @param permissionItemId Permission item ID to add
-	 */
-    public static AddPermissionItemPermissionBuilder addPermissionItem(long permissionId, long permissionItemId)  {
-		return new AddPermissionItemPermissionBuilder(permissionId, permissionItemId);
 	}
 	
 	public static class DeletePermissionBuilder extends NullRequestBuilder {
@@ -123,7 +96,7 @@ public class PermissionService {
 	
 	public static class ListPermissionBuilder extends ListResponseRequestBuilder<Permission, Permission.Tokenizer, ListPermissionBuilder> {
 		
-		public ListPermissionBuilder(BasePermissionFilter filter) {
+		public ListPermissionBuilder(PermissionFilter filter) {
 			super(Permission.class, "permission", "list");
 			params.add("filter", filter);
 		}
@@ -139,57 +112,7 @@ public class PermissionService {
 	 * 
 	 * @param filter Filter for permissions
 	 */
-    public static ListPermissionBuilder list(BasePermissionFilter filter)  {
+    public static ListPermissionBuilder list(PermissionFilter filter)  {
 		return new ListPermissionBuilder(filter);
-	}
-	
-	public static class RemovePermissionItemPermissionBuilder extends NullRequestBuilder {
-		
-		public RemovePermissionItemPermissionBuilder(long permissionId, long permissionItemId) {
-			super("permission", "removePermissionItem");
-			params.add("permissionId", permissionId);
-			params.add("permissionItemId", permissionItemId);
-		}
-		
-		public void permissionId(String multirequestToken) {
-			params.add("permissionId", multirequestToken);
-		}
-		
-		public void permissionItemId(String multirequestToken) {
-			params.add("permissionItemId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Removes permission item from permission
-	 * 
-	 * @param permissionId Permission ID to remove from
-	 * @param permissionItemId Permission item ID to remove
-	 */
-    public static RemovePermissionItemPermissionBuilder removePermissionItem(long permissionId, long permissionItemId)  {
-		return new RemovePermissionItemPermissionBuilder(permissionId, permissionItemId);
-	}
-	
-	public static class UpdatePermissionBuilder extends RequestBuilder<Permission, Permission.Tokenizer, UpdatePermissionBuilder> {
-		
-		public UpdatePermissionBuilder(long id, Permission permission) {
-			super(Permission.class, "permission", "update");
-			params.add("id", id);
-			params.add("permission", permission);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update an existing permission.
-	 * 
-	 * @param id Permission  Identifier
-	 * @param permission Permission object
-	 */
-    public static UpdatePermissionBuilder update(long id, Permission permission)  {
-		return new UpdatePermissionBuilder(id, permission);
 	}
 }

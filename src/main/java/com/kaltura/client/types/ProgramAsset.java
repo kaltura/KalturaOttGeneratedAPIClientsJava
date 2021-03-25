@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -79,35 +79,19 @@ public class ProgramAsset extends Asset {
 	 */
 	private Long linearAssetId;
 	/**
-	 * Is CDVR enabled for this asset              Please, note that value of this
-	  property is strictly connected with CDV-R setting on Partner and
-	  KalturaLiveAsset levels.              In order to enable CDV-R for
-	  KalturaProgramAsset, Partner and KalturaLiveAsset CDV-R settings should be
-	  enabled.
+	 * Is CDVR enabled for this asset
 	 */
 	private Boolean enableCdvr;
 	/**
-	 * Is catch-up enabled for this asset              Please, note that value of this
-	  property is strictly connected with Catch Up setting on Partner and
-	  KalturaLiveAsset levels.              In order to enable Catch Up for
-	  KalturaProgramAsset, Partner and KalturaLiveAsset Catch Up settings should be
-	  enabled.
+	 * Is catch-up enabled for this asset
 	 */
 	private Boolean enableCatchUp;
 	/**
-	 * Is start over enabled for this asset              Please, note that value of
-	  this property is strictly connected with Start Over setting on Partner and
-	  KalturaLiveAsset levels.              In order to enable Start Over for
-	  KalturaProgramAsset, Partner and KalturaLiveAsset Start Over settings should be
-	  enabled.
+	 * Is start over enabled for this asset
 	 */
 	private Boolean enableStartOver;
 	/**
-	 * Is trick-play enabled for this asset              Please, note that value of
-	  this property is strictly connected with Trick Play setting on Partner and
-	  KalturaLiveAsset levels.              In order to enable Trick Play for
-	  KalturaProgramAsset, Partner and KalturaLiveAsset Trick Play settings should be
-	  enabled.
+	 * Is trick-play enabled for this asset
 	 */
 	private Boolean enableTrickPlay;
 

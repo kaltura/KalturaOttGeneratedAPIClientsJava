@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.EntitlementPriceDetails;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -57,7 +56,6 @@ public class SubscriptionEntitlement extends Entitlement {
 		String scheduledSubscriptionId();
 		String unifiedPaymentId();
 		String isSuspended();
-		EntitlementPriceDetails.Tokenizer priceDetails();
 	}
 
 	/**
@@ -97,10 +95,6 @@ public class SubscriptionEntitlement extends Entitlement {
 	 * Indicates if the subscription suspended
 	 */
 	private Boolean isSuspended;
-	/**
-	 * Price details
-	 */
-	private EntitlementPriceDetails priceDetails;
 
 	// nextRenewalDate:
 	public Long getNextRenewalDate(){
@@ -154,10 +148,6 @@ public class SubscriptionEntitlement extends Entitlement {
 	public Boolean getIsSuspended(){
 		return this.isSuspended;
 	}
-	// priceDetails:
-	public EntitlementPriceDetails getPriceDetails(){
-		return this.priceDetails;
-	}
 
 	public SubscriptionEntitlement() {
 		super();
@@ -178,7 +168,6 @@ public class SubscriptionEntitlement extends Entitlement {
 		scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
 		unifiedPaymentId = GsonParser.parseLong(jsonObject.get("unifiedPaymentId"));
 		isSuspended = GsonParser.parseBoolean(jsonObject.get("isSuspended"));
-		priceDetails = GsonParser.parseObject(jsonObject.getAsJsonObject("priceDetails"), EntitlementPriceDetails.class);
 
 	}
 
