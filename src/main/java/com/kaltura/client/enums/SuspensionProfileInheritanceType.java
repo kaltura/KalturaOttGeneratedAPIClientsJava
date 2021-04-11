@@ -25,14 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -40,52 +33,39 @@ import java.util.Map;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum SuspensionProfileInheritanceType implements EnumAsString {
+	ALWAYS("ALWAYS"),
+	NEVER("NEVER"),
+	DEFAULT("DEFAULT");
 
-/**
- * Filtering external recordings
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ExternalRecordingFilter.Tokenizer.class)
-public class ExternalRecordingFilter extends RecordingFilter {
-	
-	public interface Tokenizer extends RecordingFilter.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaData();
+	private String value;
+
+	SuspensionProfileInheritanceType(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * MetaData filtering
-	 */
-	private Map<String, StringValue> metaData;
-
-	// metaData:
-	public Map<String, StringValue> getMetaData(){
-		return this.metaData;
-	}
-	public void setMetaData(Map<String, StringValue> metaData){
-		this.metaData = metaData;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-
-	public ExternalRecordingFilter() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public ExternalRecordingFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		metaData = GsonParser.parseMap(jsonObject.getAsJsonObject("metaData"), StringValue.class);
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaExternalRecordingFilter");
-		kparams.add("metaData", this.metaData);
-		return kparams;
-	}
-
+	public static SuspensionProfileInheritanceType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over SuspensionProfileInheritanceType defined values and compare the inner value with the given one:
+		for(SuspensionProfileInheritanceType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return SuspensionProfileInheritanceType.values().length > 0 ? SuspensionProfileInheritanceType.values()[0]: null;
+   }
 }
-

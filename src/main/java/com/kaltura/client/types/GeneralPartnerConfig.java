@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.DeleteMediaPolicy;
 import com.kaltura.client.enums.DowngradePolicy;
+import com.kaltura.client.enums.SuspensionProfileInheritanceType;
 import com.kaltura.client.types.RollingDeviceRemovalData;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -64,6 +65,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String defaultRegion();
 		RollingDeviceRemovalData.Tokenizer rollingDeviceData();
 		String finishedPercentThreshold();
+		String suspensionProfileInheritanceType();
 	}
 
 	/**
@@ -122,6 +124,10 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Finished PercentThreshold
 	 */
 	private Integer finishedPercentThreshold;
+	/**
+	 * Suspension Profile Inheritance
+	 */
+	private SuspensionProfileInheritanceType suspensionProfileInheritanceType;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -287,6 +293,18 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		setToken("finishedPercentThreshold", multirequestToken);
 	}
 
+	// suspensionProfileInheritanceType:
+	public SuspensionProfileInheritanceType getSuspensionProfileInheritanceType(){
+		return this.suspensionProfileInheritanceType;
+	}
+	public void setSuspensionProfileInheritanceType(SuspensionProfileInheritanceType suspensionProfileInheritanceType){
+		this.suspensionProfileInheritanceType = suspensionProfileInheritanceType;
+	}
+
+	public void suspensionProfileInheritanceType(String multirequestToken){
+		setToken("suspensionProfileInheritanceType", multirequestToken);
+	}
+
 
 	public GeneralPartnerConfig() {
 		super();
@@ -312,6 +330,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		defaultRegion = GsonParser.parseInt(jsonObject.get("defaultRegion"));
 		rollingDeviceData = GsonParser.parseObject(jsonObject.getAsJsonObject("rollingDeviceData"), RollingDeviceRemovalData.class);
 		finishedPercentThreshold = GsonParser.parseInt(jsonObject.get("finishedPercentThreshold"));
+		suspensionProfileInheritanceType = SuspensionProfileInheritanceType.get(GsonParser.parseString(jsonObject.get("suspensionProfileInheritanceType")));
 
 	}
 
@@ -332,6 +351,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("defaultRegion", this.defaultRegion);
 		kparams.add("rollingDeviceData", this.rollingDeviceData);
 		kparams.add("finishedPercentThreshold", this.finishedPercentThreshold);
+		kparams.add("suspensionProfileInheritanceType", this.suspensionProfileInheritanceType);
 		return kparams;
 	}
 
