@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.GroupByOrder;
+import com.kaltura.client.enums.GroupingOption;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -50,6 +51,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		String kSql();
 		RequestBuilder.ListTokenizer<AssetGroupBy.Tokenizer> groupBy();
 		String groupOrderBy();
+		String groupingOptionEqual();
 	}
 
 	/**
@@ -87,6 +89,10 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 	 * order by of grouping
 	 */
 	private GroupByOrder groupOrderBy;
+	/**
+	 * Grouping Option, Omit if not specified otherwise
+	 */
+	private GroupingOption groupingOptionEqual;
 
 	// kSql:
 	public String getKSql(){
@@ -120,6 +126,18 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		setToken("groupOrderBy", multirequestToken);
 	}
 
+	// groupingOptionEqual:
+	public GroupingOption getGroupingOptionEqual(){
+		return this.groupingOptionEqual;
+	}
+	public void setGroupingOptionEqual(GroupingOption groupingOptionEqual){
+		this.groupingOptionEqual = groupingOptionEqual;
+	}
+
+	public void groupingOptionEqual(String multirequestToken){
+		setToken("groupingOptionEqual", multirequestToken);
+	}
+
 
 	public BaseSearchAssetFilter() {
 		super();
@@ -134,6 +152,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		groupBy = GsonParser.parseArray(jsonObject.getAsJsonArray("groupBy"), AssetGroupBy.class);
 		groupOrderBy = GroupByOrder.get(GsonParser.parseString(jsonObject.get("groupOrderBy")));
+		groupingOptionEqual = GroupingOption.get(GsonParser.parseString(jsonObject.get("groupingOptionEqual")));
 
 	}
 
@@ -143,6 +162,7 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 		kparams.add("kSql", this.kSql);
 		kparams.add("groupBy", this.groupBy);
 		kparams.add("groupOrderBy", this.groupOrderBy);
+		kparams.add("groupingOptionEqual", this.groupingOptionEqual);
 		return kparams;
 	}
 
