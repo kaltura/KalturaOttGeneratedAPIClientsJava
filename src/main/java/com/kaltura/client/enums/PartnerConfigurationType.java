@@ -45,7 +45,8 @@ public enum PartnerConfigurationType implements EnumAsString {
 	PAYMENT("Payment"),
 	CATALOG("Catalog"),
 	SECURITY("Security"),
-	OPC("Opc");
+	OPC("Opc"),
+	BASE("Base");
 
 	private String value;
 

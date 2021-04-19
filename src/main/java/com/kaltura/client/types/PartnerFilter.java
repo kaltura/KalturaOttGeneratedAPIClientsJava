@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,39 +38,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum SuspensionProfileInheritanceType implements EnumAsString {
-	ALWAYS("ALWAYS"),
-	NEVER("NEVER"),
-	DEFAULT("DEFAULT");
 
-	private String value;
-
-	SuspensionProfileInheritanceType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(PartnerFilter.Tokenizer.class)
+public class PartnerFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Comma separated discount codes
+	 */
+	private String idIn;
+
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
-	public static SuspensionProfileInheritanceType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over SuspensionProfileInheritanceType defined values and compare the inner value with the given one:
-		for(SuspensionProfileInheritanceType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SuspensionProfileInheritanceType.values().length > 0 ? SuspensionProfileInheritanceType.values()[0]: null;
-   }
+
+	public PartnerFilter() {
+		super();
+	}
+
+	public PartnerFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaPartnerFilter");
+		kparams.add("idIn", this.idIn);
+		return kparams;
+	}
+
 }
+

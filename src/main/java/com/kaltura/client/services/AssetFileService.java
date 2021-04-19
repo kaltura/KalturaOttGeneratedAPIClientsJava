@@ -72,7 +72,7 @@ public class AssetFileService {
 	
 	public static class PlayManifestAssetFileBuilder extends RequestBuilder<AssetFile, AssetFile.Tokenizer, PlayManifestAssetFileBuilder> {
 		
-		public PlayManifestAssetFileBuilder(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks, String tokenizedUrl, boolean isAltUrl) {
+		public PlayManifestAssetFileBuilder(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks, String tokenizedUrl) {
 			super(AssetFile.class, "assetfile", "playManifest");
 			params.add("partnerId", partnerId);
 			params.add("assetId", assetId);
@@ -81,7 +81,6 @@ public class AssetFileService {
 			params.add("contextType", contextType);
 			params.add("ks", ks);
 			params.add("tokenizedUrl", tokenizedUrl);
-			params.add("isAltUrl", isAltUrl);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -111,10 +110,6 @@ public class AssetFileService {
 		public void tokenizedUrl(String multirequestToken) {
 			params.add("tokenizedUrl", multirequestToken);
 		}
-		
-		public void isAltUrl(String multirequestToken) {
-			params.add("isAltUrl", multirequestToken);
-		}
 	}
 
 	public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType)  {
@@ -123,10 +118,6 @@ public class AssetFileService {
 
 	public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks)  {
 		return playManifest(partnerId, assetId, assetType, assetFileId, contextType, ks, null);
-	}
-
-	public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks, String tokenizedUrl)  {
-		return playManifest(partnerId, assetId, assetType, assetFileId, contextType, ks, tokenizedUrl, false);
 	}
 
 	/**
@@ -139,9 +130,8 @@ public class AssetFileService {
 	 * @param contextType Playback context type
 	 * @param ks Kaltura session for the user, not mandatory for anonymous user
 	 * @param tokenizedUrl Tokenized Url, not mandatory
-	 * @param isAltUrl Is alternative url
 	 */
-    public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks, String tokenizedUrl, boolean isAltUrl)  {
-		return new PlayManifestAssetFileBuilder(partnerId, assetId, assetType, assetFileId, contextType, ks, tokenizedUrl, isAltUrl);
+    public static PlayManifestAssetFileBuilder playManifest(int partnerId, String assetId, AssetType assetType, long assetFileId, PlaybackContextType contextType, String ks, String tokenizedUrl)  {
+		return new PlayManifestAssetFileBuilder(partnerId, assetId, assetType, assetFileId, contextType, ks, tokenizedUrl);
 	}
 }
