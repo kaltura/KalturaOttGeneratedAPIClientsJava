@@ -32,8 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.enums.DrmSchemeName;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -49,7 +47,6 @@ public class DrmPlaybackPluginData extends PluginData {
 	public interface Tokenizer extends PluginData.Tokenizer {
 		String scheme();
 		String licenseURL();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 	}
 
 	/**
@@ -60,10 +57,6 @@ public class DrmPlaybackPluginData extends PluginData {
 	 * License URL
 	 */
 	private String licenseURL;
-	/**
-	 * Dynamic data
-	 */
-	private Map<String, StringValue> dynamicData;
 
 	// scheme:
 	public DrmSchemeName getScheme(){
@@ -89,14 +82,6 @@ public class DrmPlaybackPluginData extends PluginData {
 		setToken("licenseURL", multirequestToken);
 	}
 
-	// dynamicData:
-	public Map<String, StringValue> getDynamicData(){
-		return this.dynamicData;
-	}
-	public void setDynamicData(Map<String, StringValue> dynamicData){
-		this.dynamicData = dynamicData;
-	}
-
 
 	public DrmPlaybackPluginData() {
 		super();
@@ -110,7 +95,6 @@ public class DrmPlaybackPluginData extends PluginData {
 		// set members values:
 		scheme = DrmSchemeName.get(GsonParser.parseString(jsonObject.get("scheme")));
 		licenseURL = GsonParser.parseString(jsonObject.get("licenseURL"));
-		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 
 	}
 
@@ -119,7 +103,6 @@ public class DrmPlaybackPluginData extends PluginData {
 		kparams.add("objectType", "KalturaDrmPlaybackPluginData");
 		kparams.add("scheme", this.scheme);
 		kparams.add("licenseURL", this.licenseURL);
-		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
 	}
 

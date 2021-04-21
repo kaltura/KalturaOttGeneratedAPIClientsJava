@@ -28,10 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.enums.HouseholdFrequencyType;
-import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Household;
-import com.kaltura.client.types.HouseholdFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -109,31 +106,6 @@ public class HouseholdService {
 	 */
     public static GetHouseholdBuilder get(int id)  {
 		return new GetHouseholdBuilder(id);
-	}
-	
-	public static class ListHouseholdBuilder extends ListResponseRequestBuilder<Household, Household.Tokenizer, ListHouseholdBuilder> {
-		
-		public ListHouseholdBuilder(HouseholdFilter filter, FilterPager pager) {
-			super(Household.class, "household", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
-
-	public static ListHouseholdBuilder list(HouseholdFilter filter)  {
-		return list(filter, null);
-	}
-
-	/**
-	 * Get recently watched media for user, ordered by recently watched first.
-	 * 
-	 * @param filter Filter parameters for filtering out the result
-	 * @param pager Page size and index. Number of assets to return per page. Possible range 5 ≤
-	 * size ≥ 50. If omitted - will be set to 25. If a value &gt; 50 provided –
-	 * will set to 50
-	 */
-    public static ListHouseholdBuilder list(HouseholdFilter filter, FilterPager pager)  {
-		return new ListHouseholdBuilder(filter, pager);
 	}
 	
 	public static class PurgeHouseholdBuilder extends RequestBuilder<Boolean, String, PurgeHouseholdBuilder> {

@@ -37,8 +37,7 @@ public enum InboxMessageType implements EnumAsString {
 	SYSTEMANNOUNCEMENT("SystemAnnouncement"),
 	FOLLOWED("Followed"),
 	ENGAGEMENT("Engagement"),
-	INTEREST("Interest"),
-	CAMPAIGN("Campaign");
+	INTEREST("Interest");
 
 	private String value;
 

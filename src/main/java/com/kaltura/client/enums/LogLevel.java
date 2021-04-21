@@ -33,12 +33,17 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PermissionItemOrderBy implements EnumAsString {
-	NONE("NONE");
+public enum LogLevel implements EnumAsString {
+	TRACE("TRACE"),
+	DEBUG("DEBUG"),
+	INFO("INFO"),
+	WARN("WARN"),
+	ERROR("ERROR"),
+	ALL("ALL");
 
 	private String value;
 
-	PermissionItemOrderBy(String value) {
+	LogLevel(String value) {
 		this.value = value;
 	}
 
@@ -51,19 +56,19 @@ public enum PermissionItemOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static PermissionItemOrderBy get(String value) {
+	public static LogLevel get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over PermissionItemOrderBy defined values and compare the inner value with the given one:
-		for(PermissionItemOrderBy item: values()) {
+		// goes over LogLevel defined values and compare the inner value with the given one:
+		for(LogLevel item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PermissionItemOrderBy.values().length > 0 ? PermissionItemOrderBy.values()[0]: null;
+		return LogLevel.values().length > 0 ? LogLevel.values()[0]: null;
    }
 }

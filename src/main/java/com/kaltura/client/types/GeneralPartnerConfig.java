@@ -31,8 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.DeleteMediaPolicy;
 import com.kaltura.client.enums.DowngradePolicy;
-import com.kaltura.client.enums.SuspensionProfileInheritanceType;
-import com.kaltura.client.types.RollingDeviceRemovalData;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -63,9 +61,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String householdLimitationModule();
 		String enableRegionFiltering();
 		String defaultRegion();
-		RollingDeviceRemovalData.Tokenizer rollingDeviceData();
-		String finishedPercentThreshold();
-		String suspensionProfileInheritanceType();
 	}
 
 	/**
@@ -116,18 +111,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Default Region
 	 */
 	private Integer defaultRegion;
-	/**
-	 * Rolling Device Policy
-	 */
-	private RollingDeviceRemovalData rollingDeviceData;
-	/**
-	 * Finished PercentThreshold
-	 */
-	private Integer finishedPercentThreshold;
-	/**
-	 * Suspension Profile Inheritance
-	 */
-	private SuspensionProfileInheritanceType suspensionProfileInheritanceType;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -273,38 +256,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		setToken("defaultRegion", multirequestToken);
 	}
 
-	// rollingDeviceData:
-	public RollingDeviceRemovalData getRollingDeviceData(){
-		return this.rollingDeviceData;
-	}
-	public void setRollingDeviceData(RollingDeviceRemovalData rollingDeviceData){
-		this.rollingDeviceData = rollingDeviceData;
-	}
-
-	// finishedPercentThreshold:
-	public Integer getFinishedPercentThreshold(){
-		return this.finishedPercentThreshold;
-	}
-	public void setFinishedPercentThreshold(Integer finishedPercentThreshold){
-		this.finishedPercentThreshold = finishedPercentThreshold;
-	}
-
-	public void finishedPercentThreshold(String multirequestToken){
-		setToken("finishedPercentThreshold", multirequestToken);
-	}
-
-	// suspensionProfileInheritanceType:
-	public SuspensionProfileInheritanceType getSuspensionProfileInheritanceType(){
-		return this.suspensionProfileInheritanceType;
-	}
-	public void setSuspensionProfileInheritanceType(SuspensionProfileInheritanceType suspensionProfileInheritanceType){
-		this.suspensionProfileInheritanceType = suspensionProfileInheritanceType;
-	}
-
-	public void suspensionProfileInheritanceType(String multirequestToken){
-		setToken("suspensionProfileInheritanceType", multirequestToken);
-	}
-
 
 	public GeneralPartnerConfig() {
 		super();
@@ -328,9 +279,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		householdLimitationModule = GsonParser.parseInt(jsonObject.get("householdLimitationModule"));
 		enableRegionFiltering = GsonParser.parseBoolean(jsonObject.get("enableRegionFiltering"));
 		defaultRegion = GsonParser.parseInt(jsonObject.get("defaultRegion"));
-		rollingDeviceData = GsonParser.parseObject(jsonObject.getAsJsonObject("rollingDeviceData"), RollingDeviceRemovalData.class);
-		finishedPercentThreshold = GsonParser.parseInt(jsonObject.get("finishedPercentThreshold"));
-		suspensionProfileInheritanceType = SuspensionProfileInheritanceType.get(GsonParser.parseString(jsonObject.get("suspensionProfileInheritanceType")));
 
 	}
 
@@ -349,9 +297,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("householdLimitationModule", this.householdLimitationModule);
 		kparams.add("enableRegionFiltering", this.enableRegionFiltering);
 		kparams.add("defaultRegion", this.defaultRegion);
-		kparams.add("rollingDeviceData", this.rollingDeviceData);
-		kparams.add("finishedPercentThreshold", this.finishedPercentThreshold);
-		kparams.add("suspensionProfileInheritanceType", this.suspensionProfileInheritanceType);
 		return kparams;
 	}
 

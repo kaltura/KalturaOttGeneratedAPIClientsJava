@@ -33,8 +33,6 @@ import com.kaltura.client.enums.DeviceStatus;
 import com.kaltura.client.types.CustomDrmPlaybackPluginData;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -60,12 +58,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		String deviceFamilyId();
 		CustomDrmPlaybackPluginData.Tokenizer drm();
 		String externalId();
-		String macAddress();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
-		String model();
-		String manufacturer();
-		String manufacturerId();
-		String lastActivityTime();
 	}
 
 	/**
@@ -104,30 +96,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 	 * external Id
 	 */
 	private String externalId;
-	/**
-	 * mac address
-	 */
-	private String macAddress;
-	/**
-	 * Dynamic data
-	 */
-	private Map<String, StringValue> dynamicData;
-	/**
-	 * model
-	 */
-	private String model;
-	/**
-	 * manufacturer
-	 */
-	private String manufacturer;
-	/**
-	 * manufacturer Id, read only
-	 */
-	private Long manufacturerId;
-	/**
-	 * Last Activity Time, read only
-	 */
-	private Long lastActivityTime;
 
 	// householdId:
 	public Integer getHouseholdId(){
@@ -213,58 +181,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		setToken("externalId", multirequestToken);
 	}
 
-	// macAddress:
-	public String getMacAddress(){
-		return this.macAddress;
-	}
-	public void setMacAddress(String macAddress){
-		this.macAddress = macAddress;
-	}
-
-	public void macAddress(String multirequestToken){
-		setToken("macAddress", multirequestToken);
-	}
-
-	// dynamicData:
-	public Map<String, StringValue> getDynamicData(){
-		return this.dynamicData;
-	}
-	public void setDynamicData(Map<String, StringValue> dynamicData){
-		this.dynamicData = dynamicData;
-	}
-
-	// model:
-	public String getModel(){
-		return this.model;
-	}
-	public void setModel(String model){
-		this.model = model;
-	}
-
-	public void model(String multirequestToken){
-		setToken("model", multirequestToken);
-	}
-
-	// manufacturer:
-	public String getManufacturer(){
-		return this.manufacturer;
-	}
-	public void setManufacturer(String manufacturer){
-		this.manufacturer = manufacturer;
-	}
-
-	public void manufacturer(String multirequestToken){
-		setToken("manufacturer", multirequestToken);
-	}
-
-	// manufacturerId:
-	public Long getManufacturerId(){
-		return this.manufacturerId;
-	}
-	// lastActivityTime:
-	public Long getLastActivityTime(){
-		return this.lastActivityTime;
-	}
 
 	public HouseholdDevice() {
 		super();
@@ -285,12 +201,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		deviceFamilyId = GsonParser.parseLong(jsonObject.get("deviceFamilyId"));
 		drm = GsonParser.parseObject(jsonObject.getAsJsonObject("drm"), CustomDrmPlaybackPluginData.class);
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
-		macAddress = GsonParser.parseString(jsonObject.get("macAddress"));
-		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
-		model = GsonParser.parseString(jsonObject.get("model"));
-		manufacturer = GsonParser.parseString(jsonObject.get("manufacturer"));
-		manufacturerId = GsonParser.parseLong(jsonObject.get("manufacturerId"));
-		lastActivityTime = GsonParser.parseLong(jsonObject.get("lastActivityTime"));
 
 	}
 
@@ -303,10 +213,6 @@ public class HouseholdDevice extends OTTObjectSupportNullable {
 		kparams.add("brandId", this.brandId);
 		kparams.add("activatedOn", this.activatedOn);
 		kparams.add("externalId", this.externalId);
-		kparams.add("macAddress", this.macAddress);
-		kparams.add("dynamicData", this.dynamicData);
-		kparams.add("model", this.model);
-		kparams.add("manufacturer", this.manufacturer);
 		return kparams;
 	}
 

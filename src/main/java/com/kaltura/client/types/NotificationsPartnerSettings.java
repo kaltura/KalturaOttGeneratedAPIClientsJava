@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.EpgNotificationSettings;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -63,8 +62,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		String mailSenderName();
 		String mailNotificationAdapterId();
 		String smsEnabled();
-		String iotEnabled();
-		EpgNotificationSettings.Tokenizer epgNotification();
 	}
 
 	/**
@@ -135,14 +132,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
 	 * SMS capability is enabled for the account
 	 */
 	private Boolean smsEnabled;
-	/**
-	 * IOT capability is enabled for the account
-	 */
-	private Boolean iotEnabled;
-	/**
-	 * Settings for epg notifications
-	 */
-	private EpgNotificationSettings epgNotification;
 
 	// pushNotificationEnabled:
 	public Boolean getPushNotificationEnabled(){
@@ -348,26 +337,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		setToken("smsEnabled", multirequestToken);
 	}
 
-	// iotEnabled:
-	public Boolean getIotEnabled(){
-		return this.iotEnabled;
-	}
-	public void setIotEnabled(Boolean iotEnabled){
-		this.iotEnabled = iotEnabled;
-	}
-
-	public void iotEnabled(String multirequestToken){
-		setToken("iotEnabled", multirequestToken);
-	}
-
-	// epgNotification:
-	public EpgNotificationSettings getEpgNotification(){
-		return this.epgNotification;
-	}
-	public void setEpgNotification(EpgNotificationSettings epgNotification){
-		this.epgNotification = epgNotification;
-	}
-
 
 	public NotificationsPartnerSettings() {
 		super();
@@ -396,8 +365,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		mailSenderName = GsonParser.parseString(jsonObject.get("mailSenderName"));
 		mailNotificationAdapterId = GsonParser.parseLong(jsonObject.get("mailNotificationAdapterId"));
 		smsEnabled = GsonParser.parseBoolean(jsonObject.get("smsEnabled"));
-		iotEnabled = GsonParser.parseBoolean(jsonObject.get("iotEnabled"));
-		epgNotification = GsonParser.parseObject(jsonObject.getAsJsonObject("epgNotification"), EpgNotificationSettings.class);
 
 	}
 
@@ -421,8 +388,6 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		kparams.add("mailSenderName", this.mailSenderName);
 		kparams.add("mailNotificationAdapterId", this.mailNotificationAdapterId);
 		kparams.add("smsEnabled", this.smsEnabled);
-		kparams.add("iotEnabled", this.iotEnabled);
-		kparams.add("epgNotification", this.epgNotification);
 		return kparams;
 	}
 

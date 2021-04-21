@@ -55,7 +55,6 @@ public class MediaImage extends ObjectBase {
 		String version();
 		String id();
 		String isDefault();
-		String imageTypeId();
 	}
 
 	/**
@@ -86,10 +85,6 @@ public class MediaImage extends ObjectBase {
 	 * Determined whether image was taken from default configuration or not
 	 */
 	private Boolean isDefault;
-	/**
-	 * Image type identifier
-	 */
-	private Long imageTypeId;
 
 	// ratio:
 	public String getRatio(){
@@ -167,18 +162,6 @@ public class MediaImage extends ObjectBase {
 		setToken("isDefault", multirequestToken);
 	}
 
-	// imageTypeId:
-	public Long getImageTypeId(){
-		return this.imageTypeId;
-	}
-	public void setImageTypeId(Long imageTypeId){
-		this.imageTypeId = imageTypeId;
-	}
-
-	public void imageTypeId(String multirequestToken){
-		setToken("imageTypeId", multirequestToken);
-	}
-
 
 	public MediaImage() {
 		super();
@@ -197,7 +180,6 @@ public class MediaImage extends ObjectBase {
 		version = GsonParser.parseInt(jsonObject.get("version"));
 		id = GsonParser.parseString(jsonObject.get("id"));
 		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
-		imageTypeId = GsonParser.parseLong(jsonObject.get("imageTypeId"));
 
 	}
 
@@ -210,7 +192,6 @@ public class MediaImage extends ObjectBase {
 		kparams.add("url", this.url);
 		kparams.add("version", this.version);
 		kparams.add("isDefault", this.isDefault);
-		kparams.add("imageTypeId", this.imageTypeId);
 		return kparams;
 	}
 

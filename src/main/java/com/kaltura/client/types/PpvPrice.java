@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.Price;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -52,6 +53,7 @@ public class PpvPrice extends ProductPrice {
 		String fileId();
 		String ppvModuleId();
 		String isSubscriptionOnly();
+		Price.Tokenizer fullPrice();
 		String subscriptionId();
 		String collectionId();
 		String prePaidId();
@@ -80,6 +82,10 @@ public class PpvPrice extends ProductPrice {
 	  be sold separately
 	 */
 	private Boolean isSubscriptionOnly;
+	/**
+	 * The full price of the item (with no discounts)
+	 */
+	private Price fullPrice;
 	/**
 	 * The identifier of the relevant subscription
 	 */
@@ -171,6 +177,14 @@ public class PpvPrice extends ProductPrice {
 
 	public void isSubscriptionOnly(String multirequestToken){
 		setToken("isSubscriptionOnly", multirequestToken);
+	}
+
+	// fullPrice:
+	public Price getFullPrice(){
+		return this.fullPrice;
+	}
+	public void setFullPrice(Price fullPrice){
+		this.fullPrice = fullPrice;
 	}
 
 	// subscriptionId:
@@ -335,6 +349,7 @@ public class PpvPrice extends ProductPrice {
 		fileId = GsonParser.parseInt(jsonObject.get("fileId"));
 		ppvModuleId = GsonParser.parseString(jsonObject.get("ppvModuleId"));
 		isSubscriptionOnly = GsonParser.parseBoolean(jsonObject.get("isSubscriptionOnly"));
+		fullPrice = GsonParser.parseObject(jsonObject.getAsJsonObject("fullPrice"), Price.class);
 		subscriptionId = GsonParser.parseString(jsonObject.get("subscriptionId"));
 		collectionId = GsonParser.parseString(jsonObject.get("collectionId"));
 		prePaidId = GsonParser.parseString(jsonObject.get("prePaidId"));
@@ -357,6 +372,7 @@ public class PpvPrice extends ProductPrice {
 		kparams.add("fileId", this.fileId);
 		kparams.add("ppvModuleId", this.ppvModuleId);
 		kparams.add("isSubscriptionOnly", this.isSubscriptionOnly);
+		kparams.add("fullPrice", this.fullPrice);
 		kparams.add("subscriptionId", this.subscriptionId);
 		kparams.add("collectionId", this.collectionId);
 		kparams.add("prePaidId", this.prePaidId);
