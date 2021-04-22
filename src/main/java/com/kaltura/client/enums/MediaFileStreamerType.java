@@ -38,6 +38,7 @@ public enum MediaFileStreamerType implements EnumAsString {
 	MPEG_DASH("MPEG_DASH"),
 	URL("URL"),
 	SMOOTH_STREAMING("SMOOTH_STREAMING"),
+	MULTICAST("MULTICAST"),
 	NONE("NONE");
 
 	private String value;
