@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.RelatedEntityType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,68 +41,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RelatedEntity.Tokenizer.class)
-public class RelatedEntity extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
+public class RegionChannelNumber extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String type();
+		String regionId();
+		String channelNumber();
 	}
 
 	/**
-	 * Unique identifier for the related entry
+	 * The identifier of the region
 	 */
-	private String id;
+	private Integer regionId;
 	/**
-	 * Defines related entry type
+	 * The number of channel
 	 */
-	private RelatedEntityType type;
+	private Integer channelNumber;
 
-	// id:
-	public String getId(){
-		return this.id;
+	// regionId:
+	public Integer getRegionId(){
+		return this.regionId;
 	}
-	public void setId(String id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void setRegionId(Integer regionId){
+		this.regionId = regionId;
 	}
 
-	// type:
-	public RelatedEntityType getType(){
-		return this.type;
-	}
-	public void setType(RelatedEntityType type){
-		this.type = type;
+	public void regionId(String multirequestToken){
+		setToken("regionId", multirequestToken);
 	}
 
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
+	// channelNumber:
+	public Integer getChannelNumber(){
+		return this.channelNumber;
+	}
+	public void setChannelNumber(Integer channelNumber){
+		this.channelNumber = channelNumber;
+	}
+
+	public void channelNumber(String multirequestToken){
+		setToken("channelNumber", multirequestToken);
 	}
 
 
-	public RelatedEntity() {
+	public RegionChannelNumber() {
 		super();
 	}
 
-	public RelatedEntity(JsonObject jsonObject) throws APIException {
+	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		type = RelatedEntityType.get(GsonParser.parseString(jsonObject.get("type")));
+		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
+		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRelatedEntity");
-		kparams.add("id", this.id);
-		kparams.add("type", this.type);
+		kparams.add("objectType", "KalturaRegionChannelNumber");
+		kparams.add("regionId", this.regionId);
+		kparams.add("channelNumber", this.channelNumber);
 		return kparams;
 	}
 
