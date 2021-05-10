@@ -27,10 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.LoginSession;
-import com.kaltura.client.types.Partner;
-import com.kaltura.client.types.PartnerFilter;
-import com.kaltura.client.types.PartnerSetup;
+import com.kaltura.client.types.PreviewModule;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,59 +38,57 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class PartnerService {
+public class PreviewModuleService {
 	
-	public static class AddPartnerBuilder extends RequestBuilder<Partner, Partner.Tokenizer, AddPartnerBuilder> {
+	public static class AddPreviewModuleBuilder extends RequestBuilder<PreviewModule, PreviewModule.Tokenizer, AddPreviewModuleBuilder> {
 		
-		public AddPartnerBuilder(Partner partner, PartnerSetup partnerSetup) {
-			super(Partner.class, "partner", "add");
-			params.add("partner", partner);
-			params.add("partnerSetup", partnerSetup);
+		public AddPreviewModuleBuilder(PreviewModule previewModule) {
+			super(PreviewModule.class, "previewmodule", "add");
+			params.add("previewModule", previewModule);
 		}
 	}
 
 	/**
-	 * Add a partner with default user
+	 * Internal API !!! Insert new PreviewModule for partner
 	 * 
-	 * @param partner partner
-	 * @param partnerSetup mandatory parameters to create partner
+	 * @param previewModule Preview module object
 	 */
-    public static AddPartnerBuilder add(Partner partner, PartnerSetup partnerSetup)  {
-		return new AddPartnerBuilder(partner, partnerSetup);
+    public static AddPreviewModuleBuilder add(PreviewModule previewModule)  {
+		return new AddPreviewModuleBuilder(previewModule);
 	}
 	
-	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
+	public static class DeletePreviewModuleBuilder extends RequestBuilder<Boolean, String, DeletePreviewModuleBuilder> {
 		
-		public ExternalLoginPartnerBuilder() {
-			super(LoginSession.class, "partner", "externalLogin");
+		public DeletePreviewModuleBuilder(long id) {
+			super(Boolean.class, "previewmodule", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
 	/**
-	 * Returns a login session for external system (like OVP)
-	 */
-    public static ExternalLoginPartnerBuilder externalLogin()  {
-		return new ExternalLoginPartnerBuilder();
-	}
-	
-	public static class ListPartnerBuilder extends ListResponseRequestBuilder<Partner, Partner.Tokenizer, ListPartnerBuilder> {
-		
-		public ListPartnerBuilder(PartnerFilter filter) {
-			super(Partner.class, "partner", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	public static ListPartnerBuilder list()  {
-		return list(null);
-	}
-
-	/**
-	 * Internal API !!! Returns the list of active Partners
+	 * Internal API !!! Delete PreviewModule
 	 * 
-	 * @param filter Filter
+	 * @param id PreviewModule id
 	 */
-    public static ListPartnerBuilder list(PartnerFilter filter)  {
-		return new ListPartnerBuilder(filter);
+    public static DeletePreviewModuleBuilder delete(long id)  {
+		return new DeletePreviewModuleBuilder(id);
+	}
+	
+	public static class ListPreviewModuleBuilder extends ListResponseRequestBuilder<PreviewModule, PreviewModule.Tokenizer, ListPreviewModuleBuilder> {
+		
+		public ListPreviewModuleBuilder() {
+			super(PreviewModule.class, "previewmodule", "list");
+		}
+	}
+
+	/**
+	 * Internal API !!! Returns all PreviewModule
+	 */
+    public static ListPreviewModuleBuilder list()  {
+		return new ListPreviewModuleBuilder();
 	}
 }

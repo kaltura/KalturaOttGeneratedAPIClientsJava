@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,53 +40,107 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Discount
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Discount.Tokenizer.class)
-public class Discount extends Price {
+@MultiRequestBuilder.Tokenizer(Partner.Tokenizer.class)
+public class Partner extends ObjectBase {
 	
-	public interface Tokenizer extends Price.Tokenizer {
-		String percentage();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String createDate();
+		String updateDate();
 	}
 
 	/**
-	 * The discount percentage
+	 * PartnerId
 	 */
-	private Integer percentage;
+	private Integer id;
+	/**
+	 * PartnerName
+	 */
+	private String name;
+	/**
+	 * Creat date represented as epoch
+	 */
+	private Long createDate;
+	/**
+	 * Update date represented as epoch
+	 */
+	private Long updateDate;
 
-	// percentage:
-	public Integer getPercentage(){
-		return this.percentage;
+	// id:
+	public Integer getId(){
+		return this.id;
 	}
-	public void setPercentage(Integer percentage){
-		this.percentage = percentage;
+	public void setId(Integer id){
+		this.id = id;
 	}
 
-	public void percentage(String multirequestToken){
-		setToken("percentage", multirequestToken);
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	public void setCreateDate(Long createDate){
+		this.createDate = createDate;
+	}
+
+	public void createDate(String multirequestToken){
+		setToken("createDate", multirequestToken);
+	}
+
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	public void setUpdateDate(Long updateDate){
+		this.updateDate = updateDate;
+	}
+
+	public void updateDate(String multirequestToken){
+		setToken("updateDate", multirequestToken);
 	}
 
 
-	public Discount() {
+	public Partner() {
 		super();
 	}
 
-	public Discount(JsonObject jsonObject) throws APIException {
+	public Partner(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		percentage = GsonParser.parseInt(jsonObject.get("percentage"));
+		id = GsonParser.parseInt(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscount");
-		kparams.add("percentage", this.percentage);
+		kparams.add("objectType", "KalturaPartner");
+		kparams.add("id", this.id);
+		kparams.add("name", this.name);
+		kparams.add("createDate", this.createDate);
+		kparams.add("updateDate", this.updateDate);
 		return kparams;
 	}
 

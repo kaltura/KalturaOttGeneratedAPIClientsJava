@@ -27,10 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.LoginSession;
-import com.kaltura.client.types.Partner;
-import com.kaltura.client.types.PartnerFilter;
-import com.kaltura.client.types.PartnerSetup;
+import com.kaltura.client.types.UsageModule;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -41,59 +38,57 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class PartnerService {
+public class UsageModuleService {
 	
-	public static class AddPartnerBuilder extends RequestBuilder<Partner, Partner.Tokenizer, AddPartnerBuilder> {
+	public static class AddUsageModuleBuilder extends RequestBuilder<UsageModule, UsageModule.Tokenizer, AddUsageModuleBuilder> {
 		
-		public AddPartnerBuilder(Partner partner, PartnerSetup partnerSetup) {
-			super(Partner.class, "partner", "add");
-			params.add("partner", partner);
-			params.add("partnerSetup", partnerSetup);
+		public AddUsageModuleBuilder(UsageModule usageModule) {
+			super(UsageModule.class, "usagemodule", "add");
+			params.add("usageModule", usageModule);
 		}
 	}
 
 	/**
-	 * Add a partner with default user
+	 * Internal API !!! Insert new UsageModule
 	 * 
-	 * @param partner partner
-	 * @param partnerSetup mandatory parameters to create partner
+	 * @param usageModule usage module Object
 	 */
-    public static AddPartnerBuilder add(Partner partner, PartnerSetup partnerSetup)  {
-		return new AddPartnerBuilder(partner, partnerSetup);
+    public static AddUsageModuleBuilder add(UsageModule usageModule)  {
+		return new AddUsageModuleBuilder(usageModule);
 	}
 	
-	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
+	public static class DeleteUsageModuleBuilder extends RequestBuilder<Boolean, String, DeleteUsageModuleBuilder> {
 		
-		public ExternalLoginPartnerBuilder() {
-			super(LoginSession.class, "partner", "externalLogin");
+		public DeleteUsageModuleBuilder(long id) {
+			super(Boolean.class, "usagemodule", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
 	/**
-	 * Returns a login session for external system (like OVP)
-	 */
-    public static ExternalLoginPartnerBuilder externalLogin()  {
-		return new ExternalLoginPartnerBuilder();
-	}
-	
-	public static class ListPartnerBuilder extends ListResponseRequestBuilder<Partner, Partner.Tokenizer, ListPartnerBuilder> {
-		
-		public ListPartnerBuilder(PartnerFilter filter) {
-			super(Partner.class, "partner", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	public static ListPartnerBuilder list()  {
-		return list(null);
-	}
-
-	/**
-	 * Internal API !!! Returns the list of active Partners
+	 * Internal API !!! Delete UsageModule
 	 * 
-	 * @param filter Filter
+	 * @param id UsageModule id
 	 */
-    public static ListPartnerBuilder list(PartnerFilter filter)  {
-		return new ListPartnerBuilder(filter);
+    public static DeleteUsageModuleBuilder delete(long id)  {
+		return new DeleteUsageModuleBuilder(id);
+	}
+	
+	public static class ListUsageModuleBuilder extends ListResponseRequestBuilder<UsageModule, UsageModule.Tokenizer, ListUsageModuleBuilder> {
+		
+		public ListUsageModuleBuilder() {
+			super(UsageModule.class, "usagemodule", "list");
+		}
+	}
+
+	/**
+	 * Internal API !!! Returns the list of available usage module
+	 */
+    public static ListUsageModuleBuilder list()  {
+		return new ListUsageModuleBuilder();
 	}
 }

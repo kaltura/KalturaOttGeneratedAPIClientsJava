@@ -39,53 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Discount
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Discount.Tokenizer.class)
-public class Discount extends Price {
+@MultiRequestBuilder.Tokenizer(PartnerFilter.Tokenizer.class)
+public class PartnerFilter extends Filter {
 	
-	public interface Tokenizer extends Price.Tokenizer {
-		String percentage();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idIn();
 	}
 
 	/**
-	 * The discount percentage
+	 * Comma separated discount codes
 	 */
-	private Integer percentage;
+	private String idIn;
 
-	// percentage:
-	public Integer getPercentage(){
-		return this.percentage;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
 	}
-	public void setPercentage(Integer percentage){
-		this.percentage = percentage;
-	}
-
-	public void percentage(String multirequestToken){
-		setToken("percentage", multirequestToken);
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
+	}
 
-	public Discount() {
+
+	public PartnerFilter() {
 		super();
 	}
 
-	public Discount(JsonObject jsonObject) throws APIException {
+	public PartnerFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		percentage = GsonParser.parseInt(jsonObject.get("percentage"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscount");
-		kparams.add("percentage", this.percentage);
+		kparams.add("objectType", "KalturaPartnerFilter");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 

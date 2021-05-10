@@ -59,6 +59,14 @@ public class BaseChannel extends OTTObjectSupportNullable {
 	public Long getId(){
 		return this.id;
 	}
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
 
 	public BaseChannel() {
 		super();
@@ -77,6 +85,7 @@ public class BaseChannel extends OTTObjectSupportNullable {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBaseChannel");
+		kparams.add("id", this.id);
 		return kparams;
 	}
 
