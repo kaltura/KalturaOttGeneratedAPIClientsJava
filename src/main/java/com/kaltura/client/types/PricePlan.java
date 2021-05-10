@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -75,14 +75,38 @@ public class PricePlan extends UsageModule {
 	public Boolean getIsRenewable(){
 		return this.isRenewable;
 	}
+	public void setIsRenewable(Boolean isRenewable){
+		this.isRenewable = isRenewable;
+	}
+
+	public void isRenewable(String multirequestToken){
+		setToken("isRenewable", multirequestToken);
+	}
+
 	// renewalsNumber:
 	public Integer getRenewalsNumber(){
 		return this.renewalsNumber;
 	}
+	public void setRenewalsNumber(Integer renewalsNumber){
+		this.renewalsNumber = renewalsNumber;
+	}
+
+	public void renewalsNumber(String multirequestToken){
+		setToken("renewalsNumber", multirequestToken);
+	}
+
 	// discountId:
 	public Long getDiscountId(){
 		return this.discountId;
 	}
+	public void setDiscountId(Long discountId){
+		this.discountId = discountId;
+	}
+
+	public void discountId(String multirequestToken){
+		setToken("discountId", multirequestToken);
+	}
+
 	// priceDetailsId:
 	public Long getPriceDetailsId(){
 		return this.priceDetailsId;
@@ -116,6 +140,9 @@ public class PricePlan extends UsageModule {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaPricePlan");
+		kparams.add("isRenewable", this.isRenewable);
+		kparams.add("renewalsNumber", this.renewalsNumber);
+		kparams.add("discountId", this.discountId);
 		kparams.add("priceDetailsId", this.priceDetailsId);
 		return kparams;
 	}

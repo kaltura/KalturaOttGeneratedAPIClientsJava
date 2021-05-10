@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -59,6 +59,14 @@ public class BaseChannel extends OTTObjectSupportNullable {
 	public Long getId(){
 		return this.id;
 	}
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
 
 	public BaseChannel() {
 		super();
@@ -77,6 +85,7 @@ public class BaseChannel extends OTTObjectSupportNullable {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBaseChannel");
+		kparams.add("id", this.id);
 		return kparams;
 	}
 

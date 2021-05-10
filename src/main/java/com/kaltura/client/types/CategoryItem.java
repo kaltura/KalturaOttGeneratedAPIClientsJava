@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -64,6 +64,7 @@ public class CategoryItem extends CrudObject {
 		String type();
 		String versionId();
 		String virtualAssetId();
+		String referenceId();
 	}
 
 	/**
@@ -123,6 +124,10 @@ public class CategoryItem extends CrudObject {
 	 * Virtual asset id
 	 */
 	private Long virtualAssetId;
+	/**
+	 * Category reference identifier
+	 */
+	private String referenceId;
 
 	// id:
 	public Long getId(){
@@ -232,6 +237,18 @@ public class CategoryItem extends CrudObject {
 	public Long getVirtualAssetId(){
 		return this.virtualAssetId;
 	}
+	// referenceId:
+	public String getReferenceId(){
+		return this.referenceId;
+	}
+	public void setReferenceId(String referenceId){
+		this.referenceId = referenceId;
+	}
+
+	public void referenceId(String multirequestToken){
+		setToken("referenceId", multirequestToken);
+	}
+
 
 	public CategoryItem() {
 		super();
@@ -257,6 +274,7 @@ public class CategoryItem extends CrudObject {
 		type = GsonParser.parseString(jsonObject.get("type"));
 		versionId = GsonParser.parseLong(jsonObject.get("versionId"));
 		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
+		referenceId = GsonParser.parseString(jsonObject.get("referenceId"));
 
 	}
 
@@ -271,6 +289,7 @@ public class CategoryItem extends CrudObject {
 		kparams.add("startDateInSeconds", this.startDateInSeconds);
 		kparams.add("endDateInSeconds", this.endDateInSeconds);
 		kparams.add("type", this.type);
+		kparams.add("referenceId", this.referenceId);
 		return kparams;
 	}
 

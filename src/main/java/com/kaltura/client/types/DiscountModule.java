@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -48,11 +48,16 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class DiscountModule extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
 		String percent();
 		String startDate();
 		String endDate();
 	}
 
+	/**
+	 * Discount module identifier
+	 */
+	private Long id;
 	/**
 	 * The discount percentage
 	 */
@@ -65,6 +70,18 @@ public class DiscountModule extends ObjectBase {
 	 * The last date the discount is available
 	 */
 	private Long endDate;
+
+	// id:
+	public Long getId(){
+		return this.id;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
 	// percent:
 	public Double getPercent(){
@@ -113,6 +130,7 @@ public class DiscountModule extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
+		id = GsonParser.parseLong(jsonObject.get("id"));
 		percent = GsonParser.parseDouble(jsonObject.get("percent"));
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
@@ -122,6 +140,7 @@ public class DiscountModule extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDiscountModule");
+		kparams.add("id", this.id);
 		kparams.add("percent", this.percent);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
