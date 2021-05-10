@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -34,6 +34,7 @@ import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -60,6 +61,7 @@ public class AssetStruct extends ObjectBase {
 		String parentId();
 		String connectingMetaId();
 		String connectedParentMetaId();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 	}
 
 	/**
@@ -117,6 +119,10 @@ public class AssetStruct extends ObjectBase {
 	 * connectedParentMetaId
 	 */
 	private Long connectedParentMetaId;
+	/**
+	 * Dynamic data
+	 */
+	private Map<String, StringValue> dynamicData;
 
 	// id:
 	public Long getId(){
@@ -238,6 +244,14 @@ public class AssetStruct extends ObjectBase {
 		setToken("connectedParentMetaId", multirequestToken);
 	}
 
+	// dynamicData:
+	public Map<String, StringValue> getDynamicData(){
+		return this.dynamicData;
+	}
+	public void setDynamicData(Map<String, StringValue> dynamicData){
+		this.dynamicData = dynamicData;
+	}
+
 
 	public AssetStruct() {
 		super();
@@ -262,6 +276,7 @@ public class AssetStruct extends ObjectBase {
 		parentId = GsonParser.parseLong(jsonObject.get("parentId"));
 		connectingMetaId = GsonParser.parseLong(jsonObject.get("connectingMetaId"));
 		connectedParentMetaId = GsonParser.parseLong(jsonObject.get("connectedParentMetaId"));
+		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 
 	}
 
@@ -277,6 +292,7 @@ public class AssetStruct extends ObjectBase {
 		kparams.add("parentId", this.parentId);
 		kparams.add("connectingMetaId", this.connectingMetaId);
 		kparams.add("connectedParentMetaId", this.connectedParentMetaId);
+		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
 	}
 

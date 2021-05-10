@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -55,6 +55,8 @@ public class DiscountDetails extends ObjectBase {
 		RequestBuilder.ListTokenizer<Discount.Tokenizer> multiCurrencyDiscount();
 		String startDate();
 		String endDate();
+		String whenAlgoTimes();
+		String whenAlgoType();
 	}
 
 	/**
@@ -77,6 +79,14 @@ public class DiscountDetails extends ObjectBase {
 	 * End date represented as epoch
 	 */
 	private Long endDate;
+	/**
+	 * End date represented as epoch
+	 */
+	private Integer whenAlgoTimes;
+	/**
+	 * End date represented as epoch
+	 */
+	private Integer whenAlgoType;
 
 	// id:
 	public Integer getId(){
@@ -126,6 +136,30 @@ public class DiscountDetails extends ObjectBase {
 		setToken("endDate", multirequestToken);
 	}
 
+	// whenAlgoTimes:
+	public Integer getWhenAlgoTimes(){
+		return this.whenAlgoTimes;
+	}
+	public void setWhenAlgoTimes(Integer whenAlgoTimes){
+		this.whenAlgoTimes = whenAlgoTimes;
+	}
+
+	public void whenAlgoTimes(String multirequestToken){
+		setToken("whenAlgoTimes", multirequestToken);
+	}
+
+	// whenAlgoType:
+	public Integer getWhenAlgoType(){
+		return this.whenAlgoType;
+	}
+	public void setWhenAlgoType(Integer whenAlgoType){
+		this.whenAlgoType = whenAlgoType;
+	}
+
+	public void whenAlgoType(String multirequestToken){
+		setToken("whenAlgoType", multirequestToken);
+	}
+
 
 	public DiscountDetails() {
 		super();
@@ -142,6 +176,8 @@ public class DiscountDetails extends ObjectBase {
 		multiCurrencyDiscount = GsonParser.parseArray(jsonObject.getAsJsonArray("multiCurrencyDiscount"), Discount.class);
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+		whenAlgoTimes = GsonParser.parseInt(jsonObject.get("whenAlgoTimes"));
+		whenAlgoType = GsonParser.parseInt(jsonObject.get("whenAlgoType"));
 
 	}
 
@@ -152,6 +188,8 @@ public class DiscountDetails extends ObjectBase {
 		kparams.add("multiCurrencyDiscount", this.multiCurrencyDiscount);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
+		kparams.add("whenAlgoTimes", this.whenAlgoTimes);
+		kparams.add("whenAlgoType", this.whenAlgoType);
 		return kparams;
 	}
 

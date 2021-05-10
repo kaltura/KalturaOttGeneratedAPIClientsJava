@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -28,6 +28,10 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.LoginSession;
+import com.kaltura.client.types.Partner;
+import com.kaltura.client.types.PartnerFilter;
+import com.kaltura.client.types.PartnerSetup;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -38,6 +42,25 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PartnerService {
+	
+	public static class AddPartnerBuilder extends RequestBuilder<Partner, Partner.Tokenizer, AddPartnerBuilder> {
+		
+		public AddPartnerBuilder(Partner partner, PartnerSetup partnerSetup) {
+			super(Partner.class, "partner", "add");
+			params.add("partner", partner);
+			params.add("partnerSetup", partnerSetup);
+		}
+	}
+
+	/**
+	 * Add a partner with default user
+	 * 
+	 * @param partner partner
+	 * @param partnerSetup mandatory parameters to create partner
+	 */
+    public static AddPartnerBuilder add(Partner partner, PartnerSetup partnerSetup)  {
+		return new AddPartnerBuilder(partner, partnerSetup);
+	}
 	
 	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
 		
@@ -51,5 +74,26 @@ public class PartnerService {
 	 */
     public static ExternalLoginPartnerBuilder externalLogin()  {
 		return new ExternalLoginPartnerBuilder();
+	}
+	
+	public static class ListPartnerBuilder extends ListResponseRequestBuilder<Partner, Partner.Tokenizer, ListPartnerBuilder> {
+		
+		public ListPartnerBuilder(PartnerFilter filter) {
+			super(Partner.class, "partner", "list");
+			params.add("filter", filter);
+		}
+	}
+
+	public static ListPartnerBuilder list()  {
+		return list(null);
+	}
+
+	/**
+	 * Internal API !!! Returns the list of active Partners
+	 * 
+	 * @param filter Filter
+	 */
+    public static ListPartnerBuilder list(PartnerFilter filter)  {
+		return new ListPartnerBuilder(filter);
 	}
 }
