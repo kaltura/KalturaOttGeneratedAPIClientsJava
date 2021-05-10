@@ -29,7 +29,6 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.DrmProfile;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,44 +38,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class DrmProfileService {
-	
-	public static class AddDrmProfileBuilder extends RequestBuilder<DrmProfile, DrmProfile.Tokenizer, AddDrmProfileBuilder> {
-		
-		public AddDrmProfileBuilder(DrmProfile drmProfile) {
-			super(DrmProfile.class, "drmprofile", "add");
-			params.add("drmProfile", drmProfile);
-		}
-	}
-
-	/**
-	 * Internal API !!! Insert new DrmProfile
-	 * 
-	 * @param drmProfile Drm adapter Object
-	 */
-    public static AddDrmProfileBuilder add(DrmProfile drmProfile)  {
-		return new AddDrmProfileBuilder(drmProfile);
-	}
-	
-	public static class DeleteDrmProfileBuilder extends RequestBuilder<Boolean, String, DeleteDrmProfileBuilder> {
-		
-		public DeleteDrmProfileBuilder(long id) {
-			super(Boolean.class, "drmprofile", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Internal API !!! Delete DrmProfile
-	 * 
-	 * @param id Drm adapter id
-	 */
-    public static DeleteDrmProfileBuilder delete(long id)  {
-		return new DeleteDrmProfileBuilder(id);
-	}
 	
 	public static class ListDrmProfileBuilder extends ListResponseRequestBuilder<DrmProfile, DrmProfile.Tokenizer, ListDrmProfileBuilder> {
 		
