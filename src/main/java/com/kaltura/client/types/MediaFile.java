@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -52,7 +52,6 @@ public class MediaFile extends AssetFile {
 		String id();
 		String type();
 		String typeId();
-		String altUrl();
 		String duration();
 		String externalId();
 		String altExternalId();
@@ -90,10 +89,6 @@ public class MediaFile extends AssetFile {
 	 * Device types identifier as defined in the system
 	 */
 	private Integer typeId;
-	/**
-	 * URL of the media file to be played
-	 */
-	private String altUrl;
 	/**
 	 * Duration of the media file
 	 */
@@ -201,18 +196,6 @@ public class MediaFile extends AssetFile {
 
 	public void typeId(String multirequestToken){
 		setToken("typeId", multirequestToken);
-	}
-
-	// altUrl:
-	public String getAltUrl(){
-		return this.altUrl;
-	}
-	public void setAltUrl(String altUrl){
-		this.altUrl = altUrl;
-	}
-
-	public void altUrl(String multirequestToken){
-		setToken("altUrl", multirequestToken);
 	}
 
 	// duration:
@@ -454,7 +437,6 @@ public class MediaFile extends AssetFile {
 		id = GsonParser.parseInt(jsonObject.get("id"));
 		type = GsonParser.parseString(jsonObject.get("type"));
 		typeId = GsonParser.parseInt(jsonObject.get("typeId"));
-		altUrl = GsonParser.parseString(jsonObject.get("altUrl"));
 		duration = GsonParser.parseLong(jsonObject.get("duration"));
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		altExternalId = GsonParser.parseString(jsonObject.get("altExternalId"));
@@ -482,7 +464,6 @@ public class MediaFile extends AssetFile {
 		kparams.add("objectType", "KalturaMediaFile");
 		kparams.add("assetId", this.assetId);
 		kparams.add("typeId", this.typeId);
-		kparams.add("altUrl", this.altUrl);
 		kparams.add("duration", this.duration);
 		kparams.add("externalId", this.externalId);
 		kparams.add("altExternalId", this.altExternalId);
