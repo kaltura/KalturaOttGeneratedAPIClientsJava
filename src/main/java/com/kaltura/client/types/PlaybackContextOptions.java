@@ -62,8 +62,7 @@ public class PlaybackContextOptions extends ObjectBase {
 	 */
 	private String mediaProtocol;
 	/**
-	 * Playback streamer type: applehttp, mpegdash, url, smothstreaming, multicast,
-	  none
+	 * Playback streamer type: applehttp, mpegdash, url, smothstreaming, none
 	 */
 	private String streamerType;
 	/**

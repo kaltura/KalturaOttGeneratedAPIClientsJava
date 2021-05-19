@@ -30,11 +30,9 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.BaseRegionFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Region;
-import com.kaltura.client.types.RegionChannelNumber;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -60,56 +58,6 @@ public class RegionService {
 	 */
     public static AddRegionBuilder add(Region region)  {
 		return new AddRegionBuilder(region);
-	}
-	
-	public static class LinearchannelbulkaddRegionBuilder extends RequestBuilder<Boolean, String, LinearchannelbulkaddRegionBuilder> {
-		
-		public LinearchannelbulkaddRegionBuilder(long linearChannelId, List<RegionChannelNumber> regionChannelNumbers) {
-			super(Boolean.class, "region", "linearchannelbulkadd");
-			params.add("linearChannelId", linearChannelId);
-			params.add("regionChannelNumbers", regionChannelNumbers);
-		}
-		
-		public void linearChannelId(String multirequestToken) {
-			params.add("linearChannelId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Adds a linear channel to the list of regions.
-	 * 
-	 * @param linearChannelId The identifier of the linear channel
-	 * @param regionChannelNumbers List of regions and number of linear channel in it.
-	 */
-    public static LinearchannelbulkaddRegionBuilder linearchannelbulkadd(long linearChannelId, List<RegionChannelNumber> regionChannelNumbers)  {
-		return new LinearchannelbulkaddRegionBuilder(linearChannelId, regionChannelNumbers);
-	}
-	
-	public static class LinearchannelbulkdeleteRegionBuilder extends RequestBuilder<Boolean, String, LinearchannelbulkdeleteRegionBuilder> {
-		
-		public LinearchannelbulkdeleteRegionBuilder(long linearChannelId, String regionIds) {
-			super(Boolean.class, "region", "linearchannelbulkdelete");
-			params.add("linearChannelId", linearChannelId);
-			params.add("regionIds", regionIds);
-		}
-		
-		public void linearChannelId(String multirequestToken) {
-			params.add("linearChannelId", multirequestToken);
-		}
-		
-		public void regionIds(String multirequestToken) {
-			params.add("regionIds", multirequestToken);
-		}
-	}
-
-	/**
-	 * Deletes a linear channel from the list of regions.
-	 * 
-	 * @param linearChannelId The identifier of the linear channel
-	 * @param regionIds List of identifiers of regions.
-	 */
-    public static LinearchannelbulkdeleteRegionBuilder linearchannelbulkdelete(long linearChannelId, String regionIds)  {
-		return new LinearchannelbulkdeleteRegionBuilder(linearChannelId, regionIds);
 	}
 	
 	public static class DeleteRegionBuilder extends NullRequestBuilder {

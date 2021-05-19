@@ -48,7 +48,6 @@ public class AssetFileContext extends ObjectBase {
 		String viewLifeCycle();
 		String fullLifeCycle();
 		String isOfflinePlayBack();
-		String isLivePlayBack();
 	}
 
 	/**
@@ -63,10 +62,6 @@ public class AssetFileContext extends ObjectBase {
 	 * isOfflinePlayBack
 	 */
 	private Boolean isOfflinePlayBack;
-	/**
-	 * Is Live PlayBack
-	 */
-	private Boolean isLivePlayBack;
 
 	// viewLifeCycle:
 	public String getViewLifeCycle(){
@@ -79,10 +74,6 @@ public class AssetFileContext extends ObjectBase {
 	// isOfflinePlayBack:
 	public Boolean getIsOfflinePlayBack(){
 		return this.isOfflinePlayBack;
-	}
-	// isLivePlayBack:
-	public Boolean getIsLivePlayBack(){
-		return this.isLivePlayBack;
 	}
 
 	public AssetFileContext() {
@@ -98,7 +89,6 @@ public class AssetFileContext extends ObjectBase {
 		viewLifeCycle = GsonParser.parseString(jsonObject.get("viewLifeCycle"));
 		fullLifeCycle = GsonParser.parseString(jsonObject.get("fullLifeCycle"));
 		isOfflinePlayBack = GsonParser.parseBoolean(jsonObject.get("isOfflinePlayBack"));
-		isLivePlayBack = GsonParser.parseBoolean(jsonObject.get("isLivePlayBack"));
 
 	}
 
