@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.PriceDetails;
 import com.kaltura.client.types.PriceDetailsFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,6 +40,44 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class PriceDetailsService {
+	
+	public static class AddPriceDetailsBuilder extends RequestBuilder<PriceDetails, PriceDetails.Tokenizer, AddPriceDetailsBuilder> {
+		
+		public AddPriceDetailsBuilder(PriceDetails priceDetails) {
+			super(PriceDetails.class, "pricedetails", "add");
+			params.add("priceDetails", priceDetails);
+		}
+	}
+
+	/**
+	 * Internal API !!! Insert new PriceDetails for partner
+	 * 
+	 * @param priceDetails PriceDetails Object
+	 */
+    public static AddPriceDetailsBuilder add(PriceDetails priceDetails)  {
+		return new AddPriceDetailsBuilder(priceDetails);
+	}
+	
+	public static class DeletePriceDetailsBuilder extends RequestBuilder<Boolean, String, DeletePriceDetailsBuilder> {
+		
+		public DeletePriceDetailsBuilder(long id) {
+			super(Boolean.class, "pricedetails", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Internal API !!! Delete PriceDetails
+	 * 
+	 * @param id PriceDetails identifier
+	 */
+    public static DeletePriceDetailsBuilder delete(long id)  {
+		return new DeletePriceDetailsBuilder(id);
+	}
 	
 	public static class ListPriceDetailsBuilder extends ListResponseRequestBuilder<PriceDetails, PriceDetails.Tokenizer, ListPriceDetailsBuilder> {
 		
