@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,63 +41,65 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Device family details
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceFamilyBase.Tokenizer.class)
-public class DeviceFamilyBase extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(DynamicData.Tokenizer.class)
+public class DynamicData extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
+		String key();
+		Value.Tokenizer value();
 	}
 
 	/**
-	 * Device family identifier
+	 * Key
 	 */
-	private Long id;
+	private String key;
 	/**
-	 * Device family name
+	 * Value
 	 */
-	private String name;
+	private Value value;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// key:
+	public String getKey(){
+		return this.key;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void setKey(String key){
+		this.key = key;
 	}
 
-	// name:
-	public String getName(){
-		return this.name;
+	public void key(String multirequestToken){
+		setToken("key", multirequestToken);
 	}
 
-	public DeviceFamilyBase() {
+	// value:
+	public Value getValue(){
+		return this.value;
+	}
+	public void setValue(Value value){
+		this.value = value;
+	}
+
+
+	public DynamicData() {
 		super();
 	}
 
-	public DeviceFamilyBase(JsonObject jsonObject) throws APIException {
+	public DynamicData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
+		key = GsonParser.parseString(jsonObject.get("key"));
+		value = GsonParser.parseObject(jsonObject.getAsJsonObject("value"), Value.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceFamilyBase");
-		kparams.add("id", this.id);
+		kparams.add("objectType", "KalturaDynamicData");
+		kparams.add("key", this.key);
+		kparams.add("value", this.value);
 		return kparams;
 	}
 
