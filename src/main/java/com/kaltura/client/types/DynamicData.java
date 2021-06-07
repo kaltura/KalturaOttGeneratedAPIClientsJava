@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,49 +42,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ApplyPlaybackAdapterAction.Tokenizer.class)
-public class ApplyPlaybackAdapterAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(DynamicData.Tokenizer.class)
+public class DynamicData extends ObjectBase {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		String adapterId();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String key();
+		Value.Tokenizer value();
 	}
 
 	/**
-	 * Playback Adapter Identifier
+	 * Key
 	 */
-	private Integer adapterId;
+	private String key;
+	/**
+	 * Value
+	 */
+	private Value value;
 
-	// adapterId:
-	public Integer getAdapterId(){
-		return this.adapterId;
+	// key:
+	public String getKey(){
+		return this.key;
 	}
-	public void setAdapterId(Integer adapterId){
-		this.adapterId = adapterId;
+	public void setKey(String key){
+		this.key = key;
 	}
 
-	public void adapterId(String multirequestToken){
-		setToken("adapterId", multirequestToken);
+	public void key(String multirequestToken){
+		setToken("key", multirequestToken);
+	}
+
+	// value:
+	public Value getValue(){
+		return this.value;
+	}
+	public void setValue(Value value){
+		this.value = value;
 	}
 
 
-	public ApplyPlaybackAdapterAction() {
+	public DynamicData() {
 		super();
 	}
 
-	public ApplyPlaybackAdapterAction(JsonObject jsonObject) throws APIException {
+	public DynamicData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		adapterId = GsonParser.parseInt(jsonObject.get("adapterId"));
+		key = GsonParser.parseString(jsonObject.get("key"));
+		value = GsonParser.parseObject(jsonObject.getAsJsonObject("value"), Value.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaApplyPlaybackAdapterAction");
-		kparams.add("adapterId", this.adapterId);
+		kparams.add("objectType", "KalturaDynamicData");
+		kparams.add("key", this.key);
+		kparams.add("value", this.value);
 		return kparams;
 	}
 

@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.DynamicData;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.types.OTTUser;
@@ -146,6 +147,27 @@ public class OttUserService {
 	 */
     public static DeleteOttUserBuilder delete()  {
 		return new DeleteOttUserBuilder();
+	}
+	
+	public static class DeleteDynamicDataOttUserBuilder extends RequestBuilder<Boolean, String, DeleteDynamicDataOttUserBuilder> {
+		
+		public DeleteDynamicDataOttUserBuilder(String key) {
+			super(Boolean.class, "ottuser", "deleteDynamicData");
+			params.add("key", key);
+		}
+		
+		public void key(String multirequestToken) {
+			params.add("key", multirequestToken);
+		}
+	}
+
+	/**
+	 * Deletes dynamic data item for a user.
+	 * 
+	 * @param key Key of dynamic data item.
+	 */
+    public static DeleteDynamicDataOttUserBuilder deleteDynamicData(String key)  {
+		return new DeleteDynamicDataOttUserBuilder(key);
 	}
 	
 	public static class GetOttUserBuilder extends RequestBuilder<OTTUser, OTTUser.Tokenizer, GetOttUserBuilder> {
@@ -491,10 +513,12 @@ public class OttUserService {
 	}
 
 	/**
-	 * Update user dynamic data
+	 * Update user dynamic data. If it is needed to update several items, use a
+	  multi-request to avoid race conditions.              This API endpoint will
+	  deprecated soon. Please use UpsertDynamicData instead of it.
 	 * 
-	 * @param key Type of dynamicData
-	 * @param value Value of dynamicData
+	 * @param key Type of dynamicData. Max length of key is 50 characters.
+	 * @param value Value of dynamicData. Max length of value is 512 characters.
 	 */
     public static UpdateDynamicDataOttUserBuilder updateDynamicData(String key, StringValue value)  {
 		return new UpdateDynamicDataOttUserBuilder(key, value);
@@ -558,5 +582,29 @@ public class OttUserService {
 	 */
     public static UpdatePasswordOttUserBuilder updatePassword(int userId, String password)  {
 		return new UpdatePasswordOttUserBuilder(userId, password);
+	}
+	
+	public static class UpsertDynamicDataOttUserBuilder extends RequestBuilder<DynamicData, DynamicData.Tokenizer, UpsertDynamicDataOttUserBuilder> {
+		
+		public UpsertDynamicDataOttUserBuilder(String key, StringValue value) {
+			super(DynamicData.class, "ottuser", "upsertDynamicData");
+			params.add("key", key);
+			params.add("value", value);
+		}
+		
+		public void key(String multirequestToken) {
+			params.add("key", multirequestToken);
+		}
+	}
+
+	/**
+	 * Adds or updates dynamic data item for a user. If it is needed to update several
+	  items, use a multi-request to avoid race conditions.
+	 * 
+	 * @param key Key of dynamic data item. Max length of key is 50 characters.
+	 * @param value Value of dynamic data item. Max length of value is 512 characters.
+	 */
+    public static UpsertDynamicDataOttUserBuilder upsertDynamicData(String key, StringValue value)  {
+		return new UpsertDynamicDataOttUserBuilder(key, value);
 	}
 }

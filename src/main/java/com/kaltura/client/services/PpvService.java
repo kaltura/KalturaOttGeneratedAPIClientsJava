@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -40,6 +40,44 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PpvService {
+	
+	public static class AddPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, AddPpvBuilder> {
+		
+		public AddPpvBuilder(Ppv ppv) {
+			super(Ppv.class, "ppv", "add");
+			params.add("ppv", ppv);
+		}
+	}
+
+	/**
+	 * Internal API !!! Insert new ppv for partner
+	 * 
+	 * @param ppv ppv object
+	 */
+    public static AddPpvBuilder add(Ppv ppv)  {
+		return new AddPpvBuilder(ppv);
+	}
+	
+	public static class DeletePpvBuilder extends RequestBuilder<Boolean, String, DeletePpvBuilder> {
+		
+		public DeletePpvBuilder(long id) {
+			super(Boolean.class, "ppv", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Internal API !!! Delete ppv
+	 * 
+	 * @param id PPV id
+	 */
+    public static DeletePpvBuilder delete(long id)  {
+		return new DeletePpvBuilder(id);
+	}
 	
 	public static class GetPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, GetPpvBuilder> {
 		
