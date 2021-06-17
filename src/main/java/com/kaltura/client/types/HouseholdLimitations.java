@@ -116,50 +116,18 @@ public class HouseholdLimitations extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// concurrentLimit:
 	public Integer getConcurrentLimit(){
 		return this.concurrentLimit;
 	}
-	public void setConcurrentLimit(Integer concurrentLimit){
-		this.concurrentLimit = concurrentLimit;
-	}
-
-	public void concurrentLimit(String multirequestToken){
-		setToken("concurrentLimit", multirequestToken);
-	}
-
 	// deviceLimit:
 	public Integer getDeviceLimit(){
 		return this.deviceLimit;
 	}
-	public void setDeviceLimit(Integer deviceLimit){
-		this.deviceLimit = deviceLimit;
-	}
-
-	public void deviceLimit(String multirequestToken){
-		setToken("deviceLimit", multirequestToken);
-	}
-
 	// deviceFrequency:
 	public Integer getDeviceFrequency(){
 		return this.deviceFrequency;
 	}
-	public void setDeviceFrequency(Integer deviceFrequency){
-		this.deviceFrequency = deviceFrequency;
-	}
-
-	public void deviceFrequency(String multirequestToken){
-		setToken("deviceFrequency", multirequestToken);
-	}
-
 	// deviceFrequencyDescription:
 	public String getDeviceFrequencyDescription(){
 		return this.deviceFrequencyDescription;
@@ -168,14 +136,6 @@ public class HouseholdLimitations extends ObjectBase {
 	public Integer getUserFrequency(){
 		return this.userFrequency;
 	}
-	public void setUserFrequency(Integer userFrequency){
-		this.userFrequency = userFrequency;
-	}
-
-	public void userFrequency(String multirequestToken){
-		setToken("userFrequency", multirequestToken);
-	}
-
 	// userFrequencyDescription:
 	public String getUserFrequencyDescription(){
 		return this.userFrequencyDescription;
@@ -188,22 +148,10 @@ public class HouseholdLimitations extends ObjectBase {
 	public Integer getUsersLimit(){
 		return this.usersLimit;
 	}
-	public void setUsersLimit(Integer usersLimit){
-		this.usersLimit = usersLimit;
-	}
-
-	public void usersLimit(String multirequestToken){
-		setToken("usersLimit", multirequestToken);
-	}
-
 	// deviceFamiliesLimitations:
 	public List<HouseholdDeviceFamilyLimitations> getDeviceFamiliesLimitations(){
 		return this.deviceFamiliesLimitations;
 	}
-	public void setDeviceFamiliesLimitations(List<HouseholdDeviceFamilyLimitations> deviceFamiliesLimitations){
-		this.deviceFamiliesLimitations = deviceFamiliesLimitations;
-	}
-
 
 	public HouseholdLimitations() {
 		super();
@@ -232,13 +180,6 @@ public class HouseholdLimitations extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaHouseholdLimitations");
-		kparams.add("name", this.name);
-		kparams.add("concurrentLimit", this.concurrentLimit);
-		kparams.add("deviceLimit", this.deviceLimit);
-		kparams.add("deviceFrequency", this.deviceFrequency);
-		kparams.add("userFrequency", this.userFrequency);
-		kparams.add("usersLimit", this.usersLimit);
-		kparams.add("deviceFamiliesLimitations", this.deviceFamiliesLimitations);
 		return kparams;
 	}
 

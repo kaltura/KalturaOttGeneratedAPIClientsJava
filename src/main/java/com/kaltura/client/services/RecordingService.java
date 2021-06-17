@@ -27,11 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.ActionResult;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Recording;
 import com.kaltura.client.types.RecordingFilter;
-import com.kaltura.client.utils.request.ArrayRequestBuilder;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -59,30 +57,6 @@ public class RecordingService {
 	 */
     public static AddRecordingBuilder add(Recording recording)  {
 		return new AddRecordingBuilder(recording);
-	}
-	
-	public static class BulkdeleteRecordingBuilder extends ArrayRequestBuilder<ActionResult, ActionResult.Tokenizer, BulkdeleteRecordingBuilder> {
-		
-		public BulkdeleteRecordingBuilder(String recordingIds) {
-			super(ActionResult.class, "recording", "bulkdelete");
-			params.add("recordingIds", recordingIds);
-		}
-		
-		public void recordingIds(String multirequestToken) {
-			params.add("recordingIds", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete list of user&amp;#39;s recordings. Recording can be deleted only in
-	  status Recorded.              Possible error codes for each recording:
-	  RecordingNotFound = 3039, RecordingStatusNotValid = 3043, Error = 1
-	 * 
-	 * @param recordingIds Recording identifiers. Up to 40 private copies and up to 100 shared copies can
-	 * be deleted withing a call.
-	 */
-    public static BulkdeleteRecordingBuilder bulkdelete(String recordingIds)  {
-		return new BulkdeleteRecordingBuilder(recordingIds);
 	}
 	
 	public static class CancelRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, CancelRecordingBuilder> {
