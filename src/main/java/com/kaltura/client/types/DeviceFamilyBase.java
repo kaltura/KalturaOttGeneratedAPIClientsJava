@@ -65,18 +65,18 @@ public class DeviceFamilyBase extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
 	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
 
 	public DeviceFamilyBase() {
 		super();
@@ -96,7 +96,7 @@ public class DeviceFamilyBase extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDeviceFamilyBase");
-		kparams.add("id", this.id);
+		kparams.add("name", this.name);
 		return kparams;
 	}
 
