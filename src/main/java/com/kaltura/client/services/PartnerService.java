@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -60,6 +60,27 @@ public class PartnerService {
 	 */
     public static AddPartnerBuilder add(Partner partner, PartnerSetup partnerSetup)  {
 		return new AddPartnerBuilder(partner, partnerSetup);
+	}
+	
+	public static class DeletePartnerBuilder extends RequestBuilder<Boolean, String, DeletePartnerBuilder> {
+		
+		public DeletePartnerBuilder(int id) {
+			super(Boolean.class, "partner", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Internal API !!! Delete Partner
+	 * 
+	 * @param id Partner id
+	 */
+    public static DeletePartnerBuilder delete(int id)  {
+		return new DeletePartnerBuilder(id);
 	}
 	
 	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
