@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,27 +40,39 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Slim channel
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseChannel.Tokenizer.class)
-public class BaseChannel extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(Partner.Tokenizer.class)
+public class Partner extends ObjectBase {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
+		String name();
+		String createDate();
+		String updateDate();
 	}
 
 	/**
-	 * Unique identifier for the channel
+	 * PartnerId
 	 */
-	private Long id;
+	private Integer id;
+	/**
+	 * PartnerName
+	 */
+	private String name;
+	/**
+	 * Creat date represented as epoch
+	 */
+	private Long createDate;
+	/**
+	 * Update date represented as epoch
+	 */
+	private Long updateDate;
 
 	// id:
-	public Long getId(){
+	public Integer getId(){
 		return this.id;
 	}
-	public void setId(Long id){
+	public void setId(Integer id){
 		this.id = id;
 	}
 
@@ -67,25 +80,67 @@ public class BaseChannel extends OTTObjectSupportNullable {
 		setToken("id", multirequestToken);
 	}
 
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
 
-	public BaseChannel() {
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	public void setCreateDate(Long createDate){
+		this.createDate = createDate;
+	}
+
+	public void createDate(String multirequestToken){
+		setToken("createDate", multirequestToken);
+	}
+
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	public void setUpdateDate(Long updateDate){
+		this.updateDate = updateDate;
+	}
+
+	public void updateDate(String multirequestToken){
+		setToken("updateDate", multirequestToken);
+	}
+
+
+	public Partner() {
 		super();
 	}
 
-	public BaseChannel(JsonObject jsonObject) throws APIException {
+	public Partner(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
+		id = GsonParser.parseInt(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseChannel");
+		kparams.add("objectType", "KalturaPartner");
 		kparams.add("id", this.id);
+		kparams.add("name", this.name);
+		kparams.add("createDate", this.createDate);
+		kparams.add("updateDate", this.updateDate);
 		return kparams;
 	}
 

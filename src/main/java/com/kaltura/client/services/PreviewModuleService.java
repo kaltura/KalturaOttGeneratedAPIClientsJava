@@ -27,8 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.DiscountDetails;
-import com.kaltura.client.types.DiscountDetailsFilter;
+import com.kaltura.client.types.PreviewModule;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,29 +38,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class DiscountDetailsService {
+public class PreviewModuleService {
 	
-	public static class AddDiscountDetailsBuilder extends RequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, AddDiscountDetailsBuilder> {
+	public static class AddPreviewModuleBuilder extends RequestBuilder<PreviewModule, PreviewModule.Tokenizer, AddPreviewModuleBuilder> {
 		
-		public AddDiscountDetailsBuilder(DiscountDetails discountDetails) {
-			super(DiscountDetails.class, "discountdetails", "add");
-			params.add("discountDetails", discountDetails);
+		public AddPreviewModuleBuilder(PreviewModule previewModule) {
+			super(PreviewModule.class, "previewmodule", "add");
+			params.add("previewModule", previewModule);
 		}
 	}
 
 	/**
-	 * Internal API !!! Insert new DiscountDetails for partner
+	 * Internal API !!! Insert new PreviewModule for partner
 	 * 
-	 * @param discountDetails Discount details Object
+	 * @param previewModule Preview module object
 	 */
-    public static AddDiscountDetailsBuilder add(DiscountDetails discountDetails)  {
-		return new AddDiscountDetailsBuilder(discountDetails);
+    public static AddPreviewModuleBuilder add(PreviewModule previewModule)  {
+		return new AddPreviewModuleBuilder(previewModule);
 	}
 	
-	public static class DeleteDiscountDetailsBuilder extends RequestBuilder<Boolean, String, DeleteDiscountDetailsBuilder> {
+	public static class DeletePreviewModuleBuilder extends RequestBuilder<Boolean, String, DeletePreviewModuleBuilder> {
 		
-		public DeleteDiscountDetailsBuilder(long id) {
-			super(Boolean.class, "discountdetails", "delete");
+		public DeletePreviewModuleBuilder(long id) {
+			super(Boolean.class, "previewmodule", "delete");
 			params.add("id", id);
 		}
 		
@@ -71,33 +70,25 @@ public class DiscountDetailsService {
 	}
 
 	/**
-	 * Internal API !!! Delete DiscountDetails
+	 * Internal API !!! Delete PreviewModule
 	 * 
-	 * @param id DiscountDetails id
+	 * @param id PreviewModule id
 	 */
-    public static DeleteDiscountDetailsBuilder delete(long id)  {
-		return new DeleteDiscountDetailsBuilder(id);
+    public static DeletePreviewModuleBuilder delete(long id)  {
+		return new DeletePreviewModuleBuilder(id);
 	}
 	
-	public static class ListDiscountDetailsBuilder extends ListResponseRequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, ListDiscountDetailsBuilder> {
+	public static class ListPreviewModuleBuilder extends ListResponseRequestBuilder<PreviewModule, PreviewModule.Tokenizer, ListPreviewModuleBuilder> {
 		
-		public ListDiscountDetailsBuilder(DiscountDetailsFilter filter) {
-			super(DiscountDetails.class, "discountdetails", "list");
-			params.add("filter", filter);
+		public ListPreviewModuleBuilder() {
+			super(PreviewModule.class, "previewmodule", "list");
 		}
 	}
 
-	public static ListDiscountDetailsBuilder list()  {
-		return list(null);
-	}
-
 	/**
-	 * Returns the list of available discounts details, can be filtered by discount
-	  codes
-	 * 
-	 * @param filter Filter
+	 * Internal API !!! Returns all PreviewModule
 	 */
-    public static ListDiscountDetailsBuilder list(DiscountDetailsFilter filter)  {
-		return new ListDiscountDetailsBuilder(filter);
+    public static ListPreviewModuleBuilder list()  {
+		return new ListPreviewModuleBuilder();
 	}
 }

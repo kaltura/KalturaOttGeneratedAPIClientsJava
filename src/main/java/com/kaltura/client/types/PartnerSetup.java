@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.BasePartnerConfiguration;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -41,109 +42,86 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Discount module
+ * Parameters for partner setup
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DiscountModule.Tokenizer.class)
-public class DiscountModule extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(PartnerSetup.Tokenizer.class)
+public class PartnerSetup extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String percent();
-		String startDate();
-		String endDate();
+		String adminUsername();
+		String adminPassword();
+		BasePartnerConfiguration.Tokenizer basePartnerConfiguration();
 	}
 
 	/**
-	 * Discount module identifier
+	 * admin Username
 	 */
-	private Long id;
+	private String adminUsername;
 	/**
-	 * The discount percentage
+	 * admin Password
 	 */
-	private Double percent;
+	private String adminPassword;
 	/**
-	 * The first date the discount is available
+	 * basePartnerConfiguration
 	 */
-	private Long startDate;
-	/**
-	 * The last date the discount is available
-	 */
-	private Long endDate;
+	private BasePartnerConfiguration basePartnerConfiguration;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// adminUsername:
+	public String getAdminUsername(){
+		return this.adminUsername;
 	}
-	public void setId(Long id){
-		this.id = id;
+	public void setAdminUsername(String adminUsername){
+		this.adminUsername = adminUsername;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void adminUsername(String multirequestToken){
+		setToken("adminUsername", multirequestToken);
 	}
 
-	// percent:
-	public Double getPercent(){
-		return this.percent;
+	// adminPassword:
+	public String getAdminPassword(){
+		return this.adminPassword;
 	}
-	public void setPercent(Double percent){
-		this.percent = percent;
-	}
-
-	public void percent(String multirequestToken){
-		setToken("percent", multirequestToken);
+	public void setAdminPassword(String adminPassword){
+		this.adminPassword = adminPassword;
 	}
 
-	// startDate:
-	public Long getStartDate(){
-		return this.startDate;
-	}
-	public void setStartDate(Long startDate){
-		this.startDate = startDate;
+	public void adminPassword(String multirequestToken){
+		setToken("adminPassword", multirequestToken);
 	}
 
-	public void startDate(String multirequestToken){
-		setToken("startDate", multirequestToken);
+	// basePartnerConfiguration:
+	public BasePartnerConfiguration getBasePartnerConfiguration(){
+		return this.basePartnerConfiguration;
 	}
-
-	// endDate:
-	public Long getEndDate(){
-		return this.endDate;
-	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
+	public void setBasePartnerConfiguration(BasePartnerConfiguration basePartnerConfiguration){
+		this.basePartnerConfiguration = basePartnerConfiguration;
 	}
 
 
-	public DiscountModule() {
+	public PartnerSetup() {
 		super();
 	}
 
-	public DiscountModule(JsonObject jsonObject) throws APIException {
+	public PartnerSetup(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		percent = GsonParser.parseDouble(jsonObject.get("percent"));
-		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
-		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+		adminUsername = GsonParser.parseString(jsonObject.get("adminUsername"));
+		adminPassword = GsonParser.parseString(jsonObject.get("adminPassword"));
+		basePartnerConfiguration = GsonParser.parseObject(jsonObject.getAsJsonObject("basePartnerConfiguration"), BasePartnerConfiguration.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscountModule");
-		kparams.add("id", this.id);
-		kparams.add("percent", this.percent);
-		kparams.add("startDate", this.startDate);
-		kparams.add("endDate", this.endDate);
+		kparams.add("objectType", "KalturaPartnerSetup");
+		kparams.add("adminUsername", this.adminUsername);
+		kparams.add("adminPassword", this.adminPassword);
+		kparams.add("basePartnerConfiguration", this.basePartnerConfiguration);
 		return kparams;
 	}
 

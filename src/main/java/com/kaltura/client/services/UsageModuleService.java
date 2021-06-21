@@ -27,8 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.DiscountDetails;
-import com.kaltura.client.types.DiscountDetailsFilter;
+import com.kaltura.client.types.UsageModule;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -39,29 +38,29 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class DiscountDetailsService {
+public class UsageModuleService {
 	
-	public static class AddDiscountDetailsBuilder extends RequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, AddDiscountDetailsBuilder> {
+	public static class AddUsageModuleBuilder extends RequestBuilder<UsageModule, UsageModule.Tokenizer, AddUsageModuleBuilder> {
 		
-		public AddDiscountDetailsBuilder(DiscountDetails discountDetails) {
-			super(DiscountDetails.class, "discountdetails", "add");
-			params.add("discountDetails", discountDetails);
+		public AddUsageModuleBuilder(UsageModule usageModule) {
+			super(UsageModule.class, "usagemodule", "add");
+			params.add("usageModule", usageModule);
 		}
 	}
 
 	/**
-	 * Internal API !!! Insert new DiscountDetails for partner
+	 * Internal API !!! Insert new UsageModule
 	 * 
-	 * @param discountDetails Discount details Object
+	 * @param usageModule usage module Object
 	 */
-    public static AddDiscountDetailsBuilder add(DiscountDetails discountDetails)  {
-		return new AddDiscountDetailsBuilder(discountDetails);
+    public static AddUsageModuleBuilder add(UsageModule usageModule)  {
+		return new AddUsageModuleBuilder(usageModule);
 	}
 	
-	public static class DeleteDiscountDetailsBuilder extends RequestBuilder<Boolean, String, DeleteDiscountDetailsBuilder> {
+	public static class DeleteUsageModuleBuilder extends RequestBuilder<Boolean, String, DeleteUsageModuleBuilder> {
 		
-		public DeleteDiscountDetailsBuilder(long id) {
-			super(Boolean.class, "discountdetails", "delete");
+		public DeleteUsageModuleBuilder(long id) {
+			super(Boolean.class, "usagemodule", "delete");
 			params.add("id", id);
 		}
 		
@@ -71,33 +70,25 @@ public class DiscountDetailsService {
 	}
 
 	/**
-	 * Internal API !!! Delete DiscountDetails
+	 * Internal API !!! Delete UsageModule
 	 * 
-	 * @param id DiscountDetails id
+	 * @param id UsageModule id
 	 */
-    public static DeleteDiscountDetailsBuilder delete(long id)  {
-		return new DeleteDiscountDetailsBuilder(id);
+    public static DeleteUsageModuleBuilder delete(long id)  {
+		return new DeleteUsageModuleBuilder(id);
 	}
 	
-	public static class ListDiscountDetailsBuilder extends ListResponseRequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, ListDiscountDetailsBuilder> {
+	public static class ListUsageModuleBuilder extends ListResponseRequestBuilder<UsageModule, UsageModule.Tokenizer, ListUsageModuleBuilder> {
 		
-		public ListDiscountDetailsBuilder(DiscountDetailsFilter filter) {
-			super(DiscountDetails.class, "discountdetails", "list");
-			params.add("filter", filter);
+		public ListUsageModuleBuilder() {
+			super(UsageModule.class, "usagemodule", "list");
 		}
 	}
 
-	public static ListDiscountDetailsBuilder list()  {
-		return list(null);
-	}
-
 	/**
-	 * Returns the list of available discounts details, can be filtered by discount
-	  codes
-	 * 
-	 * @param filter Filter
+	 * Internal API !!! Returns the list of available usage module
 	 */
-    public static ListDiscountDetailsBuilder list(DiscountDetailsFilter filter)  {
-		return new ListDiscountDetailsBuilder(filter);
+    public static ListUsageModuleBuilder list()  {
+		return new ListUsageModuleBuilder();
 	}
 }

@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,53 +40,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Slim channel
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseChannel.Tokenizer.class)
-public class BaseChannel extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(SeriesRecordingOption.Tokenizer.class)
+public class SeriesRecordingOption extends ObjectBase {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
-		String id();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String minSeasonNumber();
+		String minEpisodeNumber();
 	}
 
 	/**
-	 * Unique identifier for the channel
+	 * min Season Number
 	 */
-	private Long id;
+	private Integer minSeasonNumber;
+	/**
+	 * min Season Number
+	 */
+	private Integer minEpisodeNumber;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// minSeasonNumber:
+	public Integer getMinSeasonNumber(){
+		return this.minSeasonNumber;
 	}
-	public void setId(Long id){
-		this.id = id;
+	public void setMinSeasonNumber(Integer minSeasonNumber){
+		this.minSeasonNumber = minSeasonNumber;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void minSeasonNumber(String multirequestToken){
+		setToken("minSeasonNumber", multirequestToken);
+	}
+
+	// minEpisodeNumber:
+	public Integer getMinEpisodeNumber(){
+		return this.minEpisodeNumber;
+	}
+	public void setMinEpisodeNumber(Integer minEpisodeNumber){
+		this.minEpisodeNumber = minEpisodeNumber;
+	}
+
+	public void minEpisodeNumber(String multirequestToken){
+		setToken("minEpisodeNumber", multirequestToken);
 	}
 
 
-	public BaseChannel() {
+	public SeriesRecordingOption() {
 		super();
 	}
 
-	public BaseChannel(JsonObject jsonObject) throws APIException {
+	public SeriesRecordingOption(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
+		minSeasonNumber = GsonParser.parseInt(jsonObject.get("minSeasonNumber"));
+		minEpisodeNumber = GsonParser.parseInt(jsonObject.get("minEpisodeNumber"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseChannel");
-		kparams.add("id", this.id);
+		kparams.add("objectType", "KalturaSeriesRecordingOption");
+		kparams.add("minSeasonNumber", this.minSeasonNumber);
+		kparams.add("minEpisodeNumber", this.minEpisodeNumber);
 		return kparams;
 	}
 
