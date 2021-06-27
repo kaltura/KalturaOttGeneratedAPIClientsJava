@@ -62,6 +62,20 @@ public class PartnerService {
 		return new AddPartnerBuilder(partner, partnerSetup);
 	}
 	
+	public static class CreateIndexesPartnerBuilder extends RequestBuilder<Boolean, String, CreateIndexesPartnerBuilder> {
+		
+		public CreateIndexesPartnerBuilder() {
+			super(Boolean.class, "partner", "createIndexes");
+		}
+	}
+
+	/**
+	 * Internal API !!! create ElasticSearch indexes for partner
+	 */
+    public static CreateIndexesPartnerBuilder createIndexes()  {
+		return new CreateIndexesPartnerBuilder();
+	}
+	
 	public static class DeletePartnerBuilder extends RequestBuilder<Boolean, String, DeletePartnerBuilder> {
 		
 		public DeletePartnerBuilder(int id) {
