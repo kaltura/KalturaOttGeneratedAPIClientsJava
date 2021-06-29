@@ -67,10 +67,6 @@ public class SubscriptionInternal extends ObjectBase {
 		String householdLimitationsId();
 		String gracePeriodMinutes();
 		RequestBuilder.ListTokenizer<PremiumService.Tokenizer> premiumServices();
-		String maxViewsNumber();
-		String viewLifeCycle();
-		String waiverPeriod();
-		String isWaiverEnabled();
 		RequestBuilder.ListTokenizer<SubscriptionCouponGroup.Tokenizer> couponsGroups();
 		RequestBuilder.ListTokenizer<ProductCode.Tokenizer> productCodes();
 		String dependencyType();
@@ -79,6 +75,7 @@ public class SubscriptionInternal extends ObjectBase {
 		String preSaleDate();
 		String adsPolicy();
 		String adsParam();
+		String isActive();
 	}
 
 	/**
@@ -142,25 +139,6 @@ public class SubscriptionInternal extends ObjectBase {
 	 */
 	private List<PremiumService> premiumServices;
 	/**
-	 * The maximum number of times an item in this usage module can be viewed
-	 */
-	private Integer maxViewsNumber;
-	/**
-	 * The amount time an item is available for viewing since a user started watching
-	  the item
-	 */
-	private Integer viewLifeCycle;
-	/**
-	 * Time period during which the end user can waive his rights to cancel a purchase.
-	  When the time period is passed, the purchase can no longer be cancelled
-	 */
-	private Integer waiverPeriod;
-	/**
-	 * Indicates whether or not the end user has the right to waive his rights to
-	  cancel a purchase
-	 */
-	private Boolean isWaiverEnabled;
-	/**
 	 * List of Coupons group
 	 */
 	private List<SubscriptionCouponGroup> couponsGroups;
@@ -192,6 +170,10 @@ public class SubscriptionInternal extends ObjectBase {
 	 * The parameters to pass to the ads server
 	 */
 	private String adsParam;
+	/**
+	 * Is active subscription
+	 */
+	private Boolean isActive;
 
 	// channelsIds:
 	public String getChannelsIds(){
@@ -345,54 +327,6 @@ public class SubscriptionInternal extends ObjectBase {
 		this.premiumServices = premiumServices;
 	}
 
-	// maxViewsNumber:
-	public Integer getMaxViewsNumber(){
-		return this.maxViewsNumber;
-	}
-	public void setMaxViewsNumber(Integer maxViewsNumber){
-		this.maxViewsNumber = maxViewsNumber;
-	}
-
-	public void maxViewsNumber(String multirequestToken){
-		setToken("maxViewsNumber", multirequestToken);
-	}
-
-	// viewLifeCycle:
-	public Integer getViewLifeCycle(){
-		return this.viewLifeCycle;
-	}
-	public void setViewLifeCycle(Integer viewLifeCycle){
-		this.viewLifeCycle = viewLifeCycle;
-	}
-
-	public void viewLifeCycle(String multirequestToken){
-		setToken("viewLifeCycle", multirequestToken);
-	}
-
-	// waiverPeriod:
-	public Integer getWaiverPeriod(){
-		return this.waiverPeriod;
-	}
-	public void setWaiverPeriod(Integer waiverPeriod){
-		this.waiverPeriod = waiverPeriod;
-	}
-
-	public void waiverPeriod(String multirequestToken){
-		setToken("waiverPeriod", multirequestToken);
-	}
-
-	// isWaiverEnabled:
-	public Boolean getIsWaiverEnabled(){
-		return this.isWaiverEnabled;
-	}
-	public void setIsWaiverEnabled(Boolean isWaiverEnabled){
-		this.isWaiverEnabled = isWaiverEnabled;
-	}
-
-	public void isWaiverEnabled(String multirequestToken){
-		setToken("isWaiverEnabled", multirequestToken);
-	}
-
 	// couponsGroups:
 	public List<SubscriptionCouponGroup> getCouponsGroups(){
 		return this.couponsGroups;
@@ -481,6 +415,18 @@ public class SubscriptionInternal extends ObjectBase {
 		setToken("adsParam", multirequestToken);
 	}
 
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
+
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
+
 
 	public SubscriptionInternal() {
 		super();
@@ -507,10 +453,6 @@ public class SubscriptionInternal extends ObjectBase {
 		householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
 		gracePeriodMinutes = GsonParser.parseInt(jsonObject.get("gracePeriodMinutes"));
 		premiumServices = GsonParser.parseArray(jsonObject.getAsJsonArray("premiumServices"), PremiumService.class);
-		maxViewsNumber = GsonParser.parseInt(jsonObject.get("maxViewsNumber"));
-		viewLifeCycle = GsonParser.parseInt(jsonObject.get("viewLifeCycle"));
-		waiverPeriod = GsonParser.parseInt(jsonObject.get("waiverPeriod"));
-		isWaiverEnabled = GsonParser.parseBoolean(jsonObject.get("isWaiverEnabled"));
 		couponsGroups = GsonParser.parseArray(jsonObject.getAsJsonArray("couponsGroups"), SubscriptionCouponGroup.class);
 		productCodes = GsonParser.parseArray(jsonObject.getAsJsonArray("productCodes"), ProductCode.class);
 		dependencyType = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyType")));
@@ -519,6 +461,7 @@ public class SubscriptionInternal extends ObjectBase {
 		preSaleDate = GsonParser.parseLong(jsonObject.get("preSaleDate"));
 		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
 		adsParam = GsonParser.parseString(jsonObject.get("adsParam"));
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 
 	}
 
@@ -538,10 +481,6 @@ public class SubscriptionInternal extends ObjectBase {
 		kparams.add("householdLimitationsId", this.householdLimitationsId);
 		kparams.add("gracePeriodMinutes", this.gracePeriodMinutes);
 		kparams.add("premiumServices", this.premiumServices);
-		kparams.add("maxViewsNumber", this.maxViewsNumber);
-		kparams.add("viewLifeCycle", this.viewLifeCycle);
-		kparams.add("waiverPeriod", this.waiverPeriod);
-		kparams.add("isWaiverEnabled", this.isWaiverEnabled);
 		kparams.add("couponsGroups", this.couponsGroups);
 		kparams.add("productCodes", this.productCodes);
 		kparams.add("dependencyType", this.dependencyType);
@@ -550,6 +489,7 @@ public class SubscriptionInternal extends ObjectBase {
 		kparams.add("preSaleDate", this.preSaleDate);
 		kparams.add("adsPolicy", this.adsPolicy);
 		kparams.add("adsParam", this.adsParam);
+		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
 
