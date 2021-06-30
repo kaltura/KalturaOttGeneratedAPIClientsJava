@@ -44,10 +44,10 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class SubscriptionService {
 	
-	public static class AddSubscriptionBuilder extends RequestBuilder<SubscriptionInternal, SubscriptionInternal.Tokenizer, AddSubscriptionBuilder> {
+	public static class AddInternalSubscriptionBuilder extends RequestBuilder<SubscriptionInternal, SubscriptionInternal.Tokenizer, AddInternalSubscriptionBuilder> {
 		
-		public AddSubscriptionBuilder(SubscriptionInternal subscription) {
-			super(SubscriptionInternal.class, "subscription", "add");
+		public AddInternalSubscriptionBuilder(SubscriptionInternal subscription) {
+			super(SubscriptionInternal.class, "subscription", "addInternal");
 			params.add("subscription", subscription);
 		}
 	}
@@ -57,8 +57,8 @@ public class SubscriptionService {
 	 * 
 	 * @param subscription subscription object
 	 */
-    public static AddSubscriptionBuilder add(SubscriptionInternal subscription)  {
-		return new AddSubscriptionBuilder(subscription);
+    public static AddInternalSubscriptionBuilder addInternal(SubscriptionInternal subscription)  {
+		return new AddInternalSubscriptionBuilder(subscription);
 	}
 	
 	public static class DeleteSubscriptionBuilder extends RequestBuilder<Boolean, String, DeleteSubscriptionBuilder> {
