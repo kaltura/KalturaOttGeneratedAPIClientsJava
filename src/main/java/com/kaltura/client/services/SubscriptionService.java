@@ -31,7 +31,6 @@ import com.kaltura.client.types.Coupon;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Subscription;
 import com.kaltura.client.types.SubscriptionFilter;
-import com.kaltura.client.types.SubscriptionInternal;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -44,10 +43,10 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class SubscriptionService {
 	
-	public static class AddInternalSubscriptionBuilder extends RequestBuilder<SubscriptionInternal, SubscriptionInternal.Tokenizer, AddInternalSubscriptionBuilder> {
+	public static class AddSubscriptionBuilder extends RequestBuilder<Subscription, Subscription.Tokenizer, AddSubscriptionBuilder> {
 		
-		public AddInternalSubscriptionBuilder(SubscriptionInternal subscription) {
-			super(SubscriptionInternal.class, "subscription", "addInternal");
+		public AddSubscriptionBuilder(Subscription subscription) {
+			super(Subscription.class, "subscription", "add");
 			params.add("subscription", subscription);
 		}
 	}
@@ -57,8 +56,8 @@ public class SubscriptionService {
 	 * 
 	 * @param subscription subscription object
 	 */
-    public static AddInternalSubscriptionBuilder addInternal(SubscriptionInternal subscription)  {
-		return new AddInternalSubscriptionBuilder(subscription);
+    public static AddSubscriptionBuilder add(Subscription subscription)  {
+		return new AddSubscriptionBuilder(subscription);
 	}
 	
 	public static class DeleteSubscriptionBuilder extends RequestBuilder<Boolean, String, DeleteSubscriptionBuilder> {
