@@ -28,10 +28,6 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.LoginSession;
-import com.kaltura.client.types.Partner;
-import com.kaltura.client.types.PartnerFilter;
-import com.kaltura.client.types.PartnerSetup;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -42,60 +38,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PartnerService {
-	
-	public static class AddPartnerBuilder extends RequestBuilder<Partner, Partner.Tokenizer, AddPartnerBuilder> {
-		
-		public AddPartnerBuilder(Partner partner, PartnerSetup partnerSetup) {
-			super(Partner.class, "partner", "add");
-			params.add("partner", partner);
-			params.add("partnerSetup", partnerSetup);
-		}
-	}
-
-	/**
-	 * Add a partner with default user
-	 * 
-	 * @param partner partner
-	 * @param partnerSetup mandatory parameters to create partner
-	 */
-    public static AddPartnerBuilder add(Partner partner, PartnerSetup partnerSetup)  {
-		return new AddPartnerBuilder(partner, partnerSetup);
-	}
-	
-	public static class CreateIndexesPartnerBuilder extends RequestBuilder<Boolean, String, CreateIndexesPartnerBuilder> {
-		
-		public CreateIndexesPartnerBuilder() {
-			super(Boolean.class, "partner", "createIndexes");
-		}
-	}
-
-	/**
-	 * Internal API !!! create ElasticSearch indexes for partner
-	 */
-    public static CreateIndexesPartnerBuilder createIndexes()  {
-		return new CreateIndexesPartnerBuilder();
-	}
-	
-	public static class DeletePartnerBuilder extends RequestBuilder<Boolean, String, DeletePartnerBuilder> {
-		
-		public DeletePartnerBuilder(int id) {
-			super(Boolean.class, "partner", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Internal API !!! Delete Partner
-	 * 
-	 * @param id Partner id
-	 */
-    public static DeletePartnerBuilder delete(int id)  {
-		return new DeletePartnerBuilder(id);
-	}
 	
 	public static class ExternalLoginPartnerBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, ExternalLoginPartnerBuilder> {
 		
@@ -109,26 +51,5 @@ public class PartnerService {
 	 */
     public static ExternalLoginPartnerBuilder externalLogin()  {
 		return new ExternalLoginPartnerBuilder();
-	}
-	
-	public static class ListPartnerBuilder extends ListResponseRequestBuilder<Partner, Partner.Tokenizer, ListPartnerBuilder> {
-		
-		public ListPartnerBuilder(PartnerFilter filter) {
-			super(Partner.class, "partner", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	public static ListPartnerBuilder list()  {
-		return list(null);
-	}
-
-	/**
-	 * Internal API !!! Returns the list of active Partners
-	 * 
-	 * @param filter Filter
-	 */
-    public static ListPartnerBuilder list(PartnerFilter filter)  {
-		return new ListPartnerBuilder(filter);
 	}
 }

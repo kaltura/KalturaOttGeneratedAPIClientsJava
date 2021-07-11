@@ -34,10 +34,7 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum GroupByField implements EnumAsString {
-	MEDIA_TYPE_ID("media_type_id"),
-	SUPPRESSED("suppressed"),
-	CRID("crid"),
-	LINEAR_MEDIA_ID("linear_media_id");
+	MEDIA_TYPE_ID("media_type_id");
 
 	private String value;
 
