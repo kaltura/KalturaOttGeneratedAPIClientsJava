@@ -40,72 +40,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Premium service
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PremiumService.Tokenizer.class)
-public class PremiumService extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SeriesRecordingOption.Tokenizer.class)
+public class SeriesRecordingOption extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
+		String minSeasonNumber();
+		String minEpisodeNumber();
 	}
 
 	/**
-	 * Service identifier
+	 * min Season Number
 	 */
-	private Long id;
+	private Integer minSeasonNumber;
 	/**
-	 * Service name / description
+	 * min Season Number
 	 */
-	private String name;
+	private Integer minEpisodeNumber;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// minSeasonNumber:
+	public Integer getMinSeasonNumber(){
+		return this.minSeasonNumber;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void setMinSeasonNumber(Integer minSeasonNumber){
+		this.minSeasonNumber = minSeasonNumber;
 	}
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
+	public void minSeasonNumber(String multirequestToken){
+		setToken("minSeasonNumber", multirequestToken);
 	}
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	// minEpisodeNumber:
+	public Integer getMinEpisodeNumber(){
+		return this.minEpisodeNumber;
+	}
+	public void setMinEpisodeNumber(Integer minEpisodeNumber){
+		this.minEpisodeNumber = minEpisodeNumber;
+	}
+
+	public void minEpisodeNumber(String multirequestToken){
+		setToken("minEpisodeNumber", multirequestToken);
 	}
 
 
-	public PremiumService() {
+	public SeriesRecordingOption() {
 		super();
 	}
 
-	public PremiumService(JsonObject jsonObject) throws APIException {
+	public SeriesRecordingOption(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
+		minSeasonNumber = GsonParser.parseInt(jsonObject.get("minSeasonNumber"));
+		minEpisodeNumber = GsonParser.parseInt(jsonObject.get("minEpisodeNumber"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPremiumService");
-		kparams.add("id", this.id);
-		kparams.add("name", this.name);
+		kparams.add("objectType", "KalturaSeriesRecordingOption");
+		kparams.add("minSeasonNumber", this.minSeasonNumber);
+		kparams.add("minEpisodeNumber", this.minEpisodeNumber);
 		return kparams;
 	}
 

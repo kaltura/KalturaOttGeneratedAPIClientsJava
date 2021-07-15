@@ -65,6 +65,7 @@ public class Channel extends BaseChannel {
 		String supportSegmentBasedOrdering();
 		String assetUserRuleId();
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaData();
+		String virtualAssetId();
 	}
 
 	/**
@@ -124,6 +125,10 @@ public class Channel extends BaseChannel {
 	 * key/value map field for extra data
 	 */
 	private Map<String, StringValue> metaData;
+	/**
+	 * Virtual asset id
+	 */
+	private Long virtualAssetId;
 
 	// name:
 	public String getName(){
@@ -245,6 +250,10 @@ public class Channel extends BaseChannel {
 		this.metaData = metaData;
 	}
 
+	// virtualAssetId:
+	public Long getVirtualAssetId(){
+		return this.virtualAssetId;
+	}
 
 	public Channel() {
 		super();
@@ -270,6 +279,7 @@ public class Channel extends BaseChannel {
 		supportSegmentBasedOrdering = GsonParser.parseBoolean(jsonObject.get("supportSegmentBasedOrdering"));
 		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 		metaData = GsonParser.parseMap(jsonObject.getAsJsonObject("metaData"), StringValue.class);
+		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
