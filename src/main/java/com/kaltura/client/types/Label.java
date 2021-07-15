@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.EntityAttribute;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -40,72 +41,79 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Premium service
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PremiumService.Tokenizer.class)
-public class PremiumService extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(Label.Tokenizer.class)
+public class Label extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
-		String name();
+		String value();
+		String entityAttribute();
 	}
 
 	/**
-	 * Service identifier
+	 * Label identifier
 	 */
 	private Long id;
 	/**
-	 * Service name / description
+	 * Label value. It must be unique in the context of entityAttribute
 	 */
-	private String name;
+	private String value;
+	/**
+	 * Identifier of entity to which label belongs
+	 */
+	private EntityAttribute entityAttribute;
 
 	// id:
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
-	// name:
-	public String getName(){
-		return this.name;
+	// entityAttribute:
+	public EntityAttribute getEntityAttribute(){
+		return this.entityAttribute;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	public void setEntityAttribute(EntityAttribute entityAttribute){
+		this.entityAttribute = entityAttribute;
 	}
 
+	public void entityAttribute(String multirequestToken){
+		setToken("entityAttribute", multirequestToken);
+	}
 
-	public PremiumService() {
+
+	public Label() {
 		super();
 	}
 
-	public PremiumService(JsonObject jsonObject) throws APIException {
+	public Label(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
+		value = GsonParser.parseString(jsonObject.get("value"));
+		entityAttribute = EntityAttribute.get(GsonParser.parseString(jsonObject.get("entityAttribute")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPremiumService");
-		kparams.add("id", this.id);
-		kparams.add("name", this.name);
+		kparams.add("objectType", "KalturaLabel");
+		kparams.add("value", this.value);
+		kparams.add("entityAttribute", this.entityAttribute);
 		return kparams;
 	}
 
