@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -72,6 +72,7 @@ public class MediaFile extends AssetFile {
 		String catalogEndDate();
 		String opl();
 		BusinessModuleDetails.Tokenizer businessModuleDetails();
+		String labels();
 	}
 
 	/**
@@ -170,6 +171,10 @@ public class MediaFile extends AssetFile {
 	 * businessModuleDetails
 	 */
 	private BusinessModuleDetails businessModuleDetails;
+	/**
+	 * Labels associated with the media file
+	 */
+	private String labels;
 
 	// assetId:
 	public Integer getAssetId(){
@@ -439,6 +444,18 @@ public class MediaFile extends AssetFile {
 		this.businessModuleDetails = businessModuleDetails;
 	}
 
+	// labels:
+	public String getLabels(){
+		return this.labels;
+	}
+	public void setLabels(String labels){
+		this.labels = labels;
+	}
+
+	public void labels(String multirequestToken){
+		setToken("labels", multirequestToken);
+	}
+
 
 	public MediaFile() {
 		super();
@@ -474,6 +491,7 @@ public class MediaFile extends AssetFile {
 		catalogEndDate = GsonParser.parseLong(jsonObject.get("catalogEndDate"));
 		opl = GsonParser.parseString(jsonObject.get("opl"));
 		businessModuleDetails = GsonParser.parseObject(jsonObject.getAsJsonObject("businessModuleDetails"), BusinessModuleDetails.class);
+		labels = GsonParser.parseString(jsonObject.get("labels"));
 
 	}
 
@@ -502,6 +520,7 @@ public class MediaFile extends AssetFile {
 		kparams.add("catalogEndDate", this.catalogEndDate);
 		kparams.add("opl", this.opl);
 		kparams.add("businessModuleDetails", this.businessModuleDetails);
+		kparams.add("labels", this.labels);
 		return kparams;
 	}
 
