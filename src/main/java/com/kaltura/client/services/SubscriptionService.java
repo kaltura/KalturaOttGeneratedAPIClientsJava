@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -42,6 +42,44 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class SubscriptionService {
+	
+	public static class AddSubscriptionBuilder extends RequestBuilder<Subscription, Subscription.Tokenizer, AddSubscriptionBuilder> {
+		
+		public AddSubscriptionBuilder(Subscription subscription) {
+			super(Subscription.class, "subscription", "add");
+			params.add("subscription", subscription);
+		}
+	}
+
+	/**
+	 * Internal API !!! Insert new subscription for partner
+	 * 
+	 * @param subscription subscription object
+	 */
+    public static AddSubscriptionBuilder add(Subscription subscription)  {
+		return new AddSubscriptionBuilder(subscription);
+	}
+	
+	public static class DeleteSubscriptionBuilder extends RequestBuilder<Boolean, String, DeleteSubscriptionBuilder> {
+		
+		public DeleteSubscriptionBuilder(long id) {
+			super(Boolean.class, "subscription", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Internal API !!! Delete subscription
+	 * 
+	 * @param id Subscription id
+	 */
+    public static DeleteSubscriptionBuilder delete(long id)  {
+		return new DeleteSubscriptionBuilder(id);
+	}
 	
 	public static class ListSubscriptionBuilder extends ListResponseRequestBuilder<Subscription, Subscription.Tokenizer, ListSubscriptionBuilder> {
 		
