@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -99,13 +99,18 @@ public class CategoryTreeService {
 	
 	public static class GetByVersionCategoryTreeBuilder extends RequestBuilder<CategoryTree, CategoryTree.Tokenizer, GetByVersionCategoryTreeBuilder> {
 		
-		public GetByVersionCategoryTreeBuilder(long versionId) {
+		public GetByVersionCategoryTreeBuilder(long versionId, int deviceFamilyId) {
 			super(CategoryTree.class, "categorytree", "getByVersion");
 			params.add("versionId", versionId);
+			params.add("deviceFamilyId", deviceFamilyId);
 		}
 		
 		public void versionId(String multirequestToken) {
 			params.add("versionId", multirequestToken);
+		}
+		
+		public void deviceFamilyId(String multirequestToken) {
+			params.add("deviceFamilyId", multirequestToken);
 		}
 	}
 
@@ -113,13 +118,18 @@ public class CategoryTreeService {
 		return getByVersion(Long.MIN_VALUE);
 	}
 
+	public static GetByVersionCategoryTreeBuilder getByVersion(long versionId)  {
+		return getByVersion(versionId, Integer.MIN_VALUE);
+	}
+
 	/**
 	 * Retrieve default category tree of deviceFamilyId by KS or specific one if
 	  versionId is set.
 	 * 
 	 * @param versionId Category version id of tree
+	 * @param deviceFamilyId deviceFamilyId related to category tree
 	 */
-    public static GetByVersionCategoryTreeBuilder getByVersion(long versionId)  {
-		return new GetByVersionCategoryTreeBuilder(versionId);
+    public static GetByVersionCategoryTreeBuilder getByVersion(long versionId, int deviceFamilyId)  {
+		return new GetByVersionCategoryTreeBuilder(versionId, deviceFamilyId);
 	}
 }
