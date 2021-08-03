@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -65,6 +65,7 @@ public class Channel extends BaseChannel {
 		String supportSegmentBasedOrdering();
 		String assetUserRuleId();
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaData();
+		String virtualAssetId();
 	}
 
 	/**
@@ -124,6 +125,10 @@ public class Channel extends BaseChannel {
 	 * key/value map field for extra data
 	 */
 	private Map<String, StringValue> metaData;
+	/**
+	 * Virtual asset id
+	 */
+	private Long virtualAssetId;
 
 	// name:
 	public String getName(){
@@ -245,6 +250,10 @@ public class Channel extends BaseChannel {
 		this.metaData = metaData;
 	}
 
+	// virtualAssetId:
+	public Long getVirtualAssetId(){
+		return this.virtualAssetId;
+	}
 
 	public Channel() {
 		super();
@@ -270,6 +279,7 @@ public class Channel extends BaseChannel {
 		supportSegmentBasedOrdering = GsonParser.parseBoolean(jsonObject.get("supportSegmentBasedOrdering"));
 		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 		metaData = GsonParser.parseMap(jsonObject.getAsJsonObject("metaData"), StringValue.class);
+		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
