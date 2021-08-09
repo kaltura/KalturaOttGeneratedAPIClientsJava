@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -48,8 +48,7 @@ public class EpgNotificationSettings extends ObjectBase {
 		String enabled();
 		String deviceFamilyIds();
 		String liveAssetIds();
-		String backwardTimeRange();
-		String forwardTimeRange();
+		String timeRange();
 	}
 
 	/**
@@ -65,17 +64,11 @@ public class EpgNotificationSettings extends ObjectBase {
 	 */
 	private String liveAssetIds;
 	/**
-	 * The backward range (in hours), in which, EPG updates triggers a notification,   
-	            every program that is updated and it’s starts time falls within this
-	  range shall trigger a notification
+	 * The range (in hours), in which, EPG updates triggers a notification,            
+	   every program that is updated and it’s starts time falls within this range
+	  shall trigger a notification
 	 */
-	private Integer backwardTimeRange;
-	/**
-	 * The forward range (in hours), in which, EPG updates triggers a notification,    
-	           every program that is updated and it’s starts time falls within this
-	  range shall trigger a notification
-	 */
-	private Integer forwardTimeRange;
+	private Integer timeRange;
 
 	// enabled:
 	public Boolean getEnabled(){
@@ -113,28 +106,16 @@ public class EpgNotificationSettings extends ObjectBase {
 		setToken("liveAssetIds", multirequestToken);
 	}
 
-	// backwardTimeRange:
-	public Integer getBackwardTimeRange(){
-		return this.backwardTimeRange;
+	// timeRange:
+	public Integer getTimeRange(){
+		return this.timeRange;
 	}
-	public void setBackwardTimeRange(Integer backwardTimeRange){
-		this.backwardTimeRange = backwardTimeRange;
-	}
-
-	public void backwardTimeRange(String multirequestToken){
-		setToken("backwardTimeRange", multirequestToken);
+	public void setTimeRange(Integer timeRange){
+		this.timeRange = timeRange;
 	}
 
-	// forwardTimeRange:
-	public Integer getForwardTimeRange(){
-		return this.forwardTimeRange;
-	}
-	public void setForwardTimeRange(Integer forwardTimeRange){
-		this.forwardTimeRange = forwardTimeRange;
-	}
-
-	public void forwardTimeRange(String multirequestToken){
-		setToken("forwardTimeRange", multirequestToken);
+	public void timeRange(String multirequestToken){
+		setToken("timeRange", multirequestToken);
 	}
 
 
@@ -151,8 +132,7 @@ public class EpgNotificationSettings extends ObjectBase {
 		enabled = GsonParser.parseBoolean(jsonObject.get("enabled"));
 		deviceFamilyIds = GsonParser.parseString(jsonObject.get("deviceFamilyIds"));
 		liveAssetIds = GsonParser.parseString(jsonObject.get("liveAssetIds"));
-		backwardTimeRange = GsonParser.parseInt(jsonObject.get("backwardTimeRange"));
-		forwardTimeRange = GsonParser.parseInt(jsonObject.get("forwardTimeRange"));
+		timeRange = GsonParser.parseInt(jsonObject.get("timeRange"));
 
 	}
 
@@ -162,8 +142,7 @@ public class EpgNotificationSettings extends ObjectBase {
 		kparams.add("enabled", this.enabled);
 		kparams.add("deviceFamilyIds", this.deviceFamilyIds);
 		kparams.add("liveAssetIds", this.liveAssetIds);
-		kparams.add("backwardTimeRange", this.backwardTimeRange);
-		kparams.add("forwardTimeRange", this.forwardTimeRange);
+		kparams.add("timeRange", this.timeRange);
 		return kparams;
 	}
 

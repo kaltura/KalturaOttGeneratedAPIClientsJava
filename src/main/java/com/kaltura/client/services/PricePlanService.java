@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -40,44 +40,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PricePlanService {
-	
-	public static class AddPricePlanBuilder extends RequestBuilder<PricePlan, PricePlan.Tokenizer, AddPricePlanBuilder> {
-		
-		public AddPricePlanBuilder(PricePlan pricePlan) {
-			super(PricePlan.class, "priceplan", "add");
-			params.add("pricePlan", pricePlan);
-		}
-	}
-
-	/**
-	 * Internal API !!!  Insert new PriceDetails for partner
-	 * 
-	 * @param pricePlan Price plan Object
-	 */
-    public static AddPricePlanBuilder add(PricePlan pricePlan)  {
-		return new AddPricePlanBuilder(pricePlan);
-	}
-	
-	public static class DeletePricePlanBuilder extends RequestBuilder<Boolean, String, DeletePricePlanBuilder> {
-		
-		public DeletePricePlanBuilder(long id) {
-			super(Boolean.class, "priceplan", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Internal API !!! Delete PricePlan
-	 * 
-	 * @param id PricePlan identifier
-	 */
-    public static DeletePricePlanBuilder delete(long id)  {
-		return new DeletePricePlanBuilder(id);
-	}
 	
 	public static class ListPricePlanBuilder extends ListResponseRequestBuilder<PricePlan, PricePlan.Tokenizer, ListPricePlanBuilder> {
 		

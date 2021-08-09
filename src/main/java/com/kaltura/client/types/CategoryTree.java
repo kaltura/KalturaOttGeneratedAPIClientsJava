@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -64,7 +64,6 @@ public class CategoryTree extends ObjectBase {
 		String type();
 		String versionId();
 		String virtualAssetId();
-		String referenceId();
 	}
 
 	/**
@@ -119,10 +118,6 @@ public class CategoryTree extends ObjectBase {
 	 * Virtual asset id
 	 */
 	private Long virtualAssetId;
-	/**
-	 * Category reference identifier
-	 */
-	private String referenceId;
 
 	// id:
 	public Long getId(){
@@ -224,10 +219,6 @@ public class CategoryTree extends ObjectBase {
 	public Long getVirtualAssetId(){
 		return this.virtualAssetId;
 	}
-	// referenceId:
-	public String getReferenceId(){
-		return this.referenceId;
-	}
 
 	public CategoryTree() {
 		super();
@@ -252,7 +243,6 @@ public class CategoryTree extends ObjectBase {
 		type = GsonParser.parseString(jsonObject.get("type"));
 		versionId = GsonParser.parseLong(jsonObject.get("versionId"));
 		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
-		referenceId = GsonParser.parseString(jsonObject.get("referenceId"));
 
 	}
 
