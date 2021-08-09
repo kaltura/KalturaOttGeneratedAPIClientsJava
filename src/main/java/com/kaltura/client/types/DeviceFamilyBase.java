@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -65,18 +65,18 @@ public class DeviceFamilyBase extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
 	}
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
+	}
+
 
 	public DeviceFamilyBase() {
 		super();
@@ -96,7 +96,7 @@ public class DeviceFamilyBase extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDeviceFamilyBase");
-		kparams.add("id", this.id);
+		kparams.add("name", this.name);
 		return kparams;
 	}
 

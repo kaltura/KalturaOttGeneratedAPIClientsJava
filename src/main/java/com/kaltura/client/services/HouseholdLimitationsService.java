@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -39,44 +39,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class HouseholdLimitationsService {
-	
-	public static class AddHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, AddHouseholdLimitationsBuilder> {
-		
-		public AddHouseholdLimitationsBuilder(HouseholdLimitations householdLimitations) {
-			super(HouseholdLimitations.class, "householdlimitations", "add");
-			params.add("householdLimitations", householdLimitations);
-		}
-	}
-
-	/**
-	 * Add household limitation
-	 * 
-	 * @param householdLimitations Household limitations
-	 */
-    public static AddHouseholdLimitationsBuilder add(HouseholdLimitations householdLimitations)  {
-		return new AddHouseholdLimitationsBuilder(householdLimitations);
-	}
-	
-	public static class DeleteHouseholdLimitationsBuilder extends RequestBuilder<Boolean, String, DeleteHouseholdLimitationsBuilder> {
-		
-		public DeleteHouseholdLimitationsBuilder(int householdLimitationsId) {
-			super(Boolean.class, "householdlimitations", "delete");
-			params.add("householdLimitationsId", householdLimitationsId);
-		}
-		
-		public void householdLimitationsId(String multirequestToken) {
-			params.add("householdLimitationsId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete household limitation
-	 * 
-	 * @param householdLimitationsId Id of household limitation
-	 */
-    public static DeleteHouseholdLimitationsBuilder delete(int householdLimitationsId)  {
-		return new DeleteHouseholdLimitationsBuilder(householdLimitationsId);
-	}
 	
 	public static class GetHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, GetHouseholdLimitationsBuilder> {
 		

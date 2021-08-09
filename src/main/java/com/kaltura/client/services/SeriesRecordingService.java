@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -204,26 +204,5 @@ public class SeriesRecordingService {
 	 */
     public static ListSeriesRecordingBuilder list(SeriesRecordingFilter filter)  {
 		return new ListSeriesRecordingBuilder(filter);
-	}
-	
-	public static class RebookCanceledByEpgIdSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, RebookCanceledByEpgIdSeriesRecordingBuilder> {
-		
-		public RebookCanceledByEpgIdSeriesRecordingBuilder(long epgId) {
-			super(SeriesRecording.class, "seriesrecording", "rebookCanceledByEpgId");
-			params.add("epgId", epgId);
-		}
-		
-		public void epgId(String multirequestToken) {
-			params.add("epgId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Enable EPG recording that was canceled as part of series
-	 * 
-	 * @param epgId EPG program identifies
-	 */
-    public static RebookCanceledByEpgIdSeriesRecordingBuilder rebookCanceledByEpgId(long epgId)  {
-		return new RebookCanceledByEpgIdSeriesRecordingBuilder(epgId);
 	}
 }
