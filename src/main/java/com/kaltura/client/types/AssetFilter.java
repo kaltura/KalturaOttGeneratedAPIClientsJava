@@ -46,12 +46,17 @@ public class AssetFilter extends PersistedFilter {
 	
 	public interface Tokenizer extends PersistedFilter.Tokenizer {
 		DynamicOrderBy.Tokenizer dynamicOrderBy();
+		String trendingDaysEqual();
 	}
 
 	/**
 	 * dynamicOrderBy - order by Meta
 	 */
 	private DynamicOrderBy dynamicOrderBy;
+	/**
+	 * Trending Days Equal
+	 */
+	private Integer trendingDaysEqual;
 
 	// dynamicOrderBy:
 	public DynamicOrderBy getDynamicOrderBy(){
@@ -59,6 +64,18 @@ public class AssetFilter extends PersistedFilter {
 	}
 	public void setDynamicOrderBy(DynamicOrderBy dynamicOrderBy){
 		this.dynamicOrderBy = dynamicOrderBy;
+	}
+
+	// trendingDaysEqual:
+	public Integer getTrendingDaysEqual(){
+		return this.trendingDaysEqual;
+	}
+	public void setTrendingDaysEqual(Integer trendingDaysEqual){
+		this.trendingDaysEqual = trendingDaysEqual;
+	}
+
+	public void trendingDaysEqual(String multirequestToken){
+		setToken("trendingDaysEqual", multirequestToken);
 	}
 
 
@@ -73,6 +90,7 @@ public class AssetFilter extends PersistedFilter {
 
 		// set members values:
 		dynamicOrderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("dynamicOrderBy"), DynamicOrderBy.class);
+		trendingDaysEqual = GsonParser.parseInt(jsonObject.get("trendingDaysEqual"));
 
 	}
 
@@ -80,6 +98,7 @@ public class AssetFilter extends PersistedFilter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetFilter");
 		kparams.add("dynamicOrderBy", this.dynamicOrderBy);
+		kparams.add("trendingDaysEqual", this.trendingDaysEqual);
 		return kparams;
 	}
 

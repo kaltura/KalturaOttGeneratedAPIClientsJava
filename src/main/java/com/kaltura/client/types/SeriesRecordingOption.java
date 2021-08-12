@@ -29,10 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -41,69 +40,69 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * partner configuration for commerce
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CommercePartnerConfig.Tokenizer.class)
-public class CommercePartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(SeriesRecordingOption.Tokenizer.class)
+public class SeriesRecordingOption extends ObjectBase {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		RequestBuilder.ListTokenizer<BookmarkEventThreshold.Tokenizer> bookmarkEventThresholds();
-		String keepSubscriptionAddOns();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String minSeasonNumber();
+		String minEpisodeNumber();
 	}
 
 	/**
-	 * configuration for bookmark event threshold (when to dispatch the event) in
-	  seconds.
+	 * min Season Number
 	 */
-	private List<BookmarkEventThreshold> bookmarkEventThresholds;
+	private Integer minSeasonNumber;
 	/**
-	 * configuration for keep add-ons after subscription deletion
+	 * min Season Number
 	 */
-	private Boolean keepSubscriptionAddOns;
+	private Integer minEpisodeNumber;
 
-	// bookmarkEventThresholds:
-	public List<BookmarkEventThreshold> getBookmarkEventThresholds(){
-		return this.bookmarkEventThresholds;
+	// minSeasonNumber:
+	public Integer getMinSeasonNumber(){
+		return this.minSeasonNumber;
 	}
-	public void setBookmarkEventThresholds(List<BookmarkEventThreshold> bookmarkEventThresholds){
-		this.bookmarkEventThresholds = bookmarkEventThresholds;
-	}
-
-	// keepSubscriptionAddOns:
-	public Boolean getKeepSubscriptionAddOns(){
-		return this.keepSubscriptionAddOns;
-	}
-	public void setKeepSubscriptionAddOns(Boolean keepSubscriptionAddOns){
-		this.keepSubscriptionAddOns = keepSubscriptionAddOns;
+	public void setMinSeasonNumber(Integer minSeasonNumber){
+		this.minSeasonNumber = minSeasonNumber;
 	}
 
-	public void keepSubscriptionAddOns(String multirequestToken){
-		setToken("keepSubscriptionAddOns", multirequestToken);
+	public void minSeasonNumber(String multirequestToken){
+		setToken("minSeasonNumber", multirequestToken);
+	}
+
+	// minEpisodeNumber:
+	public Integer getMinEpisodeNumber(){
+		return this.minEpisodeNumber;
+	}
+	public void setMinEpisodeNumber(Integer minEpisodeNumber){
+		this.minEpisodeNumber = minEpisodeNumber;
+	}
+
+	public void minEpisodeNumber(String multirequestToken){
+		setToken("minEpisodeNumber", multirequestToken);
 	}
 
 
-	public CommercePartnerConfig() {
+	public SeriesRecordingOption() {
 		super();
 	}
 
-	public CommercePartnerConfig(JsonObject jsonObject) throws APIException {
+	public SeriesRecordingOption(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		bookmarkEventThresholds = GsonParser.parseArray(jsonObject.getAsJsonArray("bookmarkEventThresholds"), BookmarkEventThreshold.class);
-		keepSubscriptionAddOns = GsonParser.parseBoolean(jsonObject.get("keepSubscriptionAddOns"));
+		minSeasonNumber = GsonParser.parseInt(jsonObject.get("minSeasonNumber"));
+		minEpisodeNumber = GsonParser.parseInt(jsonObject.get("minEpisodeNumber"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCommercePartnerConfig");
-		kparams.add("bookmarkEventThresholds", this.bookmarkEventThresholds);
-		kparams.add("keepSubscriptionAddOns", this.keepSubscriptionAddOns);
+		kparams.add("objectType", "KalturaSeriesRecordingOption");
+		kparams.add("minSeasonNumber", this.minSeasonNumber);
+		kparams.add("minEpisodeNumber", this.minEpisodeNumber);
 		return kparams;
 	}
 

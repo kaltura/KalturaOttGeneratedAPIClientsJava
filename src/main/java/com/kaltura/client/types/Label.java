@@ -29,10 +29,10 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.EntityAttribute;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -41,69 +41,79 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * partner configuration for commerce
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CommercePartnerConfig.Tokenizer.class)
-public class CommercePartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(Label.Tokenizer.class)
+public class Label extends ObjectBase {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		RequestBuilder.ListTokenizer<BookmarkEventThreshold.Tokenizer> bookmarkEventThresholds();
-		String keepSubscriptionAddOns();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String value();
+		String entityAttribute();
 	}
 
 	/**
-	 * configuration for bookmark event threshold (when to dispatch the event) in
-	  seconds.
+	 * Label identifier
 	 */
-	private List<BookmarkEventThreshold> bookmarkEventThresholds;
+	private Long id;
 	/**
-	 * configuration for keep add-ons after subscription deletion
+	 * Label value. It must be unique in the context of entityAttribute
 	 */
-	private Boolean keepSubscriptionAddOns;
+	private String value;
+	/**
+	 * Identifier of entity to which label belongs
+	 */
+	private EntityAttribute entityAttribute;
 
-	// bookmarkEventThresholds:
-	public List<BookmarkEventThreshold> getBookmarkEventThresholds(){
-		return this.bookmarkEventThresholds;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setBookmarkEventThresholds(List<BookmarkEventThreshold> bookmarkEventThresholds){
-		this.bookmarkEventThresholds = bookmarkEventThresholds;
+	// value:
+	public String getValue(){
+		return this.value;
 	}
-
-	// keepSubscriptionAddOns:
-	public Boolean getKeepSubscriptionAddOns(){
-		return this.keepSubscriptionAddOns;
-	}
-	public void setKeepSubscriptionAddOns(Boolean keepSubscriptionAddOns){
-		this.keepSubscriptionAddOns = keepSubscriptionAddOns;
-	}
-
-	public void keepSubscriptionAddOns(String multirequestToken){
-		setToken("keepSubscriptionAddOns", multirequestToken);
+	public void setValue(String value){
+		this.value = value;
 	}
 
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
+	}
 
-	public CommercePartnerConfig() {
+	// entityAttribute:
+	public EntityAttribute getEntityAttribute(){
+		return this.entityAttribute;
+	}
+	public void setEntityAttribute(EntityAttribute entityAttribute){
+		this.entityAttribute = entityAttribute;
+	}
+
+	public void entityAttribute(String multirequestToken){
+		setToken("entityAttribute", multirequestToken);
+	}
+
+
+	public Label() {
 		super();
 	}
 
-	public CommercePartnerConfig(JsonObject jsonObject) throws APIException {
+	public Label(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		bookmarkEventThresholds = GsonParser.parseArray(jsonObject.getAsJsonArray("bookmarkEventThresholds"), BookmarkEventThreshold.class);
-		keepSubscriptionAddOns = GsonParser.parseBoolean(jsonObject.get("keepSubscriptionAddOns"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		value = GsonParser.parseString(jsonObject.get("value"));
+		entityAttribute = EntityAttribute.get(GsonParser.parseString(jsonObject.get("entityAttribute")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCommercePartnerConfig");
-		kparams.add("bookmarkEventThresholds", this.bookmarkEventThresholds);
-		kparams.add("keepSubscriptionAddOns", this.keepSubscriptionAddOns);
+		kparams.add("objectType", "KalturaLabel");
+		kparams.add("value", this.value);
+		kparams.add("entityAttribute", this.entityAttribute);
 		return kparams;
 	}
 
