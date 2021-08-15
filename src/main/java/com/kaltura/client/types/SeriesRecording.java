@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.RecordingType;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.SeriesRecordingOption;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -57,6 +58,7 @@ public class SeriesRecording extends ObjectBase {
 		String createDate();
 		String updateDate();
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> excludedSeasons();
+		SeriesRecordingOption.Tokenizer seriesRecordingOption();
 	}
 
 	/**
@@ -97,6 +99,10 @@ public class SeriesRecording extends ObjectBase {
 	 * List of the season numbers to exclude.
 	 */
 	private List<IntegerValue> excludedSeasons;
+	/**
+	 * Series Recording Option
+	 */
+	private SeriesRecordingOption seriesRecordingOption;
 
 	// id:
 	public Long getId(){
@@ -174,6 +180,14 @@ public class SeriesRecording extends ObjectBase {
 	public List<IntegerValue> getExcludedSeasons(){
 		return this.excludedSeasons;
 	}
+	// seriesRecordingOption:
+	public SeriesRecordingOption getSeriesRecordingOption(){
+		return this.seriesRecordingOption;
+	}
+	public void setSeriesRecordingOption(SeriesRecordingOption seriesRecordingOption){
+		this.seriesRecordingOption = seriesRecordingOption;
+	}
+
 
 	public SeriesRecording() {
 		super();
@@ -194,6 +208,7 @@ public class SeriesRecording extends ObjectBase {
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		excludedSeasons = GsonParser.parseArray(jsonObject.getAsJsonArray("excludedSeasons"), IntegerValue.class);
+		seriesRecordingOption = GsonParser.parseObject(jsonObject.getAsJsonObject("seriesRecordingOption"), SeriesRecordingOption.class);
 
 	}
 
@@ -205,6 +220,7 @@ public class SeriesRecording extends ObjectBase {
 		kparams.add("seriesId", this.seriesId);
 		kparams.add("seasonNumber", this.seasonNumber);
 		kparams.add("type", this.type);
+		kparams.add("seriesRecordingOption", this.seriesRecordingOption);
 		return kparams;
 	}
 

@@ -29,10 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,68 +41,90 @@ import java.util.List;
  */
 
 /**
- * partner configuration for commerce
+ * Coupons group details
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CommercePartnerConfig.Tokenizer.class)
-public class CommercePartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(SubscriptionCouponGroup.Tokenizer.class)
+public class SubscriptionCouponGroup extends ObjectBase {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		RequestBuilder.ListTokenizer<BookmarkEventThreshold.Tokenizer> bookmarkEventThresholds();
-		String keepSubscriptionAddOns();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String startDate();
+		String endDate();
 	}
 
 	/**
-	 * configuration for bookmark event threshold (when to dispatch the event) in
-	  seconds.
+	 * Coupon group identifier
 	 */
-	private List<BookmarkEventThreshold> bookmarkEventThresholds;
+	private Long id;
 	/**
-	 * configuration for keep add-ons after subscription deletion
+	 * The first date the coupons in this coupons group are valid
 	 */
-	private Boolean keepSubscriptionAddOns;
+	private Long startDate;
+	/**
+	 * The last date the coupons in this coupons group are valid
+	 */
+	private Long endDate;
 
-	// bookmarkEventThresholds:
-	public List<BookmarkEventThreshold> getBookmarkEventThresholds(){
-		return this.bookmarkEventThresholds;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setBookmarkEventThresholds(List<BookmarkEventThreshold> bookmarkEventThresholds){
-		this.bookmarkEventThresholds = bookmarkEventThresholds;
-	}
-
-	// keepSubscriptionAddOns:
-	public Boolean getKeepSubscriptionAddOns(){
-		return this.keepSubscriptionAddOns;
-	}
-	public void setKeepSubscriptionAddOns(Boolean keepSubscriptionAddOns){
-		this.keepSubscriptionAddOns = keepSubscriptionAddOns;
+	public void setId(Long id){
+		this.id = id;
 	}
 
-	public void keepSubscriptionAddOns(String multirequestToken){
-		setToken("keepSubscriptionAddOns", multirequestToken);
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// startDate:
+	public Long getStartDate(){
+		return this.startDate;
+	}
+	public void setStartDate(Long startDate){
+		this.startDate = startDate;
+	}
+
+	public void startDate(String multirequestToken){
+		setToken("startDate", multirequestToken);
+	}
+
+	// endDate:
+	public Long getEndDate(){
+		return this.endDate;
+	}
+	public void setEndDate(Long endDate){
+		this.endDate = endDate;
+	}
+
+	public void endDate(String multirequestToken){
+		setToken("endDate", multirequestToken);
 	}
 
 
-	public CommercePartnerConfig() {
+	public SubscriptionCouponGroup() {
 		super();
 	}
 
-	public CommercePartnerConfig(JsonObject jsonObject) throws APIException {
+	public SubscriptionCouponGroup(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		bookmarkEventThresholds = GsonParser.parseArray(jsonObject.getAsJsonArray("bookmarkEventThresholds"), BookmarkEventThreshold.class);
-		keepSubscriptionAddOns = GsonParser.parseBoolean(jsonObject.get("keepSubscriptionAddOns"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
+		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCommercePartnerConfig");
-		kparams.add("bookmarkEventThresholds", this.bookmarkEventThresholds);
-		kparams.add("keepSubscriptionAddOns", this.keepSubscriptionAddOns);
+		kparams.add("objectType", "KalturaSubscriptionCouponGroup");
+		kparams.add("id", this.id);
+		kparams.add("startDate", this.startDate);
+		kparams.add("endDate", this.endDate);
 		return kparams;
 	}
 
