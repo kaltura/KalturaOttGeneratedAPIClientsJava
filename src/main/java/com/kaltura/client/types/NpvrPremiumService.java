@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -59,6 +59,14 @@ public class NpvrPremiumService extends PremiumService {
 	public Long getQuotaInMinutes(){
 		return this.quotaInMinutes;
 	}
+	public void setQuotaInMinutes(Long quotaInMinutes){
+		this.quotaInMinutes = quotaInMinutes;
+	}
+
+	public void quotaInMinutes(String multirequestToken){
+		setToken("quotaInMinutes", multirequestToken);
+	}
+
 
 	public NpvrPremiumService() {
 		super();
@@ -77,6 +85,7 @@ public class NpvrPremiumService extends PremiumService {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaNpvrPremiumService");
+		kparams.add("quotaInMinutes", this.quotaInMinutes);
 		return kparams;
 	}
 

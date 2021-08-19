@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -51,6 +51,7 @@ public class Duration extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String unit();
 		String value();
+		String code();
 	}
 
 	/**
@@ -61,6 +62,11 @@ public class Duration extends ObjectBase {
 	 * duration value
 	 */
 	private Integer value;
+	/**
+	 * duration code - the canculat time in minutes except from years and months that
+	  have specific code
+	 */
+	private Long code;
 
 	// unit:
 	public DurationUnit getUnit(){
@@ -86,6 +92,10 @@ public class Duration extends ObjectBase {
 		setToken("value", multirequestToken);
 	}
 
+	// code:
+	public Long getCode(){
+		return this.code;
+	}
 
 	public Duration() {
 		super();
@@ -99,6 +109,7 @@ public class Duration extends ObjectBase {
 		// set members values:
 		unit = DurationUnit.get(GsonParser.parseString(jsonObject.get("unit")));
 		value = GsonParser.parseInt(jsonObject.get("value"));
+		code = GsonParser.parseLong(jsonObject.get("code"));
 
 	}
 
