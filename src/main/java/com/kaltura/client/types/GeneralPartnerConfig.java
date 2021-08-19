@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -66,6 +66,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		RollingDeviceRemovalData.Tokenizer rollingDeviceData();
 		String finishedPercentThreshold();
 		String suspensionProfileInheritanceType();
+		String allowDeviceMobility();
 	}
 
 	/**
@@ -128,6 +129,10 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Suspension Profile Inheritance
 	 */
 	private SuspensionProfileInheritanceType suspensionProfileInheritanceType;
+	/**
+	 * Allow Device Mobility
+	 */
+	private Boolean allowDeviceMobility;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -305,6 +310,18 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		setToken("suspensionProfileInheritanceType", multirequestToken);
 	}
 
+	// allowDeviceMobility:
+	public Boolean getAllowDeviceMobility(){
+		return this.allowDeviceMobility;
+	}
+	public void setAllowDeviceMobility(Boolean allowDeviceMobility){
+		this.allowDeviceMobility = allowDeviceMobility;
+	}
+
+	public void allowDeviceMobility(String multirequestToken){
+		setToken("allowDeviceMobility", multirequestToken);
+	}
+
 
 	public GeneralPartnerConfig() {
 		super();
@@ -331,6 +348,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		rollingDeviceData = GsonParser.parseObject(jsonObject.getAsJsonObject("rollingDeviceData"), RollingDeviceRemovalData.class);
 		finishedPercentThreshold = GsonParser.parseInt(jsonObject.get("finishedPercentThreshold"));
 		suspensionProfileInheritanceType = SuspensionProfileInheritanceType.get(GsonParser.parseString(jsonObject.get("suspensionProfileInheritanceType")));
+		allowDeviceMobility = GsonParser.parseBoolean(jsonObject.get("allowDeviceMobility"));
 
 	}
 
@@ -352,6 +370,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("rollingDeviceData", this.rollingDeviceData);
 		kparams.add("finishedPercentThreshold", this.finishedPercentThreshold);
 		kparams.add("suspensionProfileInheritanceType", this.suspensionProfileInheritanceType);
+		kparams.add("allowDeviceMobility", this.allowDeviceMobility);
 		return kparams;
 	}
 

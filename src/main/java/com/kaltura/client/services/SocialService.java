@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -31,7 +31,9 @@ import com.kaltura.client.enums.SocialNetwork;
 import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.Social;
 import com.kaltura.client.types.SocialConfig;
+import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -130,12 +132,13 @@ public class SocialService {
 	
 	public static class LoginSocialBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, LoginSocialBuilder> {
 		
-		public LoginSocialBuilder(int partnerId, String token, SocialNetwork type, String udid) {
+		public LoginSocialBuilder(int partnerId, String token, SocialNetwork type, String udid, Map<String, StringValue> extraParams) {
 			super(LoginResponse.class, "social", "login");
 			params.add("partnerId", partnerId);
 			params.add("token", token);
 			params.add("type", type);
 			params.add("udid", udid);
+			params.add("extraParams", extraParams);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -159,6 +162,10 @@ public class SocialService {
 		return login(partnerId, token, type, null);
 	}
 
+	public static LoginSocialBuilder login(int partnerId, String token, SocialNetwork type, String udid)  {
+		return login(partnerId, token, type, udid, null);
+	}
+
 	/**
 	 * Login using social token
 	 * 
@@ -166,9 +173,10 @@ public class SocialService {
 	 * @param token Social token
 	 * @param type Social network
 	 * @param udid Device UDID
+	 * @param extraParams extra params
 	 */
-    public static LoginSocialBuilder login(int partnerId, String token, SocialNetwork type, String udid)  {
-		return new LoginSocialBuilder(partnerId, token, type, udid);
+    public static LoginSocialBuilder login(int partnerId, String token, SocialNetwork type, String udid, Map<String, StringValue> extraParams)  {
+		return new LoginSocialBuilder(partnerId, token, type, udid, extraParams);
 	}
 	
 	public static class MergeSocialBuilder extends RequestBuilder<Social, Social.Tokenizer, MergeSocialBuilder> {

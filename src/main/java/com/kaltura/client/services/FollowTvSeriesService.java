@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -74,9 +74,7 @@ public class FollowTvSeriesService {
 	}
 
 	/**
-	 * Delete a user&amp;#39;s tv series follow.              Possible status codes:
-	  UserNotFollowing = 8012, NotFound = 500007, InvalidAssetId = 4024,
-	  AnnouncementNotFound = 8006
+	 * Delete a user&amp;#39;s tv series follow.
 	 * 
 	 * @param assetId Asset identifier
 	 */
