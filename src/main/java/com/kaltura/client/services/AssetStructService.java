@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -28,7 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.AssetStruct;
-import com.kaltura.client.types.AssetStructFilter;
+import com.kaltura.client.types.BaseAssetStructFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -102,7 +102,7 @@ public class AssetStructService {
 	
 	public static class ListAssetStructBuilder extends ListResponseRequestBuilder<AssetStruct, AssetStruct.Tokenizer, ListAssetStructBuilder> {
 		
-		public ListAssetStructBuilder(AssetStructFilter filter) {
+		public ListAssetStructBuilder(BaseAssetStructFilter filter) {
 			super(AssetStruct.class, "assetstruct", "list");
 			params.add("filter", filter);
 		}
@@ -117,7 +117,7 @@ public class AssetStructService {
 	 * 
 	 * @param filter Filter parameters for filtering out the result
 	 */
-    public static ListAssetStructBuilder list(AssetStructFilter filter)  {
+    public static ListAssetStructBuilder list(BaseAssetStructFilter filter)  {
 		return new ListAssetStructBuilder(filter);
 	}
 	
