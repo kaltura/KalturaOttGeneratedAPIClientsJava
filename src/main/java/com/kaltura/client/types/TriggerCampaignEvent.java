@@ -31,8 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -41,69 +39,71 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * partner configuration for commerce
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CommercePartnerConfig.Tokenizer.class)
-public class CommercePartnerConfig extends PartnerConfiguration {
+@MultiRequestBuilder.Tokenizer(TriggerCampaignEvent.Tokenizer.class)
+public class TriggerCampaignEvent extends EventObject {
 	
-	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
-		RequestBuilder.ListTokenizer<BookmarkEventThreshold.Tokenizer> bookmarkEventThresholds();
-		String keepSubscriptionAddOns();
+	public interface Tokenizer extends EventObject.Tokenizer {
+		String userId();
+		String campaignId();
+		String udid();
+		String householdId();
 	}
 
 	/**
-	 * configuration for bookmark event threshold (when to dispatch the event) in
-	  seconds.
+	 * User Id
 	 */
-	private List<BookmarkEventThreshold> bookmarkEventThresholds;
+	private Long userId;
 	/**
-	 * configuration for keep add-ons after subscription deletion
+	 * Campaign Id
 	 */
-	private Boolean keepSubscriptionAddOns;
+	private Long campaignId;
+	/**
+	 * Udid
+	 */
+	private String udid;
+	/**
+	 * Household Id
+	 */
+	private Long householdId;
 
-	// bookmarkEventThresholds:
-	public List<BookmarkEventThreshold> getBookmarkEventThresholds(){
-		return this.bookmarkEventThresholds;
+	// userId:
+	public Long getUserId(){
+		return this.userId;
 	}
-	public void setBookmarkEventThresholds(List<BookmarkEventThreshold> bookmarkEventThresholds){
-		this.bookmarkEventThresholds = bookmarkEventThresholds;
+	// campaignId:
+	public Long getCampaignId(){
+		return this.campaignId;
 	}
-
-	// keepSubscriptionAddOns:
-	public Boolean getKeepSubscriptionAddOns(){
-		return this.keepSubscriptionAddOns;
+	// udid:
+	public String getUdid(){
+		return this.udid;
 	}
-	public void setKeepSubscriptionAddOns(Boolean keepSubscriptionAddOns){
-		this.keepSubscriptionAddOns = keepSubscriptionAddOns;
-	}
-
-	public void keepSubscriptionAddOns(String multirequestToken){
-		setToken("keepSubscriptionAddOns", multirequestToken);
+	// householdId:
+	public Long getHouseholdId(){
+		return this.householdId;
 	}
 
-
-	public CommercePartnerConfig() {
+	public TriggerCampaignEvent() {
 		super();
 	}
 
-	public CommercePartnerConfig(JsonObject jsonObject) throws APIException {
+	public TriggerCampaignEvent(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		bookmarkEventThresholds = GsonParser.parseArray(jsonObject.getAsJsonArray("bookmarkEventThresholds"), BookmarkEventThreshold.class);
-		keepSubscriptionAddOns = GsonParser.parseBoolean(jsonObject.get("keepSubscriptionAddOns"));
+		userId = GsonParser.parseLong(jsonObject.get("userId"));
+		campaignId = GsonParser.parseLong(jsonObject.get("campaignId"));
+		udid = GsonParser.parseString(jsonObject.get("udid"));
+		householdId = GsonParser.parseLong(jsonObject.get("householdId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCommercePartnerConfig");
-		kparams.add("bookmarkEventThresholds", this.bookmarkEventThresholds);
-		kparams.add("keepSubscriptionAddOns", this.keepSubscriptionAddOns);
+		kparams.add("objectType", "KalturaTriggerCampaignEvent");
 		return kparams;
 	}
 
