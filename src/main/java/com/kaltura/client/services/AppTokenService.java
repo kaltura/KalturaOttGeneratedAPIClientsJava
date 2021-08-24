@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -29,9 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.AppToken;
 import com.kaltura.client.types.SessionInfo;
-import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -103,14 +101,13 @@ public class AppTokenService {
 	
 	public static class StartSessionAppTokenBuilder extends RequestBuilder<SessionInfo, SessionInfo.Tokenizer, StartSessionAppTokenBuilder> {
 		
-		public StartSessionAppTokenBuilder(String id, String tokenHash, String userId, int expiry, String udid, Map<String, StringValue> extraParams) {
+		public StartSessionAppTokenBuilder(String id, String tokenHash, String userId, int expiry, String udid) {
 			super(SessionInfo.class, "apptoken", "startSession");
 			params.add("id", id);
 			params.add("tokenHash", tokenHash);
 			params.add("userId", userId);
 			params.add("expiry", expiry);
 			params.add("udid", udid);
-			params.add("extraParams", extraParams);
 		}
 		
 		public void id(String multirequestToken) {
@@ -146,10 +143,6 @@ public class AppTokenService {
 		return startSession(id, tokenHash, userId, expiry, null);
 	}
 
-	public static StartSessionAppTokenBuilder startSession(String id, String tokenHash, String userId, int expiry, String udid)  {
-		return startSession(id, tokenHash, userId, expiry, udid, null);
-	}
-
 	/**
 	 * Starts a new KS (Kaltura Session) based on application authentication token id
 	 * 
@@ -161,9 +154,8 @@ public class AppTokenService {
 	 * @param expiry session expiry (in seconds), could be overwritten by shorter expiry of the
 	 * application token and the session-expiry that defined on the application token
 	 * @param udid Device UDID
-	 * @param extraParams extra params
 	 */
-    public static StartSessionAppTokenBuilder startSession(String id, String tokenHash, String userId, int expiry, String udid, Map<String, StringValue> extraParams)  {
-		return new StartSessionAppTokenBuilder(id, tokenHash, userId, expiry, udid, extraParams);
+    public static StartSessionAppTokenBuilder startSession(String id, String tokenHash, String userId, int expiry, String udid)  {
+		return new StartSessionAppTokenBuilder(id, tokenHash, userId, expiry, udid);
 	}
 }

@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -105,11 +105,10 @@ public class OttUserService {
 	
 	public static class AnonymousLoginOttUserBuilder extends RequestBuilder<LoginSession, LoginSession.Tokenizer, AnonymousLoginOttUserBuilder> {
 		
-		public AnonymousLoginOttUserBuilder(int partnerId, String udid, Map<String, StringValue> extraParams) {
+		public AnonymousLoginOttUserBuilder(int partnerId, String udid) {
 			super(LoginSession.class, "ottuser", "anonymousLogin");
 			params.add("partnerId", partnerId);
 			params.add("udid", udid);
-			params.add("extraParams", extraParams);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -125,19 +124,14 @@ public class OttUserService {
 		return anonymousLogin(partnerId, null);
 	}
 
-	public static AnonymousLoginOttUserBuilder anonymousLogin(int partnerId, String udid)  {
-		return anonymousLogin(partnerId, udid, null);
-	}
-
 	/**
 	 * Returns tokens (KS and refresh token) for anonymous access
 	 * 
 	 * @param partnerId The partner ID
 	 * @param udid The caller device's UDID
-	 * @param extraParams extra params
 	 */
-    public static AnonymousLoginOttUserBuilder anonymousLogin(int partnerId, String udid, Map<String, StringValue> extraParams)  {
-		return new AnonymousLoginOttUserBuilder(partnerId, udid, extraParams);
+    public static AnonymousLoginOttUserBuilder anonymousLogin(int partnerId, String udid)  {
+		return new AnonymousLoginOttUserBuilder(partnerId, udid);
 	}
 	
 	public static class DeleteOttUserBuilder extends RequestBuilder<Boolean, String, DeleteOttUserBuilder> {
@@ -285,13 +279,12 @@ public class OttUserService {
 	
 	public static class LoginWithPinOttUserBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, LoginWithPinOttUserBuilder> {
 		
-		public LoginWithPinOttUserBuilder(int partnerId, String pin, String udid, String secret, Map<String, StringValue> extraParams) {
+		public LoginWithPinOttUserBuilder(int partnerId, String pin, String udid, String secret) {
 			super(LoginResponse.class, "ottuser", "loginWithPin");
 			params.add("partnerId", partnerId);
 			params.add("pin", pin);
 			params.add("udid", udid);
 			params.add("secret", secret);
-			params.add("extraParams", extraParams);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -319,10 +312,6 @@ public class OttUserService {
 		return loginWithPin(partnerId, pin, udid, null);
 	}
 
-	public static LoginWithPinOttUserBuilder loginWithPin(int partnerId, String pin, String udid, String secret)  {
-		return loginWithPin(partnerId, pin, udid, secret, null);
-	}
-
 	/**
 	 * User sign-in via a time-expired sign-in PIN.
 	 * 
@@ -330,10 +319,9 @@ public class OttUserService {
 	 * @param pin pin code
 	 * @param udid Device UDID
 	 * @param secret Additional security parameter to validate the login
-	 * @param extraParams extra params
 	 */
-    public static LoginWithPinOttUserBuilder loginWithPin(int partnerId, String pin, String udid, String secret, Map<String, StringValue> extraParams)  {
-		return new LoginWithPinOttUserBuilder(partnerId, pin, udid, secret, extraParams);
+    public static LoginWithPinOttUserBuilder loginWithPin(int partnerId, String pin, String udid, String secret)  {
+		return new LoginWithPinOttUserBuilder(partnerId, pin, udid, secret);
 	}
 	
 	public static class LogoutOttUserBuilder extends RequestBuilder<Boolean, String, LogoutOttUserBuilder> {
