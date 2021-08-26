@@ -39,25 +39,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeForAssetTypeInPlayback.Tokenizer.class)
-public class FilterFileByFileTypeForAssetTypeInPlayback extends FilterFileByFileTypeForAssetType {
+@MultiRequestBuilder.Tokenizer(FilterAction.Tokenizer.class)
+public abstract class FilterAction extends AssetRuleAction {
 	
-	public interface Tokenizer extends FilterFileByFileTypeForAssetType.Tokenizer {
+	public interface Tokenizer extends AssetRuleAction.Tokenizer {
 	}
 
 
 
-	public FilterFileByFileTypeForAssetTypeInPlayback() {
+	public FilterAction() {
 		super();
 	}
 
-	public FilterFileByFileTypeForAssetTypeInPlayback(JsonObject jsonObject) throws APIException {
+	public FilterAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByFileTypeForAssetTypeInPlayback");
+		kparams.add("objectType", "KalturaFilterAction");
 		return kparams;
 	}
 

@@ -40,52 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * FilterFile By AudioCodec
+ * FilterFile By Label
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByAudioCodec.Tokenizer.class)
-public abstract class FilterFileByAudioCodec extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByLabelAction.Tokenizer.class)
+public abstract class FilterFileByLabelAction extends FilterAction {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		String audioCodecs();
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String labelIn();
 	}
 
 	/**
-	 * List of comma separated audioCodecs
+	 * List of comma separated labels
 	 */
-	private String audioCodecs;
+	private String labelIn;
 
-	// audioCodecs:
-	public String getAudioCodecs(){
-		return this.audioCodecs;
+	// labelIn:
+	public String getLabelIn(){
+		return this.labelIn;
 	}
-	public void setAudioCodecs(String audioCodecs){
-		this.audioCodecs = audioCodecs;
-	}
-
-	public void audioCodecs(String multirequestToken){
-		setToken("audioCodecs", multirequestToken);
+	public void setLabelIn(String labelIn){
+		this.labelIn = labelIn;
 	}
 
+	public void labelIn(String multirequestToken){
+		setToken("labelIn", multirequestToken);
+	}
 
-	public FilterFileByAudioCodec() {
+
+	public FilterFileByLabelAction() {
 		super();
 	}
 
-	public FilterFileByAudioCodec(JsonObject jsonObject) throws APIException {
+	public FilterFileByLabelAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		audioCodecs = GsonParser.parseString(jsonObject.get("audioCodecs"));
+		labelIn = GsonParser.parseString(jsonObject.get("labelIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByAudioCodec");
-		kparams.add("audioCodecs", this.audioCodecs);
+		kparams.add("objectType", "KalturaFilterFileByLabelAction");
+		kparams.add("labelIn", this.labelIn);
 		return kparams;
 	}
 

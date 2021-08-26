@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,25 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeInDiscovery.Tokenizer.class)
-public class FilterFileByFileTypeInDiscovery extends FilterFileByFileType {
+@MultiRequestBuilder.Tokenizer(FilterAssetByKsqlAction.Tokenizer.class)
+public class FilterAssetByKsqlAction extends FilterAction {
 	
-	public interface Tokenizer extends FilterFileByFileType.Tokenizer {
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String ksql();
+	}
+
+	/**
+	 * ksql to filter assets by
+	 */
+	private String ksql;
+
+	// ksql:
+	public String getKsql(){
+		return this.ksql;
+	}
+	public void setKsql(String ksql){
+		this.ksql = ksql;
+	}
+
+	public void ksql(String multirequestToken){
+		setToken("ksql", multirequestToken);
 	}
 
 
-
-	public FilterFileByFileTypeInDiscovery() {
+	public FilterAssetByKsqlAction() {
 		super();
 	}
 
-	public FilterFileByFileTypeInDiscovery(JsonObject jsonObject) throws APIException {
+	public FilterAssetByKsqlAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		ksql = GsonParser.parseString(jsonObject.get("ksql"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByFileTypeInDiscovery");
+		kparams.add("objectType", "KalturaFilterAssetByKsqlAction");
+		kparams.add("ksql", this.ksql);
 		return kparams;
 	}
 

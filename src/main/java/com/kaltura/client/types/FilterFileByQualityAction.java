@@ -40,52 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * FilterFile By Quality
+ * Filter Files By their Quality
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByQuality.Tokenizer.class)
-public abstract class FilterFileByQuality extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByQualityAction.Tokenizer.class)
+public abstract class FilterFileByQualityAction extends FilterAction {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		String qualities();
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String typeQualityIn();
 	}
 
 	/**
 	 * List of comma separated qualities
 	 */
-	private String qualities;
+	private String typeQualityIn;
 
-	// qualities:
-	public String getQualities(){
-		return this.qualities;
+	// typeQualityIn:
+	public String getTypeQualityIn(){
+		return this.typeQualityIn;
 	}
-	public void setQualities(String qualities){
-		this.qualities = qualities;
-	}
-
-	public void qualities(String multirequestToken){
-		setToken("qualities", multirequestToken);
+	public void setTypeQualityIn(String typeQualityIn){
+		this.typeQualityIn = typeQualityIn;
 	}
 
+	public void typeQualityIn(String multirequestToken){
+		setToken("typeQualityIn", multirequestToken);
+	}
 
-	public FilterFileByQuality() {
+
+	public FilterFileByQualityAction() {
 		super();
 	}
 
-	public FilterFileByQuality(JsonObject jsonObject) throws APIException {
+	public FilterFileByQualityAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		qualities = GsonParser.parseString(jsonObject.get("qualities"));
+		typeQualityIn = GsonParser.parseString(jsonObject.get("typeQualityIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByQuality");
-		kparams.add("qualities", this.qualities);
+		kparams.add("objectType", "KalturaFilterFileByQualityAction");
+		kparams.add("typeQualityIn", this.typeQualityIn);
 		return kparams;
 	}
 

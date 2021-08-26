@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,53 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * FilterFile By FileType
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByFileType.Tokenizer.class)
-public abstract class FilterFileByFileType extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByAssetTypeInDiscoveryAction.Tokenizer.class)
+public class FilterFileByAssetTypeInDiscoveryAction extends FilterFileByAssetTypeAction {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		String fileTypesIds();
-	}
-
-	/**
-	 * List of comma separated fileTypesIds
-	 */
-	private String fileTypesIds;
-
-	// fileTypesIds:
-	public String getFileTypesIds(){
-		return this.fileTypesIds;
-	}
-	public void setFileTypesIds(String fileTypesIds){
-		this.fileTypesIds = fileTypesIds;
-	}
-
-	public void fileTypesIds(String multirequestToken){
-		setToken("fileTypesIds", multirequestToken);
+	public interface Tokenizer extends FilterFileByAssetTypeAction.Tokenizer {
 	}
 
 
-	public FilterFileByFileType() {
+
+	public FilterFileByAssetTypeInDiscoveryAction() {
 		super();
 	}
 
-	public FilterFileByFileType(JsonObject jsonObject) throws APIException {
+	public FilterFileByAssetTypeInDiscoveryAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		fileTypesIds = GsonParser.parseString(jsonObject.get("fileTypesIds"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByFileType");
-		kparams.add("fileTypesIds", this.fileTypesIds);
+		kparams.add("objectType", "KalturaFilterFileByAssetTypeInDiscoveryAction");
 		return kparams;
 	}
 

@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,53 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * FilterFile By Label
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByLabel.Tokenizer.class)
-public abstract class FilterFileByLabel extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByLabelInDiscoveryAction.Tokenizer.class)
+public class FilterFileByLabelInDiscoveryAction extends FilterFileByLabelAction {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		String labels();
-	}
-
-	/**
-	 * List of comma separated labels
-	 */
-	private String labels;
-
-	// labels:
-	public String getLabels(){
-		return this.labels;
-	}
-	public void setLabels(String labels){
-		this.labels = labels;
-	}
-
-	public void labels(String multirequestToken){
-		setToken("labels", multirequestToken);
+	public interface Tokenizer extends FilterFileByLabelAction.Tokenizer {
 	}
 
 
-	public FilterFileByLabel() {
+
+	public FilterFileByLabelInDiscoveryAction() {
 		super();
 	}
 
-	public FilterFileByLabel(JsonObject jsonObject) throws APIException {
+	public FilterFileByLabelInDiscoveryAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		labels = GsonParser.parseString(jsonObject.get("labels"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByLabel");
-		kparams.add("labels", this.labels);
+		kparams.add("objectType", "KalturaFilterFileByLabelInDiscoveryAction");
 		return kparams;
 	}
 

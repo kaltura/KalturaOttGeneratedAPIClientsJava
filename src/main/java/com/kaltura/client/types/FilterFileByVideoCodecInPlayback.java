@@ -40,9 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(FilterFileByVideoCodecInPlayback.Tokenizer.class)
-public class FilterFileByVideoCodecInPlayback extends FilterFileByVideoCodec {
+public class FilterFileByVideoCodecInPlayback extends FilterFileByVideoCodecAction {
 	
-	public interface Tokenizer extends FilterFileByVideoCodec.Tokenizer {
+	public interface Tokenizer extends FilterFileByVideoCodecAction.Tokenizer {
 	}
 
 

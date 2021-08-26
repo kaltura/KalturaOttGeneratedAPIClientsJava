@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,53 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * FilterFile By VideoCode
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByVideoCodec.Tokenizer.class)
-public abstract class FilterFileByVideoCodec extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByAssetTypeInPlaybackAction.Tokenizer.class)
+public class FilterFileByAssetTypeInPlaybackAction extends FilterFileByAssetTypeAction {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		String videoCodecs();
-	}
-
-	/**
-	 * List of comma separated videoCodecs
-	 */
-	private String videoCodecs;
-
-	// videoCodecs:
-	public String getVideoCodecs(){
-		return this.videoCodecs;
-	}
-	public void setVideoCodecs(String videoCodecs){
-		this.videoCodecs = videoCodecs;
-	}
-
-	public void videoCodecs(String multirequestToken){
-		setToken("videoCodecs", multirequestToken);
+	public interface Tokenizer extends FilterFileByAssetTypeAction.Tokenizer {
 	}
 
 
-	public FilterFileByVideoCodec() {
+
+	public FilterFileByAssetTypeInPlaybackAction() {
 		super();
 	}
 
-	public FilterFileByVideoCodec(JsonObject jsonObject) throws APIException {
+	public FilterFileByAssetTypeInPlaybackAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		videoCodecs = GsonParser.parseString(jsonObject.get("videoCodecs"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByVideoCodec");
-		kparams.add("videoCodecs", this.videoCodecs);
+		kparams.add("objectType", "KalturaFilterFileByAssetTypeInPlaybackAction");
 		return kparams;
 	}
 

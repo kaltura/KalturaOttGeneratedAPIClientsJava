@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * FilterFile By FileType
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeForAssetTypeInDiscovery.Tokenizer.class)
-public class FilterFileByFileTypeForAssetTypeInDiscovery extends FilterFileByFileTypeForAssetType {
+@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeIdAction.Tokenizer.class)
+public abstract class FilterFileByFileTypeIdAction extends FilterAction {
 	
-	public interface Tokenizer extends FilterFileByFileTypeForAssetType.Tokenizer {
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String fileTypeIdIn();
+	}
+
+	/**
+	 * List of comma separated fileTypesIds
+	 */
+	private String fileTypeIdIn;
+
+	// fileTypeIdIn:
+	public String getFileTypeIdIn(){
+		return this.fileTypeIdIn;
+	}
+	public void setFileTypeIdIn(String fileTypeIdIn){
+		this.fileTypeIdIn = fileTypeIdIn;
+	}
+
+	public void fileTypeIdIn(String multirequestToken){
+		setToken("fileTypeIdIn", multirequestToken);
 	}
 
 
-
-	public FilterFileByFileTypeForAssetTypeInDiscovery() {
+	public FilterFileByFileTypeIdAction() {
 		super();
 	}
 
-	public FilterFileByFileTypeForAssetTypeInDiscovery(JsonObject jsonObject) throws APIException {
+	public FilterFileByFileTypeIdAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		fileTypeIdIn = GsonParser.parseString(jsonObject.get("fileTypeIdIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByFileTypeForAssetTypeInDiscovery");
+		kparams.add("objectType", "KalturaFilterFileByFileTypeIdAction");
+		kparams.add("fileTypeIdIn", this.fileTypeIdIn);
 		return kparams;
 	}
 

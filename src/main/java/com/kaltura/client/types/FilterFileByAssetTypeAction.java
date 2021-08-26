@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * FilterFile By FileType For AssetType
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByQualityInPlayback.Tokenizer.class)
-public class FilterFileByQualityInPlayback extends FilterFileByQuality {
+@MultiRequestBuilder.Tokenizer(FilterFileByAssetTypeAction.Tokenizer.class)
+public abstract class FilterFileByAssetTypeAction extends FilterFileByFileTypeIdAction {
 	
-	public interface Tokenizer extends FilterFileByQuality.Tokenizer {
+	public interface Tokenizer extends FilterFileByFileTypeIdAction.Tokenizer {
+		String assetTypeIn();
+	}
+
+	/**
+	 * List of comma separated assetTypes
+	 */
+	private String assetTypeIn;
+
+	// assetTypeIn:
+	public String getAssetTypeIn(){
+		return this.assetTypeIn;
+	}
+	public void setAssetTypeIn(String assetTypeIn){
+		this.assetTypeIn = assetTypeIn;
+	}
+
+	public void assetTypeIn(String multirequestToken){
+		setToken("assetTypeIn", multirequestToken);
 	}
 
 
-
-	public FilterFileByQualityInPlayback() {
+	public FilterFileByAssetTypeAction() {
 		super();
 	}
 
-	public FilterFileByQualityInPlayback(JsonObject jsonObject) throws APIException {
+	public FilterFileByAssetTypeAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		assetTypeIn = GsonParser.parseString(jsonObject.get("assetTypeIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByQualityInPlayback");
+		kparams.add("objectType", "KalturaFilterFileByAssetTypeAction");
+		kparams.add("assetTypeIn", this.assetTypeIn);
 		return kparams;
 	}
 

@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,53 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * FilterFile By FileType For AssetType
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeForAssetType.Tokenizer.class)
-public abstract class FilterFileByFileTypeForAssetType extends FilterFileByFileType {
+@MultiRequestBuilder.Tokenizer(FilterFileByQualityInDiscoveryAction.Tokenizer.class)
+public class FilterFileByQualityInDiscoveryAction extends FilterFileByQualityAction {
 	
-	public interface Tokenizer extends FilterFileByFileType.Tokenizer {
-		String assetTypes();
-	}
-
-	/**
-	 * List of comma separated assetTypes
-	 */
-	private String assetTypes;
-
-	// assetTypes:
-	public String getAssetTypes(){
-		return this.assetTypes;
-	}
-	public void setAssetTypes(String assetTypes){
-		this.assetTypes = assetTypes;
-	}
-
-	public void assetTypes(String multirequestToken){
-		setToken("assetTypes", multirequestToken);
+	public interface Tokenizer extends FilterFileByQualityAction.Tokenizer {
 	}
 
 
-	public FilterFileByFileTypeForAssetType() {
+
+	public FilterFileByQualityInDiscoveryAction() {
 		super();
 	}
 
-	public FilterFileByFileTypeForAssetType(JsonObject jsonObject) throws APIException {
+	public FilterFileByQualityInDiscoveryAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		assetTypes = GsonParser.parseString(jsonObject.get("assetTypes"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByFileTypeForAssetType");
-		kparams.add("assetTypes", this.assetTypes);
+		kparams.add("objectType", "KalturaFilterFileByQualityInDiscoveryAction");
 		return kparams;
 	}
 

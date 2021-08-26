@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * FilterFile By AudioCodec
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByAudioCodecInDiscovery.Tokenizer.class)
-public class FilterFileByAudioCodecInDiscovery extends FilterFileByAudioCodec {
+@MultiRequestBuilder.Tokenizer(FilterFileByAudioCodecAction.Tokenizer.class)
+public abstract class FilterFileByAudioCodecAction extends FilterAction {
 	
-	public interface Tokenizer extends FilterFileByAudioCodec.Tokenizer {
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String audioCodecIn();
+	}
+
+	/**
+	 * List of comma separated audioCodecs
+	 */
+	private String audioCodecIn;
+
+	// audioCodecIn:
+	public String getAudioCodecIn(){
+		return this.audioCodecIn;
+	}
+	public void setAudioCodecIn(String audioCodecIn){
+		this.audioCodecIn = audioCodecIn;
+	}
+
+	public void audioCodecIn(String multirequestToken){
+		setToken("audioCodecIn", multirequestToken);
 	}
 
 
-
-	public FilterFileByAudioCodecInDiscovery() {
+	public FilterFileByAudioCodecAction() {
 		super();
 	}
 
-	public FilterFileByAudioCodecInDiscovery(JsonObject jsonObject) throws APIException {
+	public FilterFileByAudioCodecAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		audioCodecIn = GsonParser.parseString(jsonObject.get("audioCodecIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByAudioCodecInDiscovery");
+		kparams.add("objectType", "KalturaFilterFileByAudioCodecAction");
+		kparams.add("audioCodecIn", this.audioCodecIn);
 		return kparams;
 	}
 

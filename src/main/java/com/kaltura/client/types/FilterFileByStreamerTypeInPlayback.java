@@ -40,9 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(FilterFileByStreamerTypeInPlayback.Tokenizer.class)
-public class FilterFileByStreamerTypeInPlayback extends FilterFileByStreamerType {
+public class FilterFileByStreamerTypeInPlayback extends FilterFileByStreamerTypeAction {
 	
-	public interface Tokenizer extends FilterFileByStreamerType.Tokenizer {
+	public interface Tokenizer extends FilterFileByStreamerTypeAction.Tokenizer {
 	}
 
 

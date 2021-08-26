@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,53 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * FilterFile By StreamerType
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByStreamerType.Tokenizer.class)
-public abstract class FilterFileByStreamerType extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeIdInPlaybackAction.Tokenizer.class)
+public class FilterFileByFileTypeIdInPlaybackAction extends FilterFileByFileTypeIdAction {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		String streamerTypes();
-	}
-
-	/**
-	 * List of comma separated streamerTypes
-	 */
-	private String streamerTypes;
-
-	// streamerTypes:
-	public String getStreamerTypes(){
-		return this.streamerTypes;
-	}
-	public void setStreamerTypes(String streamerTypes){
-		this.streamerTypes = streamerTypes;
-	}
-
-	public void streamerTypes(String multirequestToken){
-		setToken("streamerTypes", multirequestToken);
+	public interface Tokenizer extends FilterFileByFileTypeIdAction.Tokenizer {
 	}
 
 
-	public FilterFileByStreamerType() {
+
+	public FilterFileByFileTypeIdInPlaybackAction() {
 		super();
 	}
 
-	public FilterFileByStreamerType(JsonObject jsonObject) throws APIException {
+	public FilterFileByFileTypeIdInPlaybackAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		streamerTypes = GsonParser.parseString(jsonObject.get("streamerTypes"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByStreamerType");
-		kparams.add("streamerTypes", this.streamerTypes);
+		kparams.add("objectType", "KalturaFilterFileByFileTypeIdInPlaybackAction");
 		return kparams;
 	}
 

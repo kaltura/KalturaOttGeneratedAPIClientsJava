@@ -39,25 +39,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByStreamerTypeInDiscovery.Tokenizer.class)
-public class FilterFileByStreamerTypeInDiscovery extends FilterFileByStreamerTypeAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByVideoCodecInDiscoveryAction.Tokenizer.class)
+public class FilterFileByVideoCodecInDiscoveryAction extends FilterFileByVideoCodecAction {
 	
-	public interface Tokenizer extends FilterFileByStreamerTypeAction.Tokenizer {
+	public interface Tokenizer extends FilterFileByVideoCodecAction.Tokenizer {
 	}
 
 
 
-	public FilterFileByStreamerTypeInDiscovery() {
+	public FilterFileByVideoCodecInDiscoveryAction() {
 		super();
 	}
 
-	public FilterFileByStreamerTypeInDiscovery(JsonObject jsonObject) throws APIException {
+	public FilterFileByVideoCodecInDiscoveryAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByStreamerTypeInDiscovery");
+		kparams.add("objectType", "KalturaFilterFileByVideoCodecInDiscoveryAction");
 		return kparams;
 	}
 

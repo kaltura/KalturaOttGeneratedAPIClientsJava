@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * FilterFile By StreamerType
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByLabelInDiscovery.Tokenizer.class)
-public class FilterFileByLabelInDiscovery extends FilterFileByLabel {
+@MultiRequestBuilder.Tokenizer(FilterFileByStreamerTypeAction.Tokenizer.class)
+public abstract class FilterFileByStreamerTypeAction extends FilterAction {
 	
-	public interface Tokenizer extends FilterFileByLabel.Tokenizer {
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String streamerTypeIn();
+	}
+
+	/**
+	 * List of comma separated streamerTypes
+	 */
+	private String streamerTypeIn;
+
+	// streamerTypeIn:
+	public String getStreamerTypeIn(){
+		return this.streamerTypeIn;
+	}
+	public void setStreamerTypeIn(String streamerTypeIn){
+		this.streamerTypeIn = streamerTypeIn;
+	}
+
+	public void streamerTypeIn(String multirequestToken){
+		setToken("streamerTypeIn", multirequestToken);
 	}
 
 
-
-	public FilterFileByLabelInDiscovery() {
+	public FilterFileByStreamerTypeAction() {
 		super();
 	}
 
-	public FilterFileByLabelInDiscovery(JsonObject jsonObject) throws APIException {
+	public FilterFileByStreamerTypeAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		streamerTypeIn = GsonParser.parseString(jsonObject.get("streamerTypeIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByLabelInDiscovery");
+		kparams.add("objectType", "KalturaFilterFileByStreamerTypeAction");
+		kparams.add("streamerTypeIn", this.streamerTypeIn);
 		return kparams;
 	}
 
