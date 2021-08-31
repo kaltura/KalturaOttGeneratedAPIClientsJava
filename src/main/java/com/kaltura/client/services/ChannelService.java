@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -28,7 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.Channel;
-import com.kaltura.client.types.ChannelsFilter;
+import com.kaltura.client.types.ChannelsBaseFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -104,7 +104,7 @@ public class ChannelService {
 	
 	public static class ListChannelBuilder extends ListResponseRequestBuilder<Channel, Channel.Tokenizer, ListChannelBuilder> {
 		
-		public ListChannelBuilder(ChannelsFilter filter, FilterPager pager) {
+		public ListChannelBuilder(ChannelsBaseFilter filter, FilterPager pager) {
 			super(Channel.class, "channel", "list");
 			params.add("filter", filter);
 			params.add("pager", pager);
@@ -115,7 +115,7 @@ public class ChannelService {
 		return list(null);
 	}
 
-	public static ListChannelBuilder list(ChannelsFilter filter)  {
+	public static ListChannelBuilder list(ChannelsBaseFilter filter)  {
 		return list(filter, null);
 	}
 
@@ -125,7 +125,7 @@ public class ChannelService {
 	 * @param filter Filter
 	 * @param pager Page size and index
 	 */
-    public static ListChannelBuilder list(ChannelsFilter filter, FilterPager pager)  {
+    public static ListChannelBuilder list(ChannelsBaseFilter filter, FilterPager pager)  {
 		return new ListChannelBuilder(filter, pager);
 	}
 	

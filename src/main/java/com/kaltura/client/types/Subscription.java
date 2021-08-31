@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -32,7 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.enums.AdsPolicy;
 import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.types.DiscountModule;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.PreviewModule;
 import com.kaltura.client.types.PriceDetails;
 import com.kaltura.client.utils.GsonParser;
@@ -52,9 +51,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Subscription.Tokenizer.class)
-public class Subscription extends ObjectBase {
+public class Subscription extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String id();
 		RequestBuilder.ListTokenizer<BaseChannel.Tokenizer> channels();
 		String channelsIds();
@@ -95,6 +94,8 @@ public class Subscription extends ObjectBase {
 		String adsPolicy();
 		String adsParam();
 		String isActive();
+		String createDate();
+		String updateDate();
 	}
 
 	/**
@@ -260,6 +261,15 @@ public class Subscription extends ObjectBase {
 	 * Is active subscription
 	 */
 	private Boolean isActive;
+	/**
+	 * Specifies when was the Subscription created. Date and time represented as epoch.
+	 */
+	private Long createDate;
+	/**
+	 * Specifies when was the Subscription last updated. Date and time represented as
+	  epoch.
+	 */
+	private Long updateDate;
 
 	// id:
 	public String getId(){
@@ -585,6 +595,14 @@ public class Subscription extends ObjectBase {
 		setToken("isActive", multirequestToken);
 	}
 
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
 
 	public Subscription() {
 		super();
@@ -636,6 +654,8 @@ public class Subscription extends ObjectBase {
 		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
 		adsParam = GsonParser.parseString(jsonObject.get("adsParam"));
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 

@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ObjectVirtualAssetInfoType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -50,6 +51,7 @@ public class AssetStructFilter extends Filter {
 		String idIn();
 		String metaIdEqual();
 		String isProtectedEqual();
+		String objectVirtualAssetInfoTypeEqual();
 	}
 
 	/**
@@ -64,6 +66,10 @@ public class AssetStructFilter extends Filter {
 	 * Filter Asset Structs by isProtectedEqual value
 	 */
 	private Boolean isProtectedEqual;
+	/**
+	 * Filter Asset Structs by object virtual asset info type value
+	 */
+	private ObjectVirtualAssetInfoType objectVirtualAssetInfoTypeEqual;
 
 	// idIn:
 	public String getIdIn(){
@@ -101,6 +107,18 @@ public class AssetStructFilter extends Filter {
 		setToken("isProtectedEqual", multirequestToken);
 	}
 
+	// objectVirtualAssetInfoTypeEqual:
+	public ObjectVirtualAssetInfoType getObjectVirtualAssetInfoTypeEqual(){
+		return this.objectVirtualAssetInfoTypeEqual;
+	}
+	public void setObjectVirtualAssetInfoTypeEqual(ObjectVirtualAssetInfoType objectVirtualAssetInfoTypeEqual){
+		this.objectVirtualAssetInfoTypeEqual = objectVirtualAssetInfoTypeEqual;
+	}
+
+	public void objectVirtualAssetInfoTypeEqual(String multirequestToken){
+		setToken("objectVirtualAssetInfoTypeEqual", multirequestToken);
+	}
+
 
 	public AssetStructFilter() {
 		super();
@@ -115,6 +133,7 @@ public class AssetStructFilter extends Filter {
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 		metaIdEqual = GsonParser.parseLong(jsonObject.get("metaIdEqual"));
 		isProtectedEqual = GsonParser.parseBoolean(jsonObject.get("isProtectedEqual"));
+		objectVirtualAssetInfoTypeEqual = ObjectVirtualAssetInfoType.get(GsonParser.parseString(jsonObject.get("objectVirtualAssetInfoTypeEqual")));
 
 	}
 
@@ -124,6 +143,7 @@ public class AssetStructFilter extends Filter {
 		kparams.add("idIn", this.idIn);
 		kparams.add("metaIdEqual", this.metaIdEqual);
 		kparams.add("isProtectedEqual", this.isProtectedEqual);
+		kparams.add("objectVirtualAssetInfoTypeEqual", this.objectVirtualAssetInfoTypeEqual);
 		return kparams;
 	}
 

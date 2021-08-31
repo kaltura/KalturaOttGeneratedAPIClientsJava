@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -48,7 +48,11 @@ public class SubscriptionFilter extends Filter {
 		String mediaFileIdEqual();
 		String externalIdIn();
 		String couponGroupIdEqual();
+		String previewModuleIdEqual();
+		String pricePlanIdEqual();
+		String channelIdEqual();
 		String kSql();
+		String alsoInactive();
 	}
 
 	/**
@@ -68,9 +72,25 @@ public class SubscriptionFilter extends Filter {
 	 */
 	private Integer couponGroupIdEqual;
 	/**
+	 * previewModuleIdEqual
+	 */
+	private Long previewModuleIdEqual;
+	/**
+	 * pricePlanIdEqual
+	 */
+	private Long pricePlanIdEqual;
+	/**
+	 * channelIdEqual
+	 */
+	private Long channelIdEqual;
+	/**
 	 * KSQL expression
 	 */
 	private String kSql;
+	/**
+	 * Root only
+	 */
+	private Boolean alsoInactive;
 
 	// subscriptionIdIn:
 	public String getSubscriptionIdIn(){
@@ -120,6 +140,42 @@ public class SubscriptionFilter extends Filter {
 		setToken("couponGroupIdEqual", multirequestToken);
 	}
 
+	// previewModuleIdEqual:
+	public Long getPreviewModuleIdEqual(){
+		return this.previewModuleIdEqual;
+	}
+	public void setPreviewModuleIdEqual(Long previewModuleIdEqual){
+		this.previewModuleIdEqual = previewModuleIdEqual;
+	}
+
+	public void previewModuleIdEqual(String multirequestToken){
+		setToken("previewModuleIdEqual", multirequestToken);
+	}
+
+	// pricePlanIdEqual:
+	public Long getPricePlanIdEqual(){
+		return this.pricePlanIdEqual;
+	}
+	public void setPricePlanIdEqual(Long pricePlanIdEqual){
+		this.pricePlanIdEqual = pricePlanIdEqual;
+	}
+
+	public void pricePlanIdEqual(String multirequestToken){
+		setToken("pricePlanIdEqual", multirequestToken);
+	}
+
+	// channelIdEqual:
+	public Long getChannelIdEqual(){
+		return this.channelIdEqual;
+	}
+	public void setChannelIdEqual(Long channelIdEqual){
+		this.channelIdEqual = channelIdEqual;
+	}
+
+	public void channelIdEqual(String multirequestToken){
+		setToken("channelIdEqual", multirequestToken);
+	}
+
 	// kSql:
 	public String getKSql(){
 		return this.kSql;
@@ -130,6 +186,18 @@ public class SubscriptionFilter extends Filter {
 
 	public void kSql(String multirequestToken){
 		setToken("kSql", multirequestToken);
+	}
+
+	// alsoInactive:
+	public Boolean getAlsoInactive(){
+		return this.alsoInactive;
+	}
+	public void setAlsoInactive(Boolean alsoInactive){
+		this.alsoInactive = alsoInactive;
+	}
+
+	public void alsoInactive(String multirequestToken){
+		setToken("alsoInactive", multirequestToken);
 	}
 
 
@@ -147,7 +215,11 @@ public class SubscriptionFilter extends Filter {
 		mediaFileIdEqual = GsonParser.parseInt(jsonObject.get("mediaFileIdEqual"));
 		externalIdIn = GsonParser.parseString(jsonObject.get("externalIdIn"));
 		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
+		previewModuleIdEqual = GsonParser.parseLong(jsonObject.get("previewModuleIdEqual"));
+		pricePlanIdEqual = GsonParser.parseLong(jsonObject.get("pricePlanIdEqual"));
+		channelIdEqual = GsonParser.parseLong(jsonObject.get("channelIdEqual"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
 
 	}
 
@@ -158,7 +230,11 @@ public class SubscriptionFilter extends Filter {
 		kparams.add("mediaFileIdEqual", this.mediaFileIdEqual);
 		kparams.add("externalIdIn", this.externalIdIn);
 		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
+		kparams.add("previewModuleIdEqual", this.previewModuleIdEqual);
+		kparams.add("pricePlanIdEqual", this.pricePlanIdEqual);
+		kparams.add("channelIdEqual", this.channelIdEqual);
 		kparams.add("kSql", this.kSql);
+		kparams.add("alsoInactive", this.alsoInactive);
 		return kparams;
 	}
 

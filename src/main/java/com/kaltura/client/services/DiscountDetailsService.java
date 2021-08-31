@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -99,5 +99,28 @@ public class DiscountDetailsService {
 	 */
     public static ListDiscountDetailsBuilder list(DiscountDetailsFilter filter)  {
 		return new ListDiscountDetailsBuilder(filter);
+	}
+	
+	public static class UpdateDiscountDetailsBuilder extends RequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, UpdateDiscountDetailsBuilder> {
+		
+		public UpdateDiscountDetailsBuilder(long id, DiscountDetails discountDetails) {
+			super(DiscountDetails.class, "discountdetails", "update");
+			params.add("id", id);
+			params.add("discountDetails", discountDetails);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update discount details
+	 * 
+	 * @param id DiscountDetails id
+	 * @param discountDetails Discount details Object
+	 */
+    public static UpdateDiscountDetailsBuilder update(long id, DiscountDetails discountDetails)  {
+		return new UpdateDiscountDetailsBuilder(id, discountDetails);
 	}
 }
