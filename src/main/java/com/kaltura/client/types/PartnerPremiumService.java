@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DurationUnit;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,82 +41,81 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * representation of duration time unit and value
+ * Premium service
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Duration.Tokenizer.class)
-public class Duration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(PartnerPremiumService.Tokenizer.class)
+public class PartnerPremiumService extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String unit();
-		String value();
-		String code();
+		String id();
+		String name();
+		String isApplied();
 	}
 
 	/**
-	 * duration unit
+	 * Service identifier
 	 */
-	private DurationUnit unit;
+	private Long id;
 	/**
-	 * duration value
+	 * Service name / description
 	 */
-	private Integer value;
+	private String name;
 	/**
-	 * duration code - the canculat time in minutes except from years and months that
-	  have specific code
+	 * Service name / description
 	 */
-	private Long code;
+	private Boolean isApplied;
 
-	// unit:
-	public DurationUnit getUnit(){
-		return this.unit;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setUnit(DurationUnit unit){
-		this.unit = unit;
-	}
-
-	public void unit(String multirequestToken){
-		setToken("unit", multirequestToken);
+	public void setId(Long id){
+		this.id = id;
 	}
 
-	// value:
-	public Integer getValue(){
-		return this.value;
-	}
-	public void setValue(Integer value){
-		this.value = value;
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
 	}
 
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	// isApplied:
+	public Boolean getIsApplied(){
+		return this.isApplied;
+	}
+	public void setIsApplied(Boolean isApplied){
+		this.isApplied = isApplied;
 	}
 
-	// code:
-	public Long getCode(){
-		return this.code;
+	public void isApplied(String multirequestToken){
+		setToken("isApplied", multirequestToken);
 	}
 
-	public Duration() {
+
+	public PartnerPremiumService() {
 		super();
 	}
 
-	public Duration(JsonObject jsonObject) throws APIException {
+	public PartnerPremiumService(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		unit = DurationUnit.get(GsonParser.parseString(jsonObject.get("unit")));
-		value = GsonParser.parseInt(jsonObject.get("value"));
-		code = GsonParser.parseLong(jsonObject.get("code"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		isApplied = GsonParser.parseBoolean(jsonObject.get("isApplied"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDuration");
-		kparams.add("unit", this.unit);
-		kparams.add("value", this.value);
+		kparams.add("objectType", "KalturaPartnerPremiumService");
+		kparams.add("id", this.id);
+		kparams.add("isApplied", this.isApplied);
 		return kparams;
 	}
 

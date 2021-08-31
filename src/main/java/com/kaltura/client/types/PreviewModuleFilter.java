@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DurationUnit;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,83 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * representation of duration time unit and value
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Duration.Tokenizer.class)
-public class Duration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(PreviewModuleFilter.Tokenizer.class)
+public class PreviewModuleFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String unit();
-		String value();
-		String code();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idIn();
 	}
 
 	/**
-	 * duration unit
+	 * Comma separated discount codes
 	 */
-	private DurationUnit unit;
-	/**
-	 * duration value
-	 */
-	private Integer value;
-	/**
-	 * duration code - the canculat time in minutes except from years and months that
-	  have specific code
-	 */
-	private Long code;
+	private String idIn;
 
-	// unit:
-	public DurationUnit getUnit(){
-		return this.unit;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
 	}
-	public void setUnit(DurationUnit unit){
-		this.unit = unit;
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void unit(String multirequestToken){
-		setToken("unit", multirequestToken);
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
-	// value:
-	public Integer getValue(){
-		return this.value;
-	}
-	public void setValue(Integer value){
-		this.value = value;
-	}
 
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
-
-	// code:
-	public Long getCode(){
-		return this.code;
-	}
-
-	public Duration() {
+	public PreviewModuleFilter() {
 		super();
 	}
 
-	public Duration(JsonObject jsonObject) throws APIException {
+	public PreviewModuleFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		unit = DurationUnit.get(GsonParser.parseString(jsonObject.get("unit")));
-		value = GsonParser.parseInt(jsonObject.get("value"));
-		code = GsonParser.parseLong(jsonObject.get("code"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDuration");
-		kparams.add("unit", this.unit);
-		kparams.add("value", this.value);
+		kparams.add("objectType", "KalturaPreviewModuleFilter");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 

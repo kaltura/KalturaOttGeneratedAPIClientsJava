@@ -167,14 +167,38 @@ public class UsageModule extends ObjectBase {
 	public Integer getWaiverPeriod(){
 		return this.waiverPeriod;
 	}
+	public void setWaiverPeriod(Integer waiverPeriod){
+		this.waiverPeriod = waiverPeriod;
+	}
+
+	public void waiverPeriod(String multirequestToken){
+		setToken("waiverPeriod", multirequestToken);
+	}
+
 	// isWaiverEnabled:
 	public Boolean getIsWaiverEnabled(){
 		return this.isWaiverEnabled;
 	}
+	public void setIsWaiverEnabled(Boolean isWaiverEnabled){
+		this.isWaiverEnabled = isWaiverEnabled;
+	}
+
+	public void isWaiverEnabled(String multirequestToken){
+		setToken("isWaiverEnabled", multirequestToken);
+	}
+
 	// isOfflinePlayback:
 	public Boolean getIsOfflinePlayback(){
 		return this.isOfflinePlayback;
 	}
+	public void setIsOfflinePlayback(Boolean isOfflinePlayback){
+		this.isOfflinePlayback = isOfflinePlayback;
+	}
+
+	public void isOfflinePlayback(String multirequestToken){
+		setToken("isOfflinePlayback", multirequestToken);
+	}
+
 
 	public UsageModule() {
 		super();
@@ -206,6 +230,9 @@ public class UsageModule extends ObjectBase {
 		kparams.add("maxViewsNumber", this.maxViewsNumber);
 		kparams.add("viewLifeCycle", this.viewLifeCycle);
 		kparams.add("fullLifeCycle", this.fullLifeCycle);
+		kparams.add("waiverPeriod", this.waiverPeriod);
+		kparams.add("isWaiverEnabled", this.isWaiverEnabled);
+		kparams.add("isOfflinePlayback", this.isOfflinePlayback);
 		return kparams;
 	}
 

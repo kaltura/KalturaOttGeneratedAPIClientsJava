@@ -50,7 +50,7 @@ public class PricePlanService {
 	}
 
 	/**
-	 * Internal API !!!  Insert new PriceDetails for partner
+	 * Insert new PricePlan
 	 * 
 	 * @param pricePlan Price plan Object
 	 */
@@ -71,7 +71,7 @@ public class PricePlanService {
 	}
 
 	/**
-	 * Internal API !!! Delete PricePlan
+	 * Delete PricePlan
 	 * 
 	 * @param id PricePlan identifier
 	 */
