@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -106,6 +106,29 @@ public class SubscriptionService {
 	 */
     public static ListSubscriptionBuilder list(SubscriptionFilter filter, FilterPager pager)  {
 		return new ListSubscriptionBuilder(filter, pager);
+	}
+	
+	public static class UpdateSubscriptionBuilder extends RequestBuilder<Subscription, Subscription.Tokenizer, UpdateSubscriptionBuilder> {
+		
+		public UpdateSubscriptionBuilder(long id, Subscription subscription) {
+			super(Subscription.class, "subscription", "update");
+			params.add("id", id);
+			params.add("subscription", subscription);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update Subscription
+	 * 
+	 * @param id Subscription id
+	 * @param subscription Subscription
+	 */
+    public static UpdateSubscriptionBuilder update(long id, Subscription subscription)  {
+		return new UpdateSubscriptionBuilder(id, subscription);
 	}
 	
 	public static class ValidateCouponSubscriptionBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, ValidateCouponSubscriptionBuilder> {

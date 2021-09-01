@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -50,7 +50,7 @@ public class PricePlanService {
 	}
 
 	/**
-	 * Internal API !!!  Insert new PriceDetails for partner
+	 * Insert new PricePlan
 	 * 
 	 * @param pricePlan Price plan Object
 	 */
@@ -71,7 +71,7 @@ public class PricePlanService {
 	}
 
 	/**
-	 * Internal API !!! Delete PricePlan
+	 * Delete PricePlan
 	 * 
 	 * @param id PricePlan identifier
 	 */
