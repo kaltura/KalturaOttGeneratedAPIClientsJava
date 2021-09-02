@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -28,6 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.PreviewModule;
+import com.kaltura.client.types.PreviewModuleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -49,7 +50,7 @@ public class PreviewModuleService {
 	}
 
 	/**
-	 * Internal API !!! Insert new PreviewModule for partner
+	 * Insert new PreviewModule for partner
 	 * 
 	 * @param previewModule Preview module object
 	 */
@@ -80,15 +81,45 @@ public class PreviewModuleService {
 	
 	public static class ListPreviewModuleBuilder extends ListResponseRequestBuilder<PreviewModule, PreviewModule.Tokenizer, ListPreviewModuleBuilder> {
 		
-		public ListPreviewModuleBuilder() {
+		public ListPreviewModuleBuilder(PreviewModuleFilter filter) {
 			super(PreviewModule.class, "previewmodule", "list");
+			params.add("filter", filter);
+		}
+	}
+
+	public static ListPreviewModuleBuilder list()  {
+		return list(null);
+	}
+
+	/**
+	 * Returns all PreviewModule
+	 * 
+	 * @param filter Filter
+	 */
+    public static ListPreviewModuleBuilder list(PreviewModuleFilter filter)  {
+		return new ListPreviewModuleBuilder(filter);
+	}
+	
+	public static class UpdatePreviewModuleBuilder extends RequestBuilder<PreviewModule, PreviewModule.Tokenizer, UpdatePreviewModuleBuilder> {
+		
+		public UpdatePreviewModuleBuilder(long id, PreviewModule previewModule) {
+			super(PreviewModule.class, "previewmodule", "update");
+			params.add("id", id);
+			params.add("previewModule", previewModule);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
 	/**
-	 * Internal API !!! Returns all PreviewModule
+	 * Update PreviewModule
+	 * 
+	 * @param id PreviewModule id
+	 * @param previewModule PreviewModule
 	 */
-    public static ListPreviewModuleBuilder list()  {
-		return new ListPreviewModuleBuilder();
+    public static UpdatePreviewModuleBuilder update(long id, PreviewModule previewModule)  {
+		return new UpdatePreviewModuleBuilder(id, previewModule);
 	}
 }

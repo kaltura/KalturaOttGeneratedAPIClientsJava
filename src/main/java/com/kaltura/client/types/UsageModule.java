@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platforms allow them to do with
+// to do with audio, video, and animation what Wiki platfroms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -167,14 +167,38 @@ public class UsageModule extends ObjectBase {
 	public Integer getWaiverPeriod(){
 		return this.waiverPeriod;
 	}
+	public void setWaiverPeriod(Integer waiverPeriod){
+		this.waiverPeriod = waiverPeriod;
+	}
+
+	public void waiverPeriod(String multirequestToken){
+		setToken("waiverPeriod", multirequestToken);
+	}
+
 	// isWaiverEnabled:
 	public Boolean getIsWaiverEnabled(){
 		return this.isWaiverEnabled;
 	}
+	public void setIsWaiverEnabled(Boolean isWaiverEnabled){
+		this.isWaiverEnabled = isWaiverEnabled;
+	}
+
+	public void isWaiverEnabled(String multirequestToken){
+		setToken("isWaiverEnabled", multirequestToken);
+	}
+
 	// isOfflinePlayback:
 	public Boolean getIsOfflinePlayback(){
 		return this.isOfflinePlayback;
 	}
+	public void setIsOfflinePlayback(Boolean isOfflinePlayback){
+		this.isOfflinePlayback = isOfflinePlayback;
+	}
+
+	public void isOfflinePlayback(String multirequestToken){
+		setToken("isOfflinePlayback", multirequestToken);
+	}
+
 
 	public UsageModule() {
 		super();
@@ -206,6 +230,9 @@ public class UsageModule extends ObjectBase {
 		kparams.add("maxViewsNumber", this.maxViewsNumber);
 		kparams.add("viewLifeCycle", this.viewLifeCycle);
 		kparams.add("fullLifeCycle", this.fullLifeCycle);
+		kparams.add("waiverPeriod", this.waiverPeriod);
+		kparams.add("isWaiverEnabled", this.isWaiverEnabled);
+		kparams.add("isOfflinePlayback", this.isOfflinePlayback);
 		return kparams;
 	}
 
