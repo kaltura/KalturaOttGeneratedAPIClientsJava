@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.UserSessionProfile;
 import com.kaltura.client.types.UserSessionProfileFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -82,9 +83,10 @@ public class UserSessionProfileService {
 	
 	public static class ListUserSessionProfileBuilder extends ListResponseRequestBuilder<UserSessionProfile, UserSessionProfile.Tokenizer, ListUserSessionProfileBuilder> {
 		
-		public ListUserSessionProfileBuilder(UserSessionProfileFilter filter) {
+		public ListUserSessionProfileBuilder(UserSessionProfileFilter filter, FilterPager pager) {
 			super(UserSessionProfile.class, "usersessionprofile", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
@@ -92,13 +94,18 @@ public class UserSessionProfileService {
 		return list(null);
 	}
 
+	public static ListUserSessionProfileBuilder list(UserSessionProfileFilter filter)  {
+		return list(filter, null);
+	}
+
 	/**
 	 * Returns the list of available UserSessionProfiles
 	 * 
 	 * @param filter Filter
+	 * @param pager Pager
 	 */
-    public static ListUserSessionProfileBuilder list(UserSessionProfileFilter filter)  {
-		return new ListUserSessionProfileBuilder(filter);
+    public static ListUserSessionProfileBuilder list(UserSessionProfileFilter filter, FilterPager pager)  {
+		return new ListUserSessionProfileBuilder(filter, pager);
 	}
 	
 	public static class UpdateUserSessionProfileBuilder extends RequestBuilder<UserSessionProfile, UserSessionProfile.Tokenizer, UpdateUserSessionProfileBuilder> {
