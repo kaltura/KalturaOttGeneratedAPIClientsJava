@@ -108,6 +108,29 @@ public class SubscriptionService {
 		return new ListSubscriptionBuilder(filter, pager);
 	}
 	
+	public static class UpdateSubscriptionBuilder extends RequestBuilder<Subscription, Subscription.Tokenizer, UpdateSubscriptionBuilder> {
+		
+		public UpdateSubscriptionBuilder(long id, Subscription subscription) {
+			super(Subscription.class, "subscription", "update");
+			params.add("id", id);
+			params.add("subscription", subscription);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update Subscription
+	 * 
+	 * @param id Subscription id
+	 * @param subscription Subscription
+	 */
+    public static UpdateSubscriptionBuilder update(long id, Subscription subscription)  {
+		return new UpdateSubscriptionBuilder(id, subscription);
+	}
+	
 	public static class ValidateCouponSubscriptionBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, ValidateCouponSubscriptionBuilder> {
 		
 		public ValidateCouponSubscriptionBuilder(int id, String code) {

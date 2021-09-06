@@ -100,4 +100,27 @@ public class DiscountDetailsService {
     public static ListDiscountDetailsBuilder list(DiscountDetailsFilter filter)  {
 		return new ListDiscountDetailsBuilder(filter);
 	}
+	
+	public static class UpdateDiscountDetailsBuilder extends RequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, UpdateDiscountDetailsBuilder> {
+		
+		public UpdateDiscountDetailsBuilder(long id, DiscountDetails discountDetails) {
+			super(DiscountDetails.class, "discountdetails", "update");
+			params.add("id", id);
+			params.add("discountDetails", discountDetails);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update discount details
+	 * 
+	 * @param id DiscountDetails id
+	 * @param discountDetails Discount details Object
+	 */
+    public static UpdateDiscountDetailsBuilder update(long id, DiscountDetails discountDetails)  {
+		return new UpdateDiscountDetailsBuilder(id, discountDetails);
+	}
 }
