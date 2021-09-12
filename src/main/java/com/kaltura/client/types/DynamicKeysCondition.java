@@ -25,7 +25,14 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -33,44 +40,49 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum SubscriptionOrderBy implements EnumAsString {
-	START_DATE_ASC("START_DATE_ASC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
-	UPDATE_DATE_DESC("UPDATE_DATE_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC");
 
-	private String value;
-
-	SubscriptionOrderBy(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DynamicKeysCondition.Tokenizer.class)
+public class DynamicKeysCondition extends Condition {
+	
+	public interface Tokenizer extends Condition.Tokenizer {
+		RequestBuilder.MapTokenizer<StringValueArray.Tokenizer> keyValues();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * DynamicKeysCondition
+	 */
+	private Map<String, StringValueArray> keyValues;
+
+	// keyValues:
+	public Map<String, StringValueArray> getKeyValues(){
+		return this.keyValues;
+	}
+	public void setKeyValues(Map<String, StringValueArray> keyValues){
+		this.keyValues = keyValues;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public DynamicKeysCondition() {
+		super();
 	}
 
-	public static SubscriptionOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over SubscriptionOrderBy defined values and compare the inner value with the given one:
-		for(SubscriptionOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SubscriptionOrderBy.values().length > 0 ? SubscriptionOrderBy.values()[0]: null;
-   }
+	public DynamicKeysCondition(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		keyValues = GsonParser.parseMap(jsonObject.getAsJsonObject("keyValues"), StringValueArray.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDynamicKeysCondition");
+		kparams.add("keyValues", this.keyValues);
+		return kparams;
+	}
+
 }
+

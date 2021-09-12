@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,44 +38,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum SubscriptionOrderBy implements EnumAsString {
-	START_DATE_ASC("START_DATE_ASC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
-	UPDATE_DATE_DESC("UPDATE_DATE_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC");
 
-	private String value;
-
-	SubscriptionOrderBy(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(FilterAssetByKsqlAction.Tokenizer.class)
+public class FilterAssetByKsqlAction extends FilterAction {
+	
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String ksql();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * ksql to filter assets by
+	 */
+	private String ksql;
+
+	// ksql:
+	public String getKsql(){
+		return this.ksql;
+	}
+	public void setKsql(String ksql){
+		this.ksql = ksql;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void ksql(String multirequestToken){
+		setToken("ksql", multirequestToken);
 	}
 
-	public static SubscriptionOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over SubscriptionOrderBy defined values and compare the inner value with the given one:
-		for(SubscriptionOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SubscriptionOrderBy.values().length > 0 ? SubscriptionOrderBy.values()[0]: null;
-   }
+
+	public FilterAssetByKsqlAction() {
+		super();
+	}
+
+	public FilterAssetByKsqlAction(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		ksql = GsonParser.parseString(jsonObject.get("ksql"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaFilterAssetByKsqlAction");
+		kparams.add("ksql", this.ksql);
+		return kparams;
+	}
+
 }
+

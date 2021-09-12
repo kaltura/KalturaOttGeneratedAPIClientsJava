@@ -36,6 +36,7 @@ import com.kaltura.client.types.LoginResponse;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -213,11 +214,12 @@ public class HouseholdDeviceService {
 	
 	public static class LoginWithPinHouseholdDeviceBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, LoginWithPinHouseholdDeviceBuilder> {
 		
-		public LoginWithPinHouseholdDeviceBuilder(int partnerId, String pin, String udid) {
+		public LoginWithPinHouseholdDeviceBuilder(int partnerId, String pin, String udid, Map<String, StringValue> extraParams) {
 			super(LoginResponse.class, "householddevice", "loginWithPin");
 			params.add("partnerId", partnerId);
 			params.add("pin", pin);
 			params.add("udid", udid);
+			params.add("extraParams", extraParams);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -237,15 +239,20 @@ public class HouseholdDeviceService {
 		return loginWithPin(partnerId, pin, null);
 	}
 
+	public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid)  {
+		return loginWithPin(partnerId, pin, udid, null);
+	}
+
 	/**
 	 * User sign-in via a time-expired sign-in PIN.
 	 * 
 	 * @param partnerId Partner Identifier
 	 * @param pin pin code
 	 * @param udid Device UDID
+	 * @param extraParams extra params
 	 */
-    public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid)  {
-		return new LoginWithPinHouseholdDeviceBuilder(partnerId, pin, udid);
+    public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid, Map<String, StringValue> extraParams)  {
+		return new LoginWithPinHouseholdDeviceBuilder(partnerId, pin, udid, extraParams);
 	}
 	
 	public static class UpdateHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, UpdateHouseholdDeviceBuilder> {

@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,52 +41,83 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Npvr Premium Service
+ * Kaltura Session Characteristic
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(NpvrPremiumService.Tokenizer.class)
-public class NpvrPremiumService extends PremiumService {
+@MultiRequestBuilder.Tokenizer(SessionCharacteristic.Tokenizer.class)
+public class SessionCharacteristic extends ObjectBase {
 	
-	public interface Tokenizer extends PremiumService.Tokenizer {
-		String quotaInMinutes();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String regionId();
+		String userSegmentsIds();
+		String userRolesIds();
+		String userSessionProfilesIds();
 	}
 
 	/**
-	 * Quota in minutes
+	 * Session characteristic identifier
 	 */
-	private Long quotaInMinutes;
+	private String id;
+	/**
+	 * Region identifier
+	 */
+	private Integer regionId;
+	/**
+	 * Comma-separated list of user segments identifiers
+	 */
+	private String userSegmentsIds;
+	/**
+	 * Comma-separated list of user roles identifiers
+	 */
+	private String userRolesIds;
+	/**
+	 * Comma-separated list of user session profiles identifiers
+	 */
+	private String userSessionProfilesIds;
 
-	// quotaInMinutes:
-	public Long getQuotaInMinutes(){
-		return this.quotaInMinutes;
+	// id:
+	public String getId(){
+		return this.id;
 	}
-	public void setQuotaInMinutes(Long quotaInMinutes){
-		this.quotaInMinutes = quotaInMinutes;
+	// regionId:
+	public Integer getRegionId(){
+		return this.regionId;
+	}
+	// userSegmentsIds:
+	public String getUserSegmentsIds(){
+		return this.userSegmentsIds;
+	}
+	// userRolesIds:
+	public String getUserRolesIds(){
+		return this.userRolesIds;
+	}
+	// userSessionProfilesIds:
+	public String getUserSessionProfilesIds(){
+		return this.userSessionProfilesIds;
 	}
 
-	public void quotaInMinutes(String multirequestToken){
-		setToken("quotaInMinutes", multirequestToken);
-	}
-
-
-	public NpvrPremiumService() {
+	public SessionCharacteristic() {
 		super();
 	}
 
-	public NpvrPremiumService(JsonObject jsonObject) throws APIException {
+	public SessionCharacteristic(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		quotaInMinutes = GsonParser.parseLong(jsonObject.get("quotaInMinutes"));
+		id = GsonParser.parseString(jsonObject.get("id"));
+		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
+		userSegmentsIds = GsonParser.parseString(jsonObject.get("userSegmentsIds"));
+		userRolesIds = GsonParser.parseString(jsonObject.get("userRolesIds"));
+		userSessionProfilesIds = GsonParser.parseString(jsonObject.get("userSessionProfilesIds"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaNpvrPremiumService");
-		kparams.add("quotaInMinutes", this.quotaInMinutes);
+		kparams.add("objectType", "KalturaSessionCharacteristic");
 		return kparams;
 	}
 

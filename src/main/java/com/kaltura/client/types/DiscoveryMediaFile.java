@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,44 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum SubscriptionOrderBy implements EnumAsString {
-	START_DATE_ASC("START_DATE_ASC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
-	UPDATE_DATE_DESC("UPDATE_DATE_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC");
 
-	private String value;
-
-	SubscriptionOrderBy(String value) {
-		this.value = value;
+/**
+ * Media file in discovery context
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(DiscoveryMediaFile.Tokenizer.class)
+public class DiscoveryMediaFile extends MediaFile {
+	
+	public interface Tokenizer extends MediaFile.Tokenizer {
+		String isPlaybackable();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * show, if file could be played
+	 */
+	private Boolean isPlaybackable;
+
+	// isPlaybackable:
+	public Boolean getIsPlaybackable(){
+		return this.isPlaybackable;
+	}
+	public void setIsPlaybackable(Boolean isPlaybackable){
+		this.isPlaybackable = isPlaybackable;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void isPlaybackable(String multirequestToken){
+		setToken("isPlaybackable", multirequestToken);
 	}
 
-	public static SubscriptionOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over SubscriptionOrderBy defined values and compare the inner value with the given one:
-		for(SubscriptionOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SubscriptionOrderBy.values().length > 0 ? SubscriptionOrderBy.values()[0]: null;
-   }
+
+	public DiscoveryMediaFile() {
+		super();
+	}
+
+	public DiscoveryMediaFile(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		isPlaybackable = GsonParser.parseBoolean(jsonObject.get("isPlaybackable"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaDiscoveryMediaFile");
+		kparams.add("isPlaybackable", this.isPlaybackable);
+		return kparams;
+	}
+
 }
+
