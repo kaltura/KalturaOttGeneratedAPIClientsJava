@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -47,7 +47,7 @@ public class ManualChannel extends Channel {
 	
 	public interface Tokenizer extends Channel.Tokenizer {
 		String mediaIds();
-		RequestBuilder.ListTokenizer<SlimAsset.Tokenizer> assets();
+		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class ManualChannel extends Channel {
 	/**
 	 * List of assets identifier
 	 */
-	private List<SlimAsset> assets;
+	private List<ManualCollectionAsset> assets;
 
 	// mediaIds:
 	public String getMediaIds(){
@@ -73,10 +73,10 @@ public class ManualChannel extends Channel {
 	}
 
 	// assets:
-	public List<SlimAsset> getAssets(){
+	public List<ManualCollectionAsset> getAssets(){
 		return this.assets;
 	}
-	public void setAssets(List<SlimAsset> assets){
+	public void setAssets(List<ManualCollectionAsset> assets){
 		this.assets = assets;
 	}
 
@@ -92,7 +92,7 @@ public class ManualChannel extends Channel {
 
 		// set members values:
 		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), SlimAsset.class);
+		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
 
 	}
 
