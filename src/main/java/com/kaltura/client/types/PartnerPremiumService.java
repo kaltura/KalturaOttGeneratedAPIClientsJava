@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,52 +41,81 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Npvr Premium Service
+ * Premium service
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(NpvrPremiumService.Tokenizer.class)
-public class NpvrPremiumService extends PremiumService {
+@MultiRequestBuilder.Tokenizer(PartnerPremiumService.Tokenizer.class)
+public class PartnerPremiumService extends ObjectBase {
 	
-	public interface Tokenizer extends PremiumService.Tokenizer {
-		String quotaInMinutes();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String isApplied();
 	}
 
 	/**
-	 * Quota in minutes
+	 * Service identifier
 	 */
-	private Long quotaInMinutes;
+	private Long id;
+	/**
+	 * Service name / description
+	 */
+	private String name;
+	/**
+	 * Service name / description
+	 */
+	private Boolean isApplied;
 
-	// quotaInMinutes:
-	public Long getQuotaInMinutes(){
-		return this.quotaInMinutes;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setQuotaInMinutes(Long quotaInMinutes){
-		this.quotaInMinutes = quotaInMinutes;
+	public void setId(Long id){
+		this.id = id;
 	}
 
-	public void quotaInMinutes(String multirequestToken){
-		setToken("quotaInMinutes", multirequestToken);
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
+
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	// isApplied:
+	public Boolean getIsApplied(){
+		return this.isApplied;
+	}
+	public void setIsApplied(Boolean isApplied){
+		this.isApplied = isApplied;
+	}
+
+	public void isApplied(String multirequestToken){
+		setToken("isApplied", multirequestToken);
 	}
 
 
-	public NpvrPremiumService() {
+	public PartnerPremiumService() {
 		super();
 	}
 
-	public NpvrPremiumService(JsonObject jsonObject) throws APIException {
+	public PartnerPremiumService(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		quotaInMinutes = GsonParser.parseLong(jsonObject.get("quotaInMinutes"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		isApplied = GsonParser.parseBoolean(jsonObject.get("isApplied"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaNpvrPremiumService");
-		kparams.add("quotaInMinutes", this.quotaInMinutes);
+		kparams.add("objectType", "KalturaPartnerPremiumService");
+		kparams.add("id", this.id);
+		kparams.add("isApplied", this.isApplied);
 		return kparams;
 	}
 
