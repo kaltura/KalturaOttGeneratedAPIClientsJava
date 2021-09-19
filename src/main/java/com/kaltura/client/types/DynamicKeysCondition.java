@@ -31,8 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -46,20 +44,41 @@ import java.util.Map;
 public class DynamicKeysCondition extends Condition {
 	
 	public interface Tokenizer extends Condition.Tokenizer {
-		RequestBuilder.MapTokenizer<StringValueArray.Tokenizer> keyValues();
+		String key();
+		String values();
 	}
 
 	/**
-	 * DynamicKeysCondition
+	 * key
 	 */
-	private Map<String, StringValueArray> keyValues;
+	private String key;
+	/**
+	 * comma-separated values
+	 */
+	private String values;
 
-	// keyValues:
-	public Map<String, StringValueArray> getKeyValues(){
-		return this.keyValues;
+	// key:
+	public String getKey(){
+		return this.key;
 	}
-	public void setKeyValues(Map<String, StringValueArray> keyValues){
-		this.keyValues = keyValues;
+	public void setKey(String key){
+		this.key = key;
+	}
+
+	public void key(String multirequestToken){
+		setToken("key", multirequestToken);
+	}
+
+	// values:
+	public String getValues(){
+		return this.values;
+	}
+	public void setValues(String values){
+		this.values = values;
+	}
+
+	public void values(String multirequestToken){
+		setToken("values", multirequestToken);
 	}
 
 
@@ -73,14 +92,16 @@ public class DynamicKeysCondition extends Condition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		keyValues = GsonParser.parseMap(jsonObject.getAsJsonObject("keyValues"), StringValueArray.class);
+		key = GsonParser.parseString(jsonObject.get("key"));
+		values = GsonParser.parseString(jsonObject.get("values"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDynamicKeysCondition");
-		kparams.add("keyValues", this.keyValues);
+		kparams.add("key", this.key);
+		kparams.add("values", this.values);
 		return kparams;
 	}
 

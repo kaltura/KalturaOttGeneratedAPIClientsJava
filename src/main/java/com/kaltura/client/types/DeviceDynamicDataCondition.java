@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,25 +40,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByAssetTypeInPlaybackAction.Tokenizer.class)
-public class FilterFileByAssetTypeInPlaybackAction extends FilterFileByAssetTypeAction {
+@MultiRequestBuilder.Tokenizer(DeviceDynamicDataCondition.Tokenizer.class)
+public class DeviceDynamicDataCondition extends Condition {
 	
-	public interface Tokenizer extends FilterFileByAssetTypeAction.Tokenizer {
+	public interface Tokenizer extends Condition.Tokenizer {
+		String key();
+		String value();
+	}
+
+	/**
+	 * key
+	 */
+	private String key;
+	/**
+	 * value
+	 */
+	private String value;
+
+	// key:
+	public String getKey(){
+		return this.key;
+	}
+	public void setKey(String key){
+		this.key = key;
+	}
+
+	public void key(String multirequestToken){
+		setToken("key", multirequestToken);
+	}
+
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
 
-
-	public FilterFileByAssetTypeInPlaybackAction() {
+	public DeviceDynamicDataCondition() {
 		super();
 	}
 
-	public FilterFileByAssetTypeInPlaybackAction(JsonObject jsonObject) throws APIException {
+	public DeviceDynamicDataCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		key = GsonParser.parseString(jsonObject.get("key"));
+		value = GsonParser.parseString(jsonObject.get("value"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByAssetTypeInPlaybackAction");
+		kparams.add("objectType", "KalturaDeviceDynamicDataCondition");
+		kparams.add("key", this.key);
+		kparams.add("value", this.value);
 		return kparams;
 	}
 

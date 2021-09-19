@@ -40,11 +40,11 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * FilterFile By FileType For AssetType
+ * Filter file By FileType For AssetType
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByAssetTypeAction.Tokenizer.class)
-public abstract class FilterFileByAssetTypeAction extends FilterFileByFileTypeIdAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeIdForAssetTypeAction.Tokenizer.class)
+public abstract class FilterFileByFileTypeIdForAssetTypeAction extends FilterFileByFileTypeIdAction {
 	
 	public interface Tokenizer extends FilterFileByFileTypeIdAction.Tokenizer {
 		String assetTypeIn();
@@ -68,11 +68,11 @@ public abstract class FilterFileByAssetTypeAction extends FilterFileByFileTypeId
 	}
 
 
-	public FilterFileByAssetTypeAction() {
+	public FilterFileByFileTypeIdForAssetTypeAction() {
 		super();
 	}
 
-	public FilterFileByAssetTypeAction(JsonObject jsonObject) throws APIException {
+	public FilterFileByFileTypeIdForAssetTypeAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
@@ -84,7 +84,7 @@ public abstract class FilterFileByAssetTypeAction extends FilterFileByFileTypeId
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByAssetTypeAction");
+		kparams.add("objectType", "KalturaFilterFileByFileTypeIdForAssetTypeAction");
 		kparams.add("assetTypeIn", this.assetTypeIn);
 		return kparams;
 	}

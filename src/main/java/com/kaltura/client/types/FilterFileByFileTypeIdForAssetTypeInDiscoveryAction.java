@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,53 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filter Files By their Quality
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByQualityAction.Tokenizer.class)
-public abstract class FilterFileByQualityAction extends FilterAction {
+@MultiRequestBuilder.Tokenizer(FilterFileByFileTypeIdForAssetTypeInDiscoveryAction.Tokenizer.class)
+public class FilterFileByFileTypeIdForAssetTypeInDiscoveryAction extends FilterFileByFileTypeIdForAssetTypeAction {
 	
-	public interface Tokenizer extends FilterAction.Tokenizer {
-		String qualityIn();
-	}
-
-	/**
-	 * List of comma separated qualities
-	 */
-	private String qualityIn;
-
-	// qualityIn:
-	public String getQualityIn(){
-		return this.qualityIn;
-	}
-	public void setQualityIn(String qualityIn){
-		this.qualityIn = qualityIn;
-	}
-
-	public void qualityIn(String multirequestToken){
-		setToken("qualityIn", multirequestToken);
+	public interface Tokenizer extends FilterFileByFileTypeIdForAssetTypeAction.Tokenizer {
 	}
 
 
-	public FilterFileByQualityAction() {
+
+	public FilterFileByFileTypeIdForAssetTypeInDiscoveryAction() {
 		super();
 	}
 
-	public FilterFileByQualityAction(JsonObject jsonObject) throws APIException {
+	public FilterFileByFileTypeIdForAssetTypeInDiscoveryAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		qualityIn = GsonParser.parseString(jsonObject.get("qualityIn"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByQualityAction");
-		kparams.add("qualityIn", this.qualityIn);
+		kparams.add("objectType", "KalturaFilterFileByFileTypeIdForAssetTypeInDiscoveryAction");
 		return kparams;
 	}
 
