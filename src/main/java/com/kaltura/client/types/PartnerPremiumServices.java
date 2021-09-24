@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -42,65 +43,45 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(PartnerPremiumServices.Tokenizer.class)
+public class PartnerPremiumServices extends ObjectBase {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		String mediaIds();
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.ListTokenizer<PartnerPremiumService.Tokenizer> objects();
 	}
 
 	/**
-	 * A list of comma separated media ids associated with this channel, according to
-	  the order of the medias in the channel.
+	 * A list of services
 	 */
-	private String mediaIds;
-	/**
-	 * List of assets identifier
-	 */
-	private List<ManualCollectionAsset> assets;
+	private List<PartnerPremiumService> objects;
 
-	// mediaIds:
-	public String getMediaIds(){
-		return this.mediaIds;
+	// objects:
+	public List<PartnerPremiumService> getObjects(){
+		return this.objects;
 	}
-	public void setMediaIds(String mediaIds){
-		this.mediaIds = mediaIds;
-	}
-
-	public void mediaIds(String multirequestToken){
-		setToken("mediaIds", multirequestToken);
-	}
-
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
-	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+	public void setObjects(List<PartnerPremiumService> objects){
+		this.objects = objects;
 	}
 
 
-	public ManualChannel() {
+	public PartnerPremiumServices() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public PartnerPremiumServices(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), PartnerPremiumService.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("mediaIds", this.mediaIds);
-		kparams.add("assets", this.assets);
+		kparams.add("objectType", "KalturaPartnerPremiumServices");
+		kparams.add("objects", this.objects);
 		return kparams;
 	}
 

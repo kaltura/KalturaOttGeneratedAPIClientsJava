@@ -33,19 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum SubscriptionOrderBy implements EnumAsString {
-	START_DATE_ASC("START_DATE_ASC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
-	UPDATE_DATE_DESC("UPDATE_DATE_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC");
+public enum PreviewModuleOrderBy implements EnumAsString {
+	NONE("NONE");
 
 	private String value;
 
-	SubscriptionOrderBy(String value) {
+	PreviewModuleOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -58,19 +51,19 @@ public enum SubscriptionOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static SubscriptionOrderBy get(String value) {
+	public static PreviewModuleOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over SubscriptionOrderBy defined values and compare the inner value with the given one:
-		for(SubscriptionOrderBy item: values()) {
+		// goes over PreviewModuleOrderBy defined values and compare the inner value with the given one:
+		for(PreviewModuleOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SubscriptionOrderBy.values().length > 0 ? SubscriptionOrderBy.values()[0]: null;
+		return PreviewModuleOrderBy.values().length > 0 ? PreviewModuleOrderBy.values()[0]: null;
    }
 }

@@ -99,4 +99,27 @@ public class PriceDetailsService {
     public static ListPriceDetailsBuilder list(PriceDetailsFilter filter)  {
 		return new ListPriceDetailsBuilder(filter);
 	}
+	
+	public static class UpdatePriceDetailsBuilder extends RequestBuilder<PriceDetails, PriceDetails.Tokenizer, UpdatePriceDetailsBuilder> {
+		
+		public UpdatePriceDetailsBuilder(long id, PriceDetails priceDetails) {
+			super(PriceDetails.class, "pricedetails", "update");
+			params.add("id", id);
+			params.add("priceDetails", priceDetails);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * update existing PriceDetails
+	 * 
+	 * @param id id of priceDetails
+	 * @param priceDetails priceDetails to update
+	 */
+    public static UpdatePriceDetailsBuilder update(long id, PriceDetails priceDetails)  {
+		return new UpdatePriceDetailsBuilder(id, priceDetails);
+	}
 }

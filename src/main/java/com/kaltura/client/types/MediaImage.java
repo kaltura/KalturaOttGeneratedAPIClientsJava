@@ -56,6 +56,7 @@ public class MediaImage extends ObjectBase {
 		String id();
 		String isDefault();
 		String imageTypeId();
+		String imageTypeName();
 	}
 
 	/**
@@ -90,6 +91,10 @@ public class MediaImage extends ObjectBase {
 	 * Image type identifier
 	 */
 	private Long imageTypeId;
+	/**
+	 * Image type Name
+	 */
+	private String imageTypeName;
 
 	// ratio:
 	public String getRatio(){
@@ -179,6 +184,18 @@ public class MediaImage extends ObjectBase {
 		setToken("imageTypeId", multirequestToken);
 	}
 
+	// imageTypeName:
+	public String getImageTypeName(){
+		return this.imageTypeName;
+	}
+	public void setImageTypeName(String imageTypeName){
+		this.imageTypeName = imageTypeName;
+	}
+
+	public void imageTypeName(String multirequestToken){
+		setToken("imageTypeName", multirequestToken);
+	}
+
 
 	public MediaImage() {
 		super();
@@ -198,6 +215,7 @@ public class MediaImage extends ObjectBase {
 		id = GsonParser.parseString(jsonObject.get("id"));
 		isDefault = GsonParser.parseBoolean(jsonObject.get("isDefault"));
 		imageTypeId = GsonParser.parseLong(jsonObject.get("imageTypeId"));
+		imageTypeName = GsonParser.parseString(jsonObject.get("imageTypeName"));
 
 	}
 
@@ -211,6 +229,7 @@ public class MediaImage extends ObjectBase {
 		kparams.add("version", this.version);
 		kparams.add("isDefault", this.isDefault);
 		kparams.add("imageTypeId", this.imageTypeId);
+		kparams.add("imageTypeName", this.imageTypeName);
 		return kparams;
 	}
 
