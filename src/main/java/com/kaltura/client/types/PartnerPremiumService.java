@@ -29,10 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -41,66 +40,82 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Premium service
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(PartnerPremiumService.Tokenizer.class)
+public class PartnerPremiumService extends ObjectBase {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		String mediaIds();
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		String isApplied();
 	}
 
 	/**
-	 * A list of comma separated media ids associated with this channel, according to
-	  the order of the medias in the channel.
+	 * Service identifier
 	 */
-	private String mediaIds;
+	private Long id;
 	/**
-	 * List of assets identifier
+	 * Service name / description
 	 */
-	private List<ManualCollectionAsset> assets;
+	private String name;
+	/**
+	 * Service name / description
+	 */
+	private Boolean isApplied;
 
-	// mediaIds:
-	public String getMediaIds(){
-		return this.mediaIds;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setMediaIds(String mediaIds){
-		this.mediaIds = mediaIds;
-	}
-
-	public void mediaIds(String multirequestToken){
-		setToken("mediaIds", multirequestToken);
-	}
-
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
-	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+	public void setId(Long id){
+		this.id = id;
 	}
 
+	public void id(String multirequestToken){
+		setToken("id", multirequestToken);
+	}
 
-	public ManualChannel() {
+	// name:
+	public String getName(){
+		return this.name;
+	}
+	// isApplied:
+	public Boolean getIsApplied(){
+		return this.isApplied;
+	}
+	public void setIsApplied(Boolean isApplied){
+		this.isApplied = isApplied;
+	}
+
+	public void isApplied(String multirequestToken){
+		setToken("isApplied", multirequestToken);
+	}
+
+
+	public PartnerPremiumService() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public PartnerPremiumService(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		isApplied = GsonParser.parseBoolean(jsonObject.get("isApplied"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("mediaIds", this.mediaIds);
-		kparams.add("assets", this.assets);
+		kparams.add("objectType", "KalturaPartnerPremiumService");
+		kparams.add("id", this.id);
+		kparams.add("isApplied", this.isApplied);
 		return kparams;
 	}
 

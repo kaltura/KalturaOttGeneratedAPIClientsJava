@@ -59,6 +59,14 @@ public class NpvrPremiumService extends PremiumService {
 	public Long getQuotaInMinutes(){
 		return this.quotaInMinutes;
 	}
+	public void setQuotaInMinutes(Long quotaInMinutes){
+		this.quotaInMinutes = quotaInMinutes;
+	}
+
+	public void quotaInMinutes(String multirequestToken){
+		setToken("quotaInMinutes", multirequestToken);
+	}
+
 
 	public NpvrPremiumService() {
 		super();
@@ -77,6 +85,7 @@ public class NpvrPremiumService extends PremiumService {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaNpvrPremiumService");
+		kparams.add("quotaInMinutes", this.quotaInMinutes);
 		return kparams;
 	}
 

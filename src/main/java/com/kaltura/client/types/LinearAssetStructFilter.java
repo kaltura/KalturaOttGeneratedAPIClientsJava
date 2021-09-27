@@ -29,10 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,65 +39,25 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(LinearAssetStructFilter.Tokenizer.class)
+public class LinearAssetStructFilter extends BaseAssetStructFilter {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		String mediaIds();
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
-	}
-
-	/**
-	 * A list of comma separated media ids associated with this channel, according to
-	  the order of the medias in the channel.
-	 */
-	private String mediaIds;
-	/**
-	 * List of assets identifier
-	 */
-	private List<ManualCollectionAsset> assets;
-
-	// mediaIds:
-	public String getMediaIds(){
-		return this.mediaIds;
-	}
-	public void setMediaIds(String mediaIds){
-		this.mediaIds = mediaIds;
-	}
-
-	public void mediaIds(String multirequestToken){
-		setToken("mediaIds", multirequestToken);
-	}
-
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
-	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+	public interface Tokenizer extends BaseAssetStructFilter.Tokenizer {
 	}
 
 
-	public ManualChannel() {
+
+	public LinearAssetStructFilter() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public LinearAssetStructFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("mediaIds", this.mediaIds);
-		kparams.add("assets", this.assets);
+		kparams.add("objectType", "KalturaLinearAssetStructFilter");
 		return kparams;
 	}
 

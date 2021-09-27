@@ -33,19 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum SubscriptionOrderBy implements EnumAsString {
-	START_DATE_ASC("START_DATE_ASC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC"),
-	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
-	UPDATE_DATE_DESC("UPDATE_DATE_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC");
+public enum ManualCollectionAssetType implements EnumAsString {
+	MEDIA("media"),
+	EPG("epg");
 
 	private String value;
 
-	SubscriptionOrderBy(String value) {
+	ManualCollectionAssetType(String value) {
 		this.value = value;
 	}
 
@@ -58,19 +52,19 @@ public enum SubscriptionOrderBy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static SubscriptionOrderBy get(String value) {
+	public static ManualCollectionAssetType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over SubscriptionOrderBy defined values and compare the inner value with the given one:
-		for(SubscriptionOrderBy item: values()) {
+		// goes over ManualCollectionAssetType defined values and compare the inner value with the given one:
+		for(ManualCollectionAssetType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return SubscriptionOrderBy.values().length > 0 ? SubscriptionOrderBy.values()[0]: null;
+		return ManualCollectionAssetType.values().length > 0 ? ManualCollectionAssetType.values()[0]: null;
    }
 }
