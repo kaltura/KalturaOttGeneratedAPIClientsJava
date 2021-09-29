@@ -99,27 +99,6 @@ public class HouseholdLimitationsService {
 		return new GetHouseholdLimitationsBuilder(id);
 	}
 	
-	public static class IsUsedHouseholdLimitationsBuilder extends RequestBuilder<Boolean, String, IsUsedHouseholdLimitationsBuilder> {
-		
-		public IsUsedHouseholdLimitationsBuilder(int dlmId) {
-			super(Boolean.class, "householdlimitations", "isUsed");
-			params.add("dlmId", dlmId);
-		}
-		
-		public void dlmId(String multirequestToken) {
-			params.add("dlmId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Checks if the DLM is used
-	 * 
-	 * @param dlmId Household limitations module identifier
-	 */
-    public static IsUsedHouseholdLimitationsBuilder isUsed(int dlmId)  {
-		return new IsUsedHouseholdLimitationsBuilder(dlmId);
-	}
-	
 	public static class ListHouseholdLimitationsBuilder extends ListResponseRequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, ListHouseholdLimitationsBuilder> {
 		
 		public ListHouseholdLimitationsBuilder() {
@@ -132,28 +111,5 @@ public class HouseholdLimitationsService {
 	 */
     public static ListHouseholdLimitationsBuilder list()  {
 		return new ListHouseholdLimitationsBuilder();
-	}
-	
-	public static class UpdateHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, UpdateHouseholdLimitationsBuilder> {
-		
-		public UpdateHouseholdLimitationsBuilder(int dlmId, HouseholdLimitations householdLimitation) {
-			super(HouseholdLimitations.class, "householdlimitations", "update");
-			params.add("dlmId", dlmId);
-			params.add("householdLimitation", householdLimitation);
-		}
-		
-		public void dlmId(String multirequestToken) {
-			params.add("dlmId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Updates household limitation
-	 * 
-	 * @param dlmId Id of household limitation
-	 * @param householdLimitation household limitation
-	 */
-    public static UpdateHouseholdLimitationsBuilder update(int dlmId, HouseholdLimitations householdLimitation)  {
-		return new UpdateHouseholdLimitationsBuilder(dlmId, householdLimitation);
 	}
 }

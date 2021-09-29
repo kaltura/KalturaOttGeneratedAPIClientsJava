@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,50 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Custom Fields Partner Configuration
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(LineupNotificationSettings.Tokenizer.class)
-public class LineupNotificationSettings extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(CustomFieldsPartnerConfiguration.Tokenizer.class)
+public class CustomFieldsPartnerConfiguration extends PartnerConfiguration {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String enabled();
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		String metaSystemNameInsteadOfAliasList();
 	}
 
 	/**
-	 * if lineup notifications are enabled.
+	 * Array of clientTag values
 	 */
-	private Boolean enabled;
+	private String metaSystemNameInsteadOfAliasList;
 
-	// enabled:
-	public Boolean getEnabled(){
-		return this.enabled;
+	// metaSystemNameInsteadOfAliasList:
+	public String getMetaSystemNameInsteadOfAliasList(){
+		return this.metaSystemNameInsteadOfAliasList;
 	}
-	public void setEnabled(Boolean enabled){
-		this.enabled = enabled;
-	}
-
-	public void enabled(String multirequestToken){
-		setToken("enabled", multirequestToken);
+	public void setMetaSystemNameInsteadOfAliasList(String metaSystemNameInsteadOfAliasList){
+		this.metaSystemNameInsteadOfAliasList = metaSystemNameInsteadOfAliasList;
 	}
 
+	public void metaSystemNameInsteadOfAliasList(String multirequestToken){
+		setToken("metaSystemNameInsteadOfAliasList", multirequestToken);
+	}
 
-	public LineupNotificationSettings() {
+
+	public CustomFieldsPartnerConfiguration() {
 		super();
 	}
 
-	public LineupNotificationSettings(JsonObject jsonObject) throws APIException {
+	public CustomFieldsPartnerConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		enabled = GsonParser.parseBoolean(jsonObject.get("enabled"));
+		metaSystemNameInsteadOfAliasList = GsonParser.parseString(jsonObject.get("metaSystemNameInsteadOfAliasList"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaLineupNotificationSettings");
-		kparams.add("enabled", this.enabled);
+		kparams.add("objectType", "KalturaCustomFieldsPartnerConfiguration");
+		kparams.add("metaSystemNameInsteadOfAliasList", this.metaSystemNameInsteadOfAliasList);
 		return kparams;
 	}
 
