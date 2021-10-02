@@ -43,44 +43,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class SubscriptionService {
 	
-	public static class AddSubscriptionBuilder extends RequestBuilder<Subscription, Subscription.Tokenizer, AddSubscriptionBuilder> {
-		
-		public AddSubscriptionBuilder(Subscription subscription) {
-			super(Subscription.class, "subscription", "add");
-			params.add("subscription", subscription);
-		}
-	}
-
-	/**
-	 * Internal API !!! Insert new subscription for partner
-	 * 
-	 * @param subscription subscription object
-	 */
-    public static AddSubscriptionBuilder add(Subscription subscription)  {
-		return new AddSubscriptionBuilder(subscription);
-	}
-	
-	public static class DeleteSubscriptionBuilder extends RequestBuilder<Boolean, String, DeleteSubscriptionBuilder> {
-		
-		public DeleteSubscriptionBuilder(long id) {
-			super(Boolean.class, "subscription", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Internal API !!! Delete subscription
-	 * 
-	 * @param id Subscription id
-	 */
-    public static DeleteSubscriptionBuilder delete(long id)  {
-		return new DeleteSubscriptionBuilder(id);
-	}
-	
 	public static class ListSubscriptionBuilder extends ListResponseRequestBuilder<Subscription, Subscription.Tokenizer, ListSubscriptionBuilder> {
 		
 		public ListSubscriptionBuilder(SubscriptionFilter filter, FilterPager pager) {
@@ -106,29 +68,6 @@ public class SubscriptionService {
 	 */
     public static ListSubscriptionBuilder list(SubscriptionFilter filter, FilterPager pager)  {
 		return new ListSubscriptionBuilder(filter, pager);
-	}
-	
-	public static class UpdateSubscriptionBuilder extends RequestBuilder<Subscription, Subscription.Tokenizer, UpdateSubscriptionBuilder> {
-		
-		public UpdateSubscriptionBuilder(long id, Subscription subscription) {
-			super(Subscription.class, "subscription", "update");
-			params.add("id", id);
-			params.add("subscription", subscription);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update Subscription
-	 * 
-	 * @param id Subscription id
-	 * @param subscription Subscription
-	 */
-    public static UpdateSubscriptionBuilder update(long id, Subscription subscription)  {
-		return new UpdateSubscriptionBuilder(id, subscription);
 	}
 	
 	public static class ValidateCouponSubscriptionBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, ValidateCouponSubscriptionBuilder> {

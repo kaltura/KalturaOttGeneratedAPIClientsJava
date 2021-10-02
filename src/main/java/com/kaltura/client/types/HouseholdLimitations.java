@@ -61,8 +61,6 @@ public class HouseholdLimitations extends ObjectBase {
 		String npvrQuotaInSeconds();
 		String usersLimit();
 		RequestBuilder.ListTokenizer<HouseholdDeviceFamilyLimitations.Tokenizer> deviceFamiliesLimitations();
-		String description();
-		String associatedDeviceFamiliesIdsIn();
 	}
 
 	/**
@@ -109,14 +107,6 @@ public class HouseholdLimitations extends ObjectBase {
 	 * Device families limitations
 	 */
 	private List<HouseholdDeviceFamilyLimitations> deviceFamiliesLimitations;
-	/**
-	 * Allowed device change frequency description
-	 */
-	private String description;
-	/**
-	 * Associated Device Families ids
-	 */
-	private String associatedDeviceFamiliesIdsIn;
 
 	// id:
 	public Integer getId(){
@@ -126,50 +116,18 @@ public class HouseholdLimitations extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// concurrentLimit:
 	public Integer getConcurrentLimit(){
 		return this.concurrentLimit;
 	}
-	public void setConcurrentLimit(Integer concurrentLimit){
-		this.concurrentLimit = concurrentLimit;
-	}
-
-	public void concurrentLimit(String multirequestToken){
-		setToken("concurrentLimit", multirequestToken);
-	}
-
 	// deviceLimit:
 	public Integer getDeviceLimit(){
 		return this.deviceLimit;
 	}
-	public void setDeviceLimit(Integer deviceLimit){
-		this.deviceLimit = deviceLimit;
-	}
-
-	public void deviceLimit(String multirequestToken){
-		setToken("deviceLimit", multirequestToken);
-	}
-
 	// deviceFrequency:
 	public Integer getDeviceFrequency(){
 		return this.deviceFrequency;
 	}
-	public void setDeviceFrequency(Integer deviceFrequency){
-		this.deviceFrequency = deviceFrequency;
-	}
-
-	public void deviceFrequency(String multirequestToken){
-		setToken("deviceFrequency", multirequestToken);
-	}
-
 	// deviceFrequencyDescription:
 	public String getDeviceFrequencyDescription(){
 		return this.deviceFrequencyDescription;
@@ -178,14 +136,6 @@ public class HouseholdLimitations extends ObjectBase {
 	public Integer getUserFrequency(){
 		return this.userFrequency;
 	}
-	public void setUserFrequency(Integer userFrequency){
-		this.userFrequency = userFrequency;
-	}
-
-	public void userFrequency(String multirequestToken){
-		setToken("userFrequency", multirequestToken);
-	}
-
 	// userFrequencyDescription:
 	public String getUserFrequencyDescription(){
 		return this.userFrequencyDescription;
@@ -198,46 +148,10 @@ public class HouseholdLimitations extends ObjectBase {
 	public Integer getUsersLimit(){
 		return this.usersLimit;
 	}
-	public void setUsersLimit(Integer usersLimit){
-		this.usersLimit = usersLimit;
-	}
-
-	public void usersLimit(String multirequestToken){
-		setToken("usersLimit", multirequestToken);
-	}
-
 	// deviceFamiliesLimitations:
 	public List<HouseholdDeviceFamilyLimitations> getDeviceFamiliesLimitations(){
 		return this.deviceFamiliesLimitations;
 	}
-	public void setDeviceFamiliesLimitations(List<HouseholdDeviceFamilyLimitations> deviceFamiliesLimitations){
-		this.deviceFamiliesLimitations = deviceFamiliesLimitations;
-	}
-
-	// description:
-	public String getDescription(){
-		return this.description;
-	}
-	public void setDescription(String description){
-		this.description = description;
-	}
-
-	public void description(String multirequestToken){
-		setToken("description", multirequestToken);
-	}
-
-	// associatedDeviceFamiliesIdsIn:
-	public String getAssociatedDeviceFamiliesIdsIn(){
-		return this.associatedDeviceFamiliesIdsIn;
-	}
-	public void setAssociatedDeviceFamiliesIdsIn(String associatedDeviceFamiliesIdsIn){
-		this.associatedDeviceFamiliesIdsIn = associatedDeviceFamiliesIdsIn;
-	}
-
-	public void associatedDeviceFamiliesIdsIn(String multirequestToken){
-		setToken("associatedDeviceFamiliesIdsIn", multirequestToken);
-	}
-
 
 	public HouseholdLimitations() {
 		super();
@@ -260,23 +174,12 @@ public class HouseholdLimitations extends ObjectBase {
 		npvrQuotaInSeconds = GsonParser.parseInt(jsonObject.get("npvrQuotaInSeconds"));
 		usersLimit = GsonParser.parseInt(jsonObject.get("usersLimit"));
 		deviceFamiliesLimitations = GsonParser.parseArray(jsonObject.getAsJsonArray("deviceFamiliesLimitations"), HouseholdDeviceFamilyLimitations.class);
-		description = GsonParser.parseString(jsonObject.get("description"));
-		associatedDeviceFamiliesIdsIn = GsonParser.parseString(jsonObject.get("associatedDeviceFamiliesIdsIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaHouseholdLimitations");
-		kparams.add("name", this.name);
-		kparams.add("concurrentLimit", this.concurrentLimit);
-		kparams.add("deviceLimit", this.deviceLimit);
-		kparams.add("deviceFrequency", this.deviceFrequency);
-		kparams.add("userFrequency", this.userFrequency);
-		kparams.add("usersLimit", this.usersLimit);
-		kparams.add("deviceFamiliesLimitations", this.deviceFamiliesLimitations);
-		kparams.add("description", this.description);
-		kparams.add("associatedDeviceFamiliesIdsIn", this.associatedDeviceFamiliesIdsIn);
 		return kparams;
 	}
 

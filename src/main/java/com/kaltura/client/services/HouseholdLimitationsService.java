@@ -40,44 +40,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class HouseholdLimitationsService {
 	
-	public static class AddHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, AddHouseholdLimitationsBuilder> {
-		
-		public AddHouseholdLimitationsBuilder(HouseholdLimitations householdLimitations) {
-			super(HouseholdLimitations.class, "householdlimitations", "add");
-			params.add("householdLimitations", householdLimitations);
-		}
-	}
-
-	/**
-	 * Add household limitation
-	 * 
-	 * @param householdLimitations Household limitations
-	 */
-    public static AddHouseholdLimitationsBuilder add(HouseholdLimitations householdLimitations)  {
-		return new AddHouseholdLimitationsBuilder(householdLimitations);
-	}
-	
-	public static class DeleteHouseholdLimitationsBuilder extends RequestBuilder<Boolean, String, DeleteHouseholdLimitationsBuilder> {
-		
-		public DeleteHouseholdLimitationsBuilder(int householdLimitationsId) {
-			super(Boolean.class, "householdlimitations", "delete");
-			params.add("householdLimitationsId", householdLimitationsId);
-		}
-		
-		public void householdLimitationsId(String multirequestToken) {
-			params.add("householdLimitationsId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete household limitation
-	 * 
-	 * @param householdLimitationsId Id of household limitation
-	 */
-    public static DeleteHouseholdLimitationsBuilder delete(int householdLimitationsId)  {
-		return new DeleteHouseholdLimitationsBuilder(householdLimitationsId);
-	}
-	
 	public static class GetHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, GetHouseholdLimitationsBuilder> {
 		
 		public GetHouseholdLimitationsBuilder(int id) {
@@ -99,27 +61,6 @@ public class HouseholdLimitationsService {
 		return new GetHouseholdLimitationsBuilder(id);
 	}
 	
-	public static class IsUsedHouseholdLimitationsBuilder extends RequestBuilder<Boolean, String, IsUsedHouseholdLimitationsBuilder> {
-		
-		public IsUsedHouseholdLimitationsBuilder(int dlmId) {
-			super(Boolean.class, "householdlimitations", "isUsed");
-			params.add("dlmId", dlmId);
-		}
-		
-		public void dlmId(String multirequestToken) {
-			params.add("dlmId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Checks if the DLM is used
-	 * 
-	 * @param dlmId Household limitations module identifier
-	 */
-    public static IsUsedHouseholdLimitationsBuilder isUsed(int dlmId)  {
-		return new IsUsedHouseholdLimitationsBuilder(dlmId);
-	}
-	
 	public static class ListHouseholdLimitationsBuilder extends ListResponseRequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, ListHouseholdLimitationsBuilder> {
 		
 		public ListHouseholdLimitationsBuilder() {
@@ -132,28 +73,5 @@ public class HouseholdLimitationsService {
 	 */
     public static ListHouseholdLimitationsBuilder list()  {
 		return new ListHouseholdLimitationsBuilder();
-	}
-	
-	public static class UpdateHouseholdLimitationsBuilder extends RequestBuilder<HouseholdLimitations, HouseholdLimitations.Tokenizer, UpdateHouseholdLimitationsBuilder> {
-		
-		public UpdateHouseholdLimitationsBuilder(int dlmId, HouseholdLimitations householdLimitation) {
-			super(HouseholdLimitations.class, "householdlimitations", "update");
-			params.add("dlmId", dlmId);
-			params.add("householdLimitation", householdLimitation);
-		}
-		
-		public void dlmId(String multirequestToken) {
-			params.add("dlmId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Updates household limitation
-	 * 
-	 * @param dlmId Id of household limitation
-	 * @param householdLimitation household limitation
-	 */
-    public static UpdateHouseholdLimitationsBuilder update(int dlmId, HouseholdLimitations householdLimitation)  {
-		return new UpdateHouseholdLimitationsBuilder(dlmId, householdLimitation);
 	}
 }

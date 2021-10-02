@@ -29,9 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AdsPolicy;
 import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.types.DiscountModule;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.PreviewModule;
 import com.kaltura.client.types.PriceDetails;
 import com.kaltura.client.utils.GsonParser;
@@ -51,22 +51,19 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Subscription.Tokenizer.class)
-public class Subscription extends OTTObjectSupportNullable {
+public class Subscription extends ObjectBase {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		RequestBuilder.ListTokenizer<BaseChannel.Tokenizer> channels();
-		String channelsIds();
 		String startDate();
 		String endDate();
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> fileTypes();
-		String fileTypesIds();
 		String isRenewable();
 		String renewalsNumber();
 		String isInfiniteRenewal();
 		PriceDetails.Tokenizer price();
 		DiscountModule.Tokenizer discountModule();
-		String internalDiscountModuleId();
 		String name();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String description();
@@ -75,7 +72,6 @@ public class Subscription extends OTTObjectSupportNullable {
 		String prorityInOrder();
 		String pricePlanIds();
 		PreviewModule.Tokenizer previewModule();
-		String previewModuleId();
 		String householdLimitationsId();
 		String gracePeriodMinutes();
 		RequestBuilder.ListTokenizer<PremiumService.Tokenizer> premiumServices();
@@ -85,17 +81,11 @@ public class Subscription extends OTTObjectSupportNullable {
 		String isWaiverEnabled();
 		RequestBuilder.ListTokenizer<OTTUserType.Tokenizer> userTypes();
 		RequestBuilder.ListTokenizer<CouponsGroup.Tokenizer> couponsGroups();
-		RequestBuilder.ListTokenizer<SubscriptionCouponGroup.Tokenizer> subscriptionCouponGroup();
 		RequestBuilder.ListTokenizer<ProductCode.Tokenizer> productCodes();
 		String dependencyType();
 		String externalId();
 		String isCancellationBlocked();
 		String preSaleDate();
-		String adsPolicy();
-		String adsParam();
-		String isActive();
-		String createDate();
-		String updateDate();
 	}
 
 	/**
@@ -106,10 +96,6 @@ public class Subscription extends OTTObjectSupportNullable {
 	 * A list of channels associated with this subscription
 	 */
 	private List<BaseChannel> channels;
-	/**
-	 * Comma separated channels Ids associated with this subscription
-	 */
-	private String channelsIds;
 	/**
 	 * The first date the subscription is available for purchasing
 	 */
@@ -122,10 +108,6 @@ public class Subscription extends OTTObjectSupportNullable {
 	 * A list of file types identifiers that are supported in this subscription
 	 */
 	private List<IntegerValue> fileTypes;
-	/**
-	 * Comma separated file types identifiers that are supported in this subscription
-	 */
-	private String fileTypesIds;
 	/**
 	 * Denotes whether or not this subscription can be renewed
 	 */
@@ -146,10 +128,6 @@ public class Subscription extends OTTObjectSupportNullable {
 	 * The internal discount module for the subscription
 	 */
 	private DiscountModule discountModule;
-	/**
-	 * The internal discount module identifier for the subscription
-	 */
-	private Long internalDiscountModuleId;
 	/**
 	 * Name of the subscription
 	 */
@@ -182,10 +160,6 @@ public class Subscription extends OTTObjectSupportNullable {
 	 * Subscription preview module
 	 */
 	private PreviewModule previewModule;
-	/**
-	 * Subscription preview module identifier
-	 */
-	private Long previewModuleId;
 	/**
 	 * The household limitation module identifier associated with this subscription
 	 */
@@ -226,10 +200,6 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private List<CouponsGroup> couponsGroups;
 	/**
-	 * List of subscription Coupons group
-	 */
-	private List<SubscriptionCouponGroup> subscriptionCouponGroup;
-	/**
 	 * List of Subscription product codes
 	 */
 	private List<ProductCode> productCodes;
@@ -249,27 +219,6 @@ public class Subscription extends OTTObjectSupportNullable {
 	 * The Pre-Sale date the subscription is available for purchasing
 	 */
 	private Long preSaleDate;
-	/**
-	 * Ads policy
-	 */
-	private AdsPolicy adsPolicy;
-	/**
-	 * The parameters to pass to the ads server
-	 */
-	private String adsParam;
-	/**
-	 * Is active subscription
-	 */
-	private Boolean isActive;
-	/**
-	 * Specifies when was the Subscription created. Date and time represented as epoch.
-	 */
-	private Long createDate;
-	/**
-	 * Specifies when was the Subscription last updated. Date and time represented as
-	  epoch.
-	 */
-	private Long updateDate;
 
 	// id:
 	public String getId(){
@@ -287,16 +236,8 @@ public class Subscription extends OTTObjectSupportNullable {
 	public List<BaseChannel> getChannels(){
 		return this.channels;
 	}
-	// channelsIds:
-	public String getChannelsIds(){
-		return this.channelsIds;
-	}
-	public void setChannelsIds(String channelsIds){
-		this.channelsIds = channelsIds;
-	}
-
-	public void channelsIds(String multirequestToken){
-		setToken("channelsIds", multirequestToken);
+	public void setChannels(List<BaseChannel> channels){
+		this.channels = channels;
 	}
 
 	// startDate:
@@ -327,48 +268,60 @@ public class Subscription extends OTTObjectSupportNullable {
 	public List<IntegerValue> getFileTypes(){
 		return this.fileTypes;
 	}
-	// fileTypesIds:
-	public String getFileTypesIds(){
-		return this.fileTypesIds;
-	}
-	public void setFileTypesIds(String fileTypesIds){
-		this.fileTypesIds = fileTypesIds;
-	}
-
-	public void fileTypesIds(String multirequestToken){
-		setToken("fileTypesIds", multirequestToken);
+	public void setFileTypes(List<IntegerValue> fileTypes){
+		this.fileTypes = fileTypes;
 	}
 
 	// isRenewable:
 	public Boolean getIsRenewable(){
 		return this.isRenewable;
 	}
+	public void setIsRenewable(Boolean isRenewable){
+		this.isRenewable = isRenewable;
+	}
+
+	public void isRenewable(String multirequestToken){
+		setToken("isRenewable", multirequestToken);
+	}
+
 	// renewalsNumber:
 	public Integer getRenewalsNumber(){
 		return this.renewalsNumber;
 	}
+	public void setRenewalsNumber(Integer renewalsNumber){
+		this.renewalsNumber = renewalsNumber;
+	}
+
+	public void renewalsNumber(String multirequestToken){
+		setToken("renewalsNumber", multirequestToken);
+	}
+
 	// isInfiniteRenewal:
 	public Boolean getIsInfiniteRenewal(){
 		return this.isInfiniteRenewal;
 	}
+	public void setIsInfiniteRenewal(Boolean isInfiniteRenewal){
+		this.isInfiniteRenewal = isInfiniteRenewal;
+	}
+
+	public void isInfiniteRenewal(String multirequestToken){
+		setToken("isInfiniteRenewal", multirequestToken);
+	}
+
 	// price:
 	public PriceDetails getPrice(){
 		return this.price;
 	}
+	public void setPrice(PriceDetails price){
+		this.price = price;
+	}
+
 	// discountModule:
 	public DiscountModule getDiscountModule(){
 		return this.discountModule;
 	}
-	// internalDiscountModuleId:
-	public Long getInternalDiscountModuleId(){
-		return this.internalDiscountModuleId;
-	}
-	public void setInternalDiscountModuleId(Long internalDiscountModuleId){
-		this.internalDiscountModuleId = internalDiscountModuleId;
-	}
-
-	public void internalDiscountModuleId(String multirequestToken){
-		setToken("internalDiscountModuleId", multirequestToken);
+	public void setDiscountModule(DiscountModule discountModule){
+		this.discountModule = discountModule;
 	}
 
 	// name:
@@ -399,6 +352,14 @@ public class Subscription extends OTTObjectSupportNullable {
 	public Integer getMediaId(){
 		return this.mediaId;
 	}
+	public void setMediaId(Integer mediaId){
+		this.mediaId = mediaId;
+	}
+
+	public void mediaId(String multirequestToken){
+		setToken("mediaId", multirequestToken);
+	}
+
 	// prorityInOrder:
 	public Long getProrityInOrder(){
 		return this.prorityInOrder;
@@ -427,16 +388,8 @@ public class Subscription extends OTTObjectSupportNullable {
 	public PreviewModule getPreviewModule(){
 		return this.previewModule;
 	}
-	// previewModuleId:
-	public Long getPreviewModuleId(){
-		return this.previewModuleId;
-	}
-	public void setPreviewModuleId(Long previewModuleId){
-		this.previewModuleId = previewModuleId;
-	}
-
-	public void previewModuleId(String multirequestToken){
-		setToken("previewModuleId", multirequestToken);
+	public void setPreviewModule(PreviewModule previewModule){
+		this.previewModule = previewModule;
 	}
 
 	// householdLimitationsId:
@@ -475,32 +428,64 @@ public class Subscription extends OTTObjectSupportNullable {
 	public Integer getMaxViewsNumber(){
 		return this.maxViewsNumber;
 	}
+	public void setMaxViewsNumber(Integer maxViewsNumber){
+		this.maxViewsNumber = maxViewsNumber;
+	}
+
+	public void maxViewsNumber(String multirequestToken){
+		setToken("maxViewsNumber", multirequestToken);
+	}
+
 	// viewLifeCycle:
 	public Integer getViewLifeCycle(){
 		return this.viewLifeCycle;
 	}
+	public void setViewLifeCycle(Integer viewLifeCycle){
+		this.viewLifeCycle = viewLifeCycle;
+	}
+
+	public void viewLifeCycle(String multirequestToken){
+		setToken("viewLifeCycle", multirequestToken);
+	}
+
 	// waiverPeriod:
 	public Integer getWaiverPeriod(){
 		return this.waiverPeriod;
 	}
+	public void setWaiverPeriod(Integer waiverPeriod){
+		this.waiverPeriod = waiverPeriod;
+	}
+
+	public void waiverPeriod(String multirequestToken){
+		setToken("waiverPeriod", multirequestToken);
+	}
+
 	// isWaiverEnabled:
 	public Boolean getIsWaiverEnabled(){
 		return this.isWaiverEnabled;
 	}
+	public void setIsWaiverEnabled(Boolean isWaiverEnabled){
+		this.isWaiverEnabled = isWaiverEnabled;
+	}
+
+	public void isWaiverEnabled(String multirequestToken){
+		setToken("isWaiverEnabled", multirequestToken);
+	}
+
 	// userTypes:
 	public List<OTTUserType> getUserTypes(){
 		return this.userTypes;
 	}
+	public void setUserTypes(List<OTTUserType> userTypes){
+		this.userTypes = userTypes;
+	}
+
 	// couponsGroups:
 	public List<CouponsGroup> getCouponsGroups(){
 		return this.couponsGroups;
 	}
-	// subscriptionCouponGroup:
-	public List<SubscriptionCouponGroup> getSubscriptionCouponGroup(){
-		return this.subscriptionCouponGroup;
-	}
-	public void setSubscriptionCouponGroup(List<SubscriptionCouponGroup> subscriptionCouponGroup){
-		this.subscriptionCouponGroup = subscriptionCouponGroup;
+	public void setCouponsGroups(List<CouponsGroup> couponsGroups){
+		this.couponsGroups = couponsGroups;
 	}
 
 	// productCodes:
@@ -559,50 +544,6 @@ public class Subscription extends OTTObjectSupportNullable {
 		setToken("preSaleDate", multirequestToken);
 	}
 
-	// adsPolicy:
-	public AdsPolicy getAdsPolicy(){
-		return this.adsPolicy;
-	}
-	public void setAdsPolicy(AdsPolicy adsPolicy){
-		this.adsPolicy = adsPolicy;
-	}
-
-	public void adsPolicy(String multirequestToken){
-		setToken("adsPolicy", multirequestToken);
-	}
-
-	// adsParam:
-	public String getAdsParam(){
-		return this.adsParam;
-	}
-	public void setAdsParam(String adsParam){
-		this.adsParam = adsParam;
-	}
-
-	public void adsParam(String multirequestToken){
-		setToken("adsParam", multirequestToken);
-	}
-
-	// isActive:
-	public Boolean getIsActive(){
-		return this.isActive;
-	}
-	public void setIsActive(Boolean isActive){
-		this.isActive = isActive;
-	}
-
-	public void isActive(String multirequestToken){
-		setToken("isActive", multirequestToken);
-	}
-
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
-	}
-	// updateDate:
-	public Long getUpdateDate(){
-		return this.updateDate;
-	}
 
 	public Subscription() {
 		super();
@@ -616,17 +557,14 @@ public class Subscription extends OTTObjectSupportNullable {
 		// set members values:
 		id = GsonParser.parseString(jsonObject.get("id"));
 		channels = GsonParser.parseArray(jsonObject.getAsJsonArray("channels"), BaseChannel.class);
-		channelsIds = GsonParser.parseString(jsonObject.get("channelsIds"));
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 		fileTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("fileTypes"), IntegerValue.class);
-		fileTypesIds = GsonParser.parseString(jsonObject.get("fileTypesIds"));
 		isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
 		renewalsNumber = GsonParser.parseInt(jsonObject.get("renewalsNumber"));
 		isInfiniteRenewal = GsonParser.parseBoolean(jsonObject.get("isInfiniteRenewal"));
 		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
 		discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
-		internalDiscountModuleId = GsonParser.parseLong(jsonObject.get("internalDiscountModuleId"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		description = GsonParser.parseString(jsonObject.get("description"));
@@ -635,7 +573,6 @@ public class Subscription extends OTTObjectSupportNullable {
 		prorityInOrder = GsonParser.parseLong(jsonObject.get("prorityInOrder"));
 		pricePlanIds = GsonParser.parseString(jsonObject.get("pricePlanIds"));
 		previewModule = GsonParser.parseObject(jsonObject.getAsJsonObject("previewModule"), PreviewModule.class);
-		previewModuleId = GsonParser.parseLong(jsonObject.get("previewModuleId"));
 		householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
 		gracePeriodMinutes = GsonParser.parseInt(jsonObject.get("gracePeriodMinutes"));
 		premiumServices = GsonParser.parseArray(jsonObject.getAsJsonArray("premiumServices"), PremiumService.class);
@@ -645,17 +582,11 @@ public class Subscription extends OTTObjectSupportNullable {
 		isWaiverEnabled = GsonParser.parseBoolean(jsonObject.get("isWaiverEnabled"));
 		userTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("userTypes"), OTTUserType.class);
 		couponsGroups = GsonParser.parseArray(jsonObject.getAsJsonArray("couponsGroups"), CouponsGroup.class);
-		subscriptionCouponGroup = GsonParser.parseArray(jsonObject.getAsJsonArray("subscriptionCouponGroup"), SubscriptionCouponGroup.class);
 		productCodes = GsonParser.parseArray(jsonObject.getAsJsonArray("productCodes"), ProductCode.class);
 		dependencyType = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyType")));
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		isCancellationBlocked = GsonParser.parseBoolean(jsonObject.get("isCancellationBlocked"));
 		preSaleDate = GsonParser.parseLong(jsonObject.get("preSaleDate"));
-		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
-		adsParam = GsonParser.parseString(jsonObject.get("adsParam"));
-		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 
@@ -663,28 +594,35 @@ public class Subscription extends OTTObjectSupportNullable {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSubscription");
 		kparams.add("id", this.id);
-		kparams.add("channelsIds", this.channelsIds);
+		kparams.add("channels", this.channels);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
-		kparams.add("fileTypesIds", this.fileTypesIds);
-		kparams.add("internalDiscountModuleId", this.internalDiscountModuleId);
+		kparams.add("fileTypes", this.fileTypes);
+		kparams.add("isRenewable", this.isRenewable);
+		kparams.add("renewalsNumber", this.renewalsNumber);
+		kparams.add("isInfiniteRenewal", this.isInfiniteRenewal);
+		kparams.add("price", this.price);
+		kparams.add("discountModule", this.discountModule);
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("multilingualDescription", this.multilingualDescription);
+		kparams.add("mediaId", this.mediaId);
 		kparams.add("prorityInOrder", this.prorityInOrder);
 		kparams.add("pricePlanIds", this.pricePlanIds);
-		kparams.add("previewModuleId", this.previewModuleId);
+		kparams.add("previewModule", this.previewModule);
 		kparams.add("householdLimitationsId", this.householdLimitationsId);
 		kparams.add("gracePeriodMinutes", this.gracePeriodMinutes);
 		kparams.add("premiumServices", this.premiumServices);
-		kparams.add("subscriptionCouponGroup", this.subscriptionCouponGroup);
+		kparams.add("maxViewsNumber", this.maxViewsNumber);
+		kparams.add("viewLifeCycle", this.viewLifeCycle);
+		kparams.add("waiverPeriod", this.waiverPeriod);
+		kparams.add("isWaiverEnabled", this.isWaiverEnabled);
+		kparams.add("userTypes", this.userTypes);
+		kparams.add("couponsGroups", this.couponsGroups);
 		kparams.add("productCodes", this.productCodes);
 		kparams.add("dependencyType", this.dependencyType);
 		kparams.add("externalId", this.externalId);
 		kparams.add("isCancellationBlocked", this.isCancellationBlocked);
 		kparams.add("preSaleDate", this.preSaleDate);
-		kparams.add("adsPolicy", this.adsPolicy);
-		kparams.add("adsParam", this.adsParam);
-		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
 

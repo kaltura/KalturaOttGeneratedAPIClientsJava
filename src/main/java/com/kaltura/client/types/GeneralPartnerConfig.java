@@ -31,7 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.DeleteMediaPolicy;
 import com.kaltura.client.enums.DowngradePolicy;
-import com.kaltura.client.enums.SuspensionProfileInheritanceType;
 import com.kaltura.client.types.RollingDeviceRemovalData;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -64,10 +63,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String enableRegionFiltering();
 		String defaultRegion();
 		RollingDeviceRemovalData.Tokenizer rollingDeviceData();
-		String linearWatchHistoryThreshold();
 		String finishedPercentThreshold();
-		String suspensionProfileInheritanceType();
-		String allowDeviceMobility();
 	}
 
 	/**
@@ -123,21 +119,9 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 */
 	private RollingDeviceRemovalData rollingDeviceData;
 	/**
-	 * minimum bookmark position of a linear channel to be included in a watch history
-	 */
-	private Integer linearWatchHistoryThreshold;
-	/**
 	 * Finished PercentThreshold
 	 */
 	private Integer finishedPercentThreshold;
-	/**
-	 * Suspension Profile Inheritance
-	 */
-	private SuspensionProfileInheritanceType suspensionProfileInheritanceType;
-	/**
-	 * Allow Device Mobility
-	 */
-	private Boolean allowDeviceMobility;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -291,18 +275,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		this.rollingDeviceData = rollingDeviceData;
 	}
 
-	// linearWatchHistoryThreshold:
-	public Integer getLinearWatchHistoryThreshold(){
-		return this.linearWatchHistoryThreshold;
-	}
-	public void setLinearWatchHistoryThreshold(Integer linearWatchHistoryThreshold){
-		this.linearWatchHistoryThreshold = linearWatchHistoryThreshold;
-	}
-
-	public void linearWatchHistoryThreshold(String multirequestToken){
-		setToken("linearWatchHistoryThreshold", multirequestToken);
-	}
-
 	// finishedPercentThreshold:
 	public Integer getFinishedPercentThreshold(){
 		return this.finishedPercentThreshold;
@@ -313,30 +285,6 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 
 	public void finishedPercentThreshold(String multirequestToken){
 		setToken("finishedPercentThreshold", multirequestToken);
-	}
-
-	// suspensionProfileInheritanceType:
-	public SuspensionProfileInheritanceType getSuspensionProfileInheritanceType(){
-		return this.suspensionProfileInheritanceType;
-	}
-	public void setSuspensionProfileInheritanceType(SuspensionProfileInheritanceType suspensionProfileInheritanceType){
-		this.suspensionProfileInheritanceType = suspensionProfileInheritanceType;
-	}
-
-	public void suspensionProfileInheritanceType(String multirequestToken){
-		setToken("suspensionProfileInheritanceType", multirequestToken);
-	}
-
-	// allowDeviceMobility:
-	public Boolean getAllowDeviceMobility(){
-		return this.allowDeviceMobility;
-	}
-	public void setAllowDeviceMobility(Boolean allowDeviceMobility){
-		this.allowDeviceMobility = allowDeviceMobility;
-	}
-
-	public void allowDeviceMobility(String multirequestToken){
-		setToken("allowDeviceMobility", multirequestToken);
 	}
 
 
@@ -363,10 +311,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		enableRegionFiltering = GsonParser.parseBoolean(jsonObject.get("enableRegionFiltering"));
 		defaultRegion = GsonParser.parseInt(jsonObject.get("defaultRegion"));
 		rollingDeviceData = GsonParser.parseObject(jsonObject.getAsJsonObject("rollingDeviceData"), RollingDeviceRemovalData.class);
-		linearWatchHistoryThreshold = GsonParser.parseInt(jsonObject.get("linearWatchHistoryThreshold"));
 		finishedPercentThreshold = GsonParser.parseInt(jsonObject.get("finishedPercentThreshold"));
-		suspensionProfileInheritanceType = SuspensionProfileInheritanceType.get(GsonParser.parseString(jsonObject.get("suspensionProfileInheritanceType")));
-		allowDeviceMobility = GsonParser.parseBoolean(jsonObject.get("allowDeviceMobility"));
 
 	}
 
@@ -386,10 +331,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("enableRegionFiltering", this.enableRegionFiltering);
 		kparams.add("defaultRegion", this.defaultRegion);
 		kparams.add("rollingDeviceData", this.rollingDeviceData);
-		kparams.add("linearWatchHistoryThreshold", this.linearWatchHistoryThreshold);
 		kparams.add("finishedPercentThreshold", this.finishedPercentThreshold);
-		kparams.add("suspensionProfileInheritanceType", this.suspensionProfileInheritanceType);
-		kparams.add("allowDeviceMobility", this.allowDeviceMobility);
 		return kparams;
 	}
 

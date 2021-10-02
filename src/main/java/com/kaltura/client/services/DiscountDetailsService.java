@@ -30,7 +30,6 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.DiscountDetails;
 import com.kaltura.client.types.DiscountDetailsFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -40,44 +39,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class DiscountDetailsService {
-	
-	public static class AddDiscountDetailsBuilder extends RequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, AddDiscountDetailsBuilder> {
-		
-		public AddDiscountDetailsBuilder(DiscountDetails discountDetails) {
-			super(DiscountDetails.class, "discountdetails", "add");
-			params.add("discountDetails", discountDetails);
-		}
-	}
-
-	/**
-	 * Internal API !!! Insert new DiscountDetails for partner
-	 * 
-	 * @param discountDetails Discount details Object
-	 */
-    public static AddDiscountDetailsBuilder add(DiscountDetails discountDetails)  {
-		return new AddDiscountDetailsBuilder(discountDetails);
-	}
-	
-	public static class DeleteDiscountDetailsBuilder extends RequestBuilder<Boolean, String, DeleteDiscountDetailsBuilder> {
-		
-		public DeleteDiscountDetailsBuilder(long id) {
-			super(Boolean.class, "discountdetails", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Internal API !!! Delete DiscountDetails
-	 * 
-	 * @param id DiscountDetails id
-	 */
-    public static DeleteDiscountDetailsBuilder delete(long id)  {
-		return new DeleteDiscountDetailsBuilder(id);
-	}
 	
 	public static class ListDiscountDetailsBuilder extends ListResponseRequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, ListDiscountDetailsBuilder> {
 		
@@ -99,28 +60,5 @@ public class DiscountDetailsService {
 	 */
     public static ListDiscountDetailsBuilder list(DiscountDetailsFilter filter)  {
 		return new ListDiscountDetailsBuilder(filter);
-	}
-	
-	public static class UpdateDiscountDetailsBuilder extends RequestBuilder<DiscountDetails, DiscountDetails.Tokenizer, UpdateDiscountDetailsBuilder> {
-		
-		public UpdateDiscountDetailsBuilder(long id, DiscountDetails discountDetails) {
-			super(DiscountDetails.class, "discountdetails", "update");
-			params.add("id", id);
-			params.add("discountDetails", discountDetails);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update discount details
-	 * 
-	 * @param id DiscountDetails id
-	 * @param discountDetails Discount details Object
-	 */
-    public static UpdateDiscountDetailsBuilder update(long id, DiscountDetails discountDetails)  {
-		return new UpdateDiscountDetailsBuilder(id, discountDetails);
 	}
 }

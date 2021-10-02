@@ -52,7 +52,6 @@ public class MediaFile extends AssetFile {
 		String id();
 		String type();
 		String typeId();
-		String altUrl();
 		String duration();
 		String externalId();
 		String altExternalId();
@@ -72,7 +71,6 @@ public class MediaFile extends AssetFile {
 		String catalogEndDate();
 		String opl();
 		BusinessModuleDetails.Tokenizer businessModuleDetails();
-		String labels();
 	}
 
 	/**
@@ -91,10 +89,6 @@ public class MediaFile extends AssetFile {
 	 * Device types identifier as defined in the system
 	 */
 	private Integer typeId;
-	/**
-	 * URL of the media file to be played
-	 */
-	private String altUrl;
 	/**
 	 * Duration of the media file
 	 */
@@ -171,10 +165,6 @@ public class MediaFile extends AssetFile {
 	 * businessModuleDetails
 	 */
 	private BusinessModuleDetails businessModuleDetails;
-	/**
-	 * Labels associated with the media file
-	 */
-	private String labels;
 
 	// assetId:
 	public Integer getAssetId(){
@@ -206,18 +196,6 @@ public class MediaFile extends AssetFile {
 
 	public void typeId(String multirequestToken){
 		setToken("typeId", multirequestToken);
-	}
-
-	// altUrl:
-	public String getAltUrl(){
-		return this.altUrl;
-	}
-	public void setAltUrl(String altUrl){
-		this.altUrl = altUrl;
-	}
-
-	public void altUrl(String multirequestToken){
-		setToken("altUrl", multirequestToken);
 	}
 
 	// duration:
@@ -444,18 +422,6 @@ public class MediaFile extends AssetFile {
 		this.businessModuleDetails = businessModuleDetails;
 	}
 
-	// labels:
-	public String getLabels(){
-		return this.labels;
-	}
-	public void setLabels(String labels){
-		this.labels = labels;
-	}
-
-	public void labels(String multirequestToken){
-		setToken("labels", multirequestToken);
-	}
-
 
 	public MediaFile() {
 		super();
@@ -471,7 +437,6 @@ public class MediaFile extends AssetFile {
 		id = GsonParser.parseInt(jsonObject.get("id"));
 		type = GsonParser.parseString(jsonObject.get("type"));
 		typeId = GsonParser.parseInt(jsonObject.get("typeId"));
-		altUrl = GsonParser.parseString(jsonObject.get("altUrl"));
 		duration = GsonParser.parseLong(jsonObject.get("duration"));
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		altExternalId = GsonParser.parseString(jsonObject.get("altExternalId"));
@@ -491,7 +456,6 @@ public class MediaFile extends AssetFile {
 		catalogEndDate = GsonParser.parseLong(jsonObject.get("catalogEndDate"));
 		opl = GsonParser.parseString(jsonObject.get("opl"));
 		businessModuleDetails = GsonParser.parseObject(jsonObject.getAsJsonObject("businessModuleDetails"), BusinessModuleDetails.class);
-		labels = GsonParser.parseString(jsonObject.get("labels"));
 
 	}
 
@@ -500,7 +464,6 @@ public class MediaFile extends AssetFile {
 		kparams.add("objectType", "KalturaMediaFile");
 		kparams.add("assetId", this.assetId);
 		kparams.add("typeId", this.typeId);
-		kparams.add("altUrl", this.altUrl);
 		kparams.add("duration", this.duration);
 		kparams.add("externalId", this.externalId);
 		kparams.add("altExternalId", this.altExternalId);
@@ -520,7 +483,6 @@ public class MediaFile extends AssetFile {
 		kparams.add("catalogEndDate", this.catalogEndDate);
 		kparams.add("opl", this.opl);
 		kparams.add("businessModuleDetails", this.businessModuleDetails);
-		kparams.add("labels", this.labels);
 		return kparams;
 	}
 

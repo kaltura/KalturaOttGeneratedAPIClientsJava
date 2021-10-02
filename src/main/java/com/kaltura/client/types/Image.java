@@ -50,7 +50,6 @@ public class Image extends ObjectBase {
 		String id();
 		String version();
 		String imageTypeId();
-		String imageTypeName();
 		String imageObjectId();
 		String imageObjectType();
 		String status();
@@ -71,10 +70,6 @@ public class Image extends ObjectBase {
 	 * Image type ID
 	 */
 	private Long imageTypeId;
-	/**
-	 * Image type Name
-	 */
-	private String imageTypeName;
 	/**
 	 * ID of the object the image is related to
 	 */
@@ -118,18 +113,6 @@ public class Image extends ObjectBase {
 
 	public void imageTypeId(String multirequestToken){
 		setToken("imageTypeId", multirequestToken);
-	}
-
-	// imageTypeName:
-	public String getImageTypeName(){
-		return this.imageTypeName;
-	}
-	public void setImageTypeName(String imageTypeName){
-		this.imageTypeName = imageTypeName;
-	}
-
-	public void imageTypeName(String multirequestToken){
-		setToken("imageTypeName", multirequestToken);
 	}
 
 	// imageObjectId:
@@ -186,7 +169,6 @@ public class Image extends ObjectBase {
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		version = GsonParser.parseString(jsonObject.get("version"));
 		imageTypeId = GsonParser.parseLong(jsonObject.get("imageTypeId"));
-		imageTypeName = GsonParser.parseString(jsonObject.get("imageTypeName"));
 		imageObjectId = GsonParser.parseLong(jsonObject.get("imageObjectId"));
 		imageObjectType = ImageObjectType.get(GsonParser.parseString(jsonObject.get("imageObjectType")));
 		status = ImageStatus.get(GsonParser.parseString(jsonObject.get("status")));
@@ -200,7 +182,6 @@ public class Image extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaImage");
 		kparams.add("imageTypeId", this.imageTypeId);
-		kparams.add("imageTypeName", this.imageTypeName);
 		kparams.add("imageObjectId", this.imageObjectId);
 		kparams.add("imageObjectType", this.imageObjectType);
 		return kparams;

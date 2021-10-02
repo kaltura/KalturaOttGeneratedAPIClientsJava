@@ -51,7 +51,6 @@ public class Duration extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String unit();
 		String value();
-		String code();
 	}
 
 	/**
@@ -62,11 +61,6 @@ public class Duration extends ObjectBase {
 	 * duration value
 	 */
 	private Integer value;
-	/**
-	 * duration code - the canculat time in minutes except from years and months that
-	  have specific code
-	 */
-	private Long code;
 
 	// unit:
 	public DurationUnit getUnit(){
@@ -92,10 +86,6 @@ public class Duration extends ObjectBase {
 		setToken("value", multirequestToken);
 	}
 
-	// code:
-	public Long getCode(){
-		return this.code;
-	}
 
 	public Duration() {
 		super();
@@ -109,7 +99,6 @@ public class Duration extends ObjectBase {
 		// set members values:
 		unit = DurationUnit.get(GsonParser.parseString(jsonObject.get("unit")));
 		value = GsonParser.parseInt(jsonObject.get("value"));
-		code = GsonParser.parseLong(jsonObject.get("code"));
 
 	}
 
