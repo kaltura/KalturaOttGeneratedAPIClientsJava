@@ -64,6 +64,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String enableRegionFiltering();
 		String defaultRegion();
 		RollingDeviceRemovalData.Tokenizer rollingDeviceData();
+		String linearWatchHistoryThreshold();
 		String finishedPercentThreshold();
 		String suspensionProfileInheritanceType();
 		String allowDeviceMobility();
@@ -121,6 +122,10 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Rolling Device Policy
 	 */
 	private RollingDeviceRemovalData rollingDeviceData;
+	/**
+	 * minimum bookmark position of a linear channel to be included in a watch history
+	 */
+	private Integer linearWatchHistoryThreshold;
 	/**
 	 * Finished PercentThreshold
 	 */
@@ -286,6 +291,18 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		this.rollingDeviceData = rollingDeviceData;
 	}
 
+	// linearWatchHistoryThreshold:
+	public Integer getLinearWatchHistoryThreshold(){
+		return this.linearWatchHistoryThreshold;
+	}
+	public void setLinearWatchHistoryThreshold(Integer linearWatchHistoryThreshold){
+		this.linearWatchHistoryThreshold = linearWatchHistoryThreshold;
+	}
+
+	public void linearWatchHistoryThreshold(String multirequestToken){
+		setToken("linearWatchHistoryThreshold", multirequestToken);
+	}
+
 	// finishedPercentThreshold:
 	public Integer getFinishedPercentThreshold(){
 		return this.finishedPercentThreshold;
@@ -346,6 +363,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		enableRegionFiltering = GsonParser.parseBoolean(jsonObject.get("enableRegionFiltering"));
 		defaultRegion = GsonParser.parseInt(jsonObject.get("defaultRegion"));
 		rollingDeviceData = GsonParser.parseObject(jsonObject.getAsJsonObject("rollingDeviceData"), RollingDeviceRemovalData.class);
+		linearWatchHistoryThreshold = GsonParser.parseInt(jsonObject.get("linearWatchHistoryThreshold"));
 		finishedPercentThreshold = GsonParser.parseInt(jsonObject.get("finishedPercentThreshold"));
 		suspensionProfileInheritanceType = SuspensionProfileInheritanceType.get(GsonParser.parseString(jsonObject.get("suspensionProfileInheritanceType")));
 		allowDeviceMobility = GsonParser.parseBoolean(jsonObject.get("allowDeviceMobility"));
@@ -368,6 +386,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("enableRegionFiltering", this.enableRegionFiltering);
 		kparams.add("defaultRegion", this.defaultRegion);
 		kparams.add("rollingDeviceData", this.rollingDeviceData);
+		kparams.add("linearWatchHistoryThreshold", this.linearWatchHistoryThreshold);
 		kparams.add("finishedPercentThreshold", this.finishedPercentThreshold);
 		kparams.add("suspensionProfileInheritanceType", this.suspensionProfileInheritanceType);
 		kparams.add("allowDeviceMobility", this.allowDeviceMobility);

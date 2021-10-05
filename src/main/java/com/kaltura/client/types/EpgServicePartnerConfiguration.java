@@ -29,10 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,65 +41,68 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(EpgServicePartnerConfiguration.Tokenizer.class)
+public class EpgServicePartnerConfiguration extends ObjectBase {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		String mediaIds();
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String numberOfSlots();
+		String firstSlotOffset();
 	}
 
 	/**
-	 * A list of comma separated media ids associated with this channel, according to
-	  the order of the medias in the channel.
+	 * The number of slots (NOS) that are supported (1, 2, 3, 4, 6, 8, 12, 24)
 	 */
-	private String mediaIds;
+	private Integer numberOfSlots;
 	/**
-	 * List of assets identifier
+	 * The offset of the first slot from 00:00 UTC
 	 */
-	private List<ManualCollectionAsset> assets;
+	private Integer firstSlotOffset;
 
-	// mediaIds:
-	public String getMediaIds(){
-		return this.mediaIds;
+	// numberOfSlots:
+	public Integer getNumberOfSlots(){
+		return this.numberOfSlots;
 	}
-	public void setMediaIds(String mediaIds){
-		this.mediaIds = mediaIds;
-	}
-
-	public void mediaIds(String multirequestToken){
-		setToken("mediaIds", multirequestToken);
+	public void setNumberOfSlots(Integer numberOfSlots){
+		this.numberOfSlots = numberOfSlots;
 	}
 
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
+	public void numberOfSlots(String multirequestToken){
+		setToken("numberOfSlots", multirequestToken);
 	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+
+	// firstSlotOffset:
+	public Integer getFirstSlotOffset(){
+		return this.firstSlotOffset;
+	}
+	public void setFirstSlotOffset(Integer firstSlotOffset){
+		this.firstSlotOffset = firstSlotOffset;
+	}
+
+	public void firstSlotOffset(String multirequestToken){
+		setToken("firstSlotOffset", multirequestToken);
 	}
 
 
-	public ManualChannel() {
+	public EpgServicePartnerConfiguration() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public EpgServicePartnerConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
+		numberOfSlots = GsonParser.parseInt(jsonObject.get("numberOfSlots"));
+		firstSlotOffset = GsonParser.parseInt(jsonObject.get("firstSlotOffset"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("mediaIds", this.mediaIds);
-		kparams.add("assets", this.assets);
+		kparams.add("objectType", "KalturaEpgServicePartnerConfiguration");
+		kparams.add("numberOfSlots", this.numberOfSlots);
+		kparams.add("firstSlotOffset", this.firstSlotOffset);
 		return kparams;
 	}
 

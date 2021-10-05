@@ -29,10 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ChannelStruct;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,65 +41,68 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(ChannelSearchByKsqlFilter.Tokenizer.class)
+public class ChannelSearchByKsqlFilter extends ChannelsBaseFilter {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		String mediaIds();
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
+	public interface Tokenizer extends ChannelsBaseFilter.Tokenizer {
+		String kSql();
+		String channelStructEqual();
 	}
 
 	/**
-	 * A list of comma separated media ids associated with this channel, according to
-	  the order of the medias in the channel.
+	 * KSQL expression
 	 */
-	private String mediaIds;
+	private String kSql;
 	/**
-	 * List of assets identifier
+	 * channel struct
 	 */
-	private List<ManualCollectionAsset> assets;
+	private ChannelStruct channelStructEqual;
 
-	// mediaIds:
-	public String getMediaIds(){
-		return this.mediaIds;
+	// kSql:
+	public String getKSql(){
+		return this.kSql;
 	}
-	public void setMediaIds(String mediaIds){
-		this.mediaIds = mediaIds;
-	}
-
-	public void mediaIds(String multirequestToken){
-		setToken("mediaIds", multirequestToken);
+	public void setKSql(String kSql){
+		this.kSql = kSql;
 	}
 
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
+	public void kSql(String multirequestToken){
+		setToken("kSql", multirequestToken);
 	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+
+	// channelStructEqual:
+	public ChannelStruct getChannelStructEqual(){
+		return this.channelStructEqual;
+	}
+	public void setChannelStructEqual(ChannelStruct channelStructEqual){
+		this.channelStructEqual = channelStructEqual;
+	}
+
+	public void channelStructEqual(String multirequestToken){
+		setToken("channelStructEqual", multirequestToken);
 	}
 
 
-	public ManualChannel() {
+	public ChannelSearchByKsqlFilter() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public ChannelSearchByKsqlFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
+		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		channelStructEqual = ChannelStruct.get(GsonParser.parseString(jsonObject.get("channelStructEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("mediaIds", this.mediaIds);
-		kparams.add("assets", this.assets);
+		kparams.add("objectType", "KalturaChannelSearchByKsqlFilter");
+		kparams.add("kSql", this.kSql);
+		kparams.add("channelStructEqual", this.channelStructEqual);
 		return kparams;
 	}
 

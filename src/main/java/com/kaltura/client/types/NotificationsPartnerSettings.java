@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.EpgNotificationSettings;
+import com.kaltura.client.types.LineupNotificationSettings;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -65,6 +66,7 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		String smsEnabled();
 		String iotEnabled();
 		EpgNotificationSettings.Tokenizer epgNotification();
+		LineupNotificationSettings.Tokenizer lineupNotification();
 	}
 
 	/**
@@ -143,6 +145,10 @@ public class NotificationsPartnerSettings extends ObjectBase {
 	 * Settings for epg notifications
 	 */
 	private EpgNotificationSettings epgNotification;
+	/**
+	 * Settings for lineup notifications
+	 */
+	private LineupNotificationSettings lineupNotification;
 
 	// pushNotificationEnabled:
 	public Boolean getPushNotificationEnabled(){
@@ -368,6 +374,14 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		this.epgNotification = epgNotification;
 	}
 
+	// lineupNotification:
+	public LineupNotificationSettings getLineupNotification(){
+		return this.lineupNotification;
+	}
+	public void setLineupNotification(LineupNotificationSettings lineupNotification){
+		this.lineupNotification = lineupNotification;
+	}
+
 
 	public NotificationsPartnerSettings() {
 		super();
@@ -398,6 +412,7 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		smsEnabled = GsonParser.parseBoolean(jsonObject.get("smsEnabled"));
 		iotEnabled = GsonParser.parseBoolean(jsonObject.get("iotEnabled"));
 		epgNotification = GsonParser.parseObject(jsonObject.getAsJsonObject("epgNotification"), EpgNotificationSettings.class);
+		lineupNotification = GsonParser.parseObject(jsonObject.getAsJsonObject("lineupNotification"), LineupNotificationSettings.class);
 
 	}
 
@@ -423,6 +438,7 @@ public class NotificationsPartnerSettings extends ObjectBase {
 		kparams.add("smsEnabled", this.smsEnabled);
 		kparams.add("iotEnabled", this.iotEnabled);
 		kparams.add("epgNotification", this.epgNotification);
+		kparams.add("lineupNotification", this.lineupNotification);
 		return kparams;
 	}
 

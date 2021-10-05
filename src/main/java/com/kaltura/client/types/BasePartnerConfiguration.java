@@ -49,6 +49,7 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		String anonymousKSExpirationSeconds();
 		String refreshExpirationForPinLoginSeconds();
 		String appTokenMaxExpirySeconds();
+		String autoRefreshAppToken();
 		String uploadTokenExpirySeconds();
 		String apptokenUserValidationDisabled();
 	}
@@ -73,6 +74,10 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 	 * AppTokenMaxExpirySeconds
 	 */
 	private Integer appTokenMaxExpirySeconds;
+	/**
+	 * AutoRefreshAppToken
+	 */
+	private Boolean autoRefreshAppToken;
 	/**
 	 * uploadTokenExpirySeconds
 	 */
@@ -142,6 +147,18 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		setToken("appTokenMaxExpirySeconds", multirequestToken);
 	}
 
+	// autoRefreshAppToken:
+	public Boolean getAutoRefreshAppToken(){
+		return this.autoRefreshAppToken;
+	}
+	public void setAutoRefreshAppToken(Boolean autoRefreshAppToken){
+		this.autoRefreshAppToken = autoRefreshAppToken;
+	}
+
+	public void autoRefreshAppToken(String multirequestToken){
+		setToken("autoRefreshAppToken", multirequestToken);
+	}
+
 	// uploadTokenExpirySeconds:
 	public Integer getUploadTokenExpirySeconds(){
 		return this.uploadTokenExpirySeconds;
@@ -182,6 +199,7 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		anonymousKSExpirationSeconds = GsonParser.parseLong(jsonObject.get("anonymousKSExpirationSeconds"));
 		refreshExpirationForPinLoginSeconds = GsonParser.parseLong(jsonObject.get("refreshExpirationForPinLoginSeconds"));
 		appTokenMaxExpirySeconds = GsonParser.parseInt(jsonObject.get("appTokenMaxExpirySeconds"));
+		autoRefreshAppToken = GsonParser.parseBoolean(jsonObject.get("autoRefreshAppToken"));
 		uploadTokenExpirySeconds = GsonParser.parseInt(jsonObject.get("uploadTokenExpirySeconds"));
 		apptokenUserValidationDisabled = GsonParser.parseBoolean(jsonObject.get("apptokenUserValidationDisabled"));
 
@@ -195,6 +213,7 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		kparams.add("anonymousKSExpirationSeconds", this.anonymousKSExpirationSeconds);
 		kparams.add("refreshExpirationForPinLoginSeconds", this.refreshExpirationForPinLoginSeconds);
 		kparams.add("appTokenMaxExpirySeconds", this.appTokenMaxExpirySeconds);
+		kparams.add("autoRefreshAppToken", this.autoRefreshAppToken);
 		kparams.add("uploadTokenExpirySeconds", this.uploadTokenExpirySeconds);
 		kparams.add("apptokenUserValidationDisabled", this.apptokenUserValidationDisabled);
 		return kparams;
