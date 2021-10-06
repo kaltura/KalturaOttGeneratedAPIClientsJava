@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.EpgServicePartnerConfiguration;
+import com.kaltura.client.utils.request.NullRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,50 +37,37 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc"),
-	BASE("Base"),
-	CUSTOMFIELDS("CustomFields");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
+public class EpgServicePartnerConfigurationService {
+	
+	public static class GetEpgServicePartnerConfigurationBuilder extends RequestBuilder<EpgServicePartnerConfiguration, EpgServicePartnerConfiguration.Tokenizer, GetEpgServicePartnerConfigurationBuilder> {
 		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public GetEpgServicePartnerConfigurationBuilder() {
+			super(EpgServicePartnerConfiguration.class, "epgservicepartnerconfiguration", "get");
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+	}
+
+	/**
+	 * Returns EPG cache service partner configurations
+	 */
+    public static GetEpgServicePartnerConfigurationBuilder get()  {
+		return new GetEpgServicePartnerConfigurationBuilder();
+	}
+	
+	public static class UpdateEpgServicePartnerConfigurationBuilder extends NullRequestBuilder {
+		
+		public UpdateEpgServicePartnerConfigurationBuilder(EpgServicePartnerConfiguration config) {
+			super("epgservicepartnerconfiguration", "update");
+			params.add("config", config);
+		}
+	}
+
+	/**
+	 * Returns EPG cache service partner configurations
+	 * 
+	 * @param config the partner config updates
+	 */
+    public static UpdateEpgServicePartnerConfigurationBuilder update(EpgServicePartnerConfiguration config)  {
+		return new UpdateEpgServicePartnerConfigurationBuilder(config);
+	}
 }
