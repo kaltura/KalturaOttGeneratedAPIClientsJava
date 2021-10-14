@@ -28,7 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.Channel;
-import com.kaltura.client.types.ChannelsBaseFilter;
+import com.kaltura.client.types.ChannelsFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -104,7 +104,7 @@ public class ChannelService {
 	
 	public static class ListChannelBuilder extends ListResponseRequestBuilder<Channel, Channel.Tokenizer, ListChannelBuilder> {
 		
-		public ListChannelBuilder(ChannelsBaseFilter filter, FilterPager pager) {
+		public ListChannelBuilder(ChannelsFilter filter, FilterPager pager) {
 			super(Channel.class, "channel", "list");
 			params.add("filter", filter);
 			params.add("pager", pager);
@@ -115,7 +115,7 @@ public class ChannelService {
 		return list(null);
 	}
 
-	public static ListChannelBuilder list(ChannelsBaseFilter filter)  {
+	public static ListChannelBuilder list(ChannelsFilter filter)  {
 		return list(filter, null);
 	}
 
@@ -125,7 +125,7 @@ public class ChannelService {
 	 * @param filter Filter
 	 * @param pager Page size and index
 	 */
-    public static ListChannelBuilder list(ChannelsBaseFilter filter, FilterPager pager)  {
+    public static ListChannelBuilder list(ChannelsFilter filter, FilterPager pager)  {
 		return new ListChannelBuilder(filter, pager);
 	}
 	

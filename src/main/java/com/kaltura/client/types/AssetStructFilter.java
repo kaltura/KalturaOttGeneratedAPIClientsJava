@@ -45,9 +45,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetStructFilter.Tokenizer.class)
-public class AssetStructFilter extends BaseAssetStructFilter {
+public class AssetStructFilter extends Filter {
 	
-	public interface Tokenizer extends BaseAssetStructFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String idIn();
 		String metaIdEqual();
 		String isProtectedEqual();
