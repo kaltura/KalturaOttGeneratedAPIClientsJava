@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ChronologicalRecordStartTime;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -47,6 +48,7 @@ public class SeriesRecordingOption extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String minSeasonNumber();
 		String minEpisodeNumber();
+		String chronologicalRecordStartTime();
 	}
 
 	/**
@@ -57,6 +59,10 @@ public class SeriesRecordingOption extends ObjectBase {
 	 * min Season Number
 	 */
 	private Integer minEpisodeNumber;
+	/**
+	 * Record future only from selected value
+	 */
+	private ChronologicalRecordStartTime chronologicalRecordStartTime;
 
 	// minSeasonNumber:
 	public Integer getMinSeasonNumber(){
@@ -82,6 +88,18 @@ public class SeriesRecordingOption extends ObjectBase {
 		setToken("minEpisodeNumber", multirequestToken);
 	}
 
+	// chronologicalRecordStartTime:
+	public ChronologicalRecordStartTime getChronologicalRecordStartTime(){
+		return this.chronologicalRecordStartTime;
+	}
+	public void setChronologicalRecordStartTime(ChronologicalRecordStartTime chronologicalRecordStartTime){
+		this.chronologicalRecordStartTime = chronologicalRecordStartTime;
+	}
+
+	public void chronologicalRecordStartTime(String multirequestToken){
+		setToken("chronologicalRecordStartTime", multirequestToken);
+	}
+
 
 	public SeriesRecordingOption() {
 		super();
@@ -95,6 +113,7 @@ public class SeriesRecordingOption extends ObjectBase {
 		// set members values:
 		minSeasonNumber = GsonParser.parseInt(jsonObject.get("minSeasonNumber"));
 		minEpisodeNumber = GsonParser.parseInt(jsonObject.get("minEpisodeNumber"));
+		chronologicalRecordStartTime = ChronologicalRecordStartTime.get(GsonParser.parseString(jsonObject.get("chronologicalRecordStartTime")));
 
 	}
 
@@ -103,6 +122,7 @@ public class SeriesRecordingOption extends ObjectBase {
 		kparams.add("objectType", "KalturaSeriesRecordingOption");
 		kparams.add("minSeasonNumber", this.minSeasonNumber);
 		kparams.add("minEpisodeNumber", this.minEpisodeNumber);
+		kparams.add("chronologicalRecordStartTime", this.chronologicalRecordStartTime);
 		return kparams;
 	}
 

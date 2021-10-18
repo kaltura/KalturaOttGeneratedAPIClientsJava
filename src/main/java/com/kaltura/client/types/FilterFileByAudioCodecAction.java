@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,56 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID_DYNAMIC_LIST("DEVICE_UDID_DYNAMIC_LIST"),
-	DYNAMIC_KEYS("DYNAMIC_KEYS"),
-	USER_SESSION_PROFILE("USER_SESSION_PROFILE"),
-	DEVICE_DYNAMIC_DATA("DEVICE_DYNAMIC_DATA");
 
-	private String value;
-
-	RuleConditionType(String value) {
-		this.value = value;
+/**
+ * FilterFile By AudioCodec
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(FilterFileByAudioCodecAction.Tokenizer.class)
+public abstract class FilterFileByAudioCodecAction extends FilterAction {
+	
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String audioCodecIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * List of comma separated audioCodecs
+	 */
+	private String audioCodecIn;
+
+	// audioCodecIn:
+	public String getAudioCodecIn(){
+		return this.audioCodecIn;
+	}
+	public void setAudioCodecIn(String audioCodecIn){
+		this.audioCodecIn = audioCodecIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void audioCodecIn(String multirequestToken){
+		setToken("audioCodecIn", multirequestToken);
 	}
 
-	public static RuleConditionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
-   }
+
+	public FilterFileByAudioCodecAction() {
+		super();
+	}
+
+	public FilterFileByAudioCodecAction(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		audioCodecIn = GsonParser.parseString(jsonObject.get("audioCodecIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaFilterFileByAudioCodecAction");
+		kparams.add("audioCodecIn", this.audioCodecIn);
+		return kparams;
+	}
+
 }
+
