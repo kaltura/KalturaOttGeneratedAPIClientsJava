@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.UserSessionProfileExpression;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,56 +39,52 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID_DYNAMIC_LIST("DEVICE_UDID_DYNAMIC_LIST"),
-	DYNAMIC_KEYS("DYNAMIC_KEYS"),
-	USER_SESSION_PROFILE("USER_SESSION_PROFILE"),
-	DEVICE_DYNAMIC_DATA("DEVICE_DYNAMIC_DATA");
 
-	private String value;
-
-	RuleConditionType(String value) {
-		this.value = value;
+/**
+ * Not Expression
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ExpressionNot.Tokenizer.class)
+public class ExpressionNot extends UserSessionProfileExpression {
+	
+	public interface Tokenizer extends UserSessionProfileExpression.Tokenizer {
+		UserSessionProfileExpression.Tokenizer expression();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * expression
+	 */
+	private UserSessionProfileExpression expression;
+
+	// expression:
+	public UserSessionProfileExpression getExpression(){
+		return this.expression;
+	}
+	public void setExpression(UserSessionProfileExpression expression){
+		this.expression = expression;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public ExpressionNot() {
+		super();
 	}
 
-	public static RuleConditionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
-   }
+	public ExpressionNot(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		expression = GsonParser.parseObject(jsonObject.getAsJsonObject("expression"), UserSessionProfileExpression.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaExpressionNot");
+		kparams.add("expression", this.expression);
+		return kparams;
+	}
+
 }
+

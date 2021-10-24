@@ -25,7 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.LineupChannelAsset;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,56 +36,36 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID_DYNAMIC_LIST("DEVICE_UDID_DYNAMIC_LIST"),
-	DYNAMIC_KEYS("DYNAMIC_KEYS"),
-	USER_SESSION_PROFILE("USER_SESSION_PROFILE"),
-	DEVICE_DYNAMIC_DATA("DEVICE_DYNAMIC_DATA");
 
-	private String value;
-
-	RuleConditionType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static RuleConditionType get(String value) {
-		if(value == null)
-		{
-			return null;
+public class LineupService {
+	
+	public static class GetLineupBuilder extends ListResponseRequestBuilder<LineupChannelAsset, LineupChannelAsset.Tokenizer, GetLineupBuilder> {
+		
+		public GetLineupBuilder(int pageIndex, int pageSize) {
+			super(LineupChannelAsset.class, "lineup", "get");
+			params.add("pageIndex", pageIndex);
+			params.add("pageSize", pageSize);
 		}
 		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public void pageIndex(String multirequestToken) {
+			params.add("pageIndex", multirequestToken);
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
-   }
+		
+		public void pageSize(String multirequestToken) {
+			params.add("pageSize", multirequestToken);
+		}
+	}
+
+	/**
+	 * Return regional lineup (list of lineup channel asset objects) based on the
+	  requester session characteristics and his region.
+	 * 
+	 * @param pageIndex Page index - The page index to retrieve, (if it is not sent the default page
+	 * size is 1).
+	 * @param pageSize Page size - The page size to retrieve. Must be one of the follow numbers: 100,
+	 * 200, 800, 1200, 1600 (if it is not sent the default page size is 500).
+	 */
+    public static GetLineupBuilder get(int pageIndex, int pageSize)  {
+		return new GetLineupBuilder(pageIndex, pageSize);
+	}
 }

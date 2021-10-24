@@ -33,31 +33,14 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID_DYNAMIC_LIST("DEVICE_UDID_DYNAMIC_LIST"),
-	DYNAMIC_KEYS("DYNAMIC_KEYS"),
-	USER_SESSION_PROFILE("USER_SESSION_PROFILE"),
-	DEVICE_DYNAMIC_DATA("DEVICE_DYNAMIC_DATA");
+public enum ChronologicalRecordStartTime implements EnumAsString {
+	NONE("NONE"),
+	NOW("NOW"),
+	EPG_START_TIME("EPG_START_TIME");
 
 	private String value;
 
-	RuleConditionType(String value) {
+	ChronologicalRecordStartTime(String value) {
 		this.value = value;
 	}
 
@@ -70,19 +53,19 @@ public enum RuleConditionType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static RuleConditionType get(String value) {
+	public static ChronologicalRecordStartTime get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
+		// goes over ChronologicalRecordStartTime defined values and compare the inner value with the given one:
+		for(ChronologicalRecordStartTime item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
+		return ChronologicalRecordStartTime.values().length > 0 ? ChronologicalRecordStartTime.values()[0]: null;
    }
 }
