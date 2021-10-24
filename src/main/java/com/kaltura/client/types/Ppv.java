@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.AdsPolicy;
 import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.ObjectBase;
@@ -58,6 +59,7 @@ public class Ppv extends ObjectBase {
 		String name();
 		PriceDetails.Tokenizer price();
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> fileTypes();
+		String fileTypesIds();
 		DiscountModule.Tokenizer discountModule();
 		CouponsGroup.Tokenizer couponsGroup();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
@@ -65,6 +67,11 @@ public class Ppv extends ObjectBase {
 		String isSubscriptionOnly();
 		String firstDeviceLimitation();
 		UsageModule.Tokenizer usageModule();
+		String externalId();
+		String adsPolicy();
+		String isActive();
+		String updateDate();
+		String createDate();
 	}
 
 	/**
@@ -83,6 +90,10 @@ public class Ppv extends ObjectBase {
 	 * A list of file types identifiers that are supported in this ppv
 	 */
 	private List<IntegerValue> fileTypes;
+	/**
+	 * Comma separated file types identifiers that are supported in this subscription
+	 */
+	private String fileTypesIds;
 	/**
 	 * The internal discount module for the ppv
 	 */
@@ -113,6 +124,26 @@ public class Ppv extends ObjectBase {
 	 * PPV usage module
 	 */
 	private UsageModule usageModule;
+	/**
+	 * External ID
+	 */
+	private String externalId;
+	/**
+	 * adsPolicy
+	 */
+	private AdsPolicy adsPolicy;
+	/**
+	 * Is active ppv
+	 */
+	private Boolean isActive;
+	/**
+	 * Specifies when was the ppv last updated. Date and time represented as epoch.
+	 */
+	private Long updateDate;
+	/**
+	 * Specifies when was the Subscription created. Date and time represented as epoch.
+	 */
+	private Long createDate;
 
 	// id:
 	public String getId(){
@@ -154,6 +185,18 @@ public class Ppv extends ObjectBase {
 		this.fileTypes = fileTypes;
 	}
 
+	// fileTypesIds:
+	public String getFileTypesIds(){
+		return this.fileTypesIds;
+	}
+	public void setFileTypesIds(String fileTypesIds){
+		this.fileTypesIds = fileTypesIds;
+	}
+
+	public void fileTypesIds(String multirequestToken){
+		setToken("fileTypesIds", multirequestToken);
+	}
+
 	// discountModule:
 	public DiscountModule getDiscountModule(){
 		return this.discountModule;
@@ -182,14 +225,6 @@ public class Ppv extends ObjectBase {
 	public String getProductCode(){
 		return this.productCode;
 	}
-	public void setProductCode(String productCode){
-		this.productCode = productCode;
-	}
-
-	public void productCode(String multirequestToken){
-		setToken("productCode", multirequestToken);
-	}
-
 	// isSubscriptionOnly:
 	public Boolean getIsSubscriptionOnly(){
 		return this.isSubscriptionOnly;
@@ -222,6 +257,50 @@ public class Ppv extends ObjectBase {
 		this.usageModule = usageModule;
 	}
 
+	// externalId:
+	public String getExternalId(){
+		return this.externalId;
+	}
+	public void setExternalId(String externalId){
+		this.externalId = externalId;
+	}
+
+	public void externalId(String multirequestToken){
+		setToken("externalId", multirequestToken);
+	}
+
+	// adsPolicy:
+	public AdsPolicy getAdsPolicy(){
+		return this.adsPolicy;
+	}
+	public void setAdsPolicy(AdsPolicy adsPolicy){
+		this.adsPolicy = adsPolicy;
+	}
+
+	public void adsPolicy(String multirequestToken){
+		setToken("adsPolicy", multirequestToken);
+	}
+
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
+
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
+
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
 
 	public Ppv() {
 		super();
@@ -237,6 +316,7 @@ public class Ppv extends ObjectBase {
 		name = GsonParser.parseString(jsonObject.get("name"));
 		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
 		fileTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("fileTypes"), IntegerValue.class);
+		fileTypesIds = GsonParser.parseString(jsonObject.get("fileTypesIds"));
 		discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
 		couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
 		descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
@@ -244,6 +324,11 @@ public class Ppv extends ObjectBase {
 		isSubscriptionOnly = GsonParser.parseBoolean(jsonObject.get("isSubscriptionOnly"));
 		firstDeviceLimitation = GsonParser.parseBoolean(jsonObject.get("firstDeviceLimitation"));
 		usageModule = GsonParser.parseObject(jsonObject.getAsJsonObject("usageModule"), UsageModule.class);
+		externalId = GsonParser.parseString(jsonObject.get("externalId"));
+		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 
 	}
 
@@ -254,13 +339,16 @@ public class Ppv extends ObjectBase {
 		kparams.add("name", this.name);
 		kparams.add("price", this.price);
 		kparams.add("fileTypes", this.fileTypes);
+		kparams.add("fileTypesIds", this.fileTypesIds);
 		kparams.add("discountModule", this.discountModule);
 		kparams.add("couponsGroup", this.couponsGroup);
 		kparams.add("descriptions", this.descriptions);
-		kparams.add("productCode", this.productCode);
 		kparams.add("isSubscriptionOnly", this.isSubscriptionOnly);
 		kparams.add("firstDeviceLimitation", this.firstDeviceLimitation);
 		kparams.add("usageModule", this.usageModule);
+		kparams.add("externalId", this.externalId);
+		kparams.add("adsPolicy", this.adsPolicy);
+		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
 

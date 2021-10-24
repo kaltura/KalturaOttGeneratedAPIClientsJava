@@ -39,91 +39,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filtering Asset Struct Metas
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PpvFilter.Tokenizer.class)
-public class PpvFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(DynamicKeysCondition.Tokenizer.class)
+public class DynamicKeysCondition extends Condition {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		String couponGroupIdEqual();
-		String alsoInactive();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String key();
+		String values();
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * key
 	 */
-	private String idIn;
+	private String key;
 	/**
-	 * couponGroupIdEqual
+	 * comma-separated values
 	 */
-	private Integer couponGroupIdEqual;
-	/**
-	 * return also inactive
-	 */
-	private Boolean alsoInactive;
+	private String values;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// key:
+	public String getKey(){
+		return this.key;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setKey(String key){
+		this.key = key;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	public void key(String multirequestToken){
+		setToken("key", multirequestToken);
 	}
 
-	// couponGroupIdEqual:
-	public Integer getCouponGroupIdEqual(){
-		return this.couponGroupIdEqual;
+	// values:
+	public String getValues(){
+		return this.values;
 	}
-	public void setCouponGroupIdEqual(Integer couponGroupIdEqual){
-		this.couponGroupIdEqual = couponGroupIdEqual;
-	}
-
-	public void couponGroupIdEqual(String multirequestToken){
-		setToken("couponGroupIdEqual", multirequestToken);
+	public void setValues(String values){
+		this.values = values;
 	}
 
-	// alsoInactive:
-	public Boolean getAlsoInactive(){
-		return this.alsoInactive;
-	}
-	public void setAlsoInactive(Boolean alsoInactive){
-		this.alsoInactive = alsoInactive;
-	}
-
-	public void alsoInactive(String multirequestToken){
-		setToken("alsoInactive", multirequestToken);
+	public void values(String multirequestToken){
+		setToken("values", multirequestToken);
 	}
 
 
-	public PpvFilter() {
+	public DynamicKeysCondition() {
 		super();
 	}
 
-	public PpvFilter(JsonObject jsonObject) throws APIException {
+	public DynamicKeysCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
-		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+		key = GsonParser.parseString(jsonObject.get("key"));
+		values = GsonParser.parseString(jsonObject.get("values"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPpvFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
-		kparams.add("alsoInactive", this.alsoInactive);
+		kparams.add("objectType", "KalturaDynamicKeysCondition");
+		kparams.add("key", this.key);
+		kparams.add("values", this.values);
 		return kparams;
 	}
 

@@ -35,7 +35,9 @@ package com.kaltura.client.enums;
  */
 public enum PpvOrderBy implements EnumAsString {
 	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC");
+	NAME_DESC("NAME_DESC"),
+	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
 	private String value;
 

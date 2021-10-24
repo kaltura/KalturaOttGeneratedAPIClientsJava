@@ -30,11 +30,9 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.Price;
+import com.kaltura.client.types.UserSessionProfileExpression;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -44,54 +42,35 @@ import java.util.List;
  */
 
 /**
- * Price details
+ * User Session Profile
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PriceDetails.Tokenizer.class)
-public class PriceDetails extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(UserSessionProfile.Tokenizer.class)
+public class UserSessionProfile extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
-		Price.Tokenizer price();
-		RequestBuilder.ListTokenizer<Price.Tokenizer> multiCurrencyPrice();
-		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
+		UserSessionProfileExpression.Tokenizer expression();
 	}
 
 	/**
-	 * The price code identifier
+	 * The user session profile id.
 	 */
-	private Integer id;
+	private Long id;
 	/**
-	 * The price code name
+	 * The user session profile name for presentation.
 	 */
 	private String name;
 	/**
-	 * The price
+	 * expression
 	 */
-	private Price price;
-	/**
-	 * Multi currency prices for all countries and currencies
-	 */
-	private List<Price> multiCurrencyPrice;
-	/**
-	 * A list of the descriptions for this price on different languages (language code
-	  and translation)
-	 */
-	private List<TranslationToken> descriptions;
+	private UserSessionProfileExpression expression;
 
 	// id:
-	public Integer getId(){
+	public Long getId(){
 		return this.id;
 	}
-	public void setId(Integer id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -104,52 +83,36 @@ public class PriceDetails extends ObjectBase {
 		setToken("name", multirequestToken);
 	}
 
-	// price:
-	public Price getPrice(){
-		return this.price;
+	// expression:
+	public UserSessionProfileExpression getExpression(){
+		return this.expression;
 	}
-	// multiCurrencyPrice:
-	public List<Price> getMultiCurrencyPrice(){
-		return this.multiCurrencyPrice;
-	}
-	public void setMultiCurrencyPrice(List<Price> multiCurrencyPrice){
-		this.multiCurrencyPrice = multiCurrencyPrice;
-	}
-
-	// descriptions:
-	public List<TranslationToken> getDescriptions(){
-		return this.descriptions;
-	}
-	public void setDescriptions(List<TranslationToken> descriptions){
-		this.descriptions = descriptions;
+	public void setExpression(UserSessionProfileExpression expression){
+		this.expression = expression;
 	}
 
 
-	public PriceDetails() {
+	public UserSessionProfile() {
 		super();
 	}
 
-	public PriceDetails(JsonObject jsonObject) throws APIException {
+	public UserSessionProfile(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseInt(jsonObject.get("id"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), Price.class);
-		multiCurrencyPrice = GsonParser.parseArray(jsonObject.getAsJsonArray("multiCurrencyPrice"), Price.class);
-		descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
+		expression = GsonParser.parseObject(jsonObject.getAsJsonObject("expression"), UserSessionProfileExpression.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPriceDetails");
-		kparams.add("id", this.id);
+		kparams.add("objectType", "KalturaUserSessionProfile");
 		kparams.add("name", this.name);
-		kparams.add("multiCurrencyPrice", this.multiCurrencyPrice);
-		kparams.add("descriptions", this.descriptions);
+		kparams.add("expression", this.expression);
 		return kparams;
 	}
 

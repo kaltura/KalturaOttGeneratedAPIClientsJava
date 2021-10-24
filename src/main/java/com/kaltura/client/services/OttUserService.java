@@ -279,12 +279,13 @@ public class OttUserService {
 	
 	public static class LoginWithPinOttUserBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, LoginWithPinOttUserBuilder> {
 		
-		public LoginWithPinOttUserBuilder(int partnerId, String pin, String udid, String secret) {
+		public LoginWithPinOttUserBuilder(int partnerId, String pin, String udid, String secret, Map<String, StringValue> extraParams) {
 			super(LoginResponse.class, "ottuser", "loginWithPin");
 			params.add("partnerId", partnerId);
 			params.add("pin", pin);
 			params.add("udid", udid);
 			params.add("secret", secret);
+			params.add("extraParams", extraParams);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -312,6 +313,10 @@ public class OttUserService {
 		return loginWithPin(partnerId, pin, udid, null);
 	}
 
+	public static LoginWithPinOttUserBuilder loginWithPin(int partnerId, String pin, String udid, String secret)  {
+		return loginWithPin(partnerId, pin, udid, secret, null);
+	}
+
 	/**
 	 * User sign-in via a time-expired sign-in PIN.
 	 * 
@@ -319,9 +324,10 @@ public class OttUserService {
 	 * @param pin pin code
 	 * @param udid Device UDID
 	 * @param secret Additional security parameter to validate the login
+	 * @param extraParams extra params
 	 */
-    public static LoginWithPinOttUserBuilder loginWithPin(int partnerId, String pin, String udid, String secret)  {
-		return new LoginWithPinOttUserBuilder(partnerId, pin, udid, secret);
+    public static LoginWithPinOttUserBuilder loginWithPin(int partnerId, String pin, String udid, String secret, Map<String, StringValue> extraParams)  {
+		return new LoginWithPinOttUserBuilder(partnerId, pin, udid, secret, extraParams);
 	}
 	
 	public static class LogoutOttUserBuilder extends RequestBuilder<Boolean, String, LogoutOttUserBuilder> {

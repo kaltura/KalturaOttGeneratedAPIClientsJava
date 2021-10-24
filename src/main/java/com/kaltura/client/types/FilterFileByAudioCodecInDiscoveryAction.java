@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,56 +37,29 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum RuleConditionType implements EnumAsString {
-	ASSET("ASSET"),
-	COUNTRY("COUNTRY"),
-	CONCURRENCY("CONCURRENCY"),
-	IP_RANGE("IP_RANGE"),
-	BUSINESS_MODULE("BUSINESS_MODULE"),
-	SEGMENTS("SEGMENTS"),
-	DATE("DATE"),
-	OR("OR"),
-	HEADER("HEADER"),
-	USER_SUBSCRIPTION("USER_SUBSCRIPTION"),
-	ASSET_SUBSCRIPTION("ASSET_SUBSCRIPTION"),
-	USER_ROLE("USER_ROLE"),
-	DEVICE_BRAND("DEVICE_BRAND"),
-	DEVICE_FAMILY("DEVICE_FAMILY"),
-	DEVICE_MANUFACTURER("DEVICE_MANUFACTURER"),
-	DEVICE_MODEL("DEVICE_MODEL"),
-	DEVICE_UDID_DYNAMIC_LIST("DEVICE_UDID_DYNAMIC_LIST"),
-	DYNAMIC_KEYS("DYNAMIC_KEYS"),
-	USER_SESSION_PROFILE("USER_SESSION_PROFILE"),
-	DEVICE_DYNAMIC_DATA("DEVICE_DYNAMIC_DATA");
 
-	private String value;
-
-	RuleConditionType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(FilterFileByAudioCodecInDiscoveryAction.Tokenizer.class)
+public class FilterFileByAudioCodecInDiscoveryAction extends FilterFileByAudioCodecAction {
+	
+	public interface Tokenizer extends FilterFileByAudioCodecAction.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public FilterFileByAudioCodecInDiscoveryAction() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public FilterFileByAudioCodecInDiscoveryAction(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static RuleConditionType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over RuleConditionType defined values and compare the inner value with the given one:
-		for(RuleConditionType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return RuleConditionType.values().length > 0 ? RuleConditionType.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaFilterFileByAudioCodecInDiscoveryAction");
+		return kparams;
+	}
+
 }
+

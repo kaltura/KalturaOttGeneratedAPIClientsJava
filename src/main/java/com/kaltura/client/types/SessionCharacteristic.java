@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,90 +41,83 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Filtering Asset Struct Metas
+ * Kaltura Session Characteristic
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PpvFilter.Tokenizer.class)
-public class PpvFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SessionCharacteristic.Tokenizer.class)
+public class SessionCharacteristic extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		String couponGroupIdEqual();
-		String alsoInactive();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String regionId();
+		String userSegmentsIds();
+		String userRolesIds();
+		String userSessionProfilesIds();
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * Session characteristic identifier
 	 */
-	private String idIn;
+	private String id;
 	/**
-	 * couponGroupIdEqual
+	 * Region identifier
 	 */
-	private Integer couponGroupIdEqual;
+	private Integer regionId;
 	/**
-	 * return also inactive
+	 * Comma-separated list of user segments identifiers
 	 */
-	private Boolean alsoInactive;
+	private String userSegmentsIds;
+	/**
+	 * Comma-separated list of user roles identifiers
+	 */
+	private String userRolesIds;
+	/**
+	 * Comma-separated list of user session profiles identifiers
+	 */
+	private String userSessionProfilesIds;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// id:
+	public String getId(){
+		return this.id;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	// regionId:
+	public Integer getRegionId(){
+		return this.regionId;
 	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	// userSegmentsIds:
+	public String getUserSegmentsIds(){
+		return this.userSegmentsIds;
 	}
-
-	// couponGroupIdEqual:
-	public Integer getCouponGroupIdEqual(){
-		return this.couponGroupIdEqual;
+	// userRolesIds:
+	public String getUserRolesIds(){
+		return this.userRolesIds;
 	}
-	public void setCouponGroupIdEqual(Integer couponGroupIdEqual){
-		this.couponGroupIdEqual = couponGroupIdEqual;
-	}
-
-	public void couponGroupIdEqual(String multirequestToken){
-		setToken("couponGroupIdEqual", multirequestToken);
-	}
-
-	// alsoInactive:
-	public Boolean getAlsoInactive(){
-		return this.alsoInactive;
-	}
-	public void setAlsoInactive(Boolean alsoInactive){
-		this.alsoInactive = alsoInactive;
+	// userSessionProfilesIds:
+	public String getUserSessionProfilesIds(){
+		return this.userSessionProfilesIds;
 	}
 
-	public void alsoInactive(String multirequestToken){
-		setToken("alsoInactive", multirequestToken);
-	}
-
-
-	public PpvFilter() {
+	public SessionCharacteristic() {
 		super();
 	}
 
-	public PpvFilter(JsonObject jsonObject) throws APIException {
+	public SessionCharacteristic(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
-		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+		id = GsonParser.parseString(jsonObject.get("id"));
+		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
+		userSegmentsIds = GsonParser.parseString(jsonObject.get("userSegmentsIds"));
+		userRolesIds = GsonParser.parseString(jsonObject.get("userRolesIds"));
+		userSessionProfilesIds = GsonParser.parseString(jsonObject.get("userSessionProfilesIds"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPpvFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
-		kparams.add("alsoInactive", this.alsoInactive);
+		kparams.add("objectType", "KalturaSessionCharacteristic");
 		return kparams;
 	}
 
