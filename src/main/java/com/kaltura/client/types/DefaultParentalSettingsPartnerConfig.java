@@ -62,15 +62,15 @@ public class DefaultParentalSettingsPartnerConfig extends PartnerConfiguration {
 	/**
 	 * defaultParentalPin
 	 */
-	private Integer defaultParentalPin;
+	private String defaultParentalPin;
 	/**
 	 * defaultPurchasePin
 	 */
-	private Integer defaultPurchasePin;
+	private String defaultPurchasePin;
 	/**
 	 * defaultPurchaseSettings
 	 */
-	private Integer defaultPurchaseSettings;
+	private Long defaultPurchaseSettings;
 
 	// defaultMoviesParentalRuleId:
 	public Long getDefaultMoviesParentalRuleId(){
@@ -97,10 +97,10 @@ public class DefaultParentalSettingsPartnerConfig extends PartnerConfiguration {
 	}
 
 	// defaultParentalPin:
-	public Integer getDefaultParentalPin(){
+	public String getDefaultParentalPin(){
 		return this.defaultParentalPin;
 	}
-	public void setDefaultParentalPin(Integer defaultParentalPin){
+	public void setDefaultParentalPin(String defaultParentalPin){
 		this.defaultParentalPin = defaultParentalPin;
 	}
 
@@ -109,10 +109,10 @@ public class DefaultParentalSettingsPartnerConfig extends PartnerConfiguration {
 	}
 
 	// defaultPurchasePin:
-	public Integer getDefaultPurchasePin(){
+	public String getDefaultPurchasePin(){
 		return this.defaultPurchasePin;
 	}
-	public void setDefaultPurchasePin(Integer defaultPurchasePin){
+	public void setDefaultPurchasePin(String defaultPurchasePin){
 		this.defaultPurchasePin = defaultPurchasePin;
 	}
 
@@ -121,10 +121,10 @@ public class DefaultParentalSettingsPartnerConfig extends PartnerConfiguration {
 	}
 
 	// defaultPurchaseSettings:
-	public Integer getDefaultPurchaseSettings(){
+	public Long getDefaultPurchaseSettings(){
 		return this.defaultPurchaseSettings;
 	}
-	public void setDefaultPurchaseSettings(Integer defaultPurchaseSettings){
+	public void setDefaultPurchaseSettings(Long defaultPurchaseSettings){
 		this.defaultPurchaseSettings = defaultPurchaseSettings;
 	}
 
@@ -145,9 +145,9 @@ public class DefaultParentalSettingsPartnerConfig extends PartnerConfiguration {
 		// set members values:
 		defaultMoviesParentalRuleId = GsonParser.parseLong(jsonObject.get("defaultMoviesParentalRuleId"));
 		defaultTvSeriesParentalRuleId = GsonParser.parseLong(jsonObject.get("defaultTvSeriesParentalRuleId"));
-		defaultParentalPin = GsonParser.parseInt(jsonObject.get("defaultParentalPin"));
-		defaultPurchasePin = GsonParser.parseInt(jsonObject.get("defaultPurchasePin"));
-		defaultPurchaseSettings = GsonParser.parseInt(jsonObject.get("defaultPurchaseSettings"));
+		defaultParentalPin = GsonParser.parseString(jsonObject.get("defaultParentalPin"));
+		defaultPurchasePin = GsonParser.parseString(jsonObject.get("defaultPurchasePin"));
+		defaultPurchaseSettings = GsonParser.parseLong(jsonObject.get("defaultPurchaseSettings"));
 
 	}
 
