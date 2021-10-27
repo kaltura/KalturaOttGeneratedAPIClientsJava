@@ -5,7 +5,7 @@
 //                          |_|\_\__,_|_|\__|\_,_|_| \__,_|
 //
 // This file is part of the Kaltura Collaborative Media Suite which allows users
-// to do with audio, video, and animation what Wiki platfroms allow them to do with
+// to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
 // Copyright (C) 2006-2021  Kaltura Inc.
@@ -61,6 +61,8 @@ public class HouseholdLimitations extends ObjectBase {
 		String npvrQuotaInSeconds();
 		String usersLimit();
 		RequestBuilder.ListTokenizer<HouseholdDeviceFamilyLimitations.Tokenizer> deviceFamiliesLimitations();
+		String description();
+		String associatedDeviceFamiliesIdsIn();
 	}
 
 	/**
@@ -107,6 +109,14 @@ public class HouseholdLimitations extends ObjectBase {
 	 * Device families limitations
 	 */
 	private List<HouseholdDeviceFamilyLimitations> deviceFamiliesLimitations;
+	/**
+	 * Allowed device change frequency description
+	 */
+	private String description;
+	/**
+	 * Associated Device Families ids
+	 */
+	private String associatedDeviceFamiliesIdsIn;
 
 	// id:
 	public Integer getId(){
@@ -204,6 +214,30 @@ public class HouseholdLimitations extends ObjectBase {
 		this.deviceFamiliesLimitations = deviceFamiliesLimitations;
 	}
 
+	// description:
+	public String getDescription(){
+		return this.description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
+
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
+	}
+
+	// associatedDeviceFamiliesIdsIn:
+	public String getAssociatedDeviceFamiliesIdsIn(){
+		return this.associatedDeviceFamiliesIdsIn;
+	}
+	public void setAssociatedDeviceFamiliesIdsIn(String associatedDeviceFamiliesIdsIn){
+		this.associatedDeviceFamiliesIdsIn = associatedDeviceFamiliesIdsIn;
+	}
+
+	public void associatedDeviceFamiliesIdsIn(String multirequestToken){
+		setToken("associatedDeviceFamiliesIdsIn", multirequestToken);
+	}
+
 
 	public HouseholdLimitations() {
 		super();
@@ -226,6 +260,8 @@ public class HouseholdLimitations extends ObjectBase {
 		npvrQuotaInSeconds = GsonParser.parseInt(jsonObject.get("npvrQuotaInSeconds"));
 		usersLimit = GsonParser.parseInt(jsonObject.get("usersLimit"));
 		deviceFamiliesLimitations = GsonParser.parseArray(jsonObject.getAsJsonArray("deviceFamiliesLimitations"), HouseholdDeviceFamilyLimitations.class);
+		description = GsonParser.parseString(jsonObject.get("description"));
+		associatedDeviceFamiliesIdsIn = GsonParser.parseString(jsonObject.get("associatedDeviceFamiliesIdsIn"));
 
 	}
 
@@ -239,6 +275,8 @@ public class HouseholdLimitations extends ObjectBase {
 		kparams.add("userFrequency", this.userFrequency);
 		kparams.add("usersLimit", this.usersLimit);
 		kparams.add("deviceFamiliesLimitations", this.deviceFamiliesLimitations);
+		kparams.add("description", this.description);
+		kparams.add("associatedDeviceFamiliesIdsIn", this.associatedDeviceFamiliesIdsIn);
 		return kparams;
 	}
 
