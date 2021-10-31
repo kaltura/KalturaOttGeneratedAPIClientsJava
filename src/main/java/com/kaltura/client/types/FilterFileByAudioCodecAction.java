@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,50 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc"),
-	BASE("Base"),
-	CUSTOMFIELDS("CustomFields");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
+/**
+ * FilterFile By AudioCodec
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(FilterFileByAudioCodecAction.Tokenizer.class)
+public abstract class FilterFileByAudioCodecAction extends FilterAction {
+	
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String audioCodecIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * List of comma separated audioCodecs
+	 */
+	private String audioCodecIn;
+
+	// audioCodecIn:
+	public String getAudioCodecIn(){
+		return this.audioCodecIn;
+	}
+	public void setAudioCodecIn(String audioCodecIn){
+		this.audioCodecIn = audioCodecIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void audioCodecIn(String multirequestToken){
+		setToken("audioCodecIn", multirequestToken);
 	}
 
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+
+	public FilterFileByAudioCodecAction() {
+		super();
+	}
+
+	public FilterFileByAudioCodecAction(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		audioCodecIn = GsonParser.parseString(jsonObject.get("audioCodecIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaFilterFileByAudioCodecAction");
+		kparams.add("audioCodecIn", this.audioCodecIn);
+		return kparams;
+	}
+
 }
+

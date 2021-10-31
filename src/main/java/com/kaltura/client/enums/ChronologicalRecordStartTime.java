@@ -33,25 +33,14 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc"),
-	BASE("Base"),
-	CUSTOMFIELDS("CustomFields");
+public enum ChronologicalRecordStartTime implements EnumAsString {
+	NONE("NONE"),
+	NOW("NOW"),
+	EPG_START_TIME("EPG_START_TIME");
 
 	private String value;
 
-	PartnerConfigurationType(String value) {
+	ChronologicalRecordStartTime(String value) {
 		this.value = value;
 	}
 
@@ -64,19 +53,19 @@ public enum PartnerConfigurationType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static PartnerConfigurationType get(String value) {
+	public static ChronologicalRecordStartTime get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
+		// goes over ChronologicalRecordStartTime defined values and compare the inner value with the given one:
+		for(ChronologicalRecordStartTime item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
+		return ChronologicalRecordStartTime.values().length > 0 ? ChronologicalRecordStartTime.values()[0]: null;
    }
 }
