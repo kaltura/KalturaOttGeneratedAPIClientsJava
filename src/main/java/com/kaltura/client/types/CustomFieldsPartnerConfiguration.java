@@ -39,50 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Custom Fields Partner Configuration
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UsageModuleFilter.Tokenizer.class)
-public class UsageModuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(CustomFieldsPartnerConfiguration.Tokenizer.class)
+public class CustomFieldsPartnerConfiguration extends PartnerConfiguration {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idEqual();
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		String metaSystemNameInsteadOfAliasList();
 	}
 
 	/**
-	 * Comma separated usageModule ids
+	 * Array of clientTag values
 	 */
-	private Integer idEqual;
+	private String metaSystemNameInsteadOfAliasList;
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// metaSystemNameInsteadOfAliasList:
+	public String getMetaSystemNameInsteadOfAliasList(){
+		return this.metaSystemNameInsteadOfAliasList;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
+	public void setMetaSystemNameInsteadOfAliasList(String metaSystemNameInsteadOfAliasList){
+		this.metaSystemNameInsteadOfAliasList = metaSystemNameInsteadOfAliasList;
 	}
 
+	public void metaSystemNameInsteadOfAliasList(String multirequestToken){
+		setToken("metaSystemNameInsteadOfAliasList", multirequestToken);
+	}
 
-	public UsageModuleFilter() {
+
+	public CustomFieldsPartnerConfiguration() {
 		super();
 	}
 
-	public UsageModuleFilter(JsonObject jsonObject) throws APIException {
+	public CustomFieldsPartnerConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+		metaSystemNameInsteadOfAliasList = GsonParser.parseString(jsonObject.get("metaSystemNameInsteadOfAliasList"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUsageModuleFilter");
-		kparams.add("idEqual", this.idEqual);
+		kparams.add("objectType", "KalturaCustomFieldsPartnerConfiguration");
+		kparams.add("metaSystemNameInsteadOfAliasList", this.metaSystemNameInsteadOfAliasList);
 		return kparams;
 	}
 

@@ -25,7 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.LineupChannelAsset;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,51 +36,36 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc"),
-	BASE("Base"),
-	CUSTOMFIELDS("CustomFields"),
-	DEFAULTPARENTALSETTINGS("DefaultParentalSettings");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
+public class LineupService {
+	
+	public static class GetLineupBuilder extends ListResponseRequestBuilder<LineupChannelAsset, LineupChannelAsset.Tokenizer, GetLineupBuilder> {
+		
+		public GetLineupBuilder(int pageIndex, int pageSize) {
+			super(LineupChannelAsset.class, "lineup", "get");
+			params.add("pageIndex", pageIndex);
+			params.add("pageSize", pageSize);
 		}
 		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public void pageIndex(String multirequestToken) {
+			params.add("pageIndex", multirequestToken);
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+		
+		public void pageSize(String multirequestToken) {
+			params.add("pageSize", multirequestToken);
+		}
+	}
+
+	/**
+	 * Return regional lineup (list of lineup channel asset objects) based on the
+	  requester session characteristics and his region.
+	 * 
+	 * @param pageIndex Page index - The page index to retrieve, (if it is not sent the default page
+	 * size is 1).
+	 * @param pageSize Page size - The page size to retrieve. Must be one of the follow numbers: 100,
+	 * 200, 800, 1200, 1600 (if it is not sent the default page size is 500).
+	 */
+    public static GetLineupBuilder get(int pageIndex, int pageSize)  {
+		return new GetLineupBuilder(pageIndex, pageSize);
+	}
 }

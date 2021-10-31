@@ -141,7 +141,7 @@ public class Ppv extends ObjectBase {
 	 */
 	private Long updateDate;
 	/**
-	 * Specifies when was the Subscription created. Date and time represented as epoch.
+	 * Specifies when was the ppv created. Date and time represented as epoch.
 	 */
 	private Long createDate;
 
