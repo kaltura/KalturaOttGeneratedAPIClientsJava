@@ -72,6 +72,7 @@ public class Ppv extends ObjectBase {
 		String isActive();
 		String updateDate();
 		String createDate();
+		String virtualAssetId();
 	}
 
 	/**
@@ -144,6 +145,10 @@ public class Ppv extends ObjectBase {
 	 * Specifies when was the ppv created. Date and time represented as epoch.
 	 */
 	private Long createDate;
+	/**
+	 * Virtual asset id
+	 */
+	private Long virtualAssetId;
 
 	// id:
 	public String getId(){
@@ -301,6 +306,10 @@ public class Ppv extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
+	// virtualAssetId:
+	public Long getVirtualAssetId(){
+		return this.virtualAssetId;
+	}
 
 	public Ppv() {
 		super();
@@ -329,6 +338,7 @@ public class Ppv extends ObjectBase {
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
