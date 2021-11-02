@@ -36,9 +36,7 @@ package com.kaltura.client.enums;
 public enum ObjectVirtualAssetInfoType implements EnumAsString {
 	SUBSCRIPTION("Subscription"),
 	SEGMENT("Segment"),
-	CATEGORY("Category"),
-	TVOD("Tvod"),
-	BOXSET("Boxset");
+	CATEGORY("Category");
 
 	private String value;
 
