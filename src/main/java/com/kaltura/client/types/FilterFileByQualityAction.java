@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,50 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc"),
-	BASE("Base"),
-	CUSTOMFIELDS("CustomFields");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
+/**
+ * Filter Files By their Quality
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(FilterFileByQualityAction.Tokenizer.class)
+public abstract class FilterFileByQualityAction extends FilterAction {
+	
+	public interface Tokenizer extends FilterAction.Tokenizer {
+		String qualityIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * List of comma separated qualities
+	 */
+	private String qualityIn;
+
+	// qualityIn:
+	public String getQualityIn(){
+		return this.qualityIn;
+	}
+	public void setQualityIn(String qualityIn){
+		this.qualityIn = qualityIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void qualityIn(String multirequestToken){
+		setToken("qualityIn", multirequestToken);
 	}
 
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+
+	public FilterFileByQualityAction() {
+		super();
+	}
+
+	public FilterFileByQualityAction(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		qualityIn = GsonParser.parseString(jsonObject.get("qualityIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaFilterFileByQualityAction");
+		kparams.add("qualityIn", this.qualityIn);
+		return kparams;
+	}
+
 }
+

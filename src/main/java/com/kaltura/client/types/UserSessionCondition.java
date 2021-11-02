@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.Condition;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,50 +39,52 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc"),
-	BASE("Base"),
-	CUSTOMFIELDS("CustomFields");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
+/**
+ * SimpleExpression hold single condition
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(UserSessionCondition.Tokenizer.class)
+public class UserSessionCondition extends UserSessionProfileExpression {
+	
+	public interface Tokenizer extends UserSessionProfileExpression.Tokenizer {
+		Condition.Tokenizer condition();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * expression
+	 */
+	private Condition condition;
+
+	// condition:
+	public Condition getCondition(){
+		return this.condition;
+	}
+	public void setCondition(Condition condition){
+		this.condition = condition;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public UserSessionCondition() {
+		super();
 	}
 
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+	public UserSessionCondition(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		condition = GsonParser.parseObject(jsonObject.getAsJsonObject("condition"), Condition.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaUserSessionCondition");
+		kparams.add("condition", this.condition);
+		return kparams;
+	}
+
 }
+
