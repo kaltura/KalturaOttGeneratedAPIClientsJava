@@ -48,7 +48,7 @@ public class UsageModuleFilter extends Filter {
 	}
 
 	/**
-	 * Comma separated usageModule ids
+	 * usageModule id
 	 */
 	private Integer idEqual;
 

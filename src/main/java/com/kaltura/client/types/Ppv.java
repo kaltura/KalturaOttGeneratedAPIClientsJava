@@ -58,16 +58,19 @@ public class Ppv extends ObjectBase {
 		String id();
 		String name();
 		PriceDetails.Tokenizer price();
+		String priceDetailsId();
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> fileTypes();
 		String fileTypesIds();
 		DiscountModule.Tokenizer discountModule();
+		String discountId();
 		CouponsGroup.Tokenizer couponsGroup();
+		String couponsGroupId();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
 		String productCode();
 		String isSubscriptionOnly();
 		String firstDeviceLimitation();
 		UsageModule.Tokenizer usageModule();
-		String externalId();
+		String usageModuleId();
 		String adsPolicy();
 		String isActive();
 		String updateDate();
@@ -84,11 +87,15 @@ public class Ppv extends ObjectBase {
 	 */
 	private String name;
 	/**
-	 * The price of the ppv
+	 * This property will deprecated soon. Please use PriceId instead of it.
 	 */
 	private PriceDetails price;
 	/**
-	 * A list of file types identifiers that are supported in this ppv
+	 * The price if of the ppv
+	 */
+	private Integer priceDetailsId;
+	/**
+	 * This property will deprecated soon. Please use fileTypesIds instead of it.
 	 */
 	private List<IntegerValue> fileTypes;
 	/**
@@ -96,13 +103,21 @@ public class Ppv extends ObjectBase {
 	 */
 	private String fileTypesIds;
 	/**
-	 * The internal discount module for the ppv
+	 * This property will deprecated soon. Please use DiscountId instead of it.
 	 */
 	private DiscountModule discountModule;
 	/**
-	 * Coupons group for the ppv
+	 * The discount id for the ppv
+	 */
+	private Long discountId;
+	/**
+	 * This property will deprecated soon. Please use CouponsGroupId instead of it.
 	 */
 	private CouponsGroup couponsGroup;
+	/**
+	 * Coupons group id for the ppv
+	 */
+	private Long couponsGroupId;
 	/**
 	 * A list of the descriptions of the ppv on different languages (language code and
 	  translation)
@@ -122,13 +137,13 @@ public class Ppv extends ObjectBase {
 	 */
 	private Boolean firstDeviceLimitation;
 	/**
-	 * PPV usage module
+	 * This property will deprecated soon. Please use UsageModuleId instead of it.
 	 */
 	private UsageModule usageModule;
 	/**
-	 * External ID
+	 * PPV usage module Id
 	 */
-	private String externalId;
+	private Long usageModuleId;
 	/**
 	 * adsPolicy
 	 */
@@ -178,18 +193,22 @@ public class Ppv extends ObjectBase {
 	public PriceDetails getPrice(){
 		return this.price;
 	}
-	public void setPrice(PriceDetails price){
-		this.price = price;
+	// priceDetailsId:
+	public Integer getPriceDetailsId(){
+		return this.priceDetailsId;
+	}
+	public void setPriceDetailsId(Integer priceDetailsId){
+		this.priceDetailsId = priceDetailsId;
+	}
+
+	public void priceDetailsId(String multirequestToken){
+		setToken("priceDetailsId", multirequestToken);
 	}
 
 	// fileTypes:
 	public List<IntegerValue> getFileTypes(){
 		return this.fileTypes;
 	}
-	public void setFileTypes(List<IntegerValue> fileTypes){
-		this.fileTypes = fileTypes;
-	}
-
 	// fileTypesIds:
 	public String getFileTypesIds(){
 		return this.fileTypesIds;
@@ -206,16 +225,32 @@ public class Ppv extends ObjectBase {
 	public DiscountModule getDiscountModule(){
 		return this.discountModule;
 	}
-	public void setDiscountModule(DiscountModule discountModule){
-		this.discountModule = discountModule;
+	// discountId:
+	public Long getDiscountId(){
+		return this.discountId;
+	}
+	public void setDiscountId(Long discountId){
+		this.discountId = discountId;
+	}
+
+	public void discountId(String multirequestToken){
+		setToken("discountId", multirequestToken);
 	}
 
 	// couponsGroup:
 	public CouponsGroup getCouponsGroup(){
 		return this.couponsGroup;
 	}
-	public void setCouponsGroup(CouponsGroup couponsGroup){
-		this.couponsGroup = couponsGroup;
+	// couponsGroupId:
+	public Long getCouponsGroupId(){
+		return this.couponsGroupId;
+	}
+	public void setCouponsGroupId(Long couponsGroupId){
+		this.couponsGroupId = couponsGroupId;
+	}
+
+	public void couponsGroupId(String multirequestToken){
+		setToken("couponsGroupId", multirequestToken);
 	}
 
 	// descriptions:
@@ -230,6 +265,14 @@ public class Ppv extends ObjectBase {
 	public String getProductCode(){
 		return this.productCode;
 	}
+	public void setProductCode(String productCode){
+		this.productCode = productCode;
+	}
+
+	public void productCode(String multirequestToken){
+		setToken("productCode", multirequestToken);
+	}
+
 	// isSubscriptionOnly:
 	public Boolean getIsSubscriptionOnly(){
 		return this.isSubscriptionOnly;
@@ -258,20 +301,16 @@ public class Ppv extends ObjectBase {
 	public UsageModule getUsageModule(){
 		return this.usageModule;
 	}
-	public void setUsageModule(UsageModule usageModule){
-		this.usageModule = usageModule;
+	// usageModuleId:
+	public Long getUsageModuleId(){
+		return this.usageModuleId;
+	}
+	public void setUsageModuleId(Long usageModuleId){
+		this.usageModuleId = usageModuleId;
 	}
 
-	// externalId:
-	public String getExternalId(){
-		return this.externalId;
-	}
-	public void setExternalId(String externalId){
-		this.externalId = externalId;
-	}
-
-	public void externalId(String multirequestToken){
-		setToken("externalId", multirequestToken);
+	public void usageModuleId(String multirequestToken){
+		setToken("usageModuleId", multirequestToken);
 	}
 
 	// adsPolicy:
@@ -324,16 +363,19 @@ public class Ppv extends ObjectBase {
 		id = GsonParser.parseString(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
+		priceDetailsId = GsonParser.parseInt(jsonObject.get("priceDetailsId"));
 		fileTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("fileTypes"), IntegerValue.class);
 		fileTypesIds = GsonParser.parseString(jsonObject.get("fileTypesIds"));
 		discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
+		discountId = GsonParser.parseLong(jsonObject.get("discountId"));
 		couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
+		couponsGroupId = GsonParser.parseLong(jsonObject.get("couponsGroupId"));
 		descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
 		productCode = GsonParser.parseString(jsonObject.get("productCode"));
 		isSubscriptionOnly = GsonParser.parseBoolean(jsonObject.get("isSubscriptionOnly"));
 		firstDeviceLimitation = GsonParser.parseBoolean(jsonObject.get("firstDeviceLimitation"));
 		usageModule = GsonParser.parseObject(jsonObject.getAsJsonObject("usageModule"), UsageModule.class);
-		externalId = GsonParser.parseString(jsonObject.get("externalId"));
+		usageModuleId = GsonParser.parseLong(jsonObject.get("usageModuleId"));
 		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
@@ -347,16 +389,15 @@ public class Ppv extends ObjectBase {
 		kparams.add("objectType", "KalturaPpv");
 		kparams.add("id", this.id);
 		kparams.add("name", this.name);
-		kparams.add("price", this.price);
-		kparams.add("fileTypes", this.fileTypes);
+		kparams.add("priceDetailsId", this.priceDetailsId);
 		kparams.add("fileTypesIds", this.fileTypesIds);
-		kparams.add("discountModule", this.discountModule);
-		kparams.add("couponsGroup", this.couponsGroup);
+		kparams.add("discountId", this.discountId);
+		kparams.add("couponsGroupId", this.couponsGroupId);
 		kparams.add("descriptions", this.descriptions);
+		kparams.add("productCode", this.productCode);
 		kparams.add("isSubscriptionOnly", this.isSubscriptionOnly);
 		kparams.add("firstDeviceLimitation", this.firstDeviceLimitation);
-		kparams.add("usageModule", this.usageModule);
-		kparams.add("externalId", this.externalId);
+		kparams.add("usageModuleId", this.usageModuleId);
 		kparams.add("adsPolicy", this.adsPolicy);
 		kparams.add("isActive", this.isActive);
 		return kparams;

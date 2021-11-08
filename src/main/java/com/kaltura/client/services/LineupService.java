@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.LineupChannelAsset;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -67,5 +68,26 @@ public class LineupService {
 	 */
     public static GetLineupBuilder get(int pageIndex, int pageSize)  {
 		return new GetLineupBuilder(pageIndex, pageSize);
+	}
+	
+	public static class SendUpdatedNotificationLineupBuilder extends RequestBuilder<Boolean, String, SendUpdatedNotificationLineupBuilder> {
+		
+		public SendUpdatedNotificationLineupBuilder(String regionIds) {
+			super(Boolean.class, "lineup", "sendUpdatedNotification");
+			params.add("regionIds", regionIds);
+		}
+		
+		public void regionIds(String multirequestToken) {
+			params.add("regionIds", multirequestToken);
+		}
+	}
+
+	/**
+	 * Sends lineup update requested notification.
+	 * 
+	 * @param regionIds Region IDs separated by commas.
+	 */
+    public static SendUpdatedNotificationLineupBuilder sendUpdatedNotification(String regionIds)  {
+		return new SendUpdatedNotificationLineupBuilder(regionIds);
 	}
 }
