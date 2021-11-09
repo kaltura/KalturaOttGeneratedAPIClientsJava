@@ -28,6 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.UsageModule;
+import com.kaltura.client.types.UsageModuleFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -49,7 +50,7 @@ public class UsageModuleService {
 	}
 
 	/**
-	 * Internal API !!! Insert new UsageModule
+	 * Insert new UsageModule
 	 * 
 	 * @param usageModule usage module Object
 	 */
@@ -70,7 +71,7 @@ public class UsageModuleService {
 	}
 
 	/**
-	 * Internal API !!! Delete UsageModule
+	 * Delete UsageModule
 	 * 
 	 * @param id UsageModule id
 	 */
@@ -80,15 +81,45 @@ public class UsageModuleService {
 	
 	public static class ListUsageModuleBuilder extends ListResponseRequestBuilder<UsageModule, UsageModule.Tokenizer, ListUsageModuleBuilder> {
 		
-		public ListUsageModuleBuilder() {
+		public ListUsageModuleBuilder(UsageModuleFilter filter) {
 			super(UsageModule.class, "usagemodule", "list");
+			params.add("filter", filter);
+		}
+	}
+
+	public static ListUsageModuleBuilder list()  {
+		return list(null);
+	}
+
+	/**
+	 * Returns the list of available usage module
+	 * 
+	 * @param filter Filter request
+	 */
+    public static ListUsageModuleBuilder list(UsageModuleFilter filter)  {
+		return new ListUsageModuleBuilder(filter);
+	}
+	
+	public static class UpdateUsageModuleBuilder extends RequestBuilder<UsageModule, UsageModule.Tokenizer, UpdateUsageModuleBuilder> {
+		
+		public UpdateUsageModuleBuilder(int id, UsageModule usageModule) {
+			super(UsageModule.class, "usagemodule", "update");
+			params.add("id", id);
+			params.add("usageModule", usageModule);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
 	/**
-	 * Internal API !!! Returns the list of available usage module
+	 * Update usage module
+	 * 
+	 * @param id usage module id
+	 * @param usageModule usage module Object
 	 */
-    public static ListUsageModuleBuilder list()  {
-		return new ListUsageModuleBuilder();
+    public static UpdateUsageModuleBuilder update(int id, UsageModule usageModule)  {
+		return new UpdateUsageModuleBuilder(id, usageModule);
 	}
 }

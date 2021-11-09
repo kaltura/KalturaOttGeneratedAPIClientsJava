@@ -50,7 +50,7 @@ public class PriceDetailsService {
 	}
 
 	/**
-	 * Internal API !!! Insert new PriceDetails for partner
+	 * Insert new PriceDetails for partner
 	 * 
 	 * @param priceDetails PriceDetails Object
 	 */
@@ -71,7 +71,7 @@ public class PriceDetailsService {
 	}
 
 	/**
-	 * Internal API !!! Delete PriceDetails
+	 * Delete PriceDetails
 	 * 
 	 * @param id PriceDetails identifier
 	 */
