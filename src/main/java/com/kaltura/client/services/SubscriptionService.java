@@ -52,7 +52,7 @@ public class SubscriptionService {
 	}
 
 	/**
-	 * Insert new subscription for partner
+	 * Internal API !!! Insert new subscription for partner
 	 * 
 	 * @param subscription subscription object
 	 */
@@ -73,7 +73,7 @@ public class SubscriptionService {
 	}
 
 	/**
-	 * Delete subscription
+	 * Internal API !!! Delete subscription
 	 * 
 	 * @param id Subscription id
 	 */
