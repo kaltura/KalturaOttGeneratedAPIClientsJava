@@ -47,8 +47,7 @@ public enum PartnerConfigurationType implements EnumAsString {
 	SECURITY("Security"),
 	OPC("Opc"),
 	BASE("Base"),
-	CUSTOMFIELDS("CustomFields"),
-	DEFAULTPARENTALSETTINGS("DefaultParentalSettings");
+	CUSTOMFIELDS("CustomFields");
 
 	private String value;
 
