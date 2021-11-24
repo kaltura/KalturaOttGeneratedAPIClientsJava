@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.SearchPriorityCriteriaType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,91 +41,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filtering Asset Struct Metas
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PpvFilter.Tokenizer.class)
-public class PpvFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SearchPriorityCriteria.Tokenizer.class)
+public class SearchPriorityCriteria extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		String couponGroupIdEqual();
-		String alsoInactive();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String type();
+		String value();
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * Criterion type
 	 */
-	private String idIn;
+	private SearchPriorityCriteriaType type;
 	/**
-	 * couponGroupIdEqual
+	 * Condition              KSQL has to have no more than 10 conditions. Text,
+	  boolean, enum and tag fields can be used only with = operator, numeric and
+	  datetime fields - only with &amp;lt;, = and &amp;gt; operators.
 	 */
-	private Integer couponGroupIdEqual;
-	/**
-	 * return also inactive
-	 */
-	private Boolean alsoInactive;
+	private String value;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// type:
+	public SearchPriorityCriteriaType getType(){
+		return this.type;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setType(SearchPriorityCriteriaType type){
+		this.type = type;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
 	}
 
-	// couponGroupIdEqual:
-	public Integer getCouponGroupIdEqual(){
-		return this.couponGroupIdEqual;
+	// value:
+	public String getValue(){
+		return this.value;
 	}
-	public void setCouponGroupIdEqual(Integer couponGroupIdEqual){
-		this.couponGroupIdEqual = couponGroupIdEqual;
-	}
-
-	public void couponGroupIdEqual(String multirequestToken){
-		setToken("couponGroupIdEqual", multirequestToken);
+	public void setValue(String value){
+		this.value = value;
 	}
 
-	// alsoInactive:
-	public Boolean getAlsoInactive(){
-		return this.alsoInactive;
-	}
-	public void setAlsoInactive(Boolean alsoInactive){
-		this.alsoInactive = alsoInactive;
-	}
-
-	public void alsoInactive(String multirequestToken){
-		setToken("alsoInactive", multirequestToken);
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
 
-	public PpvFilter() {
+	public SearchPriorityCriteria() {
 		super();
 	}
 
-	public PpvFilter(JsonObject jsonObject) throws APIException {
+	public SearchPriorityCriteria(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
-		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+		type = SearchPriorityCriteriaType.get(GsonParser.parseString(jsonObject.get("type")));
+		value = GsonParser.parseString(jsonObject.get("value"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPpvFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
-		kparams.add("alsoInactive", this.alsoInactive);
+		kparams.add("objectType", "KalturaSearchPriorityCriteria");
+		kparams.add("type", this.type);
+		kparams.add("value", this.value);
 		return kparams;
 	}
 

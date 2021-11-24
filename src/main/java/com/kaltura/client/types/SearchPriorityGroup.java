@@ -29,8 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.SearchPriorityCriteria;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -39,91 +43,81 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filtering Asset Struct Metas
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PpvFilter.Tokenizer.class)
-public class PpvFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SearchPriorityGroup.Tokenizer.class)
+public class SearchPriorityGroup extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		String couponGroupIdEqual();
-		String alsoInactive();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String name();
+		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
+		SearchPriorityCriteria.Tokenizer criteria();
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * Identifier
 	 */
-	private String idIn;
+	private Long id;
 	/**
-	 * couponGroupIdEqual
+	 * Name
 	 */
-	private Integer couponGroupIdEqual;
+	private String name;
 	/**
-	 * return also inactive
+	 * Name
 	 */
-	private Boolean alsoInactive;
+	private List<TranslationToken> multilingualName;
+	/**
+	 * Search criterion
+	 */
+	private SearchPriorityCriteria criteria;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	// name:
+	public String getName(){
+		return this.name;
 	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	// multilingualName:
+	public List<TranslationToken> getMultilingualName(){
+		return this.multilingualName;
 	}
-
-	// couponGroupIdEqual:
-	public Integer getCouponGroupIdEqual(){
-		return this.couponGroupIdEqual;
-	}
-	public void setCouponGroupIdEqual(Integer couponGroupIdEqual){
-		this.couponGroupIdEqual = couponGroupIdEqual;
-	}
-
-	public void couponGroupIdEqual(String multirequestToken){
-		setToken("couponGroupIdEqual", multirequestToken);
+	public void setMultilingualName(List<TranslationToken> multilingualName){
+		this.multilingualName = multilingualName;
 	}
 
-	// alsoInactive:
-	public Boolean getAlsoInactive(){
-		return this.alsoInactive;
+	// criteria:
+	public SearchPriorityCriteria getCriteria(){
+		return this.criteria;
 	}
-	public void setAlsoInactive(Boolean alsoInactive){
-		this.alsoInactive = alsoInactive;
-	}
-
-	public void alsoInactive(String multirequestToken){
-		setToken("alsoInactive", multirequestToken);
+	public void setCriteria(SearchPriorityCriteria criteria){
+		this.criteria = criteria;
 	}
 
 
-	public PpvFilter() {
+	public SearchPriorityGroup() {
 		super();
 	}
 
-	public PpvFilter(JsonObject jsonObject) throws APIException {
+	public SearchPriorityGroup(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
-		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
+		criteria = GsonParser.parseObject(jsonObject.getAsJsonObject("criteria"), SearchPriorityCriteria.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPpvFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
-		kparams.add("alsoInactive", this.alsoInactive);
+		kparams.add("objectType", "KalturaSearchPriorityGroup");
+		kparams.add("multilingualName", this.multilingualName);
+		kparams.add("criteria", this.criteria);
 		return kparams;
 	}
 

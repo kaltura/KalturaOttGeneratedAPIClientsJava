@@ -34,7 +34,11 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum CollectionOrderBy implements EnumAsString {
-	NONE("NONE");
+	NONE("NONE"),
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
 	private String value;
 

@@ -51,7 +51,7 @@ public class CollectionService {
 	}
 
 	/**
-	 * Internal API !!! Insert new collection for partner
+	 * Insert new collection for partner
 	 * 
 	 * @param collection collection object
 	 */
@@ -72,7 +72,7 @@ public class CollectionService {
 	}
 
 	/**
-	 * Internal API !!! Delete collection
+	 * Delete collection
 	 * 
 	 * @param id Collection id
 	 */
@@ -98,12 +98,36 @@ public class CollectionService {
 	}
 
 	/**
-	 * Returns a list of subscriptions requested by Subscription ID or file ID
+	 * Returns a list of collections requested by Collection IDs or file identifier or
+	  coupon group identifier
 	 * 
 	 * @param filter Filter request
 	 * @param pager Page size and index
 	 */
     public static ListCollectionBuilder list(CollectionFilter filter, FilterPager pager)  {
 		return new ListCollectionBuilder(filter, pager);
+	}
+	
+	public static class UpdateCollectionBuilder extends RequestBuilder<Collection, Collection.Tokenizer, UpdateCollectionBuilder> {
+		
+		public UpdateCollectionBuilder(long id, Collection collection) {
+			super(Collection.class, "collection", "update");
+			params.add("id", id);
+			params.add("collection", collection);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update Collection
+	 * 
+	 * @param id Collection id
+	 * @param collection Collection
+	 */
+    public static UpdateCollectionBuilder update(long id, Collection collection)  {
+		return new UpdateCollectionBuilder(id, collection);
 	}
 }

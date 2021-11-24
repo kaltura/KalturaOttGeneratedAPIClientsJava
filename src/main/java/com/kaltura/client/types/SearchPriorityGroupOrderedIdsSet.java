@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,41 +39,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ObjectVirtualAssetInfoType implements EnumAsString {
-	SUBSCRIPTION("Subscription"),
-	SEGMENT("Segment"),
-	CATEGORY("Category"),
-	TVOD("Tvod"),
-	BOXSET("Boxset");
 
-	private String value;
-
-	ObjectVirtualAssetInfoType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(SearchPriorityGroupOrderedIdsSet.Tokenizer.class)
+public class SearchPriorityGroupOrderedIdsSet extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String priorityGroupIds();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * The order and effectively the priority of each group.
+	 */
+	private String priorityGroupIds;
+
+	// priorityGroupIds:
+	public String getPriorityGroupIds(){
+		return this.priorityGroupIds;
+	}
+	public void setPriorityGroupIds(String priorityGroupIds){
+		this.priorityGroupIds = priorityGroupIds;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void priorityGroupIds(String multirequestToken){
+		setToken("priorityGroupIds", multirequestToken);
 	}
 
-	public static ObjectVirtualAssetInfoType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over ObjectVirtualAssetInfoType defined values and compare the inner value with the given one:
-		for(ObjectVirtualAssetInfoType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ObjectVirtualAssetInfoType.values().length > 0 ? ObjectVirtualAssetInfoType.values()[0]: null;
-   }
+
+	public SearchPriorityGroupOrderedIdsSet() {
+		super();
+	}
+
+	public SearchPriorityGroupOrderedIdsSet(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		priorityGroupIds = GsonParser.parseString(jsonObject.get("priorityGroupIds"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaSearchPriorityGroupOrderedIdsSet");
+		kparams.add("priorityGroupIds", this.priorityGroupIds);
+		return kparams;
+	}
+
 }
+

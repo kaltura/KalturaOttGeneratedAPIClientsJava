@@ -33,16 +33,14 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ObjectVirtualAssetInfoType implements EnumAsString {
-	SUBSCRIPTION("Subscription"),
-	SEGMENT("Segment"),
-	CATEGORY("Category"),
-	TVOD("Tvod"),
-	BOXSET("Boxset");
+public enum SearchPriorityGroupOrderBy implements EnumAsString {
+	PRIORITY_DESC("PRIORITY_DESC"),
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC");
 
 	private String value;
 
-	ObjectVirtualAssetInfoType(String value) {
+	SearchPriorityGroupOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -55,19 +53,19 @@ public enum ObjectVirtualAssetInfoType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static ObjectVirtualAssetInfoType get(String value) {
+	public static SearchPriorityGroupOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ObjectVirtualAssetInfoType defined values and compare the inner value with the given one:
-		for(ObjectVirtualAssetInfoType item: values()) {
+		// goes over SearchPriorityGroupOrderBy defined values and compare the inner value with the given one:
+		for(SearchPriorityGroupOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ObjectVirtualAssetInfoType.values().length > 0 ? ObjectVirtualAssetInfoType.values()[0]: null;
+		return SearchPriorityGroupOrderBy.values().length > 0 ? SearchPriorityGroupOrderBy.values()[0]: null;
    }
 }

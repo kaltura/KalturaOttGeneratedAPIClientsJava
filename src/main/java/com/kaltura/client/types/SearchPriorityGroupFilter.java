@@ -39,91 +39,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Filtering Asset Struct Metas
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PpvFilter.Tokenizer.class)
-public class PpvFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SearchPriorityGroupFilter.Tokenizer.class)
+public class SearchPriorityGroupFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		String couponGroupIdEqual();
-		String alsoInactive();
+		String activeOnlyEqual();
+		String idEqual();
 	}
 
 	/**
-	 * Comma separated identifiers
+	 * Return only search priority groups that are in use
 	 */
-	private String idIn;
+	private Boolean activeOnlyEqual;
 	/**
-	 * couponGroupIdEqual
+	 * Identifier of search priority group to return
 	 */
-	private Integer couponGroupIdEqual;
-	/**
-	 * return also inactive
-	 */
-	private Boolean alsoInactive;
+	private Long idEqual;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// activeOnlyEqual:
+	public Boolean getActiveOnlyEqual(){
+		return this.activeOnlyEqual;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setActiveOnlyEqual(Boolean activeOnlyEqual){
+		this.activeOnlyEqual = activeOnlyEqual;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	public void activeOnlyEqual(String multirequestToken){
+		setToken("activeOnlyEqual", multirequestToken);
 	}
 
-	// couponGroupIdEqual:
-	public Integer getCouponGroupIdEqual(){
-		return this.couponGroupIdEqual;
+	// idEqual:
+	public Long getIdEqual(){
+		return this.idEqual;
 	}
-	public void setCouponGroupIdEqual(Integer couponGroupIdEqual){
-		this.couponGroupIdEqual = couponGroupIdEqual;
-	}
-
-	public void couponGroupIdEqual(String multirequestToken){
-		setToken("couponGroupIdEqual", multirequestToken);
+	public void setIdEqual(Long idEqual){
+		this.idEqual = idEqual;
 	}
 
-	// alsoInactive:
-	public Boolean getAlsoInactive(){
-		return this.alsoInactive;
-	}
-	public void setAlsoInactive(Boolean alsoInactive){
-		this.alsoInactive = alsoInactive;
-	}
-
-	public void alsoInactive(String multirequestToken){
-		setToken("alsoInactive", multirequestToken);
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
 	}
 
 
-	public PpvFilter() {
+	public SearchPriorityGroupFilter() {
 		super();
 	}
 
-	public PpvFilter(JsonObject jsonObject) throws APIException {
+	public SearchPriorityGroupFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
-		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+		activeOnlyEqual = GsonParser.parseBoolean(jsonObject.get("activeOnlyEqual"));
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPpvFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
-		kparams.add("alsoInactive", this.alsoInactive);
+		kparams.add("objectType", "KalturaSearchPriorityGroupFilter");
+		kparams.add("activeOnlyEqual", this.activeOnlyEqual);
+		kparams.add("idEqual", this.idEqual);
 		return kparams;
 	}
 
