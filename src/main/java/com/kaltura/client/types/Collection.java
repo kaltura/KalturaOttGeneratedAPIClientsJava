@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.DiscountModule;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.UsageModule;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -49,23 +48,31 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Collection.Tokenizer.class)
-public class Collection extends ObjectBase {
+public class Collection extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String id();
 		RequestBuilder.ListTokenizer<BaseChannel.Tokenizer> channels();
+		String channelsIds();
 		String startDate();
 		String endDate();
 		DiscountModule.Tokenizer discountModule();
+		String discountModuleId();
 		String name();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();
 		String description();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualDescription();
 		UsageModule.Tokenizer usageModule();
+		String usageModuleId();
 		RequestBuilder.ListTokenizer<CouponsGroup.Tokenizer> couponsGroups();
+		RequestBuilder.ListTokenizer<CollectionCouponGroup.Tokenizer> collectionCouponGroup();
 		String externalId();
 		RequestBuilder.ListTokenizer<ProductCode.Tokenizer> productCodes();
 		String priceDetailsId();
+		String isActive();
+		String createDate();
+		String updateDate();
+		String virtualAssetId();
 	}
 
 	/**
@@ -73,9 +80,14 @@ public class Collection extends ObjectBase {
 	 */
 	private String id;
 	/**
-	 * A list of channels associated with this collection
+	 * A list of channels associated with this collection               This property
+	  will deprecated soon. Please use ChannelsIds instead of it.
 	 */
 	private List<BaseChannel> channels;
+	/**
+	 * Comma separated channels Ids associated with this collection
+	 */
+	private String channelsIds;
 	/**
 	 * The first date the collection is available for purchasing
 	 */
@@ -85,33 +97,48 @@ public class Collection extends ObjectBase {
 	 */
 	private Long endDate;
 	/**
-	 * The internal discount module for the subscription
+	 * The internal discount module for the collection              This property will
+	  deprecated soon. Please use DiscountModuleId instead of it.
 	 */
 	private DiscountModule discountModule;
 	/**
-	 * Name of the subscription
+	 * The internal discount module identifier for the collection
+	 */
+	private Long discountModuleId;
+	/**
+	 * Name of the collection
 	 */
 	private String name;
 	/**
-	 * Name of the subscription
+	 * Name of the collection
 	 */
 	private List<TranslationToken> multilingualName;
 	/**
-	 * description of the subscription
+	 * description of the collection
 	 */
 	private String description;
 	/**
-	 * description of the subscription
+	 * description of the collection
 	 */
 	private List<TranslationToken> multilingualDescription;
 	/**
-	 * Collection usage module
+	 * Collection usage module              This property will deprecated soon. Please
+	  use usageModuleId instead of it.
 	 */
 	private UsageModule usageModule;
 	/**
-	 * List of Coupons group
+	 * The internal usage module identifier for the collection
+	 */
+	private Long usageModuleId;
+	/**
+	 * List of Coupons group              This property will deprecated soon. Please
+	  use CollectionCouponGroup instead of it.
 	 */
 	private List<CouponsGroup> couponsGroups;
+	/**
+	 * List of collection Coupons group
+	 */
+	private List<CollectionCouponGroup> collectionCouponGroup;
 	/**
 	 * External ID
 	 */
@@ -124,6 +151,23 @@ public class Collection extends ObjectBase {
 	 * The ID of the price details associated with this collection
 	 */
 	private Long priceDetailsId;
+	/**
+	 * Is active collection
+	 */
+	private Boolean isActive;
+	/**
+	 * Specifies when was the collection created. Date and time represented as epoch.
+	 */
+	private Long createDate;
+	/**
+	 * Specifies when was the collection last updated. Date and time represented as
+	  epoch.
+	 */
+	private Long updateDate;
+	/**
+	 * Virtual asset id
+	 */
+	private Long virtualAssetId;
 
 	// id:
 	public String getId(){
@@ -141,8 +185,16 @@ public class Collection extends ObjectBase {
 	public List<BaseChannel> getChannels(){
 		return this.channels;
 	}
-	public void setChannels(List<BaseChannel> channels){
-		this.channels = channels;
+	// channelsIds:
+	public String getChannelsIds(){
+		return this.channelsIds;
+	}
+	public void setChannelsIds(String channelsIds){
+		this.channelsIds = channelsIds;
+	}
+
+	public void channelsIds(String multirequestToken){
+		setToken("channelsIds", multirequestToken);
 	}
 
 	// startDate:
@@ -173,8 +225,16 @@ public class Collection extends ObjectBase {
 	public DiscountModule getDiscountModule(){
 		return this.discountModule;
 	}
-	public void setDiscountModule(DiscountModule discountModule){
-		this.discountModule = discountModule;
+	// discountModuleId:
+	public Long getDiscountModuleId(){
+		return this.discountModuleId;
+	}
+	public void setDiscountModuleId(Long discountModuleId){
+		this.discountModuleId = discountModuleId;
+	}
+
+	public void discountModuleId(String multirequestToken){
+		setToken("discountModuleId", multirequestToken);
 	}
 
 	// name:
@@ -205,16 +265,28 @@ public class Collection extends ObjectBase {
 	public UsageModule getUsageModule(){
 		return this.usageModule;
 	}
-	public void setUsageModule(UsageModule usageModule){
-		this.usageModule = usageModule;
+	// usageModuleId:
+	public Long getUsageModuleId(){
+		return this.usageModuleId;
+	}
+	public void setUsageModuleId(Long usageModuleId){
+		this.usageModuleId = usageModuleId;
+	}
+
+	public void usageModuleId(String multirequestToken){
+		setToken("usageModuleId", multirequestToken);
 	}
 
 	// couponsGroups:
 	public List<CouponsGroup> getCouponsGroups(){
 		return this.couponsGroups;
 	}
-	public void setCouponsGroups(List<CouponsGroup> couponsGroups){
-		this.couponsGroups = couponsGroups;
+	// collectionCouponGroup:
+	public List<CollectionCouponGroup> getCollectionCouponGroup(){
+		return this.collectionCouponGroup;
+	}
+	public void setCollectionCouponGroup(List<CollectionCouponGroup> collectionCouponGroup){
+		this.collectionCouponGroup = collectionCouponGroup;
 	}
 
 	// externalId:
@@ -249,6 +321,30 @@ public class Collection extends ObjectBase {
 		setToken("priceDetailsId", multirequestToken);
 	}
 
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
+
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
+
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	// virtualAssetId:
+	public Long getVirtualAssetId(){
+		return this.virtualAssetId;
+	}
 
 	public Collection() {
 		super();
@@ -262,18 +358,26 @@ public class Collection extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseString(jsonObject.get("id"));
 		channels = GsonParser.parseArray(jsonObject.getAsJsonArray("channels"), BaseChannel.class);
+		channelsIds = GsonParser.parseString(jsonObject.get("channelsIds"));
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 		discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
+		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		multilingualName = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualName"), TranslationToken.class);
 		description = GsonParser.parseString(jsonObject.get("description"));
 		multilingualDescription = GsonParser.parseArray(jsonObject.getAsJsonArray("multilingualDescription"), TranslationToken.class);
 		usageModule = GsonParser.parseObject(jsonObject.getAsJsonObject("usageModule"), UsageModule.class);
+		usageModuleId = GsonParser.parseLong(jsonObject.get("usageModuleId"));
 		couponsGroups = GsonParser.parseArray(jsonObject.getAsJsonArray("couponsGroups"), CouponsGroup.class);
+		collectionCouponGroup = GsonParser.parseArray(jsonObject.getAsJsonArray("collectionCouponGroup"), CollectionCouponGroup.class);
 		externalId = GsonParser.parseString(jsonObject.get("externalId"));
 		productCodes = GsonParser.parseArray(jsonObject.getAsJsonArray("productCodes"), ProductCode.class);
 		priceDetailsId = GsonParser.parseLong(jsonObject.get("priceDetailsId"));
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
@@ -281,17 +385,18 @@ public class Collection extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCollection");
 		kparams.add("id", this.id);
-		kparams.add("channels", this.channels);
+		kparams.add("channelsIds", this.channelsIds);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
-		kparams.add("discountModule", this.discountModule);
+		kparams.add("discountModuleId", this.discountModuleId);
 		kparams.add("multilingualName", this.multilingualName);
 		kparams.add("multilingualDescription", this.multilingualDescription);
-		kparams.add("usageModule", this.usageModule);
-		kparams.add("couponsGroups", this.couponsGroups);
+		kparams.add("usageModuleId", this.usageModuleId);
+		kparams.add("collectionCouponGroup", this.collectionCouponGroup);
 		kparams.add("externalId", this.externalId);
 		kparams.add("productCodes", this.productCodes);
 		kparams.add("priceDetailsId", this.priceDetailsId);
+		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
 

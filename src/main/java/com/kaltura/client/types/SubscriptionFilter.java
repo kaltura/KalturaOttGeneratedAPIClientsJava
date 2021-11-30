@@ -88,7 +88,7 @@ public class SubscriptionFilter extends Filter {
 	 */
 	private String kSql;
 	/**
-	 * Root only
+	 * return also inactive
 	 */
 	private Boolean alsoInactive;
 
