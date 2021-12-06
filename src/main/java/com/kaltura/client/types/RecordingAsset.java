@@ -50,7 +50,6 @@ public class RecordingAsset extends ProgramAsset {
 	public interface Tokenizer extends ProgramAsset.Tokenizer {
 		String recordingId();
 		String recordingType();
-		String viewableUntilDate();
 	}
 
 	/**
@@ -61,11 +60,6 @@ public class RecordingAsset extends ProgramAsset {
 	 * Recording Type: single/season/series
 	 */
 	private RecordingType recordingType;
-	/**
-	 * Specifies until when the recording is available for viewing. Date and time
-	  represented as epoch.
-	 */
-	private Long viewableUntilDate;
 
 	// recordingId:
 	public String getRecordingId(){
@@ -91,18 +85,6 @@ public class RecordingAsset extends ProgramAsset {
 		setToken("recordingType", multirequestToken);
 	}
 
-	// viewableUntilDate:
-	public Long getViewableUntilDate(){
-		return this.viewableUntilDate;
-	}
-	public void setViewableUntilDate(Long viewableUntilDate){
-		this.viewableUntilDate = viewableUntilDate;
-	}
-
-	public void viewableUntilDate(String multirequestToken){
-		setToken("viewableUntilDate", multirequestToken);
-	}
-
 
 	public RecordingAsset() {
 		super();
@@ -116,7 +98,6 @@ public class RecordingAsset extends ProgramAsset {
 		// set members values:
 		recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
 		recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
-		viewableUntilDate = GsonParser.parseLong(jsonObject.get("viewableUntilDate"));
 
 	}
 
@@ -125,7 +106,6 @@ public class RecordingAsset extends ProgramAsset {
 		kparams.add("objectType", "KalturaRecordingAsset");
 		kparams.add("recordingId", this.recordingId);
 		kparams.add("recordingType", this.recordingType);
-		kparams.add("viewableUntilDate", this.viewableUntilDate);
 		return kparams;
 	}
 

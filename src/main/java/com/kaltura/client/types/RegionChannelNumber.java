@@ -54,7 +54,7 @@ public class RegionChannelNumber extends ObjectBase {
 	 */
 	private Integer regionId;
 	/**
-	 * The number of channel
+	 * The number of the channel
 	 */
 	private Integer channelNumber;
 

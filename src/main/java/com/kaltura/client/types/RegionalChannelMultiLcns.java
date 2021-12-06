@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,91 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Coupons group details
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CollectionCouponGroup.Tokenizer.class)
-public class CollectionCouponGroup extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(RegionalChannelMultiLcns.Tokenizer.class)
+public class RegionalChannelMultiLcns extends RegionalChannel {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String startDate();
-		String endDate();
+	public interface Tokenizer extends RegionalChannel.Tokenizer {
+		String lcns();
 	}
 
 	/**
-	 * Coupon group identifier
+	 * Linear channel numbers
 	 */
-	private Long id;
-	/**
-	 * The first date the coupons in this coupons group are valid
-	 */
-	private Long startDate;
-	/**
-	 * The last date the coupons in this coupons group are valid
-	 */
-	private Long endDate;
+	private String lcns;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// lcns:
+	public String getLcns(){
+		return this.lcns;
 	}
-	public void setId(Long id){
-		this.id = id;
+	public void setLcns(String lcns){
+		this.lcns = lcns;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
-	// startDate:
-	public Long getStartDate(){
-		return this.startDate;
-	}
-	public void setStartDate(Long startDate){
-		this.startDate = startDate;
-	}
-
-	public void startDate(String multirequestToken){
-		setToken("startDate", multirequestToken);
-	}
-
-	// endDate:
-	public Long getEndDate(){
-		return this.endDate;
-	}
-	public void setEndDate(Long endDate){
-		this.endDate = endDate;
-	}
-
-	public void endDate(String multirequestToken){
-		setToken("endDate", multirequestToken);
+	public void lcns(String multirequestToken){
+		setToken("lcns", multirequestToken);
 	}
 
 
-	public CollectionCouponGroup() {
+	public RegionalChannelMultiLcns() {
 		super();
 	}
 
-	public CollectionCouponGroup(JsonObject jsonObject) throws APIException {
+	public RegionalChannelMultiLcns(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
-		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+		lcns = GsonParser.parseString(jsonObject.get("lcns"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCollectionCouponGroup");
-		kparams.add("id", this.id);
-		kparams.add("startDate", this.startDate);
-		kparams.add("endDate", this.endDate);
+		kparams.add("objectType", "KalturaRegionalChannelMultiLcns");
+		kparams.add("lcns", this.lcns);
 		return kparams;
 	}
 

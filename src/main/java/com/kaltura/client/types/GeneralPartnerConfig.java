@@ -68,6 +68,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String finishedPercentThreshold();
 		String suspensionProfileInheritanceType();
 		String allowDeviceMobility();
+		String enableMultiLcns();
 	}
 
 	/**
@@ -138,6 +139,10 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Allow Device Mobility
 	 */
 	private Boolean allowDeviceMobility;
+	/**
+	 * Enable multi LCNs per linear channel
+	 */
+	private Boolean enableMultiLcns;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -339,6 +344,18 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		setToken("allowDeviceMobility", multirequestToken);
 	}
 
+	// enableMultiLcns:
+	public Boolean getEnableMultiLcns(){
+		return this.enableMultiLcns;
+	}
+	public void setEnableMultiLcns(Boolean enableMultiLcns){
+		this.enableMultiLcns = enableMultiLcns;
+	}
+
+	public void enableMultiLcns(String multirequestToken){
+		setToken("enableMultiLcns", multirequestToken);
+	}
+
 
 	public GeneralPartnerConfig() {
 		super();
@@ -367,6 +384,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		finishedPercentThreshold = GsonParser.parseInt(jsonObject.get("finishedPercentThreshold"));
 		suspensionProfileInheritanceType = SuspensionProfileInheritanceType.get(GsonParser.parseString(jsonObject.get("suspensionProfileInheritanceType")));
 		allowDeviceMobility = GsonParser.parseBoolean(jsonObject.get("allowDeviceMobility"));
+		enableMultiLcns = GsonParser.parseBoolean(jsonObject.get("enableMultiLcns"));
 
 	}
 
@@ -390,6 +408,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("finishedPercentThreshold", this.finishedPercentThreshold);
 		kparams.add("suspensionProfileInheritanceType", this.suspensionProfileInheritanceType);
 		kparams.add("allowDeviceMobility", this.allowDeviceMobility);
+		kparams.add("enableMultiLcns", this.enableMultiLcns);
 		return kparams;
 	}
 

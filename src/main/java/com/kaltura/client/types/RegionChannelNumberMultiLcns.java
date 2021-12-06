@@ -40,49 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(UsageModuleFilter.Tokenizer.class)
-public class UsageModuleFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(RegionChannelNumberMultiLcns.Tokenizer.class)
+public class RegionChannelNumberMultiLcns extends RegionChannelNumber {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idEqual();
+	public interface Tokenizer extends RegionChannelNumber.Tokenizer {
+		String lcns();
 	}
 
 	/**
-	 * usageModule id
+	 * Linear channel numbers
 	 */
-	private Integer idEqual;
+	private String lcns;
 
-	// idEqual:
-	public Integer getIdEqual(){
-		return this.idEqual;
+	// lcns:
+	public String getLcns(){
+		return this.lcns;
 	}
-	public void setIdEqual(Integer idEqual){
-		this.idEqual = idEqual;
-	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
+	public void setLcns(String lcns){
+		this.lcns = lcns;
 	}
 
+	public void lcns(String multirequestToken){
+		setToken("lcns", multirequestToken);
+	}
 
-	public UsageModuleFilter() {
+
+	public RegionChannelNumberMultiLcns() {
 		super();
 	}
 
-	public UsageModuleFilter(JsonObject jsonObject) throws APIException {
+	public RegionChannelNumberMultiLcns(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+		lcns = GsonParser.parseString(jsonObject.get("lcns"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaUsageModuleFilter");
-		kparams.add("idEqual", this.idEqual);
+		kparams.add("objectType", "KalturaRegionChannelNumberMultiLcns");
+		kparams.add("lcns", this.lcns);
 		return kparams;
 	}
 
