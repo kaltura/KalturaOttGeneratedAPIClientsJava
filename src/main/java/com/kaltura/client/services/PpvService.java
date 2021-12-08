@@ -27,6 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Ppv;
 import com.kaltura.client.types.PpvFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -40,6 +41,44 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class PpvService {
+	
+	public static class AddPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, AddPpvBuilder> {
+		
+		public AddPpvBuilder(Ppv ppv) {
+			super(Ppv.class, "ppv", "add");
+			params.add("ppv", ppv);
+		}
+	}
+
+	/**
+	 * Add new ppv
+	 * 
+	 * @param ppv ppv objec
+	 */
+    public static AddPpvBuilder add(Ppv ppv)  {
+		return new AddPpvBuilder(ppv);
+	}
+	
+	public static class DeletePpvBuilder extends RequestBuilder<Boolean, String, DeletePpvBuilder> {
+		
+		public DeletePpvBuilder(long id) {
+			super(Boolean.class, "ppv", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete Ppv
+	 * 
+	 * @param id Ppv id
+	 */
+    public static DeletePpvBuilder delete(long id)  {
+		return new DeletePpvBuilder(id);
+	}
 	
 	public static class GetPpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, GetPpvBuilder> {
 		
@@ -64,9 +103,10 @@ public class PpvService {
 	
 	public static class ListPpvBuilder extends ListResponseRequestBuilder<Ppv, Ppv.Tokenizer, ListPpvBuilder> {
 		
-		public ListPpvBuilder(PpvFilter filter) {
+		public ListPpvBuilder(PpvFilter filter, FilterPager pager) {
 			super(Ppv.class, "ppv", "list");
 			params.add("filter", filter);
+			params.add("pager", pager);
 		}
 	}
 
@@ -74,12 +114,40 @@ public class PpvService {
 		return list(null);
 	}
 
+	public static ListPpvBuilder list(PpvFilter filter)  {
+		return list(filter, null);
+	}
+
 	/**
 	 * Returns all ppv objects
 	 * 
 	 * @param filter Filter parameters for filtering out the result
+	 * @param pager Page size and index
 	 */
-    public static ListPpvBuilder list(PpvFilter filter)  {
-		return new ListPpvBuilder(filter);
+    public static ListPpvBuilder list(PpvFilter filter, FilterPager pager)  {
+		return new ListPpvBuilder(filter, pager);
+	}
+	
+	public static class UpdatePpvBuilder extends RequestBuilder<Ppv, Ppv.Tokenizer, UpdatePpvBuilder> {
+		
+		public UpdatePpvBuilder(int id, Ppv ppv) {
+			super(Ppv.class, "ppv", "update");
+			params.add("id", id);
+			params.add("ppv", ppv);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update ppv
+	 * 
+	 * @param id ppv id
+	 * @param ppv ppv Object
+	 */
+    public static UpdatePpvBuilder update(int id, Ppv ppv)  {
+		return new UpdatePpvBuilder(id, ppv);
 	}
 }

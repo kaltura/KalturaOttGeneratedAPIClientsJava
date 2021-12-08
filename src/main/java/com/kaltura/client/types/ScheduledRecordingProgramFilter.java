@@ -49,6 +49,7 @@ public class ScheduledRecordingProgramFilter extends AssetFilter {
 		String channelsIn();
 		String startDateGreaterThanOrNull();
 		String endDateLessThanOrNull();
+		String seriesIdsIn();
 	}
 
 	/**
@@ -67,6 +68,10 @@ public class ScheduledRecordingProgramFilter extends AssetFilter {
 	 * end date
 	 */
 	private Long endDateLessThanOrNull;
+	/**
+	 * Series to filter by
+	 */
+	private String seriesIdsIn;
 
 	// recordingTypeEqual:
 	public ScheduledRecordingAssetType getRecordingTypeEqual(){
@@ -116,6 +121,18 @@ public class ScheduledRecordingProgramFilter extends AssetFilter {
 		setToken("endDateLessThanOrNull", multirequestToken);
 	}
 
+	// seriesIdsIn:
+	public String getSeriesIdsIn(){
+		return this.seriesIdsIn;
+	}
+	public void setSeriesIdsIn(String seriesIdsIn){
+		this.seriesIdsIn = seriesIdsIn;
+	}
+
+	public void seriesIdsIn(String multirequestToken){
+		setToken("seriesIdsIn", multirequestToken);
+	}
+
 
 	public ScheduledRecordingProgramFilter() {
 		super();
@@ -131,6 +148,7 @@ public class ScheduledRecordingProgramFilter extends AssetFilter {
 		channelsIn = GsonParser.parseString(jsonObject.get("channelsIn"));
 		startDateGreaterThanOrNull = GsonParser.parseLong(jsonObject.get("startDateGreaterThanOrNull"));
 		endDateLessThanOrNull = GsonParser.parseLong(jsonObject.get("endDateLessThanOrNull"));
+		seriesIdsIn = GsonParser.parseString(jsonObject.get("seriesIdsIn"));
 
 	}
 
@@ -141,6 +159,7 @@ public class ScheduledRecordingProgramFilter extends AssetFilter {
 		kparams.add("channelsIn", this.channelsIn);
 		kparams.add("startDateGreaterThanOrNull", this.startDateGreaterThanOrNull);
 		kparams.add("endDateLessThanOrNull", this.endDateLessThanOrNull);
+		kparams.add("seriesIdsIn", this.seriesIdsIn);
 		return kparams;
 	}
 

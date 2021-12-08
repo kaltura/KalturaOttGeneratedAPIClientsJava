@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.AdsPolicy;
 import com.kaltura.client.types.CouponsGroup;
 import com.kaltura.client.types.DiscountModule;
 import com.kaltura.client.types.ObjectBase;
@@ -57,14 +58,24 @@ public class Ppv extends ObjectBase {
 		String id();
 		String name();
 		PriceDetails.Tokenizer price();
+		String priceDetailsId();
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> fileTypes();
+		String fileTypesIds();
 		DiscountModule.Tokenizer discountModule();
+		String discountId();
 		CouponsGroup.Tokenizer couponsGroup();
+		String couponsGroupId();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> descriptions();
 		String productCode();
 		String isSubscriptionOnly();
 		String firstDeviceLimitation();
 		UsageModule.Tokenizer usageModule();
+		String usageModuleId();
+		String adsPolicy();
+		String isActive();
+		String updateDate();
+		String createDate();
+		String virtualAssetId();
 	}
 
 	/**
@@ -76,21 +87,37 @@ public class Ppv extends ObjectBase {
 	 */
 	private String name;
 	/**
-	 * The price of the ppv
+	 * This property will deprecated soon. Please use PriceId instead of it.
 	 */
 	private PriceDetails price;
 	/**
-	 * A list of file types identifiers that are supported in this ppv
+	 * The price if of the ppv
+	 */
+	private Integer priceDetailsId;
+	/**
+	 * This property will deprecated soon. Please use fileTypesIds instead of it.
 	 */
 	private List<IntegerValue> fileTypes;
 	/**
-	 * The internal discount module for the ppv
+	 * Comma separated file types identifiers that are supported in this subscription
+	 */
+	private String fileTypesIds;
+	/**
+	 * This property will deprecated soon. Please use DiscountId instead of it.
 	 */
 	private DiscountModule discountModule;
 	/**
-	 * Coupons group for the ppv
+	 * The discount id for the ppv
+	 */
+	private Long discountId;
+	/**
+	 * This property will deprecated soon. Please use CouponsGroupId instead of it.
 	 */
 	private CouponsGroup couponsGroup;
+	/**
+	 * Coupons group id for the ppv
+	 */
+	private Long couponsGroupId;
 	/**
 	 * A list of the descriptions of the ppv on different languages (language code and
 	  translation)
@@ -110,9 +137,33 @@ public class Ppv extends ObjectBase {
 	 */
 	private Boolean firstDeviceLimitation;
 	/**
-	 * PPV usage module
+	 * This property will deprecated soon. Please use UsageModuleId instead of it.
 	 */
 	private UsageModule usageModule;
+	/**
+	 * PPV usage module Id
+	 */
+	private Long usageModuleId;
+	/**
+	 * adsPolicy
+	 */
+	private AdsPolicy adsPolicy;
+	/**
+	 * Is active ppv
+	 */
+	private Boolean isActive;
+	/**
+	 * Specifies when was the ppv last updated. Date and time represented as epoch.
+	 */
+	private Long updateDate;
+	/**
+	 * Specifies when was the ppv created. Date and time represented as epoch.
+	 */
+	private Long createDate;
+	/**
+	 * Virtual asset id
+	 */
+	private Long virtualAssetId;
 
 	// id:
 	public String getId(){
@@ -142,32 +193,64 @@ public class Ppv extends ObjectBase {
 	public PriceDetails getPrice(){
 		return this.price;
 	}
-	public void setPrice(PriceDetails price){
-		this.price = price;
+	// priceDetailsId:
+	public Integer getPriceDetailsId(){
+		return this.priceDetailsId;
+	}
+	public void setPriceDetailsId(Integer priceDetailsId){
+		this.priceDetailsId = priceDetailsId;
+	}
+
+	public void priceDetailsId(String multirequestToken){
+		setToken("priceDetailsId", multirequestToken);
 	}
 
 	// fileTypes:
 	public List<IntegerValue> getFileTypes(){
 		return this.fileTypes;
 	}
-	public void setFileTypes(List<IntegerValue> fileTypes){
-		this.fileTypes = fileTypes;
+	// fileTypesIds:
+	public String getFileTypesIds(){
+		return this.fileTypesIds;
+	}
+	public void setFileTypesIds(String fileTypesIds){
+		this.fileTypesIds = fileTypesIds;
+	}
+
+	public void fileTypesIds(String multirequestToken){
+		setToken("fileTypesIds", multirequestToken);
 	}
 
 	// discountModule:
 	public DiscountModule getDiscountModule(){
 		return this.discountModule;
 	}
-	public void setDiscountModule(DiscountModule discountModule){
-		this.discountModule = discountModule;
+	// discountId:
+	public Long getDiscountId(){
+		return this.discountId;
+	}
+	public void setDiscountId(Long discountId){
+		this.discountId = discountId;
+	}
+
+	public void discountId(String multirequestToken){
+		setToken("discountId", multirequestToken);
 	}
 
 	// couponsGroup:
 	public CouponsGroup getCouponsGroup(){
 		return this.couponsGroup;
 	}
-	public void setCouponsGroup(CouponsGroup couponsGroup){
-		this.couponsGroup = couponsGroup;
+	// couponsGroupId:
+	public Long getCouponsGroupId(){
+		return this.couponsGroupId;
+	}
+	public void setCouponsGroupId(Long couponsGroupId){
+		this.couponsGroupId = couponsGroupId;
+	}
+
+	public void couponsGroupId(String multirequestToken){
+		setToken("couponsGroupId", multirequestToken);
 	}
 
 	// descriptions:
@@ -218,10 +301,54 @@ public class Ppv extends ObjectBase {
 	public UsageModule getUsageModule(){
 		return this.usageModule;
 	}
-	public void setUsageModule(UsageModule usageModule){
-		this.usageModule = usageModule;
+	// usageModuleId:
+	public Long getUsageModuleId(){
+		return this.usageModuleId;
+	}
+	public void setUsageModuleId(Long usageModuleId){
+		this.usageModuleId = usageModuleId;
 	}
 
+	public void usageModuleId(String multirequestToken){
+		setToken("usageModuleId", multirequestToken);
+	}
+
+	// adsPolicy:
+	public AdsPolicy getAdsPolicy(){
+		return this.adsPolicy;
+	}
+	public void setAdsPolicy(AdsPolicy adsPolicy){
+		this.adsPolicy = adsPolicy;
+	}
+
+	public void adsPolicy(String multirequestToken){
+		setToken("adsPolicy", multirequestToken);
+	}
+
+	// isActive:
+	public Boolean getIsActive(){
+		return this.isActive;
+	}
+	public void setIsActive(Boolean isActive){
+		this.isActive = isActive;
+	}
+
+	public void isActive(String multirequestToken){
+		setToken("isActive", multirequestToken);
+	}
+
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	// virtualAssetId:
+	public Long getVirtualAssetId(){
+		return this.virtualAssetId;
+	}
 
 	public Ppv() {
 		super();
@@ -236,14 +363,24 @@ public class Ppv extends ObjectBase {
 		id = GsonParser.parseString(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		price = GsonParser.parseObject(jsonObject.getAsJsonObject("price"), PriceDetails.class);
+		priceDetailsId = GsonParser.parseInt(jsonObject.get("priceDetailsId"));
 		fileTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("fileTypes"), IntegerValue.class);
+		fileTypesIds = GsonParser.parseString(jsonObject.get("fileTypesIds"));
 		discountModule = GsonParser.parseObject(jsonObject.getAsJsonObject("discountModule"), DiscountModule.class);
+		discountId = GsonParser.parseLong(jsonObject.get("discountId"));
 		couponsGroup = GsonParser.parseObject(jsonObject.getAsJsonObject("couponsGroup"), CouponsGroup.class);
+		couponsGroupId = GsonParser.parseLong(jsonObject.get("couponsGroupId"));
 		descriptions = GsonParser.parseArray(jsonObject.getAsJsonArray("descriptions"), TranslationToken.class);
 		productCode = GsonParser.parseString(jsonObject.get("productCode"));
 		isSubscriptionOnly = GsonParser.parseBoolean(jsonObject.get("isSubscriptionOnly"));
 		firstDeviceLimitation = GsonParser.parseBoolean(jsonObject.get("firstDeviceLimitation"));
 		usageModule = GsonParser.parseObject(jsonObject.getAsJsonObject("usageModule"), UsageModule.class);
+		usageModuleId = GsonParser.parseLong(jsonObject.get("usageModuleId"));
+		adsPolicy = AdsPolicy.get(GsonParser.parseString(jsonObject.get("adsPolicy")));
+		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
 
 	}
 
@@ -252,15 +389,17 @@ public class Ppv extends ObjectBase {
 		kparams.add("objectType", "KalturaPpv");
 		kparams.add("id", this.id);
 		kparams.add("name", this.name);
-		kparams.add("price", this.price);
-		kparams.add("fileTypes", this.fileTypes);
-		kparams.add("discountModule", this.discountModule);
-		kparams.add("couponsGroup", this.couponsGroup);
+		kparams.add("priceDetailsId", this.priceDetailsId);
+		kparams.add("fileTypesIds", this.fileTypesIds);
+		kparams.add("discountId", this.discountId);
+		kparams.add("couponsGroupId", this.couponsGroupId);
 		kparams.add("descriptions", this.descriptions);
 		kparams.add("productCode", this.productCode);
 		kparams.add("isSubscriptionOnly", this.isSubscriptionOnly);
 		kparams.add("firstDeviceLimitation", this.firstDeviceLimitation);
-		kparams.add("usageModule", this.usageModule);
+		kparams.add("usageModuleId", this.usageModuleId);
+		kparams.add("adsPolicy", this.adsPolicy);
+		kparams.add("isActive", this.isActive);
 		return kparams;
 	}
 

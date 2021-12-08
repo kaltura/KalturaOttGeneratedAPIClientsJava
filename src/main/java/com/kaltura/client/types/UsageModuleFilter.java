@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,41 +38,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ObjectVirtualAssetInfoType implements EnumAsString {
-	SUBSCRIPTION("Subscription"),
-	SEGMENT("Segment"),
-	CATEGORY("Category"),
-	TVOD("Tvod"),
-	BOXSET("Boxset");
 
-	private String value;
-
-	ObjectVirtualAssetInfoType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(UsageModuleFilter.Tokenizer.class)
+public class UsageModuleFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idEqual();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * usageModule id
+	 */
+	private Integer idEqual;
+
+	// idEqual:
+	public Integer getIdEqual(){
+		return this.idEqual;
+	}
+	public void setIdEqual(Integer idEqual){
+		this.idEqual = idEqual;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
 	}
 
-	public static ObjectVirtualAssetInfoType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over ObjectVirtualAssetInfoType defined values and compare the inner value with the given one:
-		for(ObjectVirtualAssetInfoType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ObjectVirtualAssetInfoType.values().length > 0 ? ObjectVirtualAssetInfoType.values()[0]: null;
-   }
+
+	public UsageModuleFilter() {
+		super();
+	}
+
+	public UsageModuleFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaUsageModuleFilter");
+		kparams.add("idEqual", this.idEqual);
+		return kparams;
+	}
+
 }
+
