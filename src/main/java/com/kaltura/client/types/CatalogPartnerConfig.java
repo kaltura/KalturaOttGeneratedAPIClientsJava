@@ -51,7 +51,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		String singleMultilingualMode();
 		CategoryManagement.Tokenizer categoryManagement();
 		String epgMultilingualFallbackSupport();
-		String uploadExportDatalake();
 	}
 
 	/**
@@ -66,10 +65,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 	 * EPG Multilingual Fallback Support
 	 */
 	private Boolean epgMultilingualFallbackSupport;
-	/**
-	 * Upload Export Datalake
-	 */
-	private Boolean uploadExportDatalake;
 
 	// singleMultilingualMode:
 	public Boolean getSingleMultilingualMode(){
@@ -103,18 +98,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		setToken("epgMultilingualFallbackSupport", multirequestToken);
 	}
 
-	// uploadExportDatalake:
-	public Boolean getUploadExportDatalake(){
-		return this.uploadExportDatalake;
-	}
-	public void setUploadExportDatalake(Boolean uploadExportDatalake){
-		this.uploadExportDatalake = uploadExportDatalake;
-	}
-
-	public void uploadExportDatalake(String multirequestToken){
-		setToken("uploadExportDatalake", multirequestToken);
-	}
-
 
 	public CatalogPartnerConfig() {
 		super();
@@ -129,7 +112,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		singleMultilingualMode = GsonParser.parseBoolean(jsonObject.get("singleMultilingualMode"));
 		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
 		epgMultilingualFallbackSupport = GsonParser.parseBoolean(jsonObject.get("epgMultilingualFallbackSupport"));
-		uploadExportDatalake = GsonParser.parseBoolean(jsonObject.get("uploadExportDatalake"));
 
 	}
 
@@ -139,7 +121,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		kparams.add("singleMultilingualMode", this.singleMultilingualMode);
 		kparams.add("categoryManagement", this.categoryManagement);
 		kparams.add("epgMultilingualFallbackSupport", this.epgMultilingualFallbackSupport);
-		kparams.add("uploadExportDatalake", this.uploadExportDatalake);
 		return kparams;
 	}
 

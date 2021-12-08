@@ -65,14 +65,6 @@ public class PremiumService extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -104,7 +96,6 @@ public class PremiumService extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaPremiumService");
-		kparams.add("id", this.id);
 		kparams.add("name", this.name);
 		return kparams;
 	}

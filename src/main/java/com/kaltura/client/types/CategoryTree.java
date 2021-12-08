@@ -64,7 +64,6 @@ public class CategoryTree extends ObjectBase {
 		String type();
 		String versionId();
 		String virtualAssetId();
-		String referenceId();
 	}
 
 	/**
@@ -119,10 +118,6 @@ public class CategoryTree extends ObjectBase {
 	 * Virtual asset id
 	 */
 	private Long virtualAssetId;
-	/**
-	 * Category reference identifier
-	 */
-	private String referenceId;
 
 	// id:
 	public Long getId(){
@@ -224,10 +219,6 @@ public class CategoryTree extends ObjectBase {
 	public Long getVirtualAssetId(){
 		return this.virtualAssetId;
 	}
-	// referenceId:
-	public String getReferenceId(){
-		return this.referenceId;
-	}
 
 	public CategoryTree() {
 		super();
@@ -252,7 +243,6 @@ public class CategoryTree extends ObjectBase {
 		type = GsonParser.parseString(jsonObject.get("type"));
 		versionId = GsonParser.parseLong(jsonObject.get("versionId"));
 		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
-		referenceId = GsonParser.parseString(jsonObject.get("referenceId"));
 
 	}
 

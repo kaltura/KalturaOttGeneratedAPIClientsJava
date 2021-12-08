@@ -125,7 +125,7 @@ public class HouseholdService {
 	}
 
 	/**
-	 * Retrive household for the partner filter by external identifier
+	 * Get recently watched media for user, ordered by recently watched first.
 	 * 
 	 * @param filter Filter parameters for filtering out the result
 	 * @param pager Page size and index. Number of assets to return per page. Possible range 5 ≤

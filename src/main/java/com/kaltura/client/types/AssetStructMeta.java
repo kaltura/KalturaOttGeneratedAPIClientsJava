@@ -57,8 +57,6 @@ public class AssetStructMeta extends ObjectBase {
 		String updateDate();
 		String isInherited();
 		String isLocationTag();
-		String suppressedOrder();
-		String aliasName();
 	}
 
 	/**
@@ -99,14 +97,6 @@ public class AssetStructMeta extends ObjectBase {
 	 * Is Location Tag
 	 */
 	private Boolean isLocationTag;
-	/**
-	 * suppressed Order, ascending
-	 */
-	private Integer suppressedOrder;
-	/**
-	 * Case sensitive alias value
-	 */
-	private String aliasName;
 
 	// assetStructId:
 	public Long getAssetStructId(){
@@ -184,30 +174,6 @@ public class AssetStructMeta extends ObjectBase {
 		setToken("isLocationTag", multirequestToken);
 	}
 
-	// suppressedOrder:
-	public Integer getSuppressedOrder(){
-		return this.suppressedOrder;
-	}
-	public void setSuppressedOrder(Integer suppressedOrder){
-		this.suppressedOrder = suppressedOrder;
-	}
-
-	public void suppressedOrder(String multirequestToken){
-		setToken("suppressedOrder", multirequestToken);
-	}
-
-	// aliasName:
-	public String getAliasName(){
-		return this.aliasName;
-	}
-	public void setAliasName(String aliasName){
-		this.aliasName = aliasName;
-	}
-
-	public void aliasName(String multirequestToken){
-		setToken("aliasName", multirequestToken);
-	}
-
 
 	public AssetStructMeta() {
 		super();
@@ -228,8 +194,6 @@ public class AssetStructMeta extends ObjectBase {
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		isInherited = GsonParser.parseBoolean(jsonObject.get("isInherited"));
 		isLocationTag = GsonParser.parseBoolean(jsonObject.get("isLocationTag"));
-		suppressedOrder = GsonParser.parseInt(jsonObject.get("suppressedOrder"));
-		aliasName = GsonParser.parseString(jsonObject.get("aliasName"));
 
 	}
 
@@ -241,8 +205,6 @@ public class AssetStructMeta extends ObjectBase {
 		kparams.add("defaultIngestValue", this.defaultIngestValue);
 		kparams.add("isInherited", this.isInherited);
 		kparams.add("isLocationTag", this.isLocationTag);
-		kparams.add("suppressedOrder", this.suppressedOrder);
-		kparams.add("aliasName", this.aliasName);
 		return kparams;
 	}
 

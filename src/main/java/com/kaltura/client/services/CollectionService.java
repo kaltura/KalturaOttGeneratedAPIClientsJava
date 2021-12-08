@@ -31,7 +31,6 @@ import com.kaltura.client.types.Collection;
 import com.kaltura.client.types.CollectionFilter;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -41,44 +40,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class CollectionService {
-	
-	public static class AddCollectionBuilder extends RequestBuilder<Collection, Collection.Tokenizer, AddCollectionBuilder> {
-		
-		public AddCollectionBuilder(Collection collection) {
-			super(Collection.class, "collection", "add");
-			params.add("collection", collection);
-		}
-	}
-
-	/**
-	 * Insert new collection for partner
-	 * 
-	 * @param collection collection object
-	 */
-    public static AddCollectionBuilder add(Collection collection)  {
-		return new AddCollectionBuilder(collection);
-	}
-	
-	public static class DeleteCollectionBuilder extends RequestBuilder<Boolean, String, DeleteCollectionBuilder> {
-		
-		public DeleteCollectionBuilder(long id) {
-			super(Boolean.class, "collection", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete collection
-	 * 
-	 * @param id Collection id
-	 */
-    public static DeleteCollectionBuilder delete(long id)  {
-		return new DeleteCollectionBuilder(id);
-	}
 	
 	public static class ListCollectionBuilder extends ListResponseRequestBuilder<Collection, Collection.Tokenizer, ListCollectionBuilder> {
 		
@@ -98,36 +59,12 @@ public class CollectionService {
 	}
 
 	/**
-	 * Returns a list of collections requested by Collection IDs or file identifier or
-	  coupon group identifier
+	 * Returns a list of subscriptions requested by Subscription ID or file ID
 	 * 
 	 * @param filter Filter request
 	 * @param pager Page size and index
 	 */
     public static ListCollectionBuilder list(CollectionFilter filter, FilterPager pager)  {
 		return new ListCollectionBuilder(filter, pager);
-	}
-	
-	public static class UpdateCollectionBuilder extends RequestBuilder<Collection, Collection.Tokenizer, UpdateCollectionBuilder> {
-		
-		public UpdateCollectionBuilder(long id, Collection collection) {
-			super(Collection.class, "collection", "update");
-			params.add("id", id);
-			params.add("collection", collection);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update Collection
-	 * 
-	 * @param id Collection id
-	 * @param collection Collection
-	 */
-    public static UpdateCollectionBuilder update(long id, Collection collection)  {
-		return new UpdateCollectionBuilder(id, collection);
 	}
 }

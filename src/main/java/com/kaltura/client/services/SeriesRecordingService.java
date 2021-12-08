@@ -205,25 +205,4 @@ public class SeriesRecordingService {
     public static ListSeriesRecordingBuilder list(SeriesRecordingFilter filter)  {
 		return new ListSeriesRecordingBuilder(filter);
 	}
-	
-	public static class RebookCanceledByEpgIdSeriesRecordingBuilder extends RequestBuilder<SeriesRecording, SeriesRecording.Tokenizer, RebookCanceledByEpgIdSeriesRecordingBuilder> {
-		
-		public RebookCanceledByEpgIdSeriesRecordingBuilder(long epgId) {
-			super(SeriesRecording.class, "seriesrecording", "rebookCanceledByEpgId");
-			params.add("epgId", epgId);
-		}
-		
-		public void epgId(String multirequestToken) {
-			params.add("epgId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Enable EPG recording that was canceled as part of series
-	 * 
-	 * @param epgId EPG program identifies
-	 */
-    public static RebookCanceledByEpgIdSeriesRecordingBuilder rebookCanceledByEpgId(long epgId)  {
-		return new RebookCanceledByEpgIdSeriesRecordingBuilder(epgId);
-	}
 }

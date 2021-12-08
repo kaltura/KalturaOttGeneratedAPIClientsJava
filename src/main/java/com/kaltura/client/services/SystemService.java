@@ -27,8 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.LongValue;
-import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -73,74 +71,6 @@ public class SystemService {
 	 */
     public static ClearLocalServerCacheSystemBuilder clearLocalServerCache(String clearCacheAction, String key)  {
 		return new ClearLocalServerCacheSystemBuilder(clearCacheAction, key);
-	}
-	
-	public static class GetInvalidationKeyValueSystemBuilder extends RequestBuilder<LongValue, LongValue.Tokenizer, GetInvalidationKeyValueSystemBuilder> {
-		
-		public GetInvalidationKeyValueSystemBuilder(String invalidationKey, String layeredCacheConfigName, int groupId) {
-			super(LongValue.class, "system", "getInvalidationKeyValue");
-			params.add("invalidationKey", invalidationKey);
-			params.add("layeredCacheConfigName", layeredCacheConfigName);
-			params.add("groupId", groupId);
-		}
-		
-		public void invalidationKey(String multirequestToken) {
-			params.add("invalidationKey", multirequestToken);
-		}
-		
-		public void layeredCacheConfigName(String multirequestToken) {
-			params.add("layeredCacheConfigName", multirequestToken);
-		}
-		
-		public void groupId(String multirequestToken) {
-			params.add("groupId", multirequestToken);
-		}
-	}
-
-	public static GetInvalidationKeyValueSystemBuilder getInvalidationKeyValue(String invalidationKey)  {
-		return getInvalidationKeyValue(invalidationKey, null);
-	}
-
-	public static GetInvalidationKeyValueSystemBuilder getInvalidationKeyValue(String invalidationKey, String layeredCacheConfigName)  {
-		return getInvalidationKeyValue(invalidationKey, layeredCacheConfigName, 0);
-	}
-
-	/**
-	 * Returns the epoch value of an invalidation key if it was found
-	 * 
-	 * @param invalidationKey the invalidation key to fetch it's value
-	 * @param layeredCacheConfigName the layered cache config name of the invalidation key
-	 * @param groupId groupId
-	 */
-    public static GetInvalidationKeyValueSystemBuilder getInvalidationKeyValue(String invalidationKey, String layeredCacheConfigName, int groupId)  {
-		return new GetInvalidationKeyValueSystemBuilder(invalidationKey, layeredCacheConfigName, groupId);
-	}
-	
-	public static class GetLayeredCacheGroupConfigSystemBuilder extends RequestBuilder<StringValue, StringValue.Tokenizer, GetLayeredCacheGroupConfigSystemBuilder> {
-		
-		public GetLayeredCacheGroupConfigSystemBuilder(int groupId) {
-			super(StringValue.class, "system", "getLayeredCacheGroupConfig");
-			params.add("groupId", groupId);
-		}
-		
-		public void groupId(String multirequestToken) {
-			params.add("groupId", multirequestToken);
-		}
-	}
-
-	public static GetLayeredCacheGroupConfigSystemBuilder getLayeredCacheGroupConfig()  {
-		return getLayeredCacheGroupConfig(0);
-	}
-
-	/**
-	 * Returns the current layered cache group config of the sent groupId. You need to
-	  send groupId only if you wish to get it for a specific groupId and not the one
-	  the KS belongs to.
-	 * 
-	 * @param groupId groupId
-	 */
-    public static GetLayeredCacheGroupConfigSystemBuilder getLayeredCacheGroupConfig(int groupId)  {
-		return new GetLayeredCacheGroupConfigSystemBuilder(groupId);
 	}
 	
 	public static class GetTimeSystemBuilder extends RequestBuilder<Long, String, GetTimeSystemBuilder> {
@@ -196,28 +126,6 @@ public class SystemService {
 	 */
     public static IncrementLayeredCacheGroupConfigVersionSystemBuilder incrementLayeredCacheGroupConfigVersion(int groupId)  {
 		return new IncrementLayeredCacheGroupConfigVersionSystemBuilder(groupId);
-	}
-	
-	public static class InvalidateLayeredCacheInvalidationKeySystemBuilder extends RequestBuilder<Boolean, String, InvalidateLayeredCacheInvalidationKeySystemBuilder> {
-		
-		public InvalidateLayeredCacheInvalidationKeySystemBuilder(String key) {
-			super(Boolean.class, "system", "invalidateLayeredCacheInvalidationKey");
-			params.add("key", key);
-		}
-		
-		public void key(String multirequestToken) {
-			params.add("key", multirequestToken);
-		}
-	}
-
-	/**
-	 * Returns true if the invalidation key was invalidated successfully or false
-	  otherwise.
-	 * 
-	 * @param key the invalidation key to invalidate
-	 */
-    public static InvalidateLayeredCacheInvalidationKeySystemBuilder invalidateLayeredCacheInvalidationKey(String key)  {
-		return new InvalidateLayeredCacheInvalidationKeySystemBuilder(key);
 	}
 	
 	public static class PingSystemBuilder extends RequestBuilder<Boolean, String, PingSystemBuilder> {

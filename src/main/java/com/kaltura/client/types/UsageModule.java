@@ -103,62 +103,22 @@ public class UsageModule extends ObjectBase {
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
 	// maxViewsNumber:
 	public Integer getMaxViewsNumber(){
 		return this.maxViewsNumber;
 	}
-	public void setMaxViewsNumber(Integer maxViewsNumber){
-		this.maxViewsNumber = maxViewsNumber;
-	}
-
-	public void maxViewsNumber(String multirequestToken){
-		setToken("maxViewsNumber", multirequestToken);
-	}
-
 	// viewLifeCycle:
 	public Integer getViewLifeCycle(){
 		return this.viewLifeCycle;
 	}
-	public void setViewLifeCycle(Integer viewLifeCycle){
-		this.viewLifeCycle = viewLifeCycle;
-	}
-
-	public void viewLifeCycle(String multirequestToken){
-		setToken("viewLifeCycle", multirequestToken);
-	}
-
 	// fullLifeCycle:
 	public Integer getFullLifeCycle(){
 		return this.fullLifeCycle;
 	}
-	public void setFullLifeCycle(Integer fullLifeCycle){
-		this.fullLifeCycle = fullLifeCycle;
-	}
-
-	public void fullLifeCycle(String multirequestToken){
-		setToken("fullLifeCycle", multirequestToken);
-	}
-
 	// couponId:
 	public Integer getCouponId(){
 		return this.couponId;
@@ -167,38 +127,14 @@ public class UsageModule extends ObjectBase {
 	public Integer getWaiverPeriod(){
 		return this.waiverPeriod;
 	}
-	public void setWaiverPeriod(Integer waiverPeriod){
-		this.waiverPeriod = waiverPeriod;
-	}
-
-	public void waiverPeriod(String multirequestToken){
-		setToken("waiverPeriod", multirequestToken);
-	}
-
 	// isWaiverEnabled:
 	public Boolean getIsWaiverEnabled(){
 		return this.isWaiverEnabled;
 	}
-	public void setIsWaiverEnabled(Boolean isWaiverEnabled){
-		this.isWaiverEnabled = isWaiverEnabled;
-	}
-
-	public void isWaiverEnabled(String multirequestToken){
-		setToken("isWaiverEnabled", multirequestToken);
-	}
-
 	// isOfflinePlayback:
 	public Boolean getIsOfflinePlayback(){
 		return this.isOfflinePlayback;
 	}
-	public void setIsOfflinePlayback(Boolean isOfflinePlayback){
-		this.isOfflinePlayback = isOfflinePlayback;
-	}
-
-	public void isOfflinePlayback(String multirequestToken){
-		setToken("isOfflinePlayback", multirequestToken);
-	}
-
 
 	public UsageModule() {
 		super();
@@ -225,14 +161,6 @@ public class UsageModule extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaUsageModule");
-		kparams.add("id", this.id);
-		kparams.add("name", this.name);
-		kparams.add("maxViewsNumber", this.maxViewsNumber);
-		kparams.add("viewLifeCycle", this.viewLifeCycle);
-		kparams.add("fullLifeCycle", this.fullLifeCycle);
-		kparams.add("waiverPeriod", this.waiverPeriod);
-		kparams.add("isWaiverEnabled", this.isWaiverEnabled);
-		kparams.add("isOfflinePlayback", this.isOfflinePlayback);
 		return kparams;
 	}
 

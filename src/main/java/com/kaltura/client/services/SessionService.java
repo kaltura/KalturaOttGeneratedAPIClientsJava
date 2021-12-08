@@ -29,10 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.types.Session;
-import com.kaltura.client.types.SessionCharacteristic;
-import com.kaltura.client.types.StringValueArray;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -42,62 +39,6 @@ import java.util.Map;
  */
 
 public class SessionService {
-	
-	public static class CreateSessionCharacteristicSessionBuilder extends RequestBuilder<SessionCharacteristic, SessionCharacteristic.Tokenizer, CreateSessionCharacteristicSessionBuilder> {
-		
-		public CreateSessionCharacteristicSessionBuilder(String userId, long householdId, String udid, long expiration, int regionId, Map<String, StringValueArray> sessionCharacteristicParams) {
-			super(SessionCharacteristic.class, "session", "createSessionCharacteristic");
-			params.add("userId", userId);
-			params.add("householdId", householdId);
-			params.add("udid", udid);
-			params.add("expiration", expiration);
-			params.add("regionId", regionId);
-			params.add("sessionCharacteristicParams", sessionCharacteristicParams);
-		}
-		
-		public void userId(String multirequestToken) {
-			params.add("userId", multirequestToken);
-		}
-		
-		public void householdId(String multirequestToken) {
-			params.add("householdId", multirequestToken);
-		}
-		
-		public void udid(String multirequestToken) {
-			params.add("udid", multirequestToken);
-		}
-		
-		public void expiration(String multirequestToken) {
-			params.add("expiration", multirequestToken);
-		}
-		
-		public void regionId(String multirequestToken) {
-			params.add("regionId", multirequestToken);
-		}
-	}
-
-	public static CreateSessionCharacteristicSessionBuilder createSessionCharacteristic(String userId, long householdId, String udid, long expiration)  {
-		return createSessionCharacteristic(userId, householdId, udid, expiration, Integer.MIN_VALUE);
-	}
-
-	public static CreateSessionCharacteristicSessionBuilder createSessionCharacteristic(String userId, long householdId, String udid, long expiration, int regionId)  {
-		return createSessionCharacteristic(userId, householdId, udid, expiration, regionId, null);
-	}
-
-	/**
-	 * Create session characteristic
-	 * 
-	 * @param userId user identifier
-	 * @param householdId household identifier
-	 * @param udid device UDID
-	 * @param expiration relative expiration(TTL) in seconds, should be equal or greater than KS
-	 * expiration
-	 * @param regionId region identifier
-	 * @param sessionCharacteristicParams session characteristic dynamic params
-	 */
-    public static CreateSessionCharacteristicSessionBuilder createSessionCharacteristic(String userId, long householdId, String udid, long expiration, int regionId, Map<String, StringValueArray> sessionCharacteristicParams)  {
-		return new CreateSessionCharacteristicSessionBuilder(userId, householdId, udid, expiration, regionId, sessionCharacteristicParams);
-	}
 	
 	public static class GetSessionBuilder extends RequestBuilder<Session, Session.Tokenizer, GetSessionBuilder> {
 		

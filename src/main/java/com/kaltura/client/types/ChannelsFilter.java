@@ -41,9 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ChannelsFilter.Tokenizer.class)
-public class ChannelsFilter extends ChannelsBaseFilter {
+public class ChannelsFilter extends Filter {
 	
-	public interface Tokenizer extends ChannelsBaseFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String idEqual();
 		String mediaIdEqual();
 		String nameEqual();

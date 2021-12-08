@@ -29,14 +29,11 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.enums.DeviceStatus;
 import com.kaltura.client.types.DevicePin;
-import com.kaltura.client.types.DynamicData;
 import com.kaltura.client.types.HouseholdDevice;
 import com.kaltura.client.types.HouseholdDeviceFilter;
 import com.kaltura.client.types.LoginResponse;
-import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -110,33 +107,6 @@ public class HouseholdDeviceService {
 	 */
     public static DeleteHouseholdDeviceBuilder delete(String udid)  {
 		return new DeleteHouseholdDeviceBuilder(udid);
-	}
-	
-	public static class DeleteDynamicDataHouseholdDeviceBuilder extends RequestBuilder<Boolean, String, DeleteDynamicDataHouseholdDeviceBuilder> {
-		
-		public DeleteDynamicDataHouseholdDeviceBuilder(String udid, String key) {
-			super(Boolean.class, "householddevice", "deleteDynamicData");
-			params.add("udid", udid);
-			params.add("key", key);
-		}
-		
-		public void udid(String multirequestToken) {
-			params.add("udid", multirequestToken);
-		}
-		
-		public void key(String multirequestToken) {
-			params.add("key", multirequestToken);
-		}
-	}
-
-	/**
-	 * Deletes dynamic data item with key  for device with identifier .
-	 * 
-	 * @param udid Unique identifier of device.
-	 * @param key Key of dynamic data item.
-	 */
-    public static DeleteDynamicDataHouseholdDeviceBuilder deleteDynamicData(String udid, String key)  {
-		return new DeleteDynamicDataHouseholdDeviceBuilder(udid, key);
 	}
 	
 	public static class GeneratePinHouseholdDeviceBuilder extends RequestBuilder<DevicePin, DevicePin.Tokenizer, GeneratePinHouseholdDeviceBuilder> {
@@ -214,12 +184,11 @@ public class HouseholdDeviceService {
 	
 	public static class LoginWithPinHouseholdDeviceBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, LoginWithPinHouseholdDeviceBuilder> {
 		
-		public LoginWithPinHouseholdDeviceBuilder(int partnerId, String pin, String udid, Map<String, StringValue> extraParams) {
+		public LoginWithPinHouseholdDeviceBuilder(int partnerId, String pin, String udid) {
 			super(LoginResponse.class, "householddevice", "loginWithPin");
 			params.add("partnerId", partnerId);
 			params.add("pin", pin);
 			params.add("udid", udid);
-			params.add("extraParams", extraParams);
 		}
 		
 		public void partnerId(String multirequestToken) {
@@ -239,20 +208,15 @@ public class HouseholdDeviceService {
 		return loginWithPin(partnerId, pin, null);
 	}
 
-	public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid)  {
-		return loginWithPin(partnerId, pin, udid, null);
-	}
-
 	/**
 	 * User sign-in via a time-expired sign-in PIN.
 	 * 
 	 * @param partnerId Partner Identifier
 	 * @param pin pin code
 	 * @param udid Device UDID
-	 * @param extraParams extra params
 	 */
-    public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid, Map<String, StringValue> extraParams)  {
-		return new LoginWithPinHouseholdDeviceBuilder(partnerId, pin, udid, extraParams);
+    public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid)  {
+		return new LoginWithPinHouseholdDeviceBuilder(partnerId, pin, udid);
 	}
 	
 	public static class UpdateHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, UpdateHouseholdDeviceBuilder> {
@@ -303,35 +267,5 @@ public class HouseholdDeviceService {
 	 */
     public static UpdateStatusHouseholdDeviceBuilder updateStatus(String udid, DeviceStatus status)  {
 		return new UpdateStatusHouseholdDeviceBuilder(udid, status);
-	}
-	
-	public static class UpsertDynamicDataHouseholdDeviceBuilder extends RequestBuilder<DynamicData, DynamicData.Tokenizer, UpsertDynamicDataHouseholdDeviceBuilder> {
-		
-		public UpsertDynamicDataHouseholdDeviceBuilder(String udid, String key, StringValue value) {
-			super(DynamicData.class, "householddevice", "upsertDynamicData");
-			params.add("udid", udid);
-			params.add("key", key);
-			params.add("value", value);
-		}
-		
-		public void udid(String multirequestToken) {
-			params.add("udid", multirequestToken);
-		}
-		
-		public void key(String multirequestToken) {
-			params.add("key", multirequestToken);
-		}
-	}
-
-	/**
-	 * Adds or updates dynamic data item for device with identifier udid. If it is
-	  needed to update several items, use a multi-request to avoid race conditions.
-	 * 
-	 * @param udid Unique identifier of device.
-	 * @param key Key of dynamic data item. Max length of key is 125 characters.
-	 * @param value Value of dynamic data item. Max length of value is 255 characters.
-	 */
-    public static UpsertDynamicDataHouseholdDeviceBuilder upsertDynamicData(String udid, String key, StringValue value)  {
-		return new UpsertDynamicDataHouseholdDeviceBuilder(udid, key, value);
 	}
 }
