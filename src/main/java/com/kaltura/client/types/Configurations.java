@@ -86,9 +86,7 @@ public class Configurations extends ObjectBase {
 	 */
 	private String externalPushId;
 	/**
-	 * The default value for &amp;quot;isForceUpdate&amp;quot; is
-	  &amp;quot;FALSE&amp;quot;. When &amp;quot;isForceUpdate&amp;quot; is not
-	  populated it will revert to its default value.
+	 * Is force update
 	 */
 	private Boolean isForceUpdate;
 	/**

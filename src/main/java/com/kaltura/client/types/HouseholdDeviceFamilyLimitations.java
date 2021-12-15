@@ -50,8 +50,6 @@ public class HouseholdDeviceFamilyLimitations extends DeviceFamilyBase {
 		String frequency();
 		String deviceLimit();
 		String concurrentLimit();
-		String isDefaultDeviceLimit();
-		String isDefaultConcurrentLimit ();
 	}
 
 	/**
@@ -66,14 +64,6 @@ public class HouseholdDeviceFamilyLimitations extends DeviceFamilyBase {
 	 * Max number of streams allowed for this family
 	 */
 	private Integer concurrentLimit;
-	/**
-	 * Is the Max number of devices allowed for this family is default value or not
-	 */
-	private Boolean isDefaultDeviceLimit;
-	/**
-	 * Is the Max number of streams allowed for this family is default value or not
-	 */
-	private Boolean isDefaultConcurrentLimit ;
 
 	// frequency:
 	public Integer getFrequency(){
@@ -111,14 +101,6 @@ public class HouseholdDeviceFamilyLimitations extends DeviceFamilyBase {
 		setToken("concurrentLimit", multirequestToken);
 	}
 
-	// isDefaultDeviceLimit:
-	public Boolean getIsDefaultDeviceLimit(){
-		return this.isDefaultDeviceLimit;
-	}
-	// isDefaultConcurrentLimit :
-	public Boolean getIsDefaultConcurrentLimit (){
-		return this.isDefaultConcurrentLimit ;
-	}
 
 	public HouseholdDeviceFamilyLimitations() {
 		super();
@@ -133,8 +115,6 @@ public class HouseholdDeviceFamilyLimitations extends DeviceFamilyBase {
 		frequency = GsonParser.parseInt(jsonObject.get("frequency"));
 		deviceLimit = GsonParser.parseInt(jsonObject.get("deviceLimit"));
 		concurrentLimit = GsonParser.parseInt(jsonObject.get("concurrentLimit"));
-		isDefaultDeviceLimit = GsonParser.parseBoolean(jsonObject.get("isDefaultDeviceLimit"));
-		isDefaultConcurrentLimit  = GsonParser.parseBoolean(jsonObject.get("isDefaultConcurrentLimit "));
 
 	}
 
