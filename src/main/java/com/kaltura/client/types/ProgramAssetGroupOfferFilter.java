@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,69 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Program asset group offer details
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
-public class RegionChannelNumber extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferFilter.Tokenizer.class)
+public class ProgramAssetGroupOfferFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String regionId();
-		String channelNumber();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String alsoInactive();
 	}
 
 	/**
-	 * The identifier of the region
+	 * return also inactive
 	 */
-	private Integer regionId;
-	/**
-	 * The number of the channel
-	 */
-	private Integer channelNumber;
+	private Boolean alsoInactive;
 
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
+	// alsoInactive:
+	public Boolean getAlsoInactive(){
+		return this.alsoInactive;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
+	public void setAlsoInactive(Boolean alsoInactive){
+		this.alsoInactive = alsoInactive;
 	}
 
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
-	}
-
-	// channelNumber:
-	public Integer getChannelNumber(){
-		return this.channelNumber;
-	}
-	public void setChannelNumber(Integer channelNumber){
-		this.channelNumber = channelNumber;
-	}
-
-	public void channelNumber(String multirequestToken){
-		setToken("channelNumber", multirequestToken);
+	public void alsoInactive(String multirequestToken){
+		setToken("alsoInactive", multirequestToken);
 	}
 
 
-	public RegionChannelNumber() {
+	public ProgramAssetGroupOfferFilter() {
 		super();
 	}
 
-	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
+	public ProgramAssetGroupOfferFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRegionChannelNumber");
-		kparams.add("regionId", this.regionId);
-		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferFilter");
+		kparams.add("alsoInactive", this.alsoInactive);
 		return kparams;
 	}
 
