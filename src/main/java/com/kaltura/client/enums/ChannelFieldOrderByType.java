@@ -33,14 +33,19 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum DowngradePolicy implements EnumAsString {
-	LIFO("LIFO"),
-	FIFO("FIFO"),
-	ACTIVE_DATE("ACTIVE_DATE");
+public enum ChannelFieldOrderByType implements EnumAsString {
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	START_DATE_DESC("START_DATE_DESC"),
+	START_DATE_ASC("START_DATE_ASC"),
+	CREATE_DATE_ASC("CREATE_DATE_ASC"),
+	CREATE_DATE_DESC("CREATE_DATE_DESC"),
+	RELEVANCY_DESC("RELEVANCY_DESC"),
+	ORDER_NUM("ORDER_NUM");
 
 	private String value;
 
-	DowngradePolicy(String value) {
+	ChannelFieldOrderByType(String value) {
 		this.value = value;
 	}
 
@@ -53,19 +58,19 @@ public enum DowngradePolicy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static DowngradePolicy get(String value) {
+	public static ChannelFieldOrderByType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over DowngradePolicy defined values and compare the inner value with the given one:
-		for(DowngradePolicy item: values()) {
+		// goes over ChannelFieldOrderByType defined values and compare the inner value with the given one:
+		for(ChannelFieldOrderByType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return DowngradePolicy.values().length > 0 ? DowngradePolicy.values()[0]: null;
+		return ChannelFieldOrderByType.values().length > 0 ? ChannelFieldOrderByType.values()[0]: null;
    }
 }

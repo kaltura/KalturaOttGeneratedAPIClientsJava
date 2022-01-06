@@ -41,68 +41,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
-public class RegionChannelNumber extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
+public class IngestStatusEpgConfiguration extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String regionId();
-		String channelNumber();
+		String isSupported();
+		String retainingPeriod();
 	}
 
 	/**
-	 * The identifier of the region
+	 * Defines whether partner in question enabled core ingest status service.
 	 */
-	private Integer regionId;
+	private Boolean isSupported;
 	/**
-	 * The number of the channel
+	 * Defines the time in seconds that the service retain information about ingest
+	  status.
 	 */
-	private Integer channelNumber;
+	private Integer retainingPeriod;
 
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
+	// isSupported:
+	public Boolean getIsSupported(){
+		return this.isSupported;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
-	}
-
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
+	public void setIsSupported(Boolean isSupported){
+		this.isSupported = isSupported;
 	}
 
-	// channelNumber:
-	public Integer getChannelNumber(){
-		return this.channelNumber;
-	}
-	public void setChannelNumber(Integer channelNumber){
-		this.channelNumber = channelNumber;
+	public void isSupported(String multirequestToken){
+		setToken("isSupported", multirequestToken);
 	}
 
-	public void channelNumber(String multirequestToken){
-		setToken("channelNumber", multirequestToken);
+	// retainingPeriod:
+	public Integer getRetainingPeriod(){
+		return this.retainingPeriod;
+	}
+	public void setRetainingPeriod(Integer retainingPeriod){
+		this.retainingPeriod = retainingPeriod;
+	}
+
+	public void retainingPeriod(String multirequestToken){
+		setToken("retainingPeriod", multirequestToken);
 	}
 
 
-	public RegionChannelNumber() {
+	public IngestStatusEpgConfiguration() {
 		super();
 	}
 
-	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
+	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
+		retainingPeriod = GsonParser.parseInt(jsonObject.get("retainingPeriod"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRegionChannelNumber");
-		kparams.add("regionId", this.regionId);
-		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
+		kparams.add("isSupported", this.isSupported);
+		kparams.add("retainingPeriod", this.retainingPeriod);
 		return kparams;
 	}
 
