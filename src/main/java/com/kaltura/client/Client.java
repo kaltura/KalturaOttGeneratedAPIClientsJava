@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2021  Kaltura Inc.
+// Copyright (C) 2006-2022  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -44,8 +44,8 @@ public class Client extends ClientBase {
 	public Client(ConnectionConfiguration config) {
 		super(config);
 		
-		this.setClientTag("java:21-12-23");
-		this.setApiVersion("7.1.0.29666");
+		this.setClientTag("java:22-01-12");
+		this.setApiVersion("7.1.0.29667");
 		this.clientConfiguration.put("format", 1); // JSON
 	}
 	
