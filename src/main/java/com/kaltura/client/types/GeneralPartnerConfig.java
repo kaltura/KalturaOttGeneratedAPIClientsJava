@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2021  Kaltura Inc.
+// Copyright (C) 2006-2022  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -58,6 +58,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String mainCurrency();
 		String secondaryCurrencies();
 		String downgradePolicy();
+		String downgradePriorityFamilyIds();
 		String mailSettings();
 		String dateFormat();
 		String householdLimitationModule();
@@ -68,6 +69,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		String finishedPercentThreshold();
 		String suspensionProfileInheritanceType();
 		String allowDeviceMobility();
+		String enableMultiLcns();
 	}
 
 	/**
@@ -98,6 +100,11 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Downgrade policy
 	 */
 	private DowngradePolicy downgradePolicy;
+	/**
+	 * Priority Family Ids to remove devices on downgrade (first in the list first to
+	  remove)
+	 */
+	private String downgradePriorityFamilyIds;
 	/**
 	 * Mail settings
 	 */
@@ -138,6 +145,10 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 * Allow Device Mobility
 	 */
 	private Boolean allowDeviceMobility;
+	/**
+	 * Enable multi LCNs per linear channel
+	 */
+	private Boolean enableMultiLcns;
 
 	// partnerName:
 	public String getPartnerName(){
@@ -221,6 +232,18 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 
 	public void downgradePolicy(String multirequestToken){
 		setToken("downgradePolicy", multirequestToken);
+	}
+
+	// downgradePriorityFamilyIds:
+	public String getDowngradePriorityFamilyIds(){
+		return this.downgradePriorityFamilyIds;
+	}
+	public void setDowngradePriorityFamilyIds(String downgradePriorityFamilyIds){
+		this.downgradePriorityFamilyIds = downgradePriorityFamilyIds;
+	}
+
+	public void downgradePriorityFamilyIds(String multirequestToken){
+		setToken("downgradePriorityFamilyIds", multirequestToken);
 	}
 
 	// mailSettings:
@@ -339,6 +362,18 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		setToken("allowDeviceMobility", multirequestToken);
 	}
 
+	// enableMultiLcns:
+	public Boolean getEnableMultiLcns(){
+		return this.enableMultiLcns;
+	}
+	public void setEnableMultiLcns(Boolean enableMultiLcns){
+		this.enableMultiLcns = enableMultiLcns;
+	}
+
+	public void enableMultiLcns(String multirequestToken){
+		setToken("enableMultiLcns", multirequestToken);
+	}
+
 
 	public GeneralPartnerConfig() {
 		super();
@@ -357,6 +392,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		mainCurrency = GsonParser.parseInt(jsonObject.get("mainCurrency"));
 		secondaryCurrencies = GsonParser.parseString(jsonObject.get("secondaryCurrencies"));
 		downgradePolicy = DowngradePolicy.get(GsonParser.parseString(jsonObject.get("downgradePolicy")));
+		downgradePriorityFamilyIds = GsonParser.parseString(jsonObject.get("downgradePriorityFamilyIds"));
 		mailSettings = GsonParser.parseString(jsonObject.get("mailSettings"));
 		dateFormat = GsonParser.parseString(jsonObject.get("dateFormat"));
 		householdLimitationModule = GsonParser.parseInt(jsonObject.get("householdLimitationModule"));
@@ -367,6 +403,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		finishedPercentThreshold = GsonParser.parseInt(jsonObject.get("finishedPercentThreshold"));
 		suspensionProfileInheritanceType = SuspensionProfileInheritanceType.get(GsonParser.parseString(jsonObject.get("suspensionProfileInheritanceType")));
 		allowDeviceMobility = GsonParser.parseBoolean(jsonObject.get("allowDeviceMobility"));
+		enableMultiLcns = GsonParser.parseBoolean(jsonObject.get("enableMultiLcns"));
 
 	}
 
@@ -380,6 +417,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("mainCurrency", this.mainCurrency);
 		kparams.add("secondaryCurrencies", this.secondaryCurrencies);
 		kparams.add("downgradePolicy", this.downgradePolicy);
+		kparams.add("downgradePriorityFamilyIds", this.downgradePriorityFamilyIds);
 		kparams.add("mailSettings", this.mailSettings);
 		kparams.add("dateFormat", this.dateFormat);
 		kparams.add("householdLimitationModule", this.householdLimitationModule);
@@ -390,6 +428,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 		kparams.add("finishedPercentThreshold", this.finishedPercentThreshold);
 		kparams.add("suspensionProfileInheritanceType", this.suspensionProfileInheritanceType);
 		kparams.add("allowDeviceMobility", this.allowDeviceMobility);
+		kparams.add("enableMultiLcns", this.enableMultiLcns);
 		return kparams;
 	}
 

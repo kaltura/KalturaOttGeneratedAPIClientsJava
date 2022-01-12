@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2021  Kaltura Inc.
+// Copyright (C) 2006-2022  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -60,6 +60,7 @@ public class Channel extends BaseChannel {
 		String oldDescription();
 		String isActive();
 		ChannelOrder.Tokenizer orderBy();
+		RequestBuilder.ListTokenizer<BaseChannelOrder.Tokenizer> orderingParametersEqual();
 		String createDate();
 		String updateDate();
 		String supportSegmentBasedOrdering();
@@ -104,6 +105,10 @@ public class Channel extends BaseChannel {
 	 * Channel order by
 	 */
 	private ChannelOrder orderBy;
+	/**
+	 * Parameters for asset list sorting.
+	 */
+	private List<BaseChannelOrder> orderingParametersEqual;
 	/**
 	 * Specifies when was the Channel was created. Date and time represented as epoch.
 	 */
@@ -210,6 +215,14 @@ public class Channel extends BaseChannel {
 		this.orderBy = orderBy;
 	}
 
+	// orderingParametersEqual:
+	public List<BaseChannelOrder> getOrderingParametersEqual(){
+		return this.orderingParametersEqual;
+	}
+	public void setOrderingParametersEqual(List<BaseChannelOrder> orderingParametersEqual){
+		this.orderingParametersEqual = orderingParametersEqual;
+	}
+
 	// createDate:
 	public Long getCreateDate(){
 		return this.createDate;
@@ -274,6 +287,7 @@ public class Channel extends BaseChannel {
 		oldDescription = GsonParser.parseString(jsonObject.get("oldDescription"));
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
 		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), ChannelOrder.class);
+		orderingParametersEqual = GsonParser.parseArray(jsonObject.getAsJsonArray("orderingParametersEqual"), BaseChannelOrder.class);
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		supportSegmentBasedOrdering = GsonParser.parseBoolean(jsonObject.get("supportSegmentBasedOrdering"));
@@ -293,6 +307,7 @@ public class Channel extends BaseChannel {
 		kparams.add("oldDescription", this.oldDescription);
 		kparams.add("isActive", this.isActive);
 		kparams.add("orderBy", this.orderBy);
+		kparams.add("orderingParametersEqual", this.orderingParametersEqual);
 		kparams.add("supportSegmentBasedOrdering", this.supportSegmentBasedOrdering);
 		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		kparams.add("metaData", this.metaData);
