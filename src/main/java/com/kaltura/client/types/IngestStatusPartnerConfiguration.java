@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.IngestStatusEpgConfiguration;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -41,68 +42,45 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
-public class RegionChannelNumber extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestStatusPartnerConfiguration.Tokenizer.class)
+public class IngestStatusPartnerConfiguration extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String regionId();
-		String channelNumber();
+		IngestStatusEpgConfiguration.Tokenizer epg();
 	}
 
 	/**
-	 * The identifier of the region
+	 * Defines the epg configuration of the partner.
 	 */
-	private Integer regionId;
-	/**
-	 * The number of the channel
-	 */
-	private Integer channelNumber;
+	private IngestStatusEpgConfiguration epg;
 
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
+	// epg:
+	public IngestStatusEpgConfiguration getEpg(){
+		return this.epg;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
-	}
-
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
-	}
-
-	// channelNumber:
-	public Integer getChannelNumber(){
-		return this.channelNumber;
-	}
-	public void setChannelNumber(Integer channelNumber){
-		this.channelNumber = channelNumber;
-	}
-
-	public void channelNumber(String multirequestToken){
-		setToken("channelNumber", multirequestToken);
+	public void setEpg(IngestStatusEpgConfiguration epg){
+		this.epg = epg;
 	}
 
 
-	public RegionChannelNumber() {
+	public IngestStatusPartnerConfiguration() {
 		super();
 	}
 
-	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
+	public IngestStatusPartnerConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		epg = GsonParser.parseObject(jsonObject.getAsJsonObject("epg"), IngestStatusEpgConfiguration.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRegionChannelNumber");
-		kparams.add("regionId", this.regionId);
-		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("objectType", "KalturaIngestStatusPartnerConfiguration");
+		kparams.add("epg", this.epg);
 		return kparams;
 	}
 

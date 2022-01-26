@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.ChannelSlidingWindowOrderByType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,68 +41,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
-public class RegionChannelNumber extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ChannelSlidingWindowOrder.Tokenizer.class)
+public class ChannelSlidingWindowOrder extends BaseChannelOrder {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String regionId();
-		String channelNumber();
+	public interface Tokenizer extends BaseChannelOrder.Tokenizer {
+		String period();
+		String orderBy();
 	}
 
 	/**
-	 * The identifier of the region
+	 * Sliding window period in minutes
 	 */
-	private Integer regionId;
+	private Integer period;
 	/**
-	 * The number of the channel
+	 * Order By
 	 */
-	private Integer channelNumber;
+	private ChannelSlidingWindowOrderByType orderBy;
 
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
+	// period:
+	public Integer getPeriod(){
+		return this.period;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
-	}
-
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
+	public void setPeriod(Integer period){
+		this.period = period;
 	}
 
-	// channelNumber:
-	public Integer getChannelNumber(){
-		return this.channelNumber;
-	}
-	public void setChannelNumber(Integer channelNumber){
-		this.channelNumber = channelNumber;
+	public void period(String multirequestToken){
+		setToken("period", multirequestToken);
 	}
 
-	public void channelNumber(String multirequestToken){
-		setToken("channelNumber", multirequestToken);
+	// orderBy:
+	public ChannelSlidingWindowOrderByType getOrderBy(){
+		return this.orderBy;
+	}
+	public void setOrderBy(ChannelSlidingWindowOrderByType orderBy){
+		this.orderBy = orderBy;
+	}
+
+	public void orderBy(String multirequestToken){
+		setToken("orderBy", multirequestToken);
 	}
 
 
-	public RegionChannelNumber() {
+	public ChannelSlidingWindowOrder() {
 		super();
 	}
 
-	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
+	public ChannelSlidingWindowOrder(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		period = GsonParser.parseInt(jsonObject.get("period"));
+		orderBy = ChannelSlidingWindowOrderByType.get(GsonParser.parseString(jsonObject.get("orderBy")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRegionChannelNumber");
-		kparams.add("regionId", this.regionId);
-		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("objectType", "KalturaChannelSlidingWindowOrder");
+		kparams.add("period", this.period);
+		kparams.add("orderBy", this.orderBy);
 		return kparams;
 	}
 

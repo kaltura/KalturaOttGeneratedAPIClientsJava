@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.MetaTagOrderBy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,68 +41,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
-public class RegionChannelNumber extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ChannelDynamicOrder.Tokenizer.class)
+public class ChannelDynamicOrder extends BaseChannelOrder {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String regionId();
-		String channelNumber();
+	public interface Tokenizer extends BaseChannelOrder.Tokenizer {
+		String name();
+		String orderBy();
 	}
 
 	/**
-	 * The identifier of the region
+	 * Value
 	 */
-	private Integer regionId;
+	private String name;
 	/**
-	 * The number of the channel
+	 * Order By
 	 */
-	private Integer channelNumber;
+	private MetaTagOrderBy orderBy;
 
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
+	// name:
+	public String getName(){
+		return this.name;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
-	}
-
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
+	public void setName(String name){
+		this.name = name;
 	}
 
-	// channelNumber:
-	public Integer getChannelNumber(){
-		return this.channelNumber;
-	}
-	public void setChannelNumber(Integer channelNumber){
-		this.channelNumber = channelNumber;
+	public void name(String multirequestToken){
+		setToken("name", multirequestToken);
 	}
 
-	public void channelNumber(String multirequestToken){
-		setToken("channelNumber", multirequestToken);
+	// orderBy:
+	public MetaTagOrderBy getOrderBy(){
+		return this.orderBy;
+	}
+	public void setOrderBy(MetaTagOrderBy orderBy){
+		this.orderBy = orderBy;
+	}
+
+	public void orderBy(String multirequestToken){
+		setToken("orderBy", multirequestToken);
 	}
 
 
-	public RegionChannelNumber() {
+	public ChannelDynamicOrder() {
 		super();
 	}
 
-	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
+	public ChannelDynamicOrder(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		name = GsonParser.parseString(jsonObject.get("name"));
+		orderBy = MetaTagOrderBy.get(GsonParser.parseString(jsonObject.get("orderBy")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRegionChannelNumber");
-		kparams.add("regionId", this.regionId);
-		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("objectType", "KalturaChannelDynamicOrder");
+		kparams.add("name", this.name);
+		kparams.add("orderBy", this.orderBy);
 		return kparams;
 	}
 

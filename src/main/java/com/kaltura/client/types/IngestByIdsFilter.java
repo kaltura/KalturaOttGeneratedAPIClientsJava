@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,68 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
-public class RegionChannelNumber extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestByIdsFilter.Tokenizer.class)
+public class IngestByIdsFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String regionId();
-		String channelNumber();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String ingestIdIn();
 	}
 
 	/**
-	 * The identifier of the region
+	 * Comma seperated ingest profile ids
 	 */
-	private Integer regionId;
-	/**
-	 * The number of the channel
-	 */
-	private Integer channelNumber;
+	private String ingestIdIn;
 
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
+	// ingestIdIn:
+	public String getIngestIdIn(){
+		return this.ingestIdIn;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
+	public void setIngestIdIn(String ingestIdIn){
+		this.ingestIdIn = ingestIdIn;
 	}
 
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
-	}
-
-	// channelNumber:
-	public Integer getChannelNumber(){
-		return this.channelNumber;
-	}
-	public void setChannelNumber(Integer channelNumber){
-		this.channelNumber = channelNumber;
-	}
-
-	public void channelNumber(String multirequestToken){
-		setToken("channelNumber", multirequestToken);
+	public void ingestIdIn(String multirequestToken){
+		setToken("ingestIdIn", multirequestToken);
 	}
 
 
-	public RegionChannelNumber() {
+	public IngestByIdsFilter() {
 		super();
 	}
 
-	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
+	public IngestByIdsFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		ingestIdIn = GsonParser.parseString(jsonObject.get("ingestIdIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRegionChannelNumber");
-		kparams.add("regionId", this.regionId);
-		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("objectType", "KalturaIngestByIdsFilter");
+		kparams.add("ingestIdIn", this.ingestIdIn);
 		return kparams;
 	}
 
