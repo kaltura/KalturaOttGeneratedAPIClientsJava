@@ -33,14 +33,15 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum DowngradePolicy implements EnumAsString {
-	LIFO("LIFO"),
-	FIFO("FIFO"),
-	ACTIVE_DATE("ACTIVE_DATE");
+public enum ChannelSlidingWindowOrderByType implements EnumAsString {
+	LIKES_DESC("LIKES_DESC"),
+	RATINGS_DESC("RATINGS_DESC"),
+	VOTES_DESC("VOTES_DESC"),
+	VIEWS_DESC("VIEWS_DESC");
 
 	private String value;
 
-	DowngradePolicy(String value) {
+	ChannelSlidingWindowOrderByType(String value) {
 		this.value = value;
 	}
 
@@ -53,19 +54,19 @@ public enum DowngradePolicy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static DowngradePolicy get(String value) {
+	public static ChannelSlidingWindowOrderByType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over DowngradePolicy defined values and compare the inner value with the given one:
-		for(DowngradePolicy item: values()) {
+		// goes over ChannelSlidingWindowOrderByType defined values and compare the inner value with the given one:
+		for(ChannelSlidingWindowOrderByType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return DowngradePolicy.values().length > 0 ? DowngradePolicy.values()[0]: null;
+		return ChannelSlidingWindowOrderByType.values().length > 0 ? ChannelSlidingWindowOrderByType.values()[0]: null;
    }
 }
