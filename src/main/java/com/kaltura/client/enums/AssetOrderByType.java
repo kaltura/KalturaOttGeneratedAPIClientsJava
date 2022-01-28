@@ -33,14 +33,21 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum DowngradePolicy implements EnumAsString {
-	LIFO("LIFO"),
-	FIFO("FIFO"),
-	ACTIVE_DATE("ACTIVE_DATE");
+public enum AssetOrderByType implements EnumAsString {
+	RELEVANCY_DESC("RELEVANCY_DESC"),
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	RATINGS_DESC("RATINGS_DESC"),
+	VOTES_DESC("VOTES_DESC"),
+	START_DATE_DESC("START_DATE_DESC"),
+	START_DATE_ASC("START_DATE_ASC"),
+	LIKES_DESC("LIKES_DESC"),
+	CREATE_DATE_ASC("CREATE_DATE_ASC"),
+	CREATE_DATE_DESC("CREATE_DATE_DESC");
 
 	private String value;
 
-	DowngradePolicy(String value) {
+	AssetOrderByType(String value) {
 		this.value = value;
 	}
 
@@ -53,19 +60,19 @@ public enum DowngradePolicy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static DowngradePolicy get(String value) {
+	public static AssetOrderByType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over DowngradePolicy defined values and compare the inner value with the given one:
-		for(DowngradePolicy item: values()) {
+		// goes over AssetOrderByType defined values and compare the inner value with the given one:
+		for(AssetOrderByType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return DowngradePolicy.values().length > 0 ? DowngradePolicy.values()[0]: null;
+		return AssetOrderByType.values().length > 0 ? AssetOrderByType.values()[0]: null;
    }
 }

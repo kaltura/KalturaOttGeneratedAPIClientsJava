@@ -29,11 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.DynamicOrderBy;
+import com.kaltura.client.enums.AssetOrderByStatistics;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -43,48 +41,22 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetFilter.Tokenizer.class)
-public class AssetFilter extends PersistedFilter {
+@MultiRequestBuilder.Tokenizer(AssetStatisticsOrder.Tokenizer.class)
+public class AssetStatisticsOrder extends BaseAssetOrder {
 	
-	public interface Tokenizer extends PersistedFilter.Tokenizer {
-		DynamicOrderBy.Tokenizer dynamicOrderBy();
-		RequestBuilder.ListTokenizer<BaseAssetOrder.Tokenizer> orderingParameters();
+	public interface Tokenizer extends BaseAssetOrder.Tokenizer {
 		String trendingDaysEqual();
-		String shouldApplyPriorityGroupsEqual();
+		String orderBy();
 	}
 
-	/**
-	 * dynamicOrderBy - order by Meta
-	 */
-	private DynamicOrderBy dynamicOrderBy;
-	/**
-	 * Parameters for asset list sorting.
-	 */
-	private List<BaseAssetOrder> orderingParameters;
 	/**
 	 * Trending Days Equal
 	 */
 	private Integer trendingDaysEqual;
 	/**
-	 * Should apply priority groups filter or not.
+	 * order by meta asc/desc
 	 */
-	private Boolean shouldApplyPriorityGroupsEqual;
-
-	// dynamicOrderBy:
-	public DynamicOrderBy getDynamicOrderBy(){
-		return this.dynamicOrderBy;
-	}
-	public void setDynamicOrderBy(DynamicOrderBy dynamicOrderBy){
-		this.dynamicOrderBy = dynamicOrderBy;
-	}
-
-	// orderingParameters:
-	public List<BaseAssetOrder> getOrderingParameters(){
-		return this.orderingParameters;
-	}
-	public void setOrderingParameters(List<BaseAssetOrder> orderingParameters){
-		this.orderingParameters = orderingParameters;
-	}
+	private AssetOrderByStatistics orderBy;
 
 	// trendingDaysEqual:
 	public Integer getTrendingDaysEqual(){
@@ -98,43 +70,39 @@ public class AssetFilter extends PersistedFilter {
 		setToken("trendingDaysEqual", multirequestToken);
 	}
 
-	// shouldApplyPriorityGroupsEqual:
-	public Boolean getShouldApplyPriorityGroupsEqual(){
-		return this.shouldApplyPriorityGroupsEqual;
+	// orderBy:
+	public AssetOrderByStatistics getOrderBy(){
+		return this.orderBy;
 	}
-	public void setShouldApplyPriorityGroupsEqual(Boolean shouldApplyPriorityGroupsEqual){
-		this.shouldApplyPriorityGroupsEqual = shouldApplyPriorityGroupsEqual;
-	}
-
-	public void shouldApplyPriorityGroupsEqual(String multirequestToken){
-		setToken("shouldApplyPriorityGroupsEqual", multirequestToken);
+	public void setOrderBy(AssetOrderByStatistics orderBy){
+		this.orderBy = orderBy;
 	}
 
+	public void orderBy(String multirequestToken){
+		setToken("orderBy", multirequestToken);
+	}
 
-	public AssetFilter() {
+
+	public AssetStatisticsOrder() {
 		super();
 	}
 
-	public AssetFilter(JsonObject jsonObject) throws APIException {
+	public AssetStatisticsOrder(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		dynamicOrderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("dynamicOrderBy"), DynamicOrderBy.class);
-		orderingParameters = GsonParser.parseArray(jsonObject.getAsJsonArray("orderingParameters"), BaseAssetOrder.class);
 		trendingDaysEqual = GsonParser.parseInt(jsonObject.get("trendingDaysEqual"));
-		shouldApplyPriorityGroupsEqual = GsonParser.parseBoolean(jsonObject.get("shouldApplyPriorityGroupsEqual"));
+		orderBy = AssetOrderByStatistics.get(GsonParser.parseString(jsonObject.get("orderBy")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetFilter");
-		kparams.add("dynamicOrderBy", this.dynamicOrderBy);
-		kparams.add("orderingParameters", this.orderingParameters);
+		kparams.add("objectType", "KalturaAssetStatisticsOrder");
 		kparams.add("trendingDaysEqual", this.trendingDaysEqual);
-		kparams.add("shouldApplyPriorityGroupsEqual", this.shouldApplyPriorityGroupsEqual);
+		kparams.add("orderBy", this.orderBy);
 		return kparams;
 	}
 
