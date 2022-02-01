@@ -33,14 +33,16 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum DowngradePolicy implements EnumAsString {
-	LIFO("LIFO"),
-	FIFO("FIFO"),
-	ACTIVE_DATE("ACTIVE_DATE");
+public enum IngestStatus implements EnumAsString {
+	TOTAL_FAILURE("TOTAL_FAILURE"),
+	PARTIAL_FAILURE("PARTIAL_FAILURE"),
+	WARNING("WARNING"),
+	IN_PROGRESS("IN_PROGRESS"),
+	SUCCESS("SUCCESS");
 
 	private String value;
 
-	DowngradePolicy(String value) {
+	IngestStatus(String value) {
 		this.value = value;
 	}
 
@@ -53,19 +55,19 @@ public enum DowngradePolicy implements EnumAsString {
 		this.value = value;
 	}
 
-	public static DowngradePolicy get(String value) {
+	public static IngestStatus get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over DowngradePolicy defined values and compare the inner value with the given one:
-		for(DowngradePolicy item: values()) {
+		// goes over IngestStatus defined values and compare the inner value with the given one:
+		for(IngestStatus item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return DowngradePolicy.values().length > 0 ? DowngradePolicy.values()[0]: null;
+		return IngestStatus.values().length > 0 ? IngestStatus.values()[0]: null;
    }
 }
