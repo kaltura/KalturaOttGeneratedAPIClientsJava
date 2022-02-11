@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2021  Kaltura Inc.
+// Copyright (C) 2006-2022  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -32,6 +32,8 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.DynamicOrderBy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -46,7 +48,9 @@ public class AssetFilter extends PersistedFilter {
 	
 	public interface Tokenizer extends PersistedFilter.Tokenizer {
 		DynamicOrderBy.Tokenizer dynamicOrderBy();
+		RequestBuilder.ListTokenizer<BaseAssetOrder.Tokenizer> orderingParameters();
 		String trendingDaysEqual();
+		String shouldApplyPriorityGroupsEqual();
 	}
 
 	/**
@@ -54,9 +58,17 @@ public class AssetFilter extends PersistedFilter {
 	 */
 	private DynamicOrderBy dynamicOrderBy;
 	/**
+	 * Parameters for asset list sorting.
+	 */
+	private List<BaseAssetOrder> orderingParameters;
+	/**
 	 * Trending Days Equal
 	 */
 	private Integer trendingDaysEqual;
+	/**
+	 * Should apply priority groups filter or not.
+	 */
+	private Boolean shouldApplyPriorityGroupsEqual;
 
 	// dynamicOrderBy:
 	public DynamicOrderBy getDynamicOrderBy(){
@@ -64,6 +76,14 @@ public class AssetFilter extends PersistedFilter {
 	}
 	public void setDynamicOrderBy(DynamicOrderBy dynamicOrderBy){
 		this.dynamicOrderBy = dynamicOrderBy;
+	}
+
+	// orderingParameters:
+	public List<BaseAssetOrder> getOrderingParameters(){
+		return this.orderingParameters;
+	}
+	public void setOrderingParameters(List<BaseAssetOrder> orderingParameters){
+		this.orderingParameters = orderingParameters;
 	}
 
 	// trendingDaysEqual:
@@ -78,6 +98,18 @@ public class AssetFilter extends PersistedFilter {
 		setToken("trendingDaysEqual", multirequestToken);
 	}
 
+	// shouldApplyPriorityGroupsEqual:
+	public Boolean getShouldApplyPriorityGroupsEqual(){
+		return this.shouldApplyPriorityGroupsEqual;
+	}
+	public void setShouldApplyPriorityGroupsEqual(Boolean shouldApplyPriorityGroupsEqual){
+		this.shouldApplyPriorityGroupsEqual = shouldApplyPriorityGroupsEqual;
+	}
+
+	public void shouldApplyPriorityGroupsEqual(String multirequestToken){
+		setToken("shouldApplyPriorityGroupsEqual", multirequestToken);
+	}
+
 
 	public AssetFilter() {
 		super();
@@ -90,7 +122,9 @@ public class AssetFilter extends PersistedFilter {
 
 		// set members values:
 		dynamicOrderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("dynamicOrderBy"), DynamicOrderBy.class);
+		orderingParameters = GsonParser.parseArray(jsonObject.getAsJsonArray("orderingParameters"), BaseAssetOrder.class);
 		trendingDaysEqual = GsonParser.parseInt(jsonObject.get("trendingDaysEqual"));
+		shouldApplyPriorityGroupsEqual = GsonParser.parseBoolean(jsonObject.get("shouldApplyPriorityGroupsEqual"));
 
 	}
 
@@ -98,7 +132,9 @@ public class AssetFilter extends PersistedFilter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetFilter");
 		kparams.add("dynamicOrderBy", this.dynamicOrderBy);
+		kparams.add("orderingParameters", this.orderingParameters);
 		kparams.add("trendingDaysEqual", this.trendingDaysEqual);
+		kparams.add("shouldApplyPriorityGroupsEqual", this.shouldApplyPriorityGroupsEqual);
 		return kparams;
 	}
 
