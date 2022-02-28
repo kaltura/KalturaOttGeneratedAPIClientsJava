@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,37 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum AssetOrderByStatistics implements EnumAsString {
-	VIEWS_DESC("VIEWS_DESC");
 
-	private String value;
-
-	AssetOrderByStatistics(String value) {
-		this.value = value;
+/**
+ * Program asset group offer details
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferFilter.Tokenizer.class)
+public class ProgramAssetGroupOfferFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		String alsoInactive();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * return also inactive
+	 */
+	private Boolean alsoInactive;
+
+	// alsoInactive:
+	public Boolean getAlsoInactive(){
+		return this.alsoInactive;
+	}
+	public void setAlsoInactive(Boolean alsoInactive){
+		this.alsoInactive = alsoInactive;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void alsoInactive(String multirequestToken){
+		setToken("alsoInactive", multirequestToken);
 	}
 
-	public static AssetOrderByStatistics get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over AssetOrderByStatistics defined values and compare the inner value with the given one:
-		for(AssetOrderByStatistics item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetOrderByStatistics.values().length > 0 ? AssetOrderByStatistics.values()[0]: null;
-   }
+
+	public ProgramAssetGroupOfferFilter() {
+		super();
+	}
+
+	public ProgramAssetGroupOfferFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferFilter");
+		kparams.add("alsoInactive", this.alsoInactive);
+		return kparams;
+	}
+
 }
+

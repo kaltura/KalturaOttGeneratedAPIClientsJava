@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,46 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum AssetOrderByType implements EnumAsString {
-	RELEVANCY_DESC("RELEVANCY_DESC"),
-	NAME_ASC("NAME_ASC"),
-	NAME_DESC("NAME_DESC"),
-	RATINGS_DESC("RATINGS_DESC"),
-	VOTES_DESC("VOTES_DESC"),
-	START_DATE_DESC("START_DATE_DESC"),
-	START_DATE_ASC("START_DATE_ASC"),
-	LIKES_DESC("LIKES_DESC"),
-	CREATE_DATE_ASC("CREATE_DATE_ASC"),
-	CREATE_DATE_DESC("CREATE_DATE_DESC");
 
-	private String value;
-
-	AssetOrderByType(String value) {
-		this.value = value;
+/**
+ * Program asset group offer details
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferIdInFilter.Tokenizer.class)
+public class ProgramAssetGroupOfferIdInFilter extends ProgramAssetGroupOfferFilter {
+	
+	public interface Tokenizer extends ProgramAssetGroupOfferFilter.Tokenizer {
+		String idIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Program asset group offer identifiers
+	 */
+	private String idIn;
+
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
-	public static AssetOrderByType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over AssetOrderByType defined values and compare the inner value with the given one:
-		for(AssetOrderByType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return AssetOrderByType.values().length > 0 ? AssetOrderByType.values()[0]: null;
-   }
+
+	public ProgramAssetGroupOfferIdInFilter() {
+		super();
+	}
+
+	public ProgramAssetGroupOfferIdInFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferIdInFilter");
+		kparams.add("idIn", this.idIn);
+		return kparams;
+	}
+
 }
+

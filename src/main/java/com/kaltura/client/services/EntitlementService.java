@@ -90,8 +90,9 @@ public class EntitlementService {
 	}
 
 	/**
-	 * Immediately cancel a subscription, PPV or collection. Cancel is possible only if
-	  within cancellation window and content not already consumed
+	 * Immediately cancel a subscription, PPV, collection or programAssetGroupOffer.
+	  Cancel is possible only if within cancellation window and content not already
+	  consumed
 	 * 
 	 * @param assetId The mediaFileID to cancel
 	 * @param productType The product type for the cancelation
@@ -177,8 +178,8 @@ public class EntitlementService {
 	}
 
 	/**
-	 * Immediately cancel a subscription, PPV or collection. Cancel applies regardless
-	  of cancellation window and content consumption status
+	 * Immediately cancel a subscription, PPV, collection or programAssetGroupOffer.
+	  Cancel applies regardless of cancellation window and content consumption status
 	 * 
 	 * @param assetId The mediaFileID to cancel
 	 * @param productType The product type for the cancelation
@@ -240,7 +241,8 @@ public class EntitlementService {
 	}
 
 	/**
-	 * Grant household for an entitlement for a PPV or Subscription.
+	 * Grant household for an entitlement for a PPV, Subscription or
+	  programAssetGroupOffer.
 	 * 
 	 * @param productId Identifier for the product package from which this content is offered
 	 * @param productType Product package type. Possible values: PPV, Subscription, Collection

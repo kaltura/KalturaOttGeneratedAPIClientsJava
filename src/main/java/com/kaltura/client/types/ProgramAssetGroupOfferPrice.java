@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.MetaTagOrderBy;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,69 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * ProgramAssetGroupOffer price details
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetDynamicOrder.Tokenizer.class)
-public class AssetDynamicOrder extends BaseAssetOrder {
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferPrice.Tokenizer.class)
+public class ProgramAssetGroupOfferPrice extends ProductPrice {
 	
-	public interface Tokenizer extends BaseAssetOrder.Tokenizer {
-		String name();
-		String orderBy();
-	}
-
-	/**
-	 * order by name
-	 */
-	private String name;
-	/**
-	 * order by meta asc/desc
-	 */
-	private MetaTagOrderBy orderBy;
-
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// orderBy:
-	public MetaTagOrderBy getOrderBy(){
-		return this.orderBy;
-	}
-	public void setOrderBy(MetaTagOrderBy orderBy){
-		this.orderBy = orderBy;
-	}
-
-	public void orderBy(String multirequestToken){
-		setToken("orderBy", multirequestToken);
+	public interface Tokenizer extends ProductPrice.Tokenizer {
 	}
 
 
-	public AssetDynamicOrder() {
+
+	public ProgramAssetGroupOfferPrice() {
 		super();
 	}
 
-	public AssetDynamicOrder(JsonObject jsonObject) throws APIException {
+	public ProgramAssetGroupOfferPrice(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		name = GsonParser.parseString(jsonObject.get("name"));
-		orderBy = MetaTagOrderBy.get(GsonParser.parseString(jsonObject.get("orderBy")));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetDynamicOrder");
-		kparams.add("name", this.name);
-		kparams.add("orderBy", this.orderBy);
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferPrice");
 		return kparams;
 	}
 

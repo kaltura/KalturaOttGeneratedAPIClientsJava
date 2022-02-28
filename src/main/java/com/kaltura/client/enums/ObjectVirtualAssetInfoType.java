@@ -38,7 +38,8 @@ public enum ObjectVirtualAssetInfoType implements EnumAsString {
 	SEGMENT("Segment"),
 	CATEGORY("Category"),
 	TVOD("Tvod"),
-	BOXSET("Boxset");
+	BOXSET("Boxset"),
+	PAGO("PAGO");
 
 	private String value;
 

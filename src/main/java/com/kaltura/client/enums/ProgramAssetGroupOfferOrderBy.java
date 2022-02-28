@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,29 +33,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum ProgramAssetGroupOfferOrderBy implements EnumAsString {
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseAssetOrder.Tokenizer.class)
-public abstract class BaseAssetOrder extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	private String value;
+
+	ProgramAssetGroupOfferOrderBy(String value) {
+		this.value = value;
 	}
 
-
-
-	public BaseAssetOrder() {
-		super();
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public BaseAssetOrder(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseAssetOrder");
-		return kparams;
-	}
-
+	public static ProgramAssetGroupOfferOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over ProgramAssetGroupOfferOrderBy defined values and compare the inner value with the given one:
+		for(ProgramAssetGroupOfferOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return ProgramAssetGroupOfferOrderBy.values().length > 0 ? ProgramAssetGroupOfferOrderBy.values()[0]: null;
+   }
 }
-

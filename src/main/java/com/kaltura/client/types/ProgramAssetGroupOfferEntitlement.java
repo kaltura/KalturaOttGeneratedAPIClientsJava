@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AssetOrderByStatistics;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,69 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * ProgramAssetGroupOfferEntitlement
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetStatisticsOrder.Tokenizer.class)
-public class AssetStatisticsOrder extends BaseAssetOrder {
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferEntitlement.Tokenizer.class)
+public class ProgramAssetGroupOfferEntitlement extends Entitlement {
 	
-	public interface Tokenizer extends BaseAssetOrder.Tokenizer {
-		String trendingDaysEqual();
-		String orderBy();
-	}
-
-	/**
-	 * Trending Days Equal
-	 */
-	private Integer trendingDaysEqual;
-	/**
-	 * order by meta asc/desc
-	 */
-	private AssetOrderByStatistics orderBy;
-
-	// trendingDaysEqual:
-	public Integer getTrendingDaysEqual(){
-		return this.trendingDaysEqual;
-	}
-	public void setTrendingDaysEqual(Integer trendingDaysEqual){
-		this.trendingDaysEqual = trendingDaysEqual;
-	}
-
-	public void trendingDaysEqual(String multirequestToken){
-		setToken("trendingDaysEqual", multirequestToken);
-	}
-
-	// orderBy:
-	public AssetOrderByStatistics getOrderBy(){
-		return this.orderBy;
-	}
-	public void setOrderBy(AssetOrderByStatistics orderBy){
-		this.orderBy = orderBy;
-	}
-
-	public void orderBy(String multirequestToken){
-		setToken("orderBy", multirequestToken);
+	public interface Tokenizer extends Entitlement.Tokenizer {
 	}
 
 
-	public AssetStatisticsOrder() {
+
+	public ProgramAssetGroupOfferEntitlement() {
 		super();
 	}
 
-	public AssetStatisticsOrder(JsonObject jsonObject) throws APIException {
+	public ProgramAssetGroupOfferEntitlement(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		trendingDaysEqual = GsonParser.parseInt(jsonObject.get("trendingDaysEqual"));
-		orderBy = AssetOrderByStatistics.get(GsonParser.parseString(jsonObject.get("orderBy")));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetStatisticsOrder");
-		kparams.add("trendingDaysEqual", this.trendingDaysEqual);
-		kparams.add("orderBy", this.orderBy);
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferEntitlement");
 		return kparams;
 	}
 

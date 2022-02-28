@@ -32,8 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.DynamicOrderBy;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -48,7 +46,6 @@ public class AssetFilter extends PersistedFilter {
 	
 	public interface Tokenizer extends PersistedFilter.Tokenizer {
 		DynamicOrderBy.Tokenizer dynamicOrderBy();
-		RequestBuilder.ListTokenizer<BaseAssetOrder.Tokenizer> orderingParameters();
 		String trendingDaysEqual();
 		String shouldApplyPriorityGroupsEqual();
 	}
@@ -57,10 +54,6 @@ public class AssetFilter extends PersistedFilter {
 	 * dynamicOrderBy - order by Meta
 	 */
 	private DynamicOrderBy dynamicOrderBy;
-	/**
-	 * Parameters for asset list sorting.
-	 */
-	private List<BaseAssetOrder> orderingParameters;
 	/**
 	 * Trending Days Equal
 	 */
@@ -76,14 +69,6 @@ public class AssetFilter extends PersistedFilter {
 	}
 	public void setDynamicOrderBy(DynamicOrderBy dynamicOrderBy){
 		this.dynamicOrderBy = dynamicOrderBy;
-	}
-
-	// orderingParameters:
-	public List<BaseAssetOrder> getOrderingParameters(){
-		return this.orderingParameters;
-	}
-	public void setOrderingParameters(List<BaseAssetOrder> orderingParameters){
-		this.orderingParameters = orderingParameters;
 	}
 
 	// trendingDaysEqual:
@@ -122,7 +107,6 @@ public class AssetFilter extends PersistedFilter {
 
 		// set members values:
 		dynamicOrderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("dynamicOrderBy"), DynamicOrderBy.class);
-		orderingParameters = GsonParser.parseArray(jsonObject.getAsJsonArray("orderingParameters"), BaseAssetOrder.class);
 		trendingDaysEqual = GsonParser.parseInt(jsonObject.get("trendingDaysEqual"));
 		shouldApplyPriorityGroupsEqual = GsonParser.parseBoolean(jsonObject.get("shouldApplyPriorityGroupsEqual"));
 
@@ -132,7 +116,6 @@ public class AssetFilter extends PersistedFilter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetFilter");
 		kparams.add("dynamicOrderBy", this.dynamicOrderBy);
-		kparams.add("orderingParameters", this.orderingParameters);
 		kparams.add("trendingDaysEqual", this.trendingDaysEqual);
 		kparams.add("shouldApplyPriorityGroupsEqual", this.shouldApplyPriorityGroupsEqual);
 		return kparams;
