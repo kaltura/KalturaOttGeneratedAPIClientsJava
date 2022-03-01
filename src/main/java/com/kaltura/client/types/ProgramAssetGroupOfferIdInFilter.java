@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,43 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BillingItemsType implements EnumAsString {
-	UNKNOWN("unknown"),
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	PRE_PAID("pre_paid"),
-	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection"),
-	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
 
-	private String value;
-
-	BillingItemsType(String value) {
-		this.value = value;
+/**
+ * Program asset group offer filter
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferIdInFilter.Tokenizer.class)
+public class ProgramAssetGroupOfferIdInFilter extends ProgramAssetGroupOfferFilter {
+	
+	public interface Tokenizer extends ProgramAssetGroupOfferFilter.Tokenizer {
+		String idIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Comma separated asset group offer identifiers
+	 */
+	private String idIn;
+
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
-	public static BillingItemsType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BillingItemsType defined values and compare the inner value with the given one:
-		for(BillingItemsType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
-   }
+
+	public ProgramAssetGroupOfferIdInFilter() {
+		super();
+	}
+
+	public ProgramAssetGroupOfferIdInFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferIdInFilter");
+		kparams.add("idIn", this.idIn);
+		return kparams;
+	}
+
 }
+

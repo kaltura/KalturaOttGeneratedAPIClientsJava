@@ -33,18 +33,15 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BillingItemsType implements EnumAsString {
-	UNKNOWN("unknown"),
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	PRE_PAID("pre_paid"),
-	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection"),
-	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
+public enum ProgramAssetGroupOfferOrderBy implements EnumAsString {
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
 	private String value;
 
-	BillingItemsType(String value) {
+	ProgramAssetGroupOfferOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -57,19 +54,19 @@ public enum BillingItemsType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static BillingItemsType get(String value) {
+	public static ProgramAssetGroupOfferOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over BillingItemsType defined values and compare the inner value with the given one:
-		for(BillingItemsType item: values()) {
+		// goes over ProgramAssetGroupOfferOrderBy defined values and compare the inner value with the given one:
+		for(ProgramAssetGroupOfferOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
+		return ProgramAssetGroupOfferOrderBy.values().length > 0 ? ProgramAssetGroupOfferOrderBy.values()[0]: null;
    }
 }

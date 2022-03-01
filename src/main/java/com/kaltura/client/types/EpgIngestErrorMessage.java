@@ -32,6 +32,8 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -40,70 +42,87 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * A Kaltura error message
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(EpgIngestErrorMessage.Tokenizer.class)
+public class EpgIngestErrorMessage extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
+		String message();
+		String code();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> args();
 	}
 
 	/**
-	 * Defines whether partner in question enabled core ingest status service.
+	 * The message description with arguments place holders
 	 */
-	private Boolean isSupported;
+	private String message;
 	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
+	 * The message code
 	 */
-	private Long retainingPeriod;
+	private String code;
+	/**
+	 * Message args
+	 */
+	private Map<String, StringValue> args;
 
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
+	// message:
+	public String getMessage(){
+		return this.message;
 	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
-	}
-
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
-	}
-
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
-	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
+	public void setMessage(String message){
+		this.message = message;
 	}
 
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
+
+	// code:
+	public String getCode(){
+		return this.code;
+	}
+	public void setCode(String code){
+		this.code = code;
+	}
+
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
+	}
+
+	// args:
+	public Map<String, StringValue> getArgs(){
+		return this.args;
+	}
+	public void setArgs(Map<String, StringValue> args){
+		this.args = args;
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+	public EpgIngestErrorMessage() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public EpgIngestErrorMessage(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		message = GsonParser.parseString(jsonObject.get("message"));
+		code = GsonParser.parseString(jsonObject.get("code"));
+		args = GsonParser.parseMap(jsonObject.getAsJsonObject("args"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaEpgIngestErrorMessage");
+		kparams.add("message", this.message);
+		kparams.add("code", this.code);
+		kparams.add("args", this.args);
 		return kparams;
 	}
 

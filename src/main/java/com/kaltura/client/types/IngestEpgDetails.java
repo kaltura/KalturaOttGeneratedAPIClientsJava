@@ -29,9 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.IngestEpgDetailsAggregation;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -41,69 +43,60 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestEpgDetails.Tokenizer.class)
+public class IngestEpgDetails extends IngestEpg {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
+	public interface Tokenizer extends IngestEpg.Tokenizer {
+		RequestBuilder.ListTokenizer<EpgIngestErrorMessage.Tokenizer> errors();
+		IngestEpgDetailsAggregation.Tokenizer aggregations();
 	}
 
 	/**
-	 * Defines whether partner in question enabled core ingest status service.
+	 * Errors
 	 */
-	private Boolean isSupported;
+	private List<EpgIngestErrorMessage> errors;
 	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
+	 * Aggregated counters
 	 */
-	private Long retainingPeriod;
+	private IngestEpgDetailsAggregation aggregations;
 
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
+	// errors:
+	public List<EpgIngestErrorMessage> getErrors(){
+		return this.errors;
 	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
-	}
-
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
+	public void setErrors(List<EpgIngestErrorMessage> errors){
+		this.errors = errors;
 	}
 
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
+	// aggregations:
+	public IngestEpgDetailsAggregation getAggregations(){
+		return this.aggregations;
 	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
-	}
-
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	public void setAggregations(IngestEpgDetailsAggregation aggregations){
+		this.aggregations = aggregations;
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+	public IngestEpgDetails() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public IngestEpgDetails(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		errors = GsonParser.parseArray(jsonObject.getAsJsonArray("errors"), EpgIngestErrorMessage.class);
+		aggregations = GsonParser.parseObject(jsonObject.getAsJsonObject("aggregations"), IngestEpgDetailsAggregation.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaIngestEpgDetails");
+		kparams.add("errors", this.errors);
+		kparams.add("aggregations", this.aggregations);
 		return kparams;
 	}
 

@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,43 +38,54 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BillingItemsType implements EnumAsString {
-	UNKNOWN("unknown"),
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	PRE_PAID("pre_paid"),
-	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection"),
-	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
 
-	private String value;
-
-	BillingItemsType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(IngestProgramResultsByProgramIdsFilter.Tokenizer.class)
+public class IngestProgramResultsByProgramIdsFilter extends IngestEpgProgramResultFilter {
+	
+	public interface Tokenizer extends IngestEpgProgramResultFilter.Tokenizer {
+		String programIdIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Comma seperated program id (the unique ingested program id as it determined by
+	  Kaltura BE).              Up to 20 ids are allowed.
+	 */
+	private String programIdIn;
+
+	// programIdIn:
+	public String getProgramIdIn(){
+		return this.programIdIn;
+	}
+	public void setProgramIdIn(String programIdIn){
+		this.programIdIn = programIdIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void programIdIn(String multirequestToken){
+		setToken("programIdIn", multirequestToken);
 	}
 
-	public static BillingItemsType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BillingItemsType defined values and compare the inner value with the given one:
-		for(BillingItemsType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
-   }
+
+	public IngestProgramResultsByProgramIdsFilter() {
+		super();
+	}
+
+	public IngestProgramResultsByProgramIdsFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		programIdIn = GsonParser.parseString(jsonObject.get("programIdIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaIngestProgramResultsByProgramIdsFilter");
+		kparams.add("programIdIn", this.programIdIn);
+		return kparams;
+	}
+
 }
+
