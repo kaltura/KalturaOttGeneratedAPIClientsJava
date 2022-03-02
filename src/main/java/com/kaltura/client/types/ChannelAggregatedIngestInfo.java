@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.AggregatedIngestInfo;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -41,69 +42,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ChannelAggregatedIngestInfo.Tokenizer.class)
+public class ChannelAggregatedIngestInfo extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
+		String linearChannelId();
+		AggregatedIngestInfo.Tokenizer aggregatedErrors();
 	}
 
 	/**
-	 * Defines whether partner in question enabled core ingest status service.
+	 * The linear channel asset id
 	 */
-	private Boolean isSupported;
+	private Long linearChannelId;
 	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
+	 * Aggregated error counters
 	 */
-	private Long retainingPeriod;
+	private AggregatedIngestInfo aggregatedErrors;
 
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
+	// linearChannelId:
+	public Long getLinearChannelId(){
+		return this.linearChannelId;
 	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
-	}
-
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
+	public void setLinearChannelId(Long linearChannelId){
+		this.linearChannelId = linearChannelId;
 	}
 
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
-	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
+	public void linearChannelId(String multirequestToken){
+		setToken("linearChannelId", multirequestToken);
 	}
 
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	// aggregatedErrors:
+	public AggregatedIngestInfo getAggregatedErrors(){
+		return this.aggregatedErrors;
+	}
+	public void setAggregatedErrors(AggregatedIngestInfo aggregatedErrors){
+		this.aggregatedErrors = aggregatedErrors;
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+	public ChannelAggregatedIngestInfo() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public ChannelAggregatedIngestInfo(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		linearChannelId = GsonParser.parseLong(jsonObject.get("linearChannelId"));
+		aggregatedErrors = GsonParser.parseObject(jsonObject.getAsJsonObject("aggregatedErrors"), AggregatedIngestInfo.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaChannelAggregatedIngestInfo");
+		kparams.add("linearChannelId", this.linearChannelId);
+		kparams.add("aggregatedErrors", this.aggregatedErrors);
 		return kparams;
 	}
 

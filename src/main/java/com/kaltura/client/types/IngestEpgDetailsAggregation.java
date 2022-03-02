@@ -29,9 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.AggregatedIngestInfo;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -41,69 +44,77 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestEpgDetailsAggregation.Tokenizer.class)
+public class IngestEpgDetailsAggregation extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
+		RequestBuilder.ListTokenizer<ChannelAggregatedIngestInfo.Tokenizer> linearChannels();
+		RequestBuilder.ListTokenizer<DateAggregatedIngestInfo.Tokenizer> dates();
+		AggregatedIngestInfo.Tokenizer all();
 	}
 
 	/**
-	 * Defines whether partner in question enabled core ingest status service.
+	 * Array of aggregated information per channel that included in the ingest job in
+	  question
 	 */
-	private Boolean isSupported;
+	private List<ChannelAggregatedIngestInfo> linearChannels;
 	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
+	 * Array of aggregated information per date that included in the ingest job in
+	  question
 	 */
-	private Long retainingPeriod;
+	private List<DateAggregatedIngestInfo> dates;
+	/**
+	 * All aggregated counters
+	 */
+	private AggregatedIngestInfo all;
 
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
+	// linearChannels:
+	public List<ChannelAggregatedIngestInfo> getLinearChannels(){
+		return this.linearChannels;
 	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
-	}
-
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
-	}
-
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
-	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
+	public void setLinearChannels(List<ChannelAggregatedIngestInfo> linearChannels){
+		this.linearChannels = linearChannels;
 	}
 
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	// dates:
+	public List<DateAggregatedIngestInfo> getDates(){
+		return this.dates;
+	}
+	public void setDates(List<DateAggregatedIngestInfo> dates){
+		this.dates = dates;
+	}
+
+	// all:
+	public AggregatedIngestInfo getAll(){
+		return this.all;
+	}
+	public void setAll(AggregatedIngestInfo all){
+		this.all = all;
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+	public IngestEpgDetailsAggregation() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public IngestEpgDetailsAggregation(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		linearChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("linearChannels"), ChannelAggregatedIngestInfo.class);
+		dates = GsonParser.parseArray(jsonObject.getAsJsonArray("dates"), DateAggregatedIngestInfo.class);
+		all = GsonParser.parseObject(jsonObject.getAsJsonObject("all"), AggregatedIngestInfo.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaIngestEpgDetailsAggregation");
+		kparams.add("linearChannels", this.linearChannels);
+		kparams.add("dates", this.dates);
+		kparams.add("all", this.all);
 		return kparams;
 	}
 

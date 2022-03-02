@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,69 +40,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestProgramResultsByCombinedFieldsFilter.Tokenizer.class)
+public class IngestProgramResultsByCombinedFieldsFilter extends IngestProgramResultsByRefineFilter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
+	public interface Tokenizer extends IngestProgramResultsByRefineFilter.Tokenizer {
+		String combinedFieldsValue();
 	}
 
 	/**
-	 * Defines whether partner in question enabled core ingest status service.
+	 * String value to substring search by ProgramID or ExternalProgramID or
+	  LinearChannelID.              Up to 20 ids are allowed.
 	 */
-	private Boolean isSupported;
-	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
-	 */
-	private Long retainingPeriod;
+	private String combinedFieldsValue;
 
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
+	// combinedFieldsValue:
+	public String getCombinedFieldsValue(){
+		return this.combinedFieldsValue;
 	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
+	public void setCombinedFieldsValue(String combinedFieldsValue){
+		this.combinedFieldsValue = combinedFieldsValue;
 	}
 
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
-	}
-
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
-	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
-	}
-
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	public void combinedFieldsValue(String multirequestToken){
+		setToken("combinedFieldsValue", multirequestToken);
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+	public IngestProgramResultsByCombinedFieldsFilter() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public IngestProgramResultsByCombinedFieldsFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		combinedFieldsValue = GsonParser.parseString(jsonObject.get("combinedFieldsValue"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaIngestProgramResultsByCombinedFieldsFilter");
+		kparams.add("combinedFieldsValue", this.combinedFieldsValue);
 		return kparams;
 	}
 

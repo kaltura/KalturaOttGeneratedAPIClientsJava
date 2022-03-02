@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -41,69 +39,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestEpgProgramResultFilter.Tokenizer.class)
+public class IngestEpgProgramResultFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
-	}
-
-	/**
-	 * Defines whether partner in question enabled core ingest status service.
-	 */
-	private Boolean isSupported;
-	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
-	 */
-	private Long retainingPeriod;
-
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
-	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
-	}
-
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
-	}
-
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
-	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
-	}
-
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	public interface Tokenizer extends Filter.Tokenizer {
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+
+	public IngestEpgProgramResultFilter() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public IngestEpgProgramResultFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaIngestEpgProgramResultFilter");
 		return kparams;
 	}
 

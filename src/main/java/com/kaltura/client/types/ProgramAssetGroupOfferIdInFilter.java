@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,70 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Program asset group offer filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferIdInFilter.Tokenizer.class)
+public class ProgramAssetGroupOfferIdInFilter extends ProgramAssetGroupOfferFilter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
+	public interface Tokenizer extends ProgramAssetGroupOfferFilter.Tokenizer {
+		String idIn();
 	}
 
 	/**
-	 * Defines whether partner in question enabled core ingest status service.
+	 * Comma separated asset group offer identifiers
 	 */
-	private Boolean isSupported;
-	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
-	 */
-	private Long retainingPeriod;
+	private String idIn;
 
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
 	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
-	}
-
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
-	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
-	}
-
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+	public ProgramAssetGroupOfferIdInFilter() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public ProgramAssetGroupOfferIdInFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferIdInFilter");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 

@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,70 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Program asset group offer filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusEpgConfiguration.Tokenizer.class)
-public class IngestStatusEpgConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferFilter.Tokenizer.class)
+public class ProgramAssetGroupOfferFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isSupported();
-		String retainingPeriod();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String alsoInactive();
 	}
 
 	/**
-	 * Defines whether partner in question enabled core ingest status service.
+	 * return also inactive
 	 */
-	private Boolean isSupported;
-	/**
-	 * Defines the time in seconds that the service retain information about ingest
-	  status.
-	 */
-	private Long retainingPeriod;
+	private Boolean alsoInactive;
 
-	// isSupported:
-	public Boolean getIsSupported(){
-		return this.isSupported;
+	// alsoInactive:
+	public Boolean getAlsoInactive(){
+		return this.alsoInactive;
 	}
-	public void setIsSupported(Boolean isSupported){
-		this.isSupported = isSupported;
+	public void setAlsoInactive(Boolean alsoInactive){
+		this.alsoInactive = alsoInactive;
 	}
 
-	public void isSupported(String multirequestToken){
-		setToken("isSupported", multirequestToken);
-	}
-
-	// retainingPeriod:
-	public Long getRetainingPeriod(){
-		return this.retainingPeriod;
-	}
-	public void setRetainingPeriod(Long retainingPeriod){
-		this.retainingPeriod = retainingPeriod;
-	}
-
-	public void retainingPeriod(String multirequestToken){
-		setToken("retainingPeriod", multirequestToken);
+	public void alsoInactive(String multirequestToken){
+		setToken("alsoInactive", multirequestToken);
 	}
 
 
-	public IngestStatusEpgConfiguration() {
+	public ProgramAssetGroupOfferFilter() {
 		super();
 	}
 
-	public IngestStatusEpgConfiguration(JsonObject jsonObject) throws APIException {
+	public ProgramAssetGroupOfferFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusEpgConfiguration");
-		kparams.add("isSupported", this.isSupported);
-		kparams.add("retainingPeriod", this.retainingPeriod);
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferFilter");
+		kparams.add("alsoInactive", this.alsoInactive);
 		return kparams;
 	}
 

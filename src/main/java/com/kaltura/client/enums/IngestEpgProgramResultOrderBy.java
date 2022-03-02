@@ -33,17 +33,22 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ObjectVirtualAssetInfoType implements EnumAsString {
-	SUBSCRIPTION("Subscription"),
-	SEGMENT("Segment"),
-	CATEGORY("Category"),
-	TVOD("Tvod"),
-	BOXSET("Boxset"),
-	PAGO("PAGO");
+public enum IngestEpgProgramResultOrderBy implements EnumAsString {
+	NONE("NONE"),
+	EXTERNAL_PROGRAM_ID_DESC("EXTERNAL_PROGRAM_ID_DESC"),
+	EXTERNAL_PROGRAM_ID_ASC("EXTERNAL_PROGRAM_ID_ASC"),
+	LINEAR_CHANNEL_ID_DESC("LINEAR_CHANNEL_ID_DESC"),
+	LINEAR_CHANNEL_ID_ASC("LINEAR_CHANNEL_ID_ASC"),
+	INDEX_IN_FILE_DESC("INDEX_IN_FILE_DESC"),
+	INDEX_IN_FILE_ASC("INDEX_IN_FILE_ASC"),
+	START_DATE_DESC("START_DATE_DESC"),
+	START_DATE_ASC("START_DATE_ASC"),
+	SEVERITY_DESC("SEVERITY_DESC"),
+	SEVERITY_ASC("SEVERITY_ASC");
 
 	private String value;
 
-	ObjectVirtualAssetInfoType(String value) {
+	IngestEpgProgramResultOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -56,19 +61,19 @@ public enum ObjectVirtualAssetInfoType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static ObjectVirtualAssetInfoType get(String value) {
+	public static IngestEpgProgramResultOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ObjectVirtualAssetInfoType defined values and compare the inner value with the given one:
-		for(ObjectVirtualAssetInfoType item: values()) {
+		// goes over IngestEpgProgramResultOrderBy defined values and compare the inner value with the given one:
+		for(IngestEpgProgramResultOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ObjectVirtualAssetInfoType.values().length > 0 ? ObjectVirtualAssetInfoType.values()[0]: null;
+		return IngestEpgProgramResultOrderBy.values().length > 0 ? IngestEpgProgramResultOrderBy.values()[0]: null;
    }
 }

@@ -33,17 +33,15 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ObjectVirtualAssetInfoType implements EnumAsString {
-	SUBSCRIPTION("Subscription"),
-	SEGMENT("Segment"),
-	CATEGORY("Category"),
-	TVOD("Tvod"),
-	BOXSET("Boxset"),
-	PAGO("PAGO");
+public enum ProgramAssetGroupOfferOrderBy implements EnumAsString {
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC"),
+	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC");
 
 	private String value;
 
-	ObjectVirtualAssetInfoType(String value) {
+	ProgramAssetGroupOfferOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -56,19 +54,19 @@ public enum ObjectVirtualAssetInfoType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static ObjectVirtualAssetInfoType get(String value) {
+	public static ProgramAssetGroupOfferOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ObjectVirtualAssetInfoType defined values and compare the inner value with the given one:
-		for(ObjectVirtualAssetInfoType item: values()) {
+		// goes over ProgramAssetGroupOfferOrderBy defined values and compare the inner value with the given one:
+		for(ProgramAssetGroupOfferOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ObjectVirtualAssetInfoType.values().length > 0 ? ObjectVirtualAssetInfoType.values()[0]: null;
+		return ProgramAssetGroupOfferOrderBy.values().length > 0 ? ProgramAssetGroupOfferOrderBy.values()[0]: null;
    }
 }
