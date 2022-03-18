@@ -31,9 +31,6 @@ import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.IngestByCompoundFilter;
 import com.kaltura.client.types.IngestByIdsFilter;
 import com.kaltura.client.types.IngestEpg;
-import com.kaltura.client.types.IngestEpgDetails;
-import com.kaltura.client.types.IngestEpgProgramResult;
-import com.kaltura.client.types.IngestEpgProgramResultFilter;
 import com.kaltura.client.types.IngestStatusPartnerConfiguration;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
@@ -47,27 +44,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
  */
 
 public class IngestStatusService {
-	
-	public static class GetEpgDetailsIngestStatusBuilder extends RequestBuilder<IngestEpgDetails, IngestEpgDetails.Tokenizer, GetEpgDetailsIngestStatusBuilder> {
-		
-		public GetEpgDetailsIngestStatusBuilder(long ingestId) {
-			super(IngestEpgDetails.class, "ingeststatus", "getEpgDetails");
-			params.add("ingestId", ingestId);
-		}
-		
-		public void ingestId(String multirequestToken) {
-			params.add("ingestId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Returns information about specific Ingest job
-	 * 
-	 * @param ingestId The id of the requested ingest job
-	 */
-    public static GetEpgDetailsIngestStatusBuilder getEpgDetails(long ingestId)  {
-		return new GetEpgDetailsIngestStatusBuilder(ingestId);
-	}
 	
 	public static class GetEpgListIngestStatusBuilder extends ListResponseRequestBuilder<IngestEpg, IngestEpg.Tokenizer, GetEpgListIngestStatusBuilder> {
 		
@@ -100,40 +76,6 @@ public class IngestStatusService {
 	 */
     public static GetEpgListIngestStatusBuilder getEpgList(IngestByIdsFilter idsFilter, IngestByCompoundFilter filter, FilterPager pager)  {
 		return new GetEpgListIngestStatusBuilder(idsFilter, filter, pager);
-	}
-	
-	public static class GetEpgProgramResultListIngestStatusBuilder extends ListResponseRequestBuilder<IngestEpgProgramResult, IngestEpgProgramResult.Tokenizer, GetEpgProgramResultListIngestStatusBuilder> {
-		
-		public GetEpgProgramResultListIngestStatusBuilder(long ingestId, IngestEpgProgramResultFilter filter, FilterPager pager) {
-			super(IngestEpgProgramResult.class, "ingeststatus", "getEpgProgramResultList");
-			params.add("ingestId", ingestId);
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-		
-		public void ingestId(String multirequestToken) {
-			params.add("ingestId", multirequestToken);
-		}
-	}
-
-	public static GetEpgProgramResultListIngestStatusBuilder getEpgProgramResultList(long ingestId)  {
-		return getEpgProgramResultList(ingestId, null);
-	}
-
-	public static GetEpgProgramResultListIngestStatusBuilder getEpgProgramResultList(long ingestId, IngestEpgProgramResultFilter filter)  {
-		return getEpgProgramResultList(ingestId, filter, null);
-	}
-
-	/**
-	 * Get as input ingest job id, filter and pager and response with page of filtered
-	  detailed ingest job results.
-	 * 
-	 * @param ingestId The id of the requested ingest job
-	 * @param filter Filter for Ingest program, results
-	 * @param pager Paging the request
-	 */
-    public static GetEpgProgramResultListIngestStatusBuilder getEpgProgramResultList(long ingestId, IngestEpgProgramResultFilter filter, FilterPager pager)  {
-		return new GetEpgProgramResultListIngestStatusBuilder(ingestId, filter, pager);
 	}
 	
 	public static class GetPartnerConfigurationIngestStatusBuilder extends RequestBuilder<IngestStatusPartnerConfiguration, IngestStatusPartnerConfiguration.Tokenizer, GetPartnerConfigurationIngestStatusBuilder> {
