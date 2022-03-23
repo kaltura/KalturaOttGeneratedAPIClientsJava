@@ -47,9 +47,9 @@ import java.util.Map;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CategoryItem.Tokenizer.class)
-public class CategoryItem extends CrudObject {
+public class CategoryItem extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends CrudObject.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String id();
 		String name();
 		RequestBuilder.ListTokenizer<TranslationToken.Tokenizer> multilingualName();

@@ -48,12 +48,33 @@ public class IotProfileService {
 	}
 
 	/**
-	 * Add an object
+	 * Add new KalturaIotProfile
 	 * 
-	 * @param objectToAdd Object to add
+	 * @param objectToAdd KalturaIotProfile Object to add
 	 */
     public static AddIotProfileBuilder add(IotProfile objectToAdd)  {
 		return new AddIotProfileBuilder(objectToAdd);
+	}
+	
+	public static class DeleteIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, DeleteIotProfileBuilder> {
+		
+		public DeleteIotProfileBuilder(long id) {
+			super(IotProfile.class, "iotprofile", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get existing KalturaIotProfile
+	 * 
+	 * @param id KalturaIotProfile identifier
+	 */
+    public static DeleteIotProfileBuilder delete(long id)  {
+		return new DeleteIotProfileBuilder(id);
 	}
 	
 	public static class UpdateIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, UpdateIotProfileBuilder> {
@@ -70,33 +91,12 @@ public class IotProfileService {
 	}
 
 	/**
-	 * Update an object
+	 * Update existing KalturaIotProfile
 	 * 
-	 * @param id Object ID to update
-	 * @param objectToUpdate Object to update
+	 * @param id id of KalturaIotProfile to update
+	 * @param objectToUpdate KalturaIotProfile Object to update
 	 */
     public static UpdateIotProfileBuilder update(long id, IotProfile objectToUpdate)  {
 		return new UpdateIotProfileBuilder(id, objectToUpdate);
-	}
-	
-	public static class GetIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, GetIotProfileBuilder> {
-		
-		public GetIotProfileBuilder(long id) {
-			super(IotProfile.class, "iotprofile", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Get an object
-	 * 
-	 * @param id Object ID to get
-	 */
-    public static GetIotProfileBuilder get(long id)  {
-		return new GetIotProfileBuilder(id);
 	}
 }

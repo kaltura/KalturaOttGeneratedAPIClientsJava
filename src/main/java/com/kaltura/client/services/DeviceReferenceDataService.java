@@ -52,35 +52,12 @@ public class DeviceReferenceDataService {
 	}
 
 	/**
-	 * Add an object
+	 * add DeviceReferenceData
 	 * 
-	 * @param objectToAdd Object to add
+	 * @param objectToAdd DeviceReferenceData details
 	 */
     public static AddDeviceReferenceDataBuilder add(DeviceReferenceData objectToAdd)  {
 		return new AddDeviceReferenceDataBuilder(objectToAdd);
-	}
-	
-	public static class UpdateDeviceReferenceDataBuilder extends RequestBuilder<DeviceReferenceData, DeviceReferenceData.Tokenizer, UpdateDeviceReferenceDataBuilder> {
-		
-		public UpdateDeviceReferenceDataBuilder(long id, DeviceReferenceData objectToUpdate) {
-			super(DeviceReferenceData.class, "devicereferencedata", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update an object
-	 * 
-	 * @param id Object ID to update
-	 * @param objectToUpdate Object to update
-	 */
-    public static UpdateDeviceReferenceDataBuilder update(long id, DeviceReferenceData objectToUpdate)  {
-		return new UpdateDeviceReferenceDataBuilder(id, objectToUpdate);
 	}
 	
 	public static class DeleteDeviceReferenceDataBuilder extends NullRequestBuilder {
@@ -96,9 +73,9 @@ public class DeviceReferenceDataService {
 	}
 
 	/**
-	 * Delete an object
+	 * Delete existing DeviceReferenceData
 	 * 
-	 * @param id Object ID to delete
+	 * @param id DeviceReferenceData identifier
 	 */
     public static DeleteDeviceReferenceDataBuilder delete(long id)  {
 		return new DeleteDeviceReferenceDataBuilder(id);
@@ -117,7 +94,36 @@ public class DeviceReferenceDataService {
 		return list(filter, null);
 	}
 
+	/**
+	 * Returns the list of available DeviceReferenceData
+	 * 
+	 * @param filter Filter
+	 * @param pager Pager
+	 */
     public static ListDeviceReferenceDataBuilder list(DeviceReferenceDataFilter filter, FilterPager pager)  {
 		return new ListDeviceReferenceDataBuilder(filter, pager);
+	}
+	
+	public static class UpdateDeviceReferenceDataBuilder extends RequestBuilder<DeviceReferenceData, DeviceReferenceData.Tokenizer, UpdateDeviceReferenceDataBuilder> {
+		
+		public UpdateDeviceReferenceDataBuilder(long id, DeviceReferenceData objectToUpdate) {
+			super(DeviceReferenceData.class, "devicereferencedata", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update existing DeviceReferenceData
+	 * 
+	 * @param id id of DeviceReferenceData to update
+	 * @param objectToUpdate DeviceReferenceData Object to update
+	 */
+    public static UpdateDeviceReferenceDataBuilder update(long id, DeviceReferenceData objectToUpdate)  {
+		return new UpdateDeviceReferenceDataBuilder(id, objectToUpdate);
 	}
 }

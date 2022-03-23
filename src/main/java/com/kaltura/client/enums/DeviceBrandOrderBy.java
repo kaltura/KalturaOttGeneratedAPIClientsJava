@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,56 +33,38 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum DeviceBrandOrderBy implements EnumAsString {
+	ID_ASC("ID_ASC"),
+	ID_DESC("ID_DESC");
 
-/**
- * Password policy settings filter
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
-public class PasswordPolicyFilter extends Filter {
-	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userRoleIdIn();
+	private String value;
+
+	DeviceBrandOrderBy(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Comma separated list of role Ids.
-	 */
-	private String userRoleIdIn;
-
-	// userRoleIdIn:
-	public String getUserRoleIdIn(){
-		return this.userRoleIdIn;
-	}
-	public void setUserRoleIdIn(String userRoleIdIn){
-		this.userRoleIdIn = userRoleIdIn;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public void userRoleIdIn(String multirequestToken){
-		setToken("userRoleIdIn", multirequestToken);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-
-	public PasswordPolicyFilter() {
-		super();
-	}
-
-	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPasswordPolicyFilter");
-		kparams.add("userRoleIdIn", this.userRoleIdIn);
-		return kparams;
-	}
-
+	public static DeviceBrandOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over DeviceBrandOrderBy defined values and compare the inner value with the given one:
+		for(DeviceBrandOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return DeviceBrandOrderBy.values().length > 0 ? DeviceBrandOrderBy.values()[0]: null;
+   }
 }
-

@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.DeviceFamilyType;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,25 +41,87 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CrudFilter.Tokenizer.class)
-public abstract class CrudFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(DeviceFamilyFilter.Tokenizer.class)
+public class DeviceFamilyFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
+		String idEqual();
+		String nameEqual();
+		String typeEqual();
+	}
+
+	/**
+	 * Filter the device family with this identifier.
+	 */
+	private Long idEqual;
+	/**
+	 * Filter the device family with this name.
+	 */
+	private String nameEqual;
+	/**
+	 * Filter device families of this type
+	 */
+	private DeviceFamilyType typeEqual;
+
+	// idEqual:
+	public Long getIdEqual(){
+		return this.idEqual;
+	}
+	public void setIdEqual(Long idEqual){
+		this.idEqual = idEqual;
+	}
+
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
+	}
+
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
+	}
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
+	}
+
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
+	}
+
+	// typeEqual:
+	public DeviceFamilyType getTypeEqual(){
+		return this.typeEqual;
+	}
+	public void setTypeEqual(DeviceFamilyType typeEqual){
+		this.typeEqual = typeEqual;
+	}
+
+	public void typeEqual(String multirequestToken){
+		setToken("typeEqual", multirequestToken);
 	}
 
 
-
-	public CrudFilter() {
+	public DeviceFamilyFilter() {
 		super();
 	}
 
-	public CrudFilter(JsonObject jsonObject) throws APIException {
+	public DeviceFamilyFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+		typeEqual = DeviceFamilyType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCrudFilter");
+		kparams.add("objectType", "KalturaDeviceFamilyFilter");
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("nameEqual", this.nameEqual);
+		kparams.add("typeEqual", this.typeEqual);
 		return kparams;
 	}
 

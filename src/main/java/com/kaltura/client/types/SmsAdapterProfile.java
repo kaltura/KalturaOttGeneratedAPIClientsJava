@@ -46,9 +46,9 @@ import java.util.Map;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SmsAdapterProfile.Tokenizer.class)
-public class SmsAdapterProfile extends CrudObject {
+public class SmsAdapterProfile extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends CrudObject.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String id();
 		String adapterUrl();
 		String sharedSecret();
