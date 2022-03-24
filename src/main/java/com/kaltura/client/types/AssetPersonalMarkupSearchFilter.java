@@ -25,7 +25,14 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -33,43 +40,52 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BillingItemsType implements EnumAsString {
-	UNKNOWN("unknown"),
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	PRE_PAID("pre_paid"),
-	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection"),
-	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
 
-	private String value;
-
-	BillingItemsType(String value) {
-		this.value = value;
+/**
+ * Asset Personal Markup search filter
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(AssetPersonalMarkupSearchFilter.Tokenizer.class)
+public class AssetPersonalMarkupSearchFilter extends Filter {
+	
+	public interface Tokenizer extends Filter.Tokenizer {
+		RequestBuilder.ListTokenizer<SlimAsset.Tokenizer> assetsIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * all assets to search their personal markups
+	 */
+	private List<SlimAsset> assetsIn;
+
+	// assetsIn:
+	public List<SlimAsset> getAssetsIn(){
+		return this.assetsIn;
+	}
+	public void setAssetsIn(List<SlimAsset> assetsIn){
+		this.assetsIn = assetsIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public AssetPersonalMarkupSearchFilter() {
+		super();
 	}
 
-	public static BillingItemsType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BillingItemsType defined values and compare the inner value with the given one:
-		for(BillingItemsType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
-   }
+	public AssetPersonalMarkupSearchFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		assetsIn = GsonParser.parseArray(jsonObject.getAsJsonArray("assetsIn"), SlimAsset.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaAssetPersonalMarkupSearchFilter");
+		kparams.add("assetsIn", this.assetsIn);
+		return kparams;
+	}
+
 }
+
