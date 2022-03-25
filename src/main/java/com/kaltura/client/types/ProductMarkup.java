@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceBrandType;
+import com.kaltura.client.enums.TransactionType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,101 +42,63 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Device brand details
+ * Product Markup
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceBrand.Tokenizer.class)
-public class DeviceBrand extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ProductMarkup.Tokenizer.class)
+public class ProductMarkup extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String deviceFamilyId();
-		String type();
+		String productId();
+		String productType();
+		String isEntitled();
 	}
 
 	/**
-	 * Device brand identifier
+	 * Product Id
 	 */
-	private Long id;
+	private Long productId;
 	/**
-	 * Device brand name
+	 * Product Type
 	 */
-	private String name;
+	private TransactionType productType;
 	/**
-	 * Device family identifier
+	 * Is Entitled to this product
 	 */
-	private Long deviceFamilyId;
-	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
-	 */
-	private DeviceBrandType type;
+	private Boolean isEntitled;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// productId:
+	public Long getProductId(){
+		return this.productId;
 	}
-	public void setId(Long id){
-		this.id = id;
+	// productType:
+	public TransactionType getProductType(){
+		return this.productType;
 	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	// isEntitled:
+	public Boolean getIsEntitled(){
+		return this.isEntitled;
 	}
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// deviceFamilyId:
-	public Long getDeviceFamilyId(){
-		return this.deviceFamilyId;
-	}
-	public void setDeviceFamilyId(Long deviceFamilyId){
-		this.deviceFamilyId = deviceFamilyId;
-	}
-
-	public void deviceFamilyId(String multirequestToken){
-		setToken("deviceFamilyId", multirequestToken);
-	}
-
-	// type:
-	public DeviceBrandType getType(){
-		return this.type;
-	}
-
-	public DeviceBrand() {
+	public ProductMarkup() {
 		super();
 	}
 
-	public DeviceBrand(JsonObject jsonObject) throws APIException {
+	public ProductMarkup(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		deviceFamilyId = GsonParser.parseLong(jsonObject.get("deviceFamilyId"));
-		type = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("type")));
+		productId = GsonParser.parseLong(jsonObject.get("productId"));
+		productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
+		isEntitled = GsonParser.parseBoolean(jsonObject.get("isEntitled"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceBrand");
-		kparams.add("id", this.id);
-		kparams.add("name", this.name);
-		kparams.add("deviceFamilyId", this.deviceFamilyId);
+		kparams.add("objectType", "KalturaProductMarkup");
 		return kparams;
 	}
 

@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,43 +37,32 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BillingItemsType implements EnumAsString {
-	UNKNOWN("unknown"),
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	PRE_PAID("pre_paid"),
-	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection"),
-	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
 
-	private String value;
-
-	BillingItemsType(String value) {
-		this.value = value;
+/**
+ * ProgramAssetGroupOffer price details
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferPrice.Tokenizer.class)
+public class ProgramAssetGroupOfferPrice extends ProductPrice {
+	
+	public interface Tokenizer extends ProductPrice.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public ProgramAssetGroupOfferPrice() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public ProgramAssetGroupOfferPrice(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static BillingItemsType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over BillingItemsType defined values and compare the inner value with the given one:
-		for(BillingItemsType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferPrice");
+		return kparams;
+	}
+
 }
+
