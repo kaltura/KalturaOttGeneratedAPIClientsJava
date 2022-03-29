@@ -33,14 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BundleType implements EnumAsString {
-	SUBSCRIPTION("subscription"),
-	COLLECTION("collection"),
-	PAGO("pago");
+public enum DeviceBrandType implements EnumAsString {
+	SYSTEM("System"),
+	CUSTOM("Custom");
 
 	private String value;
 
-	BundleType(String value) {
+	DeviceBrandType(String value) {
 		this.value = value;
 	}
 
@@ -53,19 +52,19 @@ public enum BundleType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static BundleType get(String value) {
+	public static DeviceBrandType get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over BundleType defined values and compare the inner value with the given one:
-		for(BundleType item: values()) {
+		// goes over DeviceBrandType defined values and compare the inner value with the given one:
+		for(DeviceBrandType item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BundleType.values().length > 0 ? BundleType.values()[0]: null;
+		return DeviceBrandType.values().length > 0 ? DeviceBrandType.values()[0]: null;
    }
 }

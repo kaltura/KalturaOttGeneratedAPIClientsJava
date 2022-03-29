@@ -33,14 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BundleType implements EnumAsString {
-	SUBSCRIPTION("subscription"),
-	COLLECTION("collection"),
-	PAGO("pago");
+public enum DeviceFamilyOrderBy implements EnumAsString {
+	ID_ASC("ID_ASC"),
+	ID_DESC("ID_DESC");
 
 	private String value;
 
-	BundleType(String value) {
+	DeviceFamilyOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -53,19 +52,19 @@ public enum BundleType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static BundleType get(String value) {
+	public static DeviceFamilyOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over BundleType defined values and compare the inner value with the given one:
-		for(BundleType item: values()) {
+		// goes over DeviceFamilyOrderBy defined values and compare the inner value with the given one:
+		for(DeviceFamilyOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BundleType.values().length > 0 ? BundleType.values()[0]: null;
+		return DeviceFamilyOrderBy.values().length > 0 ? DeviceFamilyOrderBy.values()[0]: null;
    }
 }

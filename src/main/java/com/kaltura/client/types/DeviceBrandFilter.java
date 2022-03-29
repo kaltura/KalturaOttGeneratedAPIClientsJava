@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BundleType;
+import com.kaltura.client.enums.DeviceBrandType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,36 +41,38 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BundleFilter.Tokenizer.class)
-public class BundleFilter extends AssetFilter {
+@MultiRequestBuilder.Tokenizer(DeviceBrandFilter.Tokenizer.class)
+public class DeviceBrandFilter extends Filter {
 	
-	public interface Tokenizer extends AssetFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String idEqual();
-		String typeIn();
-		String bundleTypeEqual();
+		String deviceFamilyIdEqual();
+		String nameEqual();
+		String typeEqual();
 	}
 
 	/**
-	 * Bundle Id.
+	 * Filter the device brand with this identifier.
 	 */
-	private Integer idEqual;
+	private Long idEqual;
 	/**
-	 * Comma separated list of asset types to search within.              Possible
-	  values: 0 – EPG linear programs entries, any media type ID (according to media
-	  type IDs defined dynamically in the system).              If omitted – all
-	  types should be included.
+	 * Filter the device brands with this device family&amp;#39;s identifier.
 	 */
-	private String typeIn;
+	private Long deviceFamilyIdEqual;
 	/**
-	 * bundleType - possible values: Subscription, Collection or PAGO
+	 * Filter the device brand with this name.
 	 */
-	private BundleType bundleTypeEqual;
+	private String nameEqual;
+	/**
+	 * Filter device brands of this type
+	 */
+	private DeviceBrandType typeEqual;
 
 	// idEqual:
-	public Integer getIdEqual(){
+	public Long getIdEqual(){
 		return this.idEqual;
 	}
-	public void setIdEqual(Integer idEqual){
+	public void setIdEqual(Long idEqual){
 		this.idEqual = idEqual;
 	}
 
@@ -78,53 +80,67 @@ public class BundleFilter extends AssetFilter {
 		setToken("idEqual", multirequestToken);
 	}
 
-	// typeIn:
-	public String getTypeIn(){
-		return this.typeIn;
+	// deviceFamilyIdEqual:
+	public Long getDeviceFamilyIdEqual(){
+		return this.deviceFamilyIdEqual;
 	}
-	public void setTypeIn(String typeIn){
-		this.typeIn = typeIn;
-	}
-
-	public void typeIn(String multirequestToken){
-		setToken("typeIn", multirequestToken);
+	public void setDeviceFamilyIdEqual(Long deviceFamilyIdEqual){
+		this.deviceFamilyIdEqual = deviceFamilyIdEqual;
 	}
 
-	// bundleTypeEqual:
-	public BundleType getBundleTypeEqual(){
-		return this.bundleTypeEqual;
-	}
-	public void setBundleTypeEqual(BundleType bundleTypeEqual){
-		this.bundleTypeEqual = bundleTypeEqual;
+	public void deviceFamilyIdEqual(String multirequestToken){
+		setToken("deviceFamilyIdEqual", multirequestToken);
 	}
 
-	public void bundleTypeEqual(String multirequestToken){
-		setToken("bundleTypeEqual", multirequestToken);
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
+	}
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
+	}
+
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
+	}
+
+	// typeEqual:
+	public DeviceBrandType getTypeEqual(){
+		return this.typeEqual;
+	}
+	public void setTypeEqual(DeviceBrandType typeEqual){
+		this.typeEqual = typeEqual;
+	}
+
+	public void typeEqual(String multirequestToken){
+		setToken("typeEqual", multirequestToken);
 	}
 
 
-	public BundleFilter() {
+	public DeviceBrandFilter() {
 		super();
 	}
 
-	public BundleFilter(JsonObject jsonObject) throws APIException {
+	public DeviceBrandFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
-		typeIn = GsonParser.parseString(jsonObject.get("typeIn"));
-		bundleTypeEqual = BundleType.get(GsonParser.parseString(jsonObject.get("bundleTypeEqual")));
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		deviceFamilyIdEqual = GsonParser.parseLong(jsonObject.get("deviceFamilyIdEqual"));
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+		typeEqual = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBundleFilter");
+		kparams.add("objectType", "KalturaDeviceBrandFilter");
 		kparams.add("idEqual", this.idEqual);
-		kparams.add("typeIn", this.typeIn);
-		kparams.add("bundleTypeEqual", this.bundleTypeEqual);
+		kparams.add("deviceFamilyIdEqual", this.deviceFamilyIdEqual);
+		kparams.add("nameEqual", this.nameEqual);
+		kparams.add("typeEqual", this.typeEqual);
 		return kparams;
 	}
 
