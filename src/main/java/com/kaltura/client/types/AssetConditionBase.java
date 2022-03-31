@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,25 +39,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(T.Tokenizer.class)
-public class T extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AssetConditionBase.Tokenizer.class)
+public abstract class AssetConditionBase extends Condition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends Condition.Tokenizer {
 	}
 
 
 
-	public T() {
+	public AssetConditionBase() {
 		super();
 	}
 
-	public T(JsonObject jsonObject) throws APIException {
+	public AssetConditionBase(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaT");
+		kparams.add("objectType", "KalturaAssetConditionBase");
 		return kparams;
 	}
 

@@ -43,9 +43,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CampaignFilter.Tokenizer.class)
-public class CampaignFilter extends CrudFilter {
+public class CampaignFilter extends Filter {
 	
-	public interface Tokenizer extends CrudFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 	}
 
 

@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,25 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CrudObject.Tokenizer.class)
-public abstract class CrudObject extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
+public class AssetShopCondition extends AssetConditionBase {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends AssetConditionBase.Tokenizer {
+		String value();
+	}
+
+	/**
+	 * Shop marker&amp;#39;s value
+	 */
+	private String value;
+
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
 
-
-	public CrudObject() {
+	public AssetShopCondition() {
 		super();
 	}
 
-	public CrudObject(JsonObject jsonObject) throws APIException {
+	public AssetShopCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		value = GsonParser.parseString(jsonObject.get("value"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCrudObject");
+		kparams.add("objectType", "KalturaAssetShopCondition");
+		kparams.add("value", this.value);
 		return kparams;
 	}
 

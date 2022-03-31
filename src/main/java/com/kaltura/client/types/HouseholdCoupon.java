@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdCoupon.Tokenizer.class)
-public class HouseholdCoupon extends CrudObject {
+public class HouseholdCoupon extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends CrudObject.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String code();
 		String lastUsageDate();
 	}

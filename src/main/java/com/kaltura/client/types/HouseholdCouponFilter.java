@@ -43,9 +43,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdCouponFilter.Tokenizer.class)
-public class HouseholdCouponFilter extends CrudFilter {
+public class HouseholdCouponFilter extends Filter {
 	
-	public interface Tokenizer extends CrudFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String businessModuleTypeEqual();
 		String businessModuleIdEqual();
 		String couponCode();
