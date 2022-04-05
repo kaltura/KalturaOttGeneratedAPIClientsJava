@@ -89,8 +89,9 @@ public class TransactionService {
 	}
 
 	/**
-	 * Purchase specific product or subscription for a household. Upon successful
-	  charge entitlements to use the requested product or subscription are granted.
+	 * Purchase specific product, subscription or Program asset group offer (PAGO) for
+	  a household. Upon successful charge entitlements to use the requested product or
+	  subscription are granted.
 	 * 
 	 * @param purchase Purchase properties
 	 */

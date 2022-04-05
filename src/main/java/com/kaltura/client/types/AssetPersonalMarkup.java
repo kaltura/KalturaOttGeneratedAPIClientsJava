@@ -29,10 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceBrandType;
+import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,101 +44,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Device brand details
+ * Asset Personal Markup
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceBrand.Tokenizer.class)
-public class DeviceBrand extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AssetPersonalMarkup.Tokenizer.class)
+public class AssetPersonalMarkup extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String deviceFamilyId();
-		String type();
+		String assetId();
+		String assetType();
+		RequestBuilder.ListTokenizer<ProductMarkup.Tokenizer> products();
 	}
 
 	/**
-	 * Device brand identifier
+	 * Asset Id
 	 */
-	private Long id;
+	private Long assetId;
 	/**
-	 * Device brand name
+	 * Asset Type
 	 */
-	private String name;
+	private AssetType assetType;
 	/**
-	 * Device family identifier
+	 * all related asset&amp;#39;s Product Markups
 	 */
-	private Long deviceFamilyId;
-	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
-	 */
-	private DeviceBrandType type;
+	private List<ProductMarkup> products;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// assetId:
+	public Long getAssetId(){
+		return this.assetId;
 	}
-	public void setId(Long id){
-		this.id = id;
+	// assetType:
+	public AssetType getAssetType(){
+		return this.assetType;
 	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	// products:
+	public List<ProductMarkup> getProducts(){
+		return this.products;
 	}
-
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
+	public void setProducts(List<ProductMarkup> products){
+		this.products = products;
 	}
 
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
 
-	// deviceFamilyId:
-	public Long getDeviceFamilyId(){
-		return this.deviceFamilyId;
-	}
-	public void setDeviceFamilyId(Long deviceFamilyId){
-		this.deviceFamilyId = deviceFamilyId;
-	}
-
-	public void deviceFamilyId(String multirequestToken){
-		setToken("deviceFamilyId", multirequestToken);
-	}
-
-	// type:
-	public DeviceBrandType getType(){
-		return this.type;
-	}
-
-	public DeviceBrand() {
+	public AssetPersonalMarkup() {
 		super();
 	}
 
-	public DeviceBrand(JsonObject jsonObject) throws APIException {
+	public AssetPersonalMarkup(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		deviceFamilyId = GsonParser.parseLong(jsonObject.get("deviceFamilyId"));
-		type = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("type")));
+		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+		assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
+		products = GsonParser.parseArray(jsonObject.getAsJsonArray("products"), ProductMarkup.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceBrand");
-		kparams.add("id", this.id);
-		kparams.add("name", this.name);
-		kparams.add("deviceFamilyId", this.deviceFamilyId);
+		kparams.add("objectType", "KalturaAssetPersonalMarkup");
+		kparams.add("products", this.products);
 		return kparams;
 	}
 

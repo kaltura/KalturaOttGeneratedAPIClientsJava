@@ -29,8 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceBrandType;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.DeviceFamilyType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,102 +40,88 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Device brand details
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceBrand.Tokenizer.class)
-public class DeviceBrand extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(DeviceFamilyFilter.Tokenizer.class)
+public class DeviceFamilyFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String deviceFamilyId();
-		String type();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idEqual();
+		String nameEqual();
+		String typeEqual();
 	}
 
 	/**
-	 * Device brand identifier
+	 * Filter the device family with this identifier.
 	 */
-	private Long id;
+	private Long idEqual;
 	/**
-	 * Device brand name
+	 * Filter the device family with this name.
 	 */
-	private String name;
+	private String nameEqual;
 	/**
-	 * Device family identifier
+	 * Filter device families of this type
 	 */
-	private Long deviceFamilyId;
-	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
-	 */
-	private DeviceBrandType type;
+	private DeviceFamilyType typeEqual;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// idEqual:
+	public Long getIdEqual(){
+		return this.idEqual;
 	}
-	public void setId(Long id){
-		this.id = id;
+	public void setIdEqual(Long idEqual){
+		this.idEqual = idEqual;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
 	}
 
-	// name:
-	public String getName(){
-		return this.name;
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
 	}
 
-	// deviceFamilyId:
-	public Long getDeviceFamilyId(){
-		return this.deviceFamilyId;
-	}
-	public void setDeviceFamilyId(Long deviceFamilyId){
-		this.deviceFamilyId = deviceFamilyId;
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
 	}
 
-	public void deviceFamilyId(String multirequestToken){
-		setToken("deviceFamilyId", multirequestToken);
+	// typeEqual:
+	public DeviceFamilyType getTypeEqual(){
+		return this.typeEqual;
+	}
+	public void setTypeEqual(DeviceFamilyType typeEqual){
+		this.typeEqual = typeEqual;
 	}
 
-	// type:
-	public DeviceBrandType getType(){
-		return this.type;
+	public void typeEqual(String multirequestToken){
+		setToken("typeEqual", multirequestToken);
 	}
 
-	public DeviceBrand() {
+
+	public DeviceFamilyFilter() {
 		super();
 	}
 
-	public DeviceBrand(JsonObject jsonObject) throws APIException {
+	public DeviceFamilyFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		deviceFamilyId = GsonParser.parseLong(jsonObject.get("deviceFamilyId"));
-		type = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("type")));
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+		typeEqual = DeviceFamilyType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceBrand");
-		kparams.add("id", this.id);
-		kparams.add("name", this.name);
-		kparams.add("deviceFamilyId", this.deviceFamilyId);
+		kparams.add("objectType", "KalturaDeviceFamilyFilter");
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("nameEqual", this.nameEqual);
+		kparams.add("typeEqual", this.typeEqual);
 		return kparams;
 	}
 

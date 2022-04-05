@@ -25,7 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.AssetPersonalMarkup;
+import com.kaltura.client.types.AssetPersonalMarkupSearchFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,43 +37,23 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BillingItemsType implements EnumAsString {
-	UNKNOWN("unknown"),
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	PRE_PAID("pre_paid"),
-	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection"),
-	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
 
-	private String value;
-
-	BillingItemsType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static BillingItemsType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
+public class AssetPersonalMarkupService {
+	
+	public static class ListAssetPersonalMarkupBuilder extends ListResponseRequestBuilder<AssetPersonalMarkup, AssetPersonalMarkup.Tokenizer, ListAssetPersonalMarkupBuilder> {
 		
-		// goes over BillingItemsType defined values and compare the inner value with the given one:
-		for(BillingItemsType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public ListAssetPersonalMarkupBuilder(AssetPersonalMarkupSearchFilter filter) {
+			super(AssetPersonalMarkup.class, "assetpersonalmarkup", "list");
+			params.add("filter", filter);
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
-   }
+	}
+
+	/**
+	 * Response with list of assetPersonalMarkup.
+	 * 
+	 * @param filter Filter pager
+	 */
+    public static ListAssetPersonalMarkupBuilder list(AssetPersonalMarkupSearchFilter filter)  {
+		return new ListAssetPersonalMarkupBuilder(filter);
+	}
 }

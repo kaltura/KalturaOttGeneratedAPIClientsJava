@@ -33,18 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum BillingItemsType implements EnumAsString {
-	UNKNOWN("unknown"),
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	PRE_PAID("pre_paid"),
-	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection"),
-	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
+public enum DeviceFamilyOrderBy implements EnumAsString {
+	ID_ASC("ID_ASC"),
+	ID_DESC("ID_DESC");
 
 	private String value;
 
-	BillingItemsType(String value) {
+	DeviceFamilyOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -57,19 +52,19 @@ public enum BillingItemsType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static BillingItemsType get(String value) {
+	public static DeviceFamilyOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over BillingItemsType defined values and compare the inner value with the given one:
-		for(BillingItemsType item: values()) {
+		// goes over DeviceFamilyOrderBy defined values and compare the inner value with the given one:
+		for(DeviceFamilyOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return BillingItemsType.values().length > 0 ? BillingItemsType.values()[0]: null;
+		return DeviceFamilyOrderBy.values().length > 0 ? DeviceFamilyOrderBy.values()[0]: null;
    }
 }
