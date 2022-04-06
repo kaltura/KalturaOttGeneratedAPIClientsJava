@@ -95,7 +95,7 @@ public class HouseholdSegmentService {
 	/**
 	 * Gets all HouseholdSegment items for a household
 	 * 
-	 * @param filter Request filter
+	 * @param filter Filter
 	 */
     public static ListHouseholdSegmentBuilder list(HouseholdSegmentFilter filter)  {
 		return new ListHouseholdSegmentBuilder(filter);

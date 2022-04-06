@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.DeviceFamilyType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,53 +40,88 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Password policy settings filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
-public class PasswordPolicyFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(DeviceFamilyFilter.Tokenizer.class)
+public class DeviceFamilyFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String userRoleIdIn();
+		String idEqual();
+		String nameEqual();
+		String typeEqual();
 	}
 
 	/**
-	 * Comma separated list of role Ids.
+	 * Filter the device family with this identifier.
 	 */
-	private String userRoleIdIn;
+	private Long idEqual;
+	/**
+	 * Filter the device family with this name.
+	 */
+	private String nameEqual;
+	/**
+	 * Filter device families of this type
+	 */
+	private DeviceFamilyType typeEqual;
 
-	// userRoleIdIn:
-	public String getUserRoleIdIn(){
-		return this.userRoleIdIn;
+	// idEqual:
+	public Long getIdEqual(){
+		return this.idEqual;
 	}
-	public void setUserRoleIdIn(String userRoleIdIn){
-		this.userRoleIdIn = userRoleIdIn;
+	public void setIdEqual(Long idEqual){
+		this.idEqual = idEqual;
 	}
 
-	public void userRoleIdIn(String multirequestToken){
-		setToken("userRoleIdIn", multirequestToken);
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
+	}
+
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
+	}
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
+	}
+
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
+	}
+
+	// typeEqual:
+	public DeviceFamilyType getTypeEqual(){
+		return this.typeEqual;
+	}
+	public void setTypeEqual(DeviceFamilyType typeEqual){
+		this.typeEqual = typeEqual;
+	}
+
+	public void typeEqual(String multirequestToken){
+		setToken("typeEqual", multirequestToken);
 	}
 
 
-	public PasswordPolicyFilter() {
+	public DeviceFamilyFilter() {
 		super();
 	}
 
-	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
+	public DeviceFamilyFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+		typeEqual = DeviceFamilyType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPasswordPolicyFilter");
-		kparams.add("userRoleIdIn", this.userRoleIdIn);
+		kparams.add("objectType", "KalturaDeviceFamilyFilter");
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("nameEqual", this.nameEqual);
+		kparams.add("typeEqual", this.typeEqual);
 		return kparams;
 	}
 

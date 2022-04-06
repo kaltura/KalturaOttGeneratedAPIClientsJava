@@ -40,9 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CategoryVersionFilter.Tokenizer.class)
-public class CategoryVersionFilter extends CrudFilter {
+public class CategoryVersionFilter extends Filter {
 	
-	public interface Tokenizer extends CrudFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 	}
 
 

@@ -29,8 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,52 +44,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Password policy settings filter
+ * Asset Personal Markup
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
-public class PasswordPolicyFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(AssetPersonalMarkup.Tokenizer.class)
+public class AssetPersonalMarkup extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userRoleIdIn();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String assetId();
+		String assetType();
+		RequestBuilder.ListTokenizer<ProductMarkup.Tokenizer> products();
 	}
 
 	/**
-	 * Comma separated list of role Ids.
+	 * Asset Id
 	 */
-	private String userRoleIdIn;
+	private Long assetId;
+	/**
+	 * Asset Type
+	 */
+	private AssetType assetType;
+	/**
+	 * all related asset&amp;#39;s Product Markups
+	 */
+	private List<ProductMarkup> products;
 
-	// userRoleIdIn:
-	public String getUserRoleIdIn(){
-		return this.userRoleIdIn;
+	// assetId:
+	public Long getAssetId(){
+		return this.assetId;
 	}
-	public void setUserRoleIdIn(String userRoleIdIn){
-		this.userRoleIdIn = userRoleIdIn;
+	// assetType:
+	public AssetType getAssetType(){
+		return this.assetType;
+	}
+	// products:
+	public List<ProductMarkup> getProducts(){
+		return this.products;
+	}
+	public void setProducts(List<ProductMarkup> products){
+		this.products = products;
 	}
 
-	public void userRoleIdIn(String multirequestToken){
-		setToken("userRoleIdIn", multirequestToken);
-	}
 
-
-	public PasswordPolicyFilter() {
+	public AssetPersonalMarkup() {
 		super();
 	}
 
-	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
+	public AssetPersonalMarkup(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
+		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+		assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
+		products = GsonParser.parseArray(jsonObject.getAsJsonArray("products"), ProductMarkup.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPasswordPolicyFilter");
-		kparams.add("userRoleIdIn", this.userRoleIdIn);
+		kparams.add("objectType", "KalturaAssetPersonalMarkup");
+		kparams.add("products", this.products);
 		return kparams;
 	}
 

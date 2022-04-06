@@ -40,52 +40,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Password policy settings filter
+ * IP V6 range condition
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
-public class PasswordPolicyFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(IpV6RangeCondition.Tokenizer.class)
+public class IpV6RangeCondition extends Condition {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userRoleIdIn();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String fromIP();
+		String toIP();
 	}
 
 	/**
-	 * Comma separated list of role Ids.
+	 * From IP address range
 	 */
-	private String userRoleIdIn;
+	private String fromIP;
+	/**
+	 * TO IP address range
+	 */
+	private String toIP;
 
-	// userRoleIdIn:
-	public String getUserRoleIdIn(){
-		return this.userRoleIdIn;
+	// fromIP:
+	public String getFromIP(){
+		return this.fromIP;
 	}
-	public void setUserRoleIdIn(String userRoleIdIn){
-		this.userRoleIdIn = userRoleIdIn;
+	public void setFromIP(String fromIP){
+		this.fromIP = fromIP;
 	}
 
-	public void userRoleIdIn(String multirequestToken){
-		setToken("userRoleIdIn", multirequestToken);
+	public void fromIP(String multirequestToken){
+		setToken("fromIP", multirequestToken);
+	}
+
+	// toIP:
+	public String getToIP(){
+		return this.toIP;
+	}
+	public void setToIP(String toIP){
+		this.toIP = toIP;
+	}
+
+	public void toIP(String multirequestToken){
+		setToken("toIP", multirequestToken);
 	}
 
 
-	public PasswordPolicyFilter() {
+	public IpV6RangeCondition() {
 		super();
 	}
 
-	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
+	public IpV6RangeCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
+		fromIP = GsonParser.parseString(jsonObject.get("fromIP"));
+		toIP = GsonParser.parseString(jsonObject.get("toIP"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPasswordPolicyFilter");
-		kparams.add("userRoleIdIn", this.userRoleIdIn);
+		kparams.add("objectType", "KalturaIpV6RangeCondition");
+		kparams.add("fromIP", this.fromIP);
+		kparams.add("toIP", this.toIP);
 		return kparams;
 	}
 
