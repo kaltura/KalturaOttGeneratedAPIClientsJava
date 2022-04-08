@@ -40,9 +40,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SmsAdapterProfileFilter.Tokenizer.class)
-public class SmsAdapterProfileFilter extends CrudFilter {
+public class SmsAdapterProfileFilter extends Filter {
 	
-	public interface Tokenizer extends CrudFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 	}
 
 

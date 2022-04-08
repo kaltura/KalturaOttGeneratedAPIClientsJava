@@ -38,26 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * ProgramAssetGroupOfferEntitlement
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CrudFilter.Tokenizer.class)
-public abstract class CrudFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferEntitlement.Tokenizer.class)
+public class ProgramAssetGroupOfferEntitlement extends Entitlement {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends Entitlement.Tokenizer {
 	}
 
 
 
-	public CrudFilter() {
+	public ProgramAssetGroupOfferEntitlement() {
 		super();
 	}
 
-	public CrudFilter(JsonObject jsonObject) throws APIException {
+	public ProgramAssetGroupOfferEntitlement(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCrudFilter");
+		kparams.add("objectType", "KalturaProgramAssetGroupOfferEntitlement");
 		return kparams;
 	}
 

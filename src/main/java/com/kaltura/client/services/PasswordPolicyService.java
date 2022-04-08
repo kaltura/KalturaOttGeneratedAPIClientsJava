@@ -51,35 +51,12 @@ public class PasswordPolicyService {
 	}
 
 	/**
-	 * Add an object
+	 * Add new KalturaPasswordPolicy
 	 * 
-	 * @param objectToAdd Object to add
+	 * @param objectToAdd KalturaPasswordPolicy Object to add
 	 */
     public static AddPasswordPolicyBuilder add(PasswordPolicy objectToAdd)  {
 		return new AddPasswordPolicyBuilder(objectToAdd);
-	}
-	
-	public static class UpdatePasswordPolicyBuilder extends RequestBuilder<PasswordPolicy, PasswordPolicy.Tokenizer, UpdatePasswordPolicyBuilder> {
-		
-		public UpdatePasswordPolicyBuilder(long id, PasswordPolicy objectToUpdate) {
-			super(PasswordPolicy.class, "passwordpolicy", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update an object
-	 * 
-	 * @param id Object ID to update
-	 * @param objectToUpdate Object to update
-	 */
-    public static UpdatePasswordPolicyBuilder update(long id, PasswordPolicy objectToUpdate)  {
-		return new UpdatePasswordPolicyBuilder(id, objectToUpdate);
 	}
 	
 	public static class DeletePasswordPolicyBuilder extends NullRequestBuilder {
@@ -95,9 +72,9 @@ public class PasswordPolicyService {
 	}
 
 	/**
-	 * Delete an object
+	 * Delete existing PasswordPolicy
 	 * 
-	 * @param id Object ID to delete
+	 * @param id PasswordPolicy identifier
 	 */
     public static DeletePasswordPolicyBuilder delete(long id)  {
 		return new DeletePasswordPolicyBuilder(id);
@@ -115,7 +92,35 @@ public class PasswordPolicyService {
 		return list(null);
 	}
 
+	/**
+	 * Returns the list of available KalturaPasswordPolicy
+	 * 
+	 * @param filter Filter
+	 */
     public static ListPasswordPolicyBuilder list(PasswordPolicyFilter filter)  {
 		return new ListPasswordPolicyBuilder(filter);
+	}
+	
+	public static class UpdatePasswordPolicyBuilder extends RequestBuilder<PasswordPolicy, PasswordPolicy.Tokenizer, UpdatePasswordPolicyBuilder> {
+		
+		public UpdatePasswordPolicyBuilder(long id, PasswordPolicy objectToUpdate) {
+			super(PasswordPolicy.class, "passwordpolicy", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update existing KalturaPasswordPolicy
+	 * 
+	 * @param id id of KalturaPasswordPolicy to update
+	 * @param objectToUpdate KalturaPasswordPolicy Object to update
+	 */
+    public static UpdatePasswordPolicyBuilder update(long id, PasswordPolicy objectToUpdate)  {
+		return new UpdatePasswordPolicyBuilder(id, objectToUpdate);
 	}
 }

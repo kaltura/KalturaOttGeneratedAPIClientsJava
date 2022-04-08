@@ -41,9 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DynamicList.Tokenizer.class)
-public class DynamicList extends CrudObject {
+public class DynamicList extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends CrudObject.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String id();
 		String createDate();
 		String updateDate();

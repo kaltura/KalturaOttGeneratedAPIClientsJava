@@ -39,7 +39,8 @@ public enum BillingItemsType implements EnumAsString {
 	SUBSCRIPTION("subscription"),
 	PRE_PAID("pre_paid"),
 	PRE_PAID_EXPIRED("pre_paid_expired"),
-	COLLECTION("collection");
+	COLLECTION("collection"),
+	PROGRAM_ASSET_GROUP_OFFER("program_asset_group_offer");
 
 	private String value;
 

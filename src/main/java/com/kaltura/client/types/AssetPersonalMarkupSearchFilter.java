@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,52 +42,48 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Password policy settings filter
+ * Asset Personal Markup search filter
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
-public class PasswordPolicyFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(AssetPersonalMarkupSearchFilter.Tokenizer.class)
+public class AssetPersonalMarkupSearchFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String userRoleIdIn();
+		RequestBuilder.ListTokenizer<SlimAsset.Tokenizer> assetsIn();
 	}
 
 	/**
-	 * Comma separated list of role Ids.
+	 * all assets to search their personal markups
 	 */
-	private String userRoleIdIn;
+	private List<SlimAsset> assetsIn;
 
-	// userRoleIdIn:
-	public String getUserRoleIdIn(){
-		return this.userRoleIdIn;
+	// assetsIn:
+	public List<SlimAsset> getAssetsIn(){
+		return this.assetsIn;
 	}
-	public void setUserRoleIdIn(String userRoleIdIn){
-		this.userRoleIdIn = userRoleIdIn;
-	}
-
-	public void userRoleIdIn(String multirequestToken){
-		setToken("userRoleIdIn", multirequestToken);
+	public void setAssetsIn(List<SlimAsset> assetsIn){
+		this.assetsIn = assetsIn;
 	}
 
 
-	public PasswordPolicyFilter() {
+	public AssetPersonalMarkupSearchFilter() {
 		super();
 	}
 
-	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
+	public AssetPersonalMarkupSearchFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
+		assetsIn = GsonParser.parseArray(jsonObject.getAsJsonArray("assetsIn"), SlimAsset.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPasswordPolicyFilter");
-		kparams.add("userRoleIdIn", this.userRoleIdIn);
+		kparams.add("objectType", "KalturaAssetPersonalMarkupSearchFilter");
+		kparams.add("assetsIn", this.assetsIn);
 		return kparams;
 	}
 

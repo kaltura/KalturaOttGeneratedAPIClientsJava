@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.DeviceFamilyType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,84 +40,88 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Kaltura Session Characteristic
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SessionCharacteristic.Tokenizer.class)
-public class SessionCharacteristic extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(DeviceFamilyFilter.Tokenizer.class)
+public class DeviceFamilyFilter extends Filter {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String regionId();
-		String userSegmentsIds();
-		String userRolesIds();
-		String userSessionProfilesIds();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idEqual();
+		String nameEqual();
+		String typeEqual();
 	}
 
 	/**
-	 * Session characteristic identifier
+	 * Filter the device family with this identifier.
 	 */
-	private String id;
+	private Long idEqual;
 	/**
-	 * Region identifier
+	 * Filter the device family with this name.
 	 */
-	private Integer regionId;
+	private String nameEqual;
 	/**
-	 * Comma-separated list of user segments identifiers
+	 * Filter device families of this type
 	 */
-	private String userSegmentsIds;
-	/**
-	 * Comma-separated list of user roles identifiers
-	 */
-	private String userRolesIds;
-	/**
-	 * Comma-separated list of user session profiles identifiers
-	 */
-	private String userSessionProfilesIds;
+	private DeviceFamilyType typeEqual;
 
-	// id:
-	public String getId(){
-		return this.id;
+	// idEqual:
+	public Long getIdEqual(){
+		return this.idEqual;
 	}
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
-	}
-	// userSegmentsIds:
-	public String getUserSegmentsIds(){
-		return this.userSegmentsIds;
-	}
-	// userRolesIds:
-	public String getUserRolesIds(){
-		return this.userRolesIds;
-	}
-	// userSessionProfilesIds:
-	public String getUserSessionProfilesIds(){
-		return this.userSessionProfilesIds;
+	public void setIdEqual(Long idEqual){
+		this.idEqual = idEqual;
 	}
 
-	public SessionCharacteristic() {
+	public void idEqual(String multirequestToken){
+		setToken("idEqual", multirequestToken);
+	}
+
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
+	}
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
+	}
+
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
+	}
+
+	// typeEqual:
+	public DeviceFamilyType getTypeEqual(){
+		return this.typeEqual;
+	}
+	public void setTypeEqual(DeviceFamilyType typeEqual){
+		this.typeEqual = typeEqual;
+	}
+
+	public void typeEqual(String multirequestToken){
+		setToken("typeEqual", multirequestToken);
+	}
+
+
+	public DeviceFamilyFilter() {
 		super();
 	}
 
-	public SessionCharacteristic(JsonObject jsonObject) throws APIException {
+	public DeviceFamilyFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseString(jsonObject.get("id"));
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		userSegmentsIds = GsonParser.parseString(jsonObject.get("userSegmentsIds"));
-		userRolesIds = GsonParser.parseString(jsonObject.get("userRolesIds"));
-		userSessionProfilesIds = GsonParser.parseString(jsonObject.get("userSessionProfilesIds"));
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+		typeEqual = DeviceFamilyType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSessionCharacteristic");
+		kparams.add("objectType", "KalturaDeviceFamilyFilter");
+		kparams.add("idEqual", this.idEqual);
+		kparams.add("nameEqual", this.nameEqual);
+		kparams.add("typeEqual", this.typeEqual);
 		return kparams;
 	}
 

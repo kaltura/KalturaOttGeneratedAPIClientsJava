@@ -29,6 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.TransactionType;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,26 +41,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Product Markup
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CrudObject.Tokenizer.class)
-public abstract class CrudObject extends OTTObjectSupportNullable {
+@MultiRequestBuilder.Tokenizer(ProductMarkup.Tokenizer.class)
+public class ProductMarkup extends ObjectBase {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String productId();
+		String productType();
+		String isEntitled();
 	}
 
+	/**
+	 * Product Id
+	 */
+	private Long productId;
+	/**
+	 * Product Type
+	 */
+	private TransactionType productType;
+	/**
+	 * Is Entitled to this product
+	 */
+	private Boolean isEntitled;
 
+	// productId:
+	public Long getProductId(){
+		return this.productId;
+	}
+	// productType:
+	public TransactionType getProductType(){
+		return this.productType;
+	}
+	// isEntitled:
+	public Boolean getIsEntitled(){
+		return this.isEntitled;
+	}
 
-	public CrudObject() {
+	public ProductMarkup() {
 		super();
 	}
 
-	public CrudObject(JsonObject jsonObject) throws APIException {
+	public ProductMarkup(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		productId = GsonParser.parseLong(jsonObject.get("productId"));
+		productType = TransactionType.get(GsonParser.parseString(jsonObject.get("productType")));
+		isEntitled = GsonParser.parseBoolean(jsonObject.get("isEntitled"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCrudObject");
+		kparams.add("objectType", "KalturaProductMarkup");
 		return kparams;
 	}
 
