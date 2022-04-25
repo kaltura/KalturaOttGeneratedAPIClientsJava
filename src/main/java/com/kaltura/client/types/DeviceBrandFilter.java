@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.DeviceBrandType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,33 +41,38 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(EventNotificationFilter.Tokenizer.class)
-public class EventNotificationFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(DeviceBrandFilter.Tokenizer.class)
+public class DeviceBrandFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String idEqual();
-		String objectIdEqual();
-		String eventObjectTypeEqual();
+		String deviceFamilyIdEqual();
+		String nameEqual();
+		String typeEqual();
 	}
 
 	/**
-	 * Indicates which event notification to return by their event notifications Id.
+	 * Filter the device brand with this identifier.
 	 */
-	private String idEqual;
+	private Long idEqual;
 	/**
-	 * Indicates which objectId to return by their event notifications.
+	 * Filter the device brands with this device family&amp;#39;s identifier.
 	 */
-	private Long objectIdEqual;
+	private Long deviceFamilyIdEqual;
 	/**
-	 * Indicates which objectType to return by their event notifications.
+	 * Filter the device brand with this name.
 	 */
-	private String eventObjectTypeEqual;
+	private String nameEqual;
+	/**
+	 * Filter device brands of this type
+	 */
+	private DeviceBrandType typeEqual;
 
 	// idEqual:
-	public String getIdEqual(){
+	public Long getIdEqual(){
 		return this.idEqual;
 	}
-	public void setIdEqual(String idEqual){
+	public void setIdEqual(Long idEqual){
 		this.idEqual = idEqual;
 	}
 
@@ -74,53 +80,67 @@ public class EventNotificationFilter extends Filter {
 		setToken("idEqual", multirequestToken);
 	}
 
-	// objectIdEqual:
-	public Long getObjectIdEqual(){
-		return this.objectIdEqual;
+	// deviceFamilyIdEqual:
+	public Long getDeviceFamilyIdEqual(){
+		return this.deviceFamilyIdEqual;
 	}
-	public void setObjectIdEqual(Long objectIdEqual){
-		this.objectIdEqual = objectIdEqual;
-	}
-
-	public void objectIdEqual(String multirequestToken){
-		setToken("objectIdEqual", multirequestToken);
+	public void setDeviceFamilyIdEqual(Long deviceFamilyIdEqual){
+		this.deviceFamilyIdEqual = deviceFamilyIdEqual;
 	}
 
-	// eventObjectTypeEqual:
-	public String getEventObjectTypeEqual(){
-		return this.eventObjectTypeEqual;
-	}
-	public void setEventObjectTypeEqual(String eventObjectTypeEqual){
-		this.eventObjectTypeEqual = eventObjectTypeEqual;
+	public void deviceFamilyIdEqual(String multirequestToken){
+		setToken("deviceFamilyIdEqual", multirequestToken);
 	}
 
-	public void eventObjectTypeEqual(String multirequestToken){
-		setToken("eventObjectTypeEqual", multirequestToken);
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
+	}
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
+	}
+
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
+	}
+
+	// typeEqual:
+	public DeviceBrandType getTypeEqual(){
+		return this.typeEqual;
+	}
+	public void setTypeEqual(DeviceBrandType typeEqual){
+		this.typeEqual = typeEqual;
+	}
+
+	public void typeEqual(String multirequestToken){
+		setToken("typeEqual", multirequestToken);
 	}
 
 
-	public EventNotificationFilter() {
+	public DeviceBrandFilter() {
 		super();
 	}
 
-	public EventNotificationFilter(JsonObject jsonObject) throws APIException {
+	public DeviceBrandFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseString(jsonObject.get("idEqual"));
-		objectIdEqual = GsonParser.parseLong(jsonObject.get("objectIdEqual"));
-		eventObjectTypeEqual = GsonParser.parseString(jsonObject.get("eventObjectTypeEqual"));
+		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
+		deviceFamilyIdEqual = GsonParser.parseLong(jsonObject.get("deviceFamilyIdEqual"));
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+		typeEqual = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaEventNotificationFilter");
+		kparams.add("objectType", "KalturaDeviceBrandFilter");
 		kparams.add("idEqual", this.idEqual);
-		kparams.add("objectIdEqual", this.objectIdEqual);
-		kparams.add("eventObjectTypeEqual", this.eventObjectTypeEqual);
+		kparams.add("deviceFamilyIdEqual", this.deviceFamilyIdEqual);
+		kparams.add("nameEqual", this.nameEqual);
+		kparams.add("typeEqual", this.typeEqual);
 		return kparams;
 	}
 

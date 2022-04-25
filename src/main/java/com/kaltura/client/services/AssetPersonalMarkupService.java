@@ -25,12 +25,11 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.AssetPersonalMarkup;
+import com.kaltura.client.types.AssetPersonalMarkupSearchFilter;
+import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,55 +38,22 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Password policy settings filter
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
-public class PasswordPolicyFilter extends Filter {
+public class AssetPersonalMarkupService {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userRoleIdIn();
+	public static class ListAssetPersonalMarkupBuilder extends ListResponseRequestBuilder<AssetPersonalMarkup, AssetPersonalMarkup.Tokenizer, ListAssetPersonalMarkupBuilder> {
+		
+		public ListAssetPersonalMarkupBuilder(AssetPersonalMarkupSearchFilter filter) {
+			super(AssetPersonalMarkup.class, "assetpersonalmarkup", "list");
+			params.add("filter", filter);
+		}
 	}
 
 	/**
-	 * Comma separated list of role Ids.
+	 * Response with list of assetPersonalMarkup.
+	 * 
+	 * @param filter Filter pager
 	 */
-	private String userRoleIdIn;
-
-	// userRoleIdIn:
-	public String getUserRoleIdIn(){
-		return this.userRoleIdIn;
+    public static ListAssetPersonalMarkupBuilder list(AssetPersonalMarkupSearchFilter filter)  {
+		return new ListAssetPersonalMarkupBuilder(filter);
 	}
-	public void setUserRoleIdIn(String userRoleIdIn){
-		this.userRoleIdIn = userRoleIdIn;
-	}
-
-	public void userRoleIdIn(String multirequestToken){
-		setToken("userRoleIdIn", multirequestToken);
-	}
-
-
-	public PasswordPolicyFilter() {
-		super();
-	}
-
-	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPasswordPolicyFilter");
-		kparams.add("userRoleIdIn", this.userRoleIdIn);
-		return kparams;
-	}
-
 }
-

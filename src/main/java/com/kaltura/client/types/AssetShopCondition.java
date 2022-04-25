@@ -39,53 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Password policy settings filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PasswordPolicyFilter.Tokenizer.class)
-public class PasswordPolicyFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
+public class AssetShopCondition extends AssetConditionBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String userRoleIdIn();
+	public interface Tokenizer extends AssetConditionBase.Tokenizer {
+		String value();
 	}
 
 	/**
-	 * Comma separated list of role Ids.
+	 * Shop marker&amp;#39;s value
 	 */
-	private String userRoleIdIn;
+	private String value;
 
-	// userRoleIdIn:
-	public String getUserRoleIdIn(){
-		return this.userRoleIdIn;
+	// value:
+	public String getValue(){
+		return this.value;
 	}
-	public void setUserRoleIdIn(String userRoleIdIn){
-		this.userRoleIdIn = userRoleIdIn;
-	}
-
-	public void userRoleIdIn(String multirequestToken){
-		setToken("userRoleIdIn", multirequestToken);
+	public void setValue(String value){
+		this.value = value;
 	}
 
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
+	}
 
-	public PasswordPolicyFilter() {
+
+	public AssetShopCondition() {
 		super();
 	}
 
-	public PasswordPolicyFilter(JsonObject jsonObject) throws APIException {
+	public AssetShopCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		userRoleIdIn = GsonParser.parseString(jsonObject.get("userRoleIdIn"));
+		value = GsonParser.parseString(jsonObject.get("value"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPasswordPolicyFilter");
-		kparams.add("userRoleIdIn", this.userRoleIdIn);
+		kparams.add("objectType", "KalturaAssetShopCondition");
+		kparams.add("value", this.value);
 		return kparams;
 	}
 
