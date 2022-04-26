@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(IotProfileAws.Tokenizer.class)
-public class IotProfileAws extends CrudObject {
+public class IotProfileAws extends OTTObjectSupportNullable {
 	
-	public interface Tokenizer extends CrudObject.Tokenizer {
+	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
 		String iotEndPoint();
 		String accessKeyId();
 		String secretAccessKey();

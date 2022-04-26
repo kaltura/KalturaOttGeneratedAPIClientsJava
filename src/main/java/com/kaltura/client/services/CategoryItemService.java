@@ -60,29 +60,6 @@ public class CategoryItemService {
 		return new AddCategoryItemBuilder(objectToAdd);
 	}
 	
-	public static class UpdateCategoryItemBuilder extends RequestBuilder<CategoryItem, CategoryItem.Tokenizer, UpdateCategoryItemBuilder> {
-		
-		public UpdateCategoryItemBuilder(long id, CategoryItem objectToUpdate) {
-			super(CategoryItem.class, "categoryitem", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * categoryItem update
-	 * 
-	 * @param id Category identifier
-	 * @param objectToUpdate categoryItem details
-	 */
-    public static UpdateCategoryItemBuilder update(long id, CategoryItem objectToUpdate)  {
-		return new UpdateCategoryItemBuilder(id, objectToUpdate);
-	}
-	
 	public static class DeleteCategoryItemBuilder extends NullRequestBuilder {
 		
 		public DeleteCategoryItemBuilder(long id) {
@@ -124,10 +101,33 @@ public class CategoryItemService {
 	/**
 	 * Gets all categoryItem items
 	 * 
-	 * @param filter Request filter
-	 * @param pager Request pager
+	 * @param filter Filter
+	 * @param pager Pager
 	 */
     public static ListCategoryItemBuilder list(CategoryItemFilter filter, FilterPager pager)  {
 		return new ListCategoryItemBuilder(filter, pager);
+	}
+	
+	public static class UpdateCategoryItemBuilder extends RequestBuilder<CategoryItem, CategoryItem.Tokenizer, UpdateCategoryItemBuilder> {
+		
+		public UpdateCategoryItemBuilder(long id, CategoryItem objectToUpdate) {
+			super(CategoryItem.class, "categoryitem", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * categoryItem update
+	 * 
+	 * @param id Category identifier
+	 * @param objectToUpdate categoryItem details
+	 */
+    public static UpdateCategoryItemBuilder update(long id, CategoryItem objectToUpdate)  {
+		return new UpdateCategoryItemBuilder(id, objectToUpdate);
 	}
 }
