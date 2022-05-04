@@ -51,12 +51,68 @@ public class SmsAdapterProfileService {
 	}
 
 	/**
-	 * SmsAdapterProfile add
+	 * Add an object
 	 * 
-	 * @param objectToAdd SmsAdapterProfile details
+	 * @param objectToAdd Object to add
 	 */
     public static AddSmsAdapterProfileBuilder add(SmsAdapterProfile objectToAdd)  {
 		return new AddSmsAdapterProfileBuilder(objectToAdd);
+	}
+	
+	public static class UpdateSmsAdapterProfileBuilder extends RequestBuilder<SmsAdapterProfile, SmsAdapterProfile.Tokenizer, UpdateSmsAdapterProfileBuilder> {
+		
+		public UpdateSmsAdapterProfileBuilder(long id, SmsAdapterProfile objectToUpdate) {
+			super(SmsAdapterProfile.class, "smsadapterprofile", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update an object
+	 * 
+	 * @param id Object ID to update
+	 * @param objectToUpdate Object to update
+	 */
+    public static UpdateSmsAdapterProfileBuilder update(long id, SmsAdapterProfile objectToUpdate)  {
+		return new UpdateSmsAdapterProfileBuilder(id, objectToUpdate);
+	}
+	
+	public static class GetSmsAdapterProfileBuilder extends RequestBuilder<SmsAdapterProfile, SmsAdapterProfile.Tokenizer, GetSmsAdapterProfileBuilder> {
+		
+		public GetSmsAdapterProfileBuilder(long id) {
+			super(SmsAdapterProfile.class, "smsadapterprofile", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get an object
+	 * 
+	 * @param id Object ID to get
+	 */
+    public static GetSmsAdapterProfileBuilder get(long id)  {
+		return new GetSmsAdapterProfileBuilder(id);
+	}
+	
+	public static class ListSmsAdapterProfileBuilder extends ListResponseRequestBuilder<SmsAdapterProfile, SmsAdapterProfile.Tokenizer, ListSmsAdapterProfileBuilder> {
+		
+		public ListSmsAdapterProfileBuilder(SmsAdapterProfileFilter filter) {
+			super(SmsAdapterProfile.class, "smsadapterprofile", "list");
+			params.add("filter", filter);
+		}
+	}
+
+    public static ListSmsAdapterProfileBuilder list(SmsAdapterProfileFilter filter)  {
+		return new ListSmsAdapterProfileBuilder(filter);
 	}
 	
 	public static class DeleteSmsAdapterProfileBuilder extends NullRequestBuilder {
@@ -72,9 +128,9 @@ public class SmsAdapterProfileService {
 	}
 
 	/**
-	 * Remove SmsAdapterProfile
+	 * Delete an object
 	 * 
-	 * @param id SmsAdapterProfile identifier
+	 * @param id Object ID to delete
 	 */
     public static DeleteSmsAdapterProfileBuilder delete(long id)  {
 		return new DeleteSmsAdapterProfileBuilder(id);
@@ -99,70 +155,5 @@ public class SmsAdapterProfileService {
 	 */
     public static GenerateSharedSecretSmsAdapterProfileBuilder generateSharedSecret(int smsAdapterId)  {
 		return new GenerateSharedSecretSmsAdapterProfileBuilder(smsAdapterId);
-	}
-	
-	public static class GetSmsAdapterProfileBuilder extends RequestBuilder<SmsAdapterProfile, SmsAdapterProfile.Tokenizer, GetSmsAdapterProfileBuilder> {
-		
-		public GetSmsAdapterProfileBuilder(long id) {
-			super(SmsAdapterProfile.class, "smsadapterprofile", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Get SmsAdapterProfile
-	 * 
-	 * @param id SmsAdapterProfile identifier
-	 */
-    public static GetSmsAdapterProfileBuilder get(long id)  {
-		return new GetSmsAdapterProfileBuilder(id);
-	}
-	
-	public static class ListSmsAdapterProfileBuilder extends ListResponseRequestBuilder<SmsAdapterProfile, SmsAdapterProfile.Tokenizer, ListSmsAdapterProfileBuilder> {
-		
-		public ListSmsAdapterProfileBuilder(SmsAdapterProfileFilter filter) {
-			super(SmsAdapterProfile.class, "smsadapterprofile", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	public static ListSmsAdapterProfileBuilder list()  {
-		return list(null);
-	}
-
-	/**
-	 * Gets all SmsAdapterProfile items
-	 * 
-	 * @param filter Filter
-	 */
-    public static ListSmsAdapterProfileBuilder list(SmsAdapterProfileFilter filter)  {
-		return new ListSmsAdapterProfileBuilder(filter);
-	}
-	
-	public static class UpdateSmsAdapterProfileBuilder extends RequestBuilder<SmsAdapterProfile, SmsAdapterProfile.Tokenizer, UpdateSmsAdapterProfileBuilder> {
-		
-		public UpdateSmsAdapterProfileBuilder(long id, SmsAdapterProfile objectToUpdate) {
-			super(SmsAdapterProfile.class, "smsadapterprofile", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * SmsAdapterProfile update
-	 * 
-	 * @param id SmsAdapterProfile identifier
-	 * @param objectToUpdate SmsAdapterProfile details
-	 */
-    public static UpdateSmsAdapterProfileBuilder update(long id, SmsAdapterProfile objectToUpdate)  {
-		return new UpdateSmsAdapterProfileBuilder(id, objectToUpdate);
 	}
 }

@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceFamilyType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -51,7 +50,6 @@ public class DeviceFamilyBase extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
-		String type();
 	}
 
 	/**
@@ -62,11 +60,6 @@ public class DeviceFamilyBase extends ObjectBase {
 	 * Device family name
 	 */
 	private String name;
-	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
-	 */
-	private DeviceFamilyType type;
 
 	// id:
 	public Long getId(){
@@ -84,18 +77,6 @@ public class DeviceFamilyBase extends ObjectBase {
 	public String getName(){
 		return this.name;
 	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// type:
-	public DeviceFamilyType getType(){
-		return this.type;
-	}
 
 	public DeviceFamilyBase() {
 		super();
@@ -109,7 +90,6 @@ public class DeviceFamilyBase extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		type = DeviceFamilyType.get(GsonParser.parseString(jsonObject.get("type")));
 
 	}
 
@@ -117,7 +97,6 @@ public class DeviceFamilyBase extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDeviceFamilyBase");
 		kparams.add("id", this.id);
-		kparams.add("name", this.name);
 		return kparams;
 	}
 

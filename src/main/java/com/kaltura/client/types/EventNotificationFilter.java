@@ -41,9 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EventNotificationFilter.Tokenizer.class)
-public class EventNotificationFilter extends Filter {
+public class EventNotificationFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 		String idEqual();
 		String objectIdEqual();
 		String eventObjectTypeEqual();

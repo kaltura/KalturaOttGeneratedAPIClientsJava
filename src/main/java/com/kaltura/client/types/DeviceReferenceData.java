@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DeviceReferenceData.Tokenizer.class)
-public class DeviceReferenceData extends OTTObjectSupportNullable {
+public class DeviceReferenceData extends CrudObject {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String name();
 		String status();

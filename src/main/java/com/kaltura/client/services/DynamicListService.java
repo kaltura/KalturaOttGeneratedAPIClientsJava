@@ -60,12 +60,73 @@ public class DynamicListService {
 	}
 
 	/**
-	 * Add new KalturaDynamicList
+	 * Add an object
 	 * 
-	 * @param objectToAdd KalturaDynamicList Object to add
+	 * @param objectToAdd Object to add
 	 */
     public static AddDynamicListBuilder add(DynamicList objectToAdd)  {
 		return new AddDynamicListBuilder(objectToAdd);
+	}
+	
+	public static class UpdateDynamicListBuilder extends RequestBuilder<DynamicList, DynamicList.Tokenizer, UpdateDynamicListBuilder> {
+		
+		public UpdateDynamicListBuilder(long id, DynamicList objectToUpdate) {
+			super(DynamicList.class, "dynamiclist", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update an object
+	 * 
+	 * @param id Object ID to update
+	 * @param objectToUpdate Object to update
+	 */
+    public static UpdateDynamicListBuilder update(long id, DynamicList objectToUpdate)  {
+		return new UpdateDynamicListBuilder(id, objectToUpdate);
+	}
+	
+	public static class DeleteDynamicListBuilder extends NullRequestBuilder {
+		
+		public DeleteDynamicListBuilder(long id) {
+			super("dynamiclist", "delete");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Delete an object
+	 * 
+	 * @param id Object ID to delete
+	 */
+    public static DeleteDynamicListBuilder delete(long id)  {
+		return new DeleteDynamicListBuilder(id);
+	}
+	
+	public static class ListDynamicListBuilder extends ListResponseRequestBuilder<DynamicList, DynamicList.Tokenizer, ListDynamicListBuilder> {
+		
+		public ListDynamicListBuilder(DynamicListFilter filter, FilterPager pager) {
+			super(DynamicList.class, "dynamiclist", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
+
+	public static ListDynamicListBuilder list(DynamicListFilter filter)  {
+		return list(filter, null);
+	}
+
+    public static ListDynamicListBuilder list(DynamicListFilter filter, FilterPager pager)  {
+		return new ListDynamicListBuilder(filter, pager);
 	}
 	
 	public static class AddFromBulkUploadDynamicListBuilder extends RequestBuilder<BulkUpload, BulkUpload.Tokenizer, AddFromBulkUploadDynamicListBuilder> {
@@ -100,72 +161,5 @@ public class DynamicListService {
 	 */
     public static AddFromBulkUploadDynamicListBuilder addFromBulkUpload(FileHolder fileData, BulkUploadExcelJobData jobData, BulkUploadDynamicListData bulkUploadData)  {
 		return new AddFromBulkUploadDynamicListBuilder(fileData, jobData, bulkUploadData);
-	}
-	
-	public static class DeleteDynamicListBuilder extends NullRequestBuilder {
-		
-		public DeleteDynamicListBuilder(long id) {
-			super("dynamiclist", "delete");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Delete existing DynamicList
-	 * 
-	 * @param id DynamicList identifier
-	 */
-    public static DeleteDynamicListBuilder delete(long id)  {
-		return new DeleteDynamicListBuilder(id);
-	}
-	
-	public static class ListDynamicListBuilder extends ListResponseRequestBuilder<DynamicList, DynamicList.Tokenizer, ListDynamicListBuilder> {
-		
-		public ListDynamicListBuilder(DynamicListFilter filter, FilterPager pager) {
-			super(DynamicList.class, "dynamiclist", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
-
-	public static ListDynamicListBuilder list(DynamicListFilter filter)  {
-		return list(filter, null);
-	}
-
-	/**
-	 * Returns the list of available DynamicList
-	 * 
-	 * @param filter Filter
-	 * @param pager Pager
-	 */
-    public static ListDynamicListBuilder list(DynamicListFilter filter, FilterPager pager)  {
-		return new ListDynamicListBuilder(filter, pager);
-	}
-	
-	public static class UpdateDynamicListBuilder extends RequestBuilder<DynamicList, DynamicList.Tokenizer, UpdateDynamicListBuilder> {
-		
-		public UpdateDynamicListBuilder(long id, DynamicList objectToUpdate) {
-			super(DynamicList.class, "dynamiclist", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update existing KalturaDynamicList
-	 * 
-	 * @param id id of KalturaDynamicList to update
-	 * @param objectToUpdate KalturaDynamicList Object to update
-	 */
-    public static UpdateDynamicListBuilder update(long id, DynamicList objectToUpdate)  {
-		return new UpdateDynamicListBuilder(id, objectToUpdate);
 	}
 }

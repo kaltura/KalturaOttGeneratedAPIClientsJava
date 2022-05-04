@@ -43,9 +43,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(IotFilter.Tokenizer.class)
-public class IotFilter extends Filter {
+public class IotFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 	}
 
 

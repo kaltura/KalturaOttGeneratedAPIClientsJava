@@ -28,8 +28,8 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.enums.TransactionType;
-import com.kaltura.client.types.BaseEntitlementFilter;
 import com.kaltura.client.types.Entitlement;
+import com.kaltura.client.types.EntitlementFilter;
 import com.kaltura.client.types.EntitlementRenewal;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -90,9 +90,8 @@ public class EntitlementService {
 	}
 
 	/**
-	 * Immediately cancel a subscription, PPV, collection or programAssetGroupOffer.
-	  Cancel is possible only if within cancellation window and content not already
-	  consumed
+	 * Immediately cancel a subscription, PPV or collection. Cancel is possible only if
+	  within cancellation window and content not already consumed
 	 * 
 	 * @param assetId The mediaFileID to cancel
 	 * @param productType The product type for the cancelation
@@ -178,8 +177,8 @@ public class EntitlementService {
 	}
 
 	/**
-	 * Immediately cancel a subscription, PPV, collection or programAssetGroupOffer.
-	  Cancel applies regardless of cancellation window and content consumption status
+	 * Immediately cancel a subscription, PPV or collection. Cancel applies regardless
+	  of cancellation window and content consumption status
 	 * 
 	 * @param assetId The mediaFileID to cancel
 	 * @param productType The product type for the cancelation
@@ -241,8 +240,7 @@ public class EntitlementService {
 	}
 
 	/**
-	 * Grant household for an entitlement for a PPV, Subscription or
-	  programAssetGroupOffer.
+	 * Grant household for an entitlement for a PPV or Subscription.
 	 * 
 	 * @param productId Identifier for the product package from which this content is offered
 	 * @param productType Product package type. Possible values: PPV, Subscription, Collection
@@ -257,14 +255,14 @@ public class EntitlementService {
 	
 	public static class ListEntitlementBuilder extends ListResponseRequestBuilder<Entitlement, Entitlement.Tokenizer, ListEntitlementBuilder> {
 		
-		public ListEntitlementBuilder(BaseEntitlementFilter filter, FilterPager pager) {
+		public ListEntitlementBuilder(EntitlementFilter filter, FilterPager pager) {
 			super(Entitlement.class, "entitlement", "list");
 			params.add("filter", filter);
 			params.add("pager", pager);
 		}
 	}
 
-	public static ListEntitlementBuilder list(BaseEntitlementFilter filter)  {
+	public static ListEntitlementBuilder list(EntitlementFilter filter)  {
 		return list(filter, null);
 	}
 
@@ -274,7 +272,7 @@ public class EntitlementService {
 	 * @param filter Request filter
 	 * @param pager Request pager
 	 */
-    public static ListEntitlementBuilder list(BaseEntitlementFilter filter, FilterPager pager)  {
+    public static ListEntitlementBuilder list(EntitlementFilter filter, FilterPager pager)  {
 		return new ListEntitlementBuilder(filter, pager);
 	}
 	

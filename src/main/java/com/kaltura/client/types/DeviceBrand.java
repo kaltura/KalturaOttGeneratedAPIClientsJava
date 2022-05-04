@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceBrandType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -51,8 +50,7 @@ public class DeviceBrand extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String name();
-		String deviceFamilyId();
-		String type();
+		String deviceFamilyid();
 	}
 
 	/**
@@ -66,25 +64,12 @@ public class DeviceBrand extends ObjectBase {
 	/**
 	 * Device family identifier
 	 */
-	private Long deviceFamilyId;
-	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
-	 */
-	private DeviceBrandType type;
+	private Long deviceFamilyid;
 
 	// id:
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -97,21 +82,9 @@ public class DeviceBrand extends ObjectBase {
 		setToken("name", multirequestToken);
 	}
 
-	// deviceFamilyId:
-	public Long getDeviceFamilyId(){
-		return this.deviceFamilyId;
-	}
-	public void setDeviceFamilyId(Long deviceFamilyId){
-		this.deviceFamilyId = deviceFamilyId;
-	}
-
-	public void deviceFamilyId(String multirequestToken){
-		setToken("deviceFamilyId", multirequestToken);
-	}
-
-	// type:
-	public DeviceBrandType getType(){
-		return this.type;
+	// deviceFamilyid:
+	public Long getDeviceFamilyid(){
+		return this.deviceFamilyid;
 	}
 
 	public DeviceBrand() {
@@ -126,17 +99,14 @@ public class DeviceBrand extends ObjectBase {
 		// set members values:
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
-		deviceFamilyId = GsonParser.parseLong(jsonObject.get("deviceFamilyId"));
-		type = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("type")));
+		deviceFamilyid = GsonParser.parseLong(jsonObject.get("deviceFamilyid"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDeviceBrand");
-		kparams.add("id", this.id);
 		kparams.add("name", this.name);
-		kparams.add("deviceFamilyId", this.deviceFamilyId);
 		return kparams;
 	}
 
