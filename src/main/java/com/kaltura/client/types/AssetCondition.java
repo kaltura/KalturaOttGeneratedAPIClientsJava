@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(AssetCondition.Tokenizer.class)
-public class AssetCondition extends AssetConditionBase {
+public class AssetCondition extends Condition {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
+	public interface Tokenizer extends Condition.Tokenizer {
 		String ksql();
 	}
 
