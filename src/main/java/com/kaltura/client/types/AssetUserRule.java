@@ -49,24 +49,24 @@ import java.util.List;
 public class AssetUserRule extends AssetRuleBase {
 	
 	public interface Tokenizer extends AssetRuleBase.Tokenizer {
-		RequestBuilder.ListTokenizer<AssetCondition.Tokenizer> conditions();
+		RequestBuilder.ListTokenizer<AssetConditionBase.Tokenizer> conditions();
 		RequestBuilder.ListTokenizer<AssetUserRuleAction.Tokenizer> actions();
 	}
 
 	/**
-	 * List of Ksql conditions for the user rule
+	 * List of conditions for the user rule
 	 */
-	private List<AssetCondition> conditions;
+	private List<AssetConditionBase> conditions;
 	/**
 	 * List of actions for the user rule
 	 */
 	private List<AssetUserRuleAction> actions;
 
 	// conditions:
-	public List<AssetCondition> getConditions(){
+	public List<AssetConditionBase> getConditions(){
 		return this.conditions;
 	}
-	public void setConditions(List<AssetCondition> conditions){
+	public void setConditions(List<AssetConditionBase> conditions){
 		this.conditions = conditions;
 	}
 
@@ -89,7 +89,7 @@ public class AssetUserRule extends AssetRuleBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), AssetCondition.class);
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), AssetConditionBase.class);
 		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), AssetUserRuleAction.class);
 
 	}

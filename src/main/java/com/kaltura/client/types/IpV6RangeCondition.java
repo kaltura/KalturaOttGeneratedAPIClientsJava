@@ -40,52 +40,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Asset Condition
+ * IP V6 range condition
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetCondition.Tokenizer.class)
-public class AssetCondition extends AssetConditionBase {
+@MultiRequestBuilder.Tokenizer(IpV6RangeCondition.Tokenizer.class)
+public class IpV6RangeCondition extends Condition {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
-		String ksql();
+	public interface Tokenizer extends Condition.Tokenizer {
+		String fromIP();
+		String toIP();
 	}
 
 	/**
-	 * KSQL
+	 * From IP address range
 	 */
-	private String ksql;
+	private String fromIP;
+	/**
+	 * TO IP address range
+	 */
+	private String toIP;
 
-	// ksql:
-	public String getKsql(){
-		return this.ksql;
+	// fromIP:
+	public String getFromIP(){
+		return this.fromIP;
 	}
-	public void setKsql(String ksql){
-		this.ksql = ksql;
+	public void setFromIP(String fromIP){
+		this.fromIP = fromIP;
 	}
 
-	public void ksql(String multirequestToken){
-		setToken("ksql", multirequestToken);
+	public void fromIP(String multirequestToken){
+		setToken("fromIP", multirequestToken);
+	}
+
+	// toIP:
+	public String getToIP(){
+		return this.toIP;
+	}
+	public void setToIP(String toIP){
+		this.toIP = toIP;
+	}
+
+	public void toIP(String multirequestToken){
+		setToken("toIP", multirequestToken);
 	}
 
 
-	public AssetCondition() {
+	public IpV6RangeCondition() {
 		super();
 	}
 
-	public AssetCondition(JsonObject jsonObject) throws APIException {
+	public IpV6RangeCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		ksql = GsonParser.parseString(jsonObject.get("ksql"));
+		fromIP = GsonParser.parseString(jsonObject.get("fromIP"));
+		toIP = GsonParser.parseString(jsonObject.get("toIP"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetCondition");
-		kparams.add("ksql", this.ksql);
+		kparams.add("objectType", "KalturaIpV6RangeCondition");
+		kparams.add("fromIP", this.fromIP);
+		kparams.add("toIP", this.toIP);
 		return kparams;
 	}
 
