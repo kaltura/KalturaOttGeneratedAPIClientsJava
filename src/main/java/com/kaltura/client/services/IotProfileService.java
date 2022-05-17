@@ -56,10 +56,10 @@ public class IotProfileService {
 		return new AddIotProfileBuilder(objectToAdd);
 	}
 	
-	public static class GetIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, GetIotProfileBuilder> {
+	public static class DeleteIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, DeleteIotProfileBuilder> {
 		
-		public GetIotProfileBuilder(long id) {
-			super(IotProfile.class, "iotprofile", "get");
+		public DeleteIotProfileBuilder(long id) {
+			super(IotProfile.class, "iotprofile", "delete");
 			params.add("id", id);
 		}
 		
@@ -73,8 +73,8 @@ public class IotProfileService {
 	 * 
 	 * @param id KalturaIotProfile identifier
 	 */
-    public static GetIotProfileBuilder get(long id)  {
-		return new GetIotProfileBuilder(id);
+    public static DeleteIotProfileBuilder delete(long id)  {
+		return new DeleteIotProfileBuilder(id);
 	}
 	
 	public static class UpdateIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, UpdateIotProfileBuilder> {
