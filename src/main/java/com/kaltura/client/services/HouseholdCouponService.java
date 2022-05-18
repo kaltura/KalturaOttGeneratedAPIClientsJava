@@ -95,7 +95,7 @@ public class HouseholdCouponService {
 	/**
 	 * Gets all HouseholdCoupon items for a household
 	 * 
-	 * @param filter Filter
+	 * @param filter Request filter
 	 */
     public static ListHouseholdCouponBuilder list(HouseholdCouponFilter filter)  {
 		return new ListHouseholdCouponBuilder(filter);

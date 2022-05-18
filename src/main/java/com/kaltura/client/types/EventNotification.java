@@ -45,9 +45,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EventNotification.Tokenizer.class)
-public class EventNotification extends OTTObjectSupportNullable {
+public class EventNotification extends CrudObject {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String objectId();
 		String eventObjectType();

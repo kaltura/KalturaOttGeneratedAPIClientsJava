@@ -60,37 +60,27 @@ public class CategoryVersionService {
 		return new AddCategoryVersionBuilder(objectToAdd);
 	}
 	
-	public static class CreateTreeCategoryVersionBuilder extends RequestBuilder<CategoryVersion, CategoryVersion.Tokenizer, CreateTreeCategoryVersionBuilder> {
+	public static class UpdateCategoryVersionBuilder extends RequestBuilder<CategoryVersion, CategoryVersion.Tokenizer, UpdateCategoryVersionBuilder> {
 		
-		public CreateTreeCategoryVersionBuilder(long categoryItemId, String name, String comment) {
-			super(CategoryVersion.class, "categoryversion", "createTree");
-			params.add("categoryItemId", categoryItemId);
-			params.add("name", name);
-			params.add("comment", comment);
+		public UpdateCategoryVersionBuilder(long id, CategoryVersion objectToUpdate) {
+			super(CategoryVersion.class, "categoryversion", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
 		}
 		
-		public void categoryItemId(String multirequestToken) {
-			params.add("categoryItemId", multirequestToken);
-		}
-		
-		public void name(String multirequestToken) {
-			params.add("name", multirequestToken);
-		}
-		
-		public void comment(String multirequestToken) {
-			params.add("comment", multirequestToken);
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
 	/**
-	 * Acreate new tree for this categoryItem
+	 * categoryVersion update
 	 * 
-	 * @param categoryItemId the categoryItemId to create the tree accordingly
-	 * @param name Name of version
-	 * @param comment Comment of version
+	 * @param id Category version identifier
+	 * @param objectToUpdate categoryVersion details
 	 */
-    public static CreateTreeCategoryVersionBuilder createTree(long categoryItemId, String name, String comment)  {
-		return new CreateTreeCategoryVersionBuilder(categoryItemId, name, comment);
+    public static UpdateCategoryVersionBuilder update(long id, CategoryVersion objectToUpdate)  {
+		return new UpdateCategoryVersionBuilder(id, objectToUpdate);
 	}
 	
 	public static class DeleteCategoryVersionBuilder extends NullRequestBuilder {
@@ -130,11 +120,44 @@ public class CategoryVersionService {
 	/**
 	 * Gets all category versions
 	 * 
-	 * @param filter Filter
-	 * @param pager Pager
+	 * @param filter Request filter
+	 * @param pager Request pager
 	 */
     public static ListCategoryVersionBuilder list(CategoryVersionFilter filter, FilterPager pager)  {
 		return new ListCategoryVersionBuilder(filter, pager);
+	}
+	
+	public static class CreateTreeCategoryVersionBuilder extends RequestBuilder<CategoryVersion, CategoryVersion.Tokenizer, CreateTreeCategoryVersionBuilder> {
+		
+		public CreateTreeCategoryVersionBuilder(long categoryItemId, String name, String comment) {
+			super(CategoryVersion.class, "categoryversion", "createTree");
+			params.add("categoryItemId", categoryItemId);
+			params.add("name", name);
+			params.add("comment", comment);
+		}
+		
+		public void categoryItemId(String multirequestToken) {
+			params.add("categoryItemId", multirequestToken);
+		}
+		
+		public void name(String multirequestToken) {
+			params.add("name", multirequestToken);
+		}
+		
+		public void comment(String multirequestToken) {
+			params.add("comment", multirequestToken);
+		}
+	}
+
+	/**
+	 * Acreate new tree for this categoryItem
+	 * 
+	 * @param categoryItemId the categoryItemId to create the tree accordingly
+	 * @param name Name of version
+	 * @param comment Comment of version
+	 */
+    public static CreateTreeCategoryVersionBuilder createTree(long categoryItemId, String name, String comment)  {
+		return new CreateTreeCategoryVersionBuilder(categoryItemId, name, comment);
 	}
 	
 	public static class SetDefaultCategoryVersionBuilder extends NullRequestBuilder {
@@ -166,28 +189,5 @@ public class CategoryVersionService {
 	 */
     public static SetDefaultCategoryVersionBuilder setDefault(long id, boolean force)  {
 		return new SetDefaultCategoryVersionBuilder(id, force);
-	}
-	
-	public static class UpdateCategoryVersionBuilder extends RequestBuilder<CategoryVersion, CategoryVersion.Tokenizer, UpdateCategoryVersionBuilder> {
-		
-		public UpdateCategoryVersionBuilder(long id, CategoryVersion objectToUpdate) {
-			super(CategoryVersion.class, "categoryversion", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * categoryVersion update
-	 * 
-	 * @param id Category version identifier
-	 * @param objectToUpdate categoryVersion details
-	 */
-    public static UpdateCategoryVersionBuilder update(long id, CategoryVersion objectToUpdate)  {
-		return new UpdateCategoryVersionBuilder(id, objectToUpdate);
 	}
 }

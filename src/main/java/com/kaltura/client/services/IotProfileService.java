@@ -48,33 +48,12 @@ public class IotProfileService {
 	}
 
 	/**
-	 * Add new KalturaIotProfile
+	 * Add an object
 	 * 
-	 * @param objectToAdd KalturaIotProfile Object to add
+	 * @param objectToAdd Object to add
 	 */
     public static AddIotProfileBuilder add(IotProfile objectToAdd)  {
 		return new AddIotProfileBuilder(objectToAdd);
-	}
-	
-	public static class GetIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, GetIotProfileBuilder> {
-		
-		public GetIotProfileBuilder(long id) {
-			super(IotProfile.class, "iotprofile", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Get existing KalturaIotProfile
-	 * 
-	 * @param id KalturaIotProfile identifier
-	 */
-    public static GetIotProfileBuilder get(long id)  {
-		return new GetIotProfileBuilder(id);
 	}
 	
 	public static class UpdateIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, UpdateIotProfileBuilder> {
@@ -91,12 +70,33 @@ public class IotProfileService {
 	}
 
 	/**
-	 * Update existing KalturaIotProfile
+	 * Update an object
 	 * 
-	 * @param id id of KalturaIotProfile to update
-	 * @param objectToUpdate KalturaIotProfile Object to update
+	 * @param id Object ID to update
+	 * @param objectToUpdate Object to update
 	 */
     public static UpdateIotProfileBuilder update(long id, IotProfile objectToUpdate)  {
 		return new UpdateIotProfileBuilder(id, objectToUpdate);
+	}
+	
+	public static class GetIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, GetIotProfileBuilder> {
+		
+		public GetIotProfileBuilder(long id) {
+			super(IotProfile.class, "iotprofile", "get");
+			params.add("id", id);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get an object
+	 * 
+	 * @param id Object ID to get
+	 */
+    public static GetIotProfileBuilder get(long id)  {
+		return new GetIotProfileBuilder(id);
 	}
 }

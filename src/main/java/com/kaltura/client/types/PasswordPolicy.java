@@ -46,9 +46,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PasswordPolicy.Tokenizer.class)
-public class PasswordPolicy extends OTTObjectSupportNullable {
+public class PasswordPolicy extends CrudObject {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String name();
 		String userRoleIds();

@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Iot.Tokenizer.class)
-public class Iot extends OTTObjectSupportNullable {
+public class Iot extends CrudObject {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends CrudObject.Tokenizer {
 		String udid();
 		String accessKey();
 		String accessSecretKey();

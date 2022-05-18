@@ -57,7 +57,7 @@ public class IngestStatusEpgConfiguration extends ObjectBase {
 	 * Defines the time in seconds that the service retain information about ingest
 	  status.
 	 */
-	private Long retainingPeriod;
+	private Integer retainingPeriod;
 
 	// isSupported:
 	public Boolean getIsSupported(){
@@ -72,10 +72,10 @@ public class IngestStatusEpgConfiguration extends ObjectBase {
 	}
 
 	// retainingPeriod:
-	public Long getRetainingPeriod(){
+	public Integer getRetainingPeriod(){
 		return this.retainingPeriod;
 	}
-	public void setRetainingPeriod(Long retainingPeriod){
+	public void setRetainingPeriod(Integer retainingPeriod){
 		this.retainingPeriod = retainingPeriod;
 	}
 
@@ -95,7 +95,7 @@ public class IngestStatusEpgConfiguration extends ObjectBase {
 
 		// set members values:
 		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
-		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
+		retainingPeriod = GsonParser.parseInt(jsonObject.get("retainingPeriod"));
 
 	}
 

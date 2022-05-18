@@ -46,9 +46,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Campaign.Tokenizer.class)
-public class Campaign extends OTTObjectSupportNullable {
+public class Campaign extends CrudObject {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String createDate();
 		String updateDate();

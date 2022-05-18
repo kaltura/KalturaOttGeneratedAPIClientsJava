@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(DeviceReferenceDataFilter.Tokenizer.class)
-public class DeviceReferenceDataFilter extends Filter {
+public class DeviceReferenceDataFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 		String idIn();
 	}
 

@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceFamilyType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,88 +40,84 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Kaltura Session Characteristic
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceFamilyFilter.Tokenizer.class)
-public class DeviceFamilyFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SessionCharacteristic.Tokenizer.class)
+public class SessionCharacteristic extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idEqual();
-		String nameEqual();
-		String typeEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String regionId();
+		String userSegmentsIds();
+		String userRolesIds();
+		String userSessionProfilesIds();
 	}
 
 	/**
-	 * Filter the device family with this identifier.
+	 * Session characteristic identifier
 	 */
-	private Long idEqual;
+	private String id;
 	/**
-	 * Filter the device family with this name.
+	 * Region identifier
 	 */
-	private String nameEqual;
+	private Integer regionId;
 	/**
-	 * Filter device families of this type
+	 * Comma-separated list of user segments identifiers
 	 */
-	private DeviceFamilyType typeEqual;
+	private String userSegmentsIds;
+	/**
+	 * Comma-separated list of user roles identifiers
+	 */
+	private String userRolesIds;
+	/**
+	 * Comma-separated list of user session profiles identifiers
+	 */
+	private String userSessionProfilesIds;
 
-	// idEqual:
-	public Long getIdEqual(){
-		return this.idEqual;
+	// id:
+	public String getId(){
+		return this.id;
 	}
-	public void setIdEqual(Long idEqual){
-		this.idEqual = idEqual;
+	// regionId:
+	public Integer getRegionId(){
+		return this.regionId;
 	}
-
-	public void idEqual(String multirequestToken){
-		setToken("idEqual", multirequestToken);
+	// userSegmentsIds:
+	public String getUserSegmentsIds(){
+		return this.userSegmentsIds;
 	}
-
-	// nameEqual:
-	public String getNameEqual(){
-		return this.nameEqual;
+	// userRolesIds:
+	public String getUserRolesIds(){
+		return this.userRolesIds;
 	}
-	public void setNameEqual(String nameEqual){
-		this.nameEqual = nameEqual;
-	}
-
-	public void nameEqual(String multirequestToken){
-		setToken("nameEqual", multirequestToken);
-	}
-
-	// typeEqual:
-	public DeviceFamilyType getTypeEqual(){
-		return this.typeEqual;
-	}
-	public void setTypeEqual(DeviceFamilyType typeEqual){
-		this.typeEqual = typeEqual;
+	// userSessionProfilesIds:
+	public String getUserSessionProfilesIds(){
+		return this.userSessionProfilesIds;
 	}
 
-	public void typeEqual(String multirequestToken){
-		setToken("typeEqual", multirequestToken);
-	}
-
-
-	public DeviceFamilyFilter() {
+	public SessionCharacteristic() {
 		super();
 	}
 
-	public DeviceFamilyFilter(JsonObject jsonObject) throws APIException {
+	public SessionCharacteristic(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idEqual = GsonParser.parseLong(jsonObject.get("idEqual"));
-		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
-		typeEqual = DeviceFamilyType.get(GsonParser.parseString(jsonObject.get("typeEqual")));
+		id = GsonParser.parseString(jsonObject.get("id"));
+		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
+		userSegmentsIds = GsonParser.parseString(jsonObject.get("userSegmentsIds"));
+		userRolesIds = GsonParser.parseString(jsonObject.get("userRolesIds"));
+		userSessionProfilesIds = GsonParser.parseString(jsonObject.get("userSessionProfilesIds"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceFamilyFilter");
-		kparams.add("idEqual", this.idEqual);
-		kparams.add("nameEqual", this.nameEqual);
-		kparams.add("typeEqual", this.typeEqual);
+		kparams.add("objectType", "KalturaSessionCharacteristic");
 		return kparams;
 	}
 

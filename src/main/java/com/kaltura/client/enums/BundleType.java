@@ -35,8 +35,7 @@ package com.kaltura.client.enums;
  */
 public enum BundleType implements EnumAsString {
 	SUBSCRIPTION("subscription"),
-	COLLECTION("collection"),
-	PAGO("pago");
+	COLLECTION("collection");
 
 	private String value;
 

@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,38 +38,29 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum DeviceFamilyOrderBy implements EnumAsString {
-	ID_ASC("ID_ASC"),
-	ID_DESC("ID_DESC");
 
-	private String value;
-
-	DeviceFamilyOrderBy(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(T.Tokenizer.class)
+public class T extends ObjectBase {
+	
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+
+
+	public T() {
+		super();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public T(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
 	}
 
-	public static DeviceFamilyOrderBy get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over DeviceFamilyOrderBy defined values and compare the inner value with the given one:
-		for(DeviceFamilyOrderBy item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return DeviceFamilyOrderBy.values().length > 0 ? DeviceFamilyOrderBy.values()[0]: null;
-   }
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaT");
+		return kparams;
+	}
+
 }
+

@@ -28,10 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.DeviceBrand;
-import com.kaltura.client.types.DeviceBrandFilter;
-import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -42,70 +39,17 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class DeviceBrandService {
 	
-	public static class AddDeviceBrandBuilder extends RequestBuilder<DeviceBrand, DeviceBrand.Tokenizer, AddDeviceBrandBuilder> {
-		
-		public AddDeviceBrandBuilder(DeviceBrand deviceBrand) {
-			super(DeviceBrand.class, "devicebrand", "add");
-			params.add("deviceBrand", deviceBrand);
-		}
-	}
-
-	/**
-	 * Adds a new device brand which belongs to a specific group.
-	 * 
-	 * @param deviceBrand Device brand.
-	 */
-    public static AddDeviceBrandBuilder add(DeviceBrand deviceBrand)  {
-		return new AddDeviceBrandBuilder(deviceBrand);
-	}
-	
 	public static class ListDeviceBrandBuilder extends ListResponseRequestBuilder<DeviceBrand, DeviceBrand.Tokenizer, ListDeviceBrandBuilder> {
 		
-		public ListDeviceBrandBuilder(DeviceBrandFilter filter, FilterPager pager) {
+		public ListDeviceBrandBuilder() {
 			super(DeviceBrand.class, "devicebrand", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
 		}
-	}
-
-	public static ListDeviceBrandBuilder list()  {
-		return list(null);
-	}
-
-	public static ListDeviceBrandBuilder list(DeviceBrandFilter filter)  {
-		return list(filter, null);
 	}
 
 	/**
 	 * Return a list of the available device brands.
-	 * 
-	 * @param filter Filter with no more than one condition specified.
-	 * @param pager Page size and index.
 	 */
-    public static ListDeviceBrandBuilder list(DeviceBrandFilter filter, FilterPager pager)  {
-		return new ListDeviceBrandBuilder(filter, pager);
-	}
-	
-	public static class UpdateDeviceBrandBuilder extends RequestBuilder<DeviceBrand, DeviceBrand.Tokenizer, UpdateDeviceBrandBuilder> {
-		
-		public UpdateDeviceBrandBuilder(long id, DeviceBrand deviceBrand) {
-			super(DeviceBrand.class, "devicebrand", "update");
-			params.add("id", id);
-			params.add("deviceBrand", deviceBrand);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Updates an existing device brand which belongs to a specific group.
-	 * 
-	 * @param id Device brand's identifier.
-	 * @param deviceBrand Device brand.
-	 */
-    public static UpdateDeviceBrandBuilder update(long id, DeviceBrand deviceBrand)  {
-		return new UpdateDeviceBrandBuilder(id, deviceBrand);
+    public static ListDeviceBrandBuilder list()  {
+		return new ListDeviceBrandBuilder();
 	}
 }
