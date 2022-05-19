@@ -52,7 +52,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		CategoryManagement.Tokenizer categoryManagement();
 		String epgMultilingualFallbackSupport();
 		String uploadExportDatalake();
-		String shopMarkerMetaId();
 	}
 
 	/**
@@ -71,10 +70,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 	 * Upload Export Datalake
 	 */
 	private Boolean uploadExportDatalake;
-	/**
-	 * Shop Marker&amp;#39;s identifier
-	 */
-	private Long shopMarkerMetaId;
 
 	// singleMultilingualMode:
 	public Boolean getSingleMultilingualMode(){
@@ -120,18 +115,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		setToken("uploadExportDatalake", multirequestToken);
 	}
 
-	// shopMarkerMetaId:
-	public Long getShopMarkerMetaId(){
-		return this.shopMarkerMetaId;
-	}
-	public void setShopMarkerMetaId(Long shopMarkerMetaId){
-		this.shopMarkerMetaId = shopMarkerMetaId;
-	}
-
-	public void shopMarkerMetaId(String multirequestToken){
-		setToken("shopMarkerMetaId", multirequestToken);
-	}
-
 
 	public CatalogPartnerConfig() {
 		super();
@@ -147,7 +130,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		categoryManagement = GsonParser.parseObject(jsonObject.getAsJsonObject("categoryManagement"), CategoryManagement.class);
 		epgMultilingualFallbackSupport = GsonParser.parseBoolean(jsonObject.get("epgMultilingualFallbackSupport"));
 		uploadExportDatalake = GsonParser.parseBoolean(jsonObject.get("uploadExportDatalake"));
-		shopMarkerMetaId = GsonParser.parseLong(jsonObject.get("shopMarkerMetaId"));
 
 	}
 
@@ -158,7 +140,6 @@ public class CatalogPartnerConfig extends PartnerConfiguration {
 		kparams.add("categoryManagement", this.categoryManagement);
 		kparams.add("epgMultilingualFallbackSupport", this.epgMultilingualFallbackSupport);
 		kparams.add("uploadExportDatalake", this.uploadExportDatalake);
-		kparams.add("shopMarkerMetaId", this.shopMarkerMetaId);
 		return kparams;
 	}
 
