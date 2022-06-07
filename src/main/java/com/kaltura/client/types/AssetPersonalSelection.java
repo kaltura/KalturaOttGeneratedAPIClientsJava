@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceBrandType;
+import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,101 +42,63 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Device brand details
+ * Asset personal selection
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DeviceBrand.Tokenizer.class)
-public class DeviceBrand extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AssetPersonalSelection.Tokenizer.class)
+public class AssetPersonalSelection extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String name();
-		String deviceFamilyid();
-		String type();
+		String assetId();
+		String assetType();
+		String updateDate();
 	}
 
 	/**
-	 * Device brand identifier
+	 * Asset Id
 	 */
-	private Long id;
+	private Long assetId;
 	/**
-	 * Device brand name
+	 * Asset Type
 	 */
-	private String name;
+	private AssetType assetType;
 	/**
-	 * Device family identifier
+	 * Update Date
 	 */
-	private Long deviceFamilyid;
-	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
-	 */
-	private DeviceBrandType type;
+	private Long updateDate;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// assetId:
+	public Long getAssetId(){
+		return this.assetId;
 	}
-	public void setId(Long id){
-		this.id = id;
+	// assetType:
+	public AssetType getAssetType(){
+		return this.assetType;
 	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
 	}
 
-	// name:
-	public String getName(){
-		return this.name;
-	}
-	public void setName(String name){
-		this.name = name;
-	}
-
-	public void name(String multirequestToken){
-		setToken("name", multirequestToken);
-	}
-
-	// deviceFamilyid:
-	public Long getDeviceFamilyid(){
-		return this.deviceFamilyid;
-	}
-	public void setDeviceFamilyid(Long deviceFamilyid){
-		this.deviceFamilyid = deviceFamilyid;
-	}
-
-	public void deviceFamilyid(String multirequestToken){
-		setToken("deviceFamilyid", multirequestToken);
-	}
-
-	// type:
-	public DeviceBrandType getType(){
-		return this.type;
-	}
-
-	public DeviceBrand() {
+	public AssetPersonalSelection() {
 		super();
 	}
 
-	public DeviceBrand(JsonObject jsonObject) throws APIException {
+	public AssetPersonalSelection(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		name = GsonParser.parseString(jsonObject.get("name"));
-		deviceFamilyid = GsonParser.parseLong(jsonObject.get("deviceFamilyid"));
-		type = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("type")));
+		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+		assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDeviceBrand");
-		kparams.add("id", this.id);
-		kparams.add("name", this.name);
-		kparams.add("deviceFamilyid", this.deviceFamilyid);
+		kparams.add("objectType", "KalturaAssetPersonalSelection");
 		return kparams;
 	}
 
