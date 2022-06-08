@@ -30,7 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.ObjectState;
-import com.kaltura.client.types.Promotion;
+import com.kaltura.client.types.BasePromotion;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -58,7 +58,7 @@ public class Campaign extends OTTObjectSupportNullable {
 		String systemName();
 		String description();
 		String state();
-		Promotion.Tokenizer promotion();
+		BasePromotion.Tokenizer promotion();
 		String message();
 		String collectionIdIn();
 	}
@@ -102,7 +102,7 @@ public class Campaign extends OTTObjectSupportNullable {
 	/**
 	 * The Promotion that is promoted to the user
 	 */
-	private Promotion promotion;
+	private BasePromotion promotion;
 	/**
 	 * Free text message to the user that gives information about the campaign.
 	 */
@@ -189,10 +189,10 @@ public class Campaign extends OTTObjectSupportNullable {
 		return this.state;
 	}
 	// promotion:
-	public Promotion getPromotion(){
+	public BasePromotion getPromotion(){
 		return this.promotion;
 	}
-	public void setPromotion(Promotion promotion){
+	public void setPromotion(BasePromotion promotion){
 		this.promotion = promotion;
 	}
 
@@ -240,7 +240,7 @@ public class Campaign extends OTTObjectSupportNullable {
 		systemName = GsonParser.parseString(jsonObject.get("systemName"));
 		description = GsonParser.parseString(jsonObject.get("description"));
 		state = ObjectState.get(GsonParser.parseString(jsonObject.get("state")));
-		promotion = GsonParser.parseObject(jsonObject.getAsJsonObject("promotion"), Promotion.class);
+		promotion = GsonParser.parseObject(jsonObject.getAsJsonObject("promotion"), BasePromotion.class);
 		message = GsonParser.parseString(jsonObject.get("message"));
 		collectionIdIn = GsonParser.parseString(jsonObject.get("collectionIdIn"));
 
