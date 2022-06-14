@@ -40,71 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Promotion
+ * Coupon promotion
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Promotion.Tokenizer.class)
-public class Promotion extends BasePromotion {
+@MultiRequestBuilder.Tokenizer(CouponPromotion.Tokenizer.class)
+public class CouponPromotion extends BasePromotion {
 	
 	public interface Tokenizer extends BasePromotion.Tokenizer {
-		String discountModuleId();
-		String numberOfRecurring();
+		String couponGroupId();
 	}
 
 	/**
-	 * The discount module id that is promoted to the user
+	 * CouponGroup identifier
 	 */
-	private Long discountModuleId;
-	/**
-	 * the numer of recurring for this promotion
-	 */
-	private Integer numberOfRecurring;
+	private Long couponGroupId;
 
-	// discountModuleId:
-	public Long getDiscountModuleId(){
-		return this.discountModuleId;
+	// couponGroupId:
+	public Long getCouponGroupId(){
+		return this.couponGroupId;
 	}
-	public void setDiscountModuleId(Long discountModuleId){
-		this.discountModuleId = discountModuleId;
+	public void setCouponGroupId(Long couponGroupId){
+		this.couponGroupId = couponGroupId;
 	}
 
-	public void discountModuleId(String multirequestToken){
-		setToken("discountModuleId", multirequestToken);
-	}
-
-	// numberOfRecurring:
-	public Integer getNumberOfRecurring(){
-		return this.numberOfRecurring;
-	}
-	public void setNumberOfRecurring(Integer numberOfRecurring){
-		this.numberOfRecurring = numberOfRecurring;
-	}
-
-	public void numberOfRecurring(String multirequestToken){
-		setToken("numberOfRecurring", multirequestToken);
+	public void couponGroupId(String multirequestToken){
+		setToken("couponGroupId", multirequestToken);
 	}
 
 
-	public Promotion() {
+	public CouponPromotion() {
 		super();
 	}
 
-	public Promotion(JsonObject jsonObject) throws APIException {
+	public CouponPromotion(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
-		numberOfRecurring = GsonParser.parseInt(jsonObject.get("numberOfRecurring"));
+		couponGroupId = GsonParser.parseLong(jsonObject.get("couponGroupId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPromotion");
-		kparams.add("discountModuleId", this.discountModuleId);
-		kparams.add("numberOfRecurring", this.numberOfRecurring);
+		kparams.add("objectType", "KalturaCouponPromotion");
+		kparams.add("couponGroupId", this.couponGroupId);
 		return kparams;
 	}
 

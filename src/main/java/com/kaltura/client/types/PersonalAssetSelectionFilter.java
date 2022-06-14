@@ -39,72 +39,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Promotion
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Promotion.Tokenizer.class)
-public class Promotion extends BasePromotion {
+@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
+public class PersonalAssetSelectionFilter extends Filter {
 	
-	public interface Tokenizer extends BasePromotion.Tokenizer {
-		String discountModuleId();
-		String numberOfRecurring();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String slotNumberEqual();
 	}
 
 	/**
-	 * The discount module id that is promoted to the user
+	 * selected assets for specific slot number
 	 */
-	private Long discountModuleId;
-	/**
-	 * the numer of recurring for this promotion
-	 */
-	private Integer numberOfRecurring;
+	private Integer slotNumberEqual;
 
-	// discountModuleId:
-	public Long getDiscountModuleId(){
-		return this.discountModuleId;
+	// slotNumberEqual:
+	public Integer getSlotNumberEqual(){
+		return this.slotNumberEqual;
 	}
-	public void setDiscountModuleId(Long discountModuleId){
-		this.discountModuleId = discountModuleId;
+	public void setSlotNumberEqual(Integer slotNumberEqual){
+		this.slotNumberEqual = slotNumberEqual;
 	}
 
-	public void discountModuleId(String multirequestToken){
-		setToken("discountModuleId", multirequestToken);
-	}
-
-	// numberOfRecurring:
-	public Integer getNumberOfRecurring(){
-		return this.numberOfRecurring;
-	}
-	public void setNumberOfRecurring(Integer numberOfRecurring){
-		this.numberOfRecurring = numberOfRecurring;
-	}
-
-	public void numberOfRecurring(String multirequestToken){
-		setToken("numberOfRecurring", multirequestToken);
+	public void slotNumberEqual(String multirequestToken){
+		setToken("slotNumberEqual", multirequestToken);
 	}
 
 
-	public Promotion() {
+	public PersonalAssetSelectionFilter() {
 		super();
 	}
 
-	public Promotion(JsonObject jsonObject) throws APIException {
+	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
-		numberOfRecurring = GsonParser.parseInt(jsonObject.get("numberOfRecurring"));
+		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPromotion");
-		kparams.add("discountModuleId", this.discountModuleId);
-		kparams.add("numberOfRecurring", this.numberOfRecurring);
+		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
+		kparams.add("slotNumberEqual", this.slotNumberEqual);
 		return kparams;
 	}
 

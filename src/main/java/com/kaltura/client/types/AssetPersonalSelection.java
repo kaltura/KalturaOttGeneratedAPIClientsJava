@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,71 +42,63 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Promotion
+ * Asset personal selection
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Promotion.Tokenizer.class)
-public class Promotion extends BasePromotion {
+@MultiRequestBuilder.Tokenizer(AssetPersonalSelection.Tokenizer.class)
+public class AssetPersonalSelection extends ObjectBase {
 	
-	public interface Tokenizer extends BasePromotion.Tokenizer {
-		String discountModuleId();
-		String numberOfRecurring();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String assetId();
+		String assetType();
+		String updateDate();
 	}
 
 	/**
-	 * The discount module id that is promoted to the user
+	 * Asset Id
 	 */
-	private Long discountModuleId;
+	private Long assetId;
 	/**
-	 * the numer of recurring for this promotion
+	 * Asset Type
 	 */
-	private Integer numberOfRecurring;
+	private AssetType assetType;
+	/**
+	 * Update Date
+	 */
+	private Long updateDate;
 
-	// discountModuleId:
-	public Long getDiscountModuleId(){
-		return this.discountModuleId;
+	// assetId:
+	public Long getAssetId(){
+		return this.assetId;
 	}
-	public void setDiscountModuleId(Long discountModuleId){
-		this.discountModuleId = discountModuleId;
+	// assetType:
+	public AssetType getAssetType(){
+		return this.assetType;
 	}
-
-	public void discountModuleId(String multirequestToken){
-		setToken("discountModuleId", multirequestToken);
-	}
-
-	// numberOfRecurring:
-	public Integer getNumberOfRecurring(){
-		return this.numberOfRecurring;
-	}
-	public void setNumberOfRecurring(Integer numberOfRecurring){
-		this.numberOfRecurring = numberOfRecurring;
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
 	}
 
-	public void numberOfRecurring(String multirequestToken){
-		setToken("numberOfRecurring", multirequestToken);
-	}
-
-
-	public Promotion() {
+	public AssetPersonalSelection() {
 		super();
 	}
 
-	public Promotion(JsonObject jsonObject) throws APIException {
+	public AssetPersonalSelection(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
-		numberOfRecurring = GsonParser.parseInt(jsonObject.get("numberOfRecurring"));
+		assetId = GsonParser.parseLong(jsonObject.get("assetId"));
+		assetType = AssetType.get(GsonParser.parseString(jsonObject.get("assetType")));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPromotion");
-		kparams.add("discountModuleId", this.discountModuleId);
-		kparams.add("numberOfRecurring", this.numberOfRecurring);
+		kparams.add("objectType", "KalturaAssetPersonalSelection");
 		return kparams;
 	}
 
