@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -44,10 +47,11 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(Promotion.Tokenizer.class)
-public class Promotion extends BasePromotion {
+public class Promotion extends ObjectBase {
 	
-	public interface Tokenizer extends BasePromotion.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String discountModuleId();
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
 		String numberOfRecurring();
 	}
 
@@ -55,6 +59,10 @@ public class Promotion extends BasePromotion {
 	 * The discount module id that is promoted to the user
 	 */
 	private Long discountModuleId;
+	/**
+	 * These conditions define the Promotion that applies on
+	 */
+	private List<Condition> conditions;
 	/**
 	 * the numer of recurring for this promotion
 	 */
@@ -70,6 +78,14 @@ public class Promotion extends BasePromotion {
 
 	public void discountModuleId(String multirequestToken){
 		setToken("discountModuleId", multirequestToken);
+	}
+
+	// conditions:
+	public List<Condition> getConditions(){
+		return this.conditions;
+	}
+	public void setConditions(List<Condition> conditions){
+		this.conditions = conditions;
 	}
 
 	// numberOfRecurring:
@@ -96,6 +112,7 @@ public class Promotion extends BasePromotion {
 
 		// set members values:
 		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
 		numberOfRecurring = GsonParser.parseInt(jsonObject.get("numberOfRecurring"));
 
 	}
@@ -104,6 +121,7 @@ public class Promotion extends BasePromotion {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaPromotion");
 		kparams.add("discountModuleId", this.discountModuleId);
+		kparams.add("conditions", this.conditions);
 		kparams.add("numberOfRecurring", this.numberOfRecurring);
 		return kparams;
 	}
