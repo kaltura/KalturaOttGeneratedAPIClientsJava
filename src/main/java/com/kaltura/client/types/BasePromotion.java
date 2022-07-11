@@ -43,11 +43,11 @@ import java.util.List;
  */
 
 /**
- * Promotion
+ * Base Promotion
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BasePromotion.Tokenizer.class)
-public class BasePromotion extends ObjectBase {
+public abstract class BasePromotion extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
