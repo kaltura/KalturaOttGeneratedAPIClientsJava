@@ -27,9 +27,11 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.enums.AssetType;
 import com.kaltura.client.types.StreamingDevice;
 import com.kaltura.client.types.StreamingDeviceFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -39,6 +41,40 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  */
 
 public class StreamingDeviceService {
+	
+	public static class BookPlaybackSessionStreamingDeviceBuilder extends RequestBuilder<Boolean, String, BookPlaybackSessionStreamingDeviceBuilder> {
+		
+		public BookPlaybackSessionStreamingDeviceBuilder(String mediaFileId, String assetId, AssetType assetType) {
+			super(Boolean.class, "streamingdevice", "bookPlaybackSession");
+			params.add("mediaFileId", mediaFileId);
+			params.add("assetId", assetId);
+			params.add("assetType", assetType);
+		}
+		
+		public void mediaFileId(String multirequestToken) {
+			params.add("mediaFileId", multirequestToken);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void assetType(String multirequestToken) {
+			params.add("assetType", multirequestToken);
+		}
+	}
+
+	/**
+	 * Reserves a concurrency slot for the given asset-device combination
+	 * 
+	 * @param mediaFileId KalturaMediaFile.id media file belonging to the asset for which a concurrency
+	 * slot is being reserved
+	 * @param assetId KalturaAsset.id - asset for which a concurrency slot is being reserved
+	 * @param assetType Identifies the type of asset for which the concurrency slot is being reserved
+	 */
+    public static BookPlaybackSessionStreamingDeviceBuilder bookPlaybackSession(String mediaFileId, String assetId, AssetType assetType)  {
+		return new BookPlaybackSessionStreamingDeviceBuilder(mediaFileId, assetId, assetType);
+	}
 	
 	public static class ListStreamingDeviceBuilder extends ListResponseRequestBuilder<StreamingDevice, StreamingDevice.Tokenizer, ListStreamingDeviceBuilder> {
 		
