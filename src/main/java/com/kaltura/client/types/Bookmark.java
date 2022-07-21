@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.PlaybackContextType;
 import com.kaltura.client.enums.PositionOwner;
 import com.kaltura.client.types.BookmarkPlayerData;
 import com.kaltura.client.utils.GsonParser;
@@ -53,6 +54,7 @@ public class Bookmark extends SlimAsset {
 		BookmarkPlayerData.Tokenizer playerData();
 		String programId();
 		String isReportingMode();
+		String context();
 	}
 
 	/**
@@ -84,6 +86,10 @@ public class Bookmark extends SlimAsset {
 	 * Indicates if the current request is in reporting mode (hit)
 	 */
 	private Boolean isReportingMode;
+	/**
+	 * Playback context type
+	 */
+	private PlaybackContextType context;
 
 	// userId:
 	public String getUserId(){
@@ -141,6 +147,18 @@ public class Bookmark extends SlimAsset {
 		setToken("isReportingMode", multirequestToken);
 	}
 
+	// context:
+	public PlaybackContextType getContext(){
+		return this.context;
+	}
+	public void setContext(PlaybackContextType context){
+		this.context = context;
+	}
+
+	public void context(String multirequestToken){
+		setToken("context", multirequestToken);
+	}
+
 
 	public Bookmark() {
 		super();
@@ -159,6 +177,7 @@ public class Bookmark extends SlimAsset {
 		playerData = GsonParser.parseObject(jsonObject.getAsJsonObject("playerData"), BookmarkPlayerData.class);
 		programId = GsonParser.parseLong(jsonObject.get("programId"));
 		isReportingMode = GsonParser.parseBoolean(jsonObject.get("isReportingMode"));
+		context = PlaybackContextType.get(GsonParser.parseString(jsonObject.get("context")));
 
 	}
 
@@ -169,6 +188,7 @@ public class Bookmark extends SlimAsset {
 		kparams.add("playerData", this.playerData);
 		kparams.add("programId", this.programId);
 		kparams.add("isReportingMode", this.isReportingMode);
+		kparams.add("context", this.context);
 		return kparams;
 	}
 
