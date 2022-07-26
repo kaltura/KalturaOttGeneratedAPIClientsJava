@@ -44,15 +44,15 @@ public class StreamingDeviceService {
 	
 	public static class BookPlaybackSessionStreamingDeviceBuilder extends RequestBuilder<Boolean, String, BookPlaybackSessionStreamingDeviceBuilder> {
 		
-		public BookPlaybackSessionStreamingDeviceBuilder(String mediaFileId, String assetId, AssetType assetType) {
+		public BookPlaybackSessionStreamingDeviceBuilder(String fileId, String assetId, AssetType assetType) {
 			super(Boolean.class, "streamingdevice", "bookPlaybackSession");
-			params.add("mediaFileId", mediaFileId);
+			params.add("fileId", fileId);
 			params.add("assetId", assetId);
 			params.add("assetType", assetType);
 		}
 		
-		public void mediaFileId(String multirequestToken) {
-			params.add("mediaFileId", multirequestToken);
+		public void fileId(String multirequestToken) {
+			params.add("fileId", multirequestToken);
 		}
 		
 		public void assetId(String multirequestToken) {
@@ -67,13 +67,13 @@ public class StreamingDeviceService {
 	/**
 	 * Reserves a concurrency slot for the given asset-device combination
 	 * 
-	 * @param mediaFileId KalturaMediaFile.id media file belonging to the asset for which a concurrency
+	 * @param fileId KalturaMediaFile.id media file belonging to the asset for which a concurrency
 	 * slot is being reserved
 	 * @param assetId KalturaAsset.id - asset for which a concurrency slot is being reserved
 	 * @param assetType Identifies the type of asset for which the concurrency slot is being reserved
 	 */
-    public static BookPlaybackSessionStreamingDeviceBuilder bookPlaybackSession(String mediaFileId, String assetId, AssetType assetType)  {
-		return new BookPlaybackSessionStreamingDeviceBuilder(mediaFileId, assetId, assetType);
+    public static BookPlaybackSessionStreamingDeviceBuilder bookPlaybackSession(String fileId, String assetId, AssetType assetType)  {
+		return new BookPlaybackSessionStreamingDeviceBuilder(fileId, assetId, assetType);
 	}
 	
 	public static class ListStreamingDeviceBuilder extends ListResponseRequestBuilder<StreamingDevice, StreamingDevice.Tokenizer, ListStreamingDeviceBuilder> {
