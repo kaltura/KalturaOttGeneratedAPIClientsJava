@@ -53,13 +53,13 @@ public class Discount extends Price {
 	/**
 	 * The discount percentage
 	 */
-	private Integer percentage;
+	private Double percentage;
 
 	// percentage:
-	public Integer getPercentage(){
+	public Double getPercentage(){
 		return this.percentage;
 	}
-	public void setPercentage(Integer percentage){
+	public void setPercentage(Double percentage){
 		this.percentage = percentage;
 	}
 
@@ -78,7 +78,7 @@ public class Discount extends Price {
 		if(jsonObject == null) return;
 
 		// set members values:
-		percentage = GsonParser.parseInt(jsonObject.get("percentage"));
+		percentage = GsonParser.parseDouble(jsonObject.get("percentage"));
 
 	}
 
