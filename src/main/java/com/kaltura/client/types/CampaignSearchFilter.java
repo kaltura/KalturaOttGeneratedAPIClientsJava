@@ -49,6 +49,9 @@ public class CampaignSearchFilter extends CampaignFilter {
 		String endDateLessThanOrEqual();
 		String stateEqual();
 		String hasPromotion();
+		String nameEqual();
+		String nameContains();
+		String stateIn();
 	}
 
 	/**
@@ -67,6 +70,18 @@ public class CampaignSearchFilter extends CampaignFilter {
 	 * has Promotion
 	 */
 	private Boolean hasPromotion;
+	/**
+	 * Filter the Campaign with this name.
+	 */
+	private String nameEqual;
+	/**
+	 * A string that is included in the Campaign name
+	 */
+	private String nameContains;
+	/**
+	 * Comma separated Campaign State list
+	 */
+	private String stateIn;
 
 	// startDateGreaterThanOrEqual:
 	public Long getStartDateGreaterThanOrEqual(){
@@ -116,6 +131,42 @@ public class CampaignSearchFilter extends CampaignFilter {
 		setToken("hasPromotion", multirequestToken);
 	}
 
+	// nameEqual:
+	public String getNameEqual(){
+		return this.nameEqual;
+	}
+	public void setNameEqual(String nameEqual){
+		this.nameEqual = nameEqual;
+	}
+
+	public void nameEqual(String multirequestToken){
+		setToken("nameEqual", multirequestToken);
+	}
+
+	// nameContains:
+	public String getNameContains(){
+		return this.nameContains;
+	}
+	public void setNameContains(String nameContains){
+		this.nameContains = nameContains;
+	}
+
+	public void nameContains(String multirequestToken){
+		setToken("nameContains", multirequestToken);
+	}
+
+	// stateIn:
+	public String getStateIn(){
+		return this.stateIn;
+	}
+	public void setStateIn(String stateIn){
+		this.stateIn = stateIn;
+	}
+
+	public void stateIn(String multirequestToken){
+		setToken("stateIn", multirequestToken);
+	}
+
 
 	public CampaignSearchFilter() {
 		super();
@@ -131,6 +182,9 @@ public class CampaignSearchFilter extends CampaignFilter {
 		endDateLessThanOrEqual = GsonParser.parseLong(jsonObject.get("endDateLessThanOrEqual"));
 		stateEqual = ObjectState.get(GsonParser.parseString(jsonObject.get("stateEqual")));
 		hasPromotion = GsonParser.parseBoolean(jsonObject.get("hasPromotion"));
+		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
+		nameContains = GsonParser.parseString(jsonObject.get("nameContains"));
+		stateIn = GsonParser.parseString(jsonObject.get("stateIn"));
 
 	}
 
@@ -141,6 +195,9 @@ public class CampaignSearchFilter extends CampaignFilter {
 		kparams.add("endDateLessThanOrEqual", this.endDateLessThanOrEqual);
 		kparams.add("stateEqual", this.stateEqual);
 		kparams.add("hasPromotion", this.hasPromotion);
+		kparams.add("nameEqual", this.nameEqual);
+		kparams.add("nameContains", this.nameContains);
+		kparams.add("stateIn", this.stateIn);
 		return kparams;
 	}
 

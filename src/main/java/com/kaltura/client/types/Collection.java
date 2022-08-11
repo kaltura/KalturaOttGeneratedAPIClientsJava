@@ -73,6 +73,8 @@ public class Collection extends OTTObjectSupportNullable {
 		String createDate();
 		String updateDate();
 		String virtualAssetId();
+		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> fileTypes();
+		String fileTypesIds();
 	}
 
 	/**
@@ -168,6 +170,14 @@ public class Collection extends OTTObjectSupportNullable {
 	 * Virtual asset id
 	 */
 	private Long virtualAssetId;
+	/**
+	 * A list of file types identifiers that are supported in this collection
+	 */
+	private List<IntegerValue> fileTypes;
+	/**
+	 * Comma separated file types identifiers that are supported in this collection
+	 */
+	private String fileTypesIds;
 
 	// id:
 	public String getId(){
@@ -345,6 +355,22 @@ public class Collection extends OTTObjectSupportNullable {
 	public Long getVirtualAssetId(){
 		return this.virtualAssetId;
 	}
+	// fileTypes:
+	public List<IntegerValue> getFileTypes(){
+		return this.fileTypes;
+	}
+	// fileTypesIds:
+	public String getFileTypesIds(){
+		return this.fileTypesIds;
+	}
+	public void setFileTypesIds(String fileTypesIds){
+		this.fileTypesIds = fileTypesIds;
+	}
+
+	public void fileTypesIds(String multirequestToken){
+		setToken("fileTypesIds", multirequestToken);
+	}
+
 
 	public Collection() {
 		super();
@@ -378,6 +404,8 @@ public class Collection extends OTTObjectSupportNullable {
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
+		fileTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("fileTypes"), IntegerValue.class);
+		fileTypesIds = GsonParser.parseString(jsonObject.get("fileTypesIds"));
 
 	}
 
@@ -397,6 +425,7 @@ public class Collection extends OTTObjectSupportNullable {
 		kparams.add("productCodes", this.productCodes);
 		kparams.add("priceDetailsId", this.priceDetailsId);
 		kparams.add("isActive", this.isActive);
+		kparams.add("fileTypesIds", this.fileTypesIds);
 		return kparams;
 	}
 
