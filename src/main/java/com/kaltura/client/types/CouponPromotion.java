@@ -39,69 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Coupon promotion
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegmentValueFilter.Tokenizer.class)
-public class SegmentValueFilter extends BaseSegmentationTypeFilter {
+@MultiRequestBuilder.Tokenizer(CouponPromotion.Tokenizer.class)
+public class CouponPromotion extends BasePromotion {
 	
-	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
-		String idIn();
-		String nameContain();
+	public interface Tokenizer extends BasePromotion.Tokenizer {
+		String couponGroupId();
 	}
 
 	/**
-	 * Comma separated segmentation identifiers
+	 * CouponGroup identifier
 	 */
-	private String idIn;
-	/**
-	 * Name of segment contains specific string value
-	 */
-	private String nameContain;
+	private Long couponGroupId;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// couponGroupId:
+	public Long getCouponGroupId(){
+		return this.couponGroupId;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setCouponGroupId(Long couponGroupId){
+		this.couponGroupId = couponGroupId;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// nameContain:
-	public String getNameContain(){
-		return this.nameContain;
-	}
-	public void setNameContain(String nameContain){
-		this.nameContain = nameContain;
-	}
-
-	public void nameContain(String multirequestToken){
-		setToken("nameContain", multirequestToken);
+	public void couponGroupId(String multirequestToken){
+		setToken("couponGroupId", multirequestToken);
 	}
 
 
-	public SegmentValueFilter() {
+	public CouponPromotion() {
 		super();
 	}
 
-	public SegmentValueFilter(JsonObject jsonObject) throws APIException {
+	public CouponPromotion(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		nameContain = GsonParser.parseString(jsonObject.get("nameContain"));
+		couponGroupId = GsonParser.parseLong(jsonObject.get("couponGroupId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegmentValueFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("nameContain", this.nameContain);
+		kparams.add("objectType", "KalturaCouponPromotion");
+		kparams.add("couponGroupId", this.couponGroupId);
 		return kparams;
 	}
 

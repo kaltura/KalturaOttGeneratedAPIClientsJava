@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -39,69 +42,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Base Promotion
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegmentValueFilter.Tokenizer.class)
-public class SegmentValueFilter extends BaseSegmentationTypeFilter {
+@MultiRequestBuilder.Tokenizer(BasePromotion.Tokenizer.class)
+public abstract class BasePromotion extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
-		String idIn();
-		String nameContain();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
 	}
 
 	/**
-	 * Comma separated segmentation identifiers
+	 * These conditions define the Promotion that applies on
 	 */
-	private String idIn;
-	/**
-	 * Name of segment contains specific string value
-	 */
-	private String nameContain;
+	private List<Condition> conditions;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// conditions:
+	public List<Condition> getConditions(){
+		return this.conditions;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// nameContain:
-	public String getNameContain(){
-		return this.nameContain;
-	}
-	public void setNameContain(String nameContain){
-		this.nameContain = nameContain;
-	}
-
-	public void nameContain(String multirequestToken){
-		setToken("nameContain", multirequestToken);
+	public void setConditions(List<Condition> conditions){
+		this.conditions = conditions;
 	}
 
 
-	public SegmentValueFilter() {
+	public BasePromotion() {
 		super();
 	}
 
-	public SegmentValueFilter(JsonObject jsonObject) throws APIException {
+	public BasePromotion(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		nameContain = GsonParser.parseString(jsonObject.get("nameContain"));
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegmentValueFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("nameContain", this.nameContain);
+		kparams.add("objectType", "KalturaBasePromotion");
+		kparams.add("conditions", this.conditions);
 		return kparams;
 	}
 

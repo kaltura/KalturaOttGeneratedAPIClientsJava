@@ -40,22 +40,17 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegmentValueFilter.Tokenizer.class)
-public class SegmentValueFilter extends BaseSegmentationTypeFilter {
+@MultiRequestBuilder.Tokenizer(ChannelCondition.Tokenizer.class)
+public class ChannelCondition extends Condition {
 	
-	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
+	public interface Tokenizer extends Condition.Tokenizer {
 		String idIn();
-		String nameContain();
 	}
 
 	/**
-	 * Comma separated segmentation identifiers
+	 * Comma separated channel IDs list
 	 */
 	private String idIn;
-	/**
-	 * Name of segment contains specific string value
-	 */
-	private String nameContain;
 
 	// idIn:
 	public String getIdIn(){
@@ -69,39 +64,25 @@ public class SegmentValueFilter extends BaseSegmentationTypeFilter {
 		setToken("idIn", multirequestToken);
 	}
 
-	// nameContain:
-	public String getNameContain(){
-		return this.nameContain;
-	}
-	public void setNameContain(String nameContain){
-		this.nameContain = nameContain;
-	}
 
-	public void nameContain(String multirequestToken){
-		setToken("nameContain", multirequestToken);
-	}
-
-
-	public SegmentValueFilter() {
+	public ChannelCondition() {
 		super();
 	}
 
-	public SegmentValueFilter(JsonObject jsonObject) throws APIException {
+	public ChannelCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		nameContain = GsonParser.parseString(jsonObject.get("nameContain"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegmentValueFilter");
+		kparams.add("objectType", "KalturaChannelCondition");
 		kparams.add("idIn", this.idIn);
-		kparams.add("nameContain", this.nameContain);
 		return kparams;
 	}
 
