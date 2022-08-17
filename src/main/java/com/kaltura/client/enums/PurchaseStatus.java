@@ -49,8 +49,7 @@ public enum PurchaseStatus implements EnumAsString {
 	NOT_FOR_PURCHASE("not_for_purchase"),
 	INVALID_CURRENCY("invalid_currency"),
 	CURRENCY_NOT_DEFINED_ON_PRICE_CODE("currency_not_defined_on_price_code"),
-	PENDING_ENTITLEMENT("pending_entitlement"),
-	PROGRAM_ASSET_GROUP_OFFER_PURCHASED("program_asset_group_offer_purchased");
+	PENDING_ENTITLEMENT("pending_entitlement");
 
 	private String value;
 

@@ -53,8 +53,6 @@ public class LiveAsset extends MediaAsset {
 		String enableCatchUpState();
 		String enableStartOverState();
 		String bufferCatchUpSetting();
-		String paddingBeforeProgramStarts();
-		String paddingAfterProgramEnds();
 		String bufferTrickPlaySetting();
 		String enableRecordingPlaybackNonEntitledChannelState();
 		String enableTrickPlayState();
@@ -86,18 +84,6 @@ public class LiveAsset extends MediaAsset {
 	 * buffer Catch-up, configuration only
 	 */
 	private Long bufferCatchUpSetting;
-	/**
-	 * Returns padding before program starts in seconds from a live asset if
-	  configured,              otherwise returns corresponding value from
-	  TimeShiftedTvPartnerSettings.
-	 */
-	private Long paddingBeforeProgramStarts;
-	/**
-	 * Returns padding after program ends in seconds from a live asset if configured,  
-	             otherwise returns corresponding value from
-	  TimeShiftedTvPartnerSettings.
-	 */
-	private Long paddingAfterProgramEnds;
 	/**
 	 * buffer Trick-play, configuration only
 	 */
@@ -211,30 +197,6 @@ public class LiveAsset extends MediaAsset {
 
 	public void bufferCatchUpSetting(String multirequestToken){
 		setToken("bufferCatchUpSetting", multirequestToken);
-	}
-
-	// paddingBeforeProgramStarts:
-	public Long getPaddingBeforeProgramStarts(){
-		return this.paddingBeforeProgramStarts;
-	}
-	public void setPaddingBeforeProgramStarts(Long paddingBeforeProgramStarts){
-		this.paddingBeforeProgramStarts = paddingBeforeProgramStarts;
-	}
-
-	public void paddingBeforeProgramStarts(String multirequestToken){
-		setToken("paddingBeforeProgramStarts", multirequestToken);
-	}
-
-	// paddingAfterProgramEnds:
-	public Long getPaddingAfterProgramEnds(){
-		return this.paddingAfterProgramEnds;
-	}
-	public void setPaddingAfterProgramEnds(Long paddingAfterProgramEnds){
-		this.paddingAfterProgramEnds = paddingAfterProgramEnds;
-	}
-
-	public void paddingAfterProgramEnds(String multirequestToken){
-		setToken("paddingAfterProgramEnds", multirequestToken);
 	}
 
 	// bufferTrickPlaySetting:
@@ -352,8 +314,6 @@ public class LiveAsset extends MediaAsset {
 		enableCatchUpState = TimeShiftedTvState.get(GsonParser.parseString(jsonObject.get("enableCatchUpState")));
 		enableStartOverState = TimeShiftedTvState.get(GsonParser.parseString(jsonObject.get("enableStartOverState")));
 		bufferCatchUpSetting = GsonParser.parseLong(jsonObject.get("bufferCatchUpSetting"));
-		paddingBeforeProgramStarts = GsonParser.parseLong(jsonObject.get("paddingBeforeProgramStarts"));
-		paddingAfterProgramEnds = GsonParser.parseLong(jsonObject.get("paddingAfterProgramEnds"));
 		bufferTrickPlaySetting = GsonParser.parseLong(jsonObject.get("bufferTrickPlaySetting"));
 		enableRecordingPlaybackNonEntitledChannelState = TimeShiftedTvState.get(GsonParser.parseString(jsonObject.get("enableRecordingPlaybackNonEntitledChannelState")));
 		enableTrickPlayState = TimeShiftedTvState.get(GsonParser.parseString(jsonObject.get("enableTrickPlayState")));
@@ -377,8 +337,6 @@ public class LiveAsset extends MediaAsset {
 		kparams.add("enableCatchUpState", this.enableCatchUpState);
 		kparams.add("enableStartOverState", this.enableStartOverState);
 		kparams.add("bufferCatchUpSetting", this.bufferCatchUpSetting);
-		kparams.add("paddingBeforeProgramStarts", this.paddingBeforeProgramStarts);
-		kparams.add("paddingAfterProgramEnds", this.paddingAfterProgramEnds);
 		kparams.add("bufferTrickPlaySetting", this.bufferTrickPlaySetting);
 		kparams.add("enableRecordingPlaybackNonEntitledChannelState", this.enableRecordingPlaybackNonEntitledChannelState);
 		kparams.add("enableTrickPlayState", this.enableTrickPlayState);

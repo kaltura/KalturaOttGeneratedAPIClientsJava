@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.AssetInheritancePolicy;
-import com.kaltura.client.types.LiveToVodInfoAsset;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -55,7 +54,6 @@ public class MediaAsset extends Asset {
 		String geoBlockRuleId();
 		String status();
 		String inheritancePolicy();
-		LiveToVodInfoAsset.Tokenizer liveToVod();
 	}
 
 	/**
@@ -82,10 +80,6 @@ public class MediaAsset extends Asset {
 	 * The media asset inheritance policy
 	 */
 	private AssetInheritancePolicy inheritancePolicy;
-	/**
-	 * Live to VOD (if present)
-	 */
-	private LiveToVodInfoAsset liveToVod;
 
 	// externalIds:
 	public String getExternalIds(){
@@ -159,14 +153,6 @@ public class MediaAsset extends Asset {
 		setToken("inheritancePolicy", multirequestToken);
 	}
 
-	// liveToVod:
-	public LiveToVodInfoAsset getLiveToVod(){
-		return this.liveToVod;
-	}
-	public void setLiveToVod(LiveToVodInfoAsset liveToVod){
-		this.liveToVod = liveToVod;
-	}
-
 
 	public MediaAsset() {
 		super();
@@ -184,7 +170,6 @@ public class MediaAsset extends Asset {
 		geoBlockRuleId = GsonParser.parseInt(jsonObject.get("geoBlockRuleId"));
 		status = GsonParser.parseBoolean(jsonObject.get("status"));
 		inheritancePolicy = AssetInheritancePolicy.get(GsonParser.parseString(jsonObject.get("inheritancePolicy")));
-		liveToVod = GsonParser.parseObject(jsonObject.getAsJsonObject("liveToVod"), LiveToVodInfoAsset.class);
 
 	}
 
@@ -197,7 +182,6 @@ public class MediaAsset extends Asset {
 		kparams.add("geoBlockRuleId", this.geoBlockRuleId);
 		kparams.add("status", this.status);
 		kparams.add("inheritancePolicy", this.inheritancePolicy);
-		kparams.add("liveToVod", this.liveToVod);
 		return kparams;
 	}
 

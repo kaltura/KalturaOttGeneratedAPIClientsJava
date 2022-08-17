@@ -41,23 +41,6 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class EventNotificationService {
 	
-	public static class ListEventNotificationBuilder extends ListResponseRequestBuilder<EventNotification, EventNotification.Tokenizer, ListEventNotificationBuilder> {
-		
-		public ListEventNotificationBuilder(EventNotificationFilter filter) {
-			super(EventNotification.class, "eventnotification", "list");
-			params.add("filter", filter);
-		}
-	}
-
-	/**
-	 * Gets all EventNotification items for a given Object id and type
-	 * 
-	 * @param filter Filter
-	 */
-    public static ListEventNotificationBuilder list(EventNotificationFilter filter)  {
-		return new ListEventNotificationBuilder(filter);
-	}
-	
 	public static class UpdateEventNotificationBuilder extends RequestBuilder<EventNotification, EventNotification.Tokenizer, UpdateEventNotificationBuilder> {
 		
 		public UpdateEventNotificationBuilder(String id, EventNotification objectToUpdate) {
@@ -74,10 +57,27 @@ public class EventNotificationService {
 	/**
 	 * eventNotification update
 	 * 
-	 * @param id id of eventNotification
+	 * @param id Object ID to update
 	 * @param objectToUpdate eventNotification details
 	 */
     public static UpdateEventNotificationBuilder update(String id, EventNotification objectToUpdate)  {
 		return new UpdateEventNotificationBuilder(id, objectToUpdate);
+	}
+	
+	public static class ListEventNotificationBuilder extends ListResponseRequestBuilder<EventNotification, EventNotification.Tokenizer, ListEventNotificationBuilder> {
+		
+		public ListEventNotificationBuilder(EventNotificationFilter filter) {
+			super(EventNotification.class, "eventnotification", "list");
+			params.add("filter", filter);
+		}
+	}
+
+	/**
+	 * Gets all EventNotification items for a given Object id and type
+	 * 
+	 * @param filter Request filter
+	 */
+    public static ListEventNotificationBuilder list(EventNotificationFilter filter)  {
+		return new ListEventNotificationBuilder(filter);
 	}
 }

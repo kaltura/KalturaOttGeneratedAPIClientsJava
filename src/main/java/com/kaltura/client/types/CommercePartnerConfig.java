@@ -51,8 +51,6 @@ public class CommercePartnerConfig extends PartnerConfiguration {
 	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
 		RequestBuilder.ListTokenizer<BookmarkEventThreshold.Tokenizer> bookmarkEventThresholds();
 		String keepSubscriptionAddOns();
-		String programAssetEntitlementPaddingStart();
-		String programAssetEntitlementPaddingEnd();
 	}
 
 	/**
@@ -64,16 +62,6 @@ public class CommercePartnerConfig extends PartnerConfiguration {
 	 * configuration for keep add-ons after subscription deletion
 	 */
 	private Boolean keepSubscriptionAddOns;
-	/**
-	 * configuration for asset start entitlement padding e.g. asset start time -
-	  padding still relevant for asset
-	 */
-	private Integer programAssetEntitlementPaddingStart;
-	/**
-	 * configuration for asset end entitlement padding e.g. asset end time + padding
-	  still relevant for asset
-	 */
-	private Integer programAssetEntitlementPaddingEnd;
 
 	// bookmarkEventThresholds:
 	public List<BookmarkEventThreshold> getBookmarkEventThresholds(){
@@ -95,30 +83,6 @@ public class CommercePartnerConfig extends PartnerConfiguration {
 		setToken("keepSubscriptionAddOns", multirequestToken);
 	}
 
-	// programAssetEntitlementPaddingStart:
-	public Integer getProgramAssetEntitlementPaddingStart(){
-		return this.programAssetEntitlementPaddingStart;
-	}
-	public void setProgramAssetEntitlementPaddingStart(Integer programAssetEntitlementPaddingStart){
-		this.programAssetEntitlementPaddingStart = programAssetEntitlementPaddingStart;
-	}
-
-	public void programAssetEntitlementPaddingStart(String multirequestToken){
-		setToken("programAssetEntitlementPaddingStart", multirequestToken);
-	}
-
-	// programAssetEntitlementPaddingEnd:
-	public Integer getProgramAssetEntitlementPaddingEnd(){
-		return this.programAssetEntitlementPaddingEnd;
-	}
-	public void setProgramAssetEntitlementPaddingEnd(Integer programAssetEntitlementPaddingEnd){
-		this.programAssetEntitlementPaddingEnd = programAssetEntitlementPaddingEnd;
-	}
-
-	public void programAssetEntitlementPaddingEnd(String multirequestToken){
-		setToken("programAssetEntitlementPaddingEnd", multirequestToken);
-	}
-
 
 	public CommercePartnerConfig() {
 		super();
@@ -132,8 +96,6 @@ public class CommercePartnerConfig extends PartnerConfiguration {
 		// set members values:
 		bookmarkEventThresholds = GsonParser.parseArray(jsonObject.getAsJsonArray("bookmarkEventThresholds"), BookmarkEventThreshold.class);
 		keepSubscriptionAddOns = GsonParser.parseBoolean(jsonObject.get("keepSubscriptionAddOns"));
-		programAssetEntitlementPaddingStart = GsonParser.parseInt(jsonObject.get("programAssetEntitlementPaddingStart"));
-		programAssetEntitlementPaddingEnd = GsonParser.parseInt(jsonObject.get("programAssetEntitlementPaddingEnd"));
 
 	}
 
@@ -142,8 +104,6 @@ public class CommercePartnerConfig extends PartnerConfiguration {
 		kparams.add("objectType", "KalturaCommercePartnerConfig");
 		kparams.add("bookmarkEventThresholds", this.bookmarkEventThresholds);
 		kparams.add("keepSubscriptionAddOns", this.keepSubscriptionAddOns);
-		kparams.add("programAssetEntitlementPaddingStart", this.programAssetEntitlementPaddingStart);
-		kparams.add("programAssetEntitlementPaddingEnd", this.programAssetEntitlementPaddingEnd);
 		return kparams;
 	}
 

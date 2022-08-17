@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.RuleActionType;
-import com.kaltura.client.enums.RuleConditionType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -51,7 +50,6 @@ public class AssetUserRuleFilter extends Filter {
 	public interface Tokenizer extends Filter.Tokenizer {
 		String attachedUserIdEqualCurrent();
 		String actionsContainType();
-		String conditionsContainType();
 	}
 
 	/**
@@ -63,11 +61,6 @@ public class AssetUserRuleFilter extends Filter {
 	 * Indicates which asset rule list to return by this KalturaRuleActionType.
 	 */
 	private RuleActionType actionsContainType;
-	/**
-	 * Indicates that only asset rules are returned that have exactly one and not more
-	  associated condition.
-	 */
-	private RuleConditionType conditionsContainType;
 
 	// attachedUserIdEqualCurrent:
 	public Boolean getAttachedUserIdEqualCurrent(){
@@ -93,18 +86,6 @@ public class AssetUserRuleFilter extends Filter {
 		setToken("actionsContainType", multirequestToken);
 	}
 
-	// conditionsContainType:
-	public RuleConditionType getConditionsContainType(){
-		return this.conditionsContainType;
-	}
-	public void setConditionsContainType(RuleConditionType conditionsContainType){
-		this.conditionsContainType = conditionsContainType;
-	}
-
-	public void conditionsContainType(String multirequestToken){
-		setToken("conditionsContainType", multirequestToken);
-	}
-
 
 	public AssetUserRuleFilter() {
 		super();
@@ -118,7 +99,6 @@ public class AssetUserRuleFilter extends Filter {
 		// set members values:
 		attachedUserIdEqualCurrent = GsonParser.parseBoolean(jsonObject.get("attachedUserIdEqualCurrent"));
 		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
-		conditionsContainType = RuleConditionType.get(GsonParser.parseString(jsonObject.get("conditionsContainType")));
 
 	}
 
@@ -127,7 +107,6 @@ public class AssetUserRuleFilter extends Filter {
 		kparams.add("objectType", "KalturaAssetUserRuleFilter");
 		kparams.add("attachedUserIdEqualCurrent", this.attachedUserIdEqualCurrent);
 		kparams.add("actionsContainType", this.actionsContainType);
-		kparams.add("conditionsContainType", this.conditionsContainType);
 		return kparams;
 	}
 

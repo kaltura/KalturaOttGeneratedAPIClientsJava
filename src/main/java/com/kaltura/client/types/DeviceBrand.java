@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.DeviceBrandType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -52,7 +51,6 @@ public class DeviceBrand extends ObjectBase {
 		String id();
 		String name();
 		String deviceFamilyid();
-		String type();
 	}
 
 	/**
@@ -67,24 +65,11 @@ public class DeviceBrand extends ObjectBase {
 	 * Device family identifier
 	 */
 	private Long deviceFamilyid;
-	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
-	 */
-	private DeviceBrandType type;
 
 	// id:
 	public Long getId(){
 		return this.id;
 	}
-	public void setId(Long id){
-		this.id = id;
-	}
-
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
-	}
-
 	// name:
 	public String getName(){
 		return this.name;
@@ -101,18 +86,6 @@ public class DeviceBrand extends ObjectBase {
 	public Long getDeviceFamilyid(){
 		return this.deviceFamilyid;
 	}
-	public void setDeviceFamilyid(Long deviceFamilyid){
-		this.deviceFamilyid = deviceFamilyid;
-	}
-
-	public void deviceFamilyid(String multirequestToken){
-		setToken("deviceFamilyid", multirequestToken);
-	}
-
-	// type:
-	public DeviceBrandType getType(){
-		return this.type;
-	}
 
 	public DeviceBrand() {
 		super();
@@ -127,16 +100,13 @@ public class DeviceBrand extends ObjectBase {
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		deviceFamilyid = GsonParser.parseLong(jsonObject.get("deviceFamilyid"));
-		type = DeviceBrandType.get(GsonParser.parseString(jsonObject.get("type")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaDeviceBrand");
-		kparams.add("id", this.id);
 		kparams.add("name", this.name);
-		kparams.add("deviceFamilyid", this.deviceFamilyid);
 		return kparams;
 	}
 

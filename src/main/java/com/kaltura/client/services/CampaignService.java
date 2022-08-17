@@ -53,12 +53,35 @@ public class CampaignService {
 	}
 
 	/**
-	 * Add new Campaign
+	 * Add an object
 	 * 
-	 * @param objectToAdd Campaign Object to add
+	 * @param objectToAdd Object to add
 	 */
     public static AddCampaignBuilder add(Campaign objectToAdd)  {
 		return new AddCampaignBuilder(objectToAdd);
+	}
+	
+	public static class UpdateCampaignBuilder extends RequestBuilder<Campaign, Campaign.Tokenizer, UpdateCampaignBuilder> {
+		
+		public UpdateCampaignBuilder(long id, Campaign objectToUpdate) {
+			super(Campaign.class, "campaign", "update");
+			params.add("id", id);
+			params.add("objectToUpdate", objectToUpdate);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update an object
+	 * 
+	 * @param id Object ID to update
+	 * @param objectToUpdate Object to update
+	 */
+    public static UpdateCampaignBuilder update(long id, Campaign objectToUpdate)  {
+		return new UpdateCampaignBuilder(id, objectToUpdate);
 	}
 	
 	public static class DeleteCampaignBuilder extends NullRequestBuilder {
@@ -74,9 +97,9 @@ public class CampaignService {
 	}
 
 	/**
-	 * Delete existing Campaign
+	 * Delete an object
 	 * 
-	 * @param id Campaign identifier
+	 * @param id Object ID to delete
 	 */
     public static DeleteCampaignBuilder delete(long id)  {
 		return new DeleteCampaignBuilder(id);
@@ -95,12 +118,6 @@ public class CampaignService {
 		return list(filter, null);
 	}
 
-	/**
-	 * Returns the list of available Campaigns
-	 * 
-	 * @param filter Filter
-	 * @param pager Pager
-	 */
     public static ListCampaignBuilder list(CampaignFilter filter, FilterPager pager)  {
 		return new ListCampaignBuilder(filter, pager);
 	}
@@ -130,28 +147,5 @@ public class CampaignService {
 	 */
     public static SetStateCampaignBuilder setState(long campaignId, ObjectState newState)  {
 		return new SetStateCampaignBuilder(campaignId, newState);
-	}
-	
-	public static class UpdateCampaignBuilder extends RequestBuilder<Campaign, Campaign.Tokenizer, UpdateCampaignBuilder> {
-		
-		public UpdateCampaignBuilder(long id, Campaign objectToUpdate) {
-			super(Campaign.class, "campaign", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update existing Campaign
-	 * 
-	 * @param id id of Campaign to update
-	 * @param objectToUpdate Campaign Object to update
-	 */
-    public static UpdateCampaignBuilder update(long id, Campaign objectToUpdate)  {
-		return new UpdateCampaignBuilder(id, objectToUpdate);
 	}
 }

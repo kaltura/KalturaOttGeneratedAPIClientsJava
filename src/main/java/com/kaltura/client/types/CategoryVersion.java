@@ -45,9 +45,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CategoryVersion.Tokenizer.class)
-public class CategoryVersion extends OTTObjectSupportNullable {
+public class CategoryVersion extends CrudObject {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends CrudObject.Tokenizer {
 		String id();
 		String name();
 		String treeId();

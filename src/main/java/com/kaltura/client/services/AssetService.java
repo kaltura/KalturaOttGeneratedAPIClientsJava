@@ -39,7 +39,6 @@ import com.kaltura.client.types.BulkUpload;
 import com.kaltura.client.types.BulkUploadAssetData;
 import com.kaltura.client.types.BulkUploadJobData;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.PersonalAssetSelectionFilter;
 import com.kaltura.client.types.PlaybackContext;
 import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.SearchAssetFilter;
@@ -320,23 +319,6 @@ public class AssetService {
 	 */
     public static ListAssetBuilder list(AssetFilter filter, FilterPager pager)  {
 		return new ListAssetBuilder(filter, pager);
-	}
-	
-	public static class ListPersonalSelectionAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, ListPersonalSelectionAssetBuilder> {
-		
-		public ListPersonalSelectionAssetBuilder(PersonalAssetSelectionFilter filter) {
-			super(Asset.class, "asset", "listPersonalSelection");
-			params.add("filter", filter);
-		}
-	}
-
-	/**
-	 * Returns recent selected assets
-	 * 
-	 * @param filter Filtering the assets request
-	 */
-    public static ListPersonalSelectionAssetBuilder listPersonalSelection(PersonalAssetSelectionFilter filter)  {
-		return new ListPersonalSelectionAssetBuilder(filter);
 	}
 	
 	public static class RemoveMetasAndTagsAssetBuilder extends RequestBuilder<Boolean, String, RemoveMetasAndTagsAssetBuilder> {

@@ -41,9 +41,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdSegmentFilter.Tokenizer.class)
-public class HouseholdSegmentFilter extends Filter {
+public class HouseholdSegmentFilter extends CrudFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends CrudFilter.Tokenizer {
 		String kSql();
 	}
 

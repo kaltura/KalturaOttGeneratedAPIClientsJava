@@ -46,9 +46,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EntitlementFilter.Tokenizer.class)
-public class EntitlementFilter extends BaseEntitlementFilter {
+public class EntitlementFilter extends Filter {
 	
-	public interface Tokenizer extends BaseEntitlementFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String productTypeEqual();
 		String entityReferenceEqual();
 		String isExpiredEqual();

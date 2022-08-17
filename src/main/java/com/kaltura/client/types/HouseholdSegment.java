@@ -44,9 +44,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(HouseholdSegment.Tokenizer.class)
-public class HouseholdSegment extends OTTObjectSupportNullable {
+public class HouseholdSegment extends CrudObject {
 	
-	public interface Tokenizer extends OTTObjectSupportNullable.Tokenizer {
+	public interface Tokenizer extends CrudObject.Tokenizer {
 		String segmentId();
 		String householdId();
 	}

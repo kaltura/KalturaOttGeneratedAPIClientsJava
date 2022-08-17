@@ -36,8 +36,7 @@ package com.kaltura.client.enums;
 public enum TransactionType implements EnumAsString {
 	PPV("ppv"),
 	SUBSCRIPTION("subscription"),
-	COLLECTION("collection"),
-	PROGRAMASSETGROUPOFFER("programAssetGroupOffer");
+	COLLECTION("collection");
 
 	private String value;
 
