@@ -52,6 +52,7 @@ public class ConcurrencyPartnerConfig extends PartnerConfiguration {
 		String evictionPolicy();
 		String concurrencyThresholdInSeconds();
 		String revokeOnDeviceDelete();
+		String excludeFreeContentFromConcurrency();
 	}
 
 	/**
@@ -70,6 +71,11 @@ public class ConcurrencyPartnerConfig extends PartnerConfiguration {
 	 * Revoke on device delete
 	 */
 	private Boolean revokeOnDeviceDelete;
+	/**
+	 * If set to true then for all concurrency checks in all APIs, system shall exclude
+	  free content from counting towards the use of a concurrency slot
+	 */
+	private Boolean excludeFreeContentFromConcurrency;
 
 	// deviceFamilyIds:
 	public String getDeviceFamilyIds(){
@@ -119,6 +125,18 @@ public class ConcurrencyPartnerConfig extends PartnerConfiguration {
 		setToken("revokeOnDeviceDelete", multirequestToken);
 	}
 
+	// excludeFreeContentFromConcurrency:
+	public Boolean getExcludeFreeContentFromConcurrency(){
+		return this.excludeFreeContentFromConcurrency;
+	}
+	public void setExcludeFreeContentFromConcurrency(Boolean excludeFreeContentFromConcurrency){
+		this.excludeFreeContentFromConcurrency = excludeFreeContentFromConcurrency;
+	}
+
+	public void excludeFreeContentFromConcurrency(String multirequestToken){
+		setToken("excludeFreeContentFromConcurrency", multirequestToken);
+	}
+
 
 	public ConcurrencyPartnerConfig() {
 		super();
@@ -134,6 +152,7 @@ public class ConcurrencyPartnerConfig extends PartnerConfiguration {
 		evictionPolicy = EvictionPolicyType.get(GsonParser.parseString(jsonObject.get("evictionPolicy")));
 		concurrencyThresholdInSeconds = GsonParser.parseLong(jsonObject.get("concurrencyThresholdInSeconds"));
 		revokeOnDeviceDelete = GsonParser.parseBoolean(jsonObject.get("revokeOnDeviceDelete"));
+		excludeFreeContentFromConcurrency = GsonParser.parseBoolean(jsonObject.get("excludeFreeContentFromConcurrency"));
 
 	}
 
@@ -144,6 +163,7 @@ public class ConcurrencyPartnerConfig extends PartnerConfiguration {
 		kparams.add("evictionPolicy", this.evictionPolicy);
 		kparams.add("concurrencyThresholdInSeconds", this.concurrencyThresholdInSeconds);
 		kparams.add("revokeOnDeviceDelete", this.revokeOnDeviceDelete);
+		kparams.add("excludeFreeContentFromConcurrency", this.excludeFreeContentFromConcurrency);
 		return kparams;
 	}
 

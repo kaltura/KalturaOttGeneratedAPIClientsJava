@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,71 +43,48 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Promotion
+ * Base Promotion
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(Promotion.Tokenizer.class)
-public class Promotion extends BasePromotion {
+@MultiRequestBuilder.Tokenizer(BasePromotion.Tokenizer.class)
+public abstract class BasePromotion extends ObjectBase {
 	
-	public interface Tokenizer extends BasePromotion.Tokenizer {
-		String discountModuleId();
-		String numberOfRecurring();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
 	}
 
 	/**
-	 * The discount module id that is promoted to the user
+	 * These conditions define the Promotion that applies on
 	 */
-	private Long discountModuleId;
-	/**
-	 * the numer of recurring for this promotion
-	 */
-	private Integer numberOfRecurring;
+	private List<Condition> conditions;
 
-	// discountModuleId:
-	public Long getDiscountModuleId(){
-		return this.discountModuleId;
+	// conditions:
+	public List<Condition> getConditions(){
+		return this.conditions;
 	}
-	public void setDiscountModuleId(Long discountModuleId){
-		this.discountModuleId = discountModuleId;
-	}
-
-	public void discountModuleId(String multirequestToken){
-		setToken("discountModuleId", multirequestToken);
-	}
-
-	// numberOfRecurring:
-	public Integer getNumberOfRecurring(){
-		return this.numberOfRecurring;
-	}
-	public void setNumberOfRecurring(Integer numberOfRecurring){
-		this.numberOfRecurring = numberOfRecurring;
-	}
-
-	public void numberOfRecurring(String multirequestToken){
-		setToken("numberOfRecurring", multirequestToken);
+	public void setConditions(List<Condition> conditions){
+		this.conditions = conditions;
 	}
 
 
-	public Promotion() {
+	public BasePromotion() {
 		super();
 	}
 
-	public Promotion(JsonObject jsonObject) throws APIException {
+	public BasePromotion(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
-		numberOfRecurring = GsonParser.parseInt(jsonObject.get("numberOfRecurring"));
+		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPromotion");
-		kparams.add("discountModuleId", this.discountModuleId);
-		kparams.add("numberOfRecurring", this.numberOfRecurring);
+		kparams.add("objectType", "KalturaBasePromotion");
+		kparams.add("conditions", this.conditions);
 		return kparams;
 	}
 
