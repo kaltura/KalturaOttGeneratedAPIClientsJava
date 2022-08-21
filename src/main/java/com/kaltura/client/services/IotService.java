@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.Iot;
 import com.kaltura.client.types.IotClientConfiguration;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -54,10 +53,10 @@ public class IotService {
 		return new GetClientConfigurationIotBuilder();
 	}
 	
-	public static class RegisterIotBuilder extends RequestBuilder<Iot, Iot.Tokenizer, RegisterIotBuilder> {
+	public static class RegisterIotBuilder extends RequestBuilder<Boolean, String, RegisterIotBuilder> {
 		
 		public RegisterIotBuilder() {
-			super(Iot.class, "iot", "register");
+			super(Boolean.class, "iot", "register");
 		}
 	}
 

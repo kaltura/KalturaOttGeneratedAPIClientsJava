@@ -27,7 +27,6 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.IotProfile;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -39,64 +38,17 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class IotProfileService {
 	
-	public static class AddIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, AddIotProfileBuilder> {
+	public static class AddIotProfileBuilder extends RequestBuilder<Boolean, String, AddIotProfileBuilder> {
 		
-		public AddIotProfileBuilder(IotProfile objectToAdd) {
-			super(IotProfile.class, "iotprofile", "add");
-			params.add("objectToAdd", objectToAdd);
+		public AddIotProfileBuilder() {
+			super(Boolean.class, "iotprofile", "add");
 		}
 	}
 
 	/**
-	 * Add new KalturaIotProfile
-	 * 
-	 * @param objectToAdd KalturaIotProfile Object to add
+	 * Add new environment in aws
 	 */
-    public static AddIotProfileBuilder add(IotProfile objectToAdd)  {
-		return new AddIotProfileBuilder(objectToAdd);
-	}
-	
-	public static class GetIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, GetIotProfileBuilder> {
-		
-		public GetIotProfileBuilder(long id) {
-			super(IotProfile.class, "iotprofile", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Get existing KalturaIotProfile
-	 * 
-	 * @param id KalturaIotProfile identifier
-	 */
-    public static GetIotProfileBuilder get(long id)  {
-		return new GetIotProfileBuilder(id);
-	}
-	
-	public static class UpdateIotProfileBuilder extends RequestBuilder<IotProfile, IotProfile.Tokenizer, UpdateIotProfileBuilder> {
-		
-		public UpdateIotProfileBuilder(long id, IotProfile objectToUpdate) {
-			super(IotProfile.class, "iotprofile", "update");
-			params.add("id", id);
-			params.add("objectToUpdate", objectToUpdate);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Update existing KalturaIotProfile
-	 * 
-	 * @param id id of KalturaIotProfile to update
-	 * @param objectToUpdate KalturaIotProfile Object to update
-	 */
-    public static UpdateIotProfileBuilder update(long id, IotProfile objectToUpdate)  {
-		return new UpdateIotProfileBuilder(id, objectToUpdate);
+    public static AddIotProfileBuilder add()  {
+		return new AddIotProfileBuilder();
 	}
 }
