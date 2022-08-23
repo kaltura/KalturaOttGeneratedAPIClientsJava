@@ -45,17 +45,12 @@ public class SegmentValueFilter extends BaseSegmentationTypeFilter {
 	
 	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
 		String idIn();
-		String nameContain();
 	}
 
 	/**
 	 * Comma separated segmentation identifiers
 	 */
 	private String idIn;
-	/**
-	 * Name of segment contains specific string value
-	 */
-	private String nameContain;
 
 	// idIn:
 	public String getIdIn(){
@@ -67,18 +62,6 @@ public class SegmentValueFilter extends BaseSegmentationTypeFilter {
 
 	public void idIn(String multirequestToken){
 		setToken("idIn", multirequestToken);
-	}
-
-	// nameContain:
-	public String getNameContain(){
-		return this.nameContain;
-	}
-	public void setNameContain(String nameContain){
-		this.nameContain = nameContain;
-	}
-
-	public void nameContain(String multirequestToken){
-		setToken("nameContain", multirequestToken);
 	}
 
 
@@ -93,7 +76,6 @@ public class SegmentValueFilter extends BaseSegmentationTypeFilter {
 
 		// set members values:
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		nameContain = GsonParser.parseString(jsonObject.get("nameContain"));
 
 	}
 
@@ -101,7 +83,6 @@ public class SegmentValueFilter extends BaseSegmentationTypeFilter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSegmentValueFilter");
 		kparams.add("idIn", this.idIn);
-		kparams.add("nameContain", this.nameContain);
 		return kparams;
 	}
 

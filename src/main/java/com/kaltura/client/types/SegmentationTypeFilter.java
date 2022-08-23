@@ -49,7 +49,6 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
 		String idIn();
 		String kSql();
-		String nameContain();
 	}
 
 	/**
@@ -60,10 +59,6 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 	 * KSQL expression
 	 */
 	private String kSql;
-	/**
-	 * Name of segment contains specific string value
-	 */
-	private String nameContain;
 
 	// idIn:
 	public String getIdIn(){
@@ -89,18 +84,6 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		setToken("kSql", multirequestToken);
 	}
 
-	// nameContain:
-	public String getNameContain(){
-		return this.nameContain;
-	}
-	public void setNameContain(String nameContain){
-		this.nameContain = nameContain;
-	}
-
-	public void nameContain(String multirequestToken){
-		setToken("nameContain", multirequestToken);
-	}
-
 
 	public SegmentationTypeFilter() {
 		super();
@@ -114,7 +97,6 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		// set members values:
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
-		nameContain = GsonParser.parseString(jsonObject.get("nameContain"));
 
 	}
 
@@ -123,7 +105,6 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		kparams.add("objectType", "KalturaSegmentationTypeFilter");
 		kparams.add("idIn", this.idIn);
 		kparams.add("kSql", this.kSql);
-		kparams.add("nameContain", this.nameContain);
 		return kparams;
 	}
 
