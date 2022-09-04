@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,41 +38,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MonetizationType implements EnumAsString {
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	BOXSET("boxset"),
-	ANY("any"),
-	PPV_LIVE("ppv_live");
 
-	private String value;
-
-	MonetizationType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(CampaignSegmentFilter.Tokenizer.class)
+public class CampaignSegmentFilter extends CampaignSearchFilter {
+	
+	public interface Tokenizer extends CampaignSearchFilter.Tokenizer {
+		String segmentIdIn();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * comma separeted segment ids to be searched inside campaigns
+	 */
+	private String segmentIdIn;
+
+	// segmentIdIn:
+	public String getSegmentIdIn(){
+		return this.segmentIdIn;
+	}
+	public void setSegmentIdIn(String segmentIdIn){
+		this.segmentIdIn = segmentIdIn;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void segmentIdIn(String multirequestToken){
+		setToken("segmentIdIn", multirequestToken);
 	}
 
-	public static MonetizationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over MonetizationType defined values and compare the inner value with the given one:
-		for(MonetizationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MonetizationType.values().length > 0 ? MonetizationType.values()[0]: null;
-   }
+
+	public CampaignSegmentFilter() {
+		super();
+	}
+
+	public CampaignSegmentFilter(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		segmentIdIn = GsonParser.parseString(jsonObject.get("segmentIdIn"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaCampaignSegmentFilter");
+		kparams.add("segmentIdIn", this.segmentIdIn);
+		return kparams;
+	}
+
 }
+

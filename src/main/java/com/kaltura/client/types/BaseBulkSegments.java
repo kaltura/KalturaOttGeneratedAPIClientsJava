@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,41 +38,56 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MonetizationType implements EnumAsString {
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	BOXSET("boxset"),
-	ANY("any"),
-	PPV_LIVE("ppv_live");
 
-	private String value;
-
-	MonetizationType(String value) {
-		this.value = value;
+/**
+ * Base object for bulk updating segment data
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(BaseBulkSegments.Tokenizer.class)
+public abstract class BaseBulkSegments extends BulkUploadObjectData {
+	
+	public interface Tokenizer extends BulkUploadObjectData.Tokenizer {
+		String segmentId();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * Segment Id to update
+	 */
+	private Long segmentId;
+
+	// segmentId:
+	public Long getSegmentId(){
+		return this.segmentId;
+	}
+	public void setSegmentId(Long segmentId){
+		this.segmentId = segmentId;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void segmentId(String multirequestToken){
+		setToken("segmentId", multirequestToken);
 	}
 
-	public static MonetizationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over MonetizationType defined values and compare the inner value with the given one:
-		for(MonetizationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MonetizationType.values().length > 0 ? MonetizationType.values()[0]: null;
-   }
+
+	public BaseBulkSegments() {
+		super();
+	}
+
+	public BaseBulkSegments(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		segmentId = GsonParser.parseLong(jsonObject.get("segmentId"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaBaseBulkSegments");
+		kparams.add("segmentId", this.segmentId);
+		return kparams;
+	}
+
 }
+

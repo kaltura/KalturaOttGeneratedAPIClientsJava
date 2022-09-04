@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.BaseSegmentationTypeFilter;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.SegmentationPartnerConfiguration;
 import com.kaltura.client.types.SegmentationType;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -80,6 +81,20 @@ public class SegmentationTypeService {
 		return new DeleteSegmentationTypeBuilder(id);
 	}
 	
+	public static class GetPartnerConfigurationSegmentationTypeBuilder extends RequestBuilder<SegmentationPartnerConfiguration, SegmentationPartnerConfiguration.Tokenizer, GetPartnerConfigurationSegmentationTypeBuilder> {
+		
+		public GetPartnerConfigurationSegmentationTypeBuilder() {
+			super(SegmentationPartnerConfiguration.class, "segmentationtype", "getPartnerConfiguration");
+		}
+	}
+
+	/**
+	 * Get existing segmentation partner configuration
+	 */
+    public static GetPartnerConfigurationSegmentationTypeBuilder getPartnerConfiguration()  {
+		return new GetPartnerConfigurationSegmentationTypeBuilder();
+	}
+	
 	public static class ListSegmentationTypeBuilder extends ListResponseRequestBuilder<SegmentationType, SegmentationType.Tokenizer, ListSegmentationTypeBuilder> {
 		
 		public ListSegmentationTypeBuilder(BaseSegmentationTypeFilter filter, FilterPager pager) {
@@ -128,5 +143,22 @@ public class SegmentationTypeService {
 	 */
     public static UpdateSegmentationTypeBuilder update(long segmentationTypeId, SegmentationType segmentationType)  {
 		return new UpdateSegmentationTypeBuilder(segmentationTypeId, segmentationType);
+	}
+	
+	public static class UpdatePartnerConfigurationSegmentationTypeBuilder extends RequestBuilder<SegmentationPartnerConfiguration, SegmentationPartnerConfiguration.Tokenizer, UpdatePartnerConfigurationSegmentationTypeBuilder> {
+		
+		public UpdatePartnerConfigurationSegmentationTypeBuilder(SegmentationPartnerConfiguration configuration) {
+			super(SegmentationPartnerConfiguration.class, "segmentationtype", "updatePartnerConfiguration");
+			params.add("configuration", configuration);
+		}
+	}
+
+	/**
+	 * Set segmentation configuration on partner level
+	 * 
+	 * @param configuration New configuration to set
+	 */
+    public static UpdatePartnerConfigurationSegmentationTypeBuilder updatePartnerConfiguration(SegmentationPartnerConfiguration configuration)  {
+		return new UpdatePartnerConfigurationSegmentationTypeBuilder(configuration);
 	}
 }
