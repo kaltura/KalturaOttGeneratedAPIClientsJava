@@ -32,8 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -61,7 +59,7 @@ public class IotClientConfiguration extends ObjectBase {
 		String thingId();
 		String username();
 		String password();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> topics();
+		String topics();
 		String status();
 		String message();
 	}
@@ -113,7 +111,7 @@ public class IotClientConfiguration extends ObjectBase {
 	/**
 	 * topics
 	 */
-	private List<StringValue> topics;
+	private String topics;
 	/**
 	 * status
 	 */
@@ -256,11 +254,15 @@ public class IotClientConfiguration extends ObjectBase {
 	}
 
 	// topics:
-	public List<StringValue> getTopics(){
+	public String getTopics(){
 		return this.topics;
 	}
-	public void setTopics(List<StringValue> topics){
+	public void setTopics(String topics){
 		this.topics = topics;
+	}
+
+	public void topics(String multirequestToken){
+		setToken("topics", multirequestToken);
 	}
 
 	// status:
@@ -309,7 +311,7 @@ public class IotClientConfiguration extends ObjectBase {
 		thingId = GsonParser.parseString(jsonObject.get("thingId"));
 		username = GsonParser.parseString(jsonObject.get("username"));
 		password = GsonParser.parseString(jsonObject.get("password"));
-		topics = GsonParser.parseArray(jsonObject.getAsJsonArray("topics"), StringValue.class);
+		topics = GsonParser.parseString(jsonObject.get("topics"));
 		status = GsonParser.parseString(jsonObject.get("status"));
 		message = GsonParser.parseString(jsonObject.get("message"));
 
