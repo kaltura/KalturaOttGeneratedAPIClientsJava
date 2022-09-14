@@ -44,24 +44,24 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class CampaignSegmentFilter extends CampaignSearchFilter {
 	
 	public interface Tokenizer extends CampaignSearchFilter.Tokenizer {
-		String segmentIdIn();
+		String segmentIdEqual();
 	}
 
 	/**
-	 * comma separeted segment ids to be searched inside campaigns
+	 * segment id to be searched inside campaigns
 	 */
-	private String segmentIdIn;
+	private Long segmentIdEqual;
 
-	// segmentIdIn:
-	public String getSegmentIdIn(){
-		return this.segmentIdIn;
+	// segmentIdEqual:
+	public Long getSegmentIdEqual(){
+		return this.segmentIdEqual;
 	}
-	public void setSegmentIdIn(String segmentIdIn){
-		this.segmentIdIn = segmentIdIn;
+	public void setSegmentIdEqual(Long segmentIdEqual){
+		this.segmentIdEqual = segmentIdEqual;
 	}
 
-	public void segmentIdIn(String multirequestToken){
-		setToken("segmentIdIn", multirequestToken);
+	public void segmentIdEqual(String multirequestToken){
+		setToken("segmentIdEqual", multirequestToken);
 	}
 
 
@@ -75,14 +75,14 @@ public class CampaignSegmentFilter extends CampaignSearchFilter {
 		if(jsonObject == null) return;
 
 		// set members values:
-		segmentIdIn = GsonParser.parseString(jsonObject.get("segmentIdIn"));
+		segmentIdEqual = GsonParser.parseLong(jsonObject.get("segmentIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCampaignSegmentFilter");
-		kparams.add("segmentIdIn", this.segmentIdIn);
+		kparams.add("segmentIdEqual", this.segmentIdEqual);
 		return kparams;
 	}
 
