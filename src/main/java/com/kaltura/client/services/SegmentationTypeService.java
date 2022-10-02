@@ -89,7 +89,7 @@ public class SegmentationTypeService {
 	}
 
 	/**
-	 * Get existing segmentation partner configuration
+	 * Gets existing partner segmentation configuration
 	 */
     public static GetPartnerConfigurationSegmentationTypeBuilder getPartnerConfiguration()  {
 		return new GetPartnerConfigurationSegmentationTypeBuilder();
@@ -154,9 +154,15 @@ public class SegmentationTypeService {
 	}
 
 	/**
-	 * Set segmentation configuration on partner level
+	 * Sets partner configuration for segments configuration
 	 * 
-	 * @param configuration New configuration to set
+	 * @param configuration 1. maxDynamicSegments - how many dynamic segments (segments with conditions) the
+	 * operator is allowed to have.
+	 *             Displayed in the OPC as *'Maximum Number of Dynamic Segments' 
+	 *             *maxCalculatedPeriod - 
+	 *             the maximum number of past days to be calculated for dynamic
+	 * segments. e.g. the last 60 days, the last 90 days etc.
+	 *             Displayed in OPC as *'Maximum of Dynamic Segments period'*
 	 */
     public static UpdatePartnerConfigurationSegmentationTypeBuilder updatePartnerConfiguration(SegmentationPartnerConfiguration configuration)  {
 		return new UpdatePartnerConfigurationSegmentationTypeBuilder(configuration);

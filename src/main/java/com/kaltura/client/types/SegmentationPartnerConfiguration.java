@@ -53,12 +53,13 @@ public class SegmentationPartnerConfiguration extends ObjectBase {
 	}
 
 	/**
-	 * The maximum number of past days to be calculated for dynamic segments
+	 * The maximum number of past days to be calculated for dynamic segments,
+	  default=180
 	 */
 	private Integer maxCalculatedPeriod;
 	/**
 	 * How many dynamic segments (segments with conditions) the operator is allowed to
-	  have
+	  have, default=50
 	 */
 	private Integer maxDynamicSegments;
 
