@@ -29,7 +29,6 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.BaseSegmentationTypeFilter;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.SegmentationPartnerConfiguration;
 import com.kaltura.client.types.SegmentationType;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -81,20 +80,6 @@ public class SegmentationTypeService {
 		return new DeleteSegmentationTypeBuilder(id);
 	}
 	
-	public static class GetPartnerConfigurationSegmentationTypeBuilder extends RequestBuilder<SegmentationPartnerConfiguration, SegmentationPartnerConfiguration.Tokenizer, GetPartnerConfigurationSegmentationTypeBuilder> {
-		
-		public GetPartnerConfigurationSegmentationTypeBuilder() {
-			super(SegmentationPartnerConfiguration.class, "segmentationtype", "getPartnerConfiguration");
-		}
-	}
-
-	/**
-	 * Gets existing partner segmentation configuration
-	 */
-    public static GetPartnerConfigurationSegmentationTypeBuilder getPartnerConfiguration()  {
-		return new GetPartnerConfigurationSegmentationTypeBuilder();
-	}
-	
 	public static class ListSegmentationTypeBuilder extends ListResponseRequestBuilder<SegmentationType, SegmentationType.Tokenizer, ListSegmentationTypeBuilder> {
 		
 		public ListSegmentationTypeBuilder(BaseSegmentationTypeFilter filter, FilterPager pager) {
@@ -143,28 +128,5 @@ public class SegmentationTypeService {
 	 */
     public static UpdateSegmentationTypeBuilder update(long segmentationTypeId, SegmentationType segmentationType)  {
 		return new UpdateSegmentationTypeBuilder(segmentationTypeId, segmentationType);
-	}
-	
-	public static class UpdatePartnerConfigurationSegmentationTypeBuilder extends RequestBuilder<SegmentationPartnerConfiguration, SegmentationPartnerConfiguration.Tokenizer, UpdatePartnerConfigurationSegmentationTypeBuilder> {
-		
-		public UpdatePartnerConfigurationSegmentationTypeBuilder(SegmentationPartnerConfiguration configuration) {
-			super(SegmentationPartnerConfiguration.class, "segmentationtype", "updatePartnerConfiguration");
-			params.add("configuration", configuration);
-		}
-	}
-
-	/**
-	 * Sets partner configuration for segments configuration
-	 * 
-	 * @param configuration 1. maxDynamicSegments - how many dynamic segments (segments with conditions) the
-	 * operator is allowed to have.
-	 *             Displayed in the OPC as *'Maximum Number of Dynamic Segments' 
-	 *             *maxCalculatedPeriod - 
-	 *             the maximum number of past days to be calculated for dynamic
-	 * segments. e.g. the last 60 days, the last 90 days etc.
-	 *             Displayed in OPC as *'Maximum of Dynamic Segments period'*
-	 */
-    public static UpdatePartnerConfigurationSegmentationTypeBuilder updatePartnerConfiguration(SegmentationPartnerConfiguration configuration)  {
-		return new UpdatePartnerConfigurationSegmentationTypeBuilder(configuration);
 	}
 }

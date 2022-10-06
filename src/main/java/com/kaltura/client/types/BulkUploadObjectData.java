@@ -29,9 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.BulkUploadJobAction;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -49,25 +47,8 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public abstract class BulkUploadObjectData extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String action();
 	}
 
-	/**
-	 * defaults to upsert
-	 */
-	private BulkUploadJobAction action;
-
-	// action:
-	public BulkUploadJobAction getAction(){
-		return this.action;
-	}
-	public void setAction(BulkUploadJobAction action){
-		this.action = action;
-	}
-
-	public void action(String multirequestToken){
-		setToken("action", multirequestToken);
-	}
 
 
 	public BulkUploadObjectData() {
@@ -76,18 +57,11 @@ public abstract class BulkUploadObjectData extends ObjectBase {
 
 	public BulkUploadObjectData(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		action = BulkUploadJobAction.get(GsonParser.parseString(jsonObject.get("action")));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBulkUploadObjectData");
-		kparams.add("action", this.action);
 		return kparams;
 	}
 

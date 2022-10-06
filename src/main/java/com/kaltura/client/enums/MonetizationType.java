@@ -36,9 +36,7 @@ package com.kaltura.client.enums;
 public enum MonetizationType implements EnumAsString {
 	PPV("ppv"),
 	SUBSCRIPTION("subscription"),
-	BOXSET("boxset"),
-	ANY("any"),
-	PPV_LIVE("ppv_live");
+	BOXSET("boxset");
 
 	private String value;
 
