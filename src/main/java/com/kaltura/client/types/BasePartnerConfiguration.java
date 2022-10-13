@@ -52,7 +52,6 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		String autoRefreshAppToken();
 		String uploadTokenExpirySeconds();
 		String apptokenUserValidationDisabled();
-		String epgFeatureVersion();
 	}
 
 	/**
@@ -87,11 +86,6 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 	 * apptokenUserValidationDisabled
 	 */
 	private Boolean apptokenUserValidationDisabled;
-	/**
-	 * epgFeatureVersion              defines the epg feature version from version 1 to
-	  version 3              if not provided v2 will be used
-	 */
-	private Integer epgFeatureVersion;
 
 	// ksExpirationSeconds:
 	public Long getKsExpirationSeconds(){
@@ -189,18 +183,6 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		setToken("apptokenUserValidationDisabled", multirequestToken);
 	}
 
-	// epgFeatureVersion:
-	public Integer getEpgFeatureVersion(){
-		return this.epgFeatureVersion;
-	}
-	public void setEpgFeatureVersion(Integer epgFeatureVersion){
-		this.epgFeatureVersion = epgFeatureVersion;
-	}
-
-	public void epgFeatureVersion(String multirequestToken){
-		setToken("epgFeatureVersion", multirequestToken);
-	}
-
 
 	public BasePartnerConfiguration() {
 		super();
@@ -220,7 +202,6 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		autoRefreshAppToken = GsonParser.parseBoolean(jsonObject.get("autoRefreshAppToken"));
 		uploadTokenExpirySeconds = GsonParser.parseInt(jsonObject.get("uploadTokenExpirySeconds"));
 		apptokenUserValidationDisabled = GsonParser.parseBoolean(jsonObject.get("apptokenUserValidationDisabled"));
-		epgFeatureVersion = GsonParser.parseInt(jsonObject.get("epgFeatureVersion"));
 
 	}
 
@@ -235,7 +216,6 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 		kparams.add("autoRefreshAppToken", this.autoRefreshAppToken);
 		kparams.add("uploadTokenExpirySeconds", this.uploadTokenExpirySeconds);
 		kparams.add("apptokenUserValidationDisabled", this.apptokenUserValidationDisabled);
-		kparams.add("epgFeatureVersion", this.epgFeatureVersion);
 		return kparams;
 	}
 
