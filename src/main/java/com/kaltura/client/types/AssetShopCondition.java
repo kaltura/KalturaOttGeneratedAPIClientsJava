@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.StringValueArray;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -45,12 +46,17 @@ public class AssetShopCondition extends AssetConditionBase {
 	
 	public interface Tokenizer extends AssetConditionBase.Tokenizer {
 		String value();
+		StringValueArray.Tokenizer values();
 	}
 
 	/**
 	 * Shop marker&amp;#39;s value
 	 */
 	private String value;
+	/**
+	 * Shop marker&amp;#39;s values
+	 */
+	private StringValueArray values;
 
 	// value:
 	public String getValue(){
@@ -62,6 +68,14 @@ public class AssetShopCondition extends AssetConditionBase {
 
 	public void value(String multirequestToken){
 		setToken("value", multirequestToken);
+	}
+
+	// values:
+	public StringValueArray getValues(){
+		return this.values;
+	}
+	public void setValues(StringValueArray values){
+		this.values = values;
 	}
 
 
@@ -76,6 +90,7 @@ public class AssetShopCondition extends AssetConditionBase {
 
 		// set members values:
 		value = GsonParser.parseString(jsonObject.get("value"));
+		values = GsonParser.parseObject(jsonObject.getAsJsonObject("values"), StringValueArray.class);
 
 	}
 
@@ -83,6 +98,7 @@ public class AssetShopCondition extends AssetConditionBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAssetShopCondition");
 		kparams.add("value", this.value);
+		kparams.add("values", this.values);
 		return kparams;
 	}
 
