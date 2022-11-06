@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,90 +41,73 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Filter for segmentation types
+ * Partner configuration for segments configuration
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SegmentationTypeFilter.Tokenizer.class)
-public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
+@MultiRequestBuilder.Tokenizer(SegmentationPartnerConfiguration.Tokenizer.class)
+public class SegmentationPartnerConfiguration extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
-		String idIn();
-		String kSql();
-		String nameContain();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String maxCalculatedPeriod();
+		String maxDynamicSegments();
 	}
 
 	/**
-	 * Comma separated segmentation types identifiers
+	 * The maximum number of past days to be calculated for dynamic segments,
+	  default=180
 	 */
-	private String idIn;
+	private Integer maxCalculatedPeriod;
 	/**
-	 * KSQL expression
+	 * How many dynamic segments (segments with conditions) the operator is allowed to
+	  have, default=50
 	 */
-	private String kSql;
-	/**
-	 * Name of segment contains specific string value
-	 */
-	private String nameContain;
+	private Integer maxDynamicSegments;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// maxCalculatedPeriod:
+	public Integer getMaxCalculatedPeriod(){
+		return this.maxCalculatedPeriod;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setMaxCalculatedPeriod(Integer maxCalculatedPeriod){
+		this.maxCalculatedPeriod = maxCalculatedPeriod;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
+	public void maxCalculatedPeriod(String multirequestToken){
+		setToken("maxCalculatedPeriod", multirequestToken);
 	}
 
-	// kSql:
-	public String getKSql(){
-		return this.kSql;
+	// maxDynamicSegments:
+	public Integer getMaxDynamicSegments(){
+		return this.maxDynamicSegments;
 	}
-	public void setKSql(String kSql){
-		this.kSql = kSql;
-	}
-
-	public void kSql(String multirequestToken){
-		setToken("kSql", multirequestToken);
+	public void setMaxDynamicSegments(Integer maxDynamicSegments){
+		this.maxDynamicSegments = maxDynamicSegments;
 	}
 
-	// nameContain:
-	public String getNameContain(){
-		return this.nameContain;
-	}
-	public void setNameContain(String nameContain){
-		this.nameContain = nameContain;
-	}
-
-	public void nameContain(String multirequestToken){
-		setToken("nameContain", multirequestToken);
+	public void maxDynamicSegments(String multirequestToken){
+		setToken("maxDynamicSegments", multirequestToken);
 	}
 
 
-	public SegmentationTypeFilter() {
+	public SegmentationPartnerConfiguration() {
 		super();
 	}
 
-	public SegmentationTypeFilter(JsonObject jsonObject) throws APIException {
+	public SegmentationPartnerConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		kSql = GsonParser.parseString(jsonObject.get("kSql"));
-		nameContain = GsonParser.parseString(jsonObject.get("nameContain"));
+		maxCalculatedPeriod = GsonParser.parseInt(jsonObject.get("maxCalculatedPeriod"));
+		maxDynamicSegments = GsonParser.parseInt(jsonObject.get("maxDynamicSegments"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSegmentationTypeFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("kSql", this.kSql);
-		kparams.add("nameContain", this.nameContain);
+		kparams.add("objectType", "KalturaSegmentationPartnerConfiguration");
+		kparams.add("maxCalculatedPeriod", this.maxCalculatedPeriod);
+		kparams.add("maxDynamicSegments", this.maxDynamicSegments);
 		return kparams;
 	}
 
