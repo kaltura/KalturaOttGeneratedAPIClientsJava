@@ -33,16 +33,21 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MonetizationType implements EnumAsString {
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	BOXSET("boxset"),
-	ANY("any"),
-	PPV_LIVE("ppv_live");
+public enum SegmentationTypeOrderBy implements EnumAsString {
+	UPDATE_DATE_DESC("UPDATE_DATE_DESC"),
+	UPDATE_DATE_ASC("UPDATE_DATE_ASC"),
+	CREATE_DATE_DESC("CREATE_DATE_DESC"),
+	CREATE_DATE_ASC("CREATE_DATE_ASC"),
+	EXECUTE_DATE_DESC("EXECUTE_DATE_DESC"),
+	EXECUTE_DATE_ASC("EXECUTE_DATE_ASC"),
+	AFFECTED_USERS_DESC("AFFECTED_USERS_DESC"),
+	AFFECTED_USERS_ASC("AFFECTED_USERS_ASC"),
+	AFFECTED_HOUSEHOLDS_DESC("AFFECTED_HOUSEHOLDS_DESC"),
+	AFFECTED_HOUSEHOLDS_ASC("AFFECTED_HOUSEHOLDS_ASC");
 
 	private String value;
 
-	MonetizationType(String value) {
+	SegmentationTypeOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -55,19 +60,19 @@ public enum MonetizationType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static MonetizationType get(String value) {
+	public static SegmentationTypeOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over MonetizationType defined values and compare the inner value with the given one:
-		for(MonetizationType item: values()) {
+		// goes over SegmentationTypeOrderBy defined values and compare the inner value with the given one:
+		for(SegmentationTypeOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MonetizationType.values().length > 0 ? MonetizationType.values()[0]: null;
+		return SegmentationTypeOrderBy.values().length > 0 ? SegmentationTypeOrderBy.values()[0]: null;
    }
 }
