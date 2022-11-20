@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.BooleanOperator;
 import com.kaltura.client.types.BaseSegmentValue;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
@@ -55,9 +56,12 @@ public class SegmentationType extends ObjectBase {
 		String name();
 		String description();
 		RequestBuilder.ListTokenizer<BaseSegmentCondition.Tokenizer> conditions();
+		String conditionsOperator();
 		RequestBuilder.ListTokenizer<BaseSegmentAction.Tokenizer> actions();
 		BaseSegmentValue.Tokenizer value();
 		String createDate();
+		String updateDate();
+		String executeDate();
 		String version();
 	}
 
@@ -78,6 +82,11 @@ public class SegmentationType extends ObjectBase {
 	 */
 	private List<BaseSegmentCondition> conditions;
 	/**
+	 * Boolean operator between segmentation type&amp;#39;s conditions - defaults to
+	  &amp;quot;And&amp;quot;
+	 */
+	private BooleanOperator conditionsOperator;
+	/**
 	 * Segmentation conditions - can be empty
 	 */
 	private List<BaseSegmentAction> actions;
@@ -89,6 +98,14 @@ public class SegmentationType extends ObjectBase {
 	 * Create date of segmentation type
 	 */
 	private Long createDate;
+	/**
+	 * Update date of segmentation type
+	 */
+	private Long updateDate;
+	/**
+	 * Last date of execution of segmentation type
+	 */
+	private Long executeDate;
 	/**
 	 * Segmentation type version
 	 */
@@ -130,6 +147,18 @@ public class SegmentationType extends ObjectBase {
 		this.conditions = conditions;
 	}
 
+	// conditionsOperator:
+	public BooleanOperator getConditionsOperator(){
+		return this.conditionsOperator;
+	}
+	public void setConditionsOperator(BooleanOperator conditionsOperator){
+		this.conditionsOperator = conditionsOperator;
+	}
+
+	public void conditionsOperator(String multirequestToken){
+		setToken("conditionsOperator", multirequestToken);
+	}
+
 	// actions:
 	public List<BaseSegmentAction> getActions(){
 		return this.actions;
@@ -150,6 +179,14 @@ public class SegmentationType extends ObjectBase {
 	public Long getCreateDate(){
 		return this.createDate;
 	}
+	// updateDate:
+	public Long getUpdateDate(){
+		return this.updateDate;
+	}
+	// executeDate:
+	public Long getExecuteDate(){
+		return this.executeDate;
+	}
 	// version:
 	public Long getVersion(){
 		return this.version;
@@ -169,9 +206,12 @@ public class SegmentationType extends ObjectBase {
 		name = GsonParser.parseString(jsonObject.get("name"));
 		description = GsonParser.parseString(jsonObject.get("description"));
 		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), BaseSegmentCondition.class);
+		conditionsOperator = BooleanOperator.get(GsonParser.parseString(jsonObject.get("conditionsOperator")));
 		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), BaseSegmentAction.class);
 		value = GsonParser.parseObject(jsonObject.getAsJsonObject("value"), BaseSegmentValue.class);
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		executeDate = GsonParser.parseLong(jsonObject.get("executeDate"));
 		version = GsonParser.parseLong(jsonObject.get("version"));
 
 	}
@@ -182,6 +222,7 @@ public class SegmentationType extends ObjectBase {
 		kparams.add("name", this.name);
 		kparams.add("description", this.description);
 		kparams.add("conditions", this.conditions);
+		kparams.add("conditionsOperator", this.conditionsOperator);
 		kparams.add("actions", this.actions);
 		kparams.add("value", this.value);
 		return kparams;

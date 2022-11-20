@@ -56,6 +56,7 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		String type();
 		String operator();
 		String businessModuleIdIn();
+		String currencyCode();
 	}
 
 	/**
@@ -82,6 +83,10 @@ public class MonetizationCondition extends BaseSegmentCondition {
 	 * Comma saperated list of business module IDs
 	 */
 	private String businessModuleIdIn;
+	/**
+	 * Which currency code should be taken into consideration
+	 */
+	private String currencyCode;
 
 	// minValue:
 	public Integer getMinValue(){
@@ -155,6 +160,18 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		setToken("businessModuleIdIn", multirequestToken);
 	}
 
+	// currencyCode:
+	public String getCurrencyCode(){
+		return this.currencyCode;
+	}
+	public void setCurrencyCode(String currencyCode){
+		this.currencyCode = currencyCode;
+	}
+
+	public void currencyCode(String multirequestToken){
+		setToken("currencyCode", multirequestToken);
+	}
+
 
 	public MonetizationCondition() {
 		super();
@@ -172,6 +189,7 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
 		operator = MathemticalOperatorType.get(GsonParser.parseString(jsonObject.get("operator")));
 		businessModuleIdIn = GsonParser.parseString(jsonObject.get("businessModuleIdIn"));
+		currencyCode = GsonParser.parseString(jsonObject.get("currencyCode"));
 
 	}
 
@@ -184,6 +202,7 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		kparams.add("type", this.type);
 		kparams.add("operator", this.operator);
 		kparams.add("businessModuleIdIn", this.businessModuleIdIn);
+		kparams.add("currencyCode", this.currencyCode);
 		return kparams;
 	}
 
