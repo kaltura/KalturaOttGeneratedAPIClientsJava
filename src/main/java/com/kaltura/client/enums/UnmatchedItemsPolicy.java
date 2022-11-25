@@ -36,7 +36,7 @@ package com.kaltura.client.enums;
 public enum UnmatchedItemsPolicy implements EnumAsString {
 	OMIT("Omit"),
 	GROUP("Group"),
-	INCLUDE("Include");
+	INCLUDEANDMERGE("IncludeAndMerge");
 
 	private String value;
 
