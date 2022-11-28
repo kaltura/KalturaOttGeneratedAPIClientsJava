@@ -29,8 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.StringValueArray;
-import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -41,64 +40,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
-public class AssetShopCondition extends AssetConditionBase {
+@MultiRequestBuilder.Tokenizer(RepresentativeSelectionPolicy.Tokenizer.class)
+public abstract class RepresentativeSelectionPolicy extends ObjectBase {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
-		String value();
-		StringValueArray.Tokenizer values();
-	}
-
-	/**
-	 * Shop marker&amp;#39;s value
-	 */
-	private String value;
-	/**
-	 * Shop marker&amp;#39;s values
-	 */
-	private StringValueArray values;
-
-	// value:
-	public String getValue(){
-		return this.value;
-	}
-	public void setValue(String value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
-
-	// values:
-	public StringValueArray getValues(){
-		return this.values;
-	}
-	public void setValues(StringValueArray values){
-		this.values = values;
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
 
-	public AssetShopCondition() {
+
+	public RepresentativeSelectionPolicy() {
 		super();
 	}
 
-	public AssetShopCondition(JsonObject jsonObject) throws APIException {
+	public RepresentativeSelectionPolicy(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		value = GsonParser.parseString(jsonObject.get("value"));
-		values = GsonParser.parseObject(jsonObject.getAsJsonObject("values"), StringValueArray.class);
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetShopCondition");
-		kparams.add("value", this.value);
-		kparams.add("values", this.values);
+		kparams.add("objectType", "KalturaRepresentativeSelectionPolicy");
 		return kparams;
 	}
 

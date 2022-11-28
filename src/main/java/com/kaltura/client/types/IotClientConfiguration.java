@@ -61,7 +61,7 @@ public class IotClientConfiguration extends ObjectBase {
 		String thingId();
 		String username();
 		String password();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> topics();
+		RequestBuilder.ListTokenizer<KeyValue.Tokenizer> topics();
 		String status();
 		String message();
 	}
@@ -113,7 +113,7 @@ public class IotClientConfiguration extends ObjectBase {
 	/**
 	 * topics
 	 */
-	private List<StringValue> topics;
+	private List<KeyValue> topics;
 	/**
 	 * status
 	 */
@@ -256,10 +256,10 @@ public class IotClientConfiguration extends ObjectBase {
 	}
 
 	// topics:
-	public List<StringValue> getTopics(){
+	public List<KeyValue> getTopics(){
 		return this.topics;
 	}
-	public void setTopics(List<StringValue> topics){
+	public void setTopics(List<KeyValue> topics){
 		this.topics = topics;
 	}
 
@@ -309,7 +309,7 @@ public class IotClientConfiguration extends ObjectBase {
 		thingId = GsonParser.parseString(jsonObject.get("thingId"));
 		username = GsonParser.parseString(jsonObject.get("username"));
 		password = GsonParser.parseString(jsonObject.get("password"));
-		topics = GsonParser.parseArray(jsonObject.getAsJsonArray("topics"), StringValue.class);
+		topics = GsonParser.parseArray(jsonObject.getAsJsonArray("topics"), KeyValue.class);
 		status = GsonParser.parseString(jsonObject.get("status"));
 		message = GsonParser.parseString(jsonObject.get("message"));
 

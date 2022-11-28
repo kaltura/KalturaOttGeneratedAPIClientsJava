@@ -31,17 +31,22 @@ import com.kaltura.client.FileHolder;
 import com.kaltura.client.Files;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.enums.UnmatchedItemsPolicy;
 import com.kaltura.client.types.AdsContext;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
+import com.kaltura.client.types.AssetGroupBy;
+import com.kaltura.client.types.BaseAssetOrder;
 import com.kaltura.client.types.BulkUpload;
 import com.kaltura.client.types.BulkUploadAssetData;
 import com.kaltura.client.types.BulkUploadJobData;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.ListGroupsRepresentativesFilter;
 import com.kaltura.client.types.PersonalAssetSelectionFilter;
 import com.kaltura.client.types.PlaybackContext;
 import com.kaltura.client.types.PlaybackContextOptions;
+import com.kaltura.client.types.RepresentativeSelectionPolicy;
 import com.kaltura.client.types.SearchAssetFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -292,6 +297,55 @@ public class AssetService {
 	 */
     public static GetPlaybackManifestAssetBuilder getPlaybackManifest(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams, String sourceType)  {
 		return new GetPlaybackManifestAssetBuilder(assetId, assetType, contextDataParams, sourceType);
+	}
+	
+	public static class GroupRepresentativeListAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, GroupRepresentativeListAssetBuilder> {
+		
+		public GroupRepresentativeListAssetBuilder(AssetGroupBy groupBy, UnmatchedItemsPolicy unmatchedItemsPolicy, BaseAssetOrder orderBy, ListGroupsRepresentativesFilter filter, RepresentativeSelectionPolicy selectionPolicy, FilterPager pager) {
+			super(Asset.class, "asset", "groupRepresentativeList");
+			params.add("groupBy", groupBy);
+			params.add("unmatchedItemsPolicy", unmatchedItemsPolicy);
+			params.add("orderBy", orderBy);
+			params.add("filter", filter);
+			params.add("selectionPolicy", selectionPolicy);
+			params.add("pager", pager);
+		}
+		
+		public void unmatchedItemsPolicy(String multirequestToken) {
+			params.add("unmatchedItemsPolicy", multirequestToken);
+		}
+	}
+
+	public static GroupRepresentativeListAssetBuilder groupRepresentativeList(AssetGroupBy groupBy, UnmatchedItemsPolicy unmatchedItemsPolicy)  {
+		return groupRepresentativeList(groupBy, unmatchedItemsPolicy, null);
+	}
+
+	public static GroupRepresentativeListAssetBuilder groupRepresentativeList(AssetGroupBy groupBy, UnmatchedItemsPolicy unmatchedItemsPolicy, BaseAssetOrder orderBy)  {
+		return groupRepresentativeList(groupBy, unmatchedItemsPolicy, orderBy, null);
+	}
+
+	public static GroupRepresentativeListAssetBuilder groupRepresentativeList(AssetGroupBy groupBy, UnmatchedItemsPolicy unmatchedItemsPolicy, BaseAssetOrder orderBy, ListGroupsRepresentativesFilter filter)  {
+		return groupRepresentativeList(groupBy, unmatchedItemsPolicy, orderBy, filter, null);
+	}
+
+	public static GroupRepresentativeListAssetBuilder groupRepresentativeList(AssetGroupBy groupBy, UnmatchedItemsPolicy unmatchedItemsPolicy, BaseAssetOrder orderBy, ListGroupsRepresentativesFilter filter, RepresentativeSelectionPolicy selectionPolicy)  {
+		return groupRepresentativeList(groupBy, unmatchedItemsPolicy, orderBy, filter, selectionPolicy, null);
+	}
+
+	/**
+	 * Returns assets deduplicated by asset metadata (or supported asset&amp;#39;s
+	  property).
+	 * 
+	 * @param groupBy A metadata (or supported asset's property) to group by the assets
+	 * @param unmatchedItemsPolicy Defines the policy to handle assets that don't have groupBy property
+	 * @param orderBy A metadata or supported asset's property to sort by
+	 * @param filter Filtering the assets request
+	 * @param selectionPolicy A policy that implements a well defined parametric process to select an asset
+	 * out of group
+	 * @param pager Paging the request
+	 */
+    public static GroupRepresentativeListAssetBuilder groupRepresentativeList(AssetGroupBy groupBy, UnmatchedItemsPolicy unmatchedItemsPolicy, BaseAssetOrder orderBy, ListGroupsRepresentativesFilter filter, RepresentativeSelectionPolicy selectionPolicy, FilterPager pager)  {
+		return new GroupRepresentativeListAssetBuilder(groupBy, unmatchedItemsPolicy, orderBy, filter, selectionPolicy, pager);
 	}
 	
 	public static class ListAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, ListAssetBuilder> {
