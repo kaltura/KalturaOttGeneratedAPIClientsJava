@@ -33,16 +33,12 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MonetizationType implements EnumAsString {
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	BOXSET("boxset"),
-	ANY("any"),
-	PPV_LIVE("ppv_live");
+public enum ListGroupsRepresentativesOrderBy implements EnumAsString {
+	NONE("None");
 
 	private String value;
 
-	MonetizationType(String value) {
+	ListGroupsRepresentativesOrderBy(String value) {
 		this.value = value;
 	}
 
@@ -55,19 +51,19 @@ public enum MonetizationType implements EnumAsString {
 		this.value = value;
 	}
 
-	public static MonetizationType get(String value) {
+	public static ListGroupsRepresentativesOrderBy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over MonetizationType defined values and compare the inner value with the given one:
-		for(MonetizationType item: values()) {
+		// goes over ListGroupsRepresentativesOrderBy defined values and compare the inner value with the given one:
+		for(ListGroupsRepresentativesOrderBy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MonetizationType.values().length > 0 ? MonetizationType.values()[0]: null;
+		return ListGroupsRepresentativesOrderBy.values().length > 0 ? ListGroupsRepresentativesOrderBy.values()[0]: null;
    }
 }
