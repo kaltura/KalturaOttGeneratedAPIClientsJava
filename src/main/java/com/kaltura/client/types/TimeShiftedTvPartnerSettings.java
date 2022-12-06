@@ -70,6 +70,8 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		String recoveryGracePeriod();
 		String privateCopyEnabled();
 		String defaultQuota();
+		String personalizedRecording();
+		String maxRecordingConcurrency();
 	}
 
 	/**
@@ -169,6 +171,15 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 	 * Quota in seconds
 	 */
 	private Integer defaultQuota;
+	/**
+	 * Define whatever the partner enables the Personal Padding and Immediate / Stop
+	  recording services to the partner. Default value should be FALSE
+	 */
+	private Boolean personalizedRecording;
+	/**
+	 * Define the max allowed number of parallel recordings. Default NULL unlimited
+	 */
+	private Integer maxRecordingConcurrency;
 
 	// catchUpEnabled:
 	public Boolean getCatchUpEnabled(){
@@ -446,6 +457,30 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		setToken("defaultQuota", multirequestToken);
 	}
 
+	// personalizedRecording:
+	public Boolean getPersonalizedRecording(){
+		return this.personalizedRecording;
+	}
+	public void setPersonalizedRecording(Boolean personalizedRecording){
+		this.personalizedRecording = personalizedRecording;
+	}
+
+	public void personalizedRecording(String multirequestToken){
+		setToken("personalizedRecording", multirequestToken);
+	}
+
+	// maxRecordingConcurrency:
+	public Integer getMaxRecordingConcurrency(){
+		return this.maxRecordingConcurrency;
+	}
+	public void setMaxRecordingConcurrency(Integer maxRecordingConcurrency){
+		this.maxRecordingConcurrency = maxRecordingConcurrency;
+	}
+
+	public void maxRecordingConcurrency(String multirequestToken){
+		setToken("maxRecordingConcurrency", multirequestToken);
+	}
+
 
 	public TimeShiftedTvPartnerSettings() {
 		super();
@@ -480,6 +515,8 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		recoveryGracePeriod = GsonParser.parseInt(jsonObject.get("recoveryGracePeriod"));
 		privateCopyEnabled = GsonParser.parseBoolean(jsonObject.get("privateCopyEnabled"));
 		defaultQuota = GsonParser.parseInt(jsonObject.get("defaultQuota"));
+		personalizedRecording = GsonParser.parseBoolean(jsonObject.get("personalizedRecording"));
+		maxRecordingConcurrency = GsonParser.parseInt(jsonObject.get("maxRecordingConcurrency"));
 
 	}
 
@@ -509,6 +546,8 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		kparams.add("recoveryGracePeriod", this.recoveryGracePeriod);
 		kparams.add("privateCopyEnabled", this.privateCopyEnabled);
 		kparams.add("defaultQuota", this.defaultQuota);
+		kparams.add("personalizedRecording", this.personalizedRecording);
+		kparams.add("maxRecordingConcurrency", this.maxRecordingConcurrency);
 		return kparams;
 	}
 

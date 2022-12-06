@@ -200,6 +200,39 @@ public class RecordingService {
 		return new ProtectRecordingBuilder(id);
 	}
 	
+	public static class StopRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, StopRecordingBuilder> {
+		
+		public StopRecordingBuilder(long programId, long epgChannelId, long householdRecordingId) {
+			super(Recording.class, "recording", "stop");
+			params.add("programId", programId);
+			params.add("epgChannelId", epgChannelId);
+			params.add("householdRecordingId", householdRecordingId);
+		}
+		
+		public void programId(String multirequestToken) {
+			params.add("programId", multirequestToken);
+		}
+		
+		public void epgChannelId(String multirequestToken) {
+			params.add("epgChannelId", multirequestToken);
+		}
+		
+		public void householdRecordingId(String multirequestToken) {
+			params.add("householdRecordingId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Stop current recording
+	 * 
+	 * @param programId program identifier
+	 * @param epgChannelId epg channel identifier
+	 * @param householdRecordingId household recording identifier
+	 */
+    public static StopRecordingBuilder stop(long programId, long epgChannelId, long householdRecordingId)  {
+		return new StopRecordingBuilder(programId, epgChannelId, householdRecordingId);
+	}
+	
 	public static class UpdateRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, UpdateRecordingBuilder> {
 		
 		public UpdateRecordingBuilder(long id, Recording recording) {

@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.StringValueArray;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,65 +40,74 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Partner configuration for segments configuration
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
-public class AssetShopCondition extends AssetConditionBase {
+@MultiRequestBuilder.Tokenizer(SegmentationPartnerConfiguration.Tokenizer.class)
+public class SegmentationPartnerConfiguration extends ObjectBase {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
-		String value();
-		StringValueArray.Tokenizer values();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String maxCalculatedPeriod();
+		String maxDynamicSegments();
 	}
 
 	/**
-	 * Shop marker&amp;#39;s value
+	 * The maximum number of past days to be calculated for dynamic segments,
+	  default=180
 	 */
-	private String value;
+	private Integer maxCalculatedPeriod;
 	/**
-	 * Shop marker&amp;#39;s values
+	 * How many dynamic segments (segments with conditions) the operator is allowed to
+	  have, default=50
 	 */
-	private StringValueArray values;
+	private Integer maxDynamicSegments;
 
-	// value:
-	public String getValue(){
-		return this.value;
+	// maxCalculatedPeriod:
+	public Integer getMaxCalculatedPeriod(){
+		return this.maxCalculatedPeriod;
 	}
-	public void setValue(String value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
+	public void setMaxCalculatedPeriod(Integer maxCalculatedPeriod){
+		this.maxCalculatedPeriod = maxCalculatedPeriod;
 	}
 
-	// values:
-	public StringValueArray getValues(){
-		return this.values;
+	public void maxCalculatedPeriod(String multirequestToken){
+		setToken("maxCalculatedPeriod", multirequestToken);
 	}
-	public void setValues(StringValueArray values){
-		this.values = values;
+
+	// maxDynamicSegments:
+	public Integer getMaxDynamicSegments(){
+		return this.maxDynamicSegments;
+	}
+	public void setMaxDynamicSegments(Integer maxDynamicSegments){
+		this.maxDynamicSegments = maxDynamicSegments;
+	}
+
+	public void maxDynamicSegments(String multirequestToken){
+		setToken("maxDynamicSegments", multirequestToken);
 	}
 
 
-	public AssetShopCondition() {
+	public SegmentationPartnerConfiguration() {
 		super();
 	}
 
-	public AssetShopCondition(JsonObject jsonObject) throws APIException {
+	public SegmentationPartnerConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		value = GsonParser.parseString(jsonObject.get("value"));
-		values = GsonParser.parseObject(jsonObject.getAsJsonObject("values"), StringValueArray.class);
+		maxCalculatedPeriod = GsonParser.parseInt(jsonObject.get("maxCalculatedPeriod"));
+		maxDynamicSegments = GsonParser.parseInt(jsonObject.get("maxDynamicSegments"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetShopCondition");
-		kparams.add("value", this.value);
-		kparams.add("values", this.values);
+		kparams.add("objectType", "KalturaSegmentationPartnerConfiguration");
+		kparams.add("maxCalculatedPeriod", this.maxCalculatedPeriod);
+		kparams.add("maxDynamicSegments", this.maxDynamicSegments);
 		return kparams;
 	}
 

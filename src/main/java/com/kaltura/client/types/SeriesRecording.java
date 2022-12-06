@@ -59,6 +59,8 @@ public class SeriesRecording extends ObjectBase {
 		String updateDate();
 		RequestBuilder.ListTokenizer<IntegerValue.Tokenizer> excludedSeasons();
 		SeriesRecordingOption.Tokenizer seriesRecordingOption();
+		String householdSpecificSeriesStartTimeOffset();
+		String householdSpecificSeriesEndTimeOffset();
 	}
 
 	/**
@@ -103,6 +105,14 @@ public class SeriesRecording extends ObjectBase {
 	 * Series Recording Option
 	 */
 	private SeriesRecordingOption seriesRecordingOption;
+	/**
+	 * Household specific start time of the recording
+	 */
+	private Integer householdSpecificSeriesStartTimeOffset;
+	/**
+	 * Household specific end time of the recording
+	 */
+	private Integer householdSpecificSeriesEndTimeOffset;
 
 	// id:
 	public Long getId(){
@@ -188,6 +198,30 @@ public class SeriesRecording extends ObjectBase {
 		this.seriesRecordingOption = seriesRecordingOption;
 	}
 
+	// householdSpecificSeriesStartTimeOffset:
+	public Integer getHouseholdSpecificSeriesStartTimeOffset(){
+		return this.householdSpecificSeriesStartTimeOffset;
+	}
+	public void setHouseholdSpecificSeriesStartTimeOffset(Integer householdSpecificSeriesStartTimeOffset){
+		this.householdSpecificSeriesStartTimeOffset = householdSpecificSeriesStartTimeOffset;
+	}
+
+	public void householdSpecificSeriesStartTimeOffset(String multirequestToken){
+		setToken("householdSpecificSeriesStartTimeOffset", multirequestToken);
+	}
+
+	// householdSpecificSeriesEndTimeOffset:
+	public Integer getHouseholdSpecificSeriesEndTimeOffset(){
+		return this.householdSpecificSeriesEndTimeOffset;
+	}
+	public void setHouseholdSpecificSeriesEndTimeOffset(Integer householdSpecificSeriesEndTimeOffset){
+		this.householdSpecificSeriesEndTimeOffset = householdSpecificSeriesEndTimeOffset;
+	}
+
+	public void householdSpecificSeriesEndTimeOffset(String multirequestToken){
+		setToken("householdSpecificSeriesEndTimeOffset", multirequestToken);
+	}
+
 
 	public SeriesRecording() {
 		super();
@@ -209,6 +243,8 @@ public class SeriesRecording extends ObjectBase {
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		excludedSeasons = GsonParser.parseArray(jsonObject.getAsJsonArray("excludedSeasons"), IntegerValue.class);
 		seriesRecordingOption = GsonParser.parseObject(jsonObject.getAsJsonObject("seriesRecordingOption"), SeriesRecordingOption.class);
+		householdSpecificSeriesStartTimeOffset = GsonParser.parseInt(jsonObject.get("householdSpecificSeriesStartTimeOffset"));
+		householdSpecificSeriesEndTimeOffset = GsonParser.parseInt(jsonObject.get("householdSpecificSeriesEndTimeOffset"));
 
 	}
 
@@ -221,6 +257,8 @@ public class SeriesRecording extends ObjectBase {
 		kparams.add("seasonNumber", this.seasonNumber);
 		kparams.add("type", this.type);
 		kparams.add("seriesRecordingOption", this.seriesRecordingOption);
+		kparams.add("householdSpecificSeriesStartTimeOffset", this.householdSpecificSeriesStartTimeOffset);
+		kparams.add("householdSpecificSeriesEndTimeOffset", this.householdSpecificSeriesEndTimeOffset);
 		return kparams;
 	}
 
