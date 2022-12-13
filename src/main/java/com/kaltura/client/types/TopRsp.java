@@ -25,7 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.BaseAssetOrder;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,41 +39,49 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum GroupByField implements EnumAsString {
-	MEDIA_TYPE_ID("media_type_id"),
-	SUPPRESSED("suppressed"),
-	CRID("crid"),
-	LINEAR_MEDIA_ID("linear_media_id"),
-	NAME("name");
 
-	private String value;
-
-	GroupByField(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(TopRsp.Tokenizer.class)
+public class TopRsp extends RepresentativeSelectionPolicy {
+	
+	public interface Tokenizer extends RepresentativeSelectionPolicy.Tokenizer {
+		BaseAssetOrder.Tokenizer orderBy();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * order by
+	 */
+	private BaseAssetOrder orderBy;
+
+	// orderBy:
+	public BaseAssetOrder getOrderBy(){
+		return this.orderBy;
+	}
+	public void setOrderBy(BaseAssetOrder orderBy){
+		this.orderBy = orderBy;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+
+	public TopRsp() {
+		super();
 	}
 
-	public static GroupByField get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over GroupByField defined values and compare the inner value with the given one:
-		for(GroupByField item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return GroupByField.values().length > 0 ? GroupByField.values()[0]: null;
-   }
+	public TopRsp(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), BaseAssetOrder.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaTopRsp");
+		kparams.add("orderBy", this.orderBy);
+		return kparams;
+	}
+
 }
+

@@ -55,8 +55,6 @@ public class Recording extends ObjectBase {
 		String isProtected();
 		String createDate();
 		String updateDate();
-		String householdSpecificStartTimeOffset();
-		String householdSpecificEndTimeOffset();
 	}
 
 	/**
@@ -93,14 +91,6 @@ public class Recording extends ObjectBase {
 	  epoch.
 	 */
 	private Long updateDate;
-	/**
-	 * Household specific start time of the recording
-	 */
-	private Integer householdSpecificStartTimeOffset;
-	/**
-	 * Household specific end time of the recording
-	 */
-	private Integer householdSpecificEndTimeOffset;
 
 	// id:
 	public Long getId(){
@@ -166,30 +156,6 @@ public class Recording extends ObjectBase {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	// householdSpecificStartTimeOffset:
-	public Integer getHouseholdSpecificStartTimeOffset(){
-		return this.householdSpecificStartTimeOffset;
-	}
-	public void setHouseholdSpecificStartTimeOffset(Integer householdSpecificStartTimeOffset){
-		this.householdSpecificStartTimeOffset = householdSpecificStartTimeOffset;
-	}
-
-	public void householdSpecificStartTimeOffset(String multirequestToken){
-		setToken("householdSpecificStartTimeOffset", multirequestToken);
-	}
-
-	// householdSpecificEndTimeOffset:
-	public Integer getHouseholdSpecificEndTimeOffset(){
-		return this.householdSpecificEndTimeOffset;
-	}
-	public void setHouseholdSpecificEndTimeOffset(Integer householdSpecificEndTimeOffset){
-		this.householdSpecificEndTimeOffset = householdSpecificEndTimeOffset;
-	}
-
-	public void householdSpecificEndTimeOffset(String multirequestToken){
-		setToken("householdSpecificEndTimeOffset", multirequestToken);
-	}
-
 
 	public Recording() {
 		super();
@@ -209,8 +175,6 @@ public class Recording extends ObjectBase {
 		isProtected = GsonParser.parseBoolean(jsonObject.get("isProtected"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-		householdSpecificStartTimeOffset = GsonParser.parseInt(jsonObject.get("householdSpecificStartTimeOffset"));
-		householdSpecificEndTimeOffset = GsonParser.parseInt(jsonObject.get("householdSpecificEndTimeOffset"));
 
 	}
 
@@ -221,8 +185,6 @@ public class Recording extends ObjectBase {
 		kparams.add("type", this.type);
 		kparams.add("viewableUntilDate", this.viewableUntilDate);
 		kparams.add("isProtected", this.isProtected);
-		kparams.add("householdSpecificStartTimeOffset", this.householdSpecificStartTimeOffset);
-		kparams.add("householdSpecificEndTimeOffset", this.householdSpecificEndTimeOffset);
 		return kparams;
 	}
 

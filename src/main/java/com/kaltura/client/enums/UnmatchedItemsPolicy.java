@@ -33,16 +33,14 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum GroupByField implements EnumAsString {
-	MEDIA_TYPE_ID("media_type_id"),
-	SUPPRESSED("suppressed"),
-	CRID("crid"),
-	LINEAR_MEDIA_ID("linear_media_id"),
-	NAME("name");
+public enum UnmatchedItemsPolicy implements EnumAsString {
+	OMIT("OMIT"),
+	GROUP("GROUP"),
+	INCLUDE_AND_MERGE("INCLUDE_AND_MERGE");
 
 	private String value;
 
-	GroupByField(String value) {
+	UnmatchedItemsPolicy(String value) {
 		this.value = value;
 	}
 
@@ -55,19 +53,19 @@ public enum GroupByField implements EnumAsString {
 		this.value = value;
 	}
 
-	public static GroupByField get(String value) {
+	public static UnmatchedItemsPolicy get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over GroupByField defined values and compare the inner value with the given one:
-		for(GroupByField item: values()) {
+		// goes over UnmatchedItemsPolicy defined values and compare the inner value with the given one:
+		for(UnmatchedItemsPolicy item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return GroupByField.values().length > 0 ? GroupByField.values()[0]: null;
+		return UnmatchedItemsPolicy.values().length > 0 ? UnmatchedItemsPolicy.values()[0]: null;
    }
 }
