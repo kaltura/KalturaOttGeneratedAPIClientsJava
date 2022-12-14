@@ -72,6 +72,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		String defaultQuota();
 		String personalizedRecording();
 		String maxRecordingConcurrency();
+		String maxConcurrencyMargin();
 	}
 
 	/**
@@ -180,6 +181,11 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 	 * Define the max allowed number of parallel recordings. Default NULL unlimited
 	 */
 	private Integer maxRecordingConcurrency;
+	/**
+	 * Define the max grace margin time for overlapping recording. Default NULL 0
+	  margin
+	 */
+	private Integer maxConcurrencyMargin;
 
 	// catchUpEnabled:
 	public Boolean getCatchUpEnabled(){
@@ -481,6 +487,18 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		setToken("maxRecordingConcurrency", multirequestToken);
 	}
 
+	// maxConcurrencyMargin:
+	public Integer getMaxConcurrencyMargin(){
+		return this.maxConcurrencyMargin;
+	}
+	public void setMaxConcurrencyMargin(Integer maxConcurrencyMargin){
+		this.maxConcurrencyMargin = maxConcurrencyMargin;
+	}
+
+	public void maxConcurrencyMargin(String multirequestToken){
+		setToken("maxConcurrencyMargin", multirequestToken);
+	}
+
 
 	public TimeShiftedTvPartnerSettings() {
 		super();
@@ -517,6 +535,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		defaultQuota = GsonParser.parseInt(jsonObject.get("defaultQuota"));
 		personalizedRecording = GsonParser.parseBoolean(jsonObject.get("personalizedRecording"));
 		maxRecordingConcurrency = GsonParser.parseInt(jsonObject.get("maxRecordingConcurrency"));
+		maxConcurrencyMargin = GsonParser.parseInt(jsonObject.get("maxConcurrencyMargin"));
 
 	}
 
@@ -548,6 +567,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		kparams.add("defaultQuota", this.defaultQuota);
 		kparams.add("personalizedRecording", this.personalizedRecording);
 		kparams.add("maxRecordingConcurrency", this.maxRecordingConcurrency);
+		kparams.add("maxConcurrencyMargin", this.maxConcurrencyMargin);
 		return kparams;
 	}
 

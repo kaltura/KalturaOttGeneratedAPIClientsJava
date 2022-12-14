@@ -46,6 +46,7 @@ public class ImmediateRecording extends Recording {
 	public interface Tokenizer extends Recording.Tokenizer {
 		String endPadding();
 		String absoluteStart();
+		String absoluteEnd();
 	}
 
 	/**
@@ -56,6 +57,11 @@ public class ImmediateRecording extends Recording {
 	 * Household absolute start time of the immediate recording
 	 */
 	private Long absoluteStart;
+	/**
+	 * Household absolute end time of the immediate recording, empty if till end of
+	  program
+	 */
+	private Long absoluteEnd;
 
 	// endPadding:
 	public Integer getEndPadding(){
@@ -81,6 +87,18 @@ public class ImmediateRecording extends Recording {
 		setToken("absoluteStart", multirequestToken);
 	}
 
+	// absoluteEnd:
+	public Long getAbsoluteEnd(){
+		return this.absoluteEnd;
+	}
+	public void setAbsoluteEnd(Long absoluteEnd){
+		this.absoluteEnd = absoluteEnd;
+	}
+
+	public void absoluteEnd(String multirequestToken){
+		setToken("absoluteEnd", multirequestToken);
+	}
+
 
 	public ImmediateRecording() {
 		super();
@@ -94,6 +112,7 @@ public class ImmediateRecording extends Recording {
 		// set members values:
 		endPadding = GsonParser.parseInt(jsonObject.get("endPadding"));
 		absoluteStart = GsonParser.parseLong(jsonObject.get("absoluteStart"));
+		absoluteEnd = GsonParser.parseLong(jsonObject.get("absoluteEnd"));
 
 	}
 
@@ -102,6 +121,7 @@ public class ImmediateRecording extends Recording {
 		kparams.add("objectType", "KalturaImmediateRecording");
 		kparams.add("endPadding", this.endPadding);
 		kparams.add("absoluteStart", this.absoluteStart);
+		kparams.add("absoluteEnd", this.absoluteEnd);
 		return kparams;
 	}
 
