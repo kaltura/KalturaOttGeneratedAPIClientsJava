@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.StringValueArray;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
-public class AssetShopCondition extends AssetConditionBase {
+@MultiRequestBuilder.Tokenizer(CampaignSegmentFilter.Tokenizer.class)
+public class CampaignSegmentFilter extends CampaignSearchFilter {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
-		String value();
-		StringValueArray.Tokenizer values();
+	public interface Tokenizer extends CampaignSearchFilter.Tokenizer {
+		String segmentIdEqual();
 	}
 
 	/**
-	 * Shop marker&amp;#39;s value
+	 * segment id to be searched inside campaigns
 	 */
-	private String value;
-	/**
-	 * Shop marker&amp;#39;s values
-	 */
-	private StringValueArray values;
+	private Long segmentIdEqual;
 
-	// value:
-	public String getValue(){
-		return this.value;
+	// segmentIdEqual:
+	public Long getSegmentIdEqual(){
+		return this.segmentIdEqual;
 	}
-	public void setValue(String value){
-		this.value = value;
+	public void setSegmentIdEqual(Long segmentIdEqual){
+		this.segmentIdEqual = segmentIdEqual;
 	}
 
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
-
-	// values:
-	public StringValueArray getValues(){
-		return this.values;
-	}
-	public void setValues(StringValueArray values){
-		this.values = values;
+	public void segmentIdEqual(String multirequestToken){
+		setToken("segmentIdEqual", multirequestToken);
 	}
 
 
-	public AssetShopCondition() {
+	public CampaignSegmentFilter() {
 		super();
 	}
 
-	public AssetShopCondition(JsonObject jsonObject) throws APIException {
+	public CampaignSegmentFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		value = GsonParser.parseString(jsonObject.get("value"));
-		values = GsonParser.parseObject(jsonObject.getAsJsonObject("values"), StringValueArray.class);
+		segmentIdEqual = GsonParser.parseLong(jsonObject.get("segmentIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetShopCondition");
-		kparams.add("value", this.value);
-		kparams.add("values", this.values);
+		kparams.add("objectType", "KalturaCampaignSegmentFilter");
+		kparams.add("segmentIdEqual", this.segmentIdEqual);
 		return kparams;
 	}
 

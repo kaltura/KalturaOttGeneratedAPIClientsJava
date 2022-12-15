@@ -37,7 +37,8 @@ public enum GroupByField implements EnumAsString {
 	MEDIA_TYPE_ID("media_type_id"),
 	SUPPRESSED("suppressed"),
 	CRID("crid"),
-	LINEAR_MEDIA_ID("linear_media_id");
+	LINEAR_MEDIA_ID("linear_media_id"),
+	NAME("name");
 
 	private String value;
 
