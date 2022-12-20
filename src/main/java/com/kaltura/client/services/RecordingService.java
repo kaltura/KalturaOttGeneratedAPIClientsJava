@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.ActionResult;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.ImmediateRecording;
 import com.kaltura.client.types.Recording;
 import com.kaltura.client.types.RecordingFilter;
 import com.kaltura.client.utils.request.ArrayRequestBuilder;
@@ -148,6 +149,39 @@ public class RecordingService {
 	 */
     public static GetRecordingBuilder get(long id)  {
 		return new GetRecordingBuilder(id);
+	}
+	
+	public static class ImmediateRecordRecordingBuilder extends RequestBuilder<ImmediateRecording, ImmediateRecording.Tokenizer, ImmediateRecordRecordingBuilder> {
+		
+		public ImmediateRecordRecordingBuilder(long programId, long epgChannelId, int endPadding) {
+			super(ImmediateRecording.class, "recording", "immediateRecord");
+			params.add("programId", programId);
+			params.add("epgChannelId", epgChannelId);
+			params.add("endPadding", endPadding);
+		}
+		
+		public void programId(String multirequestToken) {
+			params.add("programId", multirequestToken);
+		}
+		
+		public void epgChannelId(String multirequestToken) {
+			params.add("epgChannelId", multirequestToken);
+		}
+		
+		public void endPadding(String multirequestToken) {
+			params.add("endPadding", multirequestToken);
+		}
+	}
+
+	/**
+	 * Immediate Record
+	 * 
+	 * @param programId program identifier
+	 * @param epgChannelId epg channel identifier
+	 * @param endPadding end padding offset
+	 */
+    public static ImmediateRecordRecordingBuilder immediateRecord(long programId, long epgChannelId, int endPadding)  {
+		return new ImmediateRecordRecordingBuilder(programId, epgChannelId, endPadding);
 	}
 	
 	public static class ListRecordingBuilder extends ListResponseRequestBuilder<Recording, Recording.Tokenizer, ListRecordingBuilder> {
