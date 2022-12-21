@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.StringValueArray;
+import com.kaltura.client.types.BaseAssetOrder;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +41,45 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
-public class AssetShopCondition extends AssetConditionBase {
+@MultiRequestBuilder.Tokenizer(TopSubscriptionEntitledRsp.Tokenizer.class)
+public class TopSubscriptionEntitledRsp extends RepresentativeSelectionPolicy {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
-		String value();
-		StringValueArray.Tokenizer values();
+	public interface Tokenizer extends RepresentativeSelectionPolicy.Tokenizer {
+		BaseAssetOrder.Tokenizer orderBy();
 	}
 
 	/**
-	 * Shop marker&amp;#39;s value
+	 * order by
 	 */
-	private String value;
-	/**
-	 * Shop marker&amp;#39;s values
-	 */
-	private StringValueArray values;
+	private BaseAssetOrder orderBy;
 
-	// value:
-	public String getValue(){
-		return this.value;
+	// orderBy:
+	public BaseAssetOrder getOrderBy(){
+		return this.orderBy;
 	}
-	public void setValue(String value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
-
-	// values:
-	public StringValueArray getValues(){
-		return this.values;
-	}
-	public void setValues(StringValueArray values){
-		this.values = values;
+	public void setOrderBy(BaseAssetOrder orderBy){
+		this.orderBy = orderBy;
 	}
 
 
-	public AssetShopCondition() {
+	public TopSubscriptionEntitledRsp() {
 		super();
 	}
 
-	public AssetShopCondition(JsonObject jsonObject) throws APIException {
+	public TopSubscriptionEntitledRsp(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		value = GsonParser.parseString(jsonObject.get("value"));
-		values = GsonParser.parseObject(jsonObject.getAsJsonObject("values"), StringValueArray.class);
+		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), BaseAssetOrder.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetShopCondition");
-		kparams.add("value", this.value);
-		kparams.add("values", this.values);
+		kparams.add("objectType", "KalturaTopSubscriptionEntitledRsp");
+		kparams.add("orderBy", this.orderBy);
 		return kparams;
 	}
 

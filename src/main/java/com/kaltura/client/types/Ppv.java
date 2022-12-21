@@ -76,6 +76,7 @@ public class Ppv extends ObjectBase {
 		String updateDate();
 		String createDate();
 		String virtualAssetId();
+		String assetUserRuleId();
 	}
 
 	/**
@@ -164,6 +165,10 @@ public class Ppv extends ObjectBase {
 	 * Virtual asset id
 	 */
 	private Long virtualAssetId;
+	/**
+	 * Asset user rule identifier
+	 */
+	private Long assetUserRuleId;
 
 	// id:
 	public String getId(){
@@ -349,6 +354,18 @@ public class Ppv extends ObjectBase {
 	public Long getVirtualAssetId(){
 		return this.virtualAssetId;
 	}
+	// assetUserRuleId:
+	public Long getAssetUserRuleId(){
+		return this.assetUserRuleId;
+	}
+	public void setAssetUserRuleId(Long assetUserRuleId){
+		this.assetUserRuleId = assetUserRuleId;
+	}
+
+	public void assetUserRuleId(String multirequestToken){
+		setToken("assetUserRuleId", multirequestToken);
+	}
+
 
 	public Ppv() {
 		super();
@@ -381,6 +398,7 @@ public class Ppv extends ObjectBase {
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		virtualAssetId = GsonParser.parseLong(jsonObject.get("virtualAssetId"));
+		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 
 	}
 
@@ -400,6 +418,7 @@ public class Ppv extends ObjectBase {
 		kparams.add("usageModuleId", this.usageModuleId);
 		kparams.add("adsPolicy", this.adsPolicy);
 		kparams.add("isActive", this.isActive);
+		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		return kparams;
 	}
 

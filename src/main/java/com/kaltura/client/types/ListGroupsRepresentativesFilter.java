@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.StringValueArray;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +40,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
-public class AssetShopCondition extends AssetConditionBase {
+@MultiRequestBuilder.Tokenizer(ListGroupsRepresentativesFilter.Tokenizer.class)
+public class ListGroupsRepresentativesFilter extends Filter {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
-		String value();
-		StringValueArray.Tokenizer values();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String kSql();
 	}
 
 	/**
-	 * Shop marker&amp;#39;s value
+	 * Search assets using dynamic criteria. Provided collection of nested expressions
+	  with key, comparison operators, value, and logical conjunction.
 	 */
-	private String value;
-	/**
-	 * Shop marker&amp;#39;s values
-	 */
-	private StringValueArray values;
+	private String kSql;
 
-	// value:
-	public String getValue(){
-		return this.value;
+	// kSql:
+	public String getKSql(){
+		return this.kSql;
 	}
-	public void setValue(String value){
-		this.value = value;
+	public void setKSql(String kSql){
+		this.kSql = kSql;
 	}
 
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
-	}
-
-	// values:
-	public StringValueArray getValues(){
-		return this.values;
-	}
-	public void setValues(StringValueArray values){
-		this.values = values;
+	public void kSql(String multirequestToken){
+		setToken("kSql", multirequestToken);
 	}
 
 
-	public AssetShopCondition() {
+	public ListGroupsRepresentativesFilter() {
 		super();
 	}
 
-	public AssetShopCondition(JsonObject jsonObject) throws APIException {
+	public ListGroupsRepresentativesFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		value = GsonParser.parseString(jsonObject.get("value"));
-		values = GsonParser.parseObject(jsonObject.getAsJsonObject("values"), StringValueArray.class);
+		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetShopCondition");
-		kparams.add("value", this.value);
-		kparams.add("values", this.values);
+		kparams.add("objectType", "KalturaListGroupsRepresentativesFilter");
+		kparams.add("kSql", this.kSql);
 		return kparams;
 	}
 
