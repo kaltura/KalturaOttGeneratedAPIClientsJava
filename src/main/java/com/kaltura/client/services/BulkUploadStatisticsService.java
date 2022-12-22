@@ -25,7 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.services;
+
+import com.kaltura.client.types.BulkUploadStatistics;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,41 +36,33 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum MonetizationType implements EnumAsString {
-	PPV("ppv"),
-	SUBSCRIPTION("subscription"),
-	BOXSET("boxset"),
-	ANY("any"),
-	PPV_LIVE("ppv_live");
 
-	private String value;
-
-	MonetizationType(String value) {
-		this.value = value;
-	}
-
-	@Override
-	public String getValue() {
-		return this.value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public static MonetizationType get(String value) {
-		if(value == null)
-		{
-			return null;
+public class BulkUploadStatisticsService {
+	
+	public static class GetBulkUploadStatisticsBuilder extends RequestBuilder<BulkUploadStatistics, BulkUploadStatistics.Tokenizer, GetBulkUploadStatisticsBuilder> {
+		
+		public GetBulkUploadStatisticsBuilder(String bulkObjectTypeEqual, long createDateGreaterThanOrEqual) {
+			super(BulkUploadStatistics.class, "bulkuploadstatistics", "get");
+			params.add("bulkObjectTypeEqual", bulkObjectTypeEqual);
+			params.add("createDateGreaterThanOrEqual", createDateGreaterThanOrEqual);
 		}
 		
-		// goes over MonetizationType defined values and compare the inner value with the given one:
-		for(MonetizationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
+		public void bulkObjectTypeEqual(String multirequestToken) {
+			params.add("bulkObjectTypeEqual", multirequestToken);
 		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return MonetizationType.values().length > 0 ? MonetizationType.values()[0]: null;
-   }
+		
+		public void createDateGreaterThanOrEqual(String multirequestToken) {
+			params.add("createDateGreaterThanOrEqual", multirequestToken);
+		}
+	}
+
+	/**
+	 * Get BulkUploadStatistics count summary by status
+	 * 
+	 * @param bulkObjectTypeEqual bulkUploadObject for status summary
+	 * @param createDateGreaterThanOrEqual date created filter
+	 */
+    public static GetBulkUploadStatisticsBuilder get(String bulkObjectTypeEqual, long createDateGreaterThanOrEqual)  {
+		return new GetBulkUploadStatisticsBuilder(bulkObjectTypeEqual, createDateGreaterThanOrEqual);
+	}
 }

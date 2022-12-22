@@ -40,49 +40,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(CouponFilter.Tokenizer.class)
-public class CouponFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(ListGroupsRepresentativesFilter.Tokenizer.class)
+public class ListGroupsRepresentativesFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String couponCodesIn();
+		String kSql();
 	}
 
 	/**
-	 * Comma separated list of coupon codes.
+	 * Search assets using dynamic criteria. Provided collection of nested expressions
+	  with key, comparison operators, value, and logical conjunction.
 	 */
-	private String couponCodesIn;
+	private String kSql;
 
-	// couponCodesIn:
-	public String getCouponCodesIn(){
-		return this.couponCodesIn;
+	// kSql:
+	public String getKSql(){
+		return this.kSql;
 	}
-	public void setCouponCodesIn(String couponCodesIn){
-		this.couponCodesIn = couponCodesIn;
-	}
-
-	public void couponCodesIn(String multirequestToken){
-		setToken("couponCodesIn", multirequestToken);
+	public void setKSql(String kSql){
+		this.kSql = kSql;
 	}
 
+	public void kSql(String multirequestToken){
+		setToken("kSql", multirequestToken);
+	}
 
-	public CouponFilter() {
+
+	public ListGroupsRepresentativesFilter() {
 		super();
 	}
 
-	public CouponFilter(JsonObject jsonObject) throws APIException {
+	public ListGroupsRepresentativesFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		couponCodesIn = GsonParser.parseString(jsonObject.get("couponCodesIn"));
+		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaCouponFilter");
-		kparams.add("couponCodesIn", this.couponCodesIn);
+		kparams.add("objectType", "KalturaListGroupsRepresentativesFilter");
+		kparams.add("kSql", this.kSql);
 		return kparams;
 	}
 

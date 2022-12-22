@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.StringValueArray;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +40,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetShopCondition.Tokenizer.class)
-public class AssetShopCondition extends AssetConditionBase {
+@MultiRequestBuilder.Tokenizer(PaddedRecording.Tokenizer.class)
+public class PaddedRecording extends Recording {
 	
-	public interface Tokenizer extends AssetConditionBase.Tokenizer {
-		String value();
-		StringValueArray.Tokenizer values();
+	public interface Tokenizer extends Recording.Tokenizer {
+		String startPadding();
+		String endPadding();
 	}
 
 	/**
-	 * Shop marker&amp;#39;s value
+	 * Household specific start padding of the recording
 	 */
-	private String value;
+	private Integer startPadding;
 	/**
-	 * Shop marker&amp;#39;s values
+	 * Household specific end padding of the recording
 	 */
-	private StringValueArray values;
+	private Integer endPadding;
 
-	// value:
-	public String getValue(){
-		return this.value;
+	// startPadding:
+	public Integer getStartPadding(){
+		return this.startPadding;
 	}
-	public void setValue(String value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
+	public void setStartPadding(Integer startPadding){
+		this.startPadding = startPadding;
 	}
 
-	// values:
-	public StringValueArray getValues(){
-		return this.values;
+	public void startPadding(String multirequestToken){
+		setToken("startPadding", multirequestToken);
 	}
-	public void setValues(StringValueArray values){
-		this.values = values;
+
+	// endPadding:
+	public Integer getEndPadding(){
+		return this.endPadding;
+	}
+	public void setEndPadding(Integer endPadding){
+		this.endPadding = endPadding;
+	}
+
+	public void endPadding(String multirequestToken){
+		setToken("endPadding", multirequestToken);
 	}
 
 
-	public AssetShopCondition() {
+	public PaddedRecording() {
 		super();
 	}
 
-	public AssetShopCondition(JsonObject jsonObject) throws APIException {
+	public PaddedRecording(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		value = GsonParser.parseString(jsonObject.get("value"));
-		values = GsonParser.parseObject(jsonObject.getAsJsonObject("values"), StringValueArray.class);
+		startPadding = GsonParser.parseInt(jsonObject.get("startPadding"));
+		endPadding = GsonParser.parseInt(jsonObject.get("endPadding"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetShopCondition");
-		kparams.add("value", this.value);
-		kparams.add("values", this.values);
+		kparams.add("objectType", "KalturaPaddedRecording");
+		kparams.add("startPadding", this.startPadding);
+		kparams.add("endPadding", this.endPadding);
 		return kparams;
 	}
 
