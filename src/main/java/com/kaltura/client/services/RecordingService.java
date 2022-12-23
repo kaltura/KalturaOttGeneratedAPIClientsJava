@@ -29,7 +29,6 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.ActionResult;
 import com.kaltura.client.types.FilterPager;
-import com.kaltura.client.types.ImmediateRecording;
 import com.kaltura.client.types.Recording;
 import com.kaltura.client.types.RecordingFilter;
 import com.kaltura.client.utils.request.ArrayRequestBuilder;
@@ -151,39 +150,6 @@ public class RecordingService {
 		return new GetRecordingBuilder(id);
 	}
 	
-	public static class ImmediateRecordRecordingBuilder extends RequestBuilder<ImmediateRecording, ImmediateRecording.Tokenizer, ImmediateRecordRecordingBuilder> {
-		
-		public ImmediateRecordRecordingBuilder(long assetId, long epgChannelId, int endPadding) {
-			super(ImmediateRecording.class, "recording", "immediateRecord");
-			params.add("assetId", assetId);
-			params.add("epgChannelId", epgChannelId);
-			params.add("endPadding", endPadding);
-		}
-		
-		public void assetId(String multirequestToken) {
-			params.add("assetId", multirequestToken);
-		}
-		
-		public void epgChannelId(String multirequestToken) {
-			params.add("epgChannelId", multirequestToken);
-		}
-		
-		public void endPadding(String multirequestToken) {
-			params.add("endPadding", multirequestToken);
-		}
-	}
-
-	/**
-	 * Immediate Record
-	 * 
-	 * @param assetId asset identifier
-	 * @param epgChannelId epg channel identifier
-	 * @param endPadding end padding offset
-	 */
-    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, int endPadding)  {
-		return new ImmediateRecordRecordingBuilder(assetId, epgChannelId, endPadding);
-	}
-	
 	public static class ListRecordingBuilder extends ListResponseRequestBuilder<Recording, Recording.Tokenizer, ListRecordingBuilder> {
 		
 		public ListRecordingBuilder(RecordingFilter filter, FilterPager pager) {
@@ -232,39 +198,6 @@ public class RecordingService {
 	 */
     public static ProtectRecordingBuilder protect(long id)  {
 		return new ProtectRecordingBuilder(id);
-	}
-	
-	public static class StopRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, StopRecordingBuilder> {
-		
-		public StopRecordingBuilder(long assetId, long epgChannelId, long householdRecordingId) {
-			super(Recording.class, "recording", "stop");
-			params.add("assetId", assetId);
-			params.add("epgChannelId", epgChannelId);
-			params.add("householdRecordingId", householdRecordingId);
-		}
-		
-		public void assetId(String multirequestToken) {
-			params.add("assetId", multirequestToken);
-		}
-		
-		public void epgChannelId(String multirequestToken) {
-			params.add("epgChannelId", multirequestToken);
-		}
-		
-		public void householdRecordingId(String multirequestToken) {
-			params.add("householdRecordingId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Stop current recording
-	 * 
-	 * @param assetId asset identifier
-	 * @param epgChannelId epg channel identifier
-	 * @param householdRecordingId household recording identifier
-	 */
-    public static StopRecordingBuilder stop(long assetId, long epgChannelId, long householdRecordingId)  {
-		return new StopRecordingBuilder(assetId, epgChannelId, householdRecordingId);
 	}
 	
 	public static class UpdateRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, UpdateRecordingBuilder> {
