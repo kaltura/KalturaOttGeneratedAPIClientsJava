@@ -51,6 +51,7 @@ public class PlaybackProfile extends ObjectBase {
 		String id();
 		String name();
 		String isActive();
+		String adapterGrpcAddress();
 		String adapterUrl();
 		String settings();
 		String systemName();
@@ -69,6 +70,10 @@ public class PlaybackProfile extends ObjectBase {
 	 * Playback profile active status
 	 */
 	private Boolean isActive;
+	/**
+	 * Playback profile Grpc address
+	 */
+	private String adapterGrpcAddress;
 	/**
 	 * Playback profile URL
 	 */
@@ -112,6 +117,18 @@ public class PlaybackProfile extends ObjectBase {
 
 	public void isActive(String multirequestToken){
 		setToken("isActive", multirequestToken);
+	}
+
+	// adapterGrpcAddress:
+	public String getAdapterGrpcAddress(){
+		return this.adapterGrpcAddress;
+	}
+	public void setAdapterGrpcAddress(String adapterGrpcAddress){
+		this.adapterGrpcAddress = adapterGrpcAddress;
+	}
+
+	public void adapterGrpcAddress(String multirequestToken){
+		setToken("adapterGrpcAddress", multirequestToken);
 	}
 
 	// adapterUrl:
@@ -168,6 +185,7 @@ public class PlaybackProfile extends ObjectBase {
 		id = GsonParser.parseInt(jsonObject.get("id"));
 		name = GsonParser.parseString(jsonObject.get("name"));
 		isActive = GsonParser.parseBoolean(jsonObject.get("isActive"));
+		adapterGrpcAddress = GsonParser.parseString(jsonObject.get("adapterGrpcAddress"));
 		adapterUrl = GsonParser.parseString(jsonObject.get("adapterUrl"));
 		settings = GsonParser.parseString(jsonObject.get("settings"));
 		systemName = GsonParser.parseString(jsonObject.get("systemName"));
@@ -180,6 +198,7 @@ public class PlaybackProfile extends ObjectBase {
 		kparams.add("objectType", "KalturaPlaybackProfile");
 		kparams.add("name", this.name);
 		kparams.add("isActive", this.isActive);
+		kparams.add("adapterGrpcAddress", this.adapterGrpcAddress);
 		kparams.add("adapterUrl", this.adapterUrl);
 		kparams.add("settings", this.settings);
 		kparams.add("systemName", this.systemName);
