@@ -153,12 +153,12 @@ public class RecordingService {
 	
 	public static class ImmediateRecordRecordingBuilder extends RequestBuilder<ImmediateRecording, ImmediateRecording.Tokenizer, ImmediateRecordRecordingBuilder> {
 		
-		public ImmediateRecordRecordingBuilder(long assetId, long epgChannelId, String crid, int endPadding) {
+		public ImmediateRecordRecordingBuilder(long assetId, long epgChannelId, int endPadding, String crid) {
 			super(ImmediateRecording.class, "recording", "immediateRecord");
 			params.add("assetId", assetId);
 			params.add("epgChannelId", epgChannelId);
-			params.add("crid", crid);
 			params.add("endPadding", endPadding);
+			params.add("crid", crid);
 		}
 		
 		public void assetId(String multirequestToken) {
@@ -169,13 +169,17 @@ public class RecordingService {
 			params.add("epgChannelId", multirequestToken);
 		}
 		
-		public void crid(String multirequestToken) {
-			params.add("crid", multirequestToken);
-		}
-		
 		public void endPadding(String multirequestToken) {
 			params.add("endPadding", multirequestToken);
 		}
+		
+		public void crid(String multirequestToken) {
+			params.add("crid", multirequestToken);
+		}
+	}
+
+	public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, int endPadding)  {
+		return immediateRecord(assetId, epgChannelId, endPadding, null);
 	}
 
 	/**
@@ -183,11 +187,11 @@ public class RecordingService {
 	 * 
 	 * @param assetId asset identifier
 	 * @param epgChannelId epg channel identifier
-	 * @param crid crid
 	 * @param endPadding end padding offset
+	 * @param crid crid
 	 */
-    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, String crid, int endPadding)  {
-		return new ImmediateRecordRecordingBuilder(assetId, epgChannelId, crid, endPadding);
+    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, int endPadding, String crid)  {
+		return new ImmediateRecordRecordingBuilder(assetId, epgChannelId, endPadding, crid);
 	}
 	
 	public static class ListRecordingBuilder extends ListResponseRequestBuilder<Recording, Recording.Tokenizer, ListRecordingBuilder> {
