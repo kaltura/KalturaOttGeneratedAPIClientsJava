@@ -67,6 +67,14 @@ public class ImmediateRecording extends Recording {
 	public Integer getEndPadding(){
 		return this.endPadding;
 	}
+	public void setEndPadding(Integer endPadding){
+		this.endPadding = endPadding;
+	}
+
+	public void endPadding(String multirequestToken){
+		setToken("endPadding", multirequestToken);
+	}
+
 	// absoluteStart:
 	public Long getAbsoluteStart(){
 		return this.absoluteStart;
@@ -95,6 +103,7 @@ public class ImmediateRecording extends Recording {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaImmediateRecording");
+		kparams.add("endPadding", this.endPadding);
 		return kparams;
 	}
 
