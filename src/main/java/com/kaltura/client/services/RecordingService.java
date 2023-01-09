@@ -153,12 +153,11 @@ public class RecordingService {
 	
 	public static class ImmediateRecordRecordingBuilder extends RequestBuilder<ImmediateRecording, ImmediateRecording.Tokenizer, ImmediateRecordRecordingBuilder> {
 		
-		public ImmediateRecordRecordingBuilder(long assetId, long epgChannelId, int endPadding, String crid) {
+		public ImmediateRecordRecordingBuilder(long assetId, long epgChannelId, int endPadding) {
 			super(ImmediateRecording.class, "recording", "immediateRecord");
 			params.add("assetId", assetId);
 			params.add("epgChannelId", epgChannelId);
 			params.add("endPadding", endPadding);
-			params.add("crid", crid);
 		}
 		
 		public void assetId(String multirequestToken) {
@@ -172,14 +171,6 @@ public class RecordingService {
 		public void endPadding(String multirequestToken) {
 			params.add("endPadding", multirequestToken);
 		}
-		
-		public void crid(String multirequestToken) {
-			params.add("crid", multirequestToken);
-		}
-	}
-
-	public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, int endPadding)  {
-		return immediateRecord(assetId, epgChannelId, endPadding, null);
 	}
 
 	/**
@@ -188,10 +179,9 @@ public class RecordingService {
 	 * @param assetId asset identifier
 	 * @param epgChannelId epg channel identifier
 	 * @param endPadding end padding offset
-	 * @param crid crid
 	 */
-    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, int endPadding, String crid)  {
-		return new ImmediateRecordRecordingBuilder(assetId, epgChannelId, endPadding, crid);
+    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, int endPadding)  {
+		return new ImmediateRecordRecordingBuilder(assetId, epgChannelId, endPadding);
 	}
 	
 	public static class ListRecordingBuilder extends ListResponseRequestBuilder<Recording, Recording.Tokenizer, ListRecordingBuilder> {
