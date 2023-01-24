@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.SubscriptionDependencyType;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -53,6 +54,7 @@ public class SubscriptionFilter extends Filter {
 		String channelIdEqual();
 		String kSql();
 		String alsoInactive();
+		String dependencyTypeEqual();
 	}
 
 	/**
@@ -91,6 +93,10 @@ public class SubscriptionFilter extends Filter {
 	 * return also inactive
 	 */
 	private Boolean alsoInactive;
+	/**
+	 * return subscriptions associated by their subscription sets dependency Type
+	 */
+	private SubscriptionDependencyType dependencyTypeEqual;
 
 	// subscriptionIdIn:
 	public String getSubscriptionIdIn(){
@@ -200,6 +206,18 @@ public class SubscriptionFilter extends Filter {
 		setToken("alsoInactive", multirequestToken);
 	}
 
+	// dependencyTypeEqual:
+	public SubscriptionDependencyType getDependencyTypeEqual(){
+		return this.dependencyTypeEqual;
+	}
+	public void setDependencyTypeEqual(SubscriptionDependencyType dependencyTypeEqual){
+		this.dependencyTypeEqual = dependencyTypeEqual;
+	}
+
+	public void dependencyTypeEqual(String multirequestToken){
+		setToken("dependencyTypeEqual", multirequestToken);
+	}
+
 
 	public SubscriptionFilter() {
 		super();
@@ -220,6 +238,7 @@ public class SubscriptionFilter extends Filter {
 		channelIdEqual = GsonParser.parseLong(jsonObject.get("channelIdEqual"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+		dependencyTypeEqual = SubscriptionDependencyType.get(GsonParser.parseString(jsonObject.get("dependencyTypeEqual")));
 
 	}
 
@@ -235,6 +254,7 @@ public class SubscriptionFilter extends Filter {
 		kparams.add("channelIdEqual", this.channelIdEqual);
 		kparams.add("kSql", this.kSql);
 		kparams.add("alsoInactive", this.alsoInactive);
+		kparams.add("dependencyTypeEqual", this.dependencyTypeEqual);
 		return kparams;
 	}
 
