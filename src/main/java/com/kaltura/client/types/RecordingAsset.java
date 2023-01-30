@@ -51,6 +51,7 @@ public class RecordingAsset extends ProgramAsset {
 		String recordingId();
 		String recordingType();
 		String viewableUntilDate();
+		String multiRecord();
 	}
 
 	/**
@@ -66,6 +67,11 @@ public class RecordingAsset extends ProgramAsset {
 	  represented as epoch.
 	 */
 	private Long viewableUntilDate;
+	/**
+	 * When TRUE indicates that there are multiple KalturaImmediateRecording instances
+	  for the event.
+	 */
+	private Boolean multiRecord;
 
 	// recordingId:
 	public String getRecordingId(){
@@ -103,6 +109,18 @@ public class RecordingAsset extends ProgramAsset {
 		setToken("viewableUntilDate", multirequestToken);
 	}
 
+	// multiRecord:
+	public Boolean getMultiRecord(){
+		return this.multiRecord;
+	}
+	public void setMultiRecord(Boolean multiRecord){
+		this.multiRecord = multiRecord;
+	}
+
+	public void multiRecord(String multirequestToken){
+		setToken("multiRecord", multirequestToken);
+	}
+
 
 	public RecordingAsset() {
 		super();
@@ -117,6 +135,7 @@ public class RecordingAsset extends ProgramAsset {
 		recordingId = GsonParser.parseString(jsonObject.get("recordingId"));
 		recordingType = RecordingType.get(GsonParser.parseString(jsonObject.get("recordingType")));
 		viewableUntilDate = GsonParser.parseLong(jsonObject.get("viewableUntilDate"));
+		multiRecord = GsonParser.parseBoolean(jsonObject.get("multiRecord"));
 
 	}
 
@@ -126,6 +145,7 @@ public class RecordingAsset extends ProgramAsset {
 		kparams.add("recordingId", this.recordingId);
 		kparams.add("recordingType", this.recordingType);
 		kparams.add("viewableUntilDate", this.viewableUntilDate);
+		kparams.add("multiRecord", this.multiRecord);
 		return kparams;
 	}
 
