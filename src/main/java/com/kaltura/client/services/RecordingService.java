@@ -173,6 +173,10 @@ public class RecordingService {
 		}
 	}
 
+	public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId)  {
+		return immediateRecord(assetId, epgChannelId, Integer.MIN_VALUE);
+	}
+
 	/**
 	 * Immediate Record
 	 * 
