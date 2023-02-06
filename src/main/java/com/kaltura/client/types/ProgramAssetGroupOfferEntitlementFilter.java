@@ -43,9 +43,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferEntitlementFilter.Tokenizer.class)
-public class ProgramAssetGroupOfferEntitlementFilter extends BaseEntitlementFilter {
+public class ProgramAssetGroupOfferEntitlementFilter extends EntitlementFilter {
 	
-	public interface Tokenizer extends BaseEntitlementFilter.Tokenizer {
+	public interface Tokenizer extends EntitlementFilter.Tokenizer {
 	}
 
 
