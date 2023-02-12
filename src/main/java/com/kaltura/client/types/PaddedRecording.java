@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,29 +39,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Entitlements filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseEntitlementFilter.Tokenizer.class)
-public class BaseEntitlementFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(PaddedRecording.Tokenizer.class)
+public class PaddedRecording extends Recording {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends Recording.Tokenizer {
+		String startPadding();
+		String endPadding();
+	}
+
+	/**
+	 * Household specific start padding of the recording
+	 */
+	private Integer startPadding;
+	/**
+	 * Household specific end padding of the recording
+	 */
+	private Integer endPadding;
+
+	// startPadding:
+	public Integer getStartPadding(){
+		return this.startPadding;
+	}
+	public void setStartPadding(Integer startPadding){
+		this.startPadding = startPadding;
+	}
+
+	public void startPadding(String multirequestToken){
+		setToken("startPadding", multirequestToken);
+	}
+
+	// endPadding:
+	public Integer getEndPadding(){
+		return this.endPadding;
+	}
+	public void setEndPadding(Integer endPadding){
+		this.endPadding = endPadding;
+	}
+
+	public void endPadding(String multirequestToken){
+		setToken("endPadding", multirequestToken);
 	}
 
 
-
-	public BaseEntitlementFilter() {
+	public PaddedRecording() {
 		super();
 	}
 
-	public BaseEntitlementFilter(JsonObject jsonObject) throws APIException {
+	public PaddedRecording(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		startPadding = GsonParser.parseInt(jsonObject.get("startPadding"));
+		endPadding = GsonParser.parseInt(jsonObject.get("endPadding"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseEntitlementFilter");
+		kparams.add("objectType", "KalturaPaddedRecording");
+		kparams.add("startPadding", this.startPadding);
+		kparams.add("endPadding", this.endPadding);
 		return kparams;
 	}
 

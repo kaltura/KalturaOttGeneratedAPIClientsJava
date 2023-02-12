@@ -27,9 +27,12 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.enums.NotWatchedReturnStrategy;
+import com.kaltura.client.enums.WatchedAllReturnStrategy;
 import com.kaltura.client.types.AssetHistory;
 import com.kaltura.client.types.AssetHistoryFilter;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.SeriesIdArguments;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -66,23 +69,53 @@ public class AssetHistoryService {
 	
 	public static class GetNextEpisodeAssetHistoryBuilder extends RequestBuilder<AssetHistory, AssetHistory.Tokenizer, GetNextEpisodeAssetHistoryBuilder> {
 		
-		public GetNextEpisodeAssetHistoryBuilder(long assetId) {
+		public GetNextEpisodeAssetHistoryBuilder(long assetId, SeriesIdArguments seriesIdArguments, NotWatchedReturnStrategy notWatchedReturnStrategy, WatchedAllReturnStrategy watchedAllReturnStrategy) {
 			super(AssetHistory.class, "assethistory", "getNextEpisode");
 			params.add("assetId", assetId);
+			params.add("seriesIdArguments", seriesIdArguments);
+			params.add("notWatchedReturnStrategy", notWatchedReturnStrategy);
+			params.add("watchedAllReturnStrategy", watchedAllReturnStrategy);
 		}
 		
 		public void assetId(String multirequestToken) {
 			params.add("assetId", multirequestToken);
 		}
+		
+		public void notWatchedReturnStrategy(String multirequestToken) {
+			params.add("notWatchedReturnStrategy", multirequestToken);
+		}
+		
+		public void watchedAllReturnStrategy(String multirequestToken) {
+			params.add("watchedAllReturnStrategy", multirequestToken);
+		}
+	}
+
+	public static GetNextEpisodeAssetHistoryBuilder getNextEpisode()  {
+		return getNextEpisode(Long.MIN_VALUE);
+	}
+
+	public static GetNextEpisodeAssetHistoryBuilder getNextEpisode(long assetId)  {
+		return getNextEpisode(assetId, null);
+	}
+
+	public static GetNextEpisodeAssetHistoryBuilder getNextEpisode(long assetId, SeriesIdArguments seriesIdArguments)  {
+		return getNextEpisode(assetId, seriesIdArguments, null);
+	}
+
+	public static GetNextEpisodeAssetHistoryBuilder getNextEpisode(long assetId, SeriesIdArguments seriesIdArguments, NotWatchedReturnStrategy notWatchedReturnStrategy)  {
+		return getNextEpisode(assetId, seriesIdArguments, notWatchedReturnStrategy, null);
 	}
 
 	/**
 	 * Get next episode by last watch asset in given assetId
 	 * 
 	 * @param assetId asset Id of series to search for next episode
+	 * @param seriesIdArguments series Id arguments
+	 * @param notWatchedReturnStrategy not watched any episode strategy
+	 * @param watchedAllReturnStrategy watched all series episodes strategy
 	 */
-    public static GetNextEpisodeAssetHistoryBuilder getNextEpisode(long assetId)  {
-		return new GetNextEpisodeAssetHistoryBuilder(assetId);
+    public static GetNextEpisodeAssetHistoryBuilder getNextEpisode(long assetId, SeriesIdArguments seriesIdArguments, NotWatchedReturnStrategy notWatchedReturnStrategy, WatchedAllReturnStrategy watchedAllReturnStrategy)  {
+		return new GetNextEpisodeAssetHistoryBuilder(assetId, seriesIdArguments, notWatchedReturnStrategy, watchedAllReturnStrategy);
 	}
 	
 	public static class ListAssetHistoryBuilder extends ListResponseRequestBuilder<AssetHistory, AssetHistory.Tokenizer, ListAssetHistoryBuilder> {

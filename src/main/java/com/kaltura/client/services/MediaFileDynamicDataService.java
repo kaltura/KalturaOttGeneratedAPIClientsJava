@@ -90,10 +90,6 @@ public class MediaFileDynamicDataService {
 		}
 	}
 
-	public static ListMediaFileDynamicDataBuilder list()  {
-		return list(null);
-	}
-
 	public static ListMediaFileDynamicDataBuilder list(MediaFileDynamicDataFilter filter)  {
 		return list(filter, null);
 	}

@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -38,29 +39,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Program asset group offer Entitlements filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ProgramAssetGroupOfferEntitlementFilter.Tokenizer.class)
-public class ProgramAssetGroupOfferEntitlementFilter extends EntitlementFilter {
+@MultiRequestBuilder.Tokenizer(ImmediateRecording.Tokenizer.class)
+public class ImmediateRecording extends Recording {
 	
-	public interface Tokenizer extends EntitlementFilter.Tokenizer {
+	public interface Tokenizer extends Recording.Tokenizer {
+		String endPadding();
+		String absoluteStart();
+		String absoluteEnd();
 	}
 
+	/**
+	 * Household specific end padding of the recording
+	 */
+	private Integer endPadding;
+	/**
+	 * Household absolute start time of the immediate recording
+	 */
+	private Long absoluteStart;
+	/**
+	 * Household absolute end time of the immediate recording, empty if till end of
+	  program
+	 */
+	private Long absoluteEnd;
 
+	// endPadding:
+	public Integer getEndPadding(){
+		return this.endPadding;
+	}
+	public void setEndPadding(Integer endPadding){
+		this.endPadding = endPadding;
+	}
 
-	public ProgramAssetGroupOfferEntitlementFilter() {
+	public void endPadding(String multirequestToken){
+		setToken("endPadding", multirequestToken);
+	}
+
+	// absoluteStart:
+	public Long getAbsoluteStart(){
+		return this.absoluteStart;
+	}
+	// absoluteEnd:
+	public Long getAbsoluteEnd(){
+		return this.absoluteEnd;
+	}
+
+	public ImmediateRecording() {
 		super();
 	}
 
-	public ProgramAssetGroupOfferEntitlementFilter(JsonObject jsonObject) throws APIException {
+	public ImmediateRecording(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		endPadding = GsonParser.parseInt(jsonObject.get("endPadding"));
+		absoluteStart = GsonParser.parseLong(jsonObject.get("absoluteStart"));
+		absoluteEnd = GsonParser.parseLong(jsonObject.get("absoluteEnd"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaProgramAssetGroupOfferEntitlementFilter");
+		kparams.add("objectType", "KalturaImmediateRecording");
+		kparams.add("endPadding", this.endPadding);
 		return kparams;
 	}
 
