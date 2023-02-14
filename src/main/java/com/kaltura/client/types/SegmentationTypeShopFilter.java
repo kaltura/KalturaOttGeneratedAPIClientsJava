@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,28 +40,56 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Entitlements filter
+ * allows return of all the KalturaSegmentationType objects that satisfy at least
+  one of the following conditions:              KalturaSegmentationType is
+  associated to one of a set of specified(input) Shop Roles             
+  KalturaSegmentationType is associated to no Shop
+  Role(KalturaSegmentationType.assetUserRuleId is null)
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseEntitlementFilter.Tokenizer.class)
-public class BaseEntitlementFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SegmentationTypeShopFilter.Tokenizer.class)
+public class SegmentationTypeShopFilter extends BaseSegmentationTypeFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends BaseSegmentationTypeFilter.Tokenizer {
+		String idIn();
+	}
+
+	/**
+	 * comma-separated list of KalturaSegmentationType.assetUserRuleId values
+	 */
+	private String idIn;
+
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
+	}
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
+	}
+
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
 	}
 
 
-
-	public BaseEntitlementFilter() {
+	public SegmentationTypeShopFilter() {
 		super();
 	}
 
-	public BaseEntitlementFilter(JsonObject jsonObject) throws APIException {
+	public SegmentationTypeShopFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseEntitlementFilter");
+		kparams.add("objectType", "KalturaSegmentationTypeShopFilter");
+		kparams.add("idIn", this.idIn);
 		return kparams;
 	}
 
