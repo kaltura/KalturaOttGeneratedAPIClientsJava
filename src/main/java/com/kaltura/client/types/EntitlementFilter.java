@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -46,9 +46,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(EntitlementFilter.Tokenizer.class)
-public class EntitlementFilter extends BaseEntitlementFilter {
+public class EntitlementFilter extends Filter {
 	
-	public interface Tokenizer extends BaseEntitlementFilter.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
 		String productTypeEqual();
 		String entityReferenceEqual();
 		String isExpiredEqual();
