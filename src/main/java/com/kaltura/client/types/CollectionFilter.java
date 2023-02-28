@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -51,6 +51,7 @@ public class CollectionFilter extends Filter {
 		String mediaFileIdEqual();
 		String couponGroupIdEqual();
 		String alsoInactive();
+		String assetUserRuleIdIn();
 	}
 
 	/**
@@ -69,6 +70,11 @@ public class CollectionFilter extends Filter {
 	 * return also inactive
 	 */
 	private Boolean alsoInactive;
+	/**
+	 * comma-separated list of KalturaCollection.assetUserRuleId values.  Matching
+	  KalturaCollection objects will be returned by the filter.
+	 */
+	private String assetUserRuleIdIn;
 
 	// collectionIdIn:
 	public String getCollectionIdIn(){
@@ -118,6 +124,18 @@ public class CollectionFilter extends Filter {
 		setToken("alsoInactive", multirequestToken);
 	}
 
+	// assetUserRuleIdIn:
+	public String getAssetUserRuleIdIn(){
+		return this.assetUserRuleIdIn;
+	}
+	public void setAssetUserRuleIdIn(String assetUserRuleIdIn){
+		this.assetUserRuleIdIn = assetUserRuleIdIn;
+	}
+
+	public void assetUserRuleIdIn(String multirequestToken){
+		setToken("assetUserRuleIdIn", multirequestToken);
+	}
+
 
 	public CollectionFilter() {
 		super();
@@ -133,6 +151,7 @@ public class CollectionFilter extends Filter {
 		mediaFileIdEqual = GsonParser.parseInt(jsonObject.get("mediaFileIdEqual"));
 		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
 		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
+		assetUserRuleIdIn = GsonParser.parseString(jsonObject.get("assetUserRuleIdIn"));
 
 	}
 
@@ -143,6 +162,7 @@ public class CollectionFilter extends Filter {
 		kparams.add("mediaFileIdEqual", this.mediaFileIdEqual);
 		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
 		kparams.add("alsoInactive", this.alsoInactive);
+		kparams.add("assetUserRuleIdIn", this.assetUserRuleIdIn);
 		return kparams;
 	}
 

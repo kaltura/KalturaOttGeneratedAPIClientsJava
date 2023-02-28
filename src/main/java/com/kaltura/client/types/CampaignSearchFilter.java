@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -52,6 +52,7 @@ public class CampaignSearchFilter extends CampaignFilter {
 		String nameEqual();
 		String nameContains();
 		String stateIn();
+		String assetUserRuleIdIn();
 	}
 
 	/**
@@ -82,6 +83,10 @@ public class CampaignSearchFilter extends CampaignFilter {
 	 * Comma separated Campaign State list
 	 */
 	private String stateIn;
+	/**
+	 * Comma separated AssetUserRule Ids to filter by
+	 */
+	private String assetUserRuleIdIn;
 
 	// startDateGreaterThanOrEqual:
 	public Long getStartDateGreaterThanOrEqual(){
@@ -167,6 +172,18 @@ public class CampaignSearchFilter extends CampaignFilter {
 		setToken("stateIn", multirequestToken);
 	}
 
+	// assetUserRuleIdIn:
+	public String getAssetUserRuleIdIn(){
+		return this.assetUserRuleIdIn;
+	}
+	public void setAssetUserRuleIdIn(String assetUserRuleIdIn){
+		this.assetUserRuleIdIn = assetUserRuleIdIn;
+	}
+
+	public void assetUserRuleIdIn(String multirequestToken){
+		setToken("assetUserRuleIdIn", multirequestToken);
+	}
+
 
 	public CampaignSearchFilter() {
 		super();
@@ -185,6 +202,7 @@ public class CampaignSearchFilter extends CampaignFilter {
 		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
 		nameContains = GsonParser.parseString(jsonObject.get("nameContains"));
 		stateIn = GsonParser.parseString(jsonObject.get("stateIn"));
+		assetUserRuleIdIn = GsonParser.parseString(jsonObject.get("assetUserRuleIdIn"));
 
 	}
 
@@ -198,6 +216,7 @@ public class CampaignSearchFilter extends CampaignFilter {
 		kparams.add("nameEqual", this.nameEqual);
 		kparams.add("nameContains", this.nameContains);
 		kparams.add("stateIn", this.stateIn);
+		kparams.add("assetUserRuleIdIn", this.assetUserRuleIdIn);
 		return kparams;
 	}
 
