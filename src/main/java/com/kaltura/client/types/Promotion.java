@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -49,6 +49,7 @@ public class Promotion extends BasePromotion {
 	public interface Tokenizer extends BasePromotion.Tokenizer {
 		String discountModuleId();
 		String numberOfRecurring();
+		String maxDiscountUsages();
 	}
 
 	/**
@@ -59,6 +60,11 @@ public class Promotion extends BasePromotion {
 	 * the numer of recurring for this promotion
 	 */
 	private Integer numberOfRecurring;
+	/**
+	 * The number of times a household can use the discount module in this campaign.   
+	            If omitted than no limitation is enforced on the number of usages.
+	 */
+	private Integer maxDiscountUsages;
 
 	// discountModuleId:
 	public Long getDiscountModuleId(){
@@ -84,6 +90,18 @@ public class Promotion extends BasePromotion {
 		setToken("numberOfRecurring", multirequestToken);
 	}
 
+	// maxDiscountUsages:
+	public Integer getMaxDiscountUsages(){
+		return this.maxDiscountUsages;
+	}
+	public void setMaxDiscountUsages(Integer maxDiscountUsages){
+		this.maxDiscountUsages = maxDiscountUsages;
+	}
+
+	public void maxDiscountUsages(String multirequestToken){
+		setToken("maxDiscountUsages", multirequestToken);
+	}
+
 
 	public Promotion() {
 		super();
@@ -97,6 +115,7 @@ public class Promotion extends BasePromotion {
 		// set members values:
 		discountModuleId = GsonParser.parseLong(jsonObject.get("discountModuleId"));
 		numberOfRecurring = GsonParser.parseInt(jsonObject.get("numberOfRecurring"));
+		maxDiscountUsages = GsonParser.parseInt(jsonObject.get("maxDiscountUsages"));
 
 	}
 
@@ -105,6 +124,7 @@ public class Promotion extends BasePromotion {
 		kparams.add("objectType", "KalturaPromotion");
 		kparams.add("discountModuleId", this.discountModuleId);
 		kparams.add("numberOfRecurring", this.numberOfRecurring);
+		kparams.add("maxDiscountUsages", this.maxDiscountUsages);
 		return kparams;
 	}
 

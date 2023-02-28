@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -27,7 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.LineupChannelAsset;
+import com.kaltura.client.types.LineupRegionalChannelFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -68,6 +70,31 @@ public class LineupService {
 	 */
     public static GetLineupBuilder get(int pageIndex, int pageSize)  {
 		return new GetLineupBuilder(pageIndex, pageSize);
+	}
+	
+	public static class ListLineupBuilder extends ListResponseRequestBuilder<LineupChannelAsset, LineupChannelAsset.Tokenizer, ListLineupBuilder> {
+		
+		public ListLineupBuilder(LineupRegionalChannelFilter filter, FilterPager pager) {
+			super(LineupChannelAsset.class, "lineup", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
+
+	public static ListLineupBuilder list(LineupRegionalChannelFilter filter)  {
+		return list(filter, null);
+	}
+
+	/**
+	 * Returns list of lineup regional linear channels associated with one LCN and its
+	  region information. Allows to apply sorting and filtering by LCN and linear
+	  channels.
+	 * 
+	 * @param filter Request filter
+	 * @param pager Paging the request
+	 */
+    public static ListLineupBuilder list(LineupRegionalChannelFilter filter, FilterPager pager)  {
+		return new ListLineupBuilder(filter, pager);
 	}
 	
 	public static class SendUpdatedNotificationLineupBuilder extends RequestBuilder<Boolean, String, SendUpdatedNotificationLineupBuilder> {
