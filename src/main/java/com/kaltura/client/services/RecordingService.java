@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -29,6 +29,7 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.types.ActionResult;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.ImmediateRecording;
 import com.kaltura.client.types.Recording;
 import com.kaltura.client.types.RecordingFilter;
 import com.kaltura.client.utils.request.ArrayRequestBuilder;
@@ -150,6 +151,37 @@ public class RecordingService {
 		return new GetRecordingBuilder(id);
 	}
 	
+	public static class ImmediateRecordRecordingBuilder extends RequestBuilder<ImmediateRecording, ImmediateRecording.Tokenizer, ImmediateRecordRecordingBuilder> {
+		
+		public ImmediateRecordRecordingBuilder(long assetId, int endPadding) {
+			super(ImmediateRecording.class, "recording", "immediateRecord");
+			params.add("assetId", assetId);
+			params.add("endPadding", endPadding);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void endPadding(String multirequestToken) {
+			params.add("endPadding", multirequestToken);
+		}
+	}
+
+	public static ImmediateRecordRecordingBuilder immediateRecord(long assetId)  {
+		return immediateRecord(assetId, Integer.MIN_VALUE);
+	}
+
+	/**
+	 * Immediate Record
+	 * 
+	 * @param assetId asset identifier
+	 * @param endPadding end padding offset
+	 */
+    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, int endPadding)  {
+		return new ImmediateRecordRecordingBuilder(assetId, endPadding);
+	}
+	
 	public static class ListRecordingBuilder extends ListResponseRequestBuilder<Recording, Recording.Tokenizer, ListRecordingBuilder> {
 		
 		public ListRecordingBuilder(RecordingFilter filter, FilterPager pager) {
@@ -198,6 +230,33 @@ public class RecordingService {
 	 */
     public static ProtectRecordingBuilder protect(long id)  {
 		return new ProtectRecordingBuilder(id);
+	}
+	
+	public static class StopRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, StopRecordingBuilder> {
+		
+		public StopRecordingBuilder(long assetId, long id) {
+			super(Recording.class, "recording", "stop");
+			params.add("assetId", assetId);
+			params.add("id", id);
+		}
+		
+		public void assetId(String multirequestToken) {
+			params.add("assetId", multirequestToken);
+		}
+		
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
+		}
+	}
+
+	/**
+	 * Stop ongoing household recording
+	 * 
+	 * @param assetId asset identifier
+	 * @param id household recording identifier
+	 */
+    public static StopRecordingBuilder stop(long assetId, long id)  {
+		return new StopRecordingBuilder(assetId, id);
 	}
 	
 	public static class UpdateRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, UpdateRecordingBuilder> {
