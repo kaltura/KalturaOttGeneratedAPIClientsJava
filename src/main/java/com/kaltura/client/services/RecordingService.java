@@ -153,10 +153,9 @@ public class RecordingService {
 	
 	public static class ImmediateRecordRecordingBuilder extends RequestBuilder<ImmediateRecording, ImmediateRecording.Tokenizer, ImmediateRecordRecordingBuilder> {
 		
-		public ImmediateRecordRecordingBuilder(long assetId, long epgChannelId, int endPadding) {
+		public ImmediateRecordRecordingBuilder(long assetId, int endPadding) {
 			super(ImmediateRecording.class, "recording", "immediateRecord");
 			params.add("assetId", assetId);
-			params.add("epgChannelId", epgChannelId);
 			params.add("endPadding", endPadding);
 		}
 		
@@ -164,28 +163,23 @@ public class RecordingService {
 			params.add("assetId", multirequestToken);
 		}
 		
-		public void epgChannelId(String multirequestToken) {
-			params.add("epgChannelId", multirequestToken);
-		}
-		
 		public void endPadding(String multirequestToken) {
 			params.add("endPadding", multirequestToken);
 		}
 	}
 
-	public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId)  {
-		return immediateRecord(assetId, epgChannelId, Integer.MIN_VALUE);
+	public static ImmediateRecordRecordingBuilder immediateRecord(long assetId)  {
+		return immediateRecord(assetId, Integer.MIN_VALUE);
 	}
 
 	/**
 	 * Immediate Record
 	 * 
 	 * @param assetId asset identifier
-	 * @param epgChannelId epg channel identifier
 	 * @param endPadding end padding offset
 	 */
-    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, long epgChannelId, int endPadding)  {
-		return new ImmediateRecordRecordingBuilder(assetId, epgChannelId, endPadding);
+    public static ImmediateRecordRecordingBuilder immediateRecord(long assetId, int endPadding)  {
+		return new ImmediateRecordRecordingBuilder(assetId, endPadding);
 	}
 	
 	public static class ListRecordingBuilder extends ListResponseRequestBuilder<Recording, Recording.Tokenizer, ListRecordingBuilder> {
@@ -240,23 +234,18 @@ public class RecordingService {
 	
 	public static class StopRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, StopRecordingBuilder> {
 		
-		public StopRecordingBuilder(long assetId, long epgChannelId, long householdRecordingId) {
+		public StopRecordingBuilder(long assetId, long id) {
 			super(Recording.class, "recording", "stop");
 			params.add("assetId", assetId);
-			params.add("epgChannelId", epgChannelId);
-			params.add("householdRecordingId", householdRecordingId);
+			params.add("id", id);
 		}
 		
 		public void assetId(String multirequestToken) {
 			params.add("assetId", multirequestToken);
 		}
 		
-		public void epgChannelId(String multirequestToken) {
-			params.add("epgChannelId", multirequestToken);
-		}
-		
-		public void householdRecordingId(String multirequestToken) {
-			params.add("householdRecordingId", multirequestToken);
+		public void id(String multirequestToken) {
+			params.add("id", multirequestToken);
 		}
 	}
 
@@ -264,11 +253,10 @@ public class RecordingService {
 	 * Stop ongoing household recording
 	 * 
 	 * @param assetId asset identifier
-	 * @param epgChannelId epg channel identifier
-	 * @param householdRecordingId household recording identifier
+	 * @param id household recording identifier
 	 */
-    public static StopRecordingBuilder stop(long assetId, long epgChannelId, long householdRecordingId)  {
-		return new StopRecordingBuilder(assetId, epgChannelId, householdRecordingId);
+    public static StopRecordingBuilder stop(long assetId, long id)  {
+		return new StopRecordingBuilder(assetId, id);
 	}
 	
 	public static class UpdateRecordingBuilder extends RequestBuilder<Recording, Recording.Tokenizer, UpdateRecordingBuilder> {
