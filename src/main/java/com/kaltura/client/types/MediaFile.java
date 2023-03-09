@@ -32,6 +32,8 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.BusinessModuleDetails;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -73,6 +75,7 @@ public class MediaFile extends AssetFile {
 		String opl();
 		BusinessModuleDetails.Tokenizer businessModuleDetails();
 		String labels();
+		RequestBuilder.MapTokenizer<StringValueArray.Tokenizer> dynamicData();
 	}
 
 	/**
@@ -175,6 +178,10 @@ public class MediaFile extends AssetFile {
 	 * Labels associated with the media file
 	 */
 	private String labels;
+	/**
+	 * List of KalturaMediaFile&amp;#39;s dynamic data keys
+	 */
+	private Map<String, StringValueArray> dynamicData;
 
 	// assetId:
 	public Integer getAssetId(){
@@ -456,6 +463,14 @@ public class MediaFile extends AssetFile {
 		setToken("labels", multirequestToken);
 	}
 
+	// dynamicData:
+	public Map<String, StringValueArray> getDynamicData(){
+		return this.dynamicData;
+	}
+	public void setDynamicData(Map<String, StringValueArray> dynamicData){
+		this.dynamicData = dynamicData;
+	}
+
 
 	public MediaFile() {
 		super();
@@ -492,6 +507,7 @@ public class MediaFile extends AssetFile {
 		opl = GsonParser.parseString(jsonObject.get("opl"));
 		businessModuleDetails = GsonParser.parseObject(jsonObject.getAsJsonObject("businessModuleDetails"), BusinessModuleDetails.class);
 		labels = GsonParser.parseString(jsonObject.get("labels"));
+		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValueArray.class);
 
 	}
 
@@ -521,6 +537,7 @@ public class MediaFile extends AssetFile {
 		kparams.add("opl", this.opl);
 		kparams.add("businessModuleDetails", this.businessModuleDetails);
 		kparams.add("labels", this.labels);
+		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
 	}
 

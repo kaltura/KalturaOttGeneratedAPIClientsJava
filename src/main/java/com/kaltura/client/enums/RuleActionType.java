@@ -59,7 +59,9 @@ public enum RuleActionType implements EnumAsString {
 	FILTERFILEBYSTREAMERTYPEINDISCOVERY("FilterFileByStreamerTypeInDiscovery"),
 	FILTERFILEBYSTREAMERTYPEINPLAYBACK("FilterFileByStreamerTypeInPlayback"),
 	FILTERFILEBYLABELINDISCOVERY("FilterFileByLabelInDiscovery"),
-	FILTERFILEBYLABELINPLAYBACK("FilterFileByLabelInPlayback");
+	FILTERFILEBYLABELINPLAYBACK("FilterFileByLabelInPlayback"),
+	FILTERFILEBYDYNAMICDATAINDISCOVERY("FilterFileByDynamicDataInDiscovery"),
+	FILTERFILEBYDYNAMICDATAINPLAYBACK("FilterFileByDynamicDataInPlayback");
 
 	private String value;
 
