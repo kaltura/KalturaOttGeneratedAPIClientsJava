@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -62,6 +62,7 @@ public class MediaFileType extends ObjectBase {
 		String quality();
 		String videoCodecs();
 		String audioCodecs();
+		String dynamicDataKeys();
 	}
 
 	/**
@@ -112,6 +113,11 @@ public class MediaFileType extends ObjectBase {
 	 * List of comma separated audio codecs
 	 */
 	private String audioCodecs;
+	/**
+	 * List of comma separated keys allowed to be used as KalturaMediaFile&amp;#39;s
+	  dynamic data keys
+	 */
+	private String dynamicDataKeys;
 
 	// id:
 	public Integer getId(){
@@ -233,6 +239,18 @@ public class MediaFileType extends ObjectBase {
 		setToken("audioCodecs", multirequestToken);
 	}
 
+	// dynamicDataKeys:
+	public String getDynamicDataKeys(){
+		return this.dynamicDataKeys;
+	}
+	public void setDynamicDataKeys(String dynamicDataKeys){
+		this.dynamicDataKeys = dynamicDataKeys;
+	}
+
+	public void dynamicDataKeys(String multirequestToken){
+		setToken("dynamicDataKeys", multirequestToken);
+	}
+
 
 	public MediaFileType() {
 		super();
@@ -256,6 +274,7 @@ public class MediaFileType extends ObjectBase {
 		quality = MediaFileTypeQuality.get(GsonParser.parseString(jsonObject.get("quality")));
 		videoCodecs = GsonParser.parseString(jsonObject.get("videoCodecs"));
 		audioCodecs = GsonParser.parseString(jsonObject.get("audioCodecs"));
+		dynamicDataKeys = GsonParser.parseString(jsonObject.get("dynamicDataKeys"));
 
 	}
 
@@ -271,6 +290,7 @@ public class MediaFileType extends ObjectBase {
 		kparams.add("quality", this.quality);
 		kparams.add("videoCodecs", this.videoCodecs);
 		kparams.add("audioCodecs", this.audioCodecs);
+		kparams.add("dynamicDataKeys", this.dynamicDataKeys);
 		return kparams;
 	}
 

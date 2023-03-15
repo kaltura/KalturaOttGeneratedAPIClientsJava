@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -50,6 +50,7 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		String idIn();
 		String kSql();
 		String nameContain();
+		String assetUserRuleIdIn();
 	}
 
 	/**
@@ -64,6 +65,10 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 	 * Name of segment contains specific string value
 	 */
 	private String nameContain;
+	/**
+	 * comma-separated list of KalturaSegmentationType.assetUserRuleId values
+	 */
+	private String assetUserRuleIdIn;
 
 	// idIn:
 	public String getIdIn(){
@@ -101,6 +106,18 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		setToken("nameContain", multirequestToken);
 	}
 
+	// assetUserRuleIdIn:
+	public String getAssetUserRuleIdIn(){
+		return this.assetUserRuleIdIn;
+	}
+	public void setAssetUserRuleIdIn(String assetUserRuleIdIn){
+		this.assetUserRuleIdIn = assetUserRuleIdIn;
+	}
+
+	public void assetUserRuleIdIn(String multirequestToken){
+		setToken("assetUserRuleIdIn", multirequestToken);
+	}
+
 
 	public SegmentationTypeFilter() {
 		super();
@@ -115,6 +132,7 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		nameContain = GsonParser.parseString(jsonObject.get("nameContain"));
+		assetUserRuleIdIn = GsonParser.parseString(jsonObject.get("assetUserRuleIdIn"));
 
 	}
 
@@ -124,6 +142,7 @@ public class SegmentationTypeFilter extends BaseSegmentationTypeFilter {
 		kparams.add("idIn", this.idIn);
 		kparams.add("kSql", this.kSql);
 		kparams.add("nameContain", this.nameContain);
+		kparams.add("assetUserRuleIdIn", this.assetUserRuleIdIn);
 		return kparams;
 	}
 

@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -38,29 +38,26 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Entitlements filter
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseEntitlementFilter.Tokenizer.class)
-public class BaseEntitlementFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(FilterFileByDynamicDataInPlaybackAction.Tokenizer.class)
+public class FilterFileByDynamicDataInPlaybackAction extends FilterFileByDynamicDataAction {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
+	public interface Tokenizer extends FilterFileByDynamicDataAction.Tokenizer {
 	}
 
 
 
-	public BaseEntitlementFilter() {
+	public FilterFileByDynamicDataInPlaybackAction() {
 		super();
 	}
 
-	public BaseEntitlementFilter(JsonObject jsonObject) throws APIException {
+	public FilterFileByDynamicDataInPlaybackAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseEntitlementFilter");
+		kparams.add("objectType", "KalturaFilterFileByDynamicDataInPlaybackAction");
 		return kparams;
 	}
 
