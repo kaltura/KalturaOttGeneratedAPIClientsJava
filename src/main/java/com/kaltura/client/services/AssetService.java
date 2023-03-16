@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -183,7 +183,9 @@ public class AssetService {
 	}
 
 	/**
-	 * Returns media or EPG asset by media / EPG internal or external identifier
+	 * Returns media or EPG asset by media / EPG internal or external identifier.      
+	         Note: OPC accounts asset.get for internal identifier doesn&amp;#39;t take
+	  under consideration personalized aspects neither shop limitations.
 	 * 
 	 * @param id Asset identifier
 	 * @param assetReferenceType Asset type
