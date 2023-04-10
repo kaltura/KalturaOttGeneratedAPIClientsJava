@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -61,6 +61,7 @@ public class Campaign extends OTTObjectSupportNullable {
 		BasePromotion.Tokenizer promotion();
 		String message();
 		String collectionIdIn();
+		String assetUserRuleId();
 	}
 
 	/**
@@ -111,6 +112,10 @@ public class Campaign extends OTTObjectSupportNullable {
 	 * Comma separated collection IDs list
 	 */
 	private String collectionIdIn;
+	/**
+	 * Asset user rule identifier
+	 */
+	private Long assetUserRuleId;
 
 	// id:
 	public Long getId(){
@@ -220,6 +225,18 @@ public class Campaign extends OTTObjectSupportNullable {
 		setToken("collectionIdIn", multirequestToken);
 	}
 
+	// assetUserRuleId:
+	public Long getAssetUserRuleId(){
+		return this.assetUserRuleId;
+	}
+	public void setAssetUserRuleId(Long assetUserRuleId){
+		this.assetUserRuleId = assetUserRuleId;
+	}
+
+	public void assetUserRuleId(String multirequestToken){
+		setToken("assetUserRuleId", multirequestToken);
+	}
+
 
 	public Campaign() {
 		super();
@@ -243,6 +260,7 @@ public class Campaign extends OTTObjectSupportNullable {
 		promotion = GsonParser.parseObject(jsonObject.getAsJsonObject("promotion"), BasePromotion.class);
 		message = GsonParser.parseString(jsonObject.get("message"));
 		collectionIdIn = GsonParser.parseString(jsonObject.get("collectionIdIn"));
+		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 
 	}
 
@@ -257,6 +275,7 @@ public class Campaign extends OTTObjectSupportNullable {
 		kparams.add("promotion", this.promotion);
 		kparams.add("message", this.message);
 		kparams.add("collectionIdIn", this.collectionIdIn);
+		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		return kparams;
 	}
 
