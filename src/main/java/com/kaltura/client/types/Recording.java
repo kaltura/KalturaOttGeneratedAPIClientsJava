@@ -8,7 +8,7 @@
 // to do with audio, video, and animation what Wiki platforms allow them to do with
 // text.
 //
-// Copyright (C) 2006-2022  Kaltura Inc.
+// Copyright (C) 2006-2023  Kaltura Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
@@ -55,6 +55,7 @@ public class Recording extends ObjectBase {
 		String isProtected();
 		String createDate();
 		String updateDate();
+		String duration();
 	}
 
 	/**
@@ -91,6 +92,10 @@ public class Recording extends ObjectBase {
 	  epoch.
 	 */
 	private Long updateDate;
+	/**
+	 * Duration in seconds
+	 */
+	private Long duration;
 
 	// id:
 	public Long getId(){
@@ -156,6 +161,10 @@ public class Recording extends ObjectBase {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
+	// duration:
+	public Long getDuration(){
+		return this.duration;
+	}
 
 	public Recording() {
 		super();
@@ -175,6 +184,7 @@ public class Recording extends ObjectBase {
 		isProtected = GsonParser.parseBoolean(jsonObject.get("isProtected"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		duration = GsonParser.parseLong(jsonObject.get("duration"));
 
 	}
 
