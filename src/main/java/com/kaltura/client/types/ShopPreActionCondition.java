@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.BasePreActionCondition;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,45 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterAction.Tokenizer.class)
-public abstract class FilterAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(ShopPreActionCondition.Tokenizer.class)
+public class ShopPreActionCondition extends BasePreActionCondition {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		BasePreActionCondition.Tokenizer preActionCondition();
+	public interface Tokenizer extends BasePreActionCondition.Tokenizer {
+		String shopAssetUserRuleId();
 	}
 
 	/**
-	 * PreAction condition
+	 * Asset user rule ID with shop condition
 	 */
-	private BasePreActionCondition preActionCondition;
+	private Integer shopAssetUserRuleId;
 
-	// preActionCondition:
-	public BasePreActionCondition getPreActionCondition(){
-		return this.preActionCondition;
+	// shopAssetUserRuleId:
+	public Integer getShopAssetUserRuleId(){
+		return this.shopAssetUserRuleId;
 	}
-	public void setPreActionCondition(BasePreActionCondition preActionCondition){
-		this.preActionCondition = preActionCondition;
+	public void setShopAssetUserRuleId(Integer shopAssetUserRuleId){
+		this.shopAssetUserRuleId = shopAssetUserRuleId;
+	}
+
+	public void shopAssetUserRuleId(String multirequestToken){
+		setToken("shopAssetUserRuleId", multirequestToken);
 	}
 
 
-	public FilterAction() {
+	public ShopPreActionCondition() {
 		super();
 	}
 
-	public FilterAction(JsonObject jsonObject) throws APIException {
+	public ShopPreActionCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		preActionCondition = GsonParser.parseObject(jsonObject.getAsJsonObject("preActionCondition"), BasePreActionCondition.class);
+		shopAssetUserRuleId = GsonParser.parseInt(jsonObject.get("shopAssetUserRuleId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterAction");
-		kparams.add("preActionCondition", this.preActionCondition);
+		kparams.add("objectType", "KalturaShopPreActionCondition");
+		kparams.add("shopAssetUserRuleId", this.shopAssetUserRuleId);
 		return kparams;
 	}
 
