@@ -73,6 +73,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		String personalizedRecording();
 		String maxRecordingConcurrency();
 		String maxConcurrencyMargin();
+		String cDvrMigrationEnabled();
 	}
 
 	/**
@@ -186,6 +187,10 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 	  margin
 	 */
 	private Integer maxConcurrencyMargin;
+	/**
+	 * Is CDVR Migration Enabled
+	 */
+	private Boolean cDvrMigrationEnabled;
 
 	// catchUpEnabled:
 	public Boolean getCatchUpEnabled(){
@@ -499,6 +504,18 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		setToken("maxConcurrencyMargin", multirequestToken);
 	}
 
+	// cDvrMigrationEnabled:
+	public Boolean getCDvrMigrationEnabled(){
+		return this.cDvrMigrationEnabled;
+	}
+	public void setCDvrMigrationEnabled(Boolean cDvrMigrationEnabled){
+		this.cDvrMigrationEnabled = cDvrMigrationEnabled;
+	}
+
+	public void cDvrMigrationEnabled(String multirequestToken){
+		setToken("cDvrMigrationEnabled", multirequestToken);
+	}
+
 
 	public TimeShiftedTvPartnerSettings() {
 		super();
@@ -536,6 +553,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		personalizedRecording = GsonParser.parseBoolean(jsonObject.get("personalizedRecording"));
 		maxRecordingConcurrency = GsonParser.parseInt(jsonObject.get("maxRecordingConcurrency"));
 		maxConcurrencyMargin = GsonParser.parseInt(jsonObject.get("maxConcurrencyMargin"));
+		cDvrMigrationEnabled = GsonParser.parseBoolean(jsonObject.get("cDvrMigrationEnabled"));
 
 	}
 
@@ -568,6 +586,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		kparams.add("personalizedRecording", this.personalizedRecording);
 		kparams.add("maxRecordingConcurrency", this.maxRecordingConcurrency);
 		kparams.add("maxConcurrencyMargin", this.maxConcurrencyMargin);
+		kparams.add("cDvrMigrationEnabled", this.cDvrMigrationEnabled);
 		return kparams;
 	}
 
