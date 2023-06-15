@@ -25,13 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.types.BasePreActionCondition;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -39,49 +33,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum VodIngestAssetResultStatus implements EnumAsString {
+	FAILURE("FAILURE"),
+	EXTERNAL_FAILURE("EXTERNAL_FAILURE"),
+	SUCCESS_WARNING("SUCCESS_WARNING"),
+	SUCCESS("SUCCESS");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterAction.Tokenizer.class)
-public abstract class FilterAction extends AssetRuleAction {
-	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		BasePreActionCondition.Tokenizer preActionCondition();
+	private String value;
+
+	VodIngestAssetResultStatus(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * PreAction condition
-	 */
-	private BasePreActionCondition preActionCondition;
-
-	// preActionCondition:
-	public BasePreActionCondition getPreActionCondition(){
-		return this.preActionCondition;
-	}
-	public void setPreActionCondition(BasePreActionCondition preActionCondition){
-		this.preActionCondition = preActionCondition;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-
-	public FilterAction() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public FilterAction(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		preActionCondition = GsonParser.parseObject(jsonObject.getAsJsonObject("preActionCondition"), BasePreActionCondition.class);
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterAction");
-		kparams.add("preActionCondition", this.preActionCondition);
-		return kparams;
-	}
-
+	public static VodIngestAssetResultStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over VodIngestAssetResultStatus defined values and compare the inner value with the given one:
+		for(VodIngestAssetResultStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return VodIngestAssetResultStatus.values().length > 0 ? VodIngestAssetResultStatus.values()[0]: null;
+   }
 }
-

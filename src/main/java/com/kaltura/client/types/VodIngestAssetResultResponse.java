@@ -29,7 +29,10 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.BasePreActionCondition;
+import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.VodIngestAssetResultAggregation;
+import com.kaltura.client.types.VodIngestAssetResultListResponse;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,45 +44,60 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterAction.Tokenizer.class)
-public abstract class FilterAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(VodIngestAssetResultResponse.Tokenizer.class)
+public class VodIngestAssetResultResponse extends ObjectBase {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		BasePreActionCondition.Tokenizer preActionCondition();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		ListResponse.Tokenizer<.Tokenizer> result();
+		VodIngestAssetResultAggregation.Tokenizer aggregations();
 	}
 
 	/**
-	 * PreAction condition
+	 * Errors
 	 */
-	private BasePreActionCondition preActionCondition;
+	private VodIngestAssetResultListResponse result;
+	/**
+	 * Aggregated counters
+	 */
+	private VodIngestAssetResultAggregation aggregations;
 
-	// preActionCondition:
-	public BasePreActionCondition getPreActionCondition(){
-		return this.preActionCondition;
+	// result:
+	public VodIngestAssetResultListResponse getResult(){
+		return this.result;
 	}
-	public void setPreActionCondition(BasePreActionCondition preActionCondition){
-		this.preActionCondition = preActionCondition;
+	public void setResult(VodIngestAssetResultListResponse result){
+		this.result = result;
+	}
+
+	// aggregations:
+	public VodIngestAssetResultAggregation getAggregations(){
+		return this.aggregations;
+	}
+	public void setAggregations(VodIngestAssetResultAggregation aggregations){
+		this.aggregations = aggregations;
 	}
 
 
-	public FilterAction() {
+	public VodIngestAssetResultResponse() {
 		super();
 	}
 
-	public FilterAction(JsonObject jsonObject) throws APIException {
+	public VodIngestAssetResultResponse(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		preActionCondition = GsonParser.parseObject(jsonObject.getAsJsonObject("preActionCondition"), BasePreActionCondition.class);
+		result = GsonParser.parseObject(jsonObject.getAsJsonObject("result"), VodIngestAssetResultListResponse.class);
+		aggregations = GsonParser.parseObject(jsonObject.getAsJsonObject("aggregations"), VodIngestAssetResultAggregation.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterAction");
-		kparams.add("preActionCondition", this.preActionCondition);
+		kparams.add("objectType", "KalturaVodIngestAssetResultResponse");
+		kparams.add("result", this.result);
+		kparams.add("aggregations", this.aggregations);
 		return kparams;
 	}
 

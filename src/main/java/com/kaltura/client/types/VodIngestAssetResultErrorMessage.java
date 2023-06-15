@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.BasePreActionCondition;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,46 +40,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * A Kaltura error message
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterAction.Tokenizer.class)
-public abstract class FilterAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(VodIngestAssetResultErrorMessage.Tokenizer.class)
+public class VodIngestAssetResultErrorMessage extends ObjectBase {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		BasePreActionCondition.Tokenizer preActionCondition();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String message();
+		String code();
 	}
 
 	/**
-	 * PreAction condition
+	 * The message description with arguments place holders
 	 */
-	private BasePreActionCondition preActionCondition;
+	private String message;
+	/**
+	 * The message code
+	 */
+	private String code;
 
-	// preActionCondition:
-	public BasePreActionCondition getPreActionCondition(){
-		return this.preActionCondition;
+	// message:
+	public String getMessage(){
+		return this.message;
 	}
-	public void setPreActionCondition(BasePreActionCondition preActionCondition){
-		this.preActionCondition = preActionCondition;
+	public void setMessage(String message){
+		this.message = message;
+	}
+
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
+
+	// code:
+	public String getCode(){
+		return this.code;
+	}
+	public void setCode(String code){
+		this.code = code;
+	}
+
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
 	}
 
 
-	public FilterAction() {
+	public VodIngestAssetResultErrorMessage() {
 		super();
 	}
 
-	public FilterAction(JsonObject jsonObject) throws APIException {
+	public VodIngestAssetResultErrorMessage(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		preActionCondition = GsonParser.parseObject(jsonObject.getAsJsonObject("preActionCondition"), BasePreActionCondition.class);
+		message = GsonParser.parseString(jsonObject.get("message"));
+		code = GsonParser.parseString(jsonObject.get("code"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterAction");
-		kparams.add("preActionCondition", this.preActionCondition);
+		kparams.add("objectType", "KalturaVodIngestAssetResultErrorMessage");
+		kparams.add("message", this.message);
+		kparams.add("code", this.code);
 		return kparams;
 	}
 

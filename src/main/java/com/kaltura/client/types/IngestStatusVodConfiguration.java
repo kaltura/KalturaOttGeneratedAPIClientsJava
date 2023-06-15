@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.BasePreActionCondition;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,45 +41,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterAction.Tokenizer.class)
-public abstract class FilterAction extends AssetRuleAction {
+@MultiRequestBuilder.Tokenizer(IngestStatusVodConfiguration.Tokenizer.class)
+public class IngestStatusVodConfiguration extends ObjectBase {
 	
-	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		BasePreActionCondition.Tokenizer preActionCondition();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String isSupported();
+		String retainingPeriod();
 	}
 
 	/**
-	 * PreAction condition
+	 * Defines whether partner in question enabled core ingest status service.
 	 */
-	private BasePreActionCondition preActionCondition;
+	private Boolean isSupported;
+	/**
+	 * Defines the time in seconds that the service retain information about ingest
+	  status.
+	 */
+	private Long retainingPeriod;
 
-	// preActionCondition:
-	public BasePreActionCondition getPreActionCondition(){
-		return this.preActionCondition;
+	// isSupported:
+	public Boolean getIsSupported(){
+		return this.isSupported;
 	}
-	public void setPreActionCondition(BasePreActionCondition preActionCondition){
-		this.preActionCondition = preActionCondition;
+	public void setIsSupported(Boolean isSupported){
+		this.isSupported = isSupported;
+	}
+
+	public void isSupported(String multirequestToken){
+		setToken("isSupported", multirequestToken);
+	}
+
+	// retainingPeriod:
+	public Long getRetainingPeriod(){
+		return this.retainingPeriod;
+	}
+	public void setRetainingPeriod(Long retainingPeriod){
+		this.retainingPeriod = retainingPeriod;
+	}
+
+	public void retainingPeriod(String multirequestToken){
+		setToken("retainingPeriod", multirequestToken);
 	}
 
 
-	public FilterAction() {
+	public IngestStatusVodConfiguration() {
 		super();
 	}
 
-	public FilterAction(JsonObject jsonObject) throws APIException {
+	public IngestStatusVodConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		preActionCondition = GsonParser.parseObject(jsonObject.getAsJsonObject("preActionCondition"), BasePreActionCondition.class);
+		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
+		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterAction");
-		kparams.add("preActionCondition", this.preActionCondition);
+		kparams.add("objectType", "KalturaIngestStatusVodConfiguration");
+		kparams.add("isSupported", this.isSupported);
+		kparams.add("retainingPeriod", this.retainingPeriod);
 		return kparams;
 	}
 
