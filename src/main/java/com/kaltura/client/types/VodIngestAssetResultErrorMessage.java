@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.IngestStatusEpgConfiguration;
-import com.kaltura.client.types.IngestStatusVodConfiguration;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,61 +40,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * A Kaltura error message
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusPartnerConfiguration.Tokenizer.class)
-public class IngestStatusPartnerConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(VodIngestAssetResultErrorMessage.Tokenizer.class)
+public class VodIngestAssetResultErrorMessage extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		IngestStatusEpgConfiguration.Tokenizer epg();
-		IngestStatusVodConfiguration.Tokenizer vod();
+		String message();
+		String code();
 	}
 
 	/**
-	 * Defines the epg configuration of the partner.
+	 * The message description with arguments place holders
 	 */
-	private IngestStatusEpgConfiguration epg;
+	private String message;
 	/**
-	 * Defines the vod configuration of the partner.
+	 * The message code
 	 */
-	private IngestStatusVodConfiguration vod;
+	private String code;
 
-	// epg:
-	public IngestStatusEpgConfiguration getEpg(){
-		return this.epg;
+	// message:
+	public String getMessage(){
+		return this.message;
 	}
-	public void setEpg(IngestStatusEpgConfiguration epg){
-		this.epg = epg;
-	}
-
-	// vod:
-	public IngestStatusVodConfiguration getVod(){
-		return this.vod;
-	}
-	public void setVod(IngestStatusVodConfiguration vod){
-		this.vod = vod;
+	public void setMessage(String message){
+		this.message = message;
 	}
 
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
 
-	public IngestStatusPartnerConfiguration() {
+	// code:
+	public String getCode(){
+		return this.code;
+	}
+	public void setCode(String code){
+		this.code = code;
+	}
+
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
+	}
+
+
+	public VodIngestAssetResultErrorMessage() {
 		super();
 	}
 
-	public IngestStatusPartnerConfiguration(JsonObject jsonObject) throws APIException {
+	public VodIngestAssetResultErrorMessage(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		epg = GsonParser.parseObject(jsonObject.getAsJsonObject("epg"), IngestStatusEpgConfiguration.class);
-		vod = GsonParser.parseObject(jsonObject.getAsJsonObject("vod"), IngestStatusVodConfiguration.class);
+		message = GsonParser.parseString(jsonObject.get("message"));
+		code = GsonParser.parseString(jsonObject.get("code"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusPartnerConfiguration");
-		kparams.add("epg", this.epg);
-		kparams.add("vod", this.vod);
+		kparams.add("objectType", "KalturaVodIngestAssetResultErrorMessage");
+		kparams.add("message", this.message);
+		kparams.add("code", this.code);
 		return kparams;
 	}
 

@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.IngestStatusEpgConfiguration;
-import com.kaltura.client.types.IngestStatusVodConfiguration;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -43,60 +41,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestStatusPartnerConfiguration.Tokenizer.class)
-public class IngestStatusPartnerConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(IngestStatusVodConfiguration.Tokenizer.class)
+public class IngestStatusVodConfiguration extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		IngestStatusEpgConfiguration.Tokenizer epg();
-		IngestStatusVodConfiguration.Tokenizer vod();
+		String isSupported();
+		String retainingPeriod();
 	}
 
 	/**
-	 * Defines the epg configuration of the partner.
+	 * Defines whether partner in question enabled core ingest status service.
 	 */
-	private IngestStatusEpgConfiguration epg;
+	private Boolean isSupported;
 	/**
-	 * Defines the vod configuration of the partner.
+	 * Defines the time in seconds that the service retain information about ingest
+	  status.
 	 */
-	private IngestStatusVodConfiguration vod;
+	private Long retainingPeriod;
 
-	// epg:
-	public IngestStatusEpgConfiguration getEpg(){
-		return this.epg;
+	// isSupported:
+	public Boolean getIsSupported(){
+		return this.isSupported;
 	}
-	public void setEpg(IngestStatusEpgConfiguration epg){
-		this.epg = epg;
-	}
-
-	// vod:
-	public IngestStatusVodConfiguration getVod(){
-		return this.vod;
-	}
-	public void setVod(IngestStatusVodConfiguration vod){
-		this.vod = vod;
+	public void setIsSupported(Boolean isSupported){
+		this.isSupported = isSupported;
 	}
 
+	public void isSupported(String multirequestToken){
+		setToken("isSupported", multirequestToken);
+	}
 
-	public IngestStatusPartnerConfiguration() {
+	// retainingPeriod:
+	public Long getRetainingPeriod(){
+		return this.retainingPeriod;
+	}
+	public void setRetainingPeriod(Long retainingPeriod){
+		this.retainingPeriod = retainingPeriod;
+	}
+
+	public void retainingPeriod(String multirequestToken){
+		setToken("retainingPeriod", multirequestToken);
+	}
+
+
+	public IngestStatusVodConfiguration() {
 		super();
 	}
 
-	public IngestStatusPartnerConfiguration(JsonObject jsonObject) throws APIException {
+	public IngestStatusVodConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		epg = GsonParser.parseObject(jsonObject.getAsJsonObject("epg"), IngestStatusEpgConfiguration.class);
-		vod = GsonParser.parseObject(jsonObject.getAsJsonObject("vod"), IngestStatusVodConfiguration.class);
+		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
+		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestStatusPartnerConfiguration");
-		kparams.add("epg", this.epg);
-		kparams.add("vod", this.vod);
+		kparams.add("objectType", "KalturaIngestStatusVodConfiguration");
+		kparams.add("isSupported", this.isSupported);
+		kparams.add("retainingPeriod", this.retainingPeriod);
 		return kparams;
 	}
 
