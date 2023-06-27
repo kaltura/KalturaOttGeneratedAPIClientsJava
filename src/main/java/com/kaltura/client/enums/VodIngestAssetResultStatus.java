@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,54 +33,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum VodIngestAssetResultStatus implements EnumAsString {
+	FAILURE("FAILURE"),
+	EXTERNAL_FAILURE("EXTERNAL_FAILURE"),
+	SUCCESS_WARNING("SUCCESS_WARNING"),
+	SUCCESS("SUCCESS");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
-	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	private String value;
+
+	VodIngestAssetResultStatus(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
-	 */
-	private String partnerListTypeIn;
-
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
-	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-
-	public PersonalListSearchFilter() {
-		super();
-	}
-
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
-		return kparams;
-	}
-
+	public static VodIngestAssetResultStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over VodIngestAssetResultStatus defined values and compare the inner value with the given one:
+		for(VodIngestAssetResultStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return VodIngestAssetResultStatus.values().length > 0 ? VodIngestAssetResultStatus.values()[0]: null;
+   }
 }
-
