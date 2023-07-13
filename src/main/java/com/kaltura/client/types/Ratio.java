@@ -70,7 +70,7 @@ public class Ratio extends ObjectBase {
 	private Integer width;
 	/**
 	 * Accepted error margin precentage of an image uploaded for this ratio            
-	   0 - no validation, everything accepted
+	  0 - no validation, everything accepted
 	 */
 	private Integer precisionPrecentage;
 

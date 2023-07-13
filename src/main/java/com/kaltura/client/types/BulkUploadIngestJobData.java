@@ -53,12 +53,12 @@ public class BulkUploadIngestJobData extends BulkUploadJobData {
 
 	/**
 	 * Identifies the ingest profile that will handle the ingest of programs           
-	    Ingest profiles are created separately using the ingest profile service
+	   Ingest profiles are created separately using the ingest profile service
 	 */
 	private Integer ingestProfileId;
 	/**
 	 * By default, after the successful ingest, devices will be notified about changes
-	  in epg channels.              This parameter disables this notification.
+	  in epg channels.             This parameter disables this notification.
 	 */
 	private Boolean disableEpgNotification;
 

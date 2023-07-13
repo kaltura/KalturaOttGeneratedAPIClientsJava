@@ -83,7 +83,7 @@ public class Collection extends OTTObjectSupportNullable {
 	 */
 	private String id;
 	/**
-	 * A list of channels associated with this collection               This property
+	 * A list of channels associated with this collection              This property
 	  will deprecated soon. Please use ChannelsIds instead of it.
 	 */
 	private List<BaseChannel> channels;
@@ -100,7 +100,7 @@ public class Collection extends OTTObjectSupportNullable {
 	 */
 	private Long endDate;
 	/**
-	 * The internal discount module for the collection              This property will
+	 * The internal discount module for the collection             This property will
 	  deprecated soon. Please use DiscountModuleId instead of it.
 	 */
 	private DiscountModule discountModule;
@@ -125,7 +125,7 @@ public class Collection extends OTTObjectSupportNullable {
 	 */
 	private List<TranslationToken> multilingualDescription;
 	/**
-	 * Collection usage module              This property will deprecated soon. Please
+	 * Collection usage module             This property will deprecated soon. Please
 	  use usageModuleId instead of it.
 	 */
 	private UsageModule usageModule;
@@ -134,8 +134,8 @@ public class Collection extends OTTObjectSupportNullable {
 	 */
 	private Long usageModuleId;
 	/**
-	 * List of Coupons group              This property will deprecated soon. Please
-	  use CollectionCouponGroup instead of it.
+	 * List of Coupons group             This property will deprecated soon. Please use
+	  CollectionCouponGroup instead of it.
 	 */
 	private List<CouponsGroup> couponsGroups;
 	/**

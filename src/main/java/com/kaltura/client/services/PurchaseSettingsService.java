@@ -53,7 +53,7 @@ public class PurchaseSettingsService {
 	}
 
 	/**
-	 * Retrieve the purchase settings.              Includes specification of where
+	 * Retrieve the purchase settings.             Includes specification of where
 	  these settings were defined – account, household or user
 	 * 
 	 * @param by Reference type to filter by

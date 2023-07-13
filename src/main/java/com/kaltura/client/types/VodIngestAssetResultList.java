@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -43,16 +44,21 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(VodIngestAssetResultList.Tokenizer.class)
-public class VodIngestAssetResultList extends ListResponse {
+public class VodIngestAssetResultList extends ObjectBase {
 	
-	public interface Tokenizer extends ListResponse.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 		RequestBuilder.ListTokenizer<VodIngestAssetResult.Tokenizer> objects();
+		String totalCount();
 	}
 
 	/**
 	 * list of KalturaVodIngestAssetResult
 	 */
 	private List<VodIngestAssetResult> objects;
+	/**
+	 * Total items
+	 */
+	private Integer totalCount;
 
 	// objects:
 	public List<VodIngestAssetResult> getObjects(){
@@ -60,6 +66,18 @@ public class VodIngestAssetResultList extends ListResponse {
 	}
 	public void setObjects(List<VodIngestAssetResult> objects){
 		this.objects = objects;
+	}
+
+	// totalCount:
+	public Integer getTotalCount(){
+		return this.totalCount;
+	}
+	public void setTotalCount(Integer totalCount){
+		this.totalCount = totalCount;
+	}
+
+	public void totalCount(String multirequestToken){
+		setToken("totalCount", multirequestToken);
 	}
 
 
@@ -74,6 +92,7 @@ public class VodIngestAssetResultList extends ListResponse {
 
 		// set members values:
 		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), VodIngestAssetResult.class);
+		totalCount = GsonParser.parseInt(jsonObject.get("totalCount"));
 
 	}
 
@@ -81,6 +100,7 @@ public class VodIngestAssetResultList extends ListResponse {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaVodIngestAssetResultList");
 		kparams.add("objects", this.objects);
+		kparams.add("totalCount", this.totalCount);
 		return kparams;
 	}
 

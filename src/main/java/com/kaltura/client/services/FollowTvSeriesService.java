@@ -52,7 +52,7 @@ public class FollowTvSeriesService {
 	}
 
 	/**
-	 * Add a user&amp;#39;s tv series follow.              Possible status codes:
+	 * Add a user&amp;#39;s tv series follow.             Possible status codes:
 	  UserAlreadyFollowing = 8013, NotFound = 500007, InvalidAssetId = 4024
 	 * 
 	 * @param followTvSeries Follow series request parameters
@@ -129,7 +129,7 @@ public class FollowTvSeriesService {
 	}
 
 	/**
-	 * List user&amp;#39;s tv series follows.              Possible status codes:
+	 * List user&amp;#39;s tv series follows.             Possible status codes:
 	 * 
 	 * @param filter Follow TV series filter
 	 * @param pager pager

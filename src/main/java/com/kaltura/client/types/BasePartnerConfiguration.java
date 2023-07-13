@@ -88,8 +88,8 @@ public class BasePartnerConfiguration extends PartnerConfiguration {
 	 */
 	private Boolean apptokenUserValidationDisabled;
 	/**
-	 * epgFeatureVersion              defines the epg feature version from version 1 to
-	  version 3              if not provided v2 will be used
+	 * epgFeatureVersion             defines the epg feature version from version 1 to
+	  version 3             if not provided v2 will be used
 	 */
 	private Integer epgFeatureVersion;
 

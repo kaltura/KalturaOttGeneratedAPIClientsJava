@@ -49,7 +49,7 @@ public class IngestProgramResultsByProgramIdsFilter extends IngestEpgProgramResu
 
 	/**
 	 * Comma seperated program id (the unique ingested program id as it determined by
-	  Kaltura BE).              Up to 20 ids are allowed.
+	  Kaltura BE).             Up to 20 ids are allowed.
 	 */
 	private String programIdIn;
 

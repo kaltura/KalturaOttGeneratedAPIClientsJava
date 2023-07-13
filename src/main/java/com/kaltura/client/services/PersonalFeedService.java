@@ -55,7 +55,7 @@ public class PersonalFeedService {
 	}
 
 	/**
-	 * List user&amp;#39;s feeds.              Possible status codes:
+	 * List user&amp;#39;s feeds.             Possible status codes:
 	 * 
 	 * @param filter Required sort option to apply for the identified assets. If omitted – will use
 	 * relevancy.

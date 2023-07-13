@@ -76,7 +76,7 @@ public abstract class Asset extends ObjectBase {
 	 */
 	private Long id;
 	/**
-	 * Identifies the asset type (EPG, Recording, Movie, TV Series, etc).              
+	 * Identifies the asset type (EPG, Recording, Movie, TV Series, etc).             
 	  Possible values: 0 - EPG linear programs, 1 - Recording; or any asset type ID
 	  according to the asset types IDs defined in the system.
 	 */

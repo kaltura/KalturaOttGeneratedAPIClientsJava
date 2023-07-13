@@ -86,11 +86,11 @@ public class ProgramAssetGroupOffer extends OTTObjectSupportNullable {
 	private Long priceDetailsId;
 	/**
 	 * Comma separated file types identifiers that are supported in this Program asset
-	  group offer.              The subset of KalturaMediaFiles of the live linear
+	  group offer.             The subset of KalturaMediaFiles of the live linear
 	  channel on which the associated Program Assets are carried to which households
-	  entitled to this              Program Asset Group Offer are entitled to view
+	  entitled to this             Program Asset Group Offer are entitled to view
 	  E.g.may be used to restrict entitlement only to HD flavour of the Program
-	  Asset(and not the UHD flavour)              If this parameter is empty, the
+	  Asset(and not the UHD flavour)             If this parameter is empty, the
 	  Household shall be entitled to all KalturaMediaFiles associated with the
 	  KalturaLiveAsset.
 	 */

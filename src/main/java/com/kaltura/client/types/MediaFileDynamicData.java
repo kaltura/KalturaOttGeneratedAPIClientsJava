@@ -62,7 +62,7 @@ public class MediaFileDynamicData extends ObjectBase {
 	private Long mediaFileTypeId;
 	/**
 	 * A string representing the key name within the mediaFileType that identifies the
-	  list corresponding              to that key name.
+	  list corresponding             to that key name.
 	 */
 	private String mediaFileTypeKeyName;
 	/**

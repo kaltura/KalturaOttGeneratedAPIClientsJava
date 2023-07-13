@@ -189,7 +189,7 @@ public class ParentalRuleService {
 	/**
 	 * Return the parental rules that applies for the user or household. Can include
 	  rules that have been associated in account, household, or user level.           
-	    Association level is also specified in the response.
+	   Association level is also specified in the response.
 	 * 
 	 * @param filter Filter
 	 */

@@ -76,12 +76,12 @@ public class VodIngestAssetResult extends ObjectBase {
 	 */
 	private Long ingestDate;
 	/**
-	 * The status result for the asset ingest.              FAILURE - the asset ingest
+	 * The status result for the asset ingest.             FAILURE - the asset ingest
 	  was failed after the ingest process started, specify the error for it.          
-	     SUCCESS - the asset was succeeded to be ingested.             
-	  SUCCESS_WARNING - the asset was succeeded to be ingested with warnings that do
-	  not prevent the ingest.              EXTERNAL_FAILURE - the asset ingest was
-	  failed before the ingest process started, specify the error for it.
+	    SUCCESS - the asset was succeeded to be ingested.             SUCCESS_WARNING
+	  - the asset was succeeded to be ingested with warnings that do not prevent the
+	  ingest.             EXTERNAL_FAILURE - the asset ingest was failed before the
+	  ingest process started, specify the error for it.
 	 */
 	private VodIngestAssetResultStatus status;
 	/**

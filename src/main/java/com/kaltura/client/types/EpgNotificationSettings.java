@@ -66,13 +66,13 @@ public class EpgNotificationSettings extends ObjectBase {
 	private String liveAssetIds;
 	/**
 	 * The backward range (in hours), in which, EPG updates triggers a notification,   
-	            every program that is updated and it’s starts time falls within this
+	           every program that is updated and it’s starts time falls within this
 	  range shall trigger a notification
 	 */
 	private Integer backwardTimeRange;
 	/**
 	 * The forward range (in hours), in which, EPG updates triggers a notification,    
-	           every program that is updated and it’s starts time falls within this
+	          every program that is updated and it’s starts time falls within this
 	  range shall trigger a notification
 	 */
 	private Integer forwardTimeRange;

@@ -58,12 +58,12 @@ public class Transaction extends ObjectBase {
 	 */
 	private String id;
 	/**
-	 * Transaction reference ID received from the payment gateway.               Value
+	 * Transaction reference ID received from the payment gateway.              Value
 	  is available only if the payment gateway provides this information.
 	 */
 	private String paymentGatewayReferenceId;
 	/**
-	 * Response ID received from by the payment gateway.               Value is
+	 * Response ID received from by the payment gateway.              Value is
 	  available only if the payment gateway provides this information.
 	 */
 	private String paymentGatewayResponseId;
@@ -72,10 +72,10 @@ public class Transaction extends ObjectBase {
 	 */
 	private String state;
 	/**
-	 * Adapter failure reason code              Insufficient funds = 20, Invalid
-	  account = 21, User unknown = 22, Reason unknown = 23, Unknown payment gateway
-	  response = 24,              No response from payment gateway = 25, Exceeded
-	  retry limit = 26, Illegal client request = 27, Expired = 28
+	 * Adapter failure reason code             Insufficient funds = 20, Invalid account
+	  = 21, User unknown = 22, Reason unknown = 23, Unknown payment gateway response =
+	  24,             No response from payment gateway = 25, Exceeded retry limit =
+	  26, Illegal client request = 27, Expired = 28
 	 */
 	private Integer failReasonCode;
 	/**

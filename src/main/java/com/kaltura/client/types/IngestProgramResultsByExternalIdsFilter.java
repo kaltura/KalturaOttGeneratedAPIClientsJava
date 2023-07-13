@@ -48,7 +48,7 @@ public class IngestProgramResultsByExternalIdsFilter extends IngestEpgProgramRes
 	}
 
 	/**
-	 * Comma seperated external program id.              Up to 20 ids are allowed.
+	 * Comma seperated external program id.             Up to 20 ids are allowed.
 	 */
 	private String externalProgramIdIn;
 

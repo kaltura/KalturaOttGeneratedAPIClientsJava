@@ -75,7 +75,7 @@ public class UserLoginPinService {
 
 	/**
 	 * Generate a time and usage expiry login-PIN that can allow a single/multiple
-	  login/s per PIN.               If an active login-PIN already exists. Calling
+	  login/s per PIN.              If an active login-PIN already exists. Calling
 	  this API again for same user will add another login-PIN
 	 * 
 	 * @param secret Additional security parameter for optional enhanced security

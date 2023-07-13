@@ -94,7 +94,7 @@ public class SubscriptionFilter extends Filter {
 	 */
 	private Boolean alsoInactive;
 	/**
-	 * comma separated values of KalturaSubscriptionDependencyType               return
+	 * comma separated values of KalturaSubscriptionDependencyType              return
 	  subscriptions associated by their subscription sets dependency Type
 	 */
 	private String dependencyTypeIn;

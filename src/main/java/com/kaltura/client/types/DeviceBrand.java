@@ -68,8 +68,8 @@ public class DeviceBrand extends ObjectBase {
 	 */
 	private Long deviceFamilyid;
 	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
+	 * Type of device family.              if this device family belongs only to this
+	  group,              otherwise.
 	 */
 	private DeviceBrandType type;
 

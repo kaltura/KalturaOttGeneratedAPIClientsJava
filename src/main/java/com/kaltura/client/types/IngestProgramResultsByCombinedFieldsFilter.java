@@ -49,7 +49,7 @@ public class IngestProgramResultsByCombinedFieldsFilter extends IngestProgramRes
 
 	/**
 	 * String value to substring search by ProgramID or ExternalProgramID or
-	  LinearChannelID.              Up to 20 ids are allowed.
+	  LinearChannelID.             Up to 20 ids are allowed.
 	 */
 	private String combinedFieldsValue;
 

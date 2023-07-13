@@ -64,7 +64,7 @@ public class LiveToVodLinearAssetConfiguration extends ObjectBase {
 	 */
 	private Boolean isL2vEnabled;
 	/**
-	 * Number of days the L2V asset is retained in the system.              Optional -
+	 * Number of days the L2V asset is retained in the system.             Optional -
 	  if configured, overriding the account level value.
 	 */
 	private Integer retentionPeriodDays;

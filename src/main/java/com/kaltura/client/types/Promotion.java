@@ -62,7 +62,7 @@ public class Promotion extends BasePromotion {
 	private Integer numberOfRecurring;
 	/**
 	 * The number of times a household can use the discount module in this campaign.   
-	            If omitted than no limitation is enforced on the number of usages.
+	           If omitted than no limitation is enforced on the number of usages.
 	 */
 	private Integer maxDiscountUsages;
 

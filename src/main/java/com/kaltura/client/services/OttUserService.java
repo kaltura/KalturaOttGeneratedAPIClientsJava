@@ -520,7 +520,7 @@ public class OttUserService {
 
 	/**
 	 * Update user dynamic data. If it is needed to update several items, use a
-	  multi-request to avoid race conditions.              This API endpoint will
+	  multi-request to avoid race conditions.             This API endpoint will
 	  deprecated soon. Please use UpsertDynamicData instead of it.
 	 * 
 	 * @param key Type of dynamicData. Max length of key is 50 characters.

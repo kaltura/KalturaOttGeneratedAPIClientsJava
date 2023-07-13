@@ -49,7 +49,7 @@ public class IngestProgramResultsByCompoundFilter extends IngestProgramResultsBy
 
 	/**
 	 * Comma seperated channel id (the id of the linear channel asset that the program
-	  belongs to).              Up to 20 ids are allowed.
+	  belongs to).             Up to 20 ids are allowed.
 	 */
 	private String linearChannelIdIn;
 

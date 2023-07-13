@@ -53,9 +53,9 @@ public class AssetHistoryFilter extends Filter {
 	}
 
 	/**
-	 * Comma separated list of asset types to search within.              Possible
+	 * Comma separated list of asset types to search within.             Possible
 	  values: 0 - EPG linear programs entries, any media type ID (according to media
-	  type IDs defined dynamically in the system).              If omitted - all types
+	  type IDs defined dynamically in the system).             If omitted - all types
 	  should be included.
 	 */
 	private String typeIn;
@@ -65,10 +65,10 @@ public class AssetHistoryFilter extends Filter {
 	private String assetIdIn;
 	/**
 	 * Which type of recently watched media to include in the result - those that
-	  finished watching, those that are in progress or both.              If omitted
-	  or specified filter = all - return all types.              Allowed values:
-	  progress - return medias that are in-progress, done - return medias that
-	  finished watching.
+	  finished watching, those that are in progress or both.             If omitted or
+	  specified filter = all - return all types.             Allowed values: progress
+	  - return medias that are in-progress, done - return medias that finished
+	  watching.
 	 */
 	private WatchStatus statusEqual;
 	/**

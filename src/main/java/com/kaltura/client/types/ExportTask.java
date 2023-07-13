@@ -78,7 +78,7 @@ public class ExportTask extends ObjectBase {
 	 */
 	private ExportDataType dataType;
 	/**
-	 * Filter to apply on the export, utilize KSQL.              Note: KSQL currently
+	 * Filter to apply on the export, utilize KSQL.             Note: KSQL currently
 	  applies to media assets only. It cannot be used for USERS filtering
 	 */
 	private String filter;

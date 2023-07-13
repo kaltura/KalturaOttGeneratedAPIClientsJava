@@ -77,7 +77,7 @@ public class ContentScoreCondition extends BaseSegmentCondition {
 	private String field;
 	/**
 	 * If condition should be applied on specific field (and not the one of the segment
-	  value) -               list of values to be considered together
+	  value) -              list of values to be considered together
 	 */
 	private List<StringValue> values;
 	/**

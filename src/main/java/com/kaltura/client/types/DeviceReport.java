@@ -101,7 +101,7 @@ public class DeviceReport extends Report {
 	 */
 	private String userAgent;
 	/**
-	 * Request header property              Incase value cannot be found - returns
+	 * Request header property             Incase value cannot be found - returns
 	  &amp;quot;Unknown 0.0&amp;quot;
 	 */
 	private String operationSystem;

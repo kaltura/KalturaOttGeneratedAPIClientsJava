@@ -48,11 +48,11 @@ public class SearchAssetFilter extends BaseSearchAssetFilter {
 	}
 
 	/**
-	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)              Comma
-	  separated list of asset types to search within.               Possible values: 0
-	  - EPG linear programs entries; 1 - Recordings; Any media type ID (according to
-	  media type IDs defined dynamically in the system).              If omitted - all
-	  types should be included.
+	 * (Deprecated - use KalturaBaseSearchAssetFilter.kSql)             Comma separated
+	  list of asset types to search within.              Possible values: 0 - EPG
+	  linear programs entries; 1 - Recordings; Any media type ID (according to media
+	  type IDs defined dynamically in the system).             If omitted - all types
+	  should be included.
 	 */
 	private String typeIn;
 

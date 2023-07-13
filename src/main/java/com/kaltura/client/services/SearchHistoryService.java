@@ -76,7 +76,7 @@ public class SearchHistoryService {
 	}
 
 	/**
-	 * Delete a specific search history.              Possible error code: 2032 -
+	 * Delete a specific search history.             Possible error code: 2032 -
 	  ItemNotFound
 	 * 
 	 * @param id ID of the search history reference as shown in the list action

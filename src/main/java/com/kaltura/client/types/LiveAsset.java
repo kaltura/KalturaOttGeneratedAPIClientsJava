@@ -88,13 +88,13 @@ public class LiveAsset extends MediaAsset {
 	private Long bufferCatchUpSetting;
 	/**
 	 * Returns padding before program starts in seconds from a live asset if
-	  configured,              otherwise returns corresponding value from
+	  configured,             otherwise returns corresponding value from
 	  TimeShiftedTvPartnerSettings.
 	 */
 	private Long paddingBeforeProgramStarts;
 	/**
 	 * Returns padding after program ends in seconds from a live asset if configured,  
-	             otherwise returns corresponding value from
+	            otherwise returns corresponding value from
 	  TimeShiftedTvPartnerSettings.
 	 */
 	private Long paddingAfterProgramEnds;
@@ -119,23 +119,23 @@ public class LiveAsset extends MediaAsset {
 	 */
 	private String externalCdvrId;
 	/**
-	 * Is CDVR enabled for this asset              Please, note that value of this
-	  property is strictly connected with CDV-R setting on Partner level.             
+	 * Is CDVR enabled for this asset             Please, note that value of this
+	  property is strictly connected with CDV-R setting on Partner level.            
 	  In order to enable CDV-R for KalturaLiveAsset, Partner CDV-R setting should be
 	  enabled.
 	 */
 	private Boolean enableCdvr;
 	/**
-	 * Is catch-up enabled for this asset              Please, note that value of this
+	 * Is catch-up enabled for this asset             Please, note that value of this
 	  property is strictly connected with Catch Up setting on Partner level.          
-	     In order to enable Catch Up for KalturaLiveAsset, Partner Catch Up setting
+	    In order to enable Catch Up for KalturaLiveAsset, Partner Catch Up setting
 	  should be enabled.
 	 */
 	private Boolean enableCatchUp;
 	/**
-	 * Is start over enabled for this asset              Please, note that value of
-	  this property is strictly connected with Start Over setting on Partner level.   
-	            In order to enable Start Over for KalturaLiveAsset, Partner Start Over
+	 * Is start over enabled for this asset             Please, note that value of this
+	  property is strictly connected with Start Over setting on Partner level.        
+	      In order to enable Start Over for KalturaLiveAsset, Partner Start Over
 	  setting should be enabled.
 	 */
 	private Boolean enableStartOver;
@@ -154,9 +154,9 @@ public class LiveAsset extends MediaAsset {
 	 */
 	private Boolean enableRecordingPlaybackNonEntitledChannel;
 	/**
-	 * Is trick-play enabled for this asset              Please, note that value of
-	  this property is strictly connected with Trick Play setting on Partner level.   
-	            In order to enable Trick Play for KalturaLiveAsset, Partner Trick Play
+	 * Is trick-play enabled for this asset             Please, note that value of this
+	  property is strictly connected with Trick Play setting on Partner level.        
+	      In order to enable Trick Play for KalturaLiveAsset, Partner Trick Play
 	  setting should be enabled.
 	 */
 	private Boolean enableTrickPlay;

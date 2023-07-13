@@ -69,10 +69,10 @@ public class BookmarkService {
 
 	/**
 	 * Returns player position record/s for the requested asset and the requesting
-	  user.               If default user makes the request – player position
-	  records are provided for all of the users in the household.              If
-	  non-default user makes the request - player position records are provided for
-	  the requesting user and the default user of the household.
+	  user.              If default user makes the request – player position records
+	  are provided for all of the users in the household.             If non-default
+	  user makes the request - player position records are provided for the requesting
+	  user and the default user of the household.
 	 * 
 	 * @param filter Filter option for the last position
 	 */

@@ -76,7 +76,7 @@ public class RecordingService {
 
 	/**
 	 * Delete list of user&amp;#39;s recordings. Recording can be deleted only in
-	  status Recorded.              Possible error codes for each recording:
+	  status Recorded.             Possible error codes for each recording:
 	  RecordingNotFound = 3039, RecordingStatusNotValid = 3043, Error = 1
 	 * 
 	 * @param recordingIds Recording identifiers. Up to 40 private copies and up to 100 shared copies can
@@ -223,8 +223,8 @@ public class RecordingService {
 	}
 
 	/**
-	 * Deprecated, please use recording.update instead              Protects an
-	  existing recording from the cleanup process for the defined protection period
+	 * Deprecated, please use recording.update instead             Protects an existing
+	  recording from the cleanup process for the defined protection period
 	 * 
 	 * @param id Recording identifier
 	 */

@@ -62,7 +62,7 @@ public class Bookmark extends SlimAsset {
 	 */
 	private String userId;
 	/**
-	 * The position of the user in the specific asset (in seconds)              For
+	 * The position of the user in the specific asset (in seconds)             For
 	  external recordings will always be &amp;#39;0&amp;#39;
 	 */
 	private Integer position;
@@ -72,7 +72,7 @@ public class Bookmark extends SlimAsset {
 	private PositionOwner positionOwner;
 	/**
 	 * Specifies whether the user&amp;#39;s current position exceeded 95% of the
-	  duration              For external recordings will always be
+	  duration             For external recordings will always be
 	  &amp;#39;True&amp;#39;
 	 */
 	private Boolean finishedWatching;

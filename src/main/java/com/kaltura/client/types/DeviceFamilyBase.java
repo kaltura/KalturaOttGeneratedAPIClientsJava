@@ -63,8 +63,8 @@ public class DeviceFamilyBase extends ObjectBase {
 	 */
 	private String name;
 	/**
-	 * Type of device family.               if this device family belongs only to this
-	  group,               otherwise.
+	 * Type of device family.              if this device family belongs only to this
+	  group,              otherwise.
 	 */
 	private DeviceFamilyType type;
 

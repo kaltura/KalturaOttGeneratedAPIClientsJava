@@ -99,7 +99,7 @@ public class PersonalListService {
 	}
 
 	/**
-	 * List user&amp;#39;s tv personal item to follow.              Possible status
+	 * List user&amp;#39;s tv personal item to follow.             Possible status
 	  codes:
 	 * 
 	 * @param filter Personal list filter

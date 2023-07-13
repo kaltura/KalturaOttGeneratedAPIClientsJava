@@ -48,7 +48,7 @@ public class PersonalListSearchFilter extends BaseSearchAssetFilter {
 	}
 
 	/**
-	 * Comma separated list of partner list types to search within.               If
+	 * Comma separated list of partner list types to search within.              If
 	  omitted - all types should be included.
 	 */
 	private String partnerListTypeIn;

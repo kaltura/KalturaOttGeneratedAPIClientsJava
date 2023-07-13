@@ -55,7 +55,7 @@ public class SearchPriorityCriteria extends ObjectBase {
 	 */
 	private SearchPriorityCriteriaType type;
 	/**
-	 * Condition              KSQL has to have no more than 10 conditions. Text,
+	 * Condition             KSQL has to have no more than 10 conditions. Text,
 	  boolean, enum and tag fields can be used only with = operator, numeric and
 	  datetime fields - only with &amp;lt;, = and &amp;gt; operators.
 	 */

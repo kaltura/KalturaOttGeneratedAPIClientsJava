@@ -72,7 +72,7 @@ public class AssetService {
 	}
 
 	/**
-	 * Add a new asset.              For metas of type bool-&amp;gt; use
+	 * Add a new asset.             For metas of type bool-&amp;gt; use
 	  kalturaBoolValue, type number-&amp;gt; KalturaDoubleValue, type date -&amp;gt;
 	  KalturaLongValue, type string -&amp;gt; KalturaStringValue
 	 * 
@@ -184,7 +184,7 @@ public class AssetService {
 
 	/**
 	 * Returns media or EPG asset by media / EPG internal or external identifier.      
-	         Note: OPC accounts asset.get for internal identifier doesn&amp;#39;t take
+	        Note: OPC accounts asset.get for internal identifier doesn&amp;#39;t take
 	  under consideration personalized aspects neither shop limitations.
 	 * 
 	 * @param id Asset identifier
@@ -442,7 +442,7 @@ public class AssetService {
 	}
 
 	/**
-	 * update an existing asset.              For metas of type bool-&amp;gt; use
+	 * update an existing asset.             For metas of type bool-&amp;gt; use
 	  kalturaBoolValue, type number-&amp;gt; KalturaDoubleValue, type date -&amp;gt;
 	  KalturaLongValue, type string -&amp;gt; KalturaStringValue
 	 * 
