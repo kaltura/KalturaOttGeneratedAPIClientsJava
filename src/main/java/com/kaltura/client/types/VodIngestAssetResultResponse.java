@@ -29,9 +29,10 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.types.VodIngestAssetResultAggregation;
-import com.kaltura.client.types.VodIngestAssetResultList;
+import com.kaltura.client.types.VodIngestAssetResultListResponse;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -47,24 +48,24 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class VodIngestAssetResultResponse extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		VodIngestAssetResultList.Tokenizer result();
+		ListResponse.Tokenizer<VodIngestAssetResult.Tokenizer> result();
 		VodIngestAssetResultAggregation.Tokenizer aggregations();
 	}
 
 	/**
 	 * Errors
 	 */
-	private VodIngestAssetResultList result;
+	private VodIngestAssetResultListResponse result;
 	/**
 	 * Aggregated counters
 	 */
 	private VodIngestAssetResultAggregation aggregations;
 
 	// result:
-	public VodIngestAssetResultList getResult(){
+	public VodIngestAssetResultListResponse getResult(){
 		return this.result;
 	}
-	public void setResult(VodIngestAssetResultList result){
+	public void setResult(VodIngestAssetResultListResponse result){
 		this.result = result;
 	}
 
@@ -87,7 +88,7 @@ public class VodIngestAssetResultResponse extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		result = GsonParser.parseObject(jsonObject.getAsJsonObject("result"), VodIngestAssetResultList.class);
+		result = GsonParser.parseObject(jsonObject.getAsJsonObject("result"), VodIngestAssetResultListResponse.class);
 		aggregations = GsonParser.parseObject(jsonObject.getAsJsonObject("aggregations"), VodIngestAssetResultAggregation.class);
 
 	}
