@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,50 +42,45 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(VodIngestAssetResultList.Tokenizer.class)
+public class VodIngestAssetResultList extends ListResponse {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	public interface Tokenizer extends ListResponse.Tokenizer {
+		RequestBuilder.ListTokenizer<VodIngestAssetResult.Tokenizer> objects();
 	}
 
 	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
+	 * list of KalturaVodIngestAssetResult
 	 */
-	private String partnerListTypeIn;
+	private List<VodIngestAssetResult> objects;
 
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
+	// objects:
+	public List<VodIngestAssetResult> getObjects(){
+		return this.objects;
 	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
-	}
-
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	public void setObjects(List<VodIngestAssetResult> objects){
+		this.objects = objects;
 	}
 
 
-	public PersonalListSearchFilter() {
+	public VodIngestAssetResultList() {
 		super();
 	}
 
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
+	public VodIngestAssetResultList(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), VodIngestAssetResult.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
+		kparams.add("objectType", "KalturaVodIngestAssetResultList");
+		kparams.add("objects", this.objects);
 		return kparams;
 	}
 
