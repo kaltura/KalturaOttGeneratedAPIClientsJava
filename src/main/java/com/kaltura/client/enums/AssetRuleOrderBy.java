@@ -34,7 +34,9 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum AssetRuleOrderBy implements EnumAsString {
-	NONE("NONE");
+	NONE("NONE"),
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC");
 
 	private String value;
 

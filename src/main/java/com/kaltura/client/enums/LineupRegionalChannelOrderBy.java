@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,54 +33,40 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum LineupRegionalChannelOrderBy implements EnumAsString {
+	LCN_ASC("LCN_ASC"),
+	LCN_DESC("LCN_DESC"),
+	NAME_ASC("NAME_ASC"),
+	NAME_DESC("NAME_DESC");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
-	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	private String value;
+
+	LineupRegionalChannelOrderBy(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
-	 */
-	private String partnerListTypeIn;
-
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
-	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-
-	public PersonalListSearchFilter() {
-		super();
-	}
-
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
-		return kparams;
-	}
-
+	public static LineupRegionalChannelOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over LineupRegionalChannelOrderBy defined values and compare the inner value with the given one:
+		for(LineupRegionalChannelOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return LineupRegionalChannelOrderBy.values().length > 0 ? LineupRegionalChannelOrderBy.values()[0]: null;
+   }
 }
-
