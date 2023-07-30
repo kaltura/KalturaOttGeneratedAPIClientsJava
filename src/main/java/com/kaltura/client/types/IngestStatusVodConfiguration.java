@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,50 +41,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(IngestStatusVodConfiguration.Tokenizer.class)
+public class IngestStatusVodConfiguration extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String isSupported();
+		String retainingPeriod();
 	}
 
 	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
+	 * Defines whether partner in question enabled core ingest status service.
 	 */
-	private String partnerListTypeIn;
+	private Boolean isSupported;
+	/**
+	 * Defines the time in seconds that the service retain information about ingest
+	  status.
+	 */
+	private Long retainingPeriod;
 
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
+	// isSupported:
+	public Boolean getIsSupported(){
+		return this.isSupported;
 	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
+	public void setIsSupported(Boolean isSupported){
+		this.isSupported = isSupported;
 	}
 
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	public void isSupported(String multirequestToken){
+		setToken("isSupported", multirequestToken);
+	}
+
+	// retainingPeriod:
+	public Long getRetainingPeriod(){
+		return this.retainingPeriod;
+	}
+	public void setRetainingPeriod(Long retainingPeriod){
+		this.retainingPeriod = retainingPeriod;
+	}
+
+	public void retainingPeriod(String multirequestToken){
+		setToken("retainingPeriod", multirequestToken);
 	}
 
 
-	public PersonalListSearchFilter() {
+	public IngestStatusVodConfiguration() {
 		super();
 	}
 
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
+	public IngestStatusVodConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
+		isSupported = GsonParser.parseBoolean(jsonObject.get("isSupported"));
+		retainingPeriod = GsonParser.parseLong(jsonObject.get("retainingPeriod"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
+		kparams.add("objectType", "KalturaIngestStatusVodConfiguration");
+		kparams.add("isSupported", this.isSupported);
+		kparams.add("retainingPeriod", this.retainingPeriod);
 		return kparams;
 	}
 
