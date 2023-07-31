@@ -30,10 +30,10 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.VodIngestAssetResultAggregation;
-import com.kaltura.client.types.VodIngestAssetResultList;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -43,60 +43,64 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(VodIngestAssetResultResponse.Tokenizer.class)
-public class VodIngestAssetResultResponse extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(VodIngestAssetResultList.Tokenizer.class)
+public class VodIngestAssetResultList extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		VodIngestAssetResultList.Tokenizer result();
-		VodIngestAssetResultAggregation.Tokenizer aggregations();
+		RequestBuilder.ListTokenizer<VodIngestAssetResult.Tokenizer> objects();
+		String totalCount();
 	}
 
 	/**
-	 * Errors
+	 * list of KalturaVodIngestAssetResult
 	 */
-	private VodIngestAssetResultList result;
+	private List<VodIngestAssetResult> objects;
 	/**
-	 * Aggregated counters
+	 * Total items
 	 */
-	private VodIngestAssetResultAggregation aggregations;
+	private Integer totalCount;
 
-	// result:
-	public VodIngestAssetResultList getResult(){
-		return this.result;
+	// objects:
+	public List<VodIngestAssetResult> getObjects(){
+		return this.objects;
 	}
-	public void setResult(VodIngestAssetResultList result){
-		this.result = result;
-	}
-
-	// aggregations:
-	public VodIngestAssetResultAggregation getAggregations(){
-		return this.aggregations;
-	}
-	public void setAggregations(VodIngestAssetResultAggregation aggregations){
-		this.aggregations = aggregations;
+	public void setObjects(List<VodIngestAssetResult> objects){
+		this.objects = objects;
 	}
 
+	// totalCount:
+	public Integer getTotalCount(){
+		return this.totalCount;
+	}
+	public void setTotalCount(Integer totalCount){
+		this.totalCount = totalCount;
+	}
 
-	public VodIngestAssetResultResponse() {
+	public void totalCount(String multirequestToken){
+		setToken("totalCount", multirequestToken);
+	}
+
+
+	public VodIngestAssetResultList() {
 		super();
 	}
 
-	public VodIngestAssetResultResponse(JsonObject jsonObject) throws APIException {
+	public VodIngestAssetResultList(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		result = GsonParser.parseObject(jsonObject.getAsJsonObject("result"), VodIngestAssetResultList.class);
-		aggregations = GsonParser.parseObject(jsonObject.getAsJsonObject("aggregations"), VodIngestAssetResultAggregation.class);
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), VodIngestAssetResult.class);
+		totalCount = GsonParser.parseInt(jsonObject.get("totalCount"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaVodIngestAssetResultResponse");
-		kparams.add("result", this.result);
-		kparams.add("aggregations", this.aggregations);
+		kparams.add("objectType", "KalturaVodIngestAssetResultList");
+		kparams.add("objects", this.objects);
+		kparams.add("totalCount", this.totalCount);
 		return kparams;
 	}
 
