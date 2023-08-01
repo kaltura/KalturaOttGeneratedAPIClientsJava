@@ -29,6 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.VodIngestAssetResultAggregation;
+import com.kaltura.client.types.VodIngestAssetResultList;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,50 +43,60 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(VodIngestAssetResultResponse.Tokenizer.class)
+public class VodIngestAssetResultResponse extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		VodIngestAssetResultList.Tokenizer result();
+		VodIngestAssetResultAggregation.Tokenizer aggregations();
 	}
 
 	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
+	 * Errors
 	 */
-	private String partnerListTypeIn;
+	private VodIngestAssetResultList result;
+	/**
+	 * Aggregated counters
+	 */
+	private VodIngestAssetResultAggregation aggregations;
 
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
+	// result:
+	public VodIngestAssetResultList getResult(){
+		return this.result;
 	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
+	public void setResult(VodIngestAssetResultList result){
+		this.result = result;
 	}
 
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	// aggregations:
+	public VodIngestAssetResultAggregation getAggregations(){
+		return this.aggregations;
+	}
+	public void setAggregations(VodIngestAssetResultAggregation aggregations){
+		this.aggregations = aggregations;
 	}
 
 
-	public PersonalListSearchFilter() {
+	public VodIngestAssetResultResponse() {
 		super();
 	}
 
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
+	public VodIngestAssetResultResponse(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
+		result = GsonParser.parseObject(jsonObject.getAsJsonObject("result"), VodIngestAssetResultList.class);
+		aggregations = GsonParser.parseObject(jsonObject.getAsJsonObject("aggregations"), VodIngestAssetResultAggregation.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
+		kparams.add("objectType", "KalturaVodIngestAssetResultResponse");
+		kparams.add("result", this.result);
+		kparams.add("aggregations", this.aggregations);
 		return kparams;
 	}
 

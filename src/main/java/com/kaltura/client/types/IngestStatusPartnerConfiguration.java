@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.IngestStatusEpgConfiguration;
+import com.kaltura.client.types.IngestStatusVodConfiguration;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -47,12 +48,17 @@ public class IngestStatusPartnerConfiguration extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		IngestStatusEpgConfiguration.Tokenizer epg();
+		IngestStatusVodConfiguration.Tokenizer vod();
 	}
 
 	/**
 	 * Defines the epg configuration of the partner.
 	 */
 	private IngestStatusEpgConfiguration epg;
+	/**
+	 * Defines the vod configuration of the partner.
+	 */
+	private IngestStatusVodConfiguration vod;
 
 	// epg:
 	public IngestStatusEpgConfiguration getEpg(){
@@ -60,6 +66,14 @@ public class IngestStatusPartnerConfiguration extends ObjectBase {
 	}
 	public void setEpg(IngestStatusEpgConfiguration epg){
 		this.epg = epg;
+	}
+
+	// vod:
+	public IngestStatusVodConfiguration getVod(){
+		return this.vod;
+	}
+	public void setVod(IngestStatusVodConfiguration vod){
+		this.vod = vod;
 	}
 
 
@@ -74,6 +88,7 @@ public class IngestStatusPartnerConfiguration extends ObjectBase {
 
 		// set members values:
 		epg = GsonParser.parseObject(jsonObject.getAsJsonObject("epg"), IngestStatusEpgConfiguration.class);
+		vod = GsonParser.parseObject(jsonObject.getAsJsonObject("vod"), IngestStatusVodConfiguration.class);
 
 	}
 
@@ -81,6 +96,7 @@ public class IngestStatusPartnerConfiguration extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaIngestStatusPartnerConfiguration");
 		kparams.add("epg", this.epg);
+		kparams.add("vod", this.vod);
 		return kparams;
 	}
 
