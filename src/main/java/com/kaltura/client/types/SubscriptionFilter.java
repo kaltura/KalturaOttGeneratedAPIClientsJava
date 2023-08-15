@@ -53,7 +53,6 @@ public class SubscriptionFilter extends Filter {
 		String channelIdEqual();
 		String kSql();
 		String alsoInactive();
-		String dependencyTypeIn();
 	}
 
 	/**
@@ -92,11 +91,6 @@ public class SubscriptionFilter extends Filter {
 	 * return also inactive
 	 */
 	private Boolean alsoInactive;
-	/**
-	 * comma separated values of KalturaSubscriptionDependencyType               return
-	  subscriptions associated by their subscription sets dependency Type
-	 */
-	private String dependencyTypeIn;
 
 	// subscriptionIdIn:
 	public String getSubscriptionIdIn(){
@@ -206,18 +200,6 @@ public class SubscriptionFilter extends Filter {
 		setToken("alsoInactive", multirequestToken);
 	}
 
-	// dependencyTypeIn:
-	public String getDependencyTypeIn(){
-		return this.dependencyTypeIn;
-	}
-	public void setDependencyTypeIn(String dependencyTypeIn){
-		this.dependencyTypeIn = dependencyTypeIn;
-	}
-
-	public void dependencyTypeIn(String multirequestToken){
-		setToken("dependencyTypeIn", multirequestToken);
-	}
-
 
 	public SubscriptionFilter() {
 		super();
@@ -238,7 +220,6 @@ public class SubscriptionFilter extends Filter {
 		channelIdEqual = GsonParser.parseLong(jsonObject.get("channelIdEqual"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
-		dependencyTypeIn = GsonParser.parseString(jsonObject.get("dependencyTypeIn"));
 
 	}
 
@@ -254,7 +235,6 @@ public class SubscriptionFilter extends Filter {
 		kparams.add("channelIdEqual", this.channelIdEqual);
 		kparams.add("kSql", this.kSql);
 		kparams.add("alsoInactive", this.alsoInactive);
-		kparams.add("dependencyTypeIn", this.dependencyTypeIn);
 		return kparams;
 	}
 

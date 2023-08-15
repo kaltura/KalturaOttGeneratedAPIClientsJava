@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,25 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(FilterFileByDynamicDataInPlaybackAction.Tokenizer.class)
-public class FilterFileByDynamicDataInPlaybackAction extends FilterFileByDynamicDataAction {
+@MultiRequestBuilder.Tokenizer(CouponFilter.Tokenizer.class)
+public class CouponFilter extends Filter {
 	
-	public interface Tokenizer extends FilterFileByDynamicDataAction.Tokenizer {
+	public interface Tokenizer extends Filter.Tokenizer {
+		String couponCodesIn();
+	}
+
+	/**
+	 * Comma separated list of coupon codes.
+	 */
+	private String couponCodesIn;
+
+	// couponCodesIn:
+	public String getCouponCodesIn(){
+		return this.couponCodesIn;
+	}
+	public void setCouponCodesIn(String couponCodesIn){
+		this.couponCodesIn = couponCodesIn;
+	}
+
+	public void couponCodesIn(String multirequestToken){
+		setToken("couponCodesIn", multirequestToken);
 	}
 
 
-
-	public FilterFileByDynamicDataInPlaybackAction() {
+	public CouponFilter() {
 		super();
 	}
 
-	public FilterFileByDynamicDataInPlaybackAction(JsonObject jsonObject) throws APIException {
+	public CouponFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		couponCodesIn = GsonParser.parseString(jsonObject.get("couponCodesIn"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaFilterFileByDynamicDataInPlaybackAction");
+		kparams.add("objectType", "KalturaCouponFilter");
+		kparams.add("couponCodesIn", this.couponCodesIn);
 		return kparams;
 	}
 
