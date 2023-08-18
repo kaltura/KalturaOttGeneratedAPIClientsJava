@@ -40,50 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(ShopPreActionCondition.Tokenizer.class)
+public class ShopPreActionCondition extends BasePreActionCondition {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	public interface Tokenizer extends BasePreActionCondition.Tokenizer {
+		String shopAssetUserRuleId();
 	}
 
 	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
+	 * Asset user rule ID with shop condition
 	 */
-	private String partnerListTypeIn;
+	private Integer shopAssetUserRuleId;
 
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
+	// shopAssetUserRuleId:
+	public Integer getShopAssetUserRuleId(){
+		return this.shopAssetUserRuleId;
 	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
-	}
-
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	public void setShopAssetUserRuleId(Integer shopAssetUserRuleId){
+		this.shopAssetUserRuleId = shopAssetUserRuleId;
 	}
 
+	public void shopAssetUserRuleId(String multirequestToken){
+		setToken("shopAssetUserRuleId", multirequestToken);
+	}
 
-	public PersonalListSearchFilter() {
+
+	public ShopPreActionCondition() {
 		super();
 	}
 
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
+	public ShopPreActionCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
+		shopAssetUserRuleId = GsonParser.parseInt(jsonObject.get("shopAssetUserRuleId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
+		kparams.add("objectType", "KalturaShopPreActionCondition");
+		kparams.add("shopAssetUserRuleId", this.shopAssetUserRuleId);
 		return kparams;
 	}
 
