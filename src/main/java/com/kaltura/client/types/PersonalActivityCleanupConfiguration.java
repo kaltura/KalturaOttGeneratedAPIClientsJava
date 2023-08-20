@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,50 +41,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(PersonalActivityCleanupConfiguration.Tokenizer.class)
+public class PersonalActivityCleanupConfiguration extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String retentionPeriodDays();
 	}
 
 	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
+	 * Retention Period Days
 	 */
-	private String partnerListTypeIn;
+	private Long retentionPeriodDays;
 
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
+	// retentionPeriodDays:
+	public Long getRetentionPeriodDays(){
+		return this.retentionPeriodDays;
 	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
-	}
-
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	public void setRetentionPeriodDays(Long retentionPeriodDays){
+		this.retentionPeriodDays = retentionPeriodDays;
 	}
 
+	public void retentionPeriodDays(String multirequestToken){
+		setToken("retentionPeriodDays", multirequestToken);
+	}
 
-	public PersonalListSearchFilter() {
+
+	public PersonalActivityCleanupConfiguration() {
 		super();
 	}
 
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
+	public PersonalActivityCleanupConfiguration(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
+		retentionPeriodDays = GsonParser.parseLong(jsonObject.get("retentionPeriodDays"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
+		kparams.add("objectType", "KalturaPersonalActivityCleanupConfiguration");
+		kparams.add("retentionPeriodDays", this.retentionPeriodDays);
 		return kparams;
 	}
 
