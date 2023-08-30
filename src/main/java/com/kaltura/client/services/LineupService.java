@@ -27,7 +27,9 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
+import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.LineupChannelAsset;
+import com.kaltura.client.types.LineupRegionalChannelFilter;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -58,8 +60,12 @@ public class LineupService {
 	}
 
 	/**
-	 * Return regional lineup (list of lineup channel asset objects) based on the
-	  requester session characteristics and his region.
+	 * Returns regional lineup (list of lineup channel asset objects) based on the
+	  requester session characteristics and his region.              NOTE: Calling
+	  lineup.get action using HTTP POST is supported only for tests (non production
+	  environment) and is rate limited or blocked.              For production, HTTP
+	  GET shall be used: GET https://{Host_IP}/{build
+	  version}/api_v3/service/lineup/action/get
 	 * 
 	 * @param pageIndex Page index - The page index to retrieve, (if it is not sent the default page
 	 * size is 1).
@@ -68,6 +74,31 @@ public class LineupService {
 	 */
     public static GetLineupBuilder get(int pageIndex, int pageSize)  {
 		return new GetLineupBuilder(pageIndex, pageSize);
+	}
+	
+	public static class ListLineupBuilder extends ListResponseRequestBuilder<LineupChannelAsset, LineupChannelAsset.Tokenizer, ListLineupBuilder> {
+		
+		public ListLineupBuilder(LineupRegionalChannelFilter filter, FilterPager pager) {
+			super(LineupChannelAsset.class, "lineup", "list");
+			params.add("filter", filter);
+			params.add("pager", pager);
+		}
+	}
+
+	public static ListLineupBuilder list(LineupRegionalChannelFilter filter)  {
+		return list(filter, null);
+	}
+
+	/**
+	 * Returns list of lineup regional linear channels associated with one LCN and its
+	  region information. Allows to apply sorting and filtering by LCN and linear
+	  channels.
+	 * 
+	 * @param filter Request filter
+	 * @param pager Paging the request
+	 */
+    public static ListLineupBuilder list(LineupRegionalChannelFilter filter, FilterPager pager)  {
+		return new ListLineupBuilder(filter, pager);
 	}
 	
 	public static class SendUpdatedNotificationLineupBuilder extends RequestBuilder<Boolean, String, SendUpdatedNotificationLineupBuilder> {
