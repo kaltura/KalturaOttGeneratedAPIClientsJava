@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,51 +40,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * A Kaltura error message
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalListSearchFilter.Tokenizer.class)
-public class PersonalListSearchFilter extends BaseSearchAssetFilter {
+@MultiRequestBuilder.Tokenizer(VodIngestAssetResultErrorMessage.Tokenizer.class)
+public class VodIngestAssetResultErrorMessage extends ObjectBase {
 	
-	public interface Tokenizer extends BaseSearchAssetFilter.Tokenizer {
-		String partnerListTypeIn();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String message();
+		String code();
 	}
 
 	/**
-	 * Comma separated list of partner list types to search within.               If
-	  omitted - all types should be included.
+	 * The message description with arguments place holders
 	 */
-	private String partnerListTypeIn;
+	private String message;
+	/**
+	 * The message code
+	 */
+	private String code;
 
-	// partnerListTypeIn:
-	public String getPartnerListTypeIn(){
-		return this.partnerListTypeIn;
+	// message:
+	public String getMessage(){
+		return this.message;
 	}
-	public void setPartnerListTypeIn(String partnerListTypeIn){
-		this.partnerListTypeIn = partnerListTypeIn;
+	public void setMessage(String message){
+		this.message = message;
 	}
 
-	public void partnerListTypeIn(String multirequestToken){
-		setToken("partnerListTypeIn", multirequestToken);
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
+
+	// code:
+	public String getCode(){
+		return this.code;
+	}
+	public void setCode(String code){
+		this.code = code;
+	}
+
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
 	}
 
 
-	public PersonalListSearchFilter() {
+	public VodIngestAssetResultErrorMessage() {
 		super();
 	}
 
-	public PersonalListSearchFilter(JsonObject jsonObject) throws APIException {
+	public VodIngestAssetResultErrorMessage(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		partnerListTypeIn = GsonParser.parseString(jsonObject.get("partnerListTypeIn"));
+		message = GsonParser.parseString(jsonObject.get("message"));
+		code = GsonParser.parseString(jsonObject.get("code"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalListSearchFilter");
-		kparams.add("partnerListTypeIn", this.partnerListTypeIn);
+		kparams.add("objectType", "KalturaVodIngestAssetResultErrorMessage");
+		kparams.add("message", this.message);
+		kparams.add("code", this.code);
 		return kparams;
 	}
 
