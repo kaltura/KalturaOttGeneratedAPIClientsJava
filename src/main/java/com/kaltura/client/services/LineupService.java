@@ -60,12 +60,8 @@ public class LineupService {
 	}
 
 	/**
-	 * Returns regional lineup (list of lineup channel asset objects) based on the
-	  requester session characteristics and his region.              NOTE: Calling
-	  lineup.get action using HTTP POST is supported only for tests (non production
-	  environment) and is rate limited or blocked.              For production, HTTP
-	  GET shall be used: GET https://{Host_IP}/{build
-	  version}/api_v3/service/lineup/action/get
+	 * Return regional lineup (list of lineup channel asset objects) based on the
+	  requester session characteristics and his region.
 	 * 
 	 * @param pageIndex Page index - The page index to retrieve, (if it is not sent the default page
 	 * size is 1).
