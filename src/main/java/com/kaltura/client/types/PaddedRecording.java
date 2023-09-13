@@ -46,8 +46,6 @@ public class PaddedRecording extends Recording {
 	public interface Tokenizer extends Recording.Tokenizer {
 		String startPadding();
 		String endPadding();
-		String startPaddingIsPersonal();
-		String endPaddingIsPersonal();
 	}
 
 	/**
@@ -58,16 +56,6 @@ public class PaddedRecording extends Recording {
 	 * Household specific end padding of the recording
 	 */
 	private Integer endPadding;
-	/**
-	 * Indicates whether startPadding value is personal padding (counts towards HH
-	  quota) or system padding (does not count towards HH quota).
-	 */
-	private Boolean startPaddingIsPersonal;
-	/**
-	 * Indicates whether endPadding value is personal padding (counts towards HH quota)
-	  or system padding (does not count towards HH quota).
-	 */
-	private Boolean endPaddingIsPersonal;
 
 	// startPadding:
 	public Integer getStartPadding(){
@@ -93,14 +81,6 @@ public class PaddedRecording extends Recording {
 		setToken("endPadding", multirequestToken);
 	}
 
-	// startPaddingIsPersonal:
-	public Boolean getStartPaddingIsPersonal(){
-		return this.startPaddingIsPersonal;
-	}
-	// endPaddingIsPersonal:
-	public Boolean getEndPaddingIsPersonal(){
-		return this.endPaddingIsPersonal;
-	}
 
 	public PaddedRecording() {
 		super();
@@ -114,8 +94,6 @@ public class PaddedRecording extends Recording {
 		// set members values:
 		startPadding = GsonParser.parseInt(jsonObject.get("startPadding"));
 		endPadding = GsonParser.parseInt(jsonObject.get("endPadding"));
-		startPaddingIsPersonal = GsonParser.parseBoolean(jsonObject.get("startPaddingIsPersonal"));
-		endPaddingIsPersonal = GsonParser.parseBoolean(jsonObject.get("endPaddingIsPersonal"));
 
 	}
 
