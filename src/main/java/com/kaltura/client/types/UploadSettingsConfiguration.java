@@ -25,7 +25,12 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.enums;
+package com.kaltura.client.types;
+
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -33,52 +38,53 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum PartnerConfigurationType implements EnumAsString {
-	DEFAULTPAYMENTGATEWAY("DefaultPaymentGateway"),
-	ENABLEPAYMENTGATEWAYSELECTION("EnablePaymentGatewaySelection"),
-	OSSADAPTER("OSSAdapter"),
-	CONCURRENCY("Concurrency"),
-	GENERAL("General"),
-	OBJECTVIRTUALASSET("ObjectVirtualAsset"),
-	COMMERCE("Commerce"),
-	PLAYBACK("Playback"),
-	PAYMENT("Payment"),
-	CATALOG("Catalog"),
-	SECURITY("Security"),
-	OPC("Opc"),
-	BASE("Base"),
-	CUSTOMFIELDS("CustomFields"),
-	DEFAULTPARENTALSETTINGS("DefaultParentalSettings"),
-	UPLOADSETTINGS("UploadSettings");
 
-	private String value;
-
-	PartnerConfigurationType(String value) {
-		this.value = value;
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(UploadSettingsConfiguration.Tokenizer.class)
+public class UploadSettingsConfiguration extends PartnerConfiguration {
+	
+	public interface Tokenizer extends PartnerConfiguration.Tokenizer {
+		String allowedFileExtensions();
 	}
 
-	@Override
-	public String getValue() {
-		return this.value;
+	/**
+	 * comma separated Allowed File Extensions
+	 */
+	private String allowedFileExtensions;
+
+	// allowedFileExtensions:
+	public String getAllowedFileExtensions(){
+		return this.allowedFileExtensions;
+	}
+	public void setAllowedFileExtensions(String allowedFileExtensions){
+		this.allowedFileExtensions = allowedFileExtensions;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void allowedFileExtensions(String multirequestToken){
+		setToken("allowedFileExtensions", multirequestToken);
 	}
 
-	public static PartnerConfigurationType get(String value) {
-		if(value == null)
-		{
-			return null;
-		}
-		
-		// goes over PartnerConfigurationType defined values and compare the inner value with the given one:
-		for(PartnerConfigurationType item: values()) {
-			if(item.getValue().equals(value)) {
-				return item;
-			}
-		}
-		// in case the requested value was not found in the enum values, we return the first item as default.
-		return PartnerConfigurationType.values().length > 0 ? PartnerConfigurationType.values()[0]: null;
-   }
+
+	public UploadSettingsConfiguration() {
+		super();
+	}
+
+	public UploadSettingsConfiguration(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		allowedFileExtensions = GsonParser.parseString(jsonObject.get("allowedFileExtensions"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaUploadSettingsConfiguration");
+		kparams.add("allowedFileExtensions", this.allowedFileExtensions);
+		return kparams;
+	}
+
 }
+
