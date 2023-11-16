@@ -25,11 +25,14 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.types;
 
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilesLinks;
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -38,47 +41,51 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class CouponService {
+/**
+ * An object holding all the URLs (links) to files which contain coupon codes
+ */
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(CouponFilesLinks.Tokenizer.class)
+public class CouponFilesLinks extends ListResponse {
 	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
-		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
-		}
-		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
-		}
+	public interface Tokenizer extends ListResponse.Tokenizer {
+		RequestBuilder.ListTokenizer<StringValue.Tokenizer> objects();
 	}
 
 	/**
-	 * Returns information about a coupon
-	 * 
-	 * @param code Coupon code
+	 * A pre-signed URL pointing to a coupon codes file
 	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
+	private List<StringValue> objects;
+
+	// objects:
+	public List<StringValue> getObjects(){
+		return this.objects;
 	}
-	
-	public static class GetFilesLinksCouponBuilder extends RequestBuilder<CouponFilesLinks, CouponFilesLinks.Tokenizer, GetFilesLinksCouponBuilder> {
-		
-		public GetFilesLinksCouponBuilder(long couponsGroupId) {
-			super(CouponFilesLinks.class, "coupon", "getFilesLinks");
-			params.add("couponsGroupId", couponsGroupId);
-		}
-		
-		public void couponsGroupId(String multirequestToken) {
-			params.add("couponsGroupId", multirequestToken);
-		}
+	public void setObjects(List<StringValue> objects){
+		this.objects = objects;
 	}
 
-	/**
-	 * get all coupon codes of a specific couponGroup
-	 * 
-	 * @param couponsGroupId The couponsGroup ID for which its file links will be listed
-	 */
-    public static GetFilesLinksCouponBuilder getFilesLinks(long couponsGroupId)  {
-		return new GetFilesLinksCouponBuilder(couponsGroupId);
+
+	public CouponFilesLinks() {
+		super();
 	}
+
+	public CouponFilesLinks(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), StringValue.class);
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaCouponFilesLinks");
+		kparams.add("objects", this.objects);
+		return kparams;
+	}
+
 }
+
