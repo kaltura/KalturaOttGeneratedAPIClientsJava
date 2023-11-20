@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -46,16 +47,33 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(CouponFilesLinks.Tokenizer.class)
-public class CouponFilesLinks extends ListResponse {
+public class CouponFilesLinks extends ObjectBase {
 	
-	public interface Tokenizer extends ListResponse.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String totalCount();
 		RequestBuilder.ListTokenizer<StringValue.Tokenizer> objects();
 	}
 
 	/**
+	 * Total count of coupons code files
+	 */
+	private Integer totalCount;
+	/**
 	 * A pre-signed URL pointing to a coupon codes file
 	 */
 	private List<StringValue> objects;
+
+	// totalCount:
+	public Integer getTotalCount(){
+		return this.totalCount;
+	}
+	public void setTotalCount(Integer totalCount){
+		this.totalCount = totalCount;
+	}
+
+	public void totalCount(String multirequestToken){
+		setToken("totalCount", multirequestToken);
+	}
 
 	// objects:
 	public List<StringValue> getObjects(){
@@ -76,6 +94,7 @@ public class CouponFilesLinks extends ListResponse {
 		if(jsonObject == null) return;
 
 		// set members values:
+		totalCount = GsonParser.parseInt(jsonObject.get("totalCount"));
 		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), StringValue.class);
 
 	}
@@ -83,6 +102,7 @@ public class CouponFilesLinks extends ListResponse {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaCouponFilesLinks");
+		kparams.add("totalCount", this.totalCount);
 		kparams.add("objects", this.objects);
 		return kparams;
 	}
