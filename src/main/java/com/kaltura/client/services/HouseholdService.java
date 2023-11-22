@@ -173,7 +173,7 @@ public class HouseholdService {
 	/**
 	 * Reset a household’s time limitation for removing user or device
 	 * 
-	 * @param frequencyType Possible values: devices – reset the device change frequency.
+	 * @param frequencyType Possible values: devices – reset the device change frequency. 
 	 *             users – reset the user add/remove frequency
 	 */
     public static ResetFrequencyHouseholdBuilder resetFrequency(HouseholdFrequencyType frequencyType)  {

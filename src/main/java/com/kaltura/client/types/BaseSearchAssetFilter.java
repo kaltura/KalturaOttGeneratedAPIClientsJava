@@ -43,9 +43,6 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Kaltura Base Search Asset Filter
- */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BaseSearchAssetFilter.Tokenizer.class)
 public abstract class BaseSearchAssetFilter extends AssetFilter {
@@ -69,8 +66,8 @@ public abstract class BaseSearchAssetFilter extends AssetFilter {
 	  doesn&amp;#39;t need to provide PIN code will return.             
 	  user_interests - only valid value is &amp;quot;true&amp;quot;. When enabled,
 	  only assets that the user defined as his interests (by tags and metas) will
-	  return.              epg_channel_id - the channel identifier of the EPG program.
-	               entitled_assets - valid values: &amp;quot;free&amp;quot;,
+	  return.              epg_channel_id – the channel identifier of the EPG
+	  program.              entitled_assets - valid values: &amp;quot;free&amp;quot;,
 	  &amp;quot;entitled&amp;quot;, &amp;quot;not_entitled&amp;quot;,
 	  &amp;quot;both&amp;quot;. free - gets only free to watch assets. entitled - only
 	  those that the user is implicitly entitled to watch.              asset_type -

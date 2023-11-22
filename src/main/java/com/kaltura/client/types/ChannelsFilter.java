@@ -49,7 +49,6 @@ public class ChannelsFilter extends ChannelsBaseFilter {
 		String nameEqual();
 		String nameStartsWith();
 		String idIn();
-		String assetUserRuleIdIn();
 	}
 
 	/**
@@ -72,11 +71,6 @@ public class ChannelsFilter extends ChannelsBaseFilter {
 	 * Comma separated channel ids
 	 */
 	private String idIn;
-	/**
-	 * comma-separated list of KalturaChannel.assetUserRuleId values.  Matching
-	  KalturaChannel objects will be returned by the filter.
-	 */
-	private String assetUserRuleIdIn;
 
 	// idEqual:
 	public Integer getIdEqual(){
@@ -138,18 +132,6 @@ public class ChannelsFilter extends ChannelsBaseFilter {
 		setToken("idIn", multirequestToken);
 	}
 
-	// assetUserRuleIdIn:
-	public String getAssetUserRuleIdIn(){
-		return this.assetUserRuleIdIn;
-	}
-	public void setAssetUserRuleIdIn(String assetUserRuleIdIn){
-		this.assetUserRuleIdIn = assetUserRuleIdIn;
-	}
-
-	public void assetUserRuleIdIn(String multirequestToken){
-		setToken("assetUserRuleIdIn", multirequestToken);
-	}
-
 
 	public ChannelsFilter() {
 		super();
@@ -166,7 +148,6 @@ public class ChannelsFilter extends ChannelsBaseFilter {
 		nameEqual = GsonParser.parseString(jsonObject.get("nameEqual"));
 		nameStartsWith = GsonParser.parseString(jsonObject.get("nameStartsWith"));
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		assetUserRuleIdIn = GsonParser.parseString(jsonObject.get("assetUserRuleIdIn"));
 
 	}
 
@@ -178,7 +159,6 @@ public class ChannelsFilter extends ChannelsBaseFilter {
 		kparams.add("nameEqual", this.nameEqual);
 		kparams.add("nameStartsWith", this.nameStartsWith);
 		kparams.add("idIn", this.idIn);
-		kparams.add("assetUserRuleIdIn", this.assetUserRuleIdIn);
 		return kparams;
 	}
 

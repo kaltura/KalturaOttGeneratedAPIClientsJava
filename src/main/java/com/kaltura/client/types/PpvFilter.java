@@ -50,8 +50,6 @@ public class PpvFilter extends Filter {
 		String idIn();
 		String couponGroupIdEqual();
 		String alsoInactive();
-		String nameContains();
-		String assetUserRuleIdIn();
 	}
 
 	/**
@@ -66,15 +64,6 @@ public class PpvFilter extends Filter {
 	 * return also inactive
 	 */
 	private Boolean alsoInactive;
-	/**
-	 * A string that is included in the ppv name
-	 */
-	private String nameContains;
-	/**
-	 * comma-separated list of KalturaPpv.assetUserRuleId values.  Matching KalturaPpv
-	  objects will be returned by the filter.
-	 */
-	private String assetUserRuleIdIn;
 
 	// idIn:
 	public String getIdIn(){
@@ -112,30 +101,6 @@ public class PpvFilter extends Filter {
 		setToken("alsoInactive", multirequestToken);
 	}
 
-	// nameContains:
-	public String getNameContains(){
-		return this.nameContains;
-	}
-	public void setNameContains(String nameContains){
-		this.nameContains = nameContains;
-	}
-
-	public void nameContains(String multirequestToken){
-		setToken("nameContains", multirequestToken);
-	}
-
-	// assetUserRuleIdIn:
-	public String getAssetUserRuleIdIn(){
-		return this.assetUserRuleIdIn;
-	}
-	public void setAssetUserRuleIdIn(String assetUserRuleIdIn){
-		this.assetUserRuleIdIn = assetUserRuleIdIn;
-	}
-
-	public void assetUserRuleIdIn(String multirequestToken){
-		setToken("assetUserRuleIdIn", multirequestToken);
-	}
-
 
 	public PpvFilter() {
 		super();
@@ -150,8 +115,6 @@ public class PpvFilter extends Filter {
 		idIn = GsonParser.parseString(jsonObject.get("idIn"));
 		couponGroupIdEqual = GsonParser.parseInt(jsonObject.get("couponGroupIdEqual"));
 		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
-		nameContains = GsonParser.parseString(jsonObject.get("nameContains"));
-		assetUserRuleIdIn = GsonParser.parseString(jsonObject.get("assetUserRuleIdIn"));
 
 	}
 
@@ -161,8 +124,6 @@ public class PpvFilter extends Filter {
 		kparams.add("idIn", this.idIn);
 		kparams.add("couponGroupIdEqual", this.couponGroupIdEqual);
 		kparams.add("alsoInactive", this.alsoInactive);
-		kparams.add("nameContains", this.nameContains);
-		kparams.add("assetUserRuleIdIn", this.assetUserRuleIdIn);
 		return kparams;
 	}
 

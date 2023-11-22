@@ -183,9 +183,7 @@ public class AssetService {
 	}
 
 	/**
-	 * Returns media or EPG asset by media / EPG internal or external identifier.      
-	         Note: OPC accounts asset.get for internal identifier doesn&amp;#39;t take
-	  under consideration personalized aspects neither shop limitations.
+	 * Returns media or EPG asset by media / EPG internal or external identifier
 	 * 
 	 * @param id Asset identifier
 	 * @param assetReferenceType Asset type

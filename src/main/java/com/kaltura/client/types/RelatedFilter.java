@@ -56,7 +56,7 @@ public class RelatedFilter extends BaseSearchAssetFilter {
 	/**
 	 * Comma separated list of asset types to search within.               Possible
 	  values: any media type ID (according to media type IDs defined dynamically in
-	  the system).              If omitted - same type as the provided asset.
+	  the system).              If omitted – same type as the provided asset.
 	 */
 	private String typeIn;
 	/**
