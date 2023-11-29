@@ -28,6 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.Coupon;
+import com.kaltura.client.types.CouponFilesLinks;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -58,5 +59,26 @@ public class CouponService {
 	 */
     public static GetCouponBuilder get(String code)  {
 		return new GetCouponBuilder(code);
+	}
+	
+	public static class GetFilesLinksCouponBuilder extends RequestBuilder<CouponFilesLinks, CouponFilesLinks.Tokenizer, GetFilesLinksCouponBuilder> {
+		
+		public GetFilesLinksCouponBuilder(long couponsGroupId) {
+			super(CouponFilesLinks.class, "coupon", "getFilesLinks");
+			params.add("couponsGroupId", couponsGroupId);
+		}
+		
+		public void couponsGroupId(String multirequestToken) {
+			params.add("couponsGroupId", multirequestToken);
+		}
+	}
+
+	/**
+	 * get all coupon codes of a specific couponGroup
+	 * 
+	 * @param couponsGroupId The couponsGroup ID for which its file links will be listed
+	 */
+    public static GetFilesLinksCouponBuilder getFilesLinks(long couponsGroupId)  {
+		return new GetFilesLinksCouponBuilder(couponsGroupId);
 	}
 }
