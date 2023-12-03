@@ -48,7 +48,8 @@ public enum PartnerConfigurationType implements EnumAsString {
 	OPC("Opc"),
 	BASE("Base"),
 	CUSTOMFIELDS("CustomFields"),
-	DEFAULTPARENTALSETTINGS("DefaultParentalSettings");
+	DEFAULTPARENTALSETTINGS("DefaultParentalSettings"),
+	CLOUDUPLOADSETTINGS("CloudUploadSettings");
 
 	private String value;
 
