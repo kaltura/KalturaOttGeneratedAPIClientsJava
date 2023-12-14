@@ -57,6 +57,7 @@ public class SSOAdapterProfile extends ObjectBase {
 		RequestBuilder.MapTokenizer<StringValue.Tokenizer> settings();
 		String externalIdentifier();
 		String sharedSecret();
+		String adapterGrpcAddress();
 	}
 
 	/**
@@ -87,6 +88,11 @@ public class SSOAdapterProfile extends ObjectBase {
 	 * Shared Secret
 	 */
 	private String sharedSecret;
+	/**
+	 * Adapter GRPC Address, without protocol, i.e:
+	  &amp;#39;adapter-hostname:9090&amp;#39;
+	 */
+	private String adapterGrpcAddress;
 
 	// id:
 	public Integer getId(){
@@ -160,6 +166,18 @@ public class SSOAdapterProfile extends ObjectBase {
 		setToken("sharedSecret", multirequestToken);
 	}
 
+	// adapterGrpcAddress:
+	public String getAdapterGrpcAddress(){
+		return this.adapterGrpcAddress;
+	}
+	public void setAdapterGrpcAddress(String adapterGrpcAddress){
+		this.adapterGrpcAddress = adapterGrpcAddress;
+	}
+
+	public void adapterGrpcAddress(String multirequestToken){
+		setToken("adapterGrpcAddress", multirequestToken);
+	}
+
 
 	public SSOAdapterProfile() {
 		super();
@@ -178,6 +196,7 @@ public class SSOAdapterProfile extends ObjectBase {
 		settings = GsonParser.parseMap(jsonObject.getAsJsonObject("settings"), StringValue.class);
 		externalIdentifier = GsonParser.parseString(jsonObject.get("externalIdentifier"));
 		sharedSecret = GsonParser.parseString(jsonObject.get("sharedSecret"));
+		adapterGrpcAddress = GsonParser.parseString(jsonObject.get("adapterGrpcAddress"));
 
 	}
 
@@ -190,6 +209,7 @@ public class SSOAdapterProfile extends ObjectBase {
 		kparams.add("settings", this.settings);
 		kparams.add("externalIdentifier", this.externalIdentifier);
 		kparams.add("sharedSecret", this.sharedSecret);
+		kparams.add("adapterGrpcAddress", this.adapterGrpcAddress);
 		return kparams;
 	}
 
