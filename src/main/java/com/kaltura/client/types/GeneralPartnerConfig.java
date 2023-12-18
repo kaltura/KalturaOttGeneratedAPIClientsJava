@@ -114,7 +114,7 @@ public class GeneralPartnerConfig extends PartnerConfiguration {
 	 */
 	private String dateFormat;
 	/**
-	 * Household limitation&amp;#160;module
+	 * Household limitation module
 	 */
 	private Integer householdLimitationModule;
 	/**
