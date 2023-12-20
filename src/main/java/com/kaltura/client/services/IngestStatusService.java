@@ -35,8 +35,6 @@ import com.kaltura.client.types.IngestEpgDetails;
 import com.kaltura.client.types.IngestEpgProgramResult;
 import com.kaltura.client.types.IngestEpgProgramResultFilter;
 import com.kaltura.client.types.IngestStatusPartnerConfiguration;
-import com.kaltura.client.types.VodIngestAssetResultFilter;
-import com.kaltura.client.types.VodIngestAssetResultResponse;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -150,33 +148,6 @@ public class IngestStatusService {
 	 */
     public static GetPartnerConfigurationIngestStatusBuilder getPartnerConfiguration()  {
 		return new GetPartnerConfigurationIngestStatusBuilder();
-	}
-	
-	public static class GetVodAssetResultIngestStatusBuilder extends RequestBuilder<VodIngestAssetResultResponse, VodIngestAssetResultResponse.Tokenizer, GetVodAssetResultIngestStatusBuilder> {
-		
-		public GetVodAssetResultIngestStatusBuilder(VodIngestAssetResultFilter filter, FilterPager pager) {
-			super(VodIngestAssetResultResponse.class, "ingeststatus", "getVodAssetResult");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
-
-	public static GetVodAssetResultIngestStatusBuilder getVodAssetResult()  {
-		return getVodAssetResult(null);
-	}
-
-	public static GetVodAssetResultIngestStatusBuilder getVodAssetResult(VodIngestAssetResultFilter filter)  {
-		return getVodAssetResult(filter, null);
-	}
-
-	/**
-	 * List detailed results of ingested assets.
-	 * 
-	 * @param filter Filter object with parameters to filter selected ingest processes and assets
-	 * @param pager Paging the request
-	 */
-    public static GetVodAssetResultIngestStatusBuilder getVodAssetResult(VodIngestAssetResultFilter filter, FilterPager pager)  {
-		return new GetVodAssetResultIngestStatusBuilder(filter, pager);
 	}
 	
 	public static class UpdatePartnerConfigurationIngestStatusBuilder extends NullRequestBuilder {

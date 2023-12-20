@@ -53,8 +53,6 @@ public class SubscriptionFilter extends Filter {
 		String channelIdEqual();
 		String kSql();
 		String alsoInactive();
-		String dependencyTypeIn();
-		String nameContains();
 	}
 
 	/**
@@ -93,15 +91,6 @@ public class SubscriptionFilter extends Filter {
 	 * return also inactive
 	 */
 	private Boolean alsoInactive;
-	/**
-	 * comma separated values of KalturaSubscriptionDependencyType               return
-	  subscriptions associated by their subscription sets dependency Type
-	 */
-	private String dependencyTypeIn;
-	/**
-	 * A string that is included in the subscription name
-	 */
-	private String nameContains;
 
 	// subscriptionIdIn:
 	public String getSubscriptionIdIn(){
@@ -211,30 +200,6 @@ public class SubscriptionFilter extends Filter {
 		setToken("alsoInactive", multirequestToken);
 	}
 
-	// dependencyTypeIn:
-	public String getDependencyTypeIn(){
-		return this.dependencyTypeIn;
-	}
-	public void setDependencyTypeIn(String dependencyTypeIn){
-		this.dependencyTypeIn = dependencyTypeIn;
-	}
-
-	public void dependencyTypeIn(String multirequestToken){
-		setToken("dependencyTypeIn", multirequestToken);
-	}
-
-	// nameContains:
-	public String getNameContains(){
-		return this.nameContains;
-	}
-	public void setNameContains(String nameContains){
-		this.nameContains = nameContains;
-	}
-
-	public void nameContains(String multirequestToken){
-		setToken("nameContains", multirequestToken);
-	}
-
 
 	public SubscriptionFilter() {
 		super();
@@ -255,8 +220,6 @@ public class SubscriptionFilter extends Filter {
 		channelIdEqual = GsonParser.parseLong(jsonObject.get("channelIdEqual"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
 		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
-		dependencyTypeIn = GsonParser.parseString(jsonObject.get("dependencyTypeIn"));
-		nameContains = GsonParser.parseString(jsonObject.get("nameContains"));
 
 	}
 
@@ -272,8 +235,6 @@ public class SubscriptionFilter extends Filter {
 		kparams.add("channelIdEqual", this.channelIdEqual);
 		kparams.add("kSql", this.kSql);
 		kparams.add("alsoInactive", this.alsoInactive);
-		kparams.add("dependencyTypeIn", this.dependencyTypeIn);
-		kparams.add("nameContains", this.nameContains);
 		return kparams;
 	}
 

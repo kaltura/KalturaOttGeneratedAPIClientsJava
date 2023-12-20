@@ -37,8 +37,7 @@ public enum UserRoleProfile implements EnumAsString {
 	USER("USER"),
 	PARTNER("PARTNER"),
 	PROFILE("PROFILE"),
-	SYSTEM("SYSTEM"),
-	PERMISSION_EMBEDDED("PERMISSION_EMBEDDED");
+	SYSTEM("SYSTEM");
 
 	private String value;
 

@@ -48,17 +48,12 @@ public class ProgramAssetGroupOfferFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String alsoInactive();
-		String nameContains();
 	}
 
 	/**
 	 * return also inactive
 	 */
 	private Boolean alsoInactive;
-	/**
-	 * A string that is included in the PAGO name
-	 */
-	private String nameContains;
 
 	// alsoInactive:
 	public Boolean getAlsoInactive(){
@@ -70,18 +65,6 @@ public class ProgramAssetGroupOfferFilter extends Filter {
 
 	public void alsoInactive(String multirequestToken){
 		setToken("alsoInactive", multirequestToken);
-	}
-
-	// nameContains:
-	public String getNameContains(){
-		return this.nameContains;
-	}
-	public void setNameContains(String nameContains){
-		this.nameContains = nameContains;
-	}
-
-	public void nameContains(String multirequestToken){
-		setToken("nameContains", multirequestToken);
 	}
 
 
@@ -96,7 +79,6 @@ public class ProgramAssetGroupOfferFilter extends Filter {
 
 		// set members values:
 		alsoInactive = GsonParser.parseBoolean(jsonObject.get("alsoInactive"));
-		nameContains = GsonParser.parseString(jsonObject.get("nameContains"));
 
 	}
 
@@ -104,7 +86,6 @@ public class ProgramAssetGroupOfferFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaProgramAssetGroupOfferFilter");
 		kparams.add("alsoInactive", this.alsoInactive);
-		kparams.add("nameContains", this.nameContains);
 		return kparams;
 	}
 

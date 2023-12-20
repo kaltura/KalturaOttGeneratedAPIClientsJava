@@ -47,7 +47,6 @@ public class ChannelExternalFilter extends AssetFilter {
 		String idEqual();
 		String utcOffsetEqual();
 		String freeText();
-		String alias();
 	}
 
 	/**
@@ -62,10 +61,6 @@ public class ChannelExternalFilter extends AssetFilter {
 	 * FreeTextEqual
 	 */
 	private String freeText;
-	/**
-	 * Alias for External Channel Id.
-	 */
-	private String alias;
 
 	// idEqual:
 	public Integer getIdEqual(){
@@ -103,18 +98,6 @@ public class ChannelExternalFilter extends AssetFilter {
 		setToken("freeText", multirequestToken);
 	}
 
-	// alias:
-	public String getAlias(){
-		return this.alias;
-	}
-	public void setAlias(String alias){
-		this.alias = alias;
-	}
-
-	public void alias(String multirequestToken){
-		setToken("alias", multirequestToken);
-	}
-
 
 	public ChannelExternalFilter() {
 		super();
@@ -129,7 +112,6 @@ public class ChannelExternalFilter extends AssetFilter {
 		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
 		utcOffsetEqual = GsonParser.parseDouble(jsonObject.get("utcOffsetEqual"));
 		freeText = GsonParser.parseString(jsonObject.get("freeText"));
-		alias = GsonParser.parseString(jsonObject.get("alias"));
 
 	}
 
@@ -139,7 +121,6 @@ public class ChannelExternalFilter extends AssetFilter {
 		kparams.add("idEqual", this.idEqual);
 		kparams.add("utcOffsetEqual", this.utcOffsetEqual);
 		kparams.add("freeText", this.freeText);
-		kparams.add("alias", this.alias);
 		return kparams;
 	}
 
