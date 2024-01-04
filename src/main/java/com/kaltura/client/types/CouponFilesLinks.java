@@ -30,7 +30,10 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -40,28 +43,67 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Partner base configuration
+ * An object holding all the URLs (links) to files which contain coupon codes
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PartnerConfiguration.Tokenizer.class)
-public abstract class PartnerConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(CouponFilesLinks.Tokenizer.class)
+public class CouponFilesLinks extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String totalCount();
+		RequestBuilder.ListTokenizer<StringValue.Tokenizer> objects();
+	}
+
+	/**
+	 * Total count of coupons code files
+	 */
+	private Integer totalCount;
+	/**
+	 * A pre-signed URL pointing to a coupon codes file
+	 */
+	private List<StringValue> objects;
+
+	// totalCount:
+	public Integer getTotalCount(){
+		return this.totalCount;
+	}
+	public void setTotalCount(Integer totalCount){
+		this.totalCount = totalCount;
+	}
+
+	public void totalCount(String multirequestToken){
+		setToken("totalCount", multirequestToken);
+	}
+
+	// objects:
+	public List<StringValue> getObjects(){
+		return this.objects;
+	}
+	public void setObjects(List<StringValue> objects){
+		this.objects = objects;
 	}
 
 
-
-	public PartnerConfiguration() {
+	public CouponFilesLinks() {
 		super();
 	}
 
-	public PartnerConfiguration(JsonObject jsonObject) throws APIException {
+	public CouponFilesLinks(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		totalCount = GsonParser.parseInt(jsonObject.get("totalCount"));
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), StringValue.class);
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPartnerConfiguration");
+		kparams.add("objectType", "KalturaCouponFilesLinks");
+		kparams.add("totalCount", this.totalCount);
+		kparams.add("objects", this.objects);
 		return kparams;
 	}
 
