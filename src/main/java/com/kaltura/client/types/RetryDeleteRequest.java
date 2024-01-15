@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,29 +40,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Partner base configuration
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PartnerConfiguration.Tokenizer.class)
-public abstract class PartnerConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(RetryDeleteRequest.Tokenizer.class)
+public class RetryDeleteRequest extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String startDate();
+		String endDate();
+	}
+
+	/**
+	 * The first date (epoch) to start the retryDelete from - by default {now} - {30
+	  days in second}
+	 */
+	private Long startDate;
+	/**
+	 * The last date (epoch) to do the retryDelete - by default {now} (should be
+	  greater than startDate)
+	 */
+	private Long endDate;
+
+	// startDate:
+	public Long getStartDate(){
+		return this.startDate;
+	}
+	public void setStartDate(Long startDate){
+		this.startDate = startDate;
+	}
+
+	public void startDate(String multirequestToken){
+		setToken("startDate", multirequestToken);
+	}
+
+	// endDate:
+	public Long getEndDate(){
+		return this.endDate;
+	}
+	public void setEndDate(Long endDate){
+		this.endDate = endDate;
+	}
+
+	public void endDate(String multirequestToken){
+		setToken("endDate", multirequestToken);
 	}
 
 
-
-	public PartnerConfiguration() {
+	public RetryDeleteRequest() {
 		super();
 	}
 
-	public PartnerConfiguration(JsonObject jsonObject) throws APIException {
+	public RetryDeleteRequest(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
+		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPartnerConfiguration");
+		kparams.add("objectType", "KalturaRetryDeleteRequest");
+		kparams.add("startDate", this.startDate);
+		kparams.add("endDate", this.endDate);
 		return kparams;
 	}
 

@@ -33,6 +33,7 @@ import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.OTTUserDynamicData;
 import com.kaltura.client.types.OTTUserFilter;
+import com.kaltura.client.types.RetryDeleteRequest;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.NullRequestBuilder;
@@ -442,6 +443,23 @@ public class OttUserService {
 	 */
     public static ResetPasswordOttUserBuilder resetPassword(int partnerId, String username, String templateName)  {
 		return new ResetPasswordOttUserBuilder(partnerId, username, templateName);
+	}
+	
+	public static class RetryDeleteOttUserBuilder extends NullRequestBuilder {
+		
+		public RetryDeleteOttUserBuilder(RetryDeleteRequest request) {
+			super("ottuser", "retryDelete");
+			params.add("request", request);
+		}
+	}
+
+	/**
+	 * Retry delete OTT user entities by retention.
+	 * 
+	 * @param request Request data
+	 */
+    public static RetryDeleteOttUserBuilder retryDelete(RetryDeleteRequest request)  {
+		return new RetryDeleteOttUserBuilder(request);
 	}
 	
 	public static class SetInitialPasswordOttUserBuilder extends RequestBuilder<OTTUser, OTTUser.Tokenizer, SetInitialPasswordOttUserBuilder> {

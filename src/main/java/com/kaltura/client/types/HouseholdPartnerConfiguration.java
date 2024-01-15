@@ -25,11 +25,13 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
+package com.kaltura.client.types;
 
-import com.kaltura.client.types.Coupon;
-import com.kaltura.client.types.CouponFilesLinks;
-import com.kaltura.client.utils.request.RequestBuilder;
+import com.google.gson.JsonObject;
+import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
+import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -38,47 +40,52 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class CouponService {
+@SuppressWarnings("serial")
+@MultiRequestBuilder.Tokenizer(HouseholdPartnerConfiguration.Tokenizer.class)
+public class HouseholdPartnerConfiguration extends ObjectBase {
 	
-	public static class GetCouponBuilder extends RequestBuilder<Coupon, Coupon.Tokenizer, GetCouponBuilder> {
-		
-		public GetCouponBuilder(String code) {
-			super(Coupon.class, "coupon", "get");
-			params.add("code", code);
-		}
-		
-		public void code(String multirequestToken) {
-			params.add("code", multirequestToken);
-		}
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String retentionPeriodDays();
 	}
 
 	/**
-	 * Returns information about a coupon
-	 * 
-	 * @param code Coupon code
+	 * Retention period in days.
 	 */
-    public static GetCouponBuilder get(String code)  {
-		return new GetCouponBuilder(code);
+	private Long retentionPeriodDays;
+
+	// retentionPeriodDays:
+	public Long getRetentionPeriodDays(){
+		return this.retentionPeriodDays;
 	}
-	
-	public static class GetFilesLinksCouponBuilder extends RequestBuilder<CouponFilesLinks, CouponFilesLinks.Tokenizer, GetFilesLinksCouponBuilder> {
-		
-		public GetFilesLinksCouponBuilder(long couponsGroupId) {
-			super(CouponFilesLinks.class, "coupon", "getFilesLinks");
-			params.add("couponsGroupId", couponsGroupId);
-		}
-		
-		public void couponsGroupId(String multirequestToken) {
-			params.add("couponsGroupId", multirequestToken);
-		}
+	public void setRetentionPeriodDays(Long retentionPeriodDays){
+		this.retentionPeriodDays = retentionPeriodDays;
 	}
 
-	/**
-	 * get all coupon codes of a specific couponGroup
-	 * 
-	 * @param couponsGroupId The couponsGroup ID for which its file links will be listed
-	 */
-    public static GetFilesLinksCouponBuilder getFilesLinks(long couponsGroupId)  {
-		return new GetFilesLinksCouponBuilder(couponsGroupId);
+	public void retentionPeriodDays(String multirequestToken){
+		setToken("retentionPeriodDays", multirequestToken);
 	}
+
+
+	public HouseholdPartnerConfiguration() {
+		super();
+	}
+
+	public HouseholdPartnerConfiguration(JsonObject jsonObject) throws APIException {
+		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		retentionPeriodDays = GsonParser.parseLong(jsonObject.get("retentionPeriodDays"));
+
+	}
+
+	public Params toParams() {
+		Params kparams = super.toParams();
+		kparams.add("objectType", "KalturaHouseholdPartnerConfiguration");
+		kparams.add("retentionPeriodDays", this.retentionPeriodDays);
+		return kparams;
+	}
+
 }
+

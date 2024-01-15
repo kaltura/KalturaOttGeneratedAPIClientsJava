@@ -89,7 +89,11 @@ public class BillingTransaction extends ObjectBase {
 	 */
 	private BillingItemsType itemType;
 	/**
-	 * Billing Action
+	 * Billing Action              Note: when purchasing subscription that is
+	  “ENTITLED_TO_PREVIEW_MODULE”:               the first
+	  BillingTransaction.billingAction will be “unknown”,                the
+	  second BillingTransaction.billingAction will be “purchase”,               
+	  and the rest of them will be “renew_payment&amp;quot;.
 	 */
 	private BillingAction billingAction;
 	/**
