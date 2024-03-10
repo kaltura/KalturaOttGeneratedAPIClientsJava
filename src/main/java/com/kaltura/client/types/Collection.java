@@ -83,7 +83,7 @@ public class Collection extends OTTObjectSupportNullable {
 	 */
 	private String id;
 	/**
-	 * A list of channels associated with this collection               This property
+	 * A list of channels associated with this collection              This property
 	  will deprecated soon. Please use ChannelsIds instead of it.
 	 */
 	private List<BaseChannel> channels;
