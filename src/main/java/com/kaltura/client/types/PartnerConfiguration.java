@@ -40,7 +40,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Partner base configuration
+ * Partner  base configuration
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(PartnerConfiguration.Tokenizer.class)

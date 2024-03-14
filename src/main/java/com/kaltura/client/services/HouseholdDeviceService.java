@@ -33,10 +33,8 @@ import com.kaltura.client.types.DynamicData;
 import com.kaltura.client.types.HouseholdDevice;
 import com.kaltura.client.types.HouseholdDeviceFilter;
 import com.kaltura.client.types.LoginResponse;
-import com.kaltura.client.types.RetryDeleteRequest;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.Map;
 
@@ -255,23 +253,6 @@ public class HouseholdDeviceService {
 	 */
     public static LoginWithPinHouseholdDeviceBuilder loginWithPin(int partnerId, String pin, String udid, Map<String, StringValue> extraParams)  {
 		return new LoginWithPinHouseholdDeviceBuilder(partnerId, pin, udid, extraParams);
-	}
-	
-	public static class RetryDeleteHouseholdDeviceBuilder extends NullRequestBuilder {
-		
-		public RetryDeleteHouseholdDeviceBuilder(RetryDeleteRequest request) {
-			super("householddevice", "retryDelete");
-			params.add("request", request);
-		}
-	}
-
-	/**
-	 * Retry delete household device entities by retention.
-	 * 
-	 * @param request Request data
-	 */
-    public static RetryDeleteHouseholdDeviceBuilder retryDelete(RetryDeleteRequest request)  {
-		return new RetryDeleteHouseholdDeviceBuilder(request);
 	}
 	
 	public static class UpdateHouseholdDeviceBuilder extends RequestBuilder<HouseholdDevice, HouseholdDevice.Tokenizer, UpdateHouseholdDeviceBuilder> {
