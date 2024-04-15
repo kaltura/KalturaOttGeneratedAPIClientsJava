@@ -52,6 +52,7 @@ public class DiscountModule extends ObjectBase {
 		String percent();
 		String startDate();
 		String endDate();
+		String assetUserRuleId();
 	}
 
 	/**
@@ -70,6 +71,10 @@ public class DiscountModule extends ObjectBase {
 	 * The last date the discount is available
 	 */
 	private Long endDate;
+	/**
+	 * Asset user rule identifier
+	 */
+	private Long assetUserRuleId;
 
 	// id:
 	public Long getId(){
@@ -119,6 +124,18 @@ public class DiscountModule extends ObjectBase {
 		setToken("endDate", multirequestToken);
 	}
 
+	// assetUserRuleId:
+	public Long getAssetUserRuleId(){
+		return this.assetUserRuleId;
+	}
+	public void setAssetUserRuleId(Long assetUserRuleId){
+		this.assetUserRuleId = assetUserRuleId;
+	}
+
+	public void assetUserRuleId(String multirequestToken){
+		setToken("assetUserRuleId", multirequestToken);
+	}
+
 
 	public DiscountModule() {
 		super();
@@ -134,6 +151,7 @@ public class DiscountModule extends ObjectBase {
 		percent = GsonParser.parseDouble(jsonObject.get("percent"));
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 
 	}
 
@@ -144,6 +162,7 @@ public class DiscountModule extends ObjectBase {
 		kparams.add("percent", this.percent);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
+		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		return kparams;
 	}
 
