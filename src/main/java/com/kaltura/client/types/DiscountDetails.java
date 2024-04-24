@@ -57,6 +57,7 @@ public class DiscountDetails extends ObjectBase {
 		String endDate();
 		String whenAlgoTimes();
 		String whenAlgoType();
+		String assetUserRuleId();
 	}
 
 	/**
@@ -87,6 +88,10 @@ public class DiscountDetails extends ObjectBase {
 	 * End date represented as epoch
 	 */
 	private Integer whenAlgoType;
+	/**
+	 * Asset user rule identifier
+	 */
+	private Long assetUserRuleId;
 
 	// id:
 	public Integer getId(){
@@ -160,6 +165,18 @@ public class DiscountDetails extends ObjectBase {
 		setToken("whenAlgoType", multirequestToken);
 	}
 
+	// assetUserRuleId:
+	public Long getAssetUserRuleId(){
+		return this.assetUserRuleId;
+	}
+	public void setAssetUserRuleId(Long assetUserRuleId){
+		this.assetUserRuleId = assetUserRuleId;
+	}
+
+	public void assetUserRuleId(String multirequestToken){
+		setToken("assetUserRuleId", multirequestToken);
+	}
+
 
 	public DiscountDetails() {
 		super();
@@ -178,6 +195,7 @@ public class DiscountDetails extends ObjectBase {
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
 		whenAlgoTimes = GsonParser.parseInt(jsonObject.get("whenAlgoTimes"));
 		whenAlgoType = GsonParser.parseInt(jsonObject.get("whenAlgoType"));
+		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 
 	}
 
@@ -190,6 +208,7 @@ public class DiscountDetails extends ObjectBase {
 		kparams.add("endDate", this.endDate);
 		kparams.add("whenAlgoTimes", this.whenAlgoTimes);
 		kparams.add("whenAlgoType", this.whenAlgoType);
+		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		return kparams;
 	}
 
