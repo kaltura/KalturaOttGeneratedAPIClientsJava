@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.BasePreActionCondition;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -45,21 +43,8 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public abstract class FilterAction extends AssetRuleAction {
 	
 	public interface Tokenizer extends AssetRuleAction.Tokenizer {
-		BasePreActionCondition.Tokenizer preActionCondition();
 	}
 
-	/**
-	 * PreAction condition
-	 */
-	private BasePreActionCondition preActionCondition;
-
-	// preActionCondition:
-	public BasePreActionCondition getPreActionCondition(){
-		return this.preActionCondition;
-	}
-	public void setPreActionCondition(BasePreActionCondition preActionCondition){
-		this.preActionCondition = preActionCondition;
-	}
 
 
 	public FilterAction() {
@@ -68,18 +53,11 @@ public abstract class FilterAction extends AssetRuleAction {
 
 	public FilterAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		preActionCondition = GsonParser.parseObject(jsonObject.getAsJsonObject("preActionCondition"), BasePreActionCondition.class);
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaFilterAction");
-		kparams.add("preActionCondition", this.preActionCondition);
 		return kparams;
 	}
 

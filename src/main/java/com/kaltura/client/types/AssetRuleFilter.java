@@ -54,7 +54,6 @@ public class AssetRuleFilter extends Filter {
 		SlimAsset.Tokenizer assetApplied();
 		String actionsContainType();
 		String assetRuleIdEqual();
-		String nameContains();
 	}
 
 	/**
@@ -74,10 +73,6 @@ public class AssetRuleFilter extends Filter {
 	 * Asset rule id
 	 */
 	private Long assetRuleIdEqual;
-	/**
-	 * Name
-	 */
-	private String nameContains;
 
 	// conditionsContainType:
 	public RuleConditionType getConditionsContainType(){
@@ -123,18 +118,6 @@ public class AssetRuleFilter extends Filter {
 		setToken("assetRuleIdEqual", multirequestToken);
 	}
 
-	// nameContains:
-	public String getNameContains(){
-		return this.nameContains;
-	}
-	public void setNameContains(String nameContains){
-		this.nameContains = nameContains;
-	}
-
-	public void nameContains(String multirequestToken){
-		setToken("nameContains", multirequestToken);
-	}
-
 
 	public AssetRuleFilter() {
 		super();
@@ -150,7 +133,6 @@ public class AssetRuleFilter extends Filter {
 		assetApplied = GsonParser.parseObject(jsonObject.getAsJsonObject("assetApplied"), SlimAsset.class);
 		actionsContainType = RuleActionType.get(GsonParser.parseString(jsonObject.get("actionsContainType")));
 		assetRuleIdEqual = GsonParser.parseLong(jsonObject.get("assetRuleIdEqual"));
-		nameContains = GsonParser.parseString(jsonObject.get("nameContains"));
 
 	}
 
@@ -161,7 +143,6 @@ public class AssetRuleFilter extends Filter {
 		kparams.add("assetApplied", this.assetApplied);
 		kparams.add("actionsContainType", this.actionsContainType);
 		kparams.add("assetRuleIdEqual", this.assetRuleIdEqual);
-		kparams.add("nameContains", this.nameContains);
 		return kparams;
 	}
 

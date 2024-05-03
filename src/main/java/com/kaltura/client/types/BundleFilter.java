@@ -55,10 +55,10 @@ public class BundleFilter extends AssetFilter {
 	 */
 	private Integer idEqual;
 	/**
-	 * Comma separated list of asset types to search within.              Possible
-	  values: 0 - EPG linear programs entries, any media type ID (according to media
-	  type IDs defined dynamically in the system).              If omitted - all types
-	  should be included.
+	 * Comma separated list of asset types to search within.               Possible
+	  values: 0 – EPG linear programs entries, any media type ID (according to media
+	  type IDs defined dynamically in the system).              If omitted – all
+	  types should be included.
 	 */
 	private String typeIn;
 	/**

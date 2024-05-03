@@ -63,7 +63,6 @@ public class SegmentationType extends ObjectBase {
 		String updateDate();
 		String executeDate();
 		String version();
-		String assetUserRuleId();
 	}
 
 	/**
@@ -111,10 +110,6 @@ public class SegmentationType extends ObjectBase {
 	 * Segmentation type version
 	 */
 	private Long version;
-	/**
-	 * Asset User Rule Id
-	 */
-	private Long assetUserRuleId;
 
 	// id:
 	public Long getId(){
@@ -196,18 +191,6 @@ public class SegmentationType extends ObjectBase {
 	public Long getVersion(){
 		return this.version;
 	}
-	// assetUserRuleId:
-	public Long getAssetUserRuleId(){
-		return this.assetUserRuleId;
-	}
-	public void setAssetUserRuleId(Long assetUserRuleId){
-		this.assetUserRuleId = assetUserRuleId;
-	}
-
-	public void assetUserRuleId(String multirequestToken){
-		setToken("assetUserRuleId", multirequestToken);
-	}
-
 
 	public SegmentationType() {
 		super();
@@ -230,7 +213,6 @@ public class SegmentationType extends ObjectBase {
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
 		executeDate = GsonParser.parseLong(jsonObject.get("executeDate"));
 		version = GsonParser.parseLong(jsonObject.get("version"));
-		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 
 	}
 
@@ -243,7 +225,6 @@ public class SegmentationType extends ObjectBase {
 		kparams.add("conditionsOperator", this.conditionsOperator);
 		kparams.add("actions", this.actions);
 		kparams.add("value", this.value);
-		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		return kparams;
 	}
 
