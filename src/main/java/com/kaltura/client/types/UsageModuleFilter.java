@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.AssociatedShopEntities;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -45,12 +46,17 @@ public class UsageModuleFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
 		String idEqual();
+		AssociatedShopEntities.Tokenizer associatedShopEntities();
 	}
 
 	/**
 	 * usageModule id
 	 */
 	private Integer idEqual;
+	/**
+	 * filter all usageModules by associate shop entities
+	 */
+	private AssociatedShopEntities associatedShopEntities;
 
 	// idEqual:
 	public Integer getIdEqual(){
@@ -62,6 +68,14 @@ public class UsageModuleFilter extends Filter {
 
 	public void idEqual(String multirequestToken){
 		setToken("idEqual", multirequestToken);
+	}
+
+	// associatedShopEntities:
+	public AssociatedShopEntities getAssociatedShopEntities(){
+		return this.associatedShopEntities;
+	}
+	public void setAssociatedShopEntities(AssociatedShopEntities associatedShopEntities){
+		this.associatedShopEntities = associatedShopEntities;
 	}
 
 
@@ -76,6 +90,7 @@ public class UsageModuleFilter extends Filter {
 
 		// set members values:
 		idEqual = GsonParser.parseInt(jsonObject.get("idEqual"));
+		associatedShopEntities = GsonParser.parseObject(jsonObject.getAsJsonObject("associatedShopEntities"), AssociatedShopEntities.class);
 
 	}
 
@@ -83,6 +98,7 @@ public class UsageModuleFilter extends Filter {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaUsageModuleFilter");
 		kparams.add("idEqual", this.idEqual);
+		kparams.add("associatedShopEntities", this.associatedShopEntities);
 		return kparams;
 	}
 
