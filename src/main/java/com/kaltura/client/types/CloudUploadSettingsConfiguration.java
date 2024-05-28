@@ -58,17 +58,17 @@ public class CloudUploadSettingsConfiguration extends PartnerConfiguration {
 	private String defaultAllowedFileExtensions;
 	/**
 	 * Comma seperated list of file extensions that allowed to partner in question     
-	          {&amp;quot;jpeg&amp;quot;,&amp;quot;image/jpeg&amp;quot;},             
-	  {&amp;quot;jpg&amp;quot;,&amp;quot;image/jpeg&amp;quot;},             
-	  {&amp;quot;png&amp;quot;,&amp;quot;image/png&amp;quot;},             
-	  {&amp;quot;tif&amp;quot;,&amp;quot;image/tiff&amp;quot;},             
-	  {&amp;quot;tiff&amp;quot;,&amp;quot;image/tiff&amp;quot;},             
-	  {&amp;quot;gif&amp;quot;,&amp;quot;image/gif&amp;quot;},             
-	  {&amp;quot;xls&amp;quot;,&amp;quot;application/vnd.ms-excel&amp;quot;},         
-	     
-	  {&amp;quot;xlsx&amp;quot;,&amp;quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&amp;quot;},
-	               {&amp;quot;csv&amp;quot;,&amp;quot;text/csv&amp;quot;},            
-	   {&amp;quot;xml&amp;quot;,&amp;quot;text/xml&amp;quot;},             
+	          {&amp;quot;jpeg&amp;quot;, &amp;quot;image/jpeg&amp;quot; },            
+	   {&amp;quot;jpg&amp;quot;,&amp;quot;image/jpeg&amp;quot;},             
+	  {&amp;quot;jpg&amp;quot;,&amp;quot;image/png&amp;quot;},              {
+	  &amp;quot;tif&amp;quot;,&amp;quot;image/tiff&amp;quot;},              {
+	  &amp;quot;tiff&amp;quot;, &amp;quot;image/tiff&amp;quot;},             
+	  {&amp;quot;gif&amp;quot;,  &amp;quot;image/gif&amp;quot;},             
+	  {&amp;quot;xls&amp;quot;,  &amp;quot;application/vnd.ms-excel&amp;quot;},       
+	       
+	  {&amp;quot;xlsx&amp;quot;,&amp;quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&amp;quot;
+	  },              {&amp;quot;csv&amp;quot;,&amp;quot;text/csv&amp;quot;},         
+	      {&amp;quot;xml&amp;quot;,&amp;quot;text/xml&amp;quot;},             
 	  {&amp;quot;txt&amp;quot;,&amp;quot;text/plain&amp;quot;},             
 	  {&amp;quot;doc&amp;quot;,&amp;quot;application/msword&amp;quot;},             
 	  {&amp;quot;docx&amp;quot;,&amp;quot;application/vnd.openxmlformats-officedocument.wordprocessingml.document&amp;quot;},
