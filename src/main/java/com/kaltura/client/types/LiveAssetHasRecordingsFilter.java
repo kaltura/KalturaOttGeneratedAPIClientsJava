@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AssociatedShopEntities;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -40,65 +39,56 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Returns the KalturaLiveAsset object passed as input parameter if there is at
+  least one associated KalturaRecordingAsset object. Returns empty array
+  otherwise.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DiscountDetailsFilter.Tokenizer.class)
-public class DiscountDetailsFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(LiveAssetHasRecordingsFilter.Tokenizer.class)
+public class LiveAssetHasRecordingsFilter extends AssetFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		AssociatedShopEntities.Tokenizer associatedShopEntities();
+	public interface Tokenizer extends AssetFilter.Tokenizer {
+		String liveAssetIdEqual();
 	}
 
 	/**
-	 * Comma separated discount codes
+	 * KalturaLiveAsset.id value of the live linear channel to be examined for
+	  associated recordings
 	 */
-	private String idIn;
-	/**
-	 * filter all discountDetails by associate shop entities
-	 */
-	private AssociatedShopEntities associatedShopEntities;
+	private Long liveAssetIdEqual;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// liveAssetIdEqual:
+	public Long getLiveAssetIdEqual(){
+		return this.liveAssetIdEqual;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setLiveAssetIdEqual(Long liveAssetIdEqual){
+		this.liveAssetIdEqual = liveAssetIdEqual;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// associatedShopEntities:
-	public AssociatedShopEntities getAssociatedShopEntities(){
-		return this.associatedShopEntities;
-	}
-	public void setAssociatedShopEntities(AssociatedShopEntities associatedShopEntities){
-		this.associatedShopEntities = associatedShopEntities;
+	public void liveAssetIdEqual(String multirequestToken){
+		setToken("liveAssetIdEqual", multirequestToken);
 	}
 
 
-	public DiscountDetailsFilter() {
+	public LiveAssetHasRecordingsFilter() {
 		super();
 	}
 
-	public DiscountDetailsFilter(JsonObject jsonObject) throws APIException {
+	public LiveAssetHasRecordingsFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		associatedShopEntities = GsonParser.parseObject(jsonObject.getAsJsonObject("associatedShopEntities"), AssociatedShopEntities.class);
+		liveAssetIdEqual = GsonParser.parseLong(jsonObject.get("liveAssetIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscountDetailsFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("associatedShopEntities", this.associatedShopEntities);
+		kparams.add("objectType", "KalturaLiveAssetHasRecordingsFilter");
+		kparams.add("liveAssetIdEqual", this.liveAssetIdEqual);
 		return kparams;
 	}
 
