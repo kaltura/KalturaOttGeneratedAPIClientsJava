@@ -31,10 +31,7 @@ import com.kaltura.client.enums.HouseholdFrequencyType;
 import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Household;
 import com.kaltura.client.types.HouseholdFilter;
-import com.kaltura.client.types.HouseholdPartnerConfiguration;
-import com.kaltura.client.types.RetryDeleteRequest;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
-import com.kaltura.client.utils.request.NullRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -112,20 +109,6 @@ public class HouseholdService {
 	 */
     public static GetHouseholdBuilder get(int id)  {
 		return new GetHouseholdBuilder(id);
-	}
-	
-	public static class GetPartnerConfigurationHouseholdBuilder extends RequestBuilder<HouseholdPartnerConfiguration, HouseholdPartnerConfiguration.Tokenizer, GetPartnerConfigurationHouseholdBuilder> {
-		
-		public GetPartnerConfigurationHouseholdBuilder() {
-			super(HouseholdPartnerConfiguration.class, "household", "getPartnerConfiguration");
-		}
-	}
-
-	/**
-	 * Get household partner configuration
-	 */
-    public static GetPartnerConfigurationHouseholdBuilder getPartnerConfiguration()  {
-		return new GetPartnerConfigurationHouseholdBuilder();
 	}
 	
 	public static class ListHouseholdBuilder extends ListResponseRequestBuilder<Household, Household.Tokenizer, ListHouseholdBuilder> {
@@ -211,23 +194,6 @@ public class HouseholdService {
 		return new ResumeHouseholdBuilder();
 	}
 	
-	public static class RetryDeleteHouseholdBuilder extends NullRequestBuilder {
-		
-		public RetryDeleteHouseholdBuilder(RetryDeleteRequest request) {
-			super("household", "retryDelete");
-			params.add("request", request);
-		}
-	}
-
-	/**
-	 * Retry delete household entities by retention.
-	 * 
-	 * @param request Request data
-	 */
-    public static RetryDeleteHouseholdBuilder retryDelete(RetryDeleteRequest request)  {
-		return new RetryDeleteHouseholdBuilder(request);
-	}
-	
 	public static class SuspendHouseholdBuilder extends RequestBuilder<Boolean, String, SuspendHouseholdBuilder> {
 		
 		public SuspendHouseholdBuilder(int roleId) {
@@ -270,22 +236,5 @@ public class HouseholdService {
 	 */
     public static UpdateHouseholdBuilder update(Household household)  {
 		return new UpdateHouseholdBuilder(household);
-	}
-	
-	public static class UpdatePartnerConfigurationHouseholdBuilder extends NullRequestBuilder {
-		
-		public UpdatePartnerConfigurationHouseholdBuilder(HouseholdPartnerConfiguration configuration) {
-			super("household", "updatePartnerConfiguration");
-			params.add("configuration", configuration);
-		}
-	}
-
-	/**
-	 * Update household partner configuration
-	 * 
-	 * @param configuration Household partner configuration details
-	 */
-    public static UpdatePartnerConfigurationHouseholdBuilder updatePartnerConfiguration(HouseholdPartnerConfiguration configuration)  {
-		return new UpdatePartnerConfigurationHouseholdBuilder(configuration);
 	}
 }
