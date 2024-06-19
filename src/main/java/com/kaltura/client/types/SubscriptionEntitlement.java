@@ -48,6 +48,10 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class SubscriptionEntitlement extends Entitlement {
 	
 	public interface Tokenizer extends Entitlement.Tokenizer {
+		String nextRenewalDate();
+		String isRenewableForPurchase();
+		String isRenewable();
+		String isInGracePeriod();
 		String paymentGatewayId();
 		String paymentMethodId();
 		String scheduledSubscriptionId();
@@ -57,6 +61,23 @@ public class SubscriptionEntitlement extends Entitlement {
 		String isFlexiblePricePlan();
 	}
 
+	/**
+	 * The date of the next renewal (only for subscription)
+	 */
+	private Long nextRenewalDate;
+	/**
+	 * Indicates whether the subscription is renewable in this purchase (only for
+	  subscription)
+	 */
+	private Boolean isRenewableForPurchase;
+	/**
+	 * Indicates whether a subscription is renewable (only for subscription)
+	 */
+	private Boolean isRenewable;
+	/**
+	 * Indicates whether the user is currently in his grace period entitlement
+	 */
+	private Boolean isInGracePeriod;
 	/**
 	 * Payment Gateway identifier
 	 */
@@ -87,6 +108,22 @@ public class SubscriptionEntitlement extends Entitlement {
 	 */
 	private Boolean isFlexiblePricePlan;
 
+	// nextRenewalDate:
+	public Long getNextRenewalDate(){
+		return this.nextRenewalDate;
+	}
+	// isRenewableForPurchase:
+	public Boolean getIsRenewableForPurchase(){
+		return this.isRenewableForPurchase;
+	}
+	// isRenewable:
+	public Boolean getIsRenewable(){
+		return this.isRenewable;
+	}
+	// isInGracePeriod:
+	public Boolean getIsInGracePeriod(){
+		return this.isInGracePeriod;
+	}
 	// paymentGatewayId:
 	public Integer getPaymentGatewayId(){
 		return this.paymentGatewayId;
@@ -142,6 +179,10 @@ public class SubscriptionEntitlement extends Entitlement {
 		if(jsonObject == null) return;
 
 		// set members values:
+		nextRenewalDate = GsonParser.parseLong(jsonObject.get("nextRenewalDate"));
+		isRenewableForPurchase = GsonParser.parseBoolean(jsonObject.get("isRenewableForPurchase"));
+		isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
+		isInGracePeriod = GsonParser.parseBoolean(jsonObject.get("isInGracePeriod"));
 		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
 		paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
 		scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
