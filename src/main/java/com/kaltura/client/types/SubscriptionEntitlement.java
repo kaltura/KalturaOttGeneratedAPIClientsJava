@@ -48,35 +48,15 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class SubscriptionEntitlement extends Entitlement {
 	
 	public interface Tokenizer extends Entitlement.Tokenizer {
-		String nextRenewalDate();
-		String isRenewableForPurchase();
-		String isRenewable();
-		String isInGracePeriod();
 		String paymentGatewayId();
 		String paymentMethodId();
 		String scheduledSubscriptionId();
 		String unifiedPaymentId();
 		String isSuspended();
 		EntitlementPriceDetails.Tokenizer priceDetails();
+		String isFlexiblePricePlan();
 	}
 
-	/**
-	 * The date of the next renewal (only for subscription)
-	 */
-	private Long nextRenewalDate;
-	/**
-	 * Indicates whether the subscription is renewable in this purchase (only for
-	  subscription)
-	 */
-	private Boolean isRenewableForPurchase;
-	/**
-	 * Indicates whether a subscription is renewable (only for subscription)
-	 */
-	private Boolean isRenewable;
-	/**
-	 * Indicates whether the user is currently in his grace period entitlement
-	 */
-	private Boolean isInGracePeriod;
 	/**
 	 * Payment Gateway identifier
 	 */
@@ -101,23 +81,12 @@ public class SubscriptionEntitlement extends Entitlement {
 	 * Price details
 	 */
 	private EntitlementPriceDetails priceDetails;
+	/**
+	 * Indicates whether the subscription is now within the flexible price plan
+	  lifecycle or not
+	 */
+	private Boolean isFlexiblePricePlan;
 
-	// nextRenewalDate:
-	public Long getNextRenewalDate(){
-		return this.nextRenewalDate;
-	}
-	// isRenewableForPurchase:
-	public Boolean getIsRenewableForPurchase(){
-		return this.isRenewableForPurchase;
-	}
-	// isRenewable:
-	public Boolean getIsRenewable(){
-		return this.isRenewable;
-	}
-	// isInGracePeriod:
-	public Boolean getIsInGracePeriod(){
-		return this.isInGracePeriod;
-	}
 	// paymentGatewayId:
 	public Integer getPaymentGatewayId(){
 		return this.paymentGatewayId;
@@ -158,6 +127,10 @@ public class SubscriptionEntitlement extends Entitlement {
 	public EntitlementPriceDetails getPriceDetails(){
 		return this.priceDetails;
 	}
+	// isFlexiblePricePlan:
+	public Boolean getIsFlexiblePricePlan(){
+		return this.isFlexiblePricePlan;
+	}
 
 	public SubscriptionEntitlement() {
 		super();
@@ -169,16 +142,13 @@ public class SubscriptionEntitlement extends Entitlement {
 		if(jsonObject == null) return;
 
 		// set members values:
-		nextRenewalDate = GsonParser.parseLong(jsonObject.get("nextRenewalDate"));
-		isRenewableForPurchase = GsonParser.parseBoolean(jsonObject.get("isRenewableForPurchase"));
-		isRenewable = GsonParser.parseBoolean(jsonObject.get("isRenewable"));
-		isInGracePeriod = GsonParser.parseBoolean(jsonObject.get("isInGracePeriod"));
 		paymentGatewayId = GsonParser.parseInt(jsonObject.get("paymentGatewayId"));
 		paymentMethodId = GsonParser.parseInt(jsonObject.get("paymentMethodId"));
 		scheduledSubscriptionId = GsonParser.parseLong(jsonObject.get("scheduledSubscriptionId"));
 		unifiedPaymentId = GsonParser.parseLong(jsonObject.get("unifiedPaymentId"));
 		isSuspended = GsonParser.parseBoolean(jsonObject.get("isSuspended"));
 		priceDetails = GsonParser.parseObject(jsonObject.getAsJsonObject("priceDetails"), EntitlementPriceDetails.class);
+		isFlexiblePricePlan = GsonParser.parseBoolean(jsonObject.get("isFlexiblePricePlan"));
 
 	}
 
