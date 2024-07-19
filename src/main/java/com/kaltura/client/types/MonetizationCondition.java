@@ -50,23 +50,15 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class MonetizationCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String minValue();
-		String maxValue();
 		String days();
 		String type();
 		String operator();
 		String businessModuleIdIn();
 		String currencyCode();
+		String minValue();
+		String maxValue();
 	}
 
-	/**
-	 * The minimum value to be met
-	 */
-	private Integer minValue;
-	/**
-	 * The maximum value to be met
-	 */
-	private Integer maxValue;
 	/**
 	 * How many days back should the actions be considered
 	 */
@@ -87,30 +79,14 @@ public class MonetizationCondition extends BaseSegmentCondition {
 	 * Which currency code should be taken into consideration
 	 */
 	private String currencyCode;
-
-	// minValue:
-	public Integer getMinValue(){
-		return this.minValue;
-	}
-	public void setMinValue(Integer minValue){
-		this.minValue = minValue;
-	}
-
-	public void minValue(String multirequestToken){
-		setToken("minValue", multirequestToken);
-	}
-
-	// maxValue:
-	public Integer getMaxValue(){
-		return this.maxValue;
-	}
-	public void setMaxValue(Integer maxValue){
-		this.maxValue = maxValue;
-	}
-
-	public void maxValue(String multirequestToken){
-		setToken("maxValue", multirequestToken);
-	}
+	/**
+	 * The minimum value to be met
+	 */
+	private Integer minValue;
+	/**
+	 * The maximum value to be met
+	 */
+	private Integer maxValue;
 
 	// days:
 	public Integer getDays(){
@@ -172,6 +148,30 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		setToken("currencyCode", multirequestToken);
 	}
 
+	// minValue:
+	public Integer getMinValue(){
+		return this.minValue;
+	}
+	public void setMinValue(Integer minValue){
+		this.minValue = minValue;
+	}
+
+	public void minValue(String multirequestToken){
+		setToken("minValue", multirequestToken);
+	}
+
+	// maxValue:
+	public Integer getMaxValue(){
+		return this.maxValue;
+	}
+	public void setMaxValue(Integer maxValue){
+		this.maxValue = maxValue;
+	}
+
+	public void maxValue(String multirequestToken){
+		setToken("maxValue", multirequestToken);
+	}
+
 
 	public MonetizationCondition() {
 		super();
@@ -183,26 +183,26 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		minValue = GsonParser.parseInt(jsonObject.get("minValue"));
-		maxValue = GsonParser.parseInt(jsonObject.get("maxValue"));
 		days = GsonParser.parseInt(jsonObject.get("days"));
 		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
 		operator = MathemticalOperatorType.get(GsonParser.parseString(jsonObject.get("operator")));
 		businessModuleIdIn = GsonParser.parseString(jsonObject.get("businessModuleIdIn"));
 		currencyCode = GsonParser.parseString(jsonObject.get("currencyCode"));
+		minValue = GsonParser.parseInt(jsonObject.get("minValue"));
+		maxValue = GsonParser.parseInt(jsonObject.get("maxValue"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaMonetizationCondition");
-		kparams.add("minValue", this.minValue);
-		kparams.add("maxValue", this.maxValue);
 		kparams.add("days", this.days);
 		kparams.add("type", this.type);
 		kparams.add("operator", this.operator);
 		kparams.add("businessModuleIdIn", this.businessModuleIdIn);
 		kparams.add("currencyCode", this.currencyCode);
+		kparams.add("minValue", this.minValue);
+		kparams.add("maxValue", this.maxValue);
 		return kparams;
 	}
 
