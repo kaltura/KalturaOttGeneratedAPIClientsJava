@@ -58,6 +58,7 @@ public class SubscriptionEntitlement extends Entitlement {
 		String unifiedPaymentId();
 		String isSuspended();
 		EntitlementPriceDetails.Tokenizer priceDetails();
+		String isFlexiblePricePlan();
 	}
 
 	/**
@@ -101,6 +102,11 @@ public class SubscriptionEntitlement extends Entitlement {
 	 * Price details
 	 */
 	private EntitlementPriceDetails priceDetails;
+	/**
+	 * Indicates whether the subscription is now within the flexible price plan
+	  lifecycle or not
+	 */
+	private Boolean isFlexiblePricePlan;
 
 	// nextRenewalDate:
 	public Long getNextRenewalDate(){
@@ -158,6 +164,10 @@ public class SubscriptionEntitlement extends Entitlement {
 	public EntitlementPriceDetails getPriceDetails(){
 		return this.priceDetails;
 	}
+	// isFlexiblePricePlan:
+	public Boolean getIsFlexiblePricePlan(){
+		return this.isFlexiblePricePlan;
+	}
 
 	public SubscriptionEntitlement() {
 		super();
@@ -179,6 +189,7 @@ public class SubscriptionEntitlement extends Entitlement {
 		unifiedPaymentId = GsonParser.parseLong(jsonObject.get("unifiedPaymentId"));
 		isSuspended = GsonParser.parseBoolean(jsonObject.get("isSuspended"));
 		priceDetails = GsonParser.parseObject(jsonObject.getAsJsonObject("priceDetails"), EntitlementPriceDetails.class);
+		isFlexiblePricePlan = GsonParser.parseBoolean(jsonObject.get("isFlexiblePricePlan"));
 
 	}
 

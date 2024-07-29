@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AssociatedShopEntities;
+import com.kaltura.client.types.BaseAssetOrder;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +41,45 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DiscountDetailsFilter.Tokenizer.class)
-public class DiscountDetailsFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(TopSubscriptionEntitledOrFreeRsp.Tokenizer.class)
+public class TopSubscriptionEntitledOrFreeRsp extends RepresentativeSelectionPolicy {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		AssociatedShopEntities.Tokenizer associatedShopEntities();
+	public interface Tokenizer extends RepresentativeSelectionPolicy.Tokenizer {
+		BaseAssetOrder.Tokenizer orderBy();
 	}
 
 	/**
-	 * Comma separated discount codes
+	 * order by
 	 */
-	private String idIn;
-	/**
-	 * filter all discountDetails by associate shop entities
-	 */
-	private AssociatedShopEntities associatedShopEntities;
+	private BaseAssetOrder orderBy;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// orderBy:
+	public BaseAssetOrder getOrderBy(){
+		return this.orderBy;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// associatedShopEntities:
-	public AssociatedShopEntities getAssociatedShopEntities(){
-		return this.associatedShopEntities;
-	}
-	public void setAssociatedShopEntities(AssociatedShopEntities associatedShopEntities){
-		this.associatedShopEntities = associatedShopEntities;
+	public void setOrderBy(BaseAssetOrder orderBy){
+		this.orderBy = orderBy;
 	}
 
 
-	public DiscountDetailsFilter() {
+	public TopSubscriptionEntitledOrFreeRsp() {
 		super();
 	}
 
-	public DiscountDetailsFilter(JsonObject jsonObject) throws APIException {
+	public TopSubscriptionEntitledOrFreeRsp(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		associatedShopEntities = GsonParser.parseObject(jsonObject.getAsJsonObject("associatedShopEntities"), AssociatedShopEntities.class);
+		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), BaseAssetOrder.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscountDetailsFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("associatedShopEntities", this.associatedShopEntities);
+		kparams.add("objectType", "KalturaTopSubscriptionEntitledOrFreeRsp");
+		kparams.add("orderBy", this.orderBy);
 		return kparams;
 	}
 
