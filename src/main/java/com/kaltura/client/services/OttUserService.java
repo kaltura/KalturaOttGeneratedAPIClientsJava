@@ -33,6 +33,7 @@ import com.kaltura.client.types.LoginSession;
 import com.kaltura.client.types.OTTUser;
 import com.kaltura.client.types.OTTUserDynamicData;
 import com.kaltura.client.types.OTTUserFilter;
+import com.kaltura.client.types.ResendMfaTokenResponse;
 import com.kaltura.client.types.RetryDeleteRequest;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
@@ -352,6 +353,69 @@ public class OttUserService {
 		return new LogoutOttUserBuilder(adapterData);
 	}
 	
+	public static class MfaLoginOttUserBuilder extends RequestBuilder<LoginResponse, LoginResponse.Tokenizer, MfaLoginOttUserBuilder> {
+		
+		public MfaLoginOttUserBuilder(int partnerId, String token, String username, String password, Map<String, StringValue> extraParams, String udid) {
+			super(LoginResponse.class, "ottuser", "mfaLogin");
+			params.add("partnerId", partnerId);
+			params.add("token", token);
+			params.add("username", username);
+			params.add("password", password);
+			params.add("extraParams", extraParams);
+			params.add("udid", udid);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+		
+		public void token(String multirequestToken) {
+			params.add("token", multirequestToken);
+		}
+		
+		public void username(String multirequestToken) {
+			params.add("username", multirequestToken);
+		}
+		
+		public void password(String multirequestToken) {
+			params.add("password", multirequestToken);
+		}
+		
+		public void udid(String multirequestToken) {
+			params.add("udid", multirequestToken);
+		}
+	}
+
+	public static MfaLoginOttUserBuilder mfaLogin(int partnerId, String token)  {
+		return mfaLogin(partnerId, token, null);
+	}
+
+	public static MfaLoginOttUserBuilder mfaLogin(int partnerId, String token, String username)  {
+		return mfaLogin(partnerId, token, username, null);
+	}
+
+	public static MfaLoginOttUserBuilder mfaLogin(int partnerId, String token, String username, String password)  {
+		return mfaLogin(partnerId, token, username, password, null);
+	}
+
+	public static MfaLoginOttUserBuilder mfaLogin(int partnerId, String token, String username, String password, Map<String, StringValue> extraParams)  {
+		return mfaLogin(partnerId, token, username, password, extraParams, null);
+	}
+
+	/**
+	 * login based on MFA token.
+	 * 
+	 * @param partnerId Partner identifier
+	 * @param token MFA token
+	 * @param username user name
+	 * @param password password
+	 * @param extraParams extra params
+	 * @param udid Device UDID
+	 */
+    public static MfaLoginOttUserBuilder mfaLogin(int partnerId, String token, String username, String password, Map<String, StringValue> extraParams, String udid)  {
+		return new MfaLoginOttUserBuilder(partnerId, token, username, password, extraParams, udid);
+	}
+	
 	public static class RegisterOttUserBuilder extends RequestBuilder<OTTUser, OTTUser.Tokenizer, RegisterOttUserBuilder> {
 		
 		public RegisterOttUserBuilder(int partnerId, OTTUser user, String password) {
@@ -406,6 +470,53 @@ public class OttUserService {
 	 */
     public static ResendActivationTokenOttUserBuilder resendActivationToken(int partnerId, String username)  {
 		return new ResendActivationTokenOttUserBuilder(partnerId, username);
+	}
+	
+	public static class ResendMfaTokenOttUserBuilder extends RequestBuilder<ResendMfaTokenResponse, ResendMfaTokenResponse.Tokenizer, ResendMfaTokenOttUserBuilder> {
+		
+		public ResendMfaTokenOttUserBuilder(int partnerId, String username, String password, Map<String, StringValue> extraParams) {
+			super(ResendMfaTokenResponse.class, "ottuser", "resendMfaToken");
+			params.add("partnerId", partnerId);
+			params.add("username", username);
+			params.add("password", password);
+			params.add("extraParams", extraParams);
+		}
+		
+		public void partnerId(String multirequestToken) {
+			params.add("partnerId", multirequestToken);
+		}
+		
+		public void username(String multirequestToken) {
+			params.add("username", multirequestToken);
+		}
+		
+		public void password(String multirequestToken) {
+			params.add("password", multirequestToken);
+		}
+	}
+
+	public static ResendMfaTokenOttUserBuilder resendMfaToken(int partnerId)  {
+		return resendMfaToken(partnerId, null);
+	}
+
+	public static ResendMfaTokenOttUserBuilder resendMfaToken(int partnerId, String username)  {
+		return resendMfaToken(partnerId, username, null);
+	}
+
+	public static ResendMfaTokenOttUserBuilder resendMfaToken(int partnerId, String username, String password)  {
+		return resendMfaToken(partnerId, username, password, null);
+	}
+
+	/**
+	 * resend MFA Token for the user.
+	 * 
+	 * @param partnerId Partner identifier
+	 * @param username user name
+	 * @param password password
+	 * @param extraParams extra params
+	 */
+    public static ResendMfaTokenOttUserBuilder resendMfaToken(int partnerId, String username, String password, Map<String, StringValue> extraParams)  {
+		return new ResendMfaTokenOttUserBuilder(partnerId, username, password, extraParams);
 	}
 	
 	public static class ResetPasswordOttUserBuilder extends RequestBuilder<Boolean, String, ResetPasswordOttUserBuilder> {
