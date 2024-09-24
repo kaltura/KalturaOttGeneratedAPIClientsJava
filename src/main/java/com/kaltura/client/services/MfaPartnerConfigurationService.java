@@ -27,9 +27,8 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.AssetStatistics;
-import com.kaltura.client.types.AssetStatisticsQuery;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.types.MultifactorAuthenticationPartnerConfiguration;
+import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
  * This class was generated using exec.php
@@ -38,24 +37,36 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class AssetStatisticsService {
+public class MfaPartnerConfigurationService {
 	
-	public static class QueryAssetStatisticsBuilder extends ListResponseRequestBuilder<AssetStatistics, AssetStatistics.Tokenizer, QueryAssetStatisticsBuilder> {
+	public static class GetMfaPartnerConfigurationBuilder extends RequestBuilder<MultifactorAuthenticationPartnerConfiguration, MultifactorAuthenticationPartnerConfiguration.Tokenizer, GetMfaPartnerConfigurationBuilder> {
 		
-		public QueryAssetStatisticsBuilder(AssetStatisticsQuery query) {
-			super(AssetStatistics.class, "assetstatistics", "query");
-			params.add("query", query);
+		public GetMfaPartnerConfigurationBuilder() {
+			super(MultifactorAuthenticationPartnerConfiguration.class, "mfapartnerconfiguration", "get");
 		}
 	}
 
 	/**
-	 * Returns statistics for given list of assets by type and / or time period.       
-	        Supported values for KalturaAssetStatisticsQuery.assetTypeEqual :
-	  KalturaAssetType.media, KalturaAssetType.epg.
-	 * 
-	 * @param query Query for assets statistics
+	 * Get MFA partner configuration.
 	 */
-    public static QueryAssetStatisticsBuilder query(AssetStatisticsQuery query)  {
-		return new QueryAssetStatisticsBuilder(query);
+    public static GetMfaPartnerConfigurationBuilder get()  {
+		return new GetMfaPartnerConfigurationBuilder();
+	}
+	
+	public static class UpdateMfaPartnerConfigurationBuilder extends RequestBuilder<MultifactorAuthenticationPartnerConfiguration, MultifactorAuthenticationPartnerConfiguration.Tokenizer, UpdateMfaPartnerConfigurationBuilder> {
+		
+		public UpdateMfaPartnerConfigurationBuilder(MultifactorAuthenticationPartnerConfiguration configuration) {
+			super(MultifactorAuthenticationPartnerConfiguration.class, "mfapartnerconfiguration", "update");
+			params.add("configuration", configuration);
+		}
+	}
+
+	/**
+	 * Update MFA partner configuration.
+	 * 
+	 * @param configuration MFA configuration
+	 */
+    public static UpdateMfaPartnerConfigurationBuilder update(MultifactorAuthenticationPartnerConfiguration configuration)  {
+		return new UpdateMfaPartnerConfigurationBuilder(configuration);
 	}
 }
