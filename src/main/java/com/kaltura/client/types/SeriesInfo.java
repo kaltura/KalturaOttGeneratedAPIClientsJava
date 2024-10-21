@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AssociatedShopEntities;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +41,87 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DiscountDetailsFilter.Tokenizer.class)
-public class DiscountDetailsFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SeriesInfo.Tokenizer.class)
+public class SeriesInfo extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		AssociatedShopEntities.Tokenizer associatedShopEntities();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String seriesIdMetadataName();
+		String seriesTypeId();
+		String episodeTypeId();
 	}
 
 	/**
-	 * Comma separated discount codes
+	 * Series ID meta name
 	 */
-	private String idIn;
+	private String seriesIdMetadataName;
 	/**
-	 * filter all discountDetails by associate shop entities
+	 * Series asset type ID
 	 */
-	private AssociatedShopEntities associatedShopEntities;
+	private Long seriesTypeId;
+	/**
+	 * Episode asset type ID
+	 */
+	private Long episodeTypeId;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// seriesIdMetadataName:
+	public String getSeriesIdMetadataName(){
+		return this.seriesIdMetadataName;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// associatedShopEntities:
-	public AssociatedShopEntities getAssociatedShopEntities(){
-		return this.associatedShopEntities;
-	}
-	public void setAssociatedShopEntities(AssociatedShopEntities associatedShopEntities){
-		this.associatedShopEntities = associatedShopEntities;
+	public void setSeriesIdMetadataName(String seriesIdMetadataName){
+		this.seriesIdMetadataName = seriesIdMetadataName;
 	}
 
+	public void seriesIdMetadataName(String multirequestToken){
+		setToken("seriesIdMetadataName", multirequestToken);
+	}
 
-	public DiscountDetailsFilter() {
+	// seriesTypeId:
+	public Long getSeriesTypeId(){
+		return this.seriesTypeId;
+	}
+	public void setSeriesTypeId(Long seriesTypeId){
+		this.seriesTypeId = seriesTypeId;
+	}
+
+	public void seriesTypeId(String multirequestToken){
+		setToken("seriesTypeId", multirequestToken);
+	}
+
+	// episodeTypeId:
+	public Long getEpisodeTypeId(){
+		return this.episodeTypeId;
+	}
+	public void setEpisodeTypeId(Long episodeTypeId){
+		this.episodeTypeId = episodeTypeId;
+	}
+
+	public void episodeTypeId(String multirequestToken){
+		setToken("episodeTypeId", multirequestToken);
+	}
+
+
+	public SeriesInfo() {
 		super();
 	}
 
-	public DiscountDetailsFilter(JsonObject jsonObject) throws APIException {
+	public SeriesInfo(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		associatedShopEntities = GsonParser.parseObject(jsonObject.getAsJsonObject("associatedShopEntities"), AssociatedShopEntities.class);
+		seriesIdMetadataName = GsonParser.parseString(jsonObject.get("seriesIdMetadataName"));
+		seriesTypeId = GsonParser.parseLong(jsonObject.get("seriesTypeId"));
+		episodeTypeId = GsonParser.parseLong(jsonObject.get("episodeTypeId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscountDetailsFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("associatedShopEntities", this.associatedShopEntities);
+		kparams.add("objectType", "KalturaSeriesInfo");
+		kparams.add("seriesIdMetadataName", this.seriesIdMetadataName);
+		kparams.add("seriesTypeId", this.seriesTypeId);
+		kparams.add("episodeTypeId", this.episodeTypeId);
 		return kparams;
 	}
 

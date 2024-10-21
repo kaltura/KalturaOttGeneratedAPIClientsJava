@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AssociatedShopEntities;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -41,64 +39,25 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DiscountDetailsFilter.Tokenizer.class)
-public class DiscountDetailsFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(WatchBasedRecommendationsProfileFilter.Tokenizer.class)
+public abstract class WatchBasedRecommendationsProfileFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		AssociatedShopEntities.Tokenizer associatedShopEntities();
-	}
-
-	/**
-	 * Comma separated discount codes
-	 */
-	private String idIn;
-	/**
-	 * filter all discountDetails by associate shop entities
-	 */
-	private AssociatedShopEntities associatedShopEntities;
-
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
-	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
-	}
-
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// associatedShopEntities:
-	public AssociatedShopEntities getAssociatedShopEntities(){
-		return this.associatedShopEntities;
-	}
-	public void setAssociatedShopEntities(AssociatedShopEntities associatedShopEntities){
-		this.associatedShopEntities = associatedShopEntities;
 	}
 
 
-	public DiscountDetailsFilter() {
+
+	public WatchBasedRecommendationsProfileFilter() {
 		super();
 	}
 
-	public DiscountDetailsFilter(JsonObject jsonObject) throws APIException {
+	public WatchBasedRecommendationsProfileFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		associatedShopEntities = GsonParser.parseObject(jsonObject.getAsJsonObject("associatedShopEntities"), AssociatedShopEntities.class);
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscountDetailsFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("associatedShopEntities", this.associatedShopEntities);
+		kparams.add("objectType", "KalturaWatchBasedRecommendationsProfileFilter");
 		return kparams;
 	}
 

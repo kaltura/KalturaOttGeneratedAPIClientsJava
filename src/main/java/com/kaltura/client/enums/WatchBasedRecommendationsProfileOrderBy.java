@@ -25,11 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
-
-import com.kaltura.client.types.AssetStatistics;
-import com.kaltura.client.types.AssetStatisticsQuery;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -37,25 +33,37 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum WatchBasedRecommendationsProfileOrderBy implements EnumAsString {
+	NONE("NONE");
 
-public class AssetStatisticsService {
-	
-	public static class QueryAssetStatisticsBuilder extends ListResponseRequestBuilder<AssetStatistics, AssetStatistics.Tokenizer, QueryAssetStatisticsBuilder> {
-		
-		public QueryAssetStatisticsBuilder(AssetStatisticsQuery query) {
-			super(AssetStatistics.class, "assetstatistics", "query");
-			params.add("query", query);
+	private String value;
+
+	WatchBasedRecommendationsProfileOrderBy(String value) {
+		this.value = value;
+	}
+
+	@Override
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public static WatchBasedRecommendationsProfileOrderBy get(String value) {
+		if(value == null)
+		{
+			return null;
 		}
-	}
-
-	/**
-	 * Returns statistics for given list of assets by type and / or time period.       
-	        Supported values for KalturaAssetStatisticsQuery.assetTypeEqual :
-	  KalturaAssetType.media, KalturaAssetType.epg.
-	 * 
-	 * @param query Query for assets statistics
-	 */
-    public static QueryAssetStatisticsBuilder query(AssetStatisticsQuery query)  {
-		return new QueryAssetStatisticsBuilder(query);
-	}
+		
+		// goes over WatchBasedRecommendationsProfileOrderBy defined values and compare the inner value with the given one:
+		for(WatchBasedRecommendationsProfileOrderBy item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return WatchBasedRecommendationsProfileOrderBy.values().length > 0 ? WatchBasedRecommendationsProfileOrderBy.values()[0]: null;
+   }
 }

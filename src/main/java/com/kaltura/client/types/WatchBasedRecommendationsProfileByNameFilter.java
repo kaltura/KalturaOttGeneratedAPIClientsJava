@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AssociatedShopEntities;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +40,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DiscountDetailsFilter.Tokenizer.class)
-public class DiscountDetailsFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(WatchBasedRecommendationsProfileByNameFilter.Tokenizer.class)
+public class WatchBasedRecommendationsProfileByNameFilter extends WatchBasedRecommendationsProfileFilter {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		AssociatedShopEntities.Tokenizer associatedShopEntities();
+	public interface Tokenizer extends WatchBasedRecommendationsProfileFilter.Tokenizer {
+		String nameContains();
 	}
 
 	/**
-	 * Comma separated discount codes
+	 * A string that is included in the profile name
 	 */
-	private String idIn;
-	/**
-	 * filter all discountDetails by associate shop entities
-	 */
-	private AssociatedShopEntities associatedShopEntities;
+	private String nameContains;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// nameContains:
+	public String getNameContains(){
+		return this.nameContains;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setNameContains(String nameContains){
+		this.nameContains = nameContains;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// associatedShopEntities:
-	public AssociatedShopEntities getAssociatedShopEntities(){
-		return this.associatedShopEntities;
-	}
-	public void setAssociatedShopEntities(AssociatedShopEntities associatedShopEntities){
-		this.associatedShopEntities = associatedShopEntities;
+	public void nameContains(String multirequestToken){
+		setToken("nameContains", multirequestToken);
 	}
 
 
-	public DiscountDetailsFilter() {
+	public WatchBasedRecommendationsProfileByNameFilter() {
 		super();
 	}
 
-	public DiscountDetailsFilter(JsonObject jsonObject) throws APIException {
+	public WatchBasedRecommendationsProfileByNameFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		associatedShopEntities = GsonParser.parseObject(jsonObject.getAsJsonObject("associatedShopEntities"), AssociatedShopEntities.class);
+		nameContains = GsonParser.parseString(jsonObject.get("nameContains"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscountDetailsFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("associatedShopEntities", this.associatedShopEntities);
+		kparams.add("objectType", "KalturaWatchBasedRecommendationsProfileByNameFilter");
+		kparams.add("nameContains", this.nameContains);
 		return kparams;
 	}
 

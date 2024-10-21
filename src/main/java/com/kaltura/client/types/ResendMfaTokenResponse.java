@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AssociatedShopEntities;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -41,64 +41,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(DiscountDetailsFilter.Tokenizer.class)
-public class DiscountDetailsFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(ResendMfaTokenResponse.Tokenizer.class)
+public class ResendMfaTokenResponse extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String idIn();
-		AssociatedShopEntities.Tokenizer associatedShopEntities();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String result();
 	}
 
 	/**
-	 * Comma separated discount codes
+	 * Result of resend MFA token operation
 	 */
-	private String idIn;
-	/**
-	 * filter all discountDetails by associate shop entities
-	 */
-	private AssociatedShopEntities associatedShopEntities;
+	private Boolean result;
 
-	// idIn:
-	public String getIdIn(){
-		return this.idIn;
+	// result:
+	public Boolean getResult(){
+		return this.result;
 	}
-	public void setIdIn(String idIn){
-		this.idIn = idIn;
+	public void setResult(Boolean result){
+		this.result = result;
 	}
 
-	public void idIn(String multirequestToken){
-		setToken("idIn", multirequestToken);
-	}
-
-	// associatedShopEntities:
-	public AssociatedShopEntities getAssociatedShopEntities(){
-		return this.associatedShopEntities;
-	}
-	public void setAssociatedShopEntities(AssociatedShopEntities associatedShopEntities){
-		this.associatedShopEntities = associatedShopEntities;
+	public void result(String multirequestToken){
+		setToken("result", multirequestToken);
 	}
 
 
-	public DiscountDetailsFilter() {
+	public ResendMfaTokenResponse() {
 		super();
 	}
 
-	public DiscountDetailsFilter(JsonObject jsonObject) throws APIException {
+	public ResendMfaTokenResponse(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		idIn = GsonParser.parseString(jsonObject.get("idIn"));
-		associatedShopEntities = GsonParser.parseObject(jsonObject.getAsJsonObject("associatedShopEntities"), AssociatedShopEntities.class);
+		result = GsonParser.parseBoolean(jsonObject.get("result"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaDiscountDetailsFilter");
-		kparams.add("idIn", this.idIn);
-		kparams.add("associatedShopEntities", this.associatedShopEntities);
+		kparams.add("objectType", "KalturaResendMfaTokenResponse");
+		kparams.add("result", this.result);
 		return kparams;
 	}
 

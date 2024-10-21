@@ -32,8 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -42,84 +40,77 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * This type will be used in KalturaFilter searches to filter entities by shop
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(RegionChannelNumber.Tokenizer.class)
-public class RegionChannelNumber extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AssociatedShopEntities.Tokenizer.class)
+public class AssociatedShopEntities extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String regionId();
-		String channelNumber();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
+		String assetUserRuleIdIn();
+		String includeNullAssetUserRuleId();
 	}
 
 	/**
-	 * The identifier of the region
+	 * comma-separated list of assetUserRuleId values. Matching entities will be
+	  returned by the filter.
 	 */
-	private Integer regionId;
+	private String assetUserRuleIdIn;
 	/**
-	 * The LCN of a channel
+	 * If true, filter will return entities with null/empty assetUserRuleId value, in
+	  addition to any entities whose assetUserRuleId value matches the
+	  assetUserRuleIdIn parameter.              If false (or field is not specified)
+	  filter will return only entities whose assetUserRuleId value matches the
+	  assetUserRuleIdIn parameter.
 	 */
-	private Integer channelNumber;
-	/**
-	 * The dynamic data of a channel
-	 */
-	private Map<String, StringValue> dynamicData;
+	private Boolean includeNullAssetUserRuleId;
 
-	// regionId:
-	public Integer getRegionId(){
-		return this.regionId;
+	// assetUserRuleIdIn:
+	public String getAssetUserRuleIdIn(){
+		return this.assetUserRuleIdIn;
 	}
-	public void setRegionId(Integer regionId){
-		this.regionId = regionId;
+	public void setAssetUserRuleIdIn(String assetUserRuleIdIn){
+		this.assetUserRuleIdIn = assetUserRuleIdIn;
 	}
 
-	public void regionId(String multirequestToken){
-		setToken("regionId", multirequestToken);
+	public void assetUserRuleIdIn(String multirequestToken){
+		setToken("assetUserRuleIdIn", multirequestToken);
 	}
 
-	// channelNumber:
-	public Integer getChannelNumber(){
-		return this.channelNumber;
+	// includeNullAssetUserRuleId:
+	public Boolean getIncludeNullAssetUserRuleId(){
+		return this.includeNullAssetUserRuleId;
 	}
-	public void setChannelNumber(Integer channelNumber){
-		this.channelNumber = channelNumber;
-	}
-
-	public void channelNumber(String multirequestToken){
-		setToken("channelNumber", multirequestToken);
+	public void setIncludeNullAssetUserRuleId(Boolean includeNullAssetUserRuleId){
+		this.includeNullAssetUserRuleId = includeNullAssetUserRuleId;
 	}
 
-	// dynamicData:
-	public Map<String, StringValue> getDynamicData(){
-		return this.dynamicData;
-	}
-	public void setDynamicData(Map<String, StringValue> dynamicData){
-		this.dynamicData = dynamicData;
+	public void includeNullAssetUserRuleId(String multirequestToken){
+		setToken("includeNullAssetUserRuleId", multirequestToken);
 	}
 
 
-	public RegionChannelNumber() {
+	public AssociatedShopEntities() {
 		super();
 	}
 
-	public RegionChannelNumber(JsonObject jsonObject) throws APIException {
+	public AssociatedShopEntities(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
-		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
-		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
+		assetUserRuleIdIn = GsonParser.parseString(jsonObject.get("assetUserRuleIdIn"));
+		includeNullAssetUserRuleId = GsonParser.parseBoolean(jsonObject.get("includeNullAssetUserRuleId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaRegionChannelNumber");
-		kparams.add("regionId", this.regionId);
-		kparams.add("channelNumber", this.channelNumber);
-		kparams.add("dynamicData", this.dynamicData);
+		kparams.add("objectType", "KalturaAssociatedShopEntities");
+		kparams.add("assetUserRuleIdIn", this.assetUserRuleIdIn);
+		kparams.add("includeNullAssetUserRuleId", this.includeNullAssetUserRuleId);
 		return kparams;
 	}
 
