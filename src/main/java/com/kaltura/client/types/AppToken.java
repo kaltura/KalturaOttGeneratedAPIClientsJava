@@ -59,6 +59,7 @@ public class AppToken extends ObjectBase {
 		String sessionUserId();
 		String createDate();
 		String updateDate();
+		String regionId();
 	}
 
 	/**
@@ -103,6 +104,11 @@ public class AppToken extends ObjectBase {
 	 * Update date
 	 */
 	private Long updateDate;
+	/**
+	 * The region identifier of the KS used to create the appToken. Value is presented
+	  only for partners with the enabled feature.
+	 */
+	private Integer regionId;
 
 	// id:
 	public String getId(){
@@ -184,6 +190,10 @@ public class AppToken extends ObjectBase {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
+	// regionId:
+	public Integer getRegionId(){
+		return this.regionId;
+	}
 
 	public AppToken() {
 		super();
@@ -205,6 +215,7 @@ public class AppToken extends ObjectBase {
 		sessionUserId = GsonParser.parseString(jsonObject.get("sessionUserId"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
+		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
 
 	}
 

@@ -25,11 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.services;
-
-import com.kaltura.client.types.AssetStatistics;
-import com.kaltura.client.types.AssetStatisticsQuery;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -37,25 +33,38 @@ import com.kaltura.client.utils.request.ListResponseRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum TokenDeliveryMethod implements EnumAsString {
+	EMAIL("Email"),
+	SSO("Sso");
 
-public class AssetStatisticsService {
-	
-	public static class QueryAssetStatisticsBuilder extends ListResponseRequestBuilder<AssetStatistics, AssetStatistics.Tokenizer, QueryAssetStatisticsBuilder> {
-		
-		public QueryAssetStatisticsBuilder(AssetStatisticsQuery query) {
-			super(AssetStatistics.class, "assetstatistics", "query");
-			params.add("query", query);
+	private String value;
+
+	TokenDeliveryMethod(String value) {
+		this.value = value;
+	}
+
+	@Override
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public static TokenDeliveryMethod get(String value) {
+		if(value == null)
+		{
+			return null;
 		}
-	}
-
-	/**
-	 * Returns statistics for given list of assets by type and / or time period.       
-	        Supported values for KalturaAssetStatisticsQuery.assetTypeEqual :
-	  KalturaAssetType.media, KalturaAssetType.epg.
-	 * 
-	 * @param query Query for assets statistics
-	 */
-    public static QueryAssetStatisticsBuilder query(AssetStatisticsQuery query)  {
-		return new QueryAssetStatisticsBuilder(query);
-	}
+		
+		// goes over TokenDeliveryMethod defined values and compare the inner value with the given one:
+		for(TokenDeliveryMethod item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return TokenDeliveryMethod.values().length > 0 ? TokenDeliveryMethod.values()[0]: null;
+   }
 }
