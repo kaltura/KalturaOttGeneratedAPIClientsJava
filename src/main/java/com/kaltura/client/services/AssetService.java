@@ -106,7 +106,8 @@ public class AssetService {
 	}
 
 	/**
-	 * Add new bulk upload batch job Conversion profile id can be specified in the API.
+	 * Add new bulk upload batch job Conversion profile id can be specified in the API
+	  (note that the total request body size is limited to 10MB).
 	 * 
 	 * @param fileData fileData
 	 * @param bulkUploadJobData bulkUploadJobData

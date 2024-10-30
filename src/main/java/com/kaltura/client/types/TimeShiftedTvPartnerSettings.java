@@ -73,6 +73,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		String personalizedRecording();
 		String maxRecordingConcurrency();
 		String maxConcurrencyMargin();
+		String shouldRoundStopRecordingsBySeconds();
 	}
 
 	/**
@@ -186,6 +187,12 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 	  margin
 	 */
 	private Integer maxConcurrencyMargin;
+	/**
+	 * When using padded and immediate recordings, define if end date of recording
+	  should be rounded by the minute or by the second.              Default by
+	  minutes, FALSE.
+	 */
+	private Boolean shouldRoundStopRecordingsBySeconds;
 
 	// catchUpEnabled:
 	public Boolean getCatchUpEnabled(){
@@ -499,6 +506,18 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		setToken("maxConcurrencyMargin", multirequestToken);
 	}
 
+	// shouldRoundStopRecordingsBySeconds:
+	public Boolean getShouldRoundStopRecordingsBySeconds(){
+		return this.shouldRoundStopRecordingsBySeconds;
+	}
+	public void setShouldRoundStopRecordingsBySeconds(Boolean shouldRoundStopRecordingsBySeconds){
+		this.shouldRoundStopRecordingsBySeconds = shouldRoundStopRecordingsBySeconds;
+	}
+
+	public void shouldRoundStopRecordingsBySeconds(String multirequestToken){
+		setToken("shouldRoundStopRecordingsBySeconds", multirequestToken);
+	}
+
 
 	public TimeShiftedTvPartnerSettings() {
 		super();
@@ -536,6 +555,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		personalizedRecording = GsonParser.parseBoolean(jsonObject.get("personalizedRecording"));
 		maxRecordingConcurrency = GsonParser.parseInt(jsonObject.get("maxRecordingConcurrency"));
 		maxConcurrencyMargin = GsonParser.parseInt(jsonObject.get("maxConcurrencyMargin"));
+		shouldRoundStopRecordingsBySeconds = GsonParser.parseBoolean(jsonObject.get("shouldRoundStopRecordingsBySeconds"));
 
 	}
 
@@ -568,6 +588,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		kparams.add("personalizedRecording", this.personalizedRecording);
 		kparams.add("maxRecordingConcurrency", this.maxRecordingConcurrency);
 		kparams.add("maxConcurrencyMargin", this.maxConcurrencyMargin);
+		kparams.add("shouldRoundStopRecordingsBySeconds", this.shouldRoundStopRecordingsBySeconds);
 		return kparams;
 	}
 
