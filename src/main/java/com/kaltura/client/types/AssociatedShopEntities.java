@@ -29,13 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AggregatedIngestInfo;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -44,78 +40,77 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * This type will be used in KalturaFilter searches to filter entities by shop
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(IngestEpgDetailsAggregation.Tokenizer.class)
-public class IngestEpgDetailsAggregation extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AssociatedShopEntities.Tokenizer.class)
+public class AssociatedShopEntities extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.ListTokenizer<ChannelAggregatedIngestInfo.Tokenizer> linearChannels();
-		RequestBuilder.ListTokenizer<DateAggregatedIngestInfo.Tokenizer> dates();
-		AggregatedIngestInfo.Tokenizer all();
+		String assetUserRuleIdIn();
+		String includeNullAssetUserRuleId();
 	}
 
 	/**
-	 * Array of aggregated information per channel that included in the ingest job in
-	  question
+	 * comma-separated list of assetUserRuleId values. Matching entities will be
+	  returned by the filter.
 	 */
-	private List<ChannelAggregatedIngestInfo> linearChannels;
+	private String assetUserRuleIdIn;
 	/**
-	 * Array of aggregated information per date that included in the ingest job in
-	  question
+	 * If true, filter will return entities with null/empty assetUserRuleId value, in
+	  addition to any entities whose assetUserRuleId value matches the
+	  assetUserRuleIdIn parameter.              If false (or field is not specified)
+	  filter will return only entities whose assetUserRuleId value matches the
+	  assetUserRuleIdIn parameter.
 	 */
-	private List<DateAggregatedIngestInfo> dates;
-	/**
-	 * All aggregated counters
-	 */
-	private AggregatedIngestInfo all;
+	private Boolean includeNullAssetUserRuleId;
 
-	// linearChannels:
-	public List<ChannelAggregatedIngestInfo> getLinearChannels(){
-		return this.linearChannels;
+	// assetUserRuleIdIn:
+	public String getAssetUserRuleIdIn(){
+		return this.assetUserRuleIdIn;
 	}
-	public void setLinearChannels(List<ChannelAggregatedIngestInfo> linearChannels){
-		this.linearChannels = linearChannels;
+	public void setAssetUserRuleIdIn(String assetUserRuleIdIn){
+		this.assetUserRuleIdIn = assetUserRuleIdIn;
 	}
 
-	// dates:
-	public List<DateAggregatedIngestInfo> getDates(){
-		return this.dates;
-	}
-	public void setDates(List<DateAggregatedIngestInfo> dates){
-		this.dates = dates;
+	public void assetUserRuleIdIn(String multirequestToken){
+		setToken("assetUserRuleIdIn", multirequestToken);
 	}
 
-	// all:
-	public AggregatedIngestInfo getAll(){
-		return this.all;
+	// includeNullAssetUserRuleId:
+	public Boolean getIncludeNullAssetUserRuleId(){
+		return this.includeNullAssetUserRuleId;
 	}
-	public void setAll(AggregatedIngestInfo all){
-		this.all = all;
+	public void setIncludeNullAssetUserRuleId(Boolean includeNullAssetUserRuleId){
+		this.includeNullAssetUserRuleId = includeNullAssetUserRuleId;
+	}
+
+	public void includeNullAssetUserRuleId(String multirequestToken){
+		setToken("includeNullAssetUserRuleId", multirequestToken);
 	}
 
 
-	public IngestEpgDetailsAggregation() {
+	public AssociatedShopEntities() {
 		super();
 	}
 
-	public IngestEpgDetailsAggregation(JsonObject jsonObject) throws APIException {
+	public AssociatedShopEntities(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		linearChannels = GsonParser.parseArray(jsonObject.getAsJsonArray("linearChannels"), ChannelAggregatedIngestInfo.class);
-		dates = GsonParser.parseArray(jsonObject.getAsJsonArray("dates"), DateAggregatedIngestInfo.class);
-		all = GsonParser.parseObject(jsonObject.getAsJsonObject("all"), AggregatedIngestInfo.class);
+		assetUserRuleIdIn = GsonParser.parseString(jsonObject.get("assetUserRuleIdIn"));
+		includeNullAssetUserRuleId = GsonParser.parseBoolean(jsonObject.get("includeNullAssetUserRuleId"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaIngestEpgDetailsAggregation");
-		kparams.add("linearChannels", this.linearChannels);
-		kparams.add("dates", this.dates);
-		kparams.add("all", this.all);
+		kparams.add("objectType", "KalturaAssociatedShopEntities");
+		kparams.add("assetUserRuleIdIn", this.assetUserRuleIdIn);
+		kparams.add("includeNullAssetUserRuleId", this.includeNullAssetUserRuleId);
 		return kparams;
 	}
 

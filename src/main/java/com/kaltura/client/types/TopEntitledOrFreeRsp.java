@@ -29,12 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AssetRuleStatus;
+import com.kaltura.client.types.BaseAssetOrder;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -43,74 +40,46 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Asset rule
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetRule.Tokenizer.class)
-public class AssetRule extends AssetRuleBase {
+@MultiRequestBuilder.Tokenizer(TopEntitledOrFreeRsp.Tokenizer.class)
+public class TopEntitledOrFreeRsp extends RepresentativeSelectionPolicy {
 	
-	public interface Tokenizer extends AssetRuleBase.Tokenizer {
-		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
-		RequestBuilder.ListTokenizer<AssetRuleAction.Tokenizer> actions();
-		String status();
+	public interface Tokenizer extends RepresentativeSelectionPolicy.Tokenizer {
+		BaseAssetOrder.Tokenizer orderBy();
 	}
 
 	/**
-	 * List of conditions for the rule
+	 * order by
 	 */
-	private List<Condition> conditions;
-	/**
-	 * List of actions for the rule
-	 */
-	private List<AssetRuleAction> actions;
-	/**
-	 * List of actions for the rule
-	 */
-	private AssetRuleStatus status;
+	private BaseAssetOrder orderBy;
 
-	// conditions:
-	public List<Condition> getConditions(){
-		return this.conditions;
+	// orderBy:
+	public BaseAssetOrder getOrderBy(){
+		return this.orderBy;
 	}
-	public void setConditions(List<Condition> conditions){
-		this.conditions = conditions;
+	public void setOrderBy(BaseAssetOrder orderBy){
+		this.orderBy = orderBy;
 	}
 
-	// actions:
-	public List<AssetRuleAction> getActions(){
-		return this.actions;
-	}
-	public void setActions(List<AssetRuleAction> actions){
-		this.actions = actions;
-	}
 
-	// status:
-	public AssetRuleStatus getStatus(){
-		return this.status;
-	}
-
-	public AssetRule() {
+	public TopEntitledOrFreeRsp() {
 		super();
 	}
 
-	public AssetRule(JsonObject jsonObject) throws APIException {
+	public TopEntitledOrFreeRsp(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
-		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), AssetRuleAction.class);
-		status = AssetRuleStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		orderBy = GsonParser.parseObject(jsonObject.getAsJsonObject("orderBy"), BaseAssetOrder.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetRule");
-		kparams.add("conditions", this.conditions);
-		kparams.add("actions", this.actions);
+		kparams.add("objectType", "KalturaTopEntitledOrFreeRsp");
+		kparams.add("orderBy", this.orderBy);
 		return kparams;
 	}
 

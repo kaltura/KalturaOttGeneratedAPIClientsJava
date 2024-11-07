@@ -29,12 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.AssetRuleStatus;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -44,73 +40,55 @@ import java.util.List;
  */
 
 /**
- * Asset rule
+ * Returns the KalturaLiveAsset object passed as input parameter if there is at
+  least one associated KalturaRecordingAsset object. Returns empty array
+  otherwise.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AssetRule.Tokenizer.class)
-public class AssetRule extends AssetRuleBase {
+@MultiRequestBuilder.Tokenizer(LiveAssetHasRecordingsFilter.Tokenizer.class)
+public class LiveAssetHasRecordingsFilter extends AssetFilter {
 	
-	public interface Tokenizer extends AssetRuleBase.Tokenizer {
-		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
-		RequestBuilder.ListTokenizer<AssetRuleAction.Tokenizer> actions();
-		String status();
+	public interface Tokenizer extends AssetFilter.Tokenizer {
+		String liveAssetIdEqual();
 	}
 
 	/**
-	 * List of conditions for the rule
+	 * KalturaLiveAsset.id value of the live linear channel to be examined for
+	  associated recordings
 	 */
-	private List<Condition> conditions;
-	/**
-	 * List of actions for the rule
-	 */
-	private List<AssetRuleAction> actions;
-	/**
-	 * List of actions for the rule
-	 */
-	private AssetRuleStatus status;
+	private Long liveAssetIdEqual;
 
-	// conditions:
-	public List<Condition> getConditions(){
-		return this.conditions;
+	// liveAssetIdEqual:
+	public Long getLiveAssetIdEqual(){
+		return this.liveAssetIdEqual;
 	}
-	public void setConditions(List<Condition> conditions){
-		this.conditions = conditions;
+	public void setLiveAssetIdEqual(Long liveAssetIdEqual){
+		this.liveAssetIdEqual = liveAssetIdEqual;
 	}
 
-	// actions:
-	public List<AssetRuleAction> getActions(){
-		return this.actions;
-	}
-	public void setActions(List<AssetRuleAction> actions){
-		this.actions = actions;
+	public void liveAssetIdEqual(String multirequestToken){
+		setToken("liveAssetIdEqual", multirequestToken);
 	}
 
-	// status:
-	public AssetRuleStatus getStatus(){
-		return this.status;
-	}
 
-	public AssetRule() {
+	public LiveAssetHasRecordingsFilter() {
 		super();
 	}
 
-	public AssetRule(JsonObject jsonObject) throws APIException {
+	public LiveAssetHasRecordingsFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
-		actions = GsonParser.parseArray(jsonObject.getAsJsonArray("actions"), AssetRuleAction.class);
-		status = AssetRuleStatus.get(GsonParser.parseString(jsonObject.get("status")));
+		liveAssetIdEqual = GsonParser.parseLong(jsonObject.get("liveAssetIdEqual"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAssetRule");
-		kparams.add("conditions", this.conditions);
-		kparams.add("actions", this.actions);
+		kparams.add("objectType", "KalturaLiveAssetHasRecordingsFilter");
+		kparams.add("liveAssetIdEqual", this.liveAssetIdEqual);
 		return kparams;
 	}
 
