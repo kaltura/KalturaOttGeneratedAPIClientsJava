@@ -76,6 +76,20 @@ public class LineupService {
 		return new GetLineupBuilder(pageIndex, pageSize);
 	}
 	
+	public static class InvalidateLineupBuilder extends RequestBuilder<Boolean, String, InvalidateLineupBuilder> {
+		
+		public InvalidateLineupBuilder() {
+			super(Boolean.class, "lineup", "invalidate");
+		}
+	}
+
+	/**
+	 * Sends lineup requested invalidation
+	 */
+    public static InvalidateLineupBuilder invalidate()  {
+		return new InvalidateLineupBuilder();
+	}
+	
 	public static class ListLineupBuilder extends ListResponseRequestBuilder<LineupChannelAsset, LineupChannelAsset.Tokenizer, ListLineupBuilder> {
 		
 		public ListLineupBuilder(LineupRegionalChannelFilter filter, FilterPager pager) {

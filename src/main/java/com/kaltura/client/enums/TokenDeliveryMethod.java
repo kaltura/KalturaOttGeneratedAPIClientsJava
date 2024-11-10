@@ -25,15 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -41,49 +33,38 @@ import java.util.List;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum TokenDeliveryMethod implements EnumAsString {
+	EMAIL("Email"),
+	SSO("Sso");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(OrCondition.Tokenizer.class)
-public class OrCondition extends NotCondition {
-	
-	public interface Tokenizer extends NotCondition.Tokenizer {
-		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
+	private String value;
+
+	TokenDeliveryMethod(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * List of conditions with or between them
-	 */
-	private List<Condition> conditions;
-
-	// conditions:
-	public List<Condition> getConditions(){
-		return this.conditions;
-	}
-	public void setConditions(List<Condition> conditions){
-		this.conditions = conditions;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-
-	public OrCondition() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public OrCondition(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaOrCondition");
-		kparams.add("conditions", this.conditions);
-		return kparams;
-	}
-
+	public static TokenDeliveryMethod get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over TokenDeliveryMethod defined values and compare the inner value with the given one:
+		for(TokenDeliveryMethod item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return TokenDeliveryMethod.values().length > 0 ? TokenDeliveryMethod.values()[0]: null;
+   }
 }
-
