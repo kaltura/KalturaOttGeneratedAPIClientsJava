@@ -32,6 +32,8 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -47,6 +49,7 @@ public class RegionalChannel extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String linearChannelId();
 		String channelNumber();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 	}
 
 	/**
@@ -57,6 +60,10 @@ public class RegionalChannel extends ObjectBase {
 	 * The number of the channel
 	 */
 	private Integer channelNumber;
+	/**
+	 * The dynamic data of a channel
+	 */
+	private Map<String, StringValue> dynamicData;
 
 	// linearChannelId:
 	public Integer getLinearChannelId(){
@@ -82,6 +89,14 @@ public class RegionalChannel extends ObjectBase {
 		setToken("channelNumber", multirequestToken);
 	}
 
+	// dynamicData:
+	public Map<String, StringValue> getDynamicData(){
+		return this.dynamicData;
+	}
+	public void setDynamicData(Map<String, StringValue> dynamicData){
+		this.dynamicData = dynamicData;
+	}
+
 
 	public RegionalChannel() {
 		super();
@@ -95,6 +110,7 @@ public class RegionalChannel extends ObjectBase {
 		// set members values:
 		linearChannelId = GsonParser.parseInt(jsonObject.get("linearChannelId"));
 		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 
 	}
 
@@ -103,6 +119,7 @@ public class RegionalChannel extends ObjectBase {
 		kparams.add("objectType", "KalturaRegionalChannel");
 		kparams.add("linearChannelId", this.linearChannelId);
 		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
 	}
 
