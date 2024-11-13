@@ -25,15 +25,10 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
+package com.kaltura.client.services;
 
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.types.MultifactorAuthenticationPartnerConfiguration;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,48 +37,36 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(OrCondition.Tokenizer.class)
-public class OrCondition extends NotCondition {
+public class MfaPartnerConfigurationService {
 	
-	public interface Tokenizer extends NotCondition.Tokenizer {
-		RequestBuilder.ListTokenizer<Condition.Tokenizer> conditions();
+	public static class GetMfaPartnerConfigurationBuilder extends RequestBuilder<MultifactorAuthenticationPartnerConfiguration, MultifactorAuthenticationPartnerConfiguration.Tokenizer, GetMfaPartnerConfigurationBuilder> {
+		
+		public GetMfaPartnerConfigurationBuilder() {
+			super(MultifactorAuthenticationPartnerConfiguration.class, "mfapartnerconfiguration", "get");
+		}
 	}
 
 	/**
-	 * List of conditions with or between them
+	 * Get MFA partner configuration.
 	 */
-	private List<Condition> conditions;
-
-	// conditions:
-	public List<Condition> getConditions(){
-		return this.conditions;
+    public static GetMfaPartnerConfigurationBuilder get()  {
+		return new GetMfaPartnerConfigurationBuilder();
 	}
-	public void setConditions(List<Condition> conditions){
-		this.conditions = conditions;
-	}
-
-
-	public OrCondition() {
-		super();
+	
+	public static class UpdateMfaPartnerConfigurationBuilder extends RequestBuilder<MultifactorAuthenticationPartnerConfiguration, MultifactorAuthenticationPartnerConfiguration.Tokenizer, UpdateMfaPartnerConfigurationBuilder> {
+		
+		public UpdateMfaPartnerConfigurationBuilder(MultifactorAuthenticationPartnerConfiguration configuration) {
+			super(MultifactorAuthenticationPartnerConfiguration.class, "mfapartnerconfiguration", "update");
+			params.add("configuration", configuration);
+		}
 	}
 
-	public OrCondition(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		conditions = GsonParser.parseArray(jsonObject.getAsJsonArray("conditions"), Condition.class);
-
+	/**
+	 * Update MFA partner configuration.
+	 * 
+	 * @param configuration MFA configuration
+	 */
+    public static UpdateMfaPartnerConfigurationBuilder update(MultifactorAuthenticationPartnerConfiguration configuration)  {
+		return new UpdateMfaPartnerConfigurationBuilder(configuration);
 	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaOrCondition");
-		kparams.add("conditions", this.conditions);
-		return kparams;
-	}
-
 }
-

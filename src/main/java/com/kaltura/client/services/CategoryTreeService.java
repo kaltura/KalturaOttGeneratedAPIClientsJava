@@ -99,10 +99,11 @@ public class CategoryTreeService {
 	
 	public static class GetByVersionCategoryTreeBuilder extends RequestBuilder<CategoryTree, CategoryTree.Tokenizer, GetByVersionCategoryTreeBuilder> {
 		
-		public GetByVersionCategoryTreeBuilder(long versionId, int deviceFamilyId) {
+		public GetByVersionCategoryTreeBuilder(long versionId, int deviceFamilyId, boolean filter) {
 			super(CategoryTree.class, "categorytree", "getByVersion");
 			params.add("versionId", versionId);
 			params.add("deviceFamilyId", deviceFamilyId);
+			params.add("filter", filter);
 		}
 		
 		public void versionId(String multirequestToken) {
@@ -111,6 +112,10 @@ public class CategoryTreeService {
 		
 		public void deviceFamilyId(String multirequestToken) {
 			params.add("deviceFamilyId", multirequestToken);
+		}
+		
+		public void filter(String multirequestToken) {
+			params.add("filter", multirequestToken);
 		}
 	}
 
@@ -122,14 +127,20 @@ public class CategoryTreeService {
 		return getByVersion(versionId, Integer.MIN_VALUE);
 	}
 
+	public static GetByVersionCategoryTreeBuilder getByVersion(long versionId, int deviceFamilyId)  {
+		return getByVersion(versionId, deviceFamilyId, false);
+	}
+
 	/**
 	 * Retrieve default category tree of deviceFamilyId by KS or specific one if
 	  versionId is set.
 	 * 
 	 * @param versionId Category version id of tree
 	 * @param deviceFamilyId deviceFamilyId related to category tree
+	 * @param filter filter=true excludes items for which the start date has not been reached yet;
+	 * default is false
 	 */
-    public static GetByVersionCategoryTreeBuilder getByVersion(long versionId, int deviceFamilyId)  {
-		return new GetByVersionCategoryTreeBuilder(versionId, deviceFamilyId);
+    public static GetByVersionCategoryTreeBuilder getByVersion(long versionId, int deviceFamilyId, boolean filter)  {
+		return new GetByVersionCategoryTreeBuilder(versionId, deviceFamilyId, filter);
 	}
 }
