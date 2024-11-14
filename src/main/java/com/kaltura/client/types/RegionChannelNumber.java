@@ -32,6 +32,8 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -47,6 +49,7 @@ public class RegionChannelNumber extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String regionId();
 		String channelNumber();
+		RequestBuilder.MapTokenizer<StringValue.Tokenizer> dynamicData();
 	}
 
 	/**
@@ -54,9 +57,13 @@ public class RegionChannelNumber extends ObjectBase {
 	 */
 	private Integer regionId;
 	/**
-	 * The number of the channel
+	 * The LCN of a channel
 	 */
 	private Integer channelNumber;
+	/**
+	 * The dynamic data of a channel
+	 */
+	private Map<String, StringValue> dynamicData;
 
 	// regionId:
 	public Integer getRegionId(){
@@ -82,6 +89,14 @@ public class RegionChannelNumber extends ObjectBase {
 		setToken("channelNumber", multirequestToken);
 	}
 
+	// dynamicData:
+	public Map<String, StringValue> getDynamicData(){
+		return this.dynamicData;
+	}
+	public void setDynamicData(Map<String, StringValue> dynamicData){
+		this.dynamicData = dynamicData;
+	}
+
 
 	public RegionChannelNumber() {
 		super();
@@ -95,6 +110,7 @@ public class RegionChannelNumber extends ObjectBase {
 		// set members values:
 		regionId = GsonParser.parseInt(jsonObject.get("regionId"));
 		channelNumber = GsonParser.parseInt(jsonObject.get("channelNumber"));
+		dynamicData = GsonParser.parseMap(jsonObject.getAsJsonObject("dynamicData"), StringValue.class);
 
 	}
 
@@ -103,6 +119,7 @@ public class RegionChannelNumber extends ObjectBase {
 		kparams.add("objectType", "KalturaRegionChannelNumber");
 		kparams.add("regionId", this.regionId);
 		kparams.add("channelNumber", this.channelNumber);
+		kparams.add("dynamicData", this.dynamicData);
 		return kparams;
 	}
 
