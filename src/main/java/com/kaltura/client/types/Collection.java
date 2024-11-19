@@ -34,6 +34,7 @@ import com.kaltura.client.types.UsageModule;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,7 +84,7 @@ public class Collection extends OTTObjectSupportNullable {
 	 */
 	private String id;
 	/**
-	 * A list of channels associated with this collection               This property
+	 * A list of channels associated with this collection              This property
 	  will deprecated soon. Please use ChannelsIds instead of it.
 	 */
 	private List<BaseChannel> channels;
