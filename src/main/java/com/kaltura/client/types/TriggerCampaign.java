@@ -34,6 +34,7 @@ import com.kaltura.client.enums.ApiService;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**

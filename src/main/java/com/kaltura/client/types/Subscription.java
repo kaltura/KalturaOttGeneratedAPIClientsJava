@@ -37,6 +37,7 @@ import com.kaltura.client.types.PriceDetails;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,6 +75,7 @@ public class Subscription extends OTTObjectSupportNullable {
 		String mediaId();
 		String prorityInOrder();
 		String pricePlanIds();
+		String flexiblePricePlanId();
 		PreviewModule.Tokenizer previewModule();
 		String previewModuleId();
 		String householdLimitationsId();
@@ -178,6 +180,13 @@ public class Subscription extends OTTObjectSupportNullable {
 	 * Comma separated subscription price plan IDs
 	 */
 	private String pricePlanIds;
+	/**
+	 * Optional: If the subscription has a flexible price plan. Represents an initial
+	  none-recurring discounted period which is charged immediately (no unified
+	  billing), followed by a recuring price plan which should be aligned with the
+	  unified billing cycle
+	 */
+	private Long flexiblePricePlanId;
 	/**
 	 * Subscription preview module
 	 */
@@ -423,6 +432,18 @@ public class Subscription extends OTTObjectSupportNullable {
 		setToken("pricePlanIds", multirequestToken);
 	}
 
+	// flexiblePricePlanId:
+	public Long getFlexiblePricePlanId(){
+		return this.flexiblePricePlanId;
+	}
+	public void setFlexiblePricePlanId(Long flexiblePricePlanId){
+		this.flexiblePricePlanId = flexiblePricePlanId;
+	}
+
+	public void flexiblePricePlanId(String multirequestToken){
+		setToken("flexiblePricePlanId", multirequestToken);
+	}
+
 	// previewModule:
 	public PreviewModule getPreviewModule(){
 		return this.previewModule;
@@ -634,6 +655,7 @@ public class Subscription extends OTTObjectSupportNullable {
 		mediaId = GsonParser.parseInt(jsonObject.get("mediaId"));
 		prorityInOrder = GsonParser.parseLong(jsonObject.get("prorityInOrder"));
 		pricePlanIds = GsonParser.parseString(jsonObject.get("pricePlanIds"));
+		flexiblePricePlanId = GsonParser.parseLong(jsonObject.get("flexiblePricePlanId"));
 		previewModule = GsonParser.parseObject(jsonObject.getAsJsonObject("previewModule"), PreviewModule.class);
 		previewModuleId = GsonParser.parseLong(jsonObject.get("previewModuleId"));
 		householdLimitationsId = GsonParser.parseInt(jsonObject.get("householdLimitationsId"));
@@ -672,6 +694,7 @@ public class Subscription extends OTTObjectSupportNullable {
 		kparams.add("multilingualDescription", this.multilingualDescription);
 		kparams.add("prorityInOrder", this.prorityInOrder);
 		kparams.add("pricePlanIds", this.pricePlanIds);
+		kparams.add("flexiblePricePlanId", this.flexiblePricePlanId);
 		kparams.add("previewModuleId", this.previewModuleId);
 		kparams.add("householdLimitationsId", this.householdLimitationsId);
 		kparams.add("gracePeriodMinutes", this.gracePeriodMinutes);
