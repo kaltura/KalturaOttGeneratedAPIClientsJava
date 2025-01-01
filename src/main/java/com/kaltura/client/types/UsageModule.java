@@ -57,6 +57,7 @@ public class UsageModule extends ObjectBase {
 		String waiverPeriod();
 		String isWaiverEnabled();
 		String isOfflinePlayback();
+		String assetUserRuleId();
 	}
 
 	/**
@@ -98,6 +99,10 @@ public class UsageModule extends ObjectBase {
 	 * Indicates that usage is targeted for offline playback
 	 */
 	private Boolean isOfflinePlayback;
+	/**
+	 * Asset user rule identifier
+	 */
+	private Long assetUserRuleId;
 
 	// id:
 	public Long getId(){
@@ -199,6 +204,18 @@ public class UsageModule extends ObjectBase {
 		setToken("isOfflinePlayback", multirequestToken);
 	}
 
+	// assetUserRuleId:
+	public Long getAssetUserRuleId(){
+		return this.assetUserRuleId;
+	}
+	public void setAssetUserRuleId(Long assetUserRuleId){
+		this.assetUserRuleId = assetUserRuleId;
+	}
+
+	public void assetUserRuleId(String multirequestToken){
+		setToken("assetUserRuleId", multirequestToken);
+	}
+
 
 	public UsageModule() {
 		super();
@@ -219,6 +236,7 @@ public class UsageModule extends ObjectBase {
 		waiverPeriod = GsonParser.parseInt(jsonObject.get("waiverPeriod"));
 		isWaiverEnabled = GsonParser.parseBoolean(jsonObject.get("isWaiverEnabled"));
 		isOfflinePlayback = GsonParser.parseBoolean(jsonObject.get("isOfflinePlayback"));
+		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
 
 	}
 
@@ -233,6 +251,7 @@ public class UsageModule extends ObjectBase {
 		kparams.add("waiverPeriod", this.waiverPeriod);
 		kparams.add("isWaiverEnabled", this.isWaiverEnabled);
 		kparams.add("isOfflinePlayback", this.isOfflinePlayback);
+		kparams.add("assetUserRuleId", this.assetUserRuleId);
 		return kparams;
 	}
 

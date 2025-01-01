@@ -35,8 +35,7 @@ package com.kaltura.client.enums;
  */
 public enum ImageStatus implements EnumAsString {
 	PENDING("PENDING"),
-	READY("READY"),
-	FAILED("FAILED");
+	READY("READY");
 
 	private String value;
 
