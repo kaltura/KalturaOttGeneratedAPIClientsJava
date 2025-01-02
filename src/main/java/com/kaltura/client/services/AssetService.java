@@ -106,7 +106,8 @@ public class AssetService {
 	}
 
 	/**
-	 * Add new bulk upload batch job Conversion profile id can be specified in the API.
+	 * Add new bulk upload batch job Conversion profile id can be specified in the API
+	  (note that the total request body size is limited to 10MB).
 	 * 
 	 * @param fileData fileData
 	 * @param bulkUploadJobData bulkUploadJobData
@@ -451,5 +452,26 @@ public class AssetService {
 	 */
     public static UpdateAssetBuilder update(long id, Asset asset)  {
 		return new UpdateAssetBuilder(id, asset);
+	}
+	
+	public static class WatchBasedRecommendationsListAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, WatchBasedRecommendationsListAssetBuilder> {
+		
+		public WatchBasedRecommendationsListAssetBuilder(long profileId) {
+			super(Asset.class, "asset", "watchBasedRecommendationsList");
+			params.add("profileId", profileId);
+		}
+		
+		public void profileId(String multirequestToken) {
+			params.add("profileId", multirequestToken);
+		}
+	}
+
+	/**
+	 * Return list of assets - assets are personal recommendations for the caller.
+	 * 
+	 * @param profileId WatchBasedRecommendations profile id
+	 */
+    public static WatchBasedRecommendationsListAssetBuilder watchBasedRecommendationsList(long profileId)  {
+		return new WatchBasedRecommendationsListAssetBuilder(profileId);
 	}
 }
