@@ -51,7 +51,7 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String isEnabled();
-		RequestBuilder.MapTokenizer<StringValue.Tokenizer> metaFieldNameMap();
+		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
 		String vectorizedMetaIds();
 	}
 
@@ -60,13 +60,11 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 	 */
 	private Boolean isEnabled;
 	/**
-	 * A type of dictionary defined as [KalturaLlmMetadataKeysEnum,Integer].           
-	     This property is used to correlate the newly generated metadata to existing
-	  metadata IDs which are available in the asset’s struct.               That is,
-	  per each generated metadata key (name), to which metadata ID on the asset it is
-	  mapped and stored.
+	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
+	  This property is used to correlate the newly generated metadata to             
+	  existing metadata IDs which are available in the asset’s struct.
 	 */
-	private Map<String, StringValue> metaFieldNameMap;
+	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
 	/**
 	 * a String type holding a comma separated list of metadata IDs.                It
 	  is used to define which metadata fields will be extracted from the asset and
@@ -86,12 +84,12 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 		setToken("isEnabled", multirequestToken);
 	}
 
-	// metaFieldNameMap:
-	public Map<String, StringValue> getMetaFieldNameMap(){
-		return this.metaFieldNameMap;
+	// assetStructMetaNameMap:
+	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
+		return this.assetStructMetaNameMap;
 	}
-	public void setMetaFieldNameMap(Map<String, StringValue> metaFieldNameMap){
-		this.metaFieldNameMap = metaFieldNameMap;
+	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
+		this.assetStructMetaNameMap = assetStructMetaNameMap;
 	}
 
 	// vectorizedMetaIds:
@@ -118,7 +116,7 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 
 		// set members values:
 		isEnabled = GsonParser.parseBoolean(jsonObject.get("isEnabled"));
-		metaFieldNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("metaFieldNameMap"), StringValue.class);
+		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
 		vectorizedMetaIds = GsonParser.parseString(jsonObject.get("vectorizedMetaIds"));
 
 	}
@@ -127,7 +125,7 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
 		kparams.add("isEnabled", this.isEnabled);
-		kparams.add("metaFieldNameMap", this.metaFieldNameMap);
+		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
 		kparams.add("vectorizedMetaIds", this.vectorizedMetaIds);
 		return kparams;
 	}

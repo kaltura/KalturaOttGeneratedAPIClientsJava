@@ -120,6 +120,14 @@ public class Subtitles extends ObjectBase {
 	public String getSubtitlesLanguage(){
 		return this.subtitlesLanguage;
 	}
+	public void setSubtitlesLanguage(String subtitlesLanguage){
+		this.subtitlesLanguage = subtitlesLanguage;
+	}
+
+	public void subtitlesLanguage(String multirequestToken){
+		setToken("subtitlesLanguage", multirequestToken);
+	}
+
 
 	public Subtitles() {
 		super();
@@ -144,6 +152,7 @@ public class Subtitles extends ObjectBase {
 		kparams.add("objectType", "KalturaSubtitles");
 		kparams.add("fileName", this.fileName);
 		kparams.add("subtitlesType", this.subtitlesType);
+		kparams.add("subtitlesLanguage", this.subtitlesLanguage);
 		return kparams;
 	}
 
