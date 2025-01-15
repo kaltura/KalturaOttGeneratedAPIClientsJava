@@ -31,17 +31,21 @@ import com.kaltura.client.FileHolder;
 import com.kaltura.client.Files;
 import com.kaltura.client.enums.AssetReferenceType;
 import com.kaltura.client.enums.AssetType;
+import com.kaltura.client.enums.PlaybackContextType;
 import com.kaltura.client.enums.UnmatchedItemsPolicy;
+import com.kaltura.client.enums.UrlType;
 import com.kaltura.client.types.AdsContext;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
 import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.types.BaseAssetOrder;
+import com.kaltura.client.types.BulkPlaybackContext;
 import com.kaltura.client.types.BulkUpload;
 import com.kaltura.client.types.BulkUploadAssetData;
 import com.kaltura.client.types.BulkUploadJobData;
 import com.kaltura.client.types.FilterPager;
+import com.kaltura.client.types.KeyValue;
 import com.kaltura.client.types.ListGroupsRepresentativesFilter;
 import com.kaltura.client.types.PersonalAssetSelectionFilter;
 import com.kaltura.client.types.PlaybackContext;
@@ -53,6 +57,7 @@ import com.kaltura.client.utils.request.RequestBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -222,6 +227,41 @@ public class AssetService {
 	 */
     public static GetAdsContextAssetBuilder getAdsContext(String assetId, AssetType assetType, PlaybackContextOptions contextDataParams)  {
 		return new GetAdsContextAssetBuilder(assetId, assetType, contextDataParams);
+	}
+	
+	public static class GetBulkPlaybackContextAssetBuilder extends RequestBuilder<BulkPlaybackContext, BulkPlaybackContext.Tokenizer, GetBulkPlaybackContextAssetBuilder> {
+		
+		public GetBulkPlaybackContextAssetBuilder(List<KeyValue> fileTypes, String streamerType, PlaybackContextType context, UrlType urlType) {
+			super(BulkPlaybackContext.class, "asset", "getBulkPlaybackContext");
+			params.add("fileTypes", fileTypes);
+			params.add("streamerType", streamerType);
+			params.add("context", context);
+			params.add("urlType", urlType);
+		}
+		
+		public void streamerType(String multirequestToken) {
+			params.add("streamerType", multirequestToken);
+		}
+		
+		public void context(String multirequestToken) {
+			params.add("context", multirequestToken);
+		}
+		
+		public void urlType(String multirequestToken) {
+			params.add("urlType", multirequestToken);
+		}
+	}
+
+	/**
+	 * Gets the bulk playback context for assets.
+	 * 
+	 * @param fileTypes The types of files to include in the playback context.
+	 * @param streamerType The type of streamer to use.
+	 * @param context The context for the playback.
+	 * @param urlType The type of URL to generate.
+	 */
+    public static GetBulkPlaybackContextAssetBuilder getBulkPlaybackContext(List<KeyValue> fileTypes, String streamerType, PlaybackContextType context, UrlType urlType)  {
+		return new GetBulkPlaybackContextAssetBuilder(fileTypes, streamerType, context, urlType);
 	}
 	
 	public static class GetPlaybackContextAssetBuilder extends RequestBuilder<PlaybackContext, PlaybackContext.Tokenizer, GetPlaybackContextAssetBuilder> {
