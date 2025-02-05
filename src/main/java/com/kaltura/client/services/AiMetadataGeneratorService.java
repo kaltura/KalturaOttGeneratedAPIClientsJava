@@ -30,6 +30,7 @@ package com.kaltura.client.services;
 import com.kaltura.client.types.AiMetadataGeneratorConfiguration;
 import com.kaltura.client.types.GenerateMetadataBySubtitlesJob;
 import com.kaltura.client.types.GenerateMetadataResult;
+import com.kaltura.client.types.MetaFieldNameMap;
 import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.List;
@@ -120,6 +121,20 @@ public class AiMetadataGeneratorService {
 		return new GetGenerateMetadataJobAiMetadataGeneratorBuilder(id);
 	}
 	
+	public static class GetMetadataFieldDefinitionsAiMetadataGeneratorBuilder extends RequestBuilder<MetaFieldNameMap, MetaFieldNameMap.Tokenizer, GetMetadataFieldDefinitionsAiMetadataGeneratorBuilder> {
+		
+		public GetMetadataFieldDefinitionsAiMetadataGeneratorBuilder() {
+			super(MetaFieldNameMap.class, "aimetadatagenerator", "getMetadataFieldDefinitions");
+		}
+	}
+
+	/**
+	 * Get metadata mapping structure and available generated metadata fields
+	 */
+    public static GetMetadataFieldDefinitionsAiMetadataGeneratorBuilder getMetadataFieldDefinitions()  {
+		return new GetMetadataFieldDefinitionsAiMetadataGeneratorBuilder();
+	}
+	
 	public static class GetPartnerConfigurationAiMetadataGeneratorBuilder extends RequestBuilder<AiMetadataGeneratorConfiguration, AiMetadataGeneratorConfiguration.Tokenizer, GetPartnerConfigurationAiMetadataGeneratorBuilder> {
 		
 		public GetPartnerConfigurationAiMetadataGeneratorBuilder() {
@@ -134,10 +149,10 @@ public class AiMetadataGeneratorService {
 		return new GetPartnerConfigurationAiMetadataGeneratorBuilder();
 	}
 	
-	public static class SetPartnerConfigurationAiMetadataGeneratorBuilder extends RequestBuilder<AiMetadataGeneratorConfiguration, AiMetadataGeneratorConfiguration.Tokenizer, SetPartnerConfigurationAiMetadataGeneratorBuilder> {
+	public static class UpdatePartnerConfigurationAiMetadataGeneratorBuilder extends RequestBuilder<AiMetadataGeneratorConfiguration, AiMetadataGeneratorConfiguration.Tokenizer, UpdatePartnerConfigurationAiMetadataGeneratorBuilder> {
 		
-		public SetPartnerConfigurationAiMetadataGeneratorBuilder(AiMetadataGeneratorConfiguration configuration) {
-			super(AiMetadataGeneratorConfiguration.class, "aimetadatagenerator", "setPartnerConfiguration");
+		public UpdatePartnerConfigurationAiMetadataGeneratorBuilder(AiMetadataGeneratorConfiguration configuration) {
+			super(AiMetadataGeneratorConfiguration.class, "aimetadatagenerator", "updatePartnerConfiguration");
 			params.add("configuration", configuration);
 		}
 	}
@@ -147,7 +162,7 @@ public class AiMetadataGeneratorService {
 	 * 
 	 * @param configuration the partner configuration to be set
 	 */
-    public static SetPartnerConfigurationAiMetadataGeneratorBuilder setPartnerConfiguration(AiMetadataGeneratorConfiguration configuration)  {
-		return new SetPartnerConfigurationAiMetadataGeneratorBuilder(configuration);
+    public static UpdatePartnerConfigurationAiMetadataGeneratorBuilder updatePartnerConfiguration(AiMetadataGeneratorConfiguration configuration)  {
+		return new UpdatePartnerConfigurationAiMetadataGeneratorBuilder(configuration);
 	}
 }
