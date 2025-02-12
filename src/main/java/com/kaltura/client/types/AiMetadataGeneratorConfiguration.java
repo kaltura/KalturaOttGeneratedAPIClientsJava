@@ -33,6 +33,8 @@ import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,7 +54,7 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String isEnabled();
 		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		String vectorizedMetaIds();
+		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
 	}
 
 	/**
@@ -66,11 +68,11 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 	 */
 	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
 	/**
-	 * a String type holding a comma separated list of metadata IDs.                It
-	  is used to define which metadata fields will be extracted from the asset and
-	  sent for embeddings.
+	 * A read only array to list the set of languages which can be used with the
+	  service.              In practice it is populated with the values set in
+	  KalturaMetadataGeneratorLanguages ENUM.
 	 */
-	private String vectorizedMetaIds;
+	private List<StringValue> supportedLanguages;
 
 	// isEnabled:
 	public Boolean getIsEnabled(){
@@ -92,18 +94,10 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 		this.assetStructMetaNameMap = assetStructMetaNameMap;
 	}
 
-	// vectorizedMetaIds:
-	public String getVectorizedMetaIds(){
-		return this.vectorizedMetaIds;
+	// supportedLanguages:
+	public List<StringValue> getSupportedLanguages(){
+		return this.supportedLanguages;
 	}
-	public void setVectorizedMetaIds(String vectorizedMetaIds){
-		this.vectorizedMetaIds = vectorizedMetaIds;
-	}
-
-	public void vectorizedMetaIds(String multirequestToken){
-		setToken("vectorizedMetaIds", multirequestToken);
-	}
-
 
 	public AiMetadataGeneratorConfiguration() {
 		super();
@@ -117,7 +111,7 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 		// set members values:
 		isEnabled = GsonParser.parseBoolean(jsonObject.get("isEnabled"));
 		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		vectorizedMetaIds = GsonParser.parseString(jsonObject.get("vectorizedMetaIds"));
+		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
 
 	}
 
@@ -126,7 +120,6 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
 		kparams.add("isEnabled", this.isEnabled);
 		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
-		kparams.add("vectorizedMetaIds", this.vectorizedMetaIds);
 		return kparams;
 	}
 

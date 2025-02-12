@@ -46,19 +46,14 @@ public class AiMetadataGeneratorService {
 	
 	public static class GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataBySubtitlesJob, GenerateMetadataBySubtitlesJob.Tokenizer, GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder> {
 		
-		public GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(long subtitlesFileId, List<StringValue> externalAssetIds, String targetDisplayLanguage) {
+		public GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(long subtitlesFileId, List<StringValue> externalAssetIds) {
 			super(GenerateMetadataBySubtitlesJob.class, "aimetadatagenerator", "generateMetadataBySubtitles");
 			params.add("subtitlesFileId", subtitlesFileId);
 			params.add("externalAssetIds", externalAssetIds);
-			params.add("targetDisplayLanguage", targetDisplayLanguage);
 		}
 		
 		public void subtitlesFileId(String multirequestToken) {
 			params.add("subtitlesFileId", multirequestToken);
-		}
-		
-		public void targetDisplayLanguage(String multirequestToken) {
-			params.add("targetDisplayLanguage", multirequestToken);
 		}
 	}
 
@@ -69,12 +64,9 @@ public class AiMetadataGeneratorService {
 	 * service.
 	 *             Represents also the job ID used by the generate metadata process
 	 * @param externalAssetIds A list of external asset IDs to be populated with the generated metadata
-	 * @param targetDisplayLanguage The language used for the generated results.
-	 *             Must be a valid existing KalturaLanguage systemName.\nIf not
-	 * provided then the subtitles language will be used
 	 */
-    public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(long subtitlesFileId, List<StringValue> externalAssetIds, String targetDisplayLanguage)  {
-		return new GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(subtitlesFileId, externalAssetIds, targetDisplayLanguage);
+    public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(long subtitlesFileId, List<StringValue> externalAssetIds)  {
+		return new GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(subtitlesFileId, externalAssetIds);
 	}
 	
 	public static class GetGeneratedMetadataAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataResult, GenerateMetadataResult.Tokenizer, GetGeneratedMetadataAiMetadataGeneratorBuilder> {
