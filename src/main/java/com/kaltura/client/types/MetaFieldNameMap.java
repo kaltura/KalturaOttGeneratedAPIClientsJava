@@ -49,11 +49,13 @@ public class MetaFieldNameMap extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String genre();
+		String subGenre();
 		String sentiment();
-		String shortDescription();
-		String longDescription();
+		String suggestedTitle();
+		String description();
 		String oneLiner();
 		String keywords();
+		String sensitiveContent();
 	}
 
 	/**
@@ -61,17 +63,21 @@ public class MetaFieldNameMap extends ObjectBase {
 	 */
 	private String genre;
 	/**
+	 * Sub-Genre
+	 */
+	private String subGenre;
+	/**
 	 * Sentiment
 	 */
 	private String sentiment;
 	/**
-	 * Short Description
+	 * Suggested Title
 	 */
-	private String shortDescription;
+	private String suggestedTitle;
 	/**
-	 * Long Description
+	 * Description
 	 */
-	private String longDescription;
+	private String description;
 	/**
 	 * One Liner
 	 */
@@ -80,6 +86,10 @@ public class MetaFieldNameMap extends ObjectBase {
 	 * Keywords
 	 */
 	private String keywords;
+	/**
+	 * Sensitive Content
+	 */
+	private String sensitiveContent;
 
 	// genre:
 	public String getGenre(){
@@ -91,6 +101,18 @@ public class MetaFieldNameMap extends ObjectBase {
 
 	public void genre(String multirequestToken){
 		setToken("genre", multirequestToken);
+	}
+
+	// subGenre:
+	public String getSubGenre(){
+		return this.subGenre;
+	}
+	public void setSubGenre(String subGenre){
+		this.subGenre = subGenre;
+	}
+
+	public void subGenre(String multirequestToken){
+		setToken("subGenre", multirequestToken);
 	}
 
 	// sentiment:
@@ -105,28 +127,28 @@ public class MetaFieldNameMap extends ObjectBase {
 		setToken("sentiment", multirequestToken);
 	}
 
-	// shortDescription:
-	public String getShortDescription(){
-		return this.shortDescription;
+	// suggestedTitle:
+	public String getSuggestedTitle(){
+		return this.suggestedTitle;
 	}
-	public void setShortDescription(String shortDescription){
-		this.shortDescription = shortDescription;
-	}
-
-	public void shortDescription(String multirequestToken){
-		setToken("shortDescription", multirequestToken);
+	public void setSuggestedTitle(String suggestedTitle){
+		this.suggestedTitle = suggestedTitle;
 	}
 
-	// longDescription:
-	public String getLongDescription(){
-		return this.longDescription;
-	}
-	public void setLongDescription(String longDescription){
-		this.longDescription = longDescription;
+	public void suggestedTitle(String multirequestToken){
+		setToken("suggestedTitle", multirequestToken);
 	}
 
-	public void longDescription(String multirequestToken){
-		setToken("longDescription", multirequestToken);
+	// description:
+	public String getDescription(){
+		return this.description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
+
+	public void description(String multirequestToken){
+		setToken("description", multirequestToken);
 	}
 
 	// oneLiner:
@@ -153,6 +175,18 @@ public class MetaFieldNameMap extends ObjectBase {
 		setToken("keywords", multirequestToken);
 	}
 
+	// sensitiveContent:
+	public String getSensitiveContent(){
+		return this.sensitiveContent;
+	}
+	public void setSensitiveContent(String sensitiveContent){
+		this.sensitiveContent = sensitiveContent;
+	}
+
+	public void sensitiveContent(String multirequestToken){
+		setToken("sensitiveContent", multirequestToken);
+	}
+
 
 	public MetaFieldNameMap() {
 		super();
@@ -165,11 +199,13 @@ public class MetaFieldNameMap extends ObjectBase {
 
 		// set members values:
 		genre = GsonParser.parseString(jsonObject.get("genre"));
+		subGenre = GsonParser.parseString(jsonObject.get("subGenre"));
 		sentiment = GsonParser.parseString(jsonObject.get("sentiment"));
-		shortDescription = GsonParser.parseString(jsonObject.get("shortDescription"));
-		longDescription = GsonParser.parseString(jsonObject.get("longDescription"));
+		suggestedTitle = GsonParser.parseString(jsonObject.get("suggestedTitle"));
+		description = GsonParser.parseString(jsonObject.get("description"));
 		oneLiner = GsonParser.parseString(jsonObject.get("oneLiner"));
 		keywords = GsonParser.parseString(jsonObject.get("keywords"));
+		sensitiveContent = GsonParser.parseString(jsonObject.get("sensitiveContent"));
 
 	}
 
@@ -177,11 +213,13 @@ public class MetaFieldNameMap extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaMetaFieldNameMap");
 		kparams.add("genre", this.genre);
+		kparams.add("subGenre", this.subGenre);
 		kparams.add("sentiment", this.sentiment);
-		kparams.add("shortDescription", this.shortDescription);
-		kparams.add("longDescription", this.longDescription);
+		kparams.add("suggestedTitle", this.suggestedTitle);
+		kparams.add("description", this.description);
 		kparams.add("oneLiner", this.oneLiner);
 		kparams.add("keywords", this.keywords);
+		kparams.add("sensitiveContent", this.sensitiveContent);
 		return kparams;
 	}
 
