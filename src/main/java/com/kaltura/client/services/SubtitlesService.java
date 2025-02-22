@@ -89,33 +89,33 @@ public class SubtitlesService {
 	
 	public static class UploadFileSubtitlesBuilder extends RequestBuilder<Subtitles, Subtitles.Tokenizer, UploadFileSubtitlesBuilder> {
 		
-		public UploadFileSubtitlesBuilder(Subtitles subtitles, FileHolder file) {
+		public UploadFileSubtitlesBuilder(Subtitles subtitles, FileHolder fileData) {
 			super(Subtitles.class, "subtitles", "uploadFile");
 			params.add("subtitles", subtitles);
 			files = new Files();
-			files.add("file", file);
+			files.add("fileData", fileData);
 		}
 	}
 
-	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, File file)  {
-		return uploadFile(subtitles, new FileHolder(file));
+	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, File fileData)  {
+		return uploadFile(subtitles, new FileHolder(fileData));
 	}
 
-	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, InputStream file, String fileMimeType, String fileName, long fileSize)  {
-		return uploadFile(subtitles, new FileHolder(file, fileMimeType, fileName, fileSize));
+	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, InputStream fileData, String fileDataMimeType, String fileDataName, long fileDataSize)  {
+		return uploadFile(subtitles, new FileHolder(fileData, fileDataMimeType, fileDataName, fileDataSize));
 	}
 
-	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, FileInputStream file, String fileMimeType, String fileName)  {
-		return uploadFile(subtitles, new FileHolder(file, fileMimeType, fileName));
+	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, FileInputStream fileData, String fileDataMimeType, String fileDataName)  {
+		return uploadFile(subtitles, new FileHolder(fileData, fileDataMimeType, fileDataName));
 	}
 
 	/**
 	 * Upload a subtitles file for a later analysis.
 	 * 
 	 * @param subtitles Subtitle metadata
-	 * @param file The subtitles text file to upload. The file must be in UTF-8 encoding.
+	 * @param fileData The subtitles text file to upload. Must be in UTF-8 encoding.
 	 */
-    public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, FileHolder file)  {
-		return new UploadFileSubtitlesBuilder(subtitles, file);
+    public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, FileHolder fileData)  {
+		return new UploadFileSubtitlesBuilder(subtitles, fileData);
 	}
 }

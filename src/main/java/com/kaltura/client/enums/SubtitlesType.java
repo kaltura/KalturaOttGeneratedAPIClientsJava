@@ -34,9 +34,9 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum SubtitlesType implements EnumAsString {
+	TEXT("Text"),
 	SRT("SRT"),
-	WEBTTV("WebTTV"),
-	TEXT_ONLY("Text_Only");
+	WEBVTT("WebVTT");
 
 	private String value;
 
