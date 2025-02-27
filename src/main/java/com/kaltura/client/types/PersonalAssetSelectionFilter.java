@@ -48,7 +48,9 @@ public class PersonalAssetSelectionFilter extends Filter {
 	}
 
 	/**
-	 * selected assets for specific slot number
+	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
+	  number as input and returns only those assets from the personal selection that
+	  are assigned to that slot.
 	 */
 	private Integer slotNumberEqual;
 
