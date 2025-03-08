@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.SubtitlesType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -52,7 +51,6 @@ public class Subtitles extends ObjectBase {
 		String id();
 		String createDate();
 		String fileName();
-		String type();
 		String language();
 	}
 
@@ -69,10 +67,6 @@ public class Subtitles extends ObjectBase {
 	 * Mandatory. The name that will be associated with the uploaded file.
 	 */
 	private String fileName;
-	/**
-	 * Mandatory. The type of the subtitles file. Supported - Text, SRT, WebVTT.
-	 */
-	private SubtitlesType type;
 	/**
 	 * Mandatory. The language in which the subtitles are written.              It is
 	  used in the LLM prompt to inform it what is the language it needs to analyze.
@@ -97,18 +91,6 @@ public class Subtitles extends ObjectBase {
 
 	public void fileName(String multirequestToken){
 		setToken("fileName", multirequestToken);
-	}
-
-	// type:
-	public SubtitlesType getType(){
-		return this.type;
-	}
-	public void setType(SubtitlesType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
 	}
 
 	// language:
@@ -137,7 +119,6 @@ public class Subtitles extends ObjectBase {
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		fileName = GsonParser.parseString(jsonObject.get("fileName"));
-		type = SubtitlesType.get(GsonParser.parseString(jsonObject.get("type")));
 		language = GsonParser.parseString(jsonObject.get("language"));
 
 	}
@@ -146,7 +127,6 @@ public class Subtitles extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSubtitles");
 		kparams.add("fileName", this.fileName);
-		kparams.add("type", this.type);
 		kparams.add("language", this.language);
 		return kparams;
 	}

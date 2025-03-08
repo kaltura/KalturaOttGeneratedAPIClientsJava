@@ -57,13 +57,19 @@ public class AiMetadataGeneratorService {
 		}
 	}
 
+	public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(long subtitlesFileId)  {
+		return generateMetadataBySubtitles(subtitlesFileId, null);
+	}
+
 	/**
-	 * initiate the the process of metadata generation based on the subtitles file.
+	 * Initiate the the process of metadata generation based on the subtitles file.
 	 * 
-	 * @param subtitlesFileId he subtitles file ID returned when uploaded the subtitles file by the subtitles
+	 * @param subtitlesFileId The subtitles file ID returned when uploaded the subtitles file by the subtitles
 	 * service.
 	 *             Represents also the job ID used by the generate metadata process
 	 * @param externalAssetIds A list of external asset IDs to be populated with the generated metadata
+	 *             Must be a valid existing KalturaLanguage systemName.\nIf not
+	 * provided then the subtitles language will be used
 	 */
     public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(long subtitlesFileId, List<StringValue> externalAssetIds)  {
 		return new GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(subtitlesFileId, externalAssetIds);
