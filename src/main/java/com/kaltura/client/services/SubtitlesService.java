@@ -29,10 +29,8 @@ package com.kaltura.client.services;
 
 import com.kaltura.client.FileHolder;
 import com.kaltura.client.Files;
-import com.kaltura.client.types.FilterPager;
 import com.kaltura.client.types.Subtitles;
-import com.kaltura.client.types.SubtitlesFilter;
-import com.kaltura.client.utils.request.ListResponseRequestBuilder;
+import com.kaltura.client.types.UploadSubtitles;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,49 +45,9 @@ import java.io.InputStream;
 
 public class SubtitlesService {
 	
-	public static class GetSubtitlesBuilder extends RequestBuilder<Subtitles, Subtitles.Tokenizer, GetSubtitlesBuilder> {
-		
-		public GetSubtitlesBuilder(long id) {
-			super(Subtitles.class, "subtitles", "get");
-			params.add("id", id);
-		}
-		
-		public void id(String multirequestToken) {
-			params.add("id", multirequestToken);
-		}
-	}
-
-	/**
-	 * Return a subtitles file
-	 * 
-	 * @param id A subtitles file ID to be retrieved
-	 */
-    public static GetSubtitlesBuilder get(long id)  {
-		return new GetSubtitlesBuilder(id);
-	}
-	
-	public static class ListSubtitlesBuilder extends ListResponseRequestBuilder<Subtitles, Subtitles.Tokenizer, ListSubtitlesBuilder> {
-		
-		public ListSubtitlesBuilder(SubtitlesFilter filter, FilterPager pager) {
-			super(Subtitles.class, "subtitles", "list");
-			params.add("filter", filter);
-			params.add("pager", pager);
-		}
-	}
-
-	/**
-	 * Return a list of available subtitles files
-	 * 
-	 * @param filter Filter
-	 * @param pager Pager
-	 */
-    public static ListSubtitlesBuilder list(SubtitlesFilter filter, FilterPager pager)  {
-		return new ListSubtitlesBuilder(filter, pager);
-	}
-	
 	public static class UploadFileSubtitlesBuilder extends RequestBuilder<Subtitles, Subtitles.Tokenizer, UploadFileSubtitlesBuilder> {
 		
-		public UploadFileSubtitlesBuilder(Subtitles subtitles, FileHolder fileData) {
+		public UploadFileSubtitlesBuilder(UploadSubtitles subtitles, FileHolder fileData) {
 			super(Subtitles.class, "subtitles", "uploadFile");
 			params.add("subtitles", subtitles);
 			files = new Files();
@@ -97,15 +55,15 @@ public class SubtitlesService {
 		}
 	}
 
-	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, File fileData)  {
+	public static UploadFileSubtitlesBuilder uploadFile(UploadSubtitles subtitles, File fileData)  {
 		return uploadFile(subtitles, new FileHolder(fileData));
 	}
 
-	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, InputStream fileData, String fileDataMimeType, String fileDataName, long fileDataSize)  {
+	public static UploadFileSubtitlesBuilder uploadFile(UploadSubtitles subtitles, InputStream fileData, String fileDataMimeType, String fileDataName, long fileDataSize)  {
 		return uploadFile(subtitles, new FileHolder(fileData, fileDataMimeType, fileDataName, fileDataSize));
 	}
 
-	public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, FileInputStream fileData, String fileDataMimeType, String fileDataName)  {
+	public static UploadFileSubtitlesBuilder uploadFile(UploadSubtitles subtitles, FileInputStream fileData, String fileDataMimeType, String fileDataName)  {
 		return uploadFile(subtitles, new FileHolder(fileData, fileDataMimeType, fileDataName));
 	}
 
@@ -115,7 +73,7 @@ public class SubtitlesService {
 	 * @param subtitles Subtitle metadata
 	 * @param fileData The subtitles text file to upload. Must be in UTF-8 encoding.
 	 */
-    public static UploadFileSubtitlesBuilder uploadFile(Subtitles subtitles, FileHolder fileData)  {
+    public static UploadFileSubtitlesBuilder uploadFile(UploadSubtitles subtitles, FileHolder fileData)  {
 		return new UploadFileSubtitlesBuilder(subtitles, fileData);
 	}
 }
