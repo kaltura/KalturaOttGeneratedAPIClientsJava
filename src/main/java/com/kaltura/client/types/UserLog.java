@@ -59,11 +59,11 @@ public class UserLog extends ObjectBase {
 	/**
 	 * UserLog entry unique identifier
 	 */
-	private Integer id;
+	private Long id;
 	/**
 	 * The log created date in epoch
 	 */
-	private Integer createDate;
+	private Long createDate;
 	/**
 	 * A valid user unique identifier
 	 */
@@ -74,11 +74,11 @@ public class UserLog extends ObjectBase {
 	private String message;
 
 	// id:
-	public Integer getId(){
+	public Long getId(){
 		return this.id;
 	}
 	// createDate:
-	public Integer getCreateDate(){
+	public Long getCreateDate(){
 		return this.createDate;
 	}
 	// userId:
@@ -100,8 +100,8 @@ public class UserLog extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseInt(jsonObject.get("id"));
-		createDate = GsonParser.parseInt(jsonObject.get("createDate"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		userId = GsonParser.parseInt(jsonObject.get("userId"));
 		message = GsonParser.parseString(jsonObject.get("message"));
 
