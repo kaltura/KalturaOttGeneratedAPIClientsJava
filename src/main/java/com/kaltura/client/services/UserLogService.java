@@ -50,10 +50,6 @@ public class UserLogService {
 		}
 	}
 
-	public static ListUserLogBuilder list()  {
-		return list(null);
-	}
-
 	public static ListUserLogBuilder list(UserLogFilter filter)  {
 		return list(filter, null);
 	}

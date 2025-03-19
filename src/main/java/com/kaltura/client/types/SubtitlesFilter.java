@@ -31,9 +31,6 @@ import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -43,45 +40,69 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(SubtitlesFilter.Tokenizer.class)
+public class SubtitlesFilter extends Filter {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
+	public interface Tokenizer extends Filter.Tokenizer {
+		String idIn();
+		String fileNameContains();
 	}
 
 	/**
-	 * List of assets identifier
+	 * A comma separated list of IDs indicating the KalturaSubtitles objects&amp;#39;
+	  IDs.
 	 */
-	private List<ManualCollectionAsset> assets;
+	private String idIn;
+	/**
+	 * Contains a name or a partial name of the subtitles file.
+	 */
+	private String fileNameContains;
 
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
 	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
+	}
+
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
+	}
+
+	// fileNameContains:
+	public String getFileNameContains(){
+		return this.fileNameContains;
+	}
+	public void setFileNameContains(String fileNameContains){
+		this.fileNameContains = fileNameContains;
+	}
+
+	public void fileNameContains(String multirequestToken){
+		setToken("fileNameContains", multirequestToken);
 	}
 
 
-	public ManualChannel() {
+	public SubtitlesFilter() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public SubtitlesFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		fileNameContains = GsonParser.parseString(jsonObject.get("fileNameContains"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("assets", this.assets);
+		kparams.add("objectType", "KalturaSubtitlesFilter");
+		kparams.add("idIn", this.idIn);
+		kparams.add("fileNameContains", this.fileNameContains);
 		return kparams;
 	}
 

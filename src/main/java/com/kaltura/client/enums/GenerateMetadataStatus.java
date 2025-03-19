@@ -25,15 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -41,49 +33,41 @@ import java.util.List;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum GenerateMetadataStatus implements EnumAsString {
+	PROCESSING("Processing"),
+	PARTIALSUCCESS("PartialSuccess"),
+	SUCCESSPENDINGASSETS("SuccessPendingAssets"),
+	SUCCESS("Success"),
+	FAILED("Failed");
 
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
-	
-	public interface Tokenizer extends Channel.Tokenizer {
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
+	private String value;
+
+	GenerateMetadataStatus(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * List of assets identifier
-	 */
-	private List<ManualCollectionAsset> assets;
-
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
-	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-
-	public ManualChannel() {
-		super();
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("assets", this.assets);
-		return kparams;
-	}
-
+	public static GenerateMetadataStatus get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over GenerateMetadataStatus defined values and compare the inner value with the given one:
+		for(GenerateMetadataStatus item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return GenerateMetadataStatus.values().length > 0 ? GenerateMetadataStatus.values()[0]: null;
+   }
 }
-

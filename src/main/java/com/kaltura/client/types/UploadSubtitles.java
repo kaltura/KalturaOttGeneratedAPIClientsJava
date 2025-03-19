@@ -29,11 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,46 +40,53 @@ import java.util.List;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * A class representing the request to upload subtitles to Kaltura.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(ManualChannel.Tokenizer.class)
-public class ManualChannel extends Channel {
+@MultiRequestBuilder.Tokenizer(UploadSubtitles.Tokenizer.class)
+public class UploadSubtitles extends ObjectBase {
 	
-	public interface Tokenizer extends Channel.Tokenizer {
-		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String fileName();
 	}
 
 	/**
-	 * List of assets identifier
+	 * Mandatory. The name that will be associated with the uploaded file.
 	 */
-	private List<ManualCollectionAsset> assets;
+	private String fileName;
 
-	// assets:
-	public List<ManualCollectionAsset> getAssets(){
-		return this.assets;
+	// fileName:
+	public String getFileName(){
+		return this.fileName;
 	}
-	public void setAssets(List<ManualCollectionAsset> assets){
-		this.assets = assets;
+	public void setFileName(String fileName){
+		this.fileName = fileName;
+	}
+
+	public void fileName(String multirequestToken){
+		setToken("fileName", multirequestToken);
 	}
 
 
-	public ManualChannel() {
+	public UploadSubtitles() {
 		super();
 	}
 
-	public ManualChannel(JsonObject jsonObject) throws APIException {
+	public UploadSubtitles(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
+		fileName = GsonParser.parseString(jsonObject.get("fileName"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("assets", this.assets);
+		kparams.add("objectType", "KalturaUploadSubtitles");
+		kparams.add("fileName", this.fileName);
 		return kparams;
 	}
 
