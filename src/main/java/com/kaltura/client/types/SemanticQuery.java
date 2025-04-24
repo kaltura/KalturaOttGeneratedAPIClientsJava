@@ -29,8 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -39,52 +43,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Represents a semantic query with its sub-queries and title.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SemanticQuery.Tokenizer.class)
+public class SemanticQuery extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.ListTokenizer<SemanticSubQuery.Tokenizer> subQueries();
+		String title();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * List of generated semantic sub-queries.
 	 */
-	private Integer slotNumberEqual;
+	private List<SemanticSubQuery> subQueries;
+	/**
+	 * Title of the semantic query.
+	 */
+	private String title;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// subQueries:
+	public List<SemanticSubQuery> getSubQueries(){
+		return this.subQueries;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
+	public void setSubQueries(List<SemanticSubQuery> subQueries){
+		this.subQueries = subQueries;
 	}
 
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	// title:
+	public String getTitle(){
+		return this.title;
+	}
+	public void setTitle(String title){
+		this.title = title;
+	}
+
+	public void title(String multirequestToken){
+		setToken("title", multirequestToken);
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public SemanticQuery() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public SemanticQuery(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		subQueries = GsonParser.parseArray(jsonObject.getAsJsonArray("subQueries"), SemanticSubQuery.class);
+		title = GsonParser.parseString(jsonObject.get("title"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaSemanticQuery");
+		kparams.add("subQueries", this.subQueries);
+		kparams.add("title", this.title);
 		return kparams;
 	}
 

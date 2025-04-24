@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.TranslationToken;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,52 +41,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Represents a semantic sub-query with text and name.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SemanticSubQuery.Tokenizer.class)
+public class SemanticSubQuery extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String text();
+		TranslationToken.Tokenizer name();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * The text content of the sub-query.
 	 */
-	private Integer slotNumberEqual;
+	private String text;
+	/**
+	 * The name of the sub-query.
+	 */
+	private TranslationToken name;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// text:
+	public String getText(){
+		return this.text;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
+	public void setText(String text){
+		this.text = text;
 	}
 
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	public void text(String multirequestToken){
+		setToken("text", multirequestToken);
+	}
+
+	// name:
+	public TranslationToken getName(){
+		return this.name;
+	}
+	public void setName(TranslationToken name){
+		this.name = name;
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public SemanticSubQuery() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public SemanticSubQuery(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		text = GsonParser.parseString(jsonObject.get("text"));
+		name = GsonParser.parseObject(jsonObject.getAsJsonObject("name"), TranslationToken.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaSemanticSubQuery");
+		kparams.add("text", this.text);
+		kparams.add("name", this.name);
 		return kparams;
 	}
 
