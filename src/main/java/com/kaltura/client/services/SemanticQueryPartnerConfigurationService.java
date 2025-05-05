@@ -27,8 +27,7 @@
 // ===================================================================================================
 package com.kaltura.client.services;
 
-import com.kaltura.client.types.GenerateSemanticQuery;
-import com.kaltura.client.types.SemanticQuery;
+import com.kaltura.client.types.SemanticQueryPartnerConfiguration;
 import com.kaltura.client.utils.request.RequestBuilder;
 
 /**
@@ -38,22 +37,36 @@ import com.kaltura.client.utils.request.RequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-public class SemanticQueryService {
+public class SemanticQueryPartnerConfigurationService {
 	
-	public static class GenerateSemanticQueryBuilder extends RequestBuilder<SemanticQuery, SemanticQuery.Tokenizer, GenerateSemanticQueryBuilder> {
+	public static class GetSemanticQueryPartnerConfigurationBuilder extends RequestBuilder<SemanticQueryPartnerConfiguration, SemanticQueryPartnerConfiguration.Tokenizer, GetSemanticQueryPartnerConfigurationBuilder> {
 		
-		public GenerateSemanticQueryBuilder(GenerateSemanticQuery query) {
-			super(SemanticQuery.class, "semanticquery", "generate");
-			params.add("query", query);
+		public GetSemanticQueryPartnerConfigurationBuilder() {
+			super(SemanticQueryPartnerConfiguration.class, "semanticquerypartnerconfiguration", "get");
 		}
 	}
 
 	/**
-	 * Generates semantic queries based on the input query.
-	 * 
-	 * @param query The semantic query generation request containing the input query text.
+	 * Retrieves the current partner configuration for semantic query.
 	 */
-    public static GenerateSemanticQueryBuilder generate(GenerateSemanticQuery query)  {
-		return new GenerateSemanticQueryBuilder(query);
+    public static GetSemanticQueryPartnerConfigurationBuilder get()  {
+		return new GetSemanticQueryPartnerConfigurationBuilder();
+	}
+	
+	public static class UpdateSemanticQueryPartnerConfigurationBuilder extends RequestBuilder<SemanticQueryPartnerConfiguration, SemanticQueryPartnerConfiguration.Tokenizer, UpdateSemanticQueryPartnerConfigurationBuilder> {
+		
+		public UpdateSemanticQueryPartnerConfigurationBuilder(SemanticQueryPartnerConfiguration configuration) {
+			super(SemanticQueryPartnerConfiguration.class, "semanticquerypartnerconfiguration", "update");
+			params.add("configuration", configuration);
+		}
+	}
+
+	/**
+	 * Updates the partner configuration for semantic query.
+	 * 
+	 * @param configuration The configuration parameters for semantic query generation.
+	 */
+    public static UpdateSemanticQueryPartnerConfigurationBuilder update(SemanticQueryPartnerConfiguration configuration)  {
+		return new UpdateSemanticQueryPartnerConfigurationBuilder(configuration);
 	}
 }
