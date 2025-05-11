@@ -48,24 +48,24 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class GenerateSemanticQuery extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String query();
+		String text();
 	}
 
 	/**
 	 * The input query text to generate semantic queries from.
 	 */
-	private String query;
+	private String text;
 
-	// query:
-	public String getQuery(){
-		return this.query;
+	// text:
+	public String getText(){
+		return this.text;
 	}
-	public void setQuery(String query){
-		this.query = query;
+	public void setText(String text){
+		this.text = text;
 	}
 
-	public void query(String multirequestToken){
-		setToken("query", multirequestToken);
+	public void text(String multirequestToken){
+		setToken("text", multirequestToken);
 	}
 
 
@@ -79,14 +79,14 @@ public class GenerateSemanticQuery extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		query = GsonParser.parseString(jsonObject.get("query"));
+		text = GsonParser.parseString(jsonObject.get("text"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaGenerateSemanticQuery");
-		kparams.add("query", this.query);
+		kparams.add("text", this.text);
 		return kparams;
 	}
 
