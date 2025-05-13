@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,52 +38,29 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Geo block rule filter
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(GeoBlockRuleFilter.Tokenizer.class)
+public class GeoBlockRuleFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
-	}
-
-	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
-	 */
-	private Integer slotNumberEqual;
-
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
-	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
-	}
-
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+
+	public GeoBlockRuleFilter() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public GeoBlockRuleFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaGeoBlockRuleFilter");
 		return kparams;
 	}
 
