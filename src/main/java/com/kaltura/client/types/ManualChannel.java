@@ -47,31 +47,13 @@ import java.util.List;
 public class ManualChannel extends Channel {
 	
 	public interface Tokenizer extends Channel.Tokenizer {
-		String mediaIds();
 		RequestBuilder.ListTokenizer<ManualCollectionAsset.Tokenizer> assets();
 	}
 
 	/**
-	 * A list of comma separated media ids associated with this channel, according to
-	  the order of the medias in the channel.
-	 */
-	private String mediaIds;
-	/**
 	 * List of assets identifier
 	 */
 	private List<ManualCollectionAsset> assets;
-
-	// mediaIds:
-	public String getMediaIds(){
-		return this.mediaIds;
-	}
-	public void setMediaIds(String mediaIds){
-		this.mediaIds = mediaIds;
-	}
-
-	public void mediaIds(String multirequestToken){
-		setToken("mediaIds", multirequestToken);
-	}
 
 	// assets:
 	public List<ManualCollectionAsset> getAssets(){
@@ -92,7 +74,6 @@ public class ManualChannel extends Channel {
 		if(jsonObject == null) return;
 
 		// set members values:
-		mediaIds = GsonParser.parseString(jsonObject.get("mediaIds"));
 		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), ManualCollectionAsset.class);
 
 	}
@@ -100,7 +81,6 @@ public class ManualChannel extends Channel {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaManualChannel");
-		kparams.add("mediaIds", this.mediaIds);
 		kparams.add("assets", this.assets);
 		return kparams;
 	}
