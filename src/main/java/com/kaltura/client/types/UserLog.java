@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,52 +40,76 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * This log entry records an event related to a user&amp;#39;s interaction with the
+  Kaltura TV Platform (KTP). The event may be initiated directly by the user or by
+  the platform itself in response to user activity.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(UserLog.Tokenizer.class)
+public class UserLog extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String id();
+		String createDate();
+		String userId();
+		String message();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * UserLog entry unique identifier
 	 */
-	private Integer slotNumberEqual;
+	private Long id;
+	/**
+	 * The log created date in epoch
+	 */
+	private Long createDate;
+	/**
+	 * A valid user unique identifier
+	 */
+	private Integer userId;
+	/**
+	 * Log message
+	 */
+	private String message;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// id:
+	public Long getId(){
+		return this.id;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
+	// createDate:
+	public Long getCreateDate(){
+		return this.createDate;
+	}
+	// userId:
+	public Integer getUserId(){
+		return this.userId;
+	}
+	// message:
+	public String getMessage(){
+		return this.message;
 	}
 
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
-	}
-
-
-	public PersonalAssetSelectionFilter() {
+	public UserLog() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public UserLog(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		id = GsonParser.parseLong(jsonObject.get("id"));
+		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
+		userId = GsonParser.parseInt(jsonObject.get("userId"));
+		message = GsonParser.parseString(jsonObject.get("message"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaUserLog");
 		return kparams;
 	}
 
