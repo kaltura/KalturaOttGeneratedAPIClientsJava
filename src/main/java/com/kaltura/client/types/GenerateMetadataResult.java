@@ -29,8 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -39,52 +42,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Metadata generation result object.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(GenerateMetadataResult.Tokenizer.class)
+public class GenerateMetadataResult extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		RequestBuilder.MapTokenizer<TranslationToken.Tokenizer> enrichedMetadata();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * A dictionary/map containing the generated metadata. The map key includes the
+	  metadata name and the map value includes the generated value.
 	 */
-	private Integer slotNumberEqual;
+	private Map<String, TranslationToken> enrichedMetadata;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// enrichedMetadata:
+	public Map<String, TranslationToken> getEnrichedMetadata(){
+		return this.enrichedMetadata;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
-	}
-
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	public void setEnrichedMetadata(Map<String, TranslationToken> enrichedMetadata){
+		this.enrichedMetadata = enrichedMetadata;
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public GenerateMetadataResult() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public GenerateMetadataResult(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		enrichedMetadata = GsonParser.parseMap(jsonObject.getAsJsonObject("enrichedMetadata"), TranslationToken.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaGenerateMetadataResult");
+		kparams.add("enrichedMetadata", this.enrichedMetadata);
 		return kparams;
 	}
 

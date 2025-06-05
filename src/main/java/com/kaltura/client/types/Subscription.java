@@ -105,27 +105,32 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private String id;
 	/**
-	 * A list of channels associated with this subscription
+	 * List of KalturaBaseChannel objects associated with this subscription
 	 */
 	private List<BaseChannel> channels;
 	/**
-	 * Comma separated channels Ids associated with this subscription
+	 * Comma separated list identifying the KalturaBaseChannel objects associated with
+	  this subscription. In practice this is a list of KalturaBaseChannel.id values.
 	 */
 	private String channelsIds;
 	/**
-	 * The first date the subscription is available for purchasing
+	 * The first date the subscription is available for purchasing (in seconds since
+	  the Unix epoch)
 	 */
 	private Long startDate;
 	/**
-	 * The last date the subscription is available for purchasing
+	 * The last date the subscription is available for purchasing (in seconds since the
+	  Unix epoch)
 	 */
 	private Long endDate;
 	/**
-	 * A list of file types identifiers that are supported in this subscription
+	 * List of file types (KalturaMediaFileType.id values) that are supported by this
+	  subscription
 	 */
 	private List<IntegerValue> fileTypes;
 	/**
-	 * Comma separated file types identifiers that are supported in this subscription
+	 * Comma separated list of file types (KalturaMediaFileType.id values) that are
+	  supported by this subscription
 	 */
 	private String fileTypesIds;
 	/**
@@ -149,7 +154,8 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private DiscountModule discountModule;
 	/**
-	 * The internal discount module identifier for the subscription
+	 * The internal discount module identifier (kalturaDiscountModule.id value) for the
+	  subscription
 	 */
 	private Long internalDiscountModuleId;
 	/**
@@ -169,7 +175,7 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private List<TranslationToken> multilingualDescription;
 	/**
-	 * Identifier of the media associated with the subscription
+	 * Identifier of the media (KalturaAsset.id value) associated with the subscription
 	 */
 	private Integer mediaId;
 	/**
@@ -177,13 +183,14 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private Long prorityInOrder;
 	/**
-	 * Comma separated subscription price plan IDs
+	 * Comma separated list of subscription price plans (KalturaPricePlan.id values)
+	  that are associated to this subscription
 	 */
 	private String pricePlanIds;
 	/**
 	 * Optional: If the subscription has a flexible price plan. Represents an initial
-	  none-recurring discounted period which is charged immediately (no unified
-	  billing), followed by a recuring price plan which should be aligned with the
+	  non-recurring discounted period which is charged immediately (no unified
+	  billing), followed by a recurring price plan which should be aligned with the
 	  unified billing cycle
 	 */
 	private Long flexiblePricePlanId;
@@ -192,11 +199,13 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private PreviewModule previewModule;
 	/**
-	 * Subscription preview module identifier
+	 * Identifier of the KalturaPreviewModule (KalturaPreviewModule.id value)
+	  associated with this subscription
 	 */
 	private Long previewModuleId;
 	/**
-	 * The household limitation module identifier associated with this subscription
+	 * Identifier of the KalturaHouseholdLimitationModule
+	  (KalturaHouseholdLimitations.id value) associated with this subscription
 	 */
 	private Integer householdLimitationsId;
 	/**
@@ -231,11 +240,11 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private List<OTTUserType> userTypes;
 	/**
-	 * List of Coupons group
+	 * List of KalturaCouponsGroup objects associated with the subscription
 	 */
 	private List<CouponsGroup> couponsGroups;
 	/**
-	 * List of subscription Coupons group
+	 * List of KalturaSubscriptionCouponGroup objects associated with the subscription
 	 */
 	private List<SubscriptionCouponGroup> subscriptionCouponGroup;
 	/**
@@ -247,7 +256,7 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private SubscriptionDependencyType dependencyType;
 	/**
-	 * External ID
+	 * Identifier of the subsription object as assigned by an external system
 	 */
 	private String externalId;
 	/**
@@ -255,7 +264,8 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private Boolean isCancellationBlocked;
 	/**
-	 * The Pre-Sale date the subscription is available for purchasing
+	 * Pre-sale date that subscription is available for purchasing (in seconds since
+	  the Unix epoch)
 	 */
 	private Long preSaleDate;
 	/**
@@ -271,12 +281,12 @@ public class Subscription extends OTTObjectSupportNullable {
 	 */
 	private Boolean isActive;
 	/**
-	 * Specifies when was the Subscription created. Date and time represented as epoch.
+	 * Specifies when the subscription was created (in seconds since the Unix epoch)
 	 */
 	private Long createDate;
 	/**
-	 * Specifies when was the Subscription last updated. Date and time represented as
-	  epoch.
+	 * Specifies when the subscription was last updated (in seconds since the Unix
+	  epoch)
 	 */
 	private Long updateDate;
 

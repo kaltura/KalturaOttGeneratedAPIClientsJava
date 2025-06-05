@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.ConditionOperator;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,52 +41,91 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Configuration for embedding generation rule.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(FilteringCondition.Tokenizer.class)
+public class FilteringCondition extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String metaName();
+		String operator();
+		String value();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * Meta Name (SystemName) to apply the rule to.
 	 */
-	private Integer slotNumberEqual;
+	private String metaName;
+	/**
+	 * Operator to use for the rule.
+	 */
+	private ConditionOperator operator;
+	/**
+	 * Single value for the rule condition.
+	 */
+	private String value;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// metaName:
+	public String getMetaName(){
+		return this.metaName;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
+	public void setMetaName(String metaName){
+		this.metaName = metaName;
 	}
 
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	public void metaName(String multirequestToken){
+		setToken("metaName", multirequestToken);
+	}
+
+	// operator:
+	public ConditionOperator getOperator(){
+		return this.operator;
+	}
+	public void setOperator(ConditionOperator operator){
+		this.operator = operator;
+	}
+
+	public void operator(String multirequestToken){
+		setToken("operator", multirequestToken);
+	}
+
+	// value:
+	public String getValue(){
+		return this.value;
+	}
+	public void setValue(String value){
+		this.value = value;
+	}
+
+	public void value(String multirequestToken){
+		setToken("value", multirequestToken);
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public FilteringCondition() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public FilteringCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		metaName = GsonParser.parseString(jsonObject.get("metaName"));
+		operator = ConditionOperator.get(GsonParser.parseString(jsonObject.get("operator")));
+		value = GsonParser.parseString(jsonObject.get("value"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaFilteringCondition");
+		kparams.add("metaName", this.metaName);
+		kparams.add("operator", this.operator);
+		kparams.add("value", this.value);
 		return kparams;
 	}
 
