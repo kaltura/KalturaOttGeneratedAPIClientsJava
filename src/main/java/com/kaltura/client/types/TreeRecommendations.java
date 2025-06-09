@@ -29,12 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.AssetListResponse;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -52,8 +51,7 @@ public class TreeRecommendations extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String title();
-		String searchQuery();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> assetIds();
+		ListResponse.Tokenizer<.Tokenizer> assets();
 	}
 
 	/**
@@ -61,13 +59,9 @@ public class TreeRecommendations extends ObjectBase {
 	 */
 	private String title;
 	/**
-	 * The semantic search query used to find matching assets.
+	 * Array of content assets matching the recommendation criteria.
 	 */
-	private String searchQuery;
-	/**
-	 * Array of content assets Id&amp;#39;s matching the recommendation criteria.
-	 */
-	private List<StringValue> assetIds;
+	private AssetListResponse assets;
 
 	// title:
 	public String getTitle(){
@@ -81,24 +75,12 @@ public class TreeRecommendations extends ObjectBase {
 		setToken("title", multirequestToken);
 	}
 
-	// searchQuery:
-	public String getSearchQuery(){
-		return this.searchQuery;
+	// assets:
+	public AssetListResponse getAssets(){
+		return this.assets;
 	}
-	public void setSearchQuery(String searchQuery){
-		this.searchQuery = searchQuery;
-	}
-
-	public void searchQuery(String multirequestToken){
-		setToken("searchQuery", multirequestToken);
-	}
-
-	// assetIds:
-	public List<StringValue> getAssetIds(){
-		return this.assetIds;
-	}
-	public void setAssetIds(List<StringValue> assetIds){
-		this.assetIds = assetIds;
+	public void setAssets(AssetListResponse assets){
+		this.assets = assets;
 	}
 
 
@@ -113,8 +95,7 @@ public class TreeRecommendations extends ObjectBase {
 
 		// set members values:
 		title = GsonParser.parseString(jsonObject.get("title"));
-		searchQuery = GsonParser.parseString(jsonObject.get("searchQuery"));
-		assetIds = GsonParser.parseArray(jsonObject.getAsJsonArray("assetIds"), StringValue.class);
+		assets = GsonParser.parseObject(jsonObject.getAsJsonObject("assets"), AssetListResponse.class);
 
 	}
 
@@ -122,8 +103,7 @@ public class TreeRecommendations extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaTreeRecommendations");
 		kparams.add("title", this.title);
-		kparams.add("searchQuery", this.searchQuery);
-		kparams.add("assetIds", this.assetIds);
+		kparams.add("assets", this.assets);
 		return kparams;
 	}
 

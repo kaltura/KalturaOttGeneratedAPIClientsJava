@@ -43,12 +43,12 @@ public class AiRecommendationTreeService {
 	
 	public static class GetNextNodeAndRecommendationAiRecommendationTreeBuilder extends RequestBuilder<TreeNextNodeResponse, TreeNextNodeResponse.Tokenizer, GetNextNodeAndRecommendationAiRecommendationTreeBuilder> {
 		
-		public GetNextNodeAndRecommendationAiRecommendationTreeBuilder(String treeId, String previousQuestionId, String answerId, String topQuestion) {
+		public GetNextNodeAndRecommendationAiRecommendationTreeBuilder(String treeId, String previousQuestionId, String answerId, String topQuestionId) {
 			super(TreeNextNodeResponse.class, "airecommendationtree", "getNextNodeAndRecommendation");
 			params.add("treeId", treeId);
 			params.add("previousQuestionId", previousQuestionId);
 			params.add("answerId", answerId);
-			params.add("topQuestion", topQuestion);
+			params.add("topQuestionId", topQuestionId);
 		}
 		
 		public void treeId(String multirequestToken) {
@@ -63,8 +63,8 @@ public class AiRecommendationTreeService {
 			params.add("answerId", multirequestToken);
 		}
 		
-		public void topQuestion(String multirequestToken) {
-			params.add("topQuestion", multirequestToken);
+		public void topQuestionId(String multirequestToken) {
+			params.add("topQuestionId", multirequestToken);
 		}
 	}
 
@@ -92,10 +92,10 @@ public class AiRecommendationTreeService {
 	 * @param previousQuestionId The question ID that is currently presented (omit for first question)
 	 * @param answerId Selected answer ID from the previous question (required if previousQuestionId is
 	 * provided)
-	 * @param topQuestion Specific top-level question ID (relevant for first question only)
+	 * @param topQuestionId Specific top-level question ID (relevant for first question only)
 	 */
-    public static GetNextNodeAndRecommendationAiRecommendationTreeBuilder getNextNodeAndRecommendation(String treeId, String previousQuestionId, String answerId, String topQuestion)  {
-		return new GetNextNodeAndRecommendationAiRecommendationTreeBuilder(treeId, previousQuestionId, answerId, topQuestion);
+    public static GetNextNodeAndRecommendationAiRecommendationTreeBuilder getNextNodeAndRecommendation(String treeId, String previousQuestionId, String answerId, String topQuestionId)  {
+		return new GetNextNodeAndRecommendationAiRecommendationTreeBuilder(treeId, previousQuestionId, answerId, topQuestionId);
 	}
 	
 	public static class GetPartnerConfigAiRecommendationTreeBuilder extends RequestBuilder<AiRecommendationTreePartnerConfiguration, AiRecommendationTreePartnerConfiguration.Tokenizer, GetPartnerConfigAiRecommendationTreeBuilder> {

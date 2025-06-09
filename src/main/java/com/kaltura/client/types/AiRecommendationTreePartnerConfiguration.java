@@ -33,8 +33,7 @@ import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -52,7 +51,7 @@ import java.util.List;
 public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> activeMetadataTypes();
+		RequestBuilder.MapTokenizer<IntegerValue.Tokenizer> activeMetadataTypes();
 		String topLevelQuestions();
 		String answersPerQuestion();
 		String levels();
@@ -65,9 +64,10 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	}
 
 	/**
-	 * List of metadata types to base questions on (genre, actor, director, etc.).
+	 * Dictionary of metadata types to base questions on (genre, actor, director, etc.)
+	  with their respective counts.
 	 */
-	private List<StringValue> activeMetadataTypes;
+	private Map<String, IntegerValue> activeMetadataTypes;
 	/**
 	 * Number of top-level questions to generate (range: 5-21).
 	 */
@@ -108,10 +108,10 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	private String activeTreeId;
 
 	// activeMetadataTypes:
-	public List<StringValue> getActiveMetadataTypes(){
+	public Map<String, IntegerValue> getActiveMetadataTypes(){
 		return this.activeMetadataTypes;
 	}
-	public void setActiveMetadataTypes(List<StringValue> activeMetadataTypes){
+	public void setActiveMetadataTypes(Map<String, IntegerValue> activeMetadataTypes){
 		this.activeMetadataTypes = activeMetadataTypes;
 	}
 
@@ -234,7 +234,7 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		activeMetadataTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("activeMetadataTypes"), StringValue.class);
+		activeMetadataTypes = GsonParser.parseMap(jsonObject.getAsJsonObject("activeMetadataTypes"), IntegerValue.class);
 		topLevelQuestions = GsonParser.parseInt(jsonObject.get("topLevelQuestions"));
 		answersPerQuestion = GsonParser.parseInt(jsonObject.get("answersPerQuestion"));
 		levels = GsonParser.parseInt(jsonObject.get("levels"));
