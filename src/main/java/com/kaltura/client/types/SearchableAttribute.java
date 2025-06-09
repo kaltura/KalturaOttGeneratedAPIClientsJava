@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,52 +40,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * Configuration for semantic search attributes for a specific asset type
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SearchableAttribute.Tokenizer.class)
+public class SearchableAttribute extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String assetStructId();
+		String attributes();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * The unique identifier of the asset structure.
 	 */
-	private Integer slotNumberEqual;
+	private Integer assetStructId;
+	/**
+	 * Comma-separated list of field names to include in embedding.
+	 */
+	private String attributes;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// assetStructId:
+	public Integer getAssetStructId(){
+		return this.assetStructId;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
+	public void setAssetStructId(Integer assetStructId){
+		this.assetStructId = assetStructId;
 	}
 
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	public void assetStructId(String multirequestToken){
+		setToken("assetStructId", multirequestToken);
+	}
+
+	// attributes:
+	public String getAttributes(){
+		return this.attributes;
+	}
+	public void setAttributes(String attributes){
+		this.attributes = attributes;
+	}
+
+	public void attributes(String multirequestToken){
+		setToken("attributes", multirequestToken);
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public SearchableAttribute() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public SearchableAttribute(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		assetStructId = GsonParser.parseInt(jsonObject.get("assetStructId"));
+		attributes = GsonParser.parseString(jsonObject.get("attributes"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaSearchableAttribute");
+		kparams.add("assetStructId", this.assetStructId);
+		kparams.add("attributes", this.attributes);
 		return kparams;
 	}
 
