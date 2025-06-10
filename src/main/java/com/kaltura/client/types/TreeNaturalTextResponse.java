@@ -29,6 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.TreeRecommendations;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,52 +41,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * A class representing the response from the getRecommendationWithNaturalText API.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(TreeNaturalTextResponse.Tokenizer.class)
+public class TreeNaturalTextResponse extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		TreeRecommendations.Tokenizer recommendations();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * Content recommendations based on the natural language query.
 	 */
-	private Integer slotNumberEqual;
+	private TreeRecommendations recommendations;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// recommendations:
+	public TreeRecommendations getRecommendations(){
+		return this.recommendations;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
-	}
-
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	public void setRecommendations(TreeRecommendations recommendations){
+		this.recommendations = recommendations;
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public TreeNaturalTextResponse() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public TreeNaturalTextResponse(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		recommendations = GsonParser.parseObject(jsonObject.getAsJsonObject("recommendations"), TreeRecommendations.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaTreeNaturalTextResponse");
+		kparams.add("recommendations", this.recommendations);
 		return kparams;
 	}
 

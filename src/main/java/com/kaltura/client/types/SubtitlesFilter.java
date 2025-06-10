@@ -40,51 +40,69 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(SubtitlesFilter.Tokenizer.class)
+public class SubtitlesFilter extends Filter {
 	
 	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+		String idIn();
+		String fileNameContains();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * A comma separated list of IDs indicating the KalturaSubtitles objects&amp;#39;
+	  IDs.
 	 */
-	private Integer slotNumberEqual;
+	private String idIn;
+	/**
+	 * Contains a name or a partial name of the subtitles file.
+	 */
+	private String fileNameContains;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// idIn:
+	public String getIdIn(){
+		return this.idIn;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
+	public void setIdIn(String idIn){
+		this.idIn = idIn;
 	}
 
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	public void idIn(String multirequestToken){
+		setToken("idIn", multirequestToken);
+	}
+
+	// fileNameContains:
+	public String getFileNameContains(){
+		return this.fileNameContains;
+	}
+	public void setFileNameContains(String fileNameContains){
+		this.fileNameContains = fileNameContains;
+	}
+
+	public void fileNameContains(String multirequestToken){
+		setToken("fileNameContains", multirequestToken);
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public SubtitlesFilter() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public SubtitlesFilter(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		idIn = GsonParser.parseString(jsonObject.get("idIn"));
+		fileNameContains = GsonParser.parseString(jsonObject.get("fileNameContains"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaSubtitlesFilter");
+		kparams.add("idIn", this.idIn);
+		kparams.add("fileNameContains", this.fileNameContains);
 		return kparams;
 	}
 

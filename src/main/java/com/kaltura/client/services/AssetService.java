@@ -429,6 +429,48 @@ public class AssetService {
 		return new RemoveMetasAndTagsAssetBuilder(id, assetReferenceType, idIn);
 	}
 	
+	public static class SemanticSearchAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, SemanticSearchAssetBuilder> {
+		
+		public SemanticSearchAssetBuilder(String query, boolean refineQuery, int size) {
+			super(Asset.class, "asset", "semanticSearch");
+			params.add("query", query);
+			params.add("refineQuery", refineQuery);
+			params.add("size", size);
+		}
+		
+		public void query(String multirequestToken) {
+			params.add("query", multirequestToken);
+		}
+		
+		public void refineQuery(String multirequestToken) {
+			params.add("refineQuery", multirequestToken);
+		}
+		
+		public void size(String multirequestToken) {
+			params.add("size", multirequestToken);
+		}
+	}
+
+	public static SemanticSearchAssetBuilder semanticSearch(String query)  {
+		return semanticSearch(query, false);
+	}
+
+	public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery)  {
+		return semanticSearch(query, refineQuery, 10);
+	}
+
+	/**
+	 * Search for assets using semantic similarity to a natural language query, with
+	  optional query refinement using LLM.
+	 * 
+	 * @param query The search query text used to find semantically similar assets
+	 * @param refineQuery When true, the search query is refined using LLM before vector search
+	 * @param size The maximum number of results to return. Must be between 1 and 100
+	 */
+    public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery, int size)  {
+		return new SemanticSearchAssetBuilder(query, refineQuery, size);
+	}
+	
 	public static class UpdateAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, UpdateAssetBuilder> {
 		
 		public UpdateAssetBuilder(long id, Asset asset) {

@@ -29,6 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.AssetListResponse;
+import com.kaltura.client.types.ListResponse;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -39,52 +42,68 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
+/**
+ * A class representing content recommendations.
+ */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(PersonalAssetSelectionFilter.Tokenizer.class)
-public class PersonalAssetSelectionFilter extends Filter {
+@MultiRequestBuilder.Tokenizer(TreeRecommendations.Tokenizer.class)
+public class TreeRecommendations extends ObjectBase {
 	
-	public interface Tokenizer extends Filter.Tokenizer {
-		String slotNumberEqual();
+	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String title();
+		ListResponse.Tokenizer<.Tokenizer> assets();
 	}
 
 	/**
-	 * Filters the results of asset.listPersonalSelection by slot number.  Takes a slot
-	  number as input and returns only those assets from the personal selection that
-	  are assigned to that slot.
+	 * Descriptive title for the recommendation set.
 	 */
-	private Integer slotNumberEqual;
+	private String title;
+	/**
+	 * Array of content assets matching the recommendation criteria.
+	 */
+	private AssetListResponse assets;
 
-	// slotNumberEqual:
-	public Integer getSlotNumberEqual(){
-		return this.slotNumberEqual;
+	// title:
+	public String getTitle(){
+		return this.title;
 	}
-	public void setSlotNumberEqual(Integer slotNumberEqual){
-		this.slotNumberEqual = slotNumberEqual;
+	public void setTitle(String title){
+		this.title = title;
 	}
 
-	public void slotNumberEqual(String multirequestToken){
-		setToken("slotNumberEqual", multirequestToken);
+	public void title(String multirequestToken){
+		setToken("title", multirequestToken);
+	}
+
+	// assets:
+	public AssetListResponse getAssets(){
+		return this.assets;
+	}
+	public void setAssets(AssetListResponse assets){
+		this.assets = assets;
 	}
 
 
-	public PersonalAssetSelectionFilter() {
+	public TreeRecommendations() {
 		super();
 	}
 
-	public PersonalAssetSelectionFilter(JsonObject jsonObject) throws APIException {
+	public TreeRecommendations(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		slotNumberEqual = GsonParser.parseInt(jsonObject.get("slotNumberEqual"));
+		title = GsonParser.parseString(jsonObject.get("title"));
+		assets = GsonParser.parseObject(jsonObject.getAsJsonObject("assets"), AssetListResponse.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaPersonalAssetSelectionFilter");
-		kparams.add("slotNumberEqual", this.slotNumberEqual);
+		kparams.add("objectType", "KalturaTreeRecommendations");
+		kparams.add("title", this.title);
+		kparams.add("assets", this.assets);
 		return kparams;
 	}
 
