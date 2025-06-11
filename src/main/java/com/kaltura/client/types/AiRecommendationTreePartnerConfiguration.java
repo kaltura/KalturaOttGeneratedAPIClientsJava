@@ -55,11 +55,8 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		String topLevelQuestions();
 		String answersPerQuestion();
 		String levels();
-		String specialAnswers();
 		String numOfRecommendedAssets();
-		String removeWatchedRecommendations();
 		String treeGenerationFrequency();
-		String modelId();
 		String activeTreeId();
 	}
 
@@ -81,26 +78,13 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	 */
 	private Integer levels;
 	/**
-	 * Whether to include special answers like &amp;quot;I don&amp;#39;t know&amp;quot;
-	  or &amp;quot;Surprise Me&amp;quot;.
-	 */
-	private Boolean specialAnswers;
-	/**
 	 * Number of assets to include in each recommendation set.
 	 */
 	private Integer numOfRecommendedAssets;
 	/**
-	 * Whether to exclude already watched content.
-	 */
-	private Boolean removeWatchedRecommendations;
-	/**
 	 * Cron expression for scheduling tree regeneration.
 	 */
 	private String treeGenerationFrequency;
-	/**
-	 * Identifier for the LLM model used for tree generation.
-	 */
-	private String modelId;
 	/**
 	 * Identifier for the tree that is currently marked as Active (can be only one at a
 	  time)
@@ -151,18 +135,6 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		setToken("levels", multirequestToken);
 	}
 
-	// specialAnswers:
-	public Boolean getSpecialAnswers(){
-		return this.specialAnswers;
-	}
-	public void setSpecialAnswers(Boolean specialAnswers){
-		this.specialAnswers = specialAnswers;
-	}
-
-	public void specialAnswers(String multirequestToken){
-		setToken("specialAnswers", multirequestToken);
-	}
-
 	// numOfRecommendedAssets:
 	public Integer getNumOfRecommendedAssets(){
 		return this.numOfRecommendedAssets;
@@ -175,18 +147,6 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		setToken("numOfRecommendedAssets", multirequestToken);
 	}
 
-	// removeWatchedRecommendations:
-	public Boolean getRemoveWatchedRecommendations(){
-		return this.removeWatchedRecommendations;
-	}
-	public void setRemoveWatchedRecommendations(Boolean removeWatchedRecommendations){
-		this.removeWatchedRecommendations = removeWatchedRecommendations;
-	}
-
-	public void removeWatchedRecommendations(String multirequestToken){
-		setToken("removeWatchedRecommendations", multirequestToken);
-	}
-
 	// treeGenerationFrequency:
 	public String getTreeGenerationFrequency(){
 		return this.treeGenerationFrequency;
@@ -197,18 +157,6 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 
 	public void treeGenerationFrequency(String multirequestToken){
 		setToken("treeGenerationFrequency", multirequestToken);
-	}
-
-	// modelId:
-	public String getModelId(){
-		return this.modelId;
-	}
-	public void setModelId(String modelId){
-		this.modelId = modelId;
-	}
-
-	public void modelId(String multirequestToken){
-		setToken("modelId", multirequestToken);
 	}
 
 	// activeTreeId:
@@ -238,11 +186,8 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		topLevelQuestions = GsonParser.parseInt(jsonObject.get("topLevelQuestions"));
 		answersPerQuestion = GsonParser.parseInt(jsonObject.get("answersPerQuestion"));
 		levels = GsonParser.parseInt(jsonObject.get("levels"));
-		specialAnswers = GsonParser.parseBoolean(jsonObject.get("specialAnswers"));
 		numOfRecommendedAssets = GsonParser.parseInt(jsonObject.get("numOfRecommendedAssets"));
-		removeWatchedRecommendations = GsonParser.parseBoolean(jsonObject.get("removeWatchedRecommendations"));
 		treeGenerationFrequency = GsonParser.parseString(jsonObject.get("treeGenerationFrequency"));
-		modelId = GsonParser.parseString(jsonObject.get("modelId"));
 		activeTreeId = GsonParser.parseString(jsonObject.get("activeTreeId"));
 
 	}
@@ -254,11 +199,8 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		kparams.add("topLevelQuestions", this.topLevelQuestions);
 		kparams.add("answersPerQuestion", this.answersPerQuestion);
 		kparams.add("levels", this.levels);
-		kparams.add("specialAnswers", this.specialAnswers);
 		kparams.add("numOfRecommendedAssets", this.numOfRecommendedAssets);
-		kparams.add("removeWatchedRecommendations", this.removeWatchedRecommendations);
 		kparams.add("treeGenerationFrequency", this.treeGenerationFrequency);
-		kparams.add("modelId", this.modelId);
 		kparams.add("activeTreeId", this.activeTreeId);
 		return kparams;
 	}
