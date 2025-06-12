@@ -42,7 +42,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Configuration for embedding generation rule.
+ * Represents a filtering condition used in Kaltura&amp;#39;s search and query
+  functionalities.              This class defines a condition based on a metadata
+  attribute, an operator, and a comparison value.
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(FilteringCondition.Tokenizer.class)
@@ -55,15 +57,16 @@ public class FilteringCondition extends ObjectBase {
 	}
 
 	/**
-	 * Meta Name (SystemName) to apply the rule to.
+	 * The name of the metadata attribute to apply the filtering condition on.
 	 */
 	private String metaName;
 	/**
-	 * Operator to use for the rule.
+	 * The operator defining how the value should be compared (e.g., Equal, NotEqual).
 	 */
 	private ConditionOperator operator;
 	/**
-	 * Single value for the rule condition.
+	 * The value to compare against the metadata attribute using the specified
+	  operator.
 	 */
 	private String value;
 

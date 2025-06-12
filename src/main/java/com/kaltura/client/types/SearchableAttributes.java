@@ -44,7 +44,9 @@ import java.util.List;
  */
 
 /**
- * Container for searchable attributes configuration
+ * Represents a collection of searchable attributes within the Kaltura platform.   
+            This class extends KalturaOTTObject and contains a list of
+  KalturaSearchableAttribute objects.
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(SearchableAttributes.Tokenizer.class)
@@ -55,7 +57,7 @@ public class SearchableAttributes extends ObjectBase {
 	}
 
 	/**
-	 * A list of searchable attributes.
+	 * A list of searchable attributes associated with an asset structure.
 	 */
 	private List<SearchableAttribute> items;
 
