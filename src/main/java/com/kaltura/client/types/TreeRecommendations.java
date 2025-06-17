@@ -29,11 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.AssetListResponse;
-import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -51,7 +52,7 @@ public class TreeRecommendations extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String title();
-		ListResponse.Tokenizer<.Tokenizer> assets();
+		RequestBuilder.ListTokenizer<Asset.Tokenizer> assets();
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class TreeRecommendations extends ObjectBase {
 	/**
 	 * Array of content assets matching the recommendation criteria.
 	 */
-	private AssetListResponse assets;
+	private List<Asset> assets;
 
 	// title:
 	public String getTitle(){
@@ -76,10 +77,10 @@ public class TreeRecommendations extends ObjectBase {
 	}
 
 	// assets:
-	public AssetListResponse getAssets(){
+	public List<Asset> getAssets(){
 		return this.assets;
 	}
-	public void setAssets(AssetListResponse assets){
+	public void setAssets(List<Asset> assets){
 		this.assets = assets;
 	}
 
@@ -95,7 +96,7 @@ public class TreeRecommendations extends ObjectBase {
 
 		// set members values:
 		title = GsonParser.parseString(jsonObject.get("title"));
-		assets = GsonParser.parseObject(jsonObject.getAsJsonObject("assets"), AssetListResponse.class);
+		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), Asset.class);
 
 	}
 
