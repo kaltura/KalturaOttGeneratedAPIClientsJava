@@ -48,9 +48,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkPlaybackContextError.Tokenizer.class)
-public class BulkPlaybackContextError extends BulkResponseObject {
+public class BulkPlaybackContextError extends BulkResponseItem {
 	
-	public interface Tokenizer extends BulkResponseObject.Tokenizer {
+	public interface Tokenizer extends BulkResponseItem.Tokenizer {
 		String code();
 		String message();
 		RequestBuilder.ListTokenizer<ApiExceptionArg.Tokenizer> args();

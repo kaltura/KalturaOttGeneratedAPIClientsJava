@@ -44,8 +44,8 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * Base class for objects that can be returned in bulk response operations
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BulkResponseObject.Tokenizer.class)
-public class BulkResponseObject extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkResponseItem.Tokenizer.class)
+public class BulkResponseItem extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String isSuccess();
@@ -69,11 +69,11 @@ public class BulkResponseObject extends ObjectBase {
 	}
 
 
-	public BulkResponseObject() {
+	public BulkResponseItem() {
 		super();
 	}
 
-	public BulkResponseObject(JsonObject jsonObject) throws APIException {
+	public BulkResponseItem(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
@@ -85,7 +85,7 @@ public class BulkResponseObject extends ObjectBase {
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBulkResponseObject");
+		kparams.add("objectType", "KalturaBulkResponseItem");
 		kparams.add("isSuccess", this.isSuccess);
 		return kparams;
 	}

@@ -51,7 +51,7 @@ import java.util.List;
 public class BulkPlaybackContextResponse extends ListResponse {
 	
 	public interface Tokenizer extends ListResponse.Tokenizer {
-		RequestBuilder.ListTokenizer<BulkResponseObject.Tokenizer> objects();
+		RequestBuilder.ListTokenizer<BulkResponseItem.Tokenizer> objects();
 	}
 
 	/**
@@ -59,13 +59,13 @@ public class BulkPlaybackContextResponse extends ListResponse {
 	  request at the same index in the request array.              Items can be either
 	  KalturaPlaybackContext (success) or KalturaBulkPlaybackContextError (error).
 	 */
-	private List<BulkResponseObject> objects;
+	private List<BulkResponseItem> objects;
 
 	// objects:
-	public List<BulkResponseObject> getObjects(){
+	public List<BulkResponseItem> getObjects(){
 		return this.objects;
 	}
-	public void setObjects(List<BulkResponseObject> objects){
+	public void setObjects(List<BulkResponseItem> objects){
 		this.objects = objects;
 	}
 
@@ -80,7 +80,7 @@ public class BulkPlaybackContextResponse extends ListResponse {
 		if(jsonObject == null) return;
 
 		// set members values:
-		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), BulkResponseObject.class);
+		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), BulkResponseItem.class);
 
 	}
 

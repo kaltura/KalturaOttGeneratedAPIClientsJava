@@ -46,9 +46,9 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkPlaybackContextSuccess.Tokenizer.class)
-public class BulkPlaybackContextSuccess extends BulkResponseObject {
+public class BulkPlaybackContextSuccess extends BulkResponseItem {
 	
-	public interface Tokenizer extends BulkResponseObject.Tokenizer {
+	public interface Tokenizer extends BulkResponseItem.Tokenizer {
 		PlaybackContext.Tokenizer playbackContext();
 	}
 
