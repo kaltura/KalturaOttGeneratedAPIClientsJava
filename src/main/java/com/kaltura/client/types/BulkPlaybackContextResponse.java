@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
@@ -48,10 +49,11 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkPlaybackContextResponse.Tokenizer.class)
-public class BulkPlaybackContextResponse extends ListResponse {
+public class BulkPlaybackContextResponse extends ObjectBase {
 	
-	public interface Tokenizer extends ListResponse.Tokenizer {
+	public interface Tokenizer extends ObjectBase.Tokenizer {
 		RequestBuilder.ListTokenizer<BulkResponseItem.Tokenizer> objects();
+		String totalCount();
 	}
 
 	/**
@@ -60,6 +62,10 @@ public class BulkPlaybackContextResponse extends ListResponse {
 	  KalturaPlaybackContext (success) or KalturaBulkPlaybackContextError (error).
 	 */
 	private List<BulkResponseItem> objects;
+	/**
+	 * Total items
+	 */
+	private Integer totalCount;
 
 	// objects:
 	public List<BulkResponseItem> getObjects(){
@@ -67,6 +73,18 @@ public class BulkPlaybackContextResponse extends ListResponse {
 	}
 	public void setObjects(List<BulkResponseItem> objects){
 		this.objects = objects;
+	}
+
+	// totalCount:
+	public Integer getTotalCount(){
+		return this.totalCount;
+	}
+	public void setTotalCount(Integer totalCount){
+		this.totalCount = totalCount;
+	}
+
+	public void totalCount(String multirequestToken){
+		setToken("totalCount", multirequestToken);
 	}
 
 
@@ -81,6 +99,7 @@ public class BulkPlaybackContextResponse extends ListResponse {
 
 		// set members values:
 		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), BulkResponseItem.class);
+		totalCount = GsonParser.parseInt(jsonObject.get("totalCount"));
 
 	}
 
@@ -88,6 +107,7 @@ public class BulkPlaybackContextResponse extends ListResponse {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBulkPlaybackContextResponse");
 		kparams.add("objects", this.objects);
+		kparams.add("totalCount", this.totalCount);
 		return kparams;
 	}
 
