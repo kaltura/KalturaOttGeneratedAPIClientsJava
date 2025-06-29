@@ -52,7 +52,7 @@ import java.util.List;
 public class BulkPlaybackContextResponse extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.ListTokenizer<BulkResponseItem.Tokenizer> objects();
+		RequestBuilder.ListTokenizer<BulkResponseItem.Tokenizer> items();
 		String totalCount();
 	}
 
@@ -61,18 +61,18 @@ public class BulkPlaybackContextResponse extends ObjectBase {
 	  request at the same index in the request array.              Items can be either
 	  KalturaPlaybackContext (success) or KalturaBulkPlaybackContextError (error).
 	 */
-	private List<BulkResponseItem> objects;
+	private List<BulkResponseItem> items;
 	/**
 	 * Total items
 	 */
 	private Integer totalCount;
 
-	// objects:
-	public List<BulkResponseItem> getObjects(){
-		return this.objects;
+	// items:
+	public List<BulkResponseItem> getItems(){
+		return this.items;
 	}
-	public void setObjects(List<BulkResponseItem> objects){
-		this.objects = objects;
+	public void setItems(List<BulkResponseItem> items){
+		this.items = items;
 	}
 
 	// totalCount:
@@ -98,7 +98,7 @@ public class BulkPlaybackContextResponse extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		objects = GsonParser.parseArray(jsonObject.getAsJsonArray("objects"), BulkResponseItem.class);
+		items = GsonParser.parseArray(jsonObject.getAsJsonArray("items"), BulkResponseItem.class);
 		totalCount = GsonParser.parseInt(jsonObject.get("totalCount"));
 
 	}
@@ -106,7 +106,7 @@ public class BulkPlaybackContextResponse extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBulkPlaybackContextResponse");
-		kparams.add("objects", this.objects);
+		kparams.add("items", this.items);
 		kparams.add("totalCount", this.totalCount);
 		return kparams;
 	}

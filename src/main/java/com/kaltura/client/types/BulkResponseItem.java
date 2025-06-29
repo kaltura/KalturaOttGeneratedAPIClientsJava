@@ -45,7 +45,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(BulkResponseItem.Tokenizer.class)
-public class BulkResponseItem extends ObjectBase {
+public abstract class BulkResponseItem extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String isSuccess();
