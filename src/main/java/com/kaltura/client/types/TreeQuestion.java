@@ -32,9 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -54,7 +51,6 @@ public class TreeQuestion extends ObjectBase {
 		String questionId();
 		String text();
 		String level();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> metadataTypes();
 	}
 
 	/**
@@ -69,10 +65,6 @@ public class TreeQuestion extends ObjectBase {
 	 * The depth level in the tree (1 for top-level).
 	 */
 	private Integer level;
-	/**
-	 * Array of metadata categories this question focuses on.
-	 */
-	private List<StringValue> metadataTypes;
 
 	// questionId:
 	public String getQuestionId(){
@@ -110,14 +102,6 @@ public class TreeQuestion extends ObjectBase {
 		setToken("level", multirequestToken);
 	}
 
-	// metadataTypes:
-	public List<StringValue> getMetadataTypes(){
-		return this.metadataTypes;
-	}
-	public void setMetadataTypes(List<StringValue> metadataTypes){
-		this.metadataTypes = metadataTypes;
-	}
-
 
 	public TreeQuestion() {
 		super();
@@ -132,7 +116,6 @@ public class TreeQuestion extends ObjectBase {
 		questionId = GsonParser.parseString(jsonObject.get("questionId"));
 		text = GsonParser.parseString(jsonObject.get("text"));
 		level = GsonParser.parseInt(jsonObject.get("level"));
-		metadataTypes = GsonParser.parseArray(jsonObject.getAsJsonArray("metadataTypes"), StringValue.class);
 
 	}
 
@@ -142,7 +125,6 @@ public class TreeQuestion extends ObjectBase {
 		kparams.add("questionId", this.questionId);
 		kparams.add("text", this.text);
 		kparams.add("level", this.level);
-		kparams.add("metadataTypes", this.metadataTypes);
 		return kparams;
 	}
 

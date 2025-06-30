@@ -50,9 +50,6 @@ public class TreeAnswer extends ObjectBase {
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String answerId();
 		String text();
-		String hasNextQuestion();
-		String isSpecial();
-		String specialType();
 	}
 
 	/**
@@ -63,19 +60,6 @@ public class TreeAnswer extends ObjectBase {
 	 * The answer text to display to the user.
 	 */
 	private String text;
-	/**
-	 * Boolean indicating if selecting this answer leads to another question.
-	 */
-	private Boolean hasNextQuestion;
-	/**
-	 * Flag for special answers like &amp;quot;I don&amp;#39;t know&amp;quot;
-	  (optional).
-	 */
-	private Boolean isSpecial;
-	/**
-	 * The type of special answer, e.g., &amp;quot;unsure&amp;quot; (optional).
-	 */
-	private String specialType;
 
 	// answerId:
 	public String getAnswerId(){
@@ -101,42 +85,6 @@ public class TreeAnswer extends ObjectBase {
 		setToken("text", multirequestToken);
 	}
 
-	// hasNextQuestion:
-	public Boolean getHasNextQuestion(){
-		return this.hasNextQuestion;
-	}
-	public void setHasNextQuestion(Boolean hasNextQuestion){
-		this.hasNextQuestion = hasNextQuestion;
-	}
-
-	public void hasNextQuestion(String multirequestToken){
-		setToken("hasNextQuestion", multirequestToken);
-	}
-
-	// isSpecial:
-	public Boolean getIsSpecial(){
-		return this.isSpecial;
-	}
-	public void setIsSpecial(Boolean isSpecial){
-		this.isSpecial = isSpecial;
-	}
-
-	public void isSpecial(String multirequestToken){
-		setToken("isSpecial", multirequestToken);
-	}
-
-	// specialType:
-	public String getSpecialType(){
-		return this.specialType;
-	}
-	public void setSpecialType(String specialType){
-		this.specialType = specialType;
-	}
-
-	public void specialType(String multirequestToken){
-		setToken("specialType", multirequestToken);
-	}
-
 
 	public TreeAnswer() {
 		super();
@@ -150,9 +98,6 @@ public class TreeAnswer extends ObjectBase {
 		// set members values:
 		answerId = GsonParser.parseString(jsonObject.get("answerId"));
 		text = GsonParser.parseString(jsonObject.get("text"));
-		hasNextQuestion = GsonParser.parseBoolean(jsonObject.get("hasNextQuestion"));
-		isSpecial = GsonParser.parseBoolean(jsonObject.get("isSpecial"));
-		specialType = GsonParser.parseString(jsonObject.get("specialType"));
 
 	}
 
@@ -161,9 +106,6 @@ public class TreeAnswer extends ObjectBase {
 		kparams.add("objectType", "KalturaTreeAnswer");
 		kparams.add("answerId", this.answerId);
 		kparams.add("text", this.text);
-		kparams.add("hasNextQuestion", this.hasNextQuestion);
-		kparams.add("isSpecial", this.isSpecial);
-		kparams.add("specialType", this.specialType);
 		return kparams;
 	}
 

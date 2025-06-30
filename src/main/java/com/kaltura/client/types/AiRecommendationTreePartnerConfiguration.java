@@ -55,6 +55,7 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		String topLevelQuestions();
 		String answersPerQuestion();
 		String levels();
+		String specialAnswers();
 		String numOfRecommendedAssets();
 		String treeGenerationFrequency();
 		String activeTreeId();
@@ -66,19 +67,23 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	 */
 	private Map<String, IntegerValue> activeMetadataTypes;
 	/**
-	 * Number of top-level questions to generate (range: 5-21).
+	 * Number of top-level questions to generate (range: 5-30).
 	 */
 	private Integer topLevelQuestions;
 	/**
-	 * Number of regular answers per question (range: 2-3).
+	 * Number of regular answers per question (range: 2-5).
 	 */
 	private Integer answersPerQuestion;
 	/**
-	 * Maximum depth of the decision tree (range: 1-5).
+	 * Maximum depth of the decision tree (range: 1-4).
 	 */
 	private Integer levels;
 	/**
-	 * Number of assets to include in each recommendation set.
+	 * Number of assets to include in each recommendation set (max limit is 50).
+	 */
+	private Boolean specialAnswers;
+	/**
+	 * Number of assets to include in each recommendation set (max limit is 50).
 	 */
 	private Integer numOfRecommendedAssets;
 	/**
@@ -135,6 +140,18 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		setToken("levels", multirequestToken);
 	}
 
+	// specialAnswers:
+	public Boolean getSpecialAnswers(){
+		return this.specialAnswers;
+	}
+	public void setSpecialAnswers(Boolean specialAnswers){
+		this.specialAnswers = specialAnswers;
+	}
+
+	public void specialAnswers(String multirequestToken){
+		setToken("specialAnswers", multirequestToken);
+	}
+
 	// numOfRecommendedAssets:
 	public Integer getNumOfRecommendedAssets(){
 		return this.numOfRecommendedAssets;
@@ -186,6 +203,7 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		topLevelQuestions = GsonParser.parseInt(jsonObject.get("topLevelQuestions"));
 		answersPerQuestion = GsonParser.parseInt(jsonObject.get("answersPerQuestion"));
 		levels = GsonParser.parseInt(jsonObject.get("levels"));
+		specialAnswers = GsonParser.parseBoolean(jsonObject.get("specialAnswers"));
 		numOfRecommendedAssets = GsonParser.parseInt(jsonObject.get("numOfRecommendedAssets"));
 		treeGenerationFrequency = GsonParser.parseString(jsonObject.get("treeGenerationFrequency"));
 		activeTreeId = GsonParser.parseString(jsonObject.get("activeTreeId"));
@@ -199,6 +217,7 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		kparams.add("topLevelQuestions", this.topLevelQuestions);
 		kparams.add("answersPerQuestion", this.answersPerQuestion);
 		kparams.add("levels", this.levels);
+		kparams.add("specialAnswers", this.specialAnswers);
 		kparams.add("numOfRecommendedAssets", this.numOfRecommendedAssets);
 		kparams.add("treeGenerationFrequency", this.treeGenerationFrequency);
 		kparams.add("activeTreeId", this.activeTreeId);

@@ -43,20 +43,15 @@ public class AiRecommendationTreeService {
 	
 	public static class GetNextNodeAndRecommendationAiRecommendationTreeBuilder extends RequestBuilder<TreeNextNodeResponse, TreeNextNodeResponse.Tokenizer, GetNextNodeAndRecommendationAiRecommendationTreeBuilder> {
 		
-		public GetNextNodeAndRecommendationAiRecommendationTreeBuilder(String treeId, String previousQuestionId, String answerId, String topQuestionId) {
+		public GetNextNodeAndRecommendationAiRecommendationTreeBuilder(String treeId, String answerId, String topQuestionId) {
 			super(TreeNextNodeResponse.class, "airecommendationtree", "getNextNodeAndRecommendation");
 			params.add("treeId", treeId);
-			params.add("previousQuestionId", previousQuestionId);
 			params.add("answerId", answerId);
 			params.add("topQuestionId", topQuestionId);
 		}
 		
 		public void treeId(String multirequestToken) {
 			params.add("treeId", multirequestToken);
-		}
-		
-		public void previousQuestionId(String multirequestToken) {
-			params.add("previousQuestionId", multirequestToken);
 		}
 		
 		public void answerId(String multirequestToken) {
@@ -76,12 +71,8 @@ public class AiRecommendationTreeService {
 		return getNextNodeAndRecommendation(treeId, null);
 	}
 
-	public static GetNextNodeAndRecommendationAiRecommendationTreeBuilder getNextNodeAndRecommendation(String treeId, String previousQuestionId)  {
-		return getNextNodeAndRecommendation(treeId, previousQuestionId, null);
-	}
-
-	public static GetNextNodeAndRecommendationAiRecommendationTreeBuilder getNextNodeAndRecommendation(String treeId, String previousQuestionId, String answerId)  {
-		return getNextNodeAndRecommendation(treeId, previousQuestionId, answerId, null);
+	public static GetNextNodeAndRecommendationAiRecommendationTreeBuilder getNextNodeAndRecommendation(String treeId, String answerId)  {
+		return getNextNodeAndRecommendation(treeId, answerId, null);
 	}
 
 	/**
@@ -89,13 +80,12 @@ public class AiRecommendationTreeService {
 	  on the current path through the tree.
 	 * 
 	 * @param treeId ID of the tree to navigate (optional - if omitted, the active tree will be used)
-	 * @param previousQuestionId The question ID that is currently presented (omit for first question)
 	 * @param answerId Selected answer ID from the previous question (required if previousQuestionId is
 	 * provided)
 	 * @param topQuestionId Specific top-level question ID (relevant for first question only)
 	 */
-    public static GetNextNodeAndRecommendationAiRecommendationTreeBuilder getNextNodeAndRecommendation(String treeId, String previousQuestionId, String answerId, String topQuestionId)  {
-		return new GetNextNodeAndRecommendationAiRecommendationTreeBuilder(treeId, previousQuestionId, answerId, topQuestionId);
+    public static GetNextNodeAndRecommendationAiRecommendationTreeBuilder getNextNodeAndRecommendation(String treeId, String answerId, String topQuestionId)  {
+		return new GetNextNodeAndRecommendationAiRecommendationTreeBuilder(treeId, answerId, topQuestionId);
 	}
 	
 	public static class GetPartnerConfigAiRecommendationTreeBuilder extends RequestBuilder<AiRecommendationTreePartnerConfiguration, AiRecommendationTreePartnerConfiguration.Tokenizer, GetPartnerConfigAiRecommendationTreeBuilder> {
@@ -115,10 +105,10 @@ public class AiRecommendationTreeService {
 	
 	public static class GetRecommendationWithNaturalTextAiRecommendationTreeBuilder extends RequestBuilder<TreeNaturalTextResponse, TreeNaturalTextResponse.Tokenizer, GetRecommendationWithNaturalTextAiRecommendationTreeBuilder> {
 		
-		public GetRecommendationWithNaturalTextAiRecommendationTreeBuilder(String naturalTextQuery, String previousQuestionId, String treeId) {
+		public GetRecommendationWithNaturalTextAiRecommendationTreeBuilder(String naturalTextQuery, String questionId, String treeId) {
 			super(TreeNaturalTextResponse.class, "airecommendationtree", "getRecommendationWithNaturalText");
 			params.add("naturalTextQuery", naturalTextQuery);
-			params.add("previousQuestionId", previousQuestionId);
+			params.add("questionId", questionId);
 			params.add("treeId", treeId);
 		}
 		
@@ -126,8 +116,8 @@ public class AiRecommendationTreeService {
 			params.add("naturalTextQuery", multirequestToken);
 		}
 		
-		public void previousQuestionId(String multirequestToken) {
-			params.add("previousQuestionId", multirequestToken);
+		public void questionId(String multirequestToken) {
+			params.add("questionId", multirequestToken);
 		}
 		
 		public void treeId(String multirequestToken) {
@@ -139,19 +129,19 @@ public class AiRecommendationTreeService {
 		return getRecommendationWithNaturalText(naturalTextQuery, null);
 	}
 
-	public static GetRecommendationWithNaturalTextAiRecommendationTreeBuilder getRecommendationWithNaturalText(String naturalTextQuery, String previousQuestionId)  {
-		return getRecommendationWithNaturalText(naturalTextQuery, previousQuestionId, null);
+	public static GetRecommendationWithNaturalTextAiRecommendationTreeBuilder getRecommendationWithNaturalText(String naturalTextQuery, String questionId)  {
+		return getRecommendationWithNaturalText(naturalTextQuery, questionId, null);
 	}
 
 	/**
 	 * Returns content recommendations based on natural language input.
 	 * 
 	 * @param naturalTextQuery The query text entered by the user
-	 * @param previousQuestionId Previous question ID if building on question history (optional)
+	 * @param questionId The Id of the question that naturalTextQuery is the answer to (optional)
 	 * @param treeId ID of the tree to use (mandatory if previousQuestionId is provided)
 	 */
-    public static GetRecommendationWithNaturalTextAiRecommendationTreeBuilder getRecommendationWithNaturalText(String naturalTextQuery, String previousQuestionId, String treeId)  {
-		return new GetRecommendationWithNaturalTextAiRecommendationTreeBuilder(naturalTextQuery, previousQuestionId, treeId);
+    public static GetRecommendationWithNaturalTextAiRecommendationTreeBuilder getRecommendationWithNaturalText(String naturalTextQuery, String questionId, String treeId)  {
+		return new GetRecommendationWithNaturalTextAiRecommendationTreeBuilder(naturalTextQuery, questionId, treeId);
 	}
 	
 	public static class UpsertPartnerConfigAiRecommendationTreeBuilder extends RequestBuilder<AiRecommendationTreePartnerConfiguration, AiRecommendationTreePartnerConfiguration.Tokenizer, UpsertPartnerConfigAiRecommendationTreeBuilder> {

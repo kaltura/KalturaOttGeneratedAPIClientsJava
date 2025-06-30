@@ -56,6 +56,7 @@ public class TreeNextNodeResponse extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		TreeQuestion.Tokenizer question();
+		String totalLevelQuestions();
 		RequestBuilder.ListTokenizer<TreeAnswer.Tokenizer> answers();
 		TreeRecommendations.Tokenizer recommendations();
 	}
@@ -64,6 +65,10 @@ public class TreeNextNodeResponse extends ObjectBase {
 	 * The next question to present to the user, or null for terminal nodes.
 	 */
 	private TreeQuestion question;
+	/**
+	 * Number of total questions in the level.
+	 */
+	private Integer totalLevelQuestions;
 	/**
 	 * Array of possible answer options for the question.
 	 */
@@ -79,6 +84,18 @@ public class TreeNextNodeResponse extends ObjectBase {
 	}
 	public void setQuestion(TreeQuestion question){
 		this.question = question;
+	}
+
+	// totalLevelQuestions:
+	public Integer getTotalLevelQuestions(){
+		return this.totalLevelQuestions;
+	}
+	public void setTotalLevelQuestions(Integer totalLevelQuestions){
+		this.totalLevelQuestions = totalLevelQuestions;
+	}
+
+	public void totalLevelQuestions(String multirequestToken){
+		setToken("totalLevelQuestions", multirequestToken);
 	}
 
 	// answers:
@@ -109,6 +126,7 @@ public class TreeNextNodeResponse extends ObjectBase {
 
 		// set members values:
 		question = GsonParser.parseObject(jsonObject.getAsJsonObject("question"), TreeQuestion.class);
+		totalLevelQuestions = GsonParser.parseInt(jsonObject.get("totalLevelQuestions"));
 		answers = GsonParser.parseArray(jsonObject.getAsJsonArray("answers"), TreeAnswer.class);
 		recommendations = GsonParser.parseObject(jsonObject.getAsJsonObject("recommendations"), TreeRecommendations.class);
 
@@ -118,6 +136,7 @@ public class TreeNextNodeResponse extends ObjectBase {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaTreeNextNodeResponse");
 		kparams.add("question", this.question);
+		kparams.add("totalLevelQuestions", this.totalLevelQuestions);
 		kparams.add("answers", this.answers);
 		kparams.add("recommendations", this.recommendations);
 		return kparams;

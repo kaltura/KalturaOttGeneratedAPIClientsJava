@@ -60,7 +60,8 @@ public class TreeRecommendations extends ObjectBase {
 	 */
 	private String title;
 	/**
-	 * Array of content assets matching the recommendation criteria.
+	 * Array of content assets matching the recommendation criteria, this is
+	  essentially a KalturaAssetListResponseObject.
 	 */
 	private List<Asset> assets;
 
