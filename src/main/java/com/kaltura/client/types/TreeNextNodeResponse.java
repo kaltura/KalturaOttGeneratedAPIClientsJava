@@ -55,12 +55,17 @@ import java.util.List;
 public class TreeNextNodeResponse extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String treeId();
 		TreeQuestion.Tokenizer question();
 		String totalLevelQuestions();
 		RequestBuilder.ListTokenizer<TreeAnswer.Tokenizer> answers();
 		TreeRecommendations.Tokenizer recommendations();
 	}
 
+	/**
+	 * The tree id whom this node belongs to.
+	 */
+	private String treeId;
 	/**
 	 * The next question to present to the user, or null for terminal nodes.
 	 */
@@ -77,6 +82,18 @@ public class TreeNextNodeResponse extends ObjectBase {
 	 * Content recommendations based on the current path.
 	 */
 	private TreeRecommendations recommendations;
+
+	// treeId:
+	public String getTreeId(){
+		return this.treeId;
+	}
+	public void setTreeId(String treeId){
+		this.treeId = treeId;
+	}
+
+	public void treeId(String multirequestToken){
+		setToken("treeId", multirequestToken);
+	}
 
 	// question:
 	public TreeQuestion getQuestion(){
@@ -125,6 +142,7 @@ public class TreeNextNodeResponse extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
+		treeId = GsonParser.parseString(jsonObject.get("treeId"));
 		question = GsonParser.parseObject(jsonObject.getAsJsonObject("question"), TreeQuestion.class);
 		totalLevelQuestions = GsonParser.parseInt(jsonObject.get("totalLevelQuestions"));
 		answers = GsonParser.parseArray(jsonObject.getAsJsonArray("answers"), TreeAnswer.class);
@@ -135,6 +153,7 @@ public class TreeNextNodeResponse extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaTreeNextNodeResponse");
+		kparams.add("treeId", this.treeId);
 		kparams.add("question", this.question);
 		kparams.add("totalLevelQuestions", this.totalLevelQuestions);
 		kparams.add("answers", this.answers);
