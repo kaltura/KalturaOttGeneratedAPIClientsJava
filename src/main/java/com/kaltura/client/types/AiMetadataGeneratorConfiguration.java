@@ -52,19 +52,14 @@ import java.util.Map;
 public class AiMetadataGeneratorConfiguration extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String isEnabled();
 		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
 		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
 	}
 
 	/**
-	 * Specifies if the feature is enabled or disabled.
-	 */
-	private Boolean isEnabled;
-	/**
-	 * A map (dictionary) to indicate to which existing metadata or tag the newly
-	  generated metadata value should be pushed, per assetStruct (per &amp;#39;asset
-	  type&amp;#39;)
+	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
+	  This property is used to correlate the newly generated metadata to             
+	  existing metadata IDs which are available in the asset’s struct.
 	 */
 	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
 	/**
@@ -73,18 +68,6 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 	  KalturaMetadataGeneratorLanguages ENUM.
 	 */
 	private List<StringValue> supportedLanguages;
-
-	// isEnabled:
-	public Boolean getIsEnabled(){
-		return this.isEnabled;
-	}
-	public void setIsEnabled(Boolean isEnabled){
-		this.isEnabled = isEnabled;
-	}
-
-	public void isEnabled(String multirequestToken){
-		setToken("isEnabled", multirequestToken);
-	}
 
 	// assetStructMetaNameMap:
 	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
@@ -109,7 +92,6 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		isEnabled = GsonParser.parseBoolean(jsonObject.get("isEnabled"));
 		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
 		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
 
@@ -118,7 +100,6 @@ public class AiMetadataGeneratorConfiguration extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("isEnabled", this.isEnabled);
 		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
 		return kparams;
 	}
