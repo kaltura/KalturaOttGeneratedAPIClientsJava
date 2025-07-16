@@ -35,7 +35,6 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,62 +44,68 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * A class representing content recommendations.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TreeRecommendations.Tokenizer.class)
+public class TreeRecommendations extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		String title();
+		RequestBuilder.ListTokenizer<Asset.Tokenizer> assets();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * Descriptive title for the recommendation set.
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
+	private String title;
 	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
+	 * Array of content assets matching the recommendation criteria, this is
+	  essentially a KalturaAssetListResponseObject.
 	 */
-	private List<StringValue> supportedLanguages;
+	private List<Asset> assets;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// title:
+	public String getTitle(){
+		return this.title;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
-	}
-
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void setTitle(String title){
+		this.title = title;
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+	public void title(String multirequestToken){
+		setToken("title", multirequestToken);
+	}
+
+	// assets:
+	public List<Asset> getAssets(){
+		return this.assets;
+	}
+	public void setAssets(List<Asset> assets){
+		this.assets = assets;
+	}
+
+
+	public TreeRecommendations() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public TreeRecommendations(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		title = GsonParser.parseString(jsonObject.get("title"));
+		assets = GsonParser.parseArray(jsonObject.getAsJsonArray("assets"), Asset.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaTreeRecommendations");
+		kparams.add("title", this.title);
+		kparams.add("assets", this.assets);
 		return kparams;
 	}
 
