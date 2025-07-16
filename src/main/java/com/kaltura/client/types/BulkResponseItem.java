@@ -32,10 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,62 +41,52 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * Base class for objects that can be returned in bulk response operations
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkResponseItem.Tokenizer.class)
+public abstract class BulkResponseItem extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		String isSuccess();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * Indicates whether the bulk operation was successful
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
-	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
-	 */
-	private List<StringValue> supportedLanguages;
+	private Boolean isSuccess;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// isSuccess:
+	public Boolean getIsSuccess(){
+		return this.isSuccess;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
+	public void setIsSuccess(Boolean isSuccess){
+		this.isSuccess = isSuccess;
 	}
 
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void isSuccess(String multirequestToken){
+		setToken("isSuccess", multirequestToken);
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+
+	public BulkResponseItem() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public BulkResponseItem(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		isSuccess = GsonParser.parseBoolean(jsonObject.get("isSuccess"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaBulkResponseItem");
+		kparams.add("isSuccess", this.isSuccess);
 		return kparams;
 	}
 

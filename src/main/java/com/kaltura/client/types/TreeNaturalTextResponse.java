@@ -30,12 +30,9 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.types.TreeRecommendations;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,62 +42,48 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * A class representing the response from the getRecommendationWithNaturalText API.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TreeNaturalTextResponse.Tokenizer.class)
+public class TreeNaturalTextResponse extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		TreeRecommendations.Tokenizer recommendations();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * Content recommendations based on the natural language query.
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
-	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
-	 */
-	private List<StringValue> supportedLanguages;
+	private TreeRecommendations recommendations;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// recommendations:
+	public TreeRecommendations getRecommendations(){
+		return this.recommendations;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
+	public void setRecommendations(TreeRecommendations recommendations){
+		this.recommendations = recommendations;
 	}
 
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
-	}
 
-	public AiMetadataGeneratorConfiguration() {
+	public TreeNaturalTextResponse() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public TreeNaturalTextResponse(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		recommendations = GsonParser.parseObject(jsonObject.getAsJsonObject("recommendations"), TreeRecommendations.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaTreeNaturalTextResponse");
+		kparams.add("recommendations", this.recommendations);
 		return kparams;
 	}
 
