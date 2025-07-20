@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -46,7 +45,7 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class GenerateMetadataByDescription extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		StringValue.Tokenizer externalAssetId();
+		String externalAssetId();
 	}
 
 	/**
@@ -54,14 +53,18 @@ public class GenerateMetadataByDescription extends ObjectBase {
 	  which the description will be extracted.              This is the external asset
 	  ID set by the customer (CoGuid) and not the internal Kaltura asset ID.
 	 */
-	private StringValue externalAssetId;
+	private String externalAssetId;
 
 	// externalAssetId:
-	public StringValue getExternalAssetId(){
+	public String getExternalAssetId(){
 		return this.externalAssetId;
 	}
-	public void setExternalAssetId(StringValue externalAssetId){
+	public void setExternalAssetId(String externalAssetId){
 		this.externalAssetId = externalAssetId;
+	}
+
+	public void externalAssetId(String multirequestToken){
+		setToken("externalAssetId", multirequestToken);
 	}
 
 
@@ -75,7 +78,7 @@ public class GenerateMetadataByDescription extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		externalAssetId = GsonParser.parseObject(jsonObject.getAsJsonObject("externalAssetId"), StringValue.class);
+		externalAssetId = GsonParser.parseString(jsonObject.get("externalAssetId"));
 
 	}
 
