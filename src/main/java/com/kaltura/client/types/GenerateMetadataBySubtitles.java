@@ -48,7 +48,7 @@ import java.util.List;
 public class GenerateMetadataBySubtitles extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
+		String subtitlesFileId();
 		RequestBuilder.ListTokenizer<StringValue.Tokenizer> externalAssetIds();
 	}
 
@@ -57,23 +57,23 @@ public class GenerateMetadataBySubtitles extends ObjectBase {
 	  subtitles.uploadFile request.              It is used to correlate the uploaded
 	  file with the metadata generation request.
 	 */
-	private Long id;
+	private Long subtitlesFileId;
 	/**
 	 * An optional array of KalturaStringValue specifying the target assets to which
 	  the generated metadata will be pushed.
 	 */
 	private List<StringValue> externalAssetIds;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// subtitlesFileId:
+	public Long getSubtitlesFileId(){
+		return this.subtitlesFileId;
 	}
-	public void setId(Long id){
-		this.id = id;
+	public void setSubtitlesFileId(Long subtitlesFileId){
+		this.subtitlesFileId = subtitlesFileId;
 	}
 
-	public void id(String multirequestToken){
-		setToken("id", multirequestToken);
+	public void subtitlesFileId(String multirequestToken){
+		setToken("subtitlesFileId", multirequestToken);
 	}
 
 	// externalAssetIds:
@@ -95,7 +95,7 @@ public class GenerateMetadataBySubtitles extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
+		subtitlesFileId = GsonParser.parseLong(jsonObject.get("subtitlesFileId"));
 		externalAssetIds = GsonParser.parseArray(jsonObject.getAsJsonArray("externalAssetIds"), StringValue.class);
 
 	}
@@ -103,7 +103,7 @@ public class GenerateMetadataBySubtitles extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaGenerateMetadataBySubtitles");
-		kparams.add("id", this.id);
+		kparams.add("subtitlesFileId", this.subtitlesFileId);
 		kparams.add("externalAssetIds", this.externalAssetIds);
 		return kparams;
 	}
