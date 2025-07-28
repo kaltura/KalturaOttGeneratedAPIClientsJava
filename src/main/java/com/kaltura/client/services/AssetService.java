@@ -38,6 +38,8 @@ import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
 import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.types.BaseAssetOrder;
+import com.kaltura.client.types.BulkPlaybackContextRequest;
+import com.kaltura.client.types.BulkPlaybackContextResponse;
 import com.kaltura.client.types.BulkUpload;
 import com.kaltura.client.types.BulkUploadAssetData;
 import com.kaltura.client.types.BulkUploadJobData;
@@ -115,6 +117,23 @@ public class AssetService {
 	 */
     public static AddFromBulkUploadAssetBuilder addFromBulkUpload(FileHolder fileData, BulkUploadJobData bulkUploadJobData, BulkUploadAssetData bulkUploadAssetData)  {
 		return new AddFromBulkUploadAssetBuilder(fileData, bulkUploadJobData, bulkUploadAssetData);
+	}
+	
+	public static class BulkGetPlaybackContextAssetBuilder extends RequestBuilder<BulkPlaybackContextResponse, BulkPlaybackContextResponse.Tokenizer, BulkGetPlaybackContextAssetBuilder> {
+		
+		public BulkGetPlaybackContextAssetBuilder(BulkPlaybackContextRequest request) {
+			super(BulkPlaybackContextResponse.class, "asset", "bulkGetPlaybackContext");
+			params.add("request", request);
+		}
+	}
+
+	/**
+	 * Returns playback contexts for multiple assets in a single request
+	 * 
+	 * @param request Bulk request containing array of playback context parameters
+	 */
+    public static BulkGetPlaybackContextAssetBuilder bulkGetPlaybackContext(BulkPlaybackContextRequest request)  {
+		return new BulkGetPlaybackContextAssetBuilder(request);
 	}
 	
 	public static class CountAssetBuilder extends RequestBuilder<AssetCount, AssetCount.Tokenizer, CountAssetBuilder> {

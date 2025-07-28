@@ -51,6 +51,10 @@ public class VodIngestAssetResultAggregation extends ObjectBase {
 		String successCount();
 		String externalFailureCount();
 		String successWithWarningCount();
+		String averageTotalProcessingDuration();
+		String averageTotalActiveProcessingDuration();
+		String p95TotalProcessingDuration();
+		String p95TotalActiveProcessingDuration();
 	}
 
 	/**
@@ -84,6 +88,26 @@ public class VodIngestAssetResultAggregation extends ObjectBase {
 	  assets returned according to the applied filters.
 	 */
 	private Integer successWithWarningCount;
+	/**
+	 * Average calculated for the total processing duration of the assets returned
+	  according to the applied filters.
+	 */
+	private Long averageTotalProcessingDuration;
+	/**
+	 * Average calculated for the active processing duration of the assets returned
+	  according to the applied filters.
+	 */
+	private Long averageTotalActiveProcessingDuration;
+	/**
+	 * 0.95 percentile calculated for the total processing duration of the assets
+	  returned according to the applied filters.
+	 */
+	private Long p95TotalProcessingDuration;
+	/**
+	 * 0.95 percentile calculated for the active processing duration of the assets
+	  returned according to the applied filters.
+	 */
+	private Long p95TotalActiveProcessingDuration;
 
 	// ingestDateFrom:
 	public Long getIngestDateFrom(){
@@ -157,6 +181,54 @@ public class VodIngestAssetResultAggregation extends ObjectBase {
 		setToken("successWithWarningCount", multirequestToken);
 	}
 
+	// averageTotalProcessingDuration:
+	public Long getAverageTotalProcessingDuration(){
+		return this.averageTotalProcessingDuration;
+	}
+	public void setAverageTotalProcessingDuration(Long averageTotalProcessingDuration){
+		this.averageTotalProcessingDuration = averageTotalProcessingDuration;
+	}
+
+	public void averageTotalProcessingDuration(String multirequestToken){
+		setToken("averageTotalProcessingDuration", multirequestToken);
+	}
+
+	// averageTotalActiveProcessingDuration:
+	public Long getAverageTotalActiveProcessingDuration(){
+		return this.averageTotalActiveProcessingDuration;
+	}
+	public void setAverageTotalActiveProcessingDuration(Long averageTotalActiveProcessingDuration){
+		this.averageTotalActiveProcessingDuration = averageTotalActiveProcessingDuration;
+	}
+
+	public void averageTotalActiveProcessingDuration(String multirequestToken){
+		setToken("averageTotalActiveProcessingDuration", multirequestToken);
+	}
+
+	// p95TotalProcessingDuration:
+	public Long getP95TotalProcessingDuration(){
+		return this.p95TotalProcessingDuration;
+	}
+	public void setP95TotalProcessingDuration(Long p95TotalProcessingDuration){
+		this.p95TotalProcessingDuration = p95TotalProcessingDuration;
+	}
+
+	public void p95TotalProcessingDuration(String multirequestToken){
+		setToken("p95TotalProcessingDuration", multirequestToken);
+	}
+
+	// p95TotalActiveProcessingDuration:
+	public Long getP95TotalActiveProcessingDuration(){
+		return this.p95TotalActiveProcessingDuration;
+	}
+	public void setP95TotalActiveProcessingDuration(Long p95TotalActiveProcessingDuration){
+		this.p95TotalActiveProcessingDuration = p95TotalActiveProcessingDuration;
+	}
+
+	public void p95TotalActiveProcessingDuration(String multirequestToken){
+		setToken("p95TotalActiveProcessingDuration", multirequestToken);
+	}
+
 
 	public VodIngestAssetResultAggregation() {
 		super();
@@ -174,6 +246,10 @@ public class VodIngestAssetResultAggregation extends ObjectBase {
 		successCount = GsonParser.parseInt(jsonObject.get("successCount"));
 		externalFailureCount = GsonParser.parseInt(jsonObject.get("externalFailureCount"));
 		successWithWarningCount = GsonParser.parseInt(jsonObject.get("successWithWarningCount"));
+		averageTotalProcessingDuration = GsonParser.parseLong(jsonObject.get("averageTotalProcessingDuration"));
+		averageTotalActiveProcessingDuration = GsonParser.parseLong(jsonObject.get("averageTotalActiveProcessingDuration"));
+		p95TotalProcessingDuration = GsonParser.parseLong(jsonObject.get("p95TotalProcessingDuration"));
+		p95TotalActiveProcessingDuration = GsonParser.parseLong(jsonObject.get("p95TotalActiveProcessingDuration"));
 
 	}
 
@@ -186,6 +262,10 @@ public class VodIngestAssetResultAggregation extends ObjectBase {
 		kparams.add("successCount", this.successCount);
 		kparams.add("externalFailureCount", this.externalFailureCount);
 		kparams.add("successWithWarningCount", this.successWithWarningCount);
+		kparams.add("averageTotalProcessingDuration", this.averageTotalProcessingDuration);
+		kparams.add("averageTotalActiveProcessingDuration", this.averageTotalActiveProcessingDuration);
+		kparams.add("p95TotalProcessingDuration", this.p95TotalProcessingDuration);
+		kparams.add("p95TotalActiveProcessingDuration", this.p95TotalActiveProcessingDuration);
 		return kparams;
 	}
 
