@@ -35,7 +35,6 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -44,63 +43,68 @@ import java.util.Map;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * The configuration object for the metadata enrichment feature.
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(GenerateMetadataBySubtitles.Tokenizer.class)
+public class GenerateMetadataBySubtitles extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		String subtitlesFileId();
+		RequestBuilder.ListTokenizer<StringValue.Tokenizer> externalAssetIds();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * A mandatory Long type with the subtitles file ID returned from the
+	  subtitles.uploadFile request.              It is used to correlate the uploaded
+	  file with the metadata generation request.
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
+	private Long subtitlesFileId;
 	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
+	 * An optional array of KalturaStringValue specifying the target assets to which
+	  the generated metadata will be pushed.
 	 */
-	private List<StringValue> supportedLanguages;
+	private List<StringValue> externalAssetIds;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// subtitlesFileId:
+	public Long getSubtitlesFileId(){
+		return this.subtitlesFileId;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
-	}
-
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void setSubtitlesFileId(Long subtitlesFileId){
+		this.subtitlesFileId = subtitlesFileId;
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+	public void subtitlesFileId(String multirequestToken){
+		setToken("subtitlesFileId", multirequestToken);
+	}
+
+	// externalAssetIds:
+	public List<StringValue> getExternalAssetIds(){
+		return this.externalAssetIds;
+	}
+	public void setExternalAssetIds(List<StringValue> externalAssetIds){
+		this.externalAssetIds = externalAssetIds;
+	}
+
+
+	public GenerateMetadataBySubtitles() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public GenerateMetadataBySubtitles(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		subtitlesFileId = GsonParser.parseLong(jsonObject.get("subtitlesFileId"));
+		externalAssetIds = GsonParser.parseArray(jsonObject.getAsJsonArray("externalAssetIds"), StringValue.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaGenerateMetadataBySubtitles");
+		kparams.add("subtitlesFileId", this.subtitlesFileId);
+		kparams.add("externalAssetIds", this.externalAssetIds);
 		return kparams;
 	}
 
