@@ -32,10 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,62 +41,71 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * A class representing a possible response to a question.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TreeAnswer.Tokenizer.class)
+public class TreeAnswer extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		String answerId();
+		String text();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * Unique identifier for the answer.
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
+	private String answerId;
 	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
+	 * The answer text to display to the user.
 	 */
-	private List<StringValue> supportedLanguages;
+	private String text;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// answerId:
+	public String getAnswerId(){
+		return this.answerId;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
-	}
-
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void setAnswerId(String answerId){
+		this.answerId = answerId;
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+	public void answerId(String multirequestToken){
+		setToken("answerId", multirequestToken);
+	}
+
+	// text:
+	public String getText(){
+		return this.text;
+	}
+	public void setText(String text){
+		this.text = text;
+	}
+
+	public void text(String multirequestToken){
+		setToken("text", multirequestToken);
+	}
+
+
+	public TreeAnswer() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public TreeAnswer(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		answerId = GsonParser.parseString(jsonObject.get("answerId"));
+		text = GsonParser.parseString(jsonObject.get("text"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaTreeAnswer");
+		kparams.add("answerId", this.answerId);
+		kparams.add("text", this.text);
 		return kparams;
 	}
 

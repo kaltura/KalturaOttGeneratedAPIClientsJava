@@ -51,6 +51,8 @@ public class AssetFilePpv extends OTTObjectSupportNullable {
 		String ppvModuleId();
 		String startDate();
 		String endDate();
+		String purchaseStartDate();
+		String purchaseEndDate();
 	}
 
 	/**
@@ -69,6 +71,16 @@ public class AssetFilePpv extends OTTObjectSupportNullable {
 	 * End date and time represented as epoch.
 	 */
 	private Long endDate;
+	/**
+	 * First date and time an KalturaAssetFilePpv.AssetFileId can be purchased with the
+	  given KalturaAssetFilePpv.PpvModuleId. Represented as epoch
+	 */
+	private Long purchaseStartDate;
+	/**
+	 * Final date and time an KalturaAssetFilePpv.AssetFileId can be purchased with the
+	  given KalturaAssetFilePpv.PpvModuleId. Represented as epoch
+	 */
+	private Long purchaseEndDate;
 
 	// assetFileId:
 	public Long getAssetFileId(){
@@ -118,6 +130,30 @@ public class AssetFilePpv extends OTTObjectSupportNullable {
 		setToken("endDate", multirequestToken);
 	}
 
+	// purchaseStartDate:
+	public Long getPurchaseStartDate(){
+		return this.purchaseStartDate;
+	}
+	public void setPurchaseStartDate(Long purchaseStartDate){
+		this.purchaseStartDate = purchaseStartDate;
+	}
+
+	public void purchaseStartDate(String multirequestToken){
+		setToken("purchaseStartDate", multirequestToken);
+	}
+
+	// purchaseEndDate:
+	public Long getPurchaseEndDate(){
+		return this.purchaseEndDate;
+	}
+	public void setPurchaseEndDate(Long purchaseEndDate){
+		this.purchaseEndDate = purchaseEndDate;
+	}
+
+	public void purchaseEndDate(String multirequestToken){
+		setToken("purchaseEndDate", multirequestToken);
+	}
+
 
 	public AssetFilePpv() {
 		super();
@@ -133,6 +169,8 @@ public class AssetFilePpv extends OTTObjectSupportNullable {
 		ppvModuleId = GsonParser.parseLong(jsonObject.get("ppvModuleId"));
 		startDate = GsonParser.parseLong(jsonObject.get("startDate"));
 		endDate = GsonParser.parseLong(jsonObject.get("endDate"));
+		purchaseStartDate = GsonParser.parseLong(jsonObject.get("purchaseStartDate"));
+		purchaseEndDate = GsonParser.parseLong(jsonObject.get("purchaseEndDate"));
 
 	}
 
@@ -143,6 +181,8 @@ public class AssetFilePpv extends OTTObjectSupportNullable {
 		kparams.add("ppvModuleId", this.ppvModuleId);
 		kparams.add("startDate", this.startDate);
 		kparams.add("endDate", this.endDate);
+		kparams.add("purchaseStartDate", this.purchaseStartDate);
+		kparams.add("purchaseEndDate", this.purchaseEndDate);
 		return kparams;
 	}
 

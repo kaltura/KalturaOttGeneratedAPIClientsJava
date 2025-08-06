@@ -29,10 +29,12 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.GenerateMetadataStatus;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
+import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -42,93 +44,49 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * An object containing information on the metadata generation job.
+ * Request object for bulk getPlaybackContext operation
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GenerateMetadataBySubtitlesJob.Tokenizer.class)
-public class GenerateMetadataBySubtitlesJob extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkPlaybackContextRequest.Tokenizer.class)
+public class BulkPlaybackContextRequest extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String id();
-		String createDate();
-		String updateDate();
-		String fileName();
-		String status();
-		String errorMessage();
+		RequestBuilder.ListTokenizer<GetPlaybackContextParams.Tokenizer> playbackContextParamSets();
 	}
 
 	/**
-	 * Unique identifier for the generation job
+	 * Array of request parameters for getPlaybackContext.              Each entry
+	  represents an individual playback context request.
 	 */
-	private Long id;
-	/**
-	 * Specifies when the job was created, expressed in Epoch timestamp.
-	 */
-	private Long createDate;
-	/**
-	 * Specifies when the job was updated, expressed in Epoch timestamp.
-	 */
-	private Long updateDate;
-	/**
-	 * Name of the uploaded subtitles file from which the metadata is generated.
-	 */
-	private String fileName;
-	/**
-	 * Service status states.
-	 */
-	private GenerateMetadataStatus status;
-	/**
-	 * Error messages for non-success cases.
-	 */
-	private String errorMessage;
+	private List<GetPlaybackContextParams> playbackContextParamSets;
 
-	// id:
-	public Long getId(){
-		return this.id;
+	// playbackContextParamSets:
+	public List<GetPlaybackContextParams> getPlaybackContextParamSets(){
+		return this.playbackContextParamSets;
 	}
-	// createDate:
-	public Long getCreateDate(){
-		return this.createDate;
-	}
-	// updateDate:
-	public Long getUpdateDate(){
-		return this.updateDate;
-	}
-	// fileName:
-	public String getFileName(){
-		return this.fileName;
-	}
-	// status:
-	public GenerateMetadataStatus getStatus(){
-		return this.status;
-	}
-	// errorMessage:
-	public String getErrorMessage(){
-		return this.errorMessage;
+	public void setPlaybackContextParamSets(List<GetPlaybackContextParams> playbackContextParamSets){
+		this.playbackContextParamSets = playbackContextParamSets;
 	}
 
-	public GenerateMetadataBySubtitlesJob() {
+
+	public BulkPlaybackContextRequest() {
 		super();
 	}
 
-	public GenerateMetadataBySubtitlesJob(JsonObject jsonObject) throws APIException {
+	public BulkPlaybackContextRequest(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		id = GsonParser.parseLong(jsonObject.get("id"));
-		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
-		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-		fileName = GsonParser.parseString(jsonObject.get("fileName"));
-		status = GenerateMetadataStatus.get(GsonParser.parseString(jsonObject.get("status")));
-		errorMessage = GsonParser.parseString(jsonObject.get("errorMessage"));
+		playbackContextParamSets = GsonParser.parseArray(jsonObject.getAsJsonArray("playbackContextParamSets"), GetPlaybackContextParams.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGenerateMetadataBySubtitlesJob");
+		kparams.add("objectType", "KalturaBulkPlaybackContextRequest");
+		kparams.add("playbackContextParamSets", this.playbackContextParamSets);
 		return kparams;
 	}
 

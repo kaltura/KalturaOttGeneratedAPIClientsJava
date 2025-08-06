@@ -29,13 +29,11 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,62 +43,87 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * Wrapper for KalturaAPIException to make it compatible with KalturaOTTObject
+  inheritance requirement
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkPlaybackContextError.Tokenizer.class)
+public class BulkPlaybackContextError extends BulkResponseItem {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+	public interface Tokenizer extends BulkResponseItem.Tokenizer {
+		String code();
+		String message();
+		RequestBuilder.ListTokenizer<ApiExceptionArg.Tokenizer> args();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * The error code from the API exception
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
+	private String code;
 	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
+	 * The error message from the API exception
 	 */
-	private List<StringValue> supportedLanguages;
+	private String message;
+	/**
+	 * Additional error arguments from the API exception
+	 */
+	private List<ApiExceptionArg> args;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// code:
+	public String getCode(){
+		return this.code;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
-	}
-
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void setCode(String code){
+		this.code = code;
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+	public void code(String multirequestToken){
+		setToken("code", multirequestToken);
+	}
+
+	// message:
+	public String getMessage(){
+		return this.message;
+	}
+	public void setMessage(String message){
+		this.message = message;
+	}
+
+	public void message(String multirequestToken){
+		setToken("message", multirequestToken);
+	}
+
+	// args:
+	public List<ApiExceptionArg> getArgs(){
+		return this.args;
+	}
+	public void setArgs(List<ApiExceptionArg> args){
+		this.args = args;
+	}
+
+
+	public BulkPlaybackContextError() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public BulkPlaybackContextError(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		code = GsonParser.parseString(jsonObject.get("code"));
+		message = GsonParser.parseString(jsonObject.get("message"));
+		args = GsonParser.parseArray(jsonObject.getAsJsonArray("args"), ApiExceptionArg.class);
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaBulkPlaybackContextError");
+		kparams.add("code", this.code);
+		kparams.add("message", this.message);
+		kparams.add("args", this.args);
 		return kparams;
 	}
 
