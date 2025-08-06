@@ -35,7 +35,6 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,62 +44,70 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * Response object for bulk getPlaybackContext operation.              Each item in
+  the objects array corresponds to the request at the same index.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BulkPlaybackContextResponse.Tokenizer.class)
+public class BulkPlaybackContextResponse extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		RequestBuilder.ListTokenizer<BulkResponseItem.Tokenizer> items();
+		String totalCount();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * Array of playback contexts or errors.              Each item corresponds to the
+	  request at the same index in the request array.              Items can be either
+	  KalturaPlaybackContext (success) or KalturaBulkPlaybackContextError (error).
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
+	private List<BulkResponseItem> items;
 	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
+	 * Total items
 	 */
-	private List<StringValue> supportedLanguages;
+	private Integer totalCount;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// items:
+	public List<BulkResponseItem> getItems(){
+		return this.items;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
-	}
-
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void setItems(List<BulkResponseItem> items){
+		this.items = items;
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+	// totalCount:
+	public Integer getTotalCount(){
+		return this.totalCount;
+	}
+	public void setTotalCount(Integer totalCount){
+		this.totalCount = totalCount;
+	}
+
+	public void totalCount(String multirequestToken){
+		setToken("totalCount", multirequestToken);
+	}
+
+
+	public BulkPlaybackContextResponse() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public BulkPlaybackContextResponse(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		items = GsonParser.parseArray(jsonObject.getAsJsonArray("items"), BulkResponseItem.class);
+		totalCount = GsonParser.parseInt(jsonObject.get("totalCount"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaBulkPlaybackContextResponse");
+		kparams.add("items", this.items);
+		kparams.add("totalCount", this.totalCount);
 		return kparams;
 	}
 

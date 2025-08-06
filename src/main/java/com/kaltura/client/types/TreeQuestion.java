@@ -32,10 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,62 +41,90 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * A class representing a question in the decision tree.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TreeQuestion.Tokenizer.class)
+public class TreeQuestion extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetaFieldNameMap.Tokenizer> assetStructMetaNameMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		String questionId();
+		String text();
+		String level();
 	}
 
 	/**
-	 * A type of dictionary defined as [long,KalturaMetaFieldNameMap].              
-	  This property is used to correlate the newly generated metadata to             
-	  existing metadata IDs which are available in the asset’s struct.
+	 * Unique identifier for the question.
 	 */
-	private Map<String, MetaFieldNameMap> assetStructMetaNameMap;
+	private String questionId;
 	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
+	 * The question text to display to the user.
 	 */
-	private List<StringValue> supportedLanguages;
+	private String text;
+	/**
+	 * The depth level in the tree (1 for top-level).
+	 */
+	private Integer level;
 
-	// assetStructMetaNameMap:
-	public Map<String, MetaFieldNameMap> getAssetStructMetaNameMap(){
-		return this.assetStructMetaNameMap;
+	// questionId:
+	public String getQuestionId(){
+		return this.questionId;
 	}
-	public void setAssetStructMetaNameMap(Map<String, MetaFieldNameMap> assetStructMetaNameMap){
-		this.assetStructMetaNameMap = assetStructMetaNameMap;
-	}
-
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void setQuestionId(String questionId){
+		this.questionId = questionId;
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+	public void questionId(String multirequestToken){
+		setToken("questionId", multirequestToken);
+	}
+
+	// text:
+	public String getText(){
+		return this.text;
+	}
+	public void setText(String text){
+		this.text = text;
+	}
+
+	public void text(String multirequestToken){
+		setToken("text", multirequestToken);
+	}
+
+	// level:
+	public Integer getLevel(){
+		return this.level;
+	}
+	public void setLevel(Integer level){
+		this.level = level;
+	}
+
+	public void level(String multirequestToken){
+		setToken("level", multirequestToken);
+	}
+
+
+	public TreeQuestion() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public TreeQuestion(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructMetaNameMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructMetaNameMap"), MetaFieldNameMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		questionId = GsonParser.parseString(jsonObject.get("questionId"));
+		text = GsonParser.parseString(jsonObject.get("text"));
+		level = GsonParser.parseInt(jsonObject.get("level"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructMetaNameMap", this.assetStructMetaNameMap);
+		kparams.add("objectType", "KalturaTreeQuestion");
+		kparams.add("questionId", this.questionId);
+		kparams.add("text", this.text);
+		kparams.add("level", this.level);
 		return kparams;
 	}
 
