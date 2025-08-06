@@ -121,7 +121,7 @@ public class AssetFilePpvService {
 	}
 
 	/**
-	 * Update assetFilePpv dates
+	 * Update assetFilePpv
 	 * 
 	 * @param assetFileId Asset file id
 	 * @param ppvModuleId Ppv module id
