@@ -28,12 +28,12 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.AiMetadataGeneratorConfiguration;
-import com.kaltura.client.types.GenerateMetadataByDescription;
-import com.kaltura.client.types.GenerateMetadataBySubtitles;
-import com.kaltura.client.types.GenerateMetadataJob;
+import com.kaltura.client.types.GenerateMetadataBySubtitlesJob;
 import com.kaltura.client.types.GenerateMetadataResult;
 import com.kaltura.client.types.MetaFieldNameMap;
+import com.kaltura.client.types.StringValue;
 import com.kaltura.client.utils.request.RequestBuilder;
+import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -44,49 +44,31 @@ import com.kaltura.client.utils.request.RequestBuilder;
 
 public class AiMetadataGeneratorService {
 	
-	public static class GenerateMetadataByDescriptionAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataJob, GenerateMetadataJob.Tokenizer, GenerateMetadataByDescriptionAiMetadataGeneratorBuilder> {
+	public static class GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataBySubtitlesJob, GenerateMetadataBySubtitlesJob.Tokenizer, GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder> {
 		
-		public GenerateMetadataByDescriptionAiMetadataGeneratorBuilder(GenerateMetadataByDescription generateMetadataByDescription) {
-			super(GenerateMetadataJob.class, "aimetadatagenerator", "generateMetadataByDescription");
-			params.add("generateMetadataByDescription", generateMetadataByDescription);
+		public GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(long subtitlesFileId, List<StringValue> externalAssetIds) {
+			super(GenerateMetadataBySubtitlesJob.class, "aimetadatagenerator", "generateMetadataBySubtitles");
+			params.add("subtitlesFileId", subtitlesFileId);
+			params.add("externalAssetIds", externalAssetIds);
+		}
+		
+		public void subtitlesFileId(String multirequestToken) {
+			params.add("subtitlesFileId", multirequestToken);
 		}
 	}
 
-	/**
-	 * Initiate the process of metadata generation based on existing asset description
-	  metadata.              The service will analyze the asset&amp;#39;s description
-	  and genre metadata using AI/LLM to generate              additional enriched
-	  metadata fields including enhanced genre classifications, sentiment analysis,   
-	            and relevant keywords. This method is useful for enriching assets that
-	  already have basic              description metadata but need additional
-	  AI-generated metadata fields.
-	 * 
-	 * @param generateMetadataByDescription Request object containing the external asset ID to analyze and enrich
-	 */
-    public static GenerateMetadataByDescriptionAiMetadataGeneratorBuilder generateMetadataByDescription(GenerateMetadataByDescription generateMetadataByDescription)  {
-		return new GenerateMetadataByDescriptionAiMetadataGeneratorBuilder(generateMetadataByDescription);
-	}
-	
-	public static class GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataJob, GenerateMetadataJob.Tokenizer, GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder> {
-		
-		public GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(GenerateMetadataBySubtitles generateMetadataBySubtitles) {
-			super(GenerateMetadataJob.class, "aimetadatagenerator", "generateMetadataBySubtitles");
-			params.add("generateMetadataBySubtitles", generateMetadataBySubtitles);
-		}
+	public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(long subtitlesFileId)  {
+		return generateMetadataBySubtitles(subtitlesFileId, null);
 	}
 
 	/**
-	 * Initiate the process of metadata generation based on the subtitles file.        
-	       The subtitles file must be previously uploaded using the
-	  subtitles.uploadFile service.              The service will analyze the subtitle
-	  content using AI/LLM to generate enriched metadata including              genre,
-	  description, keywords, sentiment analysis, and other metadata fields.
+	 * Start metadata generation process based on subtitles.
 	 * 
-	 * @param generateMetadataBySubtitles Request object containing the subtitles file ID and optional external asset IDs
-	 * to update
+	 * @param subtitlesFileId The subtitles file ID returned from subtitles.uploadFile.
+	 * @param externalAssetIds A list of external asset IDs to be populated with the generated metadata.
 	 */
-    public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(GenerateMetadataBySubtitles generateMetadataBySubtitles)  {
-		return new GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(generateMetadataBySubtitles);
+    public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(long subtitlesFileId, List<StringValue> externalAssetIds)  {
+		return new GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(subtitlesFileId, externalAssetIds);
 	}
 	
 	public static class GetGeneratedMetadataAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataResult, GenerateMetadataResult.Tokenizer, GetGeneratedMetadataAiMetadataGeneratorBuilder> {
@@ -110,10 +92,10 @@ public class AiMetadataGeneratorService {
 		return new GetGeneratedMetadataAiMetadataGeneratorBuilder(jobId);
 	}
 	
-	public static class GetGenerateMetadataJobAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataJob, GenerateMetadataJob.Tokenizer, GetGenerateMetadataJobAiMetadataGeneratorBuilder> {
+	public static class GetGenerateMetadataJobAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataBySubtitlesJob, GenerateMetadataBySubtitlesJob.Tokenizer, GetGenerateMetadataJobAiMetadataGeneratorBuilder> {
 		
 		public GetGenerateMetadataJobAiMetadataGeneratorBuilder(long id) {
-			super(GenerateMetadataJob.class, "aimetadatagenerator", "getGenerateMetadataJob");
+			super(GenerateMetadataBySubtitlesJob.class, "aimetadatagenerator", "getGenerateMetadataJob");
 			params.add("id", id);
 		}
 		

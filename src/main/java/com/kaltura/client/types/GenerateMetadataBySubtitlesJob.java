@@ -45,14 +45,14 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * An object containing information on the metadata generation job.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(GenerateMetadataJob.Tokenizer.class)
-public class GenerateMetadataJob extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(GenerateMetadataBySubtitlesJob.Tokenizer.class)
+public class GenerateMetadataBySubtitlesJob extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 		String id();
 		String createDate();
 		String updateDate();
-		String sourceName();
+		String fileName();
 		String status();
 		String errorMessage();
 	}
@@ -70,14 +70,11 @@ public class GenerateMetadataJob extends ObjectBase {
 	 */
 	private Long updateDate;
 	/**
-	 * Name of the source job element generating the metadata.              For
-	  generateMetadataBySubtitles: the uploaded subtitle file name.              For
-	  generateMetadataByDescription: the asset name from which metadata is generated.
+	 * Name of the uploaded subtitles file from which the metadata is generated.
 	 */
-	private String sourceName;
+	private String fileName;
 	/**
-	 * can be either Processing/Success/Failed, per the last status updated by the
-	  aiMetadataGenerator.
+	 * Service status states.
 	 */
 	private GenerateMetadataStatus status;
 	/**
@@ -97,9 +94,9 @@ public class GenerateMetadataJob extends ObjectBase {
 	public Long getUpdateDate(){
 		return this.updateDate;
 	}
-	// sourceName:
-	public String getSourceName(){
-		return this.sourceName;
+	// fileName:
+	public String getFileName(){
+		return this.fileName;
 	}
 	// status:
 	public GenerateMetadataStatus getStatus(){
@@ -110,11 +107,11 @@ public class GenerateMetadataJob extends ObjectBase {
 		return this.errorMessage;
 	}
 
-	public GenerateMetadataJob() {
+	public GenerateMetadataBySubtitlesJob() {
 		super();
 	}
 
-	public GenerateMetadataJob(JsonObject jsonObject) throws APIException {
+	public GenerateMetadataBySubtitlesJob(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
@@ -123,7 +120,7 @@ public class GenerateMetadataJob extends ObjectBase {
 		id = GsonParser.parseLong(jsonObject.get("id"));
 		createDate = GsonParser.parseLong(jsonObject.get("createDate"));
 		updateDate = GsonParser.parseLong(jsonObject.get("updateDate"));
-		sourceName = GsonParser.parseString(jsonObject.get("sourceName"));
+		fileName = GsonParser.parseString(jsonObject.get("fileName"));
 		status = GenerateMetadataStatus.get(GsonParser.parseString(jsonObject.get("status")));
 		errorMessage = GsonParser.parseString(jsonObject.get("errorMessage"));
 
@@ -131,7 +128,7 @@ public class GenerateMetadataJob extends ObjectBase {
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaGenerateMetadataJob");
+		kparams.add("objectType", "KalturaGenerateMetadataBySubtitlesJob");
 		return kparams;
 	}
 
