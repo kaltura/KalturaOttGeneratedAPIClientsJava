@@ -29,13 +29,10 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.MetadataUpdateOperation;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,63 +42,72 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * Configuration for a specific metadata field including system name and update
+  operation
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(MetadataFieldConfig.Tokenizer.class)
+public class MetadataFieldConfig extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetadataFieldConfigurationMap.Tokenizer> assetStructConfigMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		String systemName();
+		String operation();
 	}
 
 	/**
-	 * A type of dictionary defined as [string,KalturaMetadataFieldConfigurationMap].  
-	             This property is used to correlate the newly generated metadata to   
-	            existing metadata IDs which are available in the asset&amp;#39;s
-	  struct with configuration.
+	 * The system name of the metadata field in the asset struct
 	 */
-	private Map<String, MetadataFieldConfigurationMap> assetStructConfigMap;
+	private String systemName;
 	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
+	 * The update operation to be performed on this metadata field
 	 */
-	private List<StringValue> supportedLanguages;
+	private MetadataUpdateOperation operation;
 
-	// assetStructConfigMap:
-	public Map<String, MetadataFieldConfigurationMap> getAssetStructConfigMap(){
-		return this.assetStructConfigMap;
+	// systemName:
+	public String getSystemName(){
+		return this.systemName;
 	}
-	public void setAssetStructConfigMap(Map<String, MetadataFieldConfigurationMap> assetStructConfigMap){
-		this.assetStructConfigMap = assetStructConfigMap;
-	}
-
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
+	public void setSystemName(String systemName){
+		this.systemName = systemName;
 	}
 
-	public AiMetadataGeneratorConfiguration() {
+	public void systemName(String multirequestToken){
+		setToken("systemName", multirequestToken);
+	}
+
+	// operation:
+	public MetadataUpdateOperation getOperation(){
+		return this.operation;
+	}
+	public void setOperation(MetadataUpdateOperation operation){
+		this.operation = operation;
+	}
+
+	public void operation(String multirequestToken){
+		setToken("operation", multirequestToken);
+	}
+
+
+	public MetadataFieldConfig() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public MetadataFieldConfig(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructConfigMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructConfigMap"), MetadataFieldConfigurationMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		systemName = GsonParser.parseString(jsonObject.get("systemName"));
+		operation = MetadataUpdateOperation.get(GsonParser.parseString(jsonObject.get("operation")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructConfigMap", this.assetStructConfigMap);
+		kparams.add("objectType", "KalturaMetadataFieldConfig");
+		kparams.add("systemName", this.systemName);
+		kparams.add("operation", this.operation);
 		return kparams;
 	}
 
