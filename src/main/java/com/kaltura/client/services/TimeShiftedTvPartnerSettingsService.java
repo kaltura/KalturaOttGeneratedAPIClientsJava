@@ -64,10 +64,7 @@ public class TimeShiftedTvPartnerSettingsService {
 
 	/**
 	 * Configure the account’s time-shifted TV settings (catch-up and C-DVR,
-	  Trick-play, Start-over).              When updating the
-	  timeshiftedtvpartnersettings, user must provide values for all the setting
-	  fields. If any field is omitted, its value may reset to the default
-	  configuration, potentially overwriting the current settings.
+	  Trick-play, Start-over)
 	 * 
 	 * @param settings Time shifted TV settings
 	 */

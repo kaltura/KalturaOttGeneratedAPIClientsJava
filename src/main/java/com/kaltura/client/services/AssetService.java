@@ -38,8 +38,6 @@ import com.kaltura.client.types.AssetCount;
 import com.kaltura.client.types.AssetFilter;
 import com.kaltura.client.types.AssetGroupBy;
 import com.kaltura.client.types.BaseAssetOrder;
-import com.kaltura.client.types.BulkPlaybackContextRequest;
-import com.kaltura.client.types.BulkPlaybackContextResponse;
 import com.kaltura.client.types.BulkUpload;
 import com.kaltura.client.types.BulkUploadAssetData;
 import com.kaltura.client.types.BulkUploadJobData;
@@ -117,23 +115,6 @@ public class AssetService {
 	 */
     public static AddFromBulkUploadAssetBuilder addFromBulkUpload(FileHolder fileData, BulkUploadJobData bulkUploadJobData, BulkUploadAssetData bulkUploadAssetData)  {
 		return new AddFromBulkUploadAssetBuilder(fileData, bulkUploadJobData, bulkUploadAssetData);
-	}
-	
-	public static class BulkGetPlaybackContextAssetBuilder extends RequestBuilder<BulkPlaybackContextResponse, BulkPlaybackContextResponse.Tokenizer, BulkGetPlaybackContextAssetBuilder> {
-		
-		public BulkGetPlaybackContextAssetBuilder(BulkPlaybackContextRequest request) {
-			super(BulkPlaybackContextResponse.class, "asset", "bulkGetPlaybackContext");
-			params.add("request", request);
-		}
-	}
-
-	/**
-	 * Returns playback contexts for multiple assets in a single request
-	 * 
-	 * @param request Bulk request containing array of playback context parameters
-	 */
-    public static BulkGetPlaybackContextAssetBuilder bulkGetPlaybackContext(BulkPlaybackContextRequest request)  {
-		return new BulkGetPlaybackContextAssetBuilder(request);
 	}
 	
 	public static class CountAssetBuilder extends RequestBuilder<AssetCount, AssetCount.Tokenizer, CountAssetBuilder> {
@@ -448,48 +429,6 @@ public class AssetService {
 		return new RemoveMetasAndTagsAssetBuilder(id, assetReferenceType, idIn);
 	}
 	
-	public static class SemanticSearchAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, SemanticSearchAssetBuilder> {
-		
-		public SemanticSearchAssetBuilder(String query, boolean refineQuery, int size) {
-			super(Asset.class, "asset", "semanticSearch");
-			params.add("query", query);
-			params.add("refineQuery", refineQuery);
-			params.add("size", size);
-		}
-		
-		public void query(String multirequestToken) {
-			params.add("query", multirequestToken);
-		}
-		
-		public void refineQuery(String multirequestToken) {
-			params.add("refineQuery", multirequestToken);
-		}
-		
-		public void size(String multirequestToken) {
-			params.add("size", multirequestToken);
-		}
-	}
-
-	public static SemanticSearchAssetBuilder semanticSearch(String query)  {
-		return semanticSearch(query, false);
-	}
-
-	public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery)  {
-		return semanticSearch(query, refineQuery, 10);
-	}
-
-	/**
-	 * Search for assets using semantic similarity to a natural language query, with
-	  optional query refinement using LLM.
-	 * 
-	 * @param query The search query text used to find semantically similar assets
-	 * @param refineQuery When true, the search query is refined using LLM before vector search
-	 * @param size The maximum number of results to return. Must be between 1 and 100
-	 */
-    public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery, int size)  {
-		return new SemanticSearchAssetBuilder(query, refineQuery, size);
-	}
-	
 	public static class UpdateAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, UpdateAssetBuilder> {
 		
 		public UpdateAssetBuilder(long id, Asset asset) {
@@ -513,26 +452,5 @@ public class AssetService {
 	 */
     public static UpdateAssetBuilder update(long id, Asset asset)  {
 		return new UpdateAssetBuilder(id, asset);
-	}
-	
-	public static class WatchBasedRecommendationsListAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, WatchBasedRecommendationsListAssetBuilder> {
-		
-		public WatchBasedRecommendationsListAssetBuilder(long profileId) {
-			super(Asset.class, "asset", "watchBasedRecommendationsList");
-			params.add("profileId", profileId);
-		}
-		
-		public void profileId(String multirequestToken) {
-			params.add("profileId", multirequestToken);
-		}
-	}
-
-	/**
-	 * Return list of assets - assets are personal recommendations for the caller.
-	 * 
-	 * @param profileId WatchBasedRecommendations profile id
-	 */
-    public static WatchBasedRecommendationsListAssetBuilder watchBasedRecommendationsList(long profileId)  {
-		return new WatchBasedRecommendationsListAssetBuilder(profileId);
 	}
 }

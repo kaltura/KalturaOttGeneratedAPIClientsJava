@@ -118,10 +118,7 @@ public class AssetPersonalSelectionService {
 	}
 
 	/**
-	 * upsert manages asset selections within slots.  It adds a new asset ID if it
-	  doesn&amp;#39;t exist, or updates the timestamp if it does.  Slots are limited
-	  to 30 unique IDs.  When a slot is full, the oldest entry is removed (FIFO). 
-	  Inactive assets are automatically removed after 90 days.
+	 * Add or update asset selection in slot
 	 * 
 	 * @param assetId asset id
 	 * @param assetType asset type: media/epg
