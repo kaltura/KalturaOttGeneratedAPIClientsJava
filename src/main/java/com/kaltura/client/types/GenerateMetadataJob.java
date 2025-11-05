@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.GenerateMetadataJobType;
 import com.kaltura.client.enums.GenerateMetadataStatus;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
@@ -55,6 +56,7 @@ public class GenerateMetadataJob extends ObjectBase {
 		String sourceName();
 		String status();
 		String errorMessage();
+		String type();
 	}
 
 	/**
@@ -84,6 +86,11 @@ public class GenerateMetadataJob extends ObjectBase {
 	 * Error messages for non-success cases.
 	 */
 	private String errorMessage;
+	/**
+	 * Type of the metadata generation job (vodByDescription, vodBySubtitles,
+	  programByDescription)
+	 */
+	private GenerateMetadataJobType type;
 
 	// id:
 	public Long getId(){
@@ -109,6 +116,10 @@ public class GenerateMetadataJob extends ObjectBase {
 	public String getErrorMessage(){
 		return this.errorMessage;
 	}
+	// type:
+	public GenerateMetadataJobType getType(){
+		return this.type;
+	}
 
 	public GenerateMetadataJob() {
 		super();
@@ -126,6 +137,7 @@ public class GenerateMetadataJob extends ObjectBase {
 		sourceName = GsonParser.parseString(jsonObject.get("sourceName"));
 		status = GenerateMetadataStatus.get(GsonParser.parseString(jsonObject.get("status")));
 		errorMessage = GsonParser.parseString(jsonObject.get("errorMessage"));
+		type = GenerateMetadataJobType.get(GsonParser.parseString(jsonObject.get("type")));
 
 	}
 
