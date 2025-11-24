@@ -33,18 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ConditionOperator implements EnumAsString {
-	UNKNOWN("Unknown"),
-	EQUAL("Equal"),
-	NOTEQUAL("NotEqual"),
-	GREATERTHAN("GreaterThan"),
-	LESSTHAN("LessThan"),
-	GREATERTHANOREQUAL("GreaterThanOrEqual"),
-	LESSTHANOREQUAL("LessThanOrEqual");
+public enum AiRecommendationTreeFeatureLevel implements EnumAsString {
+	BASIC("Basic"),
+	PREMIUM("Premium");
 
 	private String value;
 
-	ConditionOperator(String value) {
+	AiRecommendationTreeFeatureLevel(String value) {
 		this.value = value;
 	}
 
@@ -57,19 +52,19 @@ public enum ConditionOperator implements EnumAsString {
 		this.value = value;
 	}
 
-	public static ConditionOperator get(String value) {
+	public static AiRecommendationTreeFeatureLevel get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ConditionOperator defined values and compare the inner value with the given one:
-		for(ConditionOperator item: values()) {
+		// goes over AiRecommendationTreeFeatureLevel defined values and compare the inner value with the given one:
+		for(AiRecommendationTreeFeatureLevel item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ConditionOperator.values().length > 0 ? ConditionOperator.values()[0]: null;
+		return AiRecommendationTreeFeatureLevel.values().length > 0 ? AiRecommendationTreeFeatureLevel.values()[0]: null;
    }
 }

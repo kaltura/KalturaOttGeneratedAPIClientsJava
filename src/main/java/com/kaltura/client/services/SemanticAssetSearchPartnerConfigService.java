@@ -54,6 +54,34 @@ public class SemanticAssetSearchPartnerConfigService {
 		return new GetFilteringConditionSemanticAssetSearchPartnerConfigBuilder();
 	}
 	
+	public static class GetProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<FilteringCondition, FilteringCondition.Tokenizer, GetProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder> {
+		
+		public GetProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder() {
+			super(FilteringCondition.class, "semanticassetsearchpartnerconfig", "getProgramFilteringCondition");
+		}
+	}
+
+	/**
+	 * Retrieve the filtering condition configuration for program assets.
+	 */
+    public static GetProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder getProgramFilteringCondition()  {
+		return new GetProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder();
+	}
+	
+	public static class GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<String, String, GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {
+		
+		public GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder() {
+			super(String.class, "semanticassetsearchpartnerconfig", "getProgramSearchableAttributes");
+		}
+	}
+
+	/**
+	 * Retrieve the current program field configurations for semantic search.
+	 */
+    public static GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder getProgramSearchableAttributes()  {
+		return new GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder();
+	}
+	
 	public static class GetSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<SearchableAttributes, SearchableAttributes.Tokenizer, GetSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {
 		
 		public GetSearchableAttributesSemanticAssetSearchPartnerConfigBuilder(int assetStructId) {
@@ -90,6 +118,45 @@ public class SemanticAssetSearchPartnerConfigService {
 	 */
     public static UpsertFilteringConditionSemanticAssetSearchPartnerConfigBuilder upsertFilteringCondition(FilteringCondition filteringCondition)  {
 		return new UpsertFilteringConditionSemanticAssetSearchPartnerConfigBuilder(filteringCondition);
+	}
+	
+	public static class UpsertProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<FilteringCondition, FilteringCondition.Tokenizer, UpsertProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder> {
+		
+		public UpsertProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder(FilteringCondition filteringCondition) {
+			super(FilteringCondition.class, "semanticassetsearchpartnerconfig", "upsertProgramFilteringCondition");
+			params.add("filteringCondition", filteringCondition);
+		}
+	}
+
+	/**
+	 * Update rule that controls embedding generation and search behavior for program
+	  assets.
+	 * 
+	 * @param filteringCondition Rule configuration parameters for programs.
+	 */
+    public static UpsertProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder upsertProgramFilteringCondition(FilteringCondition filteringCondition)  {
+		return new UpsertProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder(filteringCondition);
+	}
+	
+	public static class UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<String, String, UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {
+		
+		public UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder(String programAttributes) {
+			super(String.class, "semanticassetsearchpartnerconfig", "upsertProgramSearchableAttributes");
+			params.add("programAttributes", programAttributes);
+		}
+		
+		public void programAttributes(String multirequestToken) {
+			params.add("programAttributes", multirequestToken);
+		}
+	}
+
+	/**
+	 * Update which fields should be included in semantic search for program assets.
+	 * 
+	 * @param programAttributes Comma-separated list of program attribute names to be searchable.
+	 */
+    public static UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder upsertProgramSearchableAttributes(String programAttributes)  {
+		return new UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder(programAttributes);
 	}
 	
 	public static class UpsertSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<SearchableAttributes, SearchableAttributes.Tokenizer, UpsertSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {

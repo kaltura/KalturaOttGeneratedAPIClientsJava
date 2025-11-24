@@ -33,18 +33,14 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ConditionOperator implements EnumAsString {
-	UNKNOWN("Unknown"),
-	EQUAL("Equal"),
-	NOTEQUAL("NotEqual"),
-	GREATERTHAN("GreaterThan"),
-	LESSTHAN("LessThan"),
-	GREATERTHANOREQUAL("GreaterThanOrEqual"),
-	LESSTHANOREQUAL("LessThanOrEqual");
+public enum MetadataUpdateOperation implements EnumAsString {
+	PROTECT("PROTECT"),
+	EXTEND("EXTEND"),
+	OVERWRITE("OVERWRITE");
 
 	private String value;
 
-	ConditionOperator(String value) {
+	MetadataUpdateOperation(String value) {
 		this.value = value;
 	}
 
@@ -57,19 +53,19 @@ public enum ConditionOperator implements EnumAsString {
 		this.value = value;
 	}
 
-	public static ConditionOperator get(String value) {
+	public static MetadataUpdateOperation get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ConditionOperator defined values and compare the inner value with the given one:
-		for(ConditionOperator item: values()) {
+		// goes over MetadataUpdateOperation defined values and compare the inner value with the given one:
+		for(MetadataUpdateOperation item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ConditionOperator.values().length > 0 ? ConditionOperator.values()[0]: null;
+		return MetadataUpdateOperation.values().length > 0 ? MetadataUpdateOperation.values()[0]: null;
    }
 }
