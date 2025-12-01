@@ -451,62 +451,22 @@ public class AssetService {
 	
 	public static class SemanticSearchAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, SemanticSearchAssetBuilder> {
 		
-		public SemanticSearchAssetBuilder(String query, boolean refineQuery, int size) {
+		public SemanticSearchAssetBuilder(SemanticSearchParams searchParams) {
 			super(Asset.class, "asset", "semanticSearch");
-			params.add("query", query);
-			params.add("refineQuery", refineQuery);
-			params.add("size", size);
-		}
-		
-		public void query(String multirequestToken) {
-			params.add("query", multirequestToken);
-		}
-		
-		public void refineQuery(String multirequestToken) {
-			params.add("refineQuery", multirequestToken);
-		}
-		
-		public void size(String multirequestToken) {
-			params.add("size", multirequestToken);
-		}
-	}
-
-	public static SemanticSearchAssetBuilder semanticSearch(String query)  {
-		return semanticSearch(query, false);
-	}
-
-	public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery)  {
-		return semanticSearch(query, refineQuery, 10);
-	}
-
-	/**
-	 * Search for assets using semantic similarity to a natural language query, with
-	  optional query refinement using LLM.
-	 * 
-	 * @param query The search query text used to find semantically similar assets
-	 * @param refineQuery When true, the search query is refined using LLM before vector search
-	 * @param size The maximum number of results to return. Must be between 1 and 100
-	 */
-    public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery, int size)  {
-		return new SemanticSearchAssetBuilder(query, refineQuery, size);
-	}
-	
-	public static class UnifiedSemanticSearchAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, UnifiedSemanticSearchAssetBuilder> {
-		
-		public UnifiedSemanticSearchAssetBuilder(SemanticSearchParams searchParams) {
-			super(Asset.class, "asset", "unifiedSemanticSearch");
 			params.add("searchParams", searchParams);
 		}
 	}
 
 	/**
-	 * Performs unified semantic search across media and programs.
+	 * Search for assets using semantic similarity to a natural language query.        
+	       Supports unified search across both media/VOD assets and programs/EPG with
+	  optional type-specific filters.
 	 * 
 	 * @param searchParams Search parameters including query text, content type filters, and optional
 	 * type-specific filters
 	 */
-    public static UnifiedSemanticSearchAssetBuilder unifiedSemanticSearch(SemanticSearchParams searchParams)  {
-		return new UnifiedSemanticSearchAssetBuilder(searchParams);
+    public static SemanticSearchAssetBuilder semanticSearch(SemanticSearchParams searchParams)  {
+		return new SemanticSearchAssetBuilder(searchParams);
 	}
 	
 	public static class UpdateAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, UpdateAssetBuilder> {
