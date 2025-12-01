@@ -29,9 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionOperator;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -42,90 +40,31 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Condition to apply when searching in a specific scope.
+ * Media-specific semantic search parameters.              Presence of this object
+  indicates media/VOD assets should be included in search results.             
+  Currently empty - designed for future extensibility (e.g., duration filters,
+  creation date filters).
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchCondition.Tokenizer.class)
-public class SearchCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(MediaSemanticSearchParams.Tokenizer.class)
+public class MediaSemanticSearchParams extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String field();
-		String operator();
-		String value();
-	}
-
-	/**
-	 * Field name to filter by.
-	 */
-	private String field;
-	/**
-	 * Operator to use for filtering.
-	 */
-	private ConditionOperator operator;
-	/**
-	 * Value to filter by.
-	 */
-	private String value;
-
-	// field:
-	public String getField(){
-		return this.field;
-	}
-	public void setField(String field){
-		this.field = field;
-	}
-
-	public void field(String multirequestToken){
-		setToken("field", multirequestToken);
-	}
-
-	// operator:
-	public ConditionOperator getOperator(){
-		return this.operator;
-	}
-	public void setOperator(ConditionOperator operator){
-		this.operator = operator;
-	}
-
-	public void operator(String multirequestToken){
-		setToken("operator", multirequestToken);
-	}
-
-	// value:
-	public String getValue(){
-		return this.value;
-	}
-	public void setValue(String value){
-		this.value = value;
-	}
-
-	public void value(String multirequestToken){
-		setToken("value", multirequestToken);
 	}
 
 
-	public SearchCondition() {
+
+	public MediaSemanticSearchParams() {
 		super();
 	}
 
-	public SearchCondition(JsonObject jsonObject) throws APIException {
+	public MediaSemanticSearchParams(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		field = GsonParser.parseString(jsonObject.get("field"));
-		operator = ConditionOperator.get(GsonParser.parseString(jsonObject.get("operator")));
-		value = GsonParser.parseString(jsonObject.get("value"));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchCondition");
-		kparams.add("field", this.field);
-		kparams.add("operator", this.operator);
-		kparams.add("value", this.value);
+		kparams.add("objectType", "KalturaMediaSemanticSearchParams");
 		return kparams;
 	}
 

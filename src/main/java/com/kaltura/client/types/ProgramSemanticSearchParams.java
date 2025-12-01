@@ -29,13 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.SearchType;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -45,68 +41,74 @@ import java.util.List;
  */
 
 /**
- * Represents a search scope with type and optional filters for unified semantic
-  search.
+ * Program-specific semantic search parameters.              Presence of this
+  object indicates programs should be included in search results.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(SearchScope.Tokenizer.class)
-public class SearchScope extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ProgramSemanticSearchParams.Tokenizer.class)
+public class ProgramSemanticSearchParams extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String type();
-		RequestBuilder.ListTokenizer<SearchCondition.Tokenizer> filters();
+		String endsAfter();
+		String expiresAfter();
 	}
 
 	/**
-	 * The type of search scope (Asset or Program).
+	 * Only include programs that end after this timestamp (Unix epoch seconds).       
+	        Optional filter.
 	 */
-	private SearchType type;
+	private Long endsAfter;
 	/**
-	 * Optional filters to apply for this scope.
+	 * Only include programs that expire after this timestamp (Unix epoch seconds).    
+	           Optional filter.
 	 */
-	private List<SearchCondition> filters;
+	private Long expiresAfter;
 
-	// type:
-	public SearchType getType(){
-		return this.type;
+	// endsAfter:
+	public Long getEndsAfter(){
+		return this.endsAfter;
 	}
-	public void setType(SearchType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
+	public void setEndsAfter(Long endsAfter){
+		this.endsAfter = endsAfter;
 	}
 
-	// filters:
-	public List<SearchCondition> getFilters(){
-		return this.filters;
+	public void endsAfter(String multirequestToken){
+		setToken("endsAfter", multirequestToken);
 	}
-	public void setFilters(List<SearchCondition> filters){
-		this.filters = filters;
+
+	// expiresAfter:
+	public Long getExpiresAfter(){
+		return this.expiresAfter;
+	}
+	public void setExpiresAfter(Long expiresAfter){
+		this.expiresAfter = expiresAfter;
+	}
+
+	public void expiresAfter(String multirequestToken){
+		setToken("expiresAfter", multirequestToken);
 	}
 
 
-	public SearchScope() {
+	public ProgramSemanticSearchParams() {
 		super();
 	}
 
-	public SearchScope(JsonObject jsonObject) throws APIException {
+	public ProgramSemanticSearchParams(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		type = SearchType.get(GsonParser.parseString(jsonObject.get("type")));
-		filters = GsonParser.parseArray(jsonObject.getAsJsonArray("filters"), SearchCondition.class);
+		endsAfter = GsonParser.parseLong(jsonObject.get("endsAfter"));
+		expiresAfter = GsonParser.parseLong(jsonObject.get("expiresAfter"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaSearchScope");
-		kparams.add("type", this.type);
-		kparams.add("filters", this.filters);
+		kparams.add("objectType", "KalturaProgramSemanticSearchParams");
+		kparams.add("endsAfter", this.endsAfter);
+		kparams.add("expiresAfter", this.expiresAfter);
 		return kparams;
 	}
 

@@ -50,13 +50,12 @@ import com.kaltura.client.types.PlaybackContext;
 import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.RepresentativeSelectionPolicy;
 import com.kaltura.client.types.SearchAssetFilter;
-import com.kaltura.client.types.SearchScope;
+import com.kaltura.client.types.SemanticSearchParams;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * This class was generated using exec.php
@@ -494,46 +493,20 @@ public class AssetService {
 	
 	public static class UnifiedSemanticSearchAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, UnifiedSemanticSearchAssetBuilder> {
 		
-		public UnifiedSemanticSearchAssetBuilder(String query, List<SearchScope> searchScopes, boolean refineQuery, int size) {
+		public UnifiedSemanticSearchAssetBuilder(SemanticSearchParams searchParams) {
 			super(Asset.class, "asset", "unifiedSemanticSearch");
-			params.add("query", query);
-			params.add("searchScopes", searchScopes);
-			params.add("refineQuery", refineQuery);
-			params.add("size", size);
+			params.add("searchParams", searchParams);
 		}
-		
-		public void query(String multirequestToken) {
-			params.add("query", multirequestToken);
-		}
-		
-		public void refineQuery(String multirequestToken) {
-			params.add("refineQuery", multirequestToken);
-		}
-		
-		public void size(String multirequestToken) {
-			params.add("size", multirequestToken);
-		}
-	}
-
-	public static UnifiedSemanticSearchAssetBuilder unifiedSemanticSearch(String query, List<SearchScope> searchScopes)  {
-		return unifiedSemanticSearch(query, searchScopes, false);
-	}
-
-	public static UnifiedSemanticSearchAssetBuilder unifiedSemanticSearch(String query, List<SearchScope> searchScopes, boolean refineQuery)  {
-		return unifiedSemanticSearch(query, searchScopes, refineQuery, 10);
 	}
 
 	/**
-	 * Performs unified semantic search across both assets and programs.
+	 * Performs unified semantic search across media and programs.
 	 * 
-	 * @param query Search query text
-	 * @param searchScopes List of search scopes defining which types to search (Asset/Program) and
-	 * optional filters
-	 * @param refineQuery Whether to refine the query using LLM
-	 * @param size Maximum number of results to return
+	 * @param searchParams Search parameters including query text, content type filters, and optional
+	 * type-specific filters
 	 */
-    public static UnifiedSemanticSearchAssetBuilder unifiedSemanticSearch(String query, List<SearchScope> searchScopes, boolean refineQuery, int size)  {
-		return new UnifiedSemanticSearchAssetBuilder(query, searchScopes, refineQuery, size);
+    public static UnifiedSemanticSearchAssetBuilder unifiedSemanticSearch(SemanticSearchParams searchParams)  {
+		return new UnifiedSemanticSearchAssetBuilder(searchParams);
 	}
 	
 	public static class UpdateAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, UpdateAssetBuilder> {
