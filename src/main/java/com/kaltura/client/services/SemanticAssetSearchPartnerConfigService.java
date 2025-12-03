@@ -28,6 +28,7 @@
 package com.kaltura.client.services;
 
 import com.kaltura.client.types.FilteringCondition;
+import com.kaltura.client.types.ProgramSearchableAttributes;
 import com.kaltura.client.types.SearchableAttributes;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -68,10 +69,10 @@ public class SemanticAssetSearchPartnerConfigService {
 		return new GetProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder();
 	}
 	
-	public static class GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<String, String, GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {
+	public static class GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<ProgramSearchableAttributes, ProgramSearchableAttributes.Tokenizer, GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {
 		
 		public GetProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder() {
-			super(String.class, "semanticassetsearchpartnerconfig", "getProgramSearchableAttributes");
+			super(ProgramSearchableAttributes.class, "semanticassetsearchpartnerconfig", "getProgramSearchableAttributes");
 		}
 	}
 
@@ -138,24 +139,21 @@ public class SemanticAssetSearchPartnerConfigService {
 		return new UpsertProgramFilteringConditionSemanticAssetSearchPartnerConfigBuilder(filteringCondition);
 	}
 	
-	public static class UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<String, String, UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {
+	public static class UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder extends RequestBuilder<ProgramSearchableAttributes, ProgramSearchableAttributes.Tokenizer, UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder> {
 		
-		public UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder(String programAttributes) {
-			super(String.class, "semanticassetsearchpartnerconfig", "upsertProgramSearchableAttributes");
+		public UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder(ProgramSearchableAttributes programAttributes) {
+			super(ProgramSearchableAttributes.class, "semanticassetsearchpartnerconfig", "upsertProgramSearchableAttributes");
 			params.add("programAttributes", programAttributes);
-		}
-		
-		public void programAttributes(String multirequestToken) {
-			params.add("programAttributes", multirequestToken);
 		}
 	}
 
 	/**
 	 * Update which fields should be included in semantic search for program assets.
 	 * 
-	 * @param programAttributes Comma-separated list of program attribute names to be searchable.
+	 * @param programAttributes Program searchable attributes configuration containing comma-separated attribute
+	 * names.
 	 */
-    public static UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder upsertProgramSearchableAttributes(String programAttributes)  {
+    public static UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder upsertProgramSearchableAttributes(ProgramSearchableAttributes programAttributes)  {
 		return new UpsertProgramSearchableAttributesSemanticAssetSearchPartnerConfigBuilder(programAttributes);
 	}
 	
