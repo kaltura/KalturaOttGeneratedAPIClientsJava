@@ -34,13 +34,8 @@ package com.kaltura.client.enums;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 public enum ConditionOperator implements EnumAsString {
-	UNKNOWN("Unknown"),
 	EQUAL("Equal"),
-	NOTEQUAL("NotEqual"),
-	GREATERTHAN("GreaterThan"),
-	LESSTHAN("LessThan"),
-	GREATERTHANOREQUAL("GreaterThanOrEqual"),
-	LESSTHANOREQUAL("LessThanOrEqual");
+	NOTEQUAL("NotEqual");
 
 	private String value;
 

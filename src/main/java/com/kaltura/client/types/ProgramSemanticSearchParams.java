@@ -49,31 +49,31 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class ProgramSemanticSearchParams extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String endsAfter();
+		String endsBefore();
 		String expiresAfter();
 	}
 
 	/**
-	 * Only include programs that end after this timestamp (Unix epoch seconds).       
-	        Optional filter.
+	 * Only include programs that end before this timestamp (Unix epoch seconds).      
+	         Optional filter.
 	 */
-	private Long endsAfter;
+	private Long endsBefore;
 	/**
 	 * Only include programs that expire after this timestamp (Unix epoch seconds).    
 	           Optional filter.
 	 */
 	private Long expiresAfter;
 
-	// endsAfter:
-	public Long getEndsAfter(){
-		return this.endsAfter;
+	// endsBefore:
+	public Long getEndsBefore(){
+		return this.endsBefore;
 	}
-	public void setEndsAfter(Long endsAfter){
-		this.endsAfter = endsAfter;
+	public void setEndsBefore(Long endsBefore){
+		this.endsBefore = endsBefore;
 	}
 
-	public void endsAfter(String multirequestToken){
-		setToken("endsAfter", multirequestToken);
+	public void endsBefore(String multirequestToken){
+		setToken("endsBefore", multirequestToken);
 	}
 
 	// expiresAfter:
@@ -99,7 +99,7 @@ public class ProgramSemanticSearchParams extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		endsAfter = GsonParser.parseLong(jsonObject.get("endsAfter"));
+		endsBefore = GsonParser.parseLong(jsonObject.get("endsBefore"));
 		expiresAfter = GsonParser.parseLong(jsonObject.get("expiresAfter"));
 
 	}
@@ -107,7 +107,7 @@ public class ProgramSemanticSearchParams extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaProgramSemanticSearchParams");
-		kparams.add("endsAfter", this.endsAfter);
+		kparams.add("endsBefore", this.endsBefore);
 		kparams.add("expiresAfter", this.expiresAfter);
 		return kparams;
 	}
