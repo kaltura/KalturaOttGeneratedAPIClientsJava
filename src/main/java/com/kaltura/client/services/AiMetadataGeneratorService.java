@@ -32,6 +32,7 @@ import com.kaltura.client.types.GenerateMetadataByDescription;
 import com.kaltura.client.types.GenerateMetadataBySubtitles;
 import com.kaltura.client.types.GenerateMetadataJob;
 import com.kaltura.client.types.GenerateMetadataResult;
+import com.kaltura.client.types.GenerateProgramMetadatasByDescription;
 import com.kaltura.client.types.MetaFieldNameMap;
 import com.kaltura.client.utils.request.RequestBuilder;
 
@@ -87,6 +88,29 @@ public class AiMetadataGeneratorService {
 	 */
     public static GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder generateMetadataBySubtitles(GenerateMetadataBySubtitles generateMetadataBySubtitles)  {
 		return new GenerateMetadataBySubtitlesAiMetadataGeneratorBuilder(generateMetadataBySubtitles);
+	}
+	
+	public static class GenerateProgramMetadataByDescriptionAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataJob, GenerateMetadataJob.Tokenizer, GenerateProgramMetadataByDescriptionAiMetadataGeneratorBuilder> {
+		
+		public GenerateProgramMetadataByDescriptionAiMetadataGeneratorBuilder(GenerateProgramMetadatasByDescription generateProgramMetadataByDescription) {
+			super(GenerateMetadataJob.class, "aimetadatagenerator", "generateProgramMetadataByDescription");
+			params.add("generateProgramMetadataByDescription", generateProgramMetadataByDescription);
+		}
+	}
+
+	/**
+	 * Initiate the process of metadata generation for Program assets based on existing
+	  asset description metadata.              The service will analyze the
+	  program&amp;#39;s description and genre metadata using AI/LLM to generate       
+	        additional enriched metadata fields. This method is specifically designed
+	  for Program/EPG assets              and supports CRID-based uniqueness,
+	  regeneration options, and configurable overwrite behavior.              Programs
+	  without a CRID are out of scope for this feature.
+	 * 
+	 * @param generateProgramMetadataByDescription Request object containing the external asset ID and regenerate flag
+	 */
+    public static GenerateProgramMetadataByDescriptionAiMetadataGeneratorBuilder generateProgramMetadataByDescription(GenerateProgramMetadatasByDescription generateProgramMetadataByDescription)  {
+		return new GenerateProgramMetadataByDescriptionAiMetadataGeneratorBuilder(generateProgramMetadataByDescription);
 	}
 	
 	public static class GetGeneratedMetadataAiMetadataGeneratorBuilder extends RequestBuilder<GenerateMetadataResult, GenerateMetadataResult.Tokenizer, GetGeneratedMetadataAiMetadataGeneratorBuilder> {
