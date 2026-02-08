@@ -29,9 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
 import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -42,52 +40,31 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Media-specific semantic search parameters.              Presence of this object
+  indicates media/VOD assets should be included in search results.             
+  Currently empty - designed for future extensibility (e.g., duration filters,
+  creation date filters).
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(MediaSemanticSearchParams.Tokenizer.class)
+public class MediaSemanticSearchParams extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
-	}
-
-	/**
-	 * Defines the scope of the condition evaluation.
-	 */
-	private ConditionLevel scope;
-
-	// scope:
-	public ConditionLevel getScope(){
-		return this.scope;
-	}
-	public void setScope(ConditionLevel scope){
-		this.scope = scope;
-	}
-
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
 	}
 
 
-	public BaseSegmentCondition() {
+
+	public MediaSemanticSearchParams() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public MediaSemanticSearchParams(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		scope = ConditionLevel.get(GsonParser.parseString(jsonObject.get("scope")));
-
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaMediaSemanticSearchParams");
 		return kparams;
 	}
 

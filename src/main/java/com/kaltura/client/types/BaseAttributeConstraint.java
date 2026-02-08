@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,52 +41,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Base class for specific attribute constraints.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BaseAttributeConstraint.Tokenizer.class)
+public class BaseAttributeConstraint extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+		String attributeType();
+		String key();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * Discriminator field to identify the specific attribute constraint type.
 	 */
-	private ConditionLevel scope;
+	private String attributeType;
+	/**
+	 * The system name of the metadata field to query.
+	 */
+	private String key;
 
-	// scope:
-	public ConditionLevel getScope(){
-		return this.scope;
+	// attributeType:
+	public String getAttributeType(){
+		return this.attributeType;
 	}
-	public void setScope(ConditionLevel scope){
-		this.scope = scope;
+	public void setAttributeType(String attributeType){
+		this.attributeType = attributeType;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void attributeType(String multirequestToken){
+		setToken("attributeType", multirequestToken);
+	}
+
+	// key:
+	public String getKey(){
+		return this.key;
+	}
+	public void setKey(String key){
+		this.key = key;
+	}
+
+	public void key(String multirequestToken){
+		setToken("key", multirequestToken);
 	}
 
 
-	public BaseSegmentCondition() {
+	public BaseAttributeConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public BaseAttributeConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionLevel.get(GsonParser.parseString(jsonObject.get("scope")));
+		attributeType = GsonParser.parseString(jsonObject.get("attributeType"));
+		key = GsonParser.parseString(jsonObject.get("key"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaBaseAttributeConstraint");
+		kparams.add("attributeType", this.attributeType);
+		kparams.add("key", this.key);
 		return kparams;
 	}
 

@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,52 +41,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Filters watch actions that occurred within a specific time window.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ViewTimeConstraint.Tokenizer.class)
+public class ViewTimeConstraint extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+		String startTime();
+		String endTime();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * The starting time of the viewing window.
 	 */
-	private ConditionLevel scope;
+	private String startTime;
+	/**
+	 * The ending time of the viewing window.
+	 */
+	private String endTime;
 
-	// scope:
-	public ConditionLevel getScope(){
-		return this.scope;
+	// startTime:
+	public String getStartTime(){
+		return this.startTime;
 	}
-	public void setScope(ConditionLevel scope){
-		this.scope = scope;
+	public void setStartTime(String startTime){
+		this.startTime = startTime;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void startTime(String multirequestToken){
+		setToken("startTime", multirequestToken);
+	}
+
+	// endTime:
+	public String getEndTime(){
+		return this.endTime;
+	}
+	public void setEndTime(String endTime){
+		this.endTime = endTime;
+	}
+
+	public void endTime(String multirequestToken){
+		setToken("endTime", multirequestToken);
 	}
 
 
-	public BaseSegmentCondition() {
+	public ViewTimeConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public ViewTimeConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionLevel.get(GsonParser.parseString(jsonObject.get("scope")));
+		startTime = GsonParser.parseString(jsonObject.get("startTime"));
+		endTime = GsonParser.parseString(jsonObject.get("endTime"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaViewTimeConstraint");
+		kparams.add("startTime", this.startTime);
+		kparams.add("endTime", this.endTime);
 		return kparams;
 	}
 

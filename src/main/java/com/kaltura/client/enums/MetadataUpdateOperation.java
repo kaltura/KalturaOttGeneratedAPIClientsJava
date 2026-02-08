@@ -25,14 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.GsonParser;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -40,56 +33,39 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum MetadataUpdateOperation implements EnumAsString {
+	PROTECT("PROTECT"),
+	EXTEND("EXTEND"),
+	OVERWRITE("OVERWRITE");
 
-/**
- * Base class that defines a segment condition.
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+	private String value;
+
+	MetadataUpdateOperation(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Defines the scope of the condition evaluation.
-	 */
-	private ConditionLevel scope;
-
-	// scope:
-	public ConditionLevel getScope(){
-		return this.scope;
-	}
-	public void setScope(ConditionLevel scope){
-		this.scope = scope;
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-
-	public BaseSegmentCondition() {
-		super();
-	}
-
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
-
-		if(jsonObject == null) return;
-
-		// set members values:
-		scope = ConditionLevel.get(GsonParser.parseString(jsonObject.get("scope")));
-
-	}
-
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
-		return kparams;
-	}
-
+	public static MetadataUpdateOperation get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over MetadataUpdateOperation defined values and compare the inner value with the given one:
+		for(MetadataUpdateOperation item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return MetadataUpdateOperation.values().length > 0 ? MetadataUpdateOperation.values()[0]: null;
+   }
 }
-
