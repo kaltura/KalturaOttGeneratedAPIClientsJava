@@ -49,6 +49,7 @@ public class TextMetaConstraint extends BaseAttributeConstraint {
 	public interface Tokenizer extends BaseAttributeConstraint.Tokenizer {
 		String contains();
 		String equals();
+		String attributeType();
 	}
 
 	/**
@@ -59,6 +60,10 @@ public class TextMetaConstraint extends BaseAttributeConstraint {
 	 * The exact string value the field must equal.
 	 */
 	private String equals;
+	/**
+	 * Discriminator field to identify the specific attribute constraint type.
+	 */
+	private String attributeType;
 
 	// contains:
 	public String getContains(){
@@ -84,6 +89,18 @@ public class TextMetaConstraint extends BaseAttributeConstraint {
 		setToken("equals", multirequestToken);
 	}
 
+	// attributeType:
+	public String getAttributeType(){
+		return this.attributeType;
+	}
+	public void setAttributeType(String attributeType){
+		this.attributeType = attributeType;
+	}
+
+	public void attributeType(String multirequestToken){
+		setToken("attributeType", multirequestToken);
+	}
+
 
 	public TextMetaConstraint() {
 		super();
@@ -97,6 +114,7 @@ public class TextMetaConstraint extends BaseAttributeConstraint {
 		// set members values:
 		contains = GsonParser.parseString(jsonObject.get("contains"));
 		equals = GsonParser.parseString(jsonObject.get("equals"));
+		attributeType = GsonParser.parseString(jsonObject.get("attributeType"));
 
 	}
 
@@ -105,6 +123,7 @@ public class TextMetaConstraint extends BaseAttributeConstraint {
 		kparams.add("objectType", "KalturaTextMetaConstraint");
 		kparams.add("contains", this.contains);
 		kparams.add("equals", this.equals);
+		kparams.add("attributeType", this.attributeType);
 		return kparams;
 	}
 

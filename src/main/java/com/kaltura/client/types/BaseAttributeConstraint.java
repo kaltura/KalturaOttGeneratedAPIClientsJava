@@ -48,30 +48,13 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class BaseAttributeConstraint extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String attributeType();
 		String key();
 	}
 
 	/**
-	 * Discriminator field to identify the specific attribute constraint type.
-	 */
-	private String attributeType;
-	/**
 	 * The system name of the metadata field to query.
 	 */
 	private String key;
-
-	// attributeType:
-	public String getAttributeType(){
-		return this.attributeType;
-	}
-	public void setAttributeType(String attributeType){
-		this.attributeType = attributeType;
-	}
-
-	public void attributeType(String multirequestToken){
-		setToken("attributeType", multirequestToken);
-	}
 
 	// key:
 	public String getKey(){
@@ -96,7 +79,6 @@ public class BaseAttributeConstraint extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		attributeType = GsonParser.parseString(jsonObject.get("attributeType"));
 		key = GsonParser.parseString(jsonObject.get("key"));
 
 	}
@@ -104,7 +86,6 @@ public class BaseAttributeConstraint extends ObjectBase {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBaseAttributeConstraint");
-		kparams.add("attributeType", this.attributeType);
 		kparams.add("key", this.key);
 		return kparams;
 	}

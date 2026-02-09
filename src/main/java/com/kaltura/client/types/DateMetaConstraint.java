@@ -57,21 +57,21 @@ public class DateMetaConstraint extends BaseAttributeConstraint {
 	/**
 	 * The exact epoch timestamp the field must equal.
 	 */
-	private String equals;
+	private Long equals;
 	/**
 	 * The epoch timestamp the field must be greater than.
 	 */
-	private String greaterThan;
+	private Long greaterThan;
 	/**
 	 * The epoch timestamp the field must be smaller than.
 	 */
-	private String smallerThan;
+	private Long smallerThan;
 
 	// equals:
-	public String getEquals(){
+	public Long getEquals(){
 		return this.equals;
 	}
-	public void setEquals(String equals){
+	public void setEquals(Long equals){
 		this.equals = equals;
 	}
 
@@ -80,10 +80,10 @@ public class DateMetaConstraint extends BaseAttributeConstraint {
 	}
 
 	// greaterThan:
-	public String getGreaterThan(){
+	public Long getGreaterThan(){
 		return this.greaterThan;
 	}
-	public void setGreaterThan(String greaterThan){
+	public void setGreaterThan(Long greaterThan){
 		this.greaterThan = greaterThan;
 	}
 
@@ -92,10 +92,10 @@ public class DateMetaConstraint extends BaseAttributeConstraint {
 	}
 
 	// smallerThan:
-	public String getSmallerThan(){
+	public Long getSmallerThan(){
 		return this.smallerThan;
 	}
-	public void setSmallerThan(String smallerThan){
+	public void setSmallerThan(Long smallerThan){
 		this.smallerThan = smallerThan;
 	}
 
@@ -114,9 +114,9 @@ public class DateMetaConstraint extends BaseAttributeConstraint {
 		if(jsonObject == null) return;
 
 		// set members values:
-		equals = GsonParser.parseString(jsonObject.get("equals"));
-		greaterThan = GsonParser.parseString(jsonObject.get("greaterThan"));
-		smallerThan = GsonParser.parseString(jsonObject.get("smallerThan"));
+		equals = GsonParser.parseLong(jsonObject.get("equals"));
+		greaterThan = GsonParser.parseLong(jsonObject.get("greaterThan"));
+		smallerThan = GsonParser.parseLong(jsonObject.get("smallerThan"));
 
 	}
 

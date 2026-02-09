@@ -29,8 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.BooleanOperator;
 import com.kaltura.client.enums.ConditionLevel;
-import com.kaltura.client.enums.LogicalOperator;
 import com.kaltura.client.types.ContentTypeSelector;
 import com.kaltura.client.types.ViewTimeConstraint;
 import com.kaltura.client.utils.GsonParser;
@@ -89,7 +89,7 @@ public abstract class BaseWatchCondition extends BaseSegmentCondition {
 	/**
 	 * Defines whether to use AND or OR between the items in constraintAttributes.
 	 */
-	private LogicalOperator constraintsOperator;
+	private BooleanOperator constraintsOperator;
 	/**
 	 * A list of up to 5 specific constraints to filter the watch history.
 	 */
@@ -148,10 +148,10 @@ public abstract class BaseWatchCondition extends BaseSegmentCondition {
 	}
 
 	// constraintsOperator:
-	public LogicalOperator getConstraintsOperator(){
+	public BooleanOperator getConstraintsOperator(){
 		return this.constraintsOperator;
 	}
-	public void setConstraintsOperator(LogicalOperator constraintsOperator){
+	public void setConstraintsOperator(BooleanOperator constraintsOperator){
 		this.constraintsOperator = constraintsOperator;
 	}
 
@@ -183,7 +183,7 @@ public abstract class BaseWatchCondition extends BaseSegmentCondition {
 		evaluationDays = GsonParser.parseInt(jsonObject.get("evaluationDays"));
 		deviceFamilyIn = GsonParser.parseString(jsonObject.get("deviceFamilyIn"));
 		viewTimeConstraint = GsonParser.parseObject(jsonObject.getAsJsonObject("viewTimeConstraint"), ViewTimeConstraint.class);
-		constraintsOperator = LogicalOperator.get(GsonParser.parseString(jsonObject.get("constraintsOperator")));
+		constraintsOperator = BooleanOperator.get(GsonParser.parseString(jsonObject.get("constraintsOperator")));
 		constraintAttributes = GsonParser.parseArray(jsonObject.getAsJsonArray("constraintAttributes"), BaseAttributeConstraint.class);
 
 	}
