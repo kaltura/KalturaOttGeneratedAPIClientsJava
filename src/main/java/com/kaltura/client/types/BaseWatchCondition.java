@@ -30,7 +30,6 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.BooleanOperator;
-import com.kaltura.client.enums.ConditionLevel;
 import com.kaltura.client.types.ContentTypeSelector;
 import com.kaltura.client.types.ViewTimeConstraint;
 import com.kaltura.client.utils.GsonParser;
@@ -55,7 +54,6 @@ import java.util.List;
 public abstract class BaseWatchCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String level();
 		ContentTypeSelector.Tokenizer contentFilter();
 		String evaluationDays();
 		String deviceFamilyIn();
@@ -64,10 +62,6 @@ public abstract class BaseWatchCondition extends BaseSegmentCondition {
 		RequestBuilder.ListTokenizer<BaseAttributeConstraint.Tokenizer> constraintAttributes();
 	}
 
-	/**
-	 * Defines the scope of the condition evaluation.
-	 */
-	private ConditionLevel level;
 	/**
 	 * Specifies criteria to include or exclude specific content types (recordings,
 	  programs, media types) from the evaluation.
@@ -94,18 +88,6 @@ public abstract class BaseWatchCondition extends BaseSegmentCondition {
 	 * A list of up to 5 specific constraints to filter the watch history.
 	 */
 	private List<BaseAttributeConstraint> constraintAttributes;
-
-	// level:
-	public ConditionLevel getLevel(){
-		return this.level;
-	}
-	public void setLevel(ConditionLevel level){
-		this.level = level;
-	}
-
-	public void level(String multirequestToken){
-		setToken("level", multirequestToken);
-	}
 
 	// contentFilter:
 	public ContentTypeSelector getContentFilter(){
@@ -178,7 +160,6 @@ public abstract class BaseWatchCondition extends BaseSegmentCondition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		level = ConditionLevel.get(GsonParser.parseString(jsonObject.get("level")));
 		contentFilter = GsonParser.parseObject(jsonObject.getAsJsonObject("contentFilter"), ContentTypeSelector.class);
 		evaluationDays = GsonParser.parseInt(jsonObject.get("evaluationDays"));
 		deviceFamilyIn = GsonParser.parseString(jsonObject.get("deviceFamilyIn"));
@@ -191,7 +172,6 @@ public abstract class BaseWatchCondition extends BaseSegmentCondition {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaBaseWatchCondition");
-		kparams.add("level", this.level);
 		kparams.add("contentFilter", this.contentFilter);
 		kparams.add("evaluationDays", this.evaluationDays);
 		kparams.add("deviceFamilyIn", this.deviceFamilyIn);

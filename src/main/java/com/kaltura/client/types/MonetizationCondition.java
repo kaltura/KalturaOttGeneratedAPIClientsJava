@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
 import com.kaltura.client.enums.MathemticalOperatorType;
 import com.kaltura.client.enums.MonetizationType;
 import com.kaltura.client.utils.GsonParser;
@@ -50,7 +49,6 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class MonetizationCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String level();
 		String businessModuleIdIn();
 		String currencyCode();
 		String days();
@@ -60,10 +58,6 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		String type();
 	}
 
-	/**
-	 * Monetization conditions are always evaluated at the Household level.
-	 */
-	private ConditionLevel level;
 	/**
 	 * A comma-separated list of business module IDs to include in the filter.
 	 */
@@ -95,18 +89,6 @@ public class MonetizationCondition extends BaseSegmentCondition {
 	 * The specific monetization type to filter by.
 	 */
 	private MonetizationType type;
-
-	// level:
-	public ConditionLevel getLevel(){
-		return this.level;
-	}
-	public void setLevel(ConditionLevel level){
-		this.level = level;
-	}
-
-	public void level(String multirequestToken){
-		setToken("level", multirequestToken);
-	}
 
 	// businessModuleIdIn:
 	public String getBusinessModuleIdIn(){
@@ -203,7 +185,6 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		level = ConditionLevel.get(GsonParser.parseString(jsonObject.get("level")));
 		businessModuleIdIn = GsonParser.parseString(jsonObject.get("businessModuleIdIn"));
 		currencyCode = GsonParser.parseString(jsonObject.get("currencyCode"));
 		days = GsonParser.parseInt(jsonObject.get("days"));
@@ -217,7 +198,6 @@ public class MonetizationCondition extends BaseSegmentCondition {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaMonetizationCondition");
-		kparams.add("level", this.level);
 		kparams.add("businessModuleIdIn", this.businessModuleIdIn);
 		kparams.add("currencyCode", this.currencyCode);
 		kparams.add("days", this.days);

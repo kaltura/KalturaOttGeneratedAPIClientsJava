@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
+import com.kaltura.client.enums.ConditionScope;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -55,13 +55,13 @@ public class BaseSegmentCondition extends ObjectBase {
 	/**
 	 * Defines the scope of the condition evaluation.
 	 */
-	private ConditionLevel scope;
+	private ConditionScope scope;
 
 	// scope:
-	public ConditionLevel getScope(){
+	public ConditionScope getScope(){
 		return this.scope;
 	}
-	public void setScope(ConditionLevel scope){
+	public void setScope(ConditionScope scope){
 		this.scope = scope;
 	}
 
@@ -80,7 +80,7 @@ public class BaseSegmentCondition extends ObjectBase {
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionLevel.get(GsonParser.parseString(jsonObject.get("scope")));
+		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
 
 	}
 

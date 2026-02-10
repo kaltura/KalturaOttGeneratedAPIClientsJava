@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -48,30 +47,13 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class SubscriptionEntitledCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String level();
 		String subscriptionIdEquals();
 	}
 
 	/**
-	 * Entitlement conditions are always evaluated at the Household level.
-	 */
-	private ConditionLevel level;
-	/**
 	 * The specific subscription product identifier to check.
 	 */
 	private Long subscriptionIdEquals;
-
-	// level:
-	public ConditionLevel getLevel(){
-		return this.level;
-	}
-	public void setLevel(ConditionLevel level){
-		this.level = level;
-	}
-
-	public void level(String multirequestToken){
-		setToken("level", multirequestToken);
-	}
 
 	// subscriptionIdEquals:
 	public Long getSubscriptionIdEquals(){
@@ -96,7 +78,6 @@ public class SubscriptionEntitledCondition extends BaseSegmentCondition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		level = ConditionLevel.get(GsonParser.parseString(jsonObject.get("level")));
 		subscriptionIdEquals = GsonParser.parseLong(jsonObject.get("subscriptionIdEquals"));
 
 	}
@@ -104,7 +85,6 @@ public class SubscriptionEntitledCondition extends BaseSegmentCondition {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaSubscriptionEntitledCondition");
-		kparams.add("level", this.level);
 		kparams.add("subscriptionIdEquals", this.subscriptionIdEquals);
 		return kparams;
 	}

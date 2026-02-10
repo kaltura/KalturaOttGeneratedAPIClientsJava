@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionLevel;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -48,16 +47,11 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
 public class TvodPurchasedCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String level();
 		String ppvIdEquals();
 		String mediaIdEquals();
 		String days();
 	}
 
-	/**
-	 * TVOD purchase conditions are always evaluated at the Household level.
-	 */
-	private ConditionLevel level;
 	/**
 	 * The specific purchased ppv product identifier to check.
 	 */
@@ -70,18 +64,6 @@ public class TvodPurchasedCondition extends BaseSegmentCondition {
 	 * The number of days to look back for the purchase.
 	 */
 	private Integer days;
-
-	// level:
-	public ConditionLevel getLevel(){
-		return this.level;
-	}
-	public void setLevel(ConditionLevel level){
-		this.level = level;
-	}
-
-	public void level(String multirequestToken){
-		setToken("level", multirequestToken);
-	}
 
 	// ppvIdEquals:
 	public Long getPpvIdEquals(){
@@ -130,7 +112,6 @@ public class TvodPurchasedCondition extends BaseSegmentCondition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		level = ConditionLevel.get(GsonParser.parseString(jsonObject.get("level")));
 		ppvIdEquals = GsonParser.parseLong(jsonObject.get("ppvIdEquals"));
 		mediaIdEquals = GsonParser.parseLong(jsonObject.get("mediaIdEquals"));
 		days = GsonParser.parseInt(jsonObject.get("days"));
@@ -140,7 +121,6 @@ public class TvodPurchasedCondition extends BaseSegmentCondition {
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaTvodPurchasedCondition");
-		kparams.add("level", this.level);
 		kparams.add("ppvIdEquals", this.ppvIdEquals);
 		kparams.add("mediaIdEquals", this.mediaIdEquals);
 		kparams.add("days", this.days);

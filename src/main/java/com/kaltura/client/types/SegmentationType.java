@@ -30,7 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.enums.BooleanOperator;
-import com.kaltura.client.enums.ConditionLevel;
+import com.kaltura.client.enums.ConditionScope;
 import com.kaltura.client.types.BaseSegmentValue;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
@@ -121,7 +121,7 @@ public class SegmentationType extends ObjectBase {
 	/**
 	 * Defines whether segments are applied to users or households
 	 */
-	private ConditionLevel scope;
+	private ConditionScope scope;
 
 	// id:
 	public Long getId(){
@@ -216,10 +216,10 @@ public class SegmentationType extends ObjectBase {
 	}
 
 	// scope:
-	public ConditionLevel getScope(){
+	public ConditionScope getScope(){
 		return this.scope;
 	}
-	public void setScope(ConditionLevel scope){
+	public void setScope(ConditionScope scope){
 		this.scope = scope;
 	}
 
@@ -250,7 +250,7 @@ public class SegmentationType extends ObjectBase {
 		executeDate = GsonParser.parseLong(jsonObject.get("executeDate"));
 		version = GsonParser.parseLong(jsonObject.get("version"));
 		assetUserRuleId = GsonParser.parseLong(jsonObject.get("assetUserRuleId"));
-		scope = ConditionLevel.get(GsonParser.parseString(jsonObject.get("scope")));
+		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
 
 	}
 

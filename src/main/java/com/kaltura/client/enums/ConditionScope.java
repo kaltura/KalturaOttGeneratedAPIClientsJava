@@ -33,13 +33,13 @@ package com.kaltura.client.enums;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
-public enum ConditionLevel implements EnumAsString {
+public enum ConditionScope implements EnumAsString {
 	USER("USER"),
 	HOUSEHOLD("HOUSEHOLD");
 
 	private String value;
 
-	ConditionLevel(String value) {
+	ConditionScope(String value) {
 		this.value = value;
 	}
 
@@ -52,19 +52,19 @@ public enum ConditionLevel implements EnumAsString {
 		this.value = value;
 	}
 
-	public static ConditionLevel get(String value) {
+	public static ConditionScope get(String value) {
 		if(value == null)
 		{
 			return null;
 		}
 		
-		// goes over ConditionLevel defined values and compare the inner value with the given one:
-		for(ConditionLevel item: values()) {
+		// goes over ConditionScope defined values and compare the inner value with the given one:
+		for(ConditionScope item: values()) {
 			if(item.getValue().equals(value)) {
 				return item;
 			}
 		}
 		// in case the requested value was not found in the enum values, we return the first item as default.
-		return ConditionLevel.values().length > 0 ? ConditionLevel.values()[0]: null;
+		return ConditionScope.values().length > 0 ? ConditionScope.values()[0]: null;
    }
 }
