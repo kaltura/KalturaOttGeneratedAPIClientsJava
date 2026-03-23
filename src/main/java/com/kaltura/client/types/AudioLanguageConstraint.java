@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,52 +40,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Filters watch actions where the content was played with specific audio
+  languages.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(AudioLanguageConstraint.Tokenizer.class)
+public class AudioLanguageConstraint extends BaseAttributeConstraint {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+	public interface Tokenizer extends BaseAttributeConstraint.Tokenizer {
+		String languageCodes();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * A comma-separated list of audio language codes.
 	 */
-	private ConditionScope scope;
+	private String languageCodes;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
+	// languageCodes:
+	public String getLanguageCodes(){
+		return this.languageCodes;
 	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
-	}
-
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void setLanguageCodes(String languageCodes){
+		this.languageCodes = languageCodes;
 	}
 
+	public void languageCodes(String multirequestToken){
+		setToken("languageCodes", multirequestToken);
+	}
 
-	public BaseSegmentCondition() {
+
+	public AudioLanguageConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public AudioLanguageConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		languageCodes = GsonParser.parseString(jsonObject.get("languageCodes"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaAudioLanguageConstraint");
+		kparams.add("languageCodes", this.languageCodes);
 		return kparams;
 	}
 

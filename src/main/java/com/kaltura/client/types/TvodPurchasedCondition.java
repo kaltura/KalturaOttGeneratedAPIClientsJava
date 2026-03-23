@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,52 +40,90 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Evaluates whether a user purchased a specific TVOD.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TvodPurchasedCondition.Tokenizer.class)
+public class TvodPurchasedCondition extends BaseSegmentCondition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
+		String ppvIdEquals();
+		String mediaIdEquals();
+		String days();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * The specific purchased ppv product identifier to check.
 	 */
-	private ConditionScope scope;
+	private Long ppvIdEquals;
+	/**
+	 * The specific purchased media entry identifier to check.
+	 */
+	private Long mediaIdEquals;
+	/**
+	 * The number of days to look back for the purchase.
+	 */
+	private Integer days;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
+	// ppvIdEquals:
+	public Long getPpvIdEquals(){
+		return this.ppvIdEquals;
 	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
+	public void setPpvIdEquals(Long ppvIdEquals){
+		this.ppvIdEquals = ppvIdEquals;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void ppvIdEquals(String multirequestToken){
+		setToken("ppvIdEquals", multirequestToken);
+	}
+
+	// mediaIdEquals:
+	public Long getMediaIdEquals(){
+		return this.mediaIdEquals;
+	}
+	public void setMediaIdEquals(Long mediaIdEquals){
+		this.mediaIdEquals = mediaIdEquals;
+	}
+
+	public void mediaIdEquals(String multirequestToken){
+		setToken("mediaIdEquals", multirequestToken);
+	}
+
+	// days:
+	public Integer getDays(){
+		return this.days;
+	}
+	public void setDays(Integer days){
+		this.days = days;
+	}
+
+	public void days(String multirequestToken){
+		setToken("days", multirequestToken);
 	}
 
 
-	public BaseSegmentCondition() {
+	public TvodPurchasedCondition() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public TvodPurchasedCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		ppvIdEquals = GsonParser.parseLong(jsonObject.get("ppvIdEquals"));
+		mediaIdEquals = GsonParser.parseLong(jsonObject.get("mediaIdEquals"));
+		days = GsonParser.parseInt(jsonObject.get("days"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaTvodPurchasedCondition");
+		kparams.add("ppvIdEquals", this.ppvIdEquals);
+		kparams.add("mediaIdEquals", this.mediaIdEquals);
+		kparams.add("days", this.days);
 		return kparams;
 	}
 

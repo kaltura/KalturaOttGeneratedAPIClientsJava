@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,52 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Filters watch actions that were authorized by specific entitlement product IDs.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(EntitlementConstraint.Tokenizer.class)
+public class EntitlementConstraint extends BaseAttributeConstraint {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+	public interface Tokenizer extends BaseAttributeConstraint.Tokenizer {
+		String productIds();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * A comma-separated list of entitlement product IDs.
 	 */
-	private ConditionScope scope;
+	private String productIds;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
+	// productIds:
+	public String getProductIds(){
+		return this.productIds;
 	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
-	}
-
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void setProductIds(String productIds){
+		this.productIds = productIds;
 	}
 
+	public void productIds(String multirequestToken){
+		setToken("productIds", multirequestToken);
+	}
 
-	public BaseSegmentCondition() {
+
+	public EntitlementConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public EntitlementConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		productIds = GsonParser.parseString(jsonObject.get("productIds"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaEntitlementConstraint");
+		kparams.add("productIds", this.productIds);
 		return kparams;
 	}
 
