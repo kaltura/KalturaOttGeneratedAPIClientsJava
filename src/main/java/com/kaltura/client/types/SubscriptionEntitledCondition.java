@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,52 +40,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Evaluates whether a user holds an entitlement for a specific subscription.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SubscriptionEntitledCondition.Tokenizer.class)
+public class SubscriptionEntitledCondition extends BaseSegmentCondition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
+		String subscriptionIdEquals();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * The specific subscription product identifier to check.
 	 */
-	private ConditionScope scope;
+	private Long subscriptionIdEquals;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
+	// subscriptionIdEquals:
+	public Long getSubscriptionIdEquals(){
+		return this.subscriptionIdEquals;
 	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
-	}
-
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void setSubscriptionIdEquals(Long subscriptionIdEquals){
+		this.subscriptionIdEquals = subscriptionIdEquals;
 	}
 
+	public void subscriptionIdEquals(String multirequestToken){
+		setToken("subscriptionIdEquals", multirequestToken);
+	}
 
-	public BaseSegmentCondition() {
+
+	public SubscriptionEntitledCondition() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public SubscriptionEntitledCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		subscriptionIdEquals = GsonParser.parseLong(jsonObject.get("subscriptionIdEquals"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaSubscriptionEntitledCondition");
+		kparams.add("subscriptionIdEquals", this.subscriptionIdEquals);
 		return kparams;
 	}
 

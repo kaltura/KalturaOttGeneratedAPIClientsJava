@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,52 +40,92 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Filters assets based on a date metadata field (epoch) using range comparisons.  
+             Attempting to create KalturaDateMetaConstraint for key that is not
+  type of Date will fail.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(DateMetaConstraint.Tokenizer.class)
+public class DateMetaConstraint extends BaseAttributeConstraint {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+	public interface Tokenizer extends BaseAttributeConstraint.Tokenizer {
+		String equals();
+		String greaterThan();
+		String smallerThan();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * The exact epoch timestamp the field must equal.
 	 */
-	private ConditionScope scope;
+	private Long equals;
+	/**
+	 * The epoch timestamp the field must be greater than.
+	 */
+	private Long greaterThan;
+	/**
+	 * The epoch timestamp the field must be smaller than.
+	 */
+	private Long smallerThan;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
+	// equals:
+	public Long getEquals(){
+		return this.equals;
 	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
+	public void setEquals(Long equals){
+		this.equals = equals;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void equals(String multirequestToken){
+		setToken("equals", multirequestToken);
+	}
+
+	// greaterThan:
+	public Long getGreaterThan(){
+		return this.greaterThan;
+	}
+	public void setGreaterThan(Long greaterThan){
+		this.greaterThan = greaterThan;
+	}
+
+	public void greaterThan(String multirequestToken){
+		setToken("greaterThan", multirequestToken);
+	}
+
+	// smallerThan:
+	public Long getSmallerThan(){
+		return this.smallerThan;
+	}
+	public void setSmallerThan(Long smallerThan){
+		this.smallerThan = smallerThan;
+	}
+
+	public void smallerThan(String multirequestToken){
+		setToken("smallerThan", multirequestToken);
 	}
 
 
-	public BaseSegmentCondition() {
+	public DateMetaConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public DateMetaConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		equals = GsonParser.parseLong(jsonObject.get("equals"));
+		greaterThan = GsonParser.parseLong(jsonObject.get("greaterThan"));
+		smallerThan = GsonParser.parseLong(jsonObject.get("smallerThan"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaDateMetaConstraint");
+		kparams.add("equals", this.equals);
+		kparams.add("greaterThan", this.greaterThan);
+		kparams.add("smallerThan", this.smallerThan);
 		return kparams;
 	}
 

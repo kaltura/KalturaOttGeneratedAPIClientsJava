@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,52 +41,52 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Base class for specific attribute constraints.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(BaseAttributeConstraint.Tokenizer.class)
+public class BaseAttributeConstraint extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+		String key();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * The system name of the metadata field to query.
 	 */
-	private ConditionScope scope;
+	private String key;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
+	// key:
+	public String getKey(){
+		return this.key;
 	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
-	}
-
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void setKey(String key){
+		this.key = key;
 	}
 
+	public void key(String multirequestToken){
+		setToken("key", multirequestToken);
+	}
 
-	public BaseSegmentCondition() {
+
+	public BaseAttributeConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public BaseAttributeConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		key = GsonParser.parseString(jsonObject.get("key"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaBaseAttributeConstraint");
+		kparams.add("key", this.key);
 		return kparams;
 	}
 

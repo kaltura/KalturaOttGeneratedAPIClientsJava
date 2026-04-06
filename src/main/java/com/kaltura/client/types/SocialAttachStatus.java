@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,52 +41,43 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Social Attach Response
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SocialAttachStatus.Tokenizer.class)
+public class SocialAttachStatus extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+		String attached();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * Indicates the attachment status of the user to the IDP.
 	 */
-	private ConditionScope scope;
+	private Boolean attached;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
-	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
+	// attached:
+	public Boolean getAttached(){
+		return this.attached;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
-	}
-
-
-	public BaseSegmentCondition() {
+	public SocialAttachStatus() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public SocialAttachStatus(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		attached = GsonParser.parseBoolean(jsonObject.get("attached"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaSocialAttachStatus");
 		return kparams;
 	}
 

@@ -29,7 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -42,52 +41,43 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Set Social IDP Secret Response
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SocialSetSecretResponse.Tokenizer.class)
+public class SocialSetSecretResponse extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+		String secretSet();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * Indicates whether the secret was set.
 	 */
-	private ConditionScope scope;
+	private Boolean secretSet;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
-	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
+	// secretSet:
+	public Boolean getSecretSet(){
+		return this.secretSet;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
-	}
-
-
-	public BaseSegmentCondition() {
+	public SocialSetSecretResponse() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public SocialSetSecretResponse(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		secretSet = GsonParser.parseBoolean(jsonObject.get("secretSet"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaSocialSetSecretResponse");
 		return kparams;
 	}
 

@@ -29,8 +29,6 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.enums.ConditionScope;
-import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
@@ -42,52 +40,74 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Evaluates the total duration (in hours) the user watched content matching the
+  min and max criterias.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(WatchDurationCondition.Tokenizer.class)
+public class WatchDurationCondition extends BaseWatchCondition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
-		String scope();
+	public interface Tokenizer extends BaseWatchCondition.Tokenizer {
+		String minDurationHours();
+		String maxDurationHours();
 	}
 
 	/**
-	 * Defines the scope of the condition evaluation.
+	 * The minimum duration in hours to be met.              Constraint: Must be less
+	  than or equal to maxDurationHours.
 	 */
-	private ConditionScope scope;
+	private Integer minDurationHours;
+	/**
+	 * The maximum duration in hours to be met.              Constraint: Must be
+	  greater than or equal to minDurationHours.
+	 */
+	private Integer maxDurationHours;
 
-	// scope:
-	public ConditionScope getScope(){
-		return this.scope;
+	// minDurationHours:
+	public Integer getMinDurationHours(){
+		return this.minDurationHours;
 	}
-	public void setScope(ConditionScope scope){
-		this.scope = scope;
+	public void setMinDurationHours(Integer minDurationHours){
+		this.minDurationHours = minDurationHours;
 	}
 
-	public void scope(String multirequestToken){
-		setToken("scope", multirequestToken);
+	public void minDurationHours(String multirequestToken){
+		setToken("minDurationHours", multirequestToken);
+	}
+
+	// maxDurationHours:
+	public Integer getMaxDurationHours(){
+		return this.maxDurationHours;
+	}
+	public void setMaxDurationHours(Integer maxDurationHours){
+		this.maxDurationHours = maxDurationHours;
+	}
+
+	public void maxDurationHours(String multirequestToken){
+		setToken("maxDurationHours", multirequestToken);
 	}
 
 
-	public BaseSegmentCondition() {
+	public WatchDurationCondition() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public WatchDurationCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		scope = ConditionScope.get(GsonParser.parseString(jsonObject.get("scope")));
+		minDurationHours = GsonParser.parseInt(jsonObject.get("minDurationHours"));
+		maxDurationHours = GsonParser.parseInt(jsonObject.get("maxDurationHours"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		kparams.add("scope", this.scope);
+		kparams.add("objectType", "KalturaWatchDurationCondition");
+		kparams.add("minDurationHours", this.minDurationHours);
+		kparams.add("maxDurationHours", this.maxDurationHours);
 		return kparams;
 	}
 

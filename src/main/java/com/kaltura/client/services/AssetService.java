@@ -50,6 +50,7 @@ import com.kaltura.client.types.PlaybackContext;
 import com.kaltura.client.types.PlaybackContextOptions;
 import com.kaltura.client.types.RepresentativeSelectionPolicy;
 import com.kaltura.client.types.SearchAssetFilter;
+import com.kaltura.client.types.SemanticSearchParams;
 import com.kaltura.client.utils.request.ListResponseRequestBuilder;
 import com.kaltura.client.utils.request.RequestBuilder;
 import java.io.File;
@@ -450,44 +451,22 @@ public class AssetService {
 	
 	public static class SemanticSearchAssetBuilder extends ListResponseRequestBuilder<Asset, Asset.Tokenizer, SemanticSearchAssetBuilder> {
 		
-		public SemanticSearchAssetBuilder(String query, boolean refineQuery, int size) {
+		public SemanticSearchAssetBuilder(SemanticSearchParams searchParams) {
 			super(Asset.class, "asset", "semanticSearch");
-			params.add("query", query);
-			params.add("refineQuery", refineQuery);
-			params.add("size", size);
+			params.add("searchParams", searchParams);
 		}
-		
-		public void query(String multirequestToken) {
-			params.add("query", multirequestToken);
-		}
-		
-		public void refineQuery(String multirequestToken) {
-			params.add("refineQuery", multirequestToken);
-		}
-		
-		public void size(String multirequestToken) {
-			params.add("size", multirequestToken);
-		}
-	}
-
-	public static SemanticSearchAssetBuilder semanticSearch(String query)  {
-		return semanticSearch(query, false);
-	}
-
-	public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery)  {
-		return semanticSearch(query, refineQuery, 10);
 	}
 
 	/**
-	 * Search for assets using semantic similarity to a natural language query, with
-	  optional query refinement using LLM.
+	 * Search for assets using semantic similarity to a natural language query.        
+	       Supports unified search across both media/VOD assets and programs/EPG with
+	  optional type-specific filters.
 	 * 
-	 * @param query The search query text used to find semantically similar assets
-	 * @param refineQuery When true, the search query is refined using LLM before vector search
-	 * @param size The maximum number of results to return. Must be between 1 and 100
+	 * @param searchParams Search parameters including query text, content type filters, and optional
+	 * type-specific filters
 	 */
-    public static SemanticSearchAssetBuilder semanticSearch(String query, boolean refineQuery, int size)  {
-		return new SemanticSearchAssetBuilder(query, refineQuery, size);
+    public static SemanticSearchAssetBuilder semanticSearch(SemanticSearchParams searchParams)  {
+		return new SemanticSearchAssetBuilder(searchParams);
 	}
 	
 	public static class UpdateAssetBuilder extends RequestBuilder<Asset, Asset.Tokenizer, UpdateAssetBuilder> {
