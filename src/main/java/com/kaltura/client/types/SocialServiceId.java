@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +41,43 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Social Service ID Response
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SocialServiceId.Tokenizer.class)
+public class SocialServiceId extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String serviceId();
 	}
 
+	/**
+	 * The service ID identifier.
+	 */
+	private String serviceId;
 
+	// serviceId:
+	public String getServiceId(){
+		return this.serviceId;
+	}
 
-	public BaseSegmentCondition() {
+	public SocialServiceId() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public SocialServiceId(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		serviceId = GsonParser.parseString(jsonObject.get("serviceId"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaSocialServiceId");
 		return kparams;
 	}
 
