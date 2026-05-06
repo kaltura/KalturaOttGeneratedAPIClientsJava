@@ -51,6 +51,7 @@ public class RecordingFilter extends Filter {
 		String assetIdIn();
 		String externalRecordingIdIn();
 		String kSql();
+		String contentFilteringEnforced();
 	}
 
 	/**
@@ -69,6 +70,10 @@ public class RecordingFilter extends Filter {
 	 * KSQL expression
 	 */
 	private String kSql;
+	/**
+	 * Enforce content filtering
+	 */
+	private Boolean contentFilteringEnforced;
 
 	// statusIn:
 	public String getStatusIn(){
@@ -118,6 +123,18 @@ public class RecordingFilter extends Filter {
 		setToken("kSql", multirequestToken);
 	}
 
+	// contentFilteringEnforced:
+	public Boolean getContentFilteringEnforced(){
+		return this.contentFilteringEnforced;
+	}
+	public void setContentFilteringEnforced(Boolean contentFilteringEnforced){
+		this.contentFilteringEnforced = contentFilteringEnforced;
+	}
+
+	public void contentFilteringEnforced(String multirequestToken){
+		setToken("contentFilteringEnforced", multirequestToken);
+	}
+
 
 	public RecordingFilter() {
 		super();
@@ -133,6 +150,7 @@ public class RecordingFilter extends Filter {
 		assetIdIn = GsonParser.parseString(jsonObject.get("assetIdIn"));
 		externalRecordingIdIn = GsonParser.parseString(jsonObject.get("externalRecordingIdIn"));
 		kSql = GsonParser.parseString(jsonObject.get("kSql"));
+		contentFilteringEnforced = GsonParser.parseBoolean(jsonObject.get("contentFilteringEnforced"));
 
 	}
 
@@ -143,6 +161,7 @@ public class RecordingFilter extends Filter {
 		kparams.add("assetIdIn", this.assetIdIn);
 		kparams.add("externalRecordingIdIn", this.externalRecordingIdIn);
 		kparams.add("kSql", this.kSql);
+		kparams.add("contentFilteringEnforced", this.contentFilteringEnforced);
 		return kparams;
 	}
 

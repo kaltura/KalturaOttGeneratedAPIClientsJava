@@ -29,7 +29,9 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.MetadataUpdateOperation;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +42,72 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Configuration for a specific metadata field including system name and update
+  operation.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(MetadataFieldConfig.Tokenizer.class)
+public class MetadataFieldConfig extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String systemName();
+		String operation();
+	}
+
+	/**
+	 * The system name of the metadata field in the asset struct.
+	 */
+	private String systemName;
+	/**
+	 * The update operation to be performed on this metadata field.
+	 */
+	private MetadataUpdateOperation operation;
+
+	// systemName:
+	public String getSystemName(){
+		return this.systemName;
+	}
+	public void setSystemName(String systemName){
+		this.systemName = systemName;
+	}
+
+	public void systemName(String multirequestToken){
+		setToken("systemName", multirequestToken);
+	}
+
+	// operation:
+	public MetadataUpdateOperation getOperation(){
+		return this.operation;
+	}
+	public void setOperation(MetadataUpdateOperation operation){
+		this.operation = operation;
+	}
+
+	public void operation(String multirequestToken){
+		setToken("operation", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public MetadataFieldConfig() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public MetadataFieldConfig(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		systemName = GsonParser.parseString(jsonObject.get("systemName"));
+		operation = MetadataUpdateOperation.get(GsonParser.parseString(jsonObject.get("operation")));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaMetadataFieldConfig");
+		kparams.add("systemName", this.systemName);
+		kparams.add("operation", this.operation);
 		return kparams;
 	}
 
