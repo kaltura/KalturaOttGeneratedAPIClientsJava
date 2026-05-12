@@ -29,6 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
+import com.kaltura.client.enums.AiRecommendationTreeFeatureLevel;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
@@ -59,6 +60,7 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		String numOfRecommendedAssets();
 		String treeGenerationFrequency();
 		String activeTreeId();
+		String featureType();
 	}
 
 	/**
@@ -71,7 +73,7 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	 */
 	private Integer topLevelQuestions;
 	/**
-	 * Number of regular answers per question (range: 2-5).
+	 * Number of regular answers per question (range: 2-4).
 	 */
 	private Integer answersPerQuestion;
 	/**
@@ -96,6 +98,10 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	  time)
 	 */
 	private String activeTreeId;
+	/**
+	 * Feature level of the recommendation tree (e.g., Basic, Premium).
+	 */
+	private AiRecommendationTreeFeatureLevel featureType;
 
 	// activeMetadataTypes:
 	public Map<String, IntegerValue> getActiveMetadataTypes(){
@@ -181,6 +187,10 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 	public String getActiveTreeId(){
 		return this.activeTreeId;
 	}
+	// featureType:
+	public AiRecommendationTreeFeatureLevel getFeatureType(){
+		return this.featureType;
+	}
 
 	public AiRecommendationTreePartnerConfiguration() {
 		super();
@@ -200,6 +210,7 @@ public class AiRecommendationTreePartnerConfiguration extends ObjectBase {
 		numOfRecommendedAssets = GsonParser.parseInt(jsonObject.get("numOfRecommendedAssets"));
 		treeGenerationFrequency = GsonParser.parseString(jsonObject.get("treeGenerationFrequency"));
 		activeTreeId = GsonParser.parseString(jsonObject.get("activeTreeId"));
+		featureType = AiRecommendationTreeFeatureLevel.get(GsonParser.parseString(jsonObject.get("featureType")));
 
 	}
 

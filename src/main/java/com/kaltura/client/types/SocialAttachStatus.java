@@ -32,10 +32,6 @@ import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
 import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
-import com.kaltura.client.utils.request.RequestBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class was generated using exec.php
@@ -45,63 +41,43 @@ import java.util.Map;
  */
 
 /**
- * The configuration object for the metadata enrichment feature.
+ * Social Attach Response
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(AiMetadataGeneratorConfiguration.Tokenizer.class)
-public class AiMetadataGeneratorConfiguration extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SocialAttachStatus.Tokenizer.class)
+public class SocialAttachStatus extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
-		RequestBuilder.MapTokenizer<MetadataFieldConfigurationMap.Tokenizer> assetStructConfigMap();
-		RequestBuilder.ListTokenizer<StringValue.Tokenizer> supportedLanguages();
+		String attached();
 	}
 
 	/**
-	 * A type of dictionary defined as [string,KalturaMetadataFieldConfigurationMap].  
-	             This property is used to correlate the newly generated metadata to   
-	            existing metadata IDs which are available in the asset&amp;#39;s
-	  struct with configuration.
+	 * Indicates the attachment status of the user to the IDP.
 	 */
-	private Map<String, MetadataFieldConfigurationMap> assetStructConfigMap;
-	/**
-	 * A read only array to list the set of languages which can be used with the
-	  service.              In practice it is populated with the values set in
-	  KalturaMetadataGeneratorLanguages ENUM.
-	 */
-	private List<StringValue> supportedLanguages;
+	private Boolean attached;
 
-	// assetStructConfigMap:
-	public Map<String, MetadataFieldConfigurationMap> getAssetStructConfigMap(){
-		return this.assetStructConfigMap;
-	}
-	public void setAssetStructConfigMap(Map<String, MetadataFieldConfigurationMap> assetStructConfigMap){
-		this.assetStructConfigMap = assetStructConfigMap;
+	// attached:
+	public Boolean getAttached(){
+		return this.attached;
 	}
 
-	// supportedLanguages:
-	public List<StringValue> getSupportedLanguages(){
-		return this.supportedLanguages;
-	}
-
-	public AiMetadataGeneratorConfiguration() {
+	public SocialAttachStatus() {
 		super();
 	}
 
-	public AiMetadataGeneratorConfiguration(JsonObject jsonObject) throws APIException {
+	public SocialAttachStatus(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 
 		if(jsonObject == null) return;
 
 		// set members values:
-		assetStructConfigMap = GsonParser.parseMap(jsonObject.getAsJsonObject("assetStructConfigMap"), MetadataFieldConfigurationMap.class);
-		supportedLanguages = GsonParser.parseArray(jsonObject.getAsJsonArray("supportedLanguages"), StringValue.class);
+		attached = GsonParser.parseBoolean(jsonObject.get("attached"));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaAiMetadataGeneratorConfiguration");
-		kparams.add("assetStructConfigMap", this.assetStructConfigMap);
+		kparams.add("objectType", "KalturaSocialAttachStatus");
 		return kparams;
 	}
 
