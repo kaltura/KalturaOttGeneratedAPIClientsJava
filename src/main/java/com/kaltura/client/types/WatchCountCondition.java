@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +40,74 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Evaluates the number of times the user watched content matching the min and max
+  criterias.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(WatchCountCondition.Tokenizer.class)
+public class WatchCountCondition extends BaseWatchCondition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends BaseWatchCondition.Tokenizer {
+		String minCount();
+		String maxCount();
+	}
+
+	/**
+	 * The minimum count to be met.              Constraint: Must be less than or equal
+	  to maxCount.
+	 */
+	private Integer minCount;
+	/**
+	 * The maximum count to be met.              Constraint: Must be greater than or
+	  equal to minCount.
+	 */
+	private Integer maxCount;
+
+	// minCount:
+	public Integer getMinCount(){
+		return this.minCount;
+	}
+	public void setMinCount(Integer minCount){
+		this.minCount = minCount;
+	}
+
+	public void minCount(String multirequestToken){
+		setToken("minCount", multirequestToken);
+	}
+
+	// maxCount:
+	public Integer getMaxCount(){
+		return this.maxCount;
+	}
+	public void setMaxCount(Integer maxCount){
+		this.maxCount = maxCount;
+	}
+
+	public void maxCount(String multirequestToken){
+		setToken("maxCount", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public WatchCountCondition() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public WatchCountCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		minCount = GsonParser.parseInt(jsonObject.get("minCount"));
+		maxCount = GsonParser.parseInt(jsonObject.get("maxCount"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaWatchCountCondition");
+		kparams.add("minCount", this.minCount);
+		kparams.add("maxCount", this.maxCount);
 		return kparams;
 	}
 
