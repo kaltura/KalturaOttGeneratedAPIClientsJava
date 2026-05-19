@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,29 +39,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Base class that defines a segment condition.
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(GenerateProgramMetadatasByDescription.Tokenizer.class)
+public class GenerateProgramMetadatasByDescription extends GenerateMetadataByDescription {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends GenerateMetadataByDescription.Tokenizer {
+		String regenerate();
+	}
+
+	/**
+	 * A boolean flag that allows the API user to force the regeneration of metadata.  
+	             If true, the service will run a new analysis even if enriched
+	  metadata already exists for the program&amp;#39;s CRID.              If false
+	  (default), the service will reuse existing metadata if available for the CRID.
+	 */
+	private Boolean regenerate;
+
+	// regenerate:
+	public Boolean getRegenerate(){
+		return this.regenerate;
+	}
+	public void setRegenerate(Boolean regenerate){
+		this.regenerate = regenerate;
+	}
+
+	public void regenerate(String multirequestToken){
+		setToken("regenerate", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public GenerateProgramMetadatasByDescription() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public GenerateProgramMetadatasByDescription(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		regenerate = GsonParser.parseBoolean(jsonObject.get("regenerate"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaGenerateProgramMetadatasByDescription");
+		kparams.add("regenerate", this.regenerate);
 		return kparams;
 	}
 
