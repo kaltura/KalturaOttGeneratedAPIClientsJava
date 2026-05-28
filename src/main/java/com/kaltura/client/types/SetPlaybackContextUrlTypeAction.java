@@ -29,7 +29,8 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.enums.UrlType;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -39,29 +40,50 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
 
-/**
- * Base class that defines a segment condition.
- */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(SetPlaybackContextUrlTypeAction.Tokenizer.class)
+public class SetPlaybackContextUrlTypeAction extends AssetRuleAction {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends AssetRuleAction.Tokenizer {
+		String urlType();
+	}
+
+	/**
+	 * URL Type to override (DIRECT or PLAYMANIFEST)
+	 */
+	private UrlType urlType;
+
+	// urlType:
+	public UrlType getUrlType(){
+		return this.urlType;
+	}
+	public void setUrlType(UrlType urlType){
+		this.urlType = urlType;
+	}
+
+	public void urlType(String multirequestToken){
+		setToken("urlType", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public SetPlaybackContextUrlTypeAction() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public SetPlaybackContextUrlTypeAction(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		urlType = UrlType.get(GsonParser.parseString(jsonObject.get("urlType")));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaSetPlaybackContextUrlTypeAction");
+		kparams.add("urlType", this.urlType);
 		return kparams;
 	}
 

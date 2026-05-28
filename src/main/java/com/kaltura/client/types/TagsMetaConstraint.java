@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +40,55 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Filters assets based on a tags metadata field (multivalue) where at least one
+  tag matches.              Attempting to create KalturaTagsMetaConstraint for key
+  that is not type of Tags will fail.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TagsMetaConstraint.Tokenizer.class)
+public class TagsMetaConstraint extends BaseAttributeConstraint {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends BaseAttributeConstraint.Tokenizer {
+		String oneOf();
+	}
+
+	/**
+	 * A comma-separated list of values. The metadata field tag&amp;#39;s values must
+	  match at least one of these items.
+	 */
+	private String oneOf;
+
+	// oneOf:
+	public String getOneOf(){
+		return this.oneOf;
+	}
+	public void setOneOf(String oneOf){
+		this.oneOf = oneOf;
+	}
+
+	public void oneOf(String multirequestToken){
+		setToken("oneOf", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public TagsMetaConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public TagsMetaConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		oneOf = GsonParser.parseString(jsonObject.get("oneOf"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaTagsMetaConstraint");
+		kparams.add("oneOf", this.oneOf);
 		return kparams;
 	}
 
