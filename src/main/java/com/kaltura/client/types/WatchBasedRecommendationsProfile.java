@@ -56,6 +56,10 @@ public class WatchBasedRecommendationsProfile extends ObjectBase {
 		String maxPlaybacks();
 		String allowedRecommendationsKsql();
 		String playbackInterestsCalculationPeriodDays();
+		String analyzeCatchUps();
+		String analyzeLinearEvents();
+		String userInterestPlayThresholdForEventInMinutes();
+		String maximumEventsPerSession();
 	}
 
 	/**
@@ -107,6 +111,26 @@ public class WatchBasedRecommendationsProfile extends ObjectBase {
 	 * The number of days the user interests are considered to be up-to-date.
 	 */
 	private Integer playbackInterestsCalculationPeriodDays;
+	/**
+	 * Determines whether catch-up viewing data should be included in the
+	  user&amp;#39;s interest analysis.
+	 */
+	private Boolean analyzeCatchUps;
+	/**
+	 * Determines whether linear events viewing data should be included in the
+	  user&amp;#39;s interest analysis.
+	 */
+	private Boolean analyzeLinearEvents;
+	/**
+	 * Minimum required viewing time per session (in minutes) for live content to be
+	  considered in the analysis.
+	 */
+	private Integer userInterestPlayThresholdForEventInMinutes;
+	/**
+	 * Minimum required viewing time per session (in minutes) for live content to be
+	  considered in the analysis.
+	 */
+	private Integer maximumEventsPerSession;
 
 	// id:
 	public Long getId(){
@@ -232,6 +256,54 @@ public class WatchBasedRecommendationsProfile extends ObjectBase {
 		setToken("playbackInterestsCalculationPeriodDays", multirequestToken);
 	}
 
+	// analyzeCatchUps:
+	public Boolean getAnalyzeCatchUps(){
+		return this.analyzeCatchUps;
+	}
+	public void setAnalyzeCatchUps(Boolean analyzeCatchUps){
+		this.analyzeCatchUps = analyzeCatchUps;
+	}
+
+	public void analyzeCatchUps(String multirequestToken){
+		setToken("analyzeCatchUps", multirequestToken);
+	}
+
+	// analyzeLinearEvents:
+	public Boolean getAnalyzeLinearEvents(){
+		return this.analyzeLinearEvents;
+	}
+	public void setAnalyzeLinearEvents(Boolean analyzeLinearEvents){
+		this.analyzeLinearEvents = analyzeLinearEvents;
+	}
+
+	public void analyzeLinearEvents(String multirequestToken){
+		setToken("analyzeLinearEvents", multirequestToken);
+	}
+
+	// userInterestPlayThresholdForEventInMinutes:
+	public Integer getUserInterestPlayThresholdForEventInMinutes(){
+		return this.userInterestPlayThresholdForEventInMinutes;
+	}
+	public void setUserInterestPlayThresholdForEventInMinutes(Integer userInterestPlayThresholdForEventInMinutes){
+		this.userInterestPlayThresholdForEventInMinutes = userInterestPlayThresholdForEventInMinutes;
+	}
+
+	public void userInterestPlayThresholdForEventInMinutes(String multirequestToken){
+		setToken("userInterestPlayThresholdForEventInMinutes", multirequestToken);
+	}
+
+	// maximumEventsPerSession:
+	public Integer getMaximumEventsPerSession(){
+		return this.maximumEventsPerSession;
+	}
+	public void setMaximumEventsPerSession(Integer maximumEventsPerSession){
+		this.maximumEventsPerSession = maximumEventsPerSession;
+	}
+
+	public void maximumEventsPerSession(String multirequestToken){
+		setToken("maximumEventsPerSession", multirequestToken);
+	}
+
 
 	public WatchBasedRecommendationsProfile() {
 		super();
@@ -254,6 +326,10 @@ public class WatchBasedRecommendationsProfile extends ObjectBase {
 		maxPlaybacks = GsonParser.parseInt(jsonObject.get("maxPlaybacks"));
 		allowedRecommendationsKsql = GsonParser.parseString(jsonObject.get("allowedRecommendationsKsql"));
 		playbackInterestsCalculationPeriodDays = GsonParser.parseInt(jsonObject.get("playbackInterestsCalculationPeriodDays"));
+		analyzeCatchUps = GsonParser.parseBoolean(jsonObject.get("analyzeCatchUps"));
+		analyzeLinearEvents = GsonParser.parseBoolean(jsonObject.get("analyzeLinearEvents"));
+		userInterestPlayThresholdForEventInMinutes = GsonParser.parseInt(jsonObject.get("userInterestPlayThresholdForEventInMinutes"));
+		maximumEventsPerSession = GsonParser.parseInt(jsonObject.get("maximumEventsPerSession"));
 
 	}
 
@@ -270,6 +346,10 @@ public class WatchBasedRecommendationsProfile extends ObjectBase {
 		kparams.add("maxPlaybacks", this.maxPlaybacks);
 		kparams.add("allowedRecommendationsKsql", this.allowedRecommendationsKsql);
 		kparams.add("playbackInterestsCalculationPeriodDays", this.playbackInterestsCalculationPeriodDays);
+		kparams.add("analyzeCatchUps", this.analyzeCatchUps);
+		kparams.add("analyzeLinearEvents", this.analyzeLinearEvents);
+		kparams.add("userInterestPlayThresholdForEventInMinutes", this.userInterestPlayThresholdForEventInMinutes);
+		kparams.add("maximumEventsPerSession", this.maximumEventsPerSession);
 		return kparams;
 	}
 
