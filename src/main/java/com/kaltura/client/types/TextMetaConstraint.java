@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +40,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Filters assets based on a text metadata field containing a substring.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(TextMetaConstraint.Tokenizer.class)
+public class TextMetaConstraint extends BaseAttributeConstraint {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends BaseAttributeConstraint.Tokenizer {
+		String contains();
+		String equals();
+	}
+
+	/**
+	 * The substring that the metadata field value must contain.
+	 */
+	private String contains;
+	/**
+	 * The exact string value the field must equal.
+	 */
+	private String equals;
+
+	// contains:
+	public String getContains(){
+		return this.contains;
+	}
+	public void setContains(String contains){
+		this.contains = contains;
+	}
+
+	public void contains(String multirequestToken){
+		setToken("contains", multirequestToken);
+	}
+
+	// equals:
+	public String getEquals(){
+		return this.equals;
+	}
+	public void setEquals(String equals){
+		this.equals = equals;
+	}
+
+	public void equals(String multirequestToken){
+		setToken("equals", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public TextMetaConstraint() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public TextMetaConstraint(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		contains = GsonParser.parseString(jsonObject.get("contains"));
+		equals = GsonParser.parseString(jsonObject.get("equals"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaTextMetaConstraint");
+		kparams.add("contains", this.contains);
+		kparams.add("equals", this.equals);
 		return kparams;
 	}
 

@@ -42,87 +42,53 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Defines a condition which is essentially a combination of several
-  monetization-based actions, each has their own score multiplier
+ * Defines a condition based on monetization actions.
  */
 @SuppressWarnings("serial")
 @MultiRequestBuilder.Tokenizer(MonetizationCondition.Tokenizer.class)
 public class MonetizationCondition extends BaseSegmentCondition {
 	
 	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
-		String days();
-		String type();
-		String operator();
 		String businessModuleIdIn();
 		String currencyCode();
-		String minValue();
+		String days();
 		String maxValue();
+		String minValue();
+		String operator();
+		String type();
 	}
 
 	/**
-	 * How many days back should the actions be considered
-	 */
-	private Integer days;
-	/**
-	 * Purchase type
-	 */
-	private MonetizationType type;
-	/**
-	 * Mathermtical operator to calculate
-	 */
-	private MathemticalOperatorType operator;
-	/**
-	 * Comma saperated list of business module IDs
+	 * A comma-separated list of business module IDs to include in the filter.
 	 */
 	private String businessModuleIdIn;
 	/**
-	 * Which currency code should be taken into consideration
+	 * The ISO 4217 currency code to filter by.
 	 */
 	private String currencyCode;
 	/**
-	 * The minimum value to be met
+	 * The number of days to look back for monetization actions.
+	 */
+	private Integer days;
+	/**
+	 * The maximum allowable value for the calculated metric.              MinValue
+	  must be greater than or equal to MaxValue.
+	 */
+	private Integer maxValue;
+	/**
+	 * The minimum required value for the calculated metric.              MinValue must
+	  be less than or equal to MaxValue.
 	 */
 	private Integer minValue;
 	/**
-	 * The maximum value to be met
+	 * The aggregation method used to calculate the value (e.g., counting transactions,
+	  summing amounts).
 	 */
-	private Integer maxValue;
-
-	// days:
-	public Integer getDays(){
-		return this.days;
-	}
-	public void setDays(Integer days){
-		this.days = days;
-	}
-
-	public void days(String multirequestToken){
-		setToken("days", multirequestToken);
-	}
-
-	// type:
-	public MonetizationType getType(){
-		return this.type;
-	}
-	public void setType(MonetizationType type){
-		this.type = type;
-	}
-
-	public void type(String multirequestToken){
-		setToken("type", multirequestToken);
-	}
-
-	// operator:
-	public MathemticalOperatorType getOperator(){
-		return this.operator;
-	}
-	public void setOperator(MathemticalOperatorType operator){
-		this.operator = operator;
-	}
-
-	public void operator(String multirequestToken){
-		setToken("operator", multirequestToken);
-	}
+	private MathemticalOperatorType operator;
+	/**
+	 * The specific monetization type to filter by.
+	 */
+	private MonetizationType type;
 
 	// businessModuleIdIn:
 	public String getBusinessModuleIdIn(){
@@ -148,16 +114,16 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		setToken("currencyCode", multirequestToken);
 	}
 
-	// minValue:
-	public Integer getMinValue(){
-		return this.minValue;
+	// days:
+	public Integer getDays(){
+		return this.days;
 	}
-	public void setMinValue(Integer minValue){
-		this.minValue = minValue;
+	public void setDays(Integer days){
+		this.days = days;
 	}
 
-	public void minValue(String multirequestToken){
-		setToken("minValue", multirequestToken);
+	public void days(String multirequestToken){
+		setToken("days", multirequestToken);
 	}
 
 	// maxValue:
@@ -172,6 +138,42 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		setToken("maxValue", multirequestToken);
 	}
 
+	// minValue:
+	public Integer getMinValue(){
+		return this.minValue;
+	}
+	public void setMinValue(Integer minValue){
+		this.minValue = minValue;
+	}
+
+	public void minValue(String multirequestToken){
+		setToken("minValue", multirequestToken);
+	}
+
+	// operator:
+	public MathemticalOperatorType getOperator(){
+		return this.operator;
+	}
+	public void setOperator(MathemticalOperatorType operator){
+		this.operator = operator;
+	}
+
+	public void operator(String multirequestToken){
+		setToken("operator", multirequestToken);
+	}
+
+	// type:
+	public MonetizationType getType(){
+		return this.type;
+	}
+	public void setType(MonetizationType type){
+		this.type = type;
+	}
+
+	public void type(String multirequestToken){
+		setToken("type", multirequestToken);
+	}
+
 
 	public MonetizationCondition() {
 		super();
@@ -183,26 +185,26 @@ public class MonetizationCondition extends BaseSegmentCondition {
 		if(jsonObject == null) return;
 
 		// set members values:
-		days = GsonParser.parseInt(jsonObject.get("days"));
-		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
-		operator = MathemticalOperatorType.get(GsonParser.parseString(jsonObject.get("operator")));
 		businessModuleIdIn = GsonParser.parseString(jsonObject.get("businessModuleIdIn"));
 		currencyCode = GsonParser.parseString(jsonObject.get("currencyCode"));
-		minValue = GsonParser.parseInt(jsonObject.get("minValue"));
+		days = GsonParser.parseInt(jsonObject.get("days"));
 		maxValue = GsonParser.parseInt(jsonObject.get("maxValue"));
+		minValue = GsonParser.parseInt(jsonObject.get("minValue"));
+		operator = MathemticalOperatorType.get(GsonParser.parseString(jsonObject.get("operator")));
+		type = MonetizationType.get(GsonParser.parseString(jsonObject.get("type")));
 
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
 		kparams.add("objectType", "KalturaMonetizationCondition");
-		kparams.add("days", this.days);
-		kparams.add("type", this.type);
-		kparams.add("operator", this.operator);
 		kparams.add("businessModuleIdIn", this.businessModuleIdIn);
 		kparams.add("currencyCode", this.currencyCode);
-		kparams.add("minValue", this.minValue);
+		kparams.add("days", this.days);
 		kparams.add("maxValue", this.maxValue);
+		kparams.add("minValue", this.minValue);
+		kparams.add("operator", this.operator);
+		kparams.add("type", this.type);
 		return kparams;
 	}
 
