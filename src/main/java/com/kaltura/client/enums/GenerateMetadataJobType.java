@@ -25,12 +25,7 @@
 //
 // @ignore
 // ===================================================================================================
-package com.kaltura.client.types;
-
-import com.google.gson.JsonObject;
-import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
-import com.kaltura.client.utils.request.MultiRequestBuilder;
+package com.kaltura.client.enums;
 
 /**
  * This class was generated using exec.php
@@ -38,32 +33,39 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  * 
  * MANUAL CHANGES TO THIS CLASS WILL BE OVERWRITTEN.
  */
+public enum GenerateMetadataJobType implements EnumAsString {
+	VODBYDESCRIPTION("VodByDescription"),
+	VODBYSUBTITLES("VodBySubtitles"),
+	PROGRAMBYDESCRIPTION("ProgramByDescription");
 
-/**
- * Base class that defines a segment condition.
- */
-@SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
-	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	private String value;
+
+	GenerateMetadataJobType(String value) {
+		this.value = value;
 	}
 
-
-
-	public BaseSegmentCondition() {
-		super();
+	@Override
+	public String getValue() {
+		return this.value;
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
-		super(jsonObject);
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public Params toParams() {
-		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
-		return kparams;
-	}
-
+	public static GenerateMetadataJobType get(String value) {
+		if(value == null)
+		{
+			return null;
+		}
+		
+		// goes over GenerateMetadataJobType defined values and compare the inner value with the given one:
+		for(GenerateMetadataJobType item: values()) {
+			if(item.getValue().equals(value)) {
+				return item;
+			}
+		}
+		// in case the requested value was not found in the enum values, we return the first item as default.
+		return GenerateMetadataJobType.values().length > 0 ? GenerateMetadataJobType.values()[0]: null;
+   }
 }
-

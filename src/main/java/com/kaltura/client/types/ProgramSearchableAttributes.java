@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +41,56 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Represents the searchable attributes configuration for Program (EPG/Catchup)
+  assets.              Unlike VOD assets which use asset structs, Programs have a
+  single unified configuration.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ProgramSearchableAttributes.Tokenizer.class)
+public class ProgramSearchableAttributes extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String attributes();
+	}
+
+	/**
+	 * Comma-separated list of Program metadata field names that should be searchable. 
+	              Examples:
+	  &amp;quot;name,description,genre,tags,meta_cast,meta_director&amp;quot;
+	 */
+	private String attributes;
+
+	// attributes:
+	public String getAttributes(){
+		return this.attributes;
+	}
+	public void setAttributes(String attributes){
+		this.attributes = attributes;
+	}
+
+	public void attributes(String multirequestToken){
+		setToken("attributes", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public ProgramSearchableAttributes() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public ProgramSearchableAttributes(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		attributes = GsonParser.parseString(jsonObject.get("attributes"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaProgramSearchableAttributes");
+		kparams.add("attributes", this.attributes);
 		return kparams;
 	}
 

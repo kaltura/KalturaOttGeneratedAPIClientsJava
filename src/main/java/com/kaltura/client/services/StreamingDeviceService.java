@@ -44,11 +44,12 @@ public class StreamingDeviceService {
 	
 	public static class BookPlaybackSessionStreamingDeviceBuilder extends RequestBuilder<Boolean, String, BookPlaybackSessionStreamingDeviceBuilder> {
 		
-		public BookPlaybackSessionStreamingDeviceBuilder(String fileId, String assetId, AssetType assetType) {
+		public BookPlaybackSessionStreamingDeviceBuilder(String fileId, String assetId, AssetType assetType, long externalRecordingProgramId) {
 			super(Boolean.class, "streamingdevice", "bookPlaybackSession");
 			params.add("fileId", fileId);
 			params.add("assetId", assetId);
 			params.add("assetType", assetType);
+			params.add("externalRecordingProgramId", externalRecordingProgramId);
 		}
 		
 		public void fileId(String multirequestToken) {
@@ -62,6 +63,14 @@ public class StreamingDeviceService {
 		public void assetType(String multirequestToken) {
 			params.add("assetType", multirequestToken);
 		}
+		
+		public void externalRecordingProgramId(String multirequestToken) {
+			params.add("externalRecordingProgramId", multirequestToken);
+		}
+	}
+
+	public static BookPlaybackSessionStreamingDeviceBuilder bookPlaybackSession(String fileId, String assetId, AssetType assetType)  {
+		return bookPlaybackSession(fileId, assetId, assetType, Long.MIN_VALUE);
 	}
 
 	/**
@@ -71,9 +80,13 @@ public class StreamingDeviceService {
 	 * slot is being reserved
 	 * @param assetId KalturaAsset.id - asset for which a concurrency slot is being reserved
 	 * @param assetType Identifies the type of asset for which the concurrency slot is being reserved
+	 * @param externalRecordingProgramId Optional EPG program ID used as fallback for concurrency checks when the
+	 * external recording ID does not exist in the backend (e.g., recording not yet
+	 * created). Only applicable for recording asset types when external recordings
+	 * feature is enabled.
 	 */
-    public static BookPlaybackSessionStreamingDeviceBuilder bookPlaybackSession(String fileId, String assetId, AssetType assetType)  {
-		return new BookPlaybackSessionStreamingDeviceBuilder(fileId, assetId, assetType);
+    public static BookPlaybackSessionStreamingDeviceBuilder bookPlaybackSession(String fileId, String assetId, AssetType assetType, long externalRecordingProgramId)  {
+		return new BookPlaybackSessionStreamingDeviceBuilder(fileId, assetId, assetType, externalRecordingProgramId);
 	}
 	
 	public static class ListStreamingDeviceBuilder extends ListResponseRequestBuilder<StreamingDevice, StreamingDevice.Tokenizer, ListStreamingDeviceBuilder> {

@@ -29,7 +29,7 @@ package com.kaltura.client.types;
 
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
-import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +40,71 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Evaluates whether a user purchased a specific Collection (BoxSet).
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(CollectionPurchasedCondition.Tokenizer.class)
+public class CollectionPurchasedCondition extends BaseSegmentCondition {
 	
-	public interface Tokenizer extends ObjectBase.Tokenizer {
+	public interface Tokenizer extends BaseSegmentCondition.Tokenizer {
+		String collectionIdEquals();
+		String days();
+	}
+
+	/**
+	 * The specific purchased collection product identifier to check.
+	 */
+	private Long collectionIdEquals;
+	/**
+	 * The number of days to look back for the purchase.
+	 */
+	private Integer days;
+
+	// collectionIdEquals:
+	public Long getCollectionIdEquals(){
+		return this.collectionIdEquals;
+	}
+	public void setCollectionIdEquals(Long collectionIdEquals){
+		this.collectionIdEquals = collectionIdEquals;
+	}
+
+	public void collectionIdEquals(String multirequestToken){
+		setToken("collectionIdEquals", multirequestToken);
+	}
+
+	// days:
+	public Integer getDays(){
+		return this.days;
+	}
+	public void setDays(Integer days){
+		this.days = days;
+	}
+
+	public void days(String multirequestToken){
+		setToken("days", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public CollectionPurchasedCondition() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public CollectionPurchasedCondition(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		collectionIdEquals = GsonParser.parseLong(jsonObject.get("collectionIdEquals"));
+		days = GsonParser.parseInt(jsonObject.get("days"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaCollectionPurchasedCondition");
+		kparams.add("collectionIdEquals", this.collectionIdEquals);
+		kparams.add("days", this.days);
 		return kparams;
 	}
 
