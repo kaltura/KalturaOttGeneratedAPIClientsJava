@@ -74,6 +74,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		String maxRecordingConcurrency();
 		String maxConcurrencyMargin();
 		String shouldRoundStopRecordingsBySeconds();
+		String isRecordingsV2Enabled();
 	}
 
 	/**
@@ -193,6 +194,14 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 	  minutes, FALSE.
 	 */
 	private Boolean shouldRoundStopRecordingsBySeconds;
+	/**
+	 * Enable V2 recordings mode. When enabled, recordings are handled internally as
+	  padded recordings              using MongoDB storage and async handlers, while
+	  maintaining backward compatibility with the existing             
+	  KalturaRecording API. Uses partner default padding. Default value should be
+	  FALSE
+	 */
+	private Boolean isRecordingsV2Enabled;
 
 	// catchUpEnabled:
 	public Boolean getCatchUpEnabled(){
@@ -518,6 +527,18 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		setToken("shouldRoundStopRecordingsBySeconds", multirequestToken);
 	}
 
+	// isRecordingsV2Enabled:
+	public Boolean getIsRecordingsV2Enabled(){
+		return this.isRecordingsV2Enabled;
+	}
+	public void setIsRecordingsV2Enabled(Boolean isRecordingsV2Enabled){
+		this.isRecordingsV2Enabled = isRecordingsV2Enabled;
+	}
+
+	public void isRecordingsV2Enabled(String multirequestToken){
+		setToken("isRecordingsV2Enabled", multirequestToken);
+	}
+
 
 	public TimeShiftedTvPartnerSettings() {
 		super();
@@ -556,6 +577,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		maxRecordingConcurrency = GsonParser.parseInt(jsonObject.get("maxRecordingConcurrency"));
 		maxConcurrencyMargin = GsonParser.parseInt(jsonObject.get("maxConcurrencyMargin"));
 		shouldRoundStopRecordingsBySeconds = GsonParser.parseBoolean(jsonObject.get("shouldRoundStopRecordingsBySeconds"));
+		isRecordingsV2Enabled = GsonParser.parseBoolean(jsonObject.get("isRecordingsV2Enabled"));
 
 	}
 
@@ -589,6 +611,7 @@ public class TimeShiftedTvPartnerSettings extends ObjectBase {
 		kparams.add("maxRecordingConcurrency", this.maxRecordingConcurrency);
 		kparams.add("maxConcurrencyMargin", this.maxConcurrencyMargin);
 		kparams.add("shouldRoundStopRecordingsBySeconds", this.shouldRoundStopRecordingsBySeconds);
+		kparams.add("isRecordingsV2Enabled", this.isRecordingsV2Enabled);
 		return kparams;
 	}
 

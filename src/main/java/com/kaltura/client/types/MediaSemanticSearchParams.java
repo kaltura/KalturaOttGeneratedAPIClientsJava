@@ -40,28 +40,31 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Media-specific semantic search parameters.              Presence of this object
+  indicates media/VOD assets should be included in search results.             
+  Currently empty - designed for future extensibility (e.g., duration filters,
+  creation date filters).
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(MediaSemanticSearchParams.Tokenizer.class)
+public class MediaSemanticSearchParams extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
 	}
 
 
 
-	public BaseSegmentCondition() {
+	public MediaSemanticSearchParams() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public MediaSemanticSearchParams(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaMediaSemanticSearchParams");
 		return kparams;
 	}
 
