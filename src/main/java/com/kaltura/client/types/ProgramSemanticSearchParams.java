@@ -30,6 +30,7 @@ package com.kaltura.client.types;
 import com.google.gson.JsonObject;
 import com.kaltura.client.Params;
 import com.kaltura.client.types.ObjectBase;
+import com.kaltura.client.utils.GsonParser;
 import com.kaltura.client.utils.request.MultiRequestBuilder;
 
 /**
@@ -40,28 +41,74 @@ import com.kaltura.client.utils.request.MultiRequestBuilder;
  */
 
 /**
- * Base class that defines a segment condition.
+ * Program-specific semantic search parameters.              Presence of this
+  object indicates programs should be included in search results.
  */
 @SuppressWarnings("serial")
-@MultiRequestBuilder.Tokenizer(BaseSegmentCondition.Tokenizer.class)
-public class BaseSegmentCondition extends ObjectBase {
+@MultiRequestBuilder.Tokenizer(ProgramSemanticSearchParams.Tokenizer.class)
+public class ProgramSemanticSearchParams extends ObjectBase {
 	
 	public interface Tokenizer extends ObjectBase.Tokenizer {
+		String endsBefore();
+		String expiresAfter();
+	}
+
+	/**
+	 * Only include programs that end before this timestamp (Unix epoch seconds).      
+	         Optional filter.
+	 */
+	private Long endsBefore;
+	/**
+	 * Only include programs that expire after this timestamp (Unix epoch seconds).    
+	           Optional filter.
+	 */
+	private Long expiresAfter;
+
+	// endsBefore:
+	public Long getEndsBefore(){
+		return this.endsBefore;
+	}
+	public void setEndsBefore(Long endsBefore){
+		this.endsBefore = endsBefore;
+	}
+
+	public void endsBefore(String multirequestToken){
+		setToken("endsBefore", multirequestToken);
+	}
+
+	// expiresAfter:
+	public Long getExpiresAfter(){
+		return this.expiresAfter;
+	}
+	public void setExpiresAfter(Long expiresAfter){
+		this.expiresAfter = expiresAfter;
+	}
+
+	public void expiresAfter(String multirequestToken){
+		setToken("expiresAfter", multirequestToken);
 	}
 
 
-
-	public BaseSegmentCondition() {
+	public ProgramSemanticSearchParams() {
 		super();
 	}
 
-	public BaseSegmentCondition(JsonObject jsonObject) throws APIException {
+	public ProgramSemanticSearchParams(JsonObject jsonObject) throws APIException {
 		super(jsonObject);
+
+		if(jsonObject == null) return;
+
+		// set members values:
+		endsBefore = GsonParser.parseLong(jsonObject.get("endsBefore"));
+		expiresAfter = GsonParser.parseLong(jsonObject.get("expiresAfter"));
+
 	}
 
 	public Params toParams() {
 		Params kparams = super.toParams();
-		kparams.add("objectType", "KalturaBaseSegmentCondition");
+		kparams.add("objectType", "KalturaProgramSemanticSearchParams");
+		kparams.add("endsBefore", this.endsBefore);
+		kparams.add("expiresAfter", this.expiresAfter);
 		return kparams;
 	}
 
